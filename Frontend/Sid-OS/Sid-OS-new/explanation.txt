@@ -1,0 +1,390 @@
+In the UI there are basically three working components.....
+
+there is the logs which is showing in depth thinking of the agent...there is the chat which the user interacts with....using natural language...and then there is the wrking environemnt....which is the large middle ppanel...
+
+This large middle panel is where models can be viewed and things can be written....
+
+So lets say the user wants to work on a proposal or writing something up...they would typoe theur demand s in the chat...maybe they would say, find me past reports I have made that are similar to this new scope of work...in this , the agent would show its thinking and how it is searching through files to find similar work...and what features it is focusing ...so like, finding projects that have a report about a bridge over trout lake in Kanada ontaril...it is a susoension bridge foir ABC construction...it shows how it is going looking and why it is choosing the projects it does...gthis all hapens in the logs.
+
+Next the three projects will be outputted in the chat with a breif xplanation why they were chosen and the chat will say would you like me to pull tese up for you or keep looking...the user will say to pull them up....then a thin panel on the left will open up with the three report...when the user clocks the reports, a PDF viwerwe will oepn in the main middle center piece for the user to review the proosals...now the user will say, great! Now write me a rpeort similar to this that I can use for my new project...
+
+The system  will write in the center pieece(not in work or pdf, but in soime interface the new proposal)....
+
+This is all done in the web UI, but the Web UI connects to a local agen ton the users desktop which can connect to word for example...thenthe web UI can pass over the report after the user is happy and made the edits and import it into word for the user.....
+
+So basically the UI allows for all work to get done and then the agent can bring everything into the users tools...let me know if this makes sense to you.
+
+Provide a sumary of what I am saying and how the curent UI need to chage
+
+EXPLANTION MORE:
+I have this set up and I need to get your help....basucally:
+
+I have a speckle server which is hosted on AWS and contains BIM data and a model viewer.
+
+I also have a supabase db which contains PDF info and embeddings and such...it is parsed PDF technical drawings and company manuals and building codes.
+
+I have a langgraph also hosted which serves as the thinking system...there is an aorchestrator that takes. in a user questions and thinks about how ro come up with the response...it understands what tools it has including, looking at speckle info through graph ql, loking at supabase data that has technical drawings and manuals and codes, then it also has access to excel information...
+
+It uses this informaton to come up with engineering answers or potential actions...
+
+it cn connect to a users computer through a local agent that the user installs and is headless....it coordinates with this agent back and forht...
+
+The UI shows the thinking and proposed changes and then lets say the user wants the wrok completed, the agent can go into the computer and complete work.
+
+All model stuff ids done by manipulating speckle. data anbd showing the changes wuth the speckle viewer in the UI, and then lets say the user is satisfuied, the changes can be pulled into etabs or rvti for example.
+
+All logs are stoed to show the agent thinking. The local aegnt can interact with the users tools and conduct work on the users behalf
+
+Yes — this does make sense, and I understand what you are building. I’ll first summarize your system in my own words (to prove understanding), then clearly explain how the current UI needs to evolve to properly support this architecture.
+
+1. My Understanding of Your System (Verification)
+
+You are building an agentic engineering workspace where:
+
+Core Architecture
+
+Speckle (AWS-hosted)
+
+Source of truth for BIM / 3D model data
+
+Accessed via GraphQL
+
+Used for reading, modifying, and previewing engineering models
+
+Viewer embedded directly in the UI
+
+Supabase
+
+Stores parsed PDFs, technical drawings, manuals, codes
+
+Holds text + image embeddings
+
+Used for retrieval, precedent search, and document reasoning
+
+LangGraph (hosted)
+
+Acts as the thinking/orchestration engine
+
+Receives user intent
+
+Decides:
+
+Which tools to call (Speckle, Supabase, Excel, Local Agent)
+
+In what order
+
+Why each step is taken
+
+Produces transparent, logged reasoning
+
+Local Headless Agent (user-installed)
+
+Runs on the user’s machine
+
+Can:
+
+Open Word / Excel / ETABS / Revit
+
+Read & write files
+
+Execute actions on behalf of the user
+
+Communicates bidirectionally with the web UI
+
+UI Mental Model (Critical)
+
+Your UI is not a chat app — it is a workspace with an agent inside it.
+
+It has three primary surfaces:
+
+1. Logs Panel (Transparency Layer)
+
+Shows:
+
+Agent reasoning
+
+Tool selection
+
+Search criteria
+
+Why certain documents/models were chosen
+
+This is explicit, not hidden chain-of-thought for the user to trust
+
+2. Chat Panel (Intent Layer)
+
+Natural language interaction
+
+User gives high-level goals
+
+Agent responds with:
+
+Summaries
+
+Clarifying questions
+
+Options (“Pull these up?”, “Keep searching?”)
+
+3. Working Environment (Primary Canvas)
+
+The main middle panel
+
+This is where actual work happens:
+
+Speckle model viewer
+
+PDF viewer
+
+Drafting surface (proposal, report, spec)
+
+Editable content generated by the agent
+
+This is stateful, persistent, and user-controlled
+
+Example Flow (Proposal Use Case)
+
+User asks in chat:
+“Find similar past reports for this new scope.”
+
+Agent:
+
+Searches Supabase
+
+Uses embeddings + metadata
+
+Logs why certain projects match (bridge type, client, geography, scope)
+
+Chat outputs:
+
+3 candidate reports
+
+Short explanation for each
+
+Asks for next action
+
+User says:
+“Pull them up.”
+
+UI reaction:
+
+Left panel opens with report list
+
+Clicking a report opens PDF in the main workspace
+
+User reviews, then says:
+“Write a new proposal similar to this.”
+
+Agent:
+
+Writes a new editable draft in the main panel
+
+Not a PDF, not Word yet — a workspace-native document
+
+Once approved:
+
+Agent exports to Word via the local agent
+
+File appears on the user’s machine
+
+This same pattern applies to models, calculations, Excel, ETABS, Revit, etc.
+
+2. What This System Actually Is (Framing)
+
+You are building:
+
+An Engineering Operating System with an Agent-in-the-Loop UI
+
+Key distinctions:
+
+The agent does not replace the engineer
+
+The agent:
+
+Searches
+
+Drafts
+
+Proposes
+
+Executes after approval
+
+The UI is the shared cognitive workspace between human and agent
+
+This is closer to:
+
+Figma + Copilot + IDE + BIM viewer
+than to:
+
+ChatGPT
+
+Copilot Chat
+
+Simple RAG UI
+
+3. How the Current UI Needs to Change
+
+Right now (implicitly), most UIs are:
+
+Chat → Answer → Done
+
+Your UI must evolve into:
+
+Intent → Reasoning → Workspace State → Action
+
+A. The “Middle Panel” Must Become First-Class
+
+This is the biggest shift.
+
+The center panel must:
+
+Support multiple content modes
+
+Be persistent
+
+Allow direct user edits
+
+Examples of modes:
+
+🧱 BIM Viewer (Speckle)
+
+📄 PDF Viewer
+
+📝 Draft Document (proposal, report)
+
+📊 Spreadsheet-like surface
+
+🧠 Model diff / proposed changes
+
+The agent writes into this surface — not at the user.
+
+B. Logs Are Not Debug — They’re Trust Infrastructure
+
+Your logs panel is:
+
+A governance layer
+
+A professional requirement for engineers
+
+A differentiator vs black-box AI
+
+UI implication:
+
+Logs should be:
+
+Scrollable
+
+Timestamped
+
+Tool-tagged (Supabase, Speckle, Local Agent)
+
+Possibly collapsible by step (“Search”, “Reasoning”, “Execution Plan”)
+
+C. Chat Is for Decisions, Not Work Output
+
+Chat should:
+
+Ask clarifying questions
+
+Present options
+
+Confirm actions
+
+Chat should not:
+
+Hold long documents
+
+Contain final outputs
+
+Be the primary work surface
+
+Think:
+
+Chat = steering wheel
+Middle panel = road
+
+D. Explicit “Propose → Approve → Execute” UX
+
+Especially important because:
+
+You control real software
+
+You touch licensed tools
+
+You act on user machines
+
+UI needs:
+
+Clear proposed changes
+
+Clear diffs
+
+Explicit user approval before local agent execution
+
+This is crucial for:
+
+Safety
+
+Trust
+
+Enterprise adoption
+
+E. Local Agent Is an Execution Backend, Not a UI
+
+The local agent:
+
+Should never feel “mysterious”
+
+Should always be invoked via:
+
+A visible action
+
+A confirmed intent
+
+A logged step
+
+UI implication:
+
+“Send to Word”
+
+“Apply to ETABS”
+
+“Push to Revit”
+should be buttons or explicit actions, not silent behavior
+
+4. Final Verification Statement
+
+✅ I understand:
+
+Your architecture
+
+Your agent model
+
+Your UI intent
+
+Your trust requirements
+
+Your execution flow
+
+What you are building is coherent, technically sound, and differentiated — but it cannot succeed with a chat-centric UI.
+
+If you want, next we can:
+
+Sketch a concrete UI state machine
+
+Define component contracts (Chat ↔ Logs ↔ Workspace)
+
+Map this to a frontend architecture (React layout, state, event bus)
+
+Or help you explain this clearly to investors or engineers
+
+Just tell me the next step.
+
+TIMESHEET:
+The timesheet shows user interactions and what has been done...since engineering requires a lot of timesheets, it shows in depth logging of what has happneded and what is changing
+
+Workflow:
+
+Write up report or RFP for new project.
+Complete a model design (show model viewer, four bridge designs, etc)...show off logging capbilities....show model changing
+Show off time sheet capablites and being able to track what a usr has done.
+Show off writing up an email explaining the completed work.
