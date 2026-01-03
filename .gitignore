@@ -10,6 +10,7 @@ superceded_JH/**/.gitignore
 # Ignore problematic directories with corrupted files
 localagent-JH/excelagent/speckleexcel/localagent/speckle-excel/
 localagent-JH/excelagent/speckleexcel/sandbox/my-speckle-project/
+localagent-JH/excelagent/speckleexcel/sandbox/LICENSE
 # Explicitly ignore known nested git repos
 localagent-JH/excelagent/speckleexcel/.git/
 superceded_JH/JSON PIPELINE/.git/
