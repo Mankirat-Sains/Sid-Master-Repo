@@ -1,0 +1,71 @@
+{
+  "pages": [
+    {
+      "page_number": 4,
+      "sheet_id": "S3.0",
+      "drawing_title": "BUILDING ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "North, South, and East elevations",
+      "key_components": [
+        "Concrete Foundation",
+        "Metal Roofing",
+        "Metal Cladding",
+        "Bracing"
+      ],
+      "text_verbatim_title_block": "WADELL ENGINEERING LTD\nMark Craig\n60' x 100' Shed Addition\n25-01-101\nCalvin Martin\nBUILDING ELEVATIONS\nS3.0",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the building elevations for the north, south, and east sides of the shed addition. Key components include the concrete foundation, metal roofing, and metal cladding. The sheet also indicates the use of double 2x6 bracing as per detail. The elevations help in visualizing the exterior appearance and structural elements of the building."
+    },
+    {
+      "page_number": 1,
+      "sheet_id": "S0.0",
+      "drawing_title": "GENERAL NOTES",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Structural Notes",
+        "Concrete Specifications",
+        "Lumber/Framing Notes",
+        "Steel Specifications"
+      ],
+      "text_verbatim_title_block": "WADELL ENGINEERING LTD\nMark Craig\n60' x 100' Shed Addition\n25-01-101\nCalvin Martin\nGENERAL NOTES\nS0.0",
+      "general_notes_verbatim": "GENERAL NOTES\n1. ALL CONSTRUCTION SHALL CONFORM TO THE LATEST EDITION OF THE ONTARIO BUILDING CODE...\nCONCRETE\n1. ALL CONCRETE WORK SHALL CONFORM TO THE LATEST EDITION OF CSA A23.1...\nLUMBER / FRAMING\n1. ALL WOOD FRAMING SHALL CONFORM TO THE LATEST EDITION OF CSA O86...",
+      "page_overview_summary": "This sheet contains general notes and specifications applicable to the entire project. It includes detailed instructions on concrete, lumber/framing, and steel specifications. These notes are crucial for ensuring compliance with building codes and standards throughout the construction process."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "S2.0",
+      "drawing_title": "ROOF FRAMING PLAN & BUILDING SECTION",
+      "overall_classification": "Mixed",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Truss Framing",
+        "Building Sections",
+        "Truss Bracing"
+      ],
+      "text_verbatim_title_block": "WADELL ENGINEERING LTD\nMark Craig\n60' x 100' Shed Addition\n25-01-101\nCalvin Martin\nROOF FRAMING PLAN & BUILDING SECTION\nS2.0",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet features the roof truss framing plan and several building sections. It details the layout and connections of roof trusses, including bracing and support elements. The sections provide insight into the structural assembly and connections at various points in the building, ensuring proper load distribution and stability."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "S1.0",
+      "drawing_title": "PROPOSED PLANS & DETAILS",
+      "overall_classification": "Mixed",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Plan",
+        "Ground Floor Plan",
+        "Lintel Schedule",
+        "Assembly Schedule"
+      ],
+      "text_verbatim_title_block": "WADELL ENGINEERING LTD\nMark Craig\n60' x 100' Shed Addition\n25-01-101\nCalvin Martin\nPROPOSED PLANS & DETAILS\nS1.0",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet includes the foundation and ground floor plans, along with detailed sections and schedules. It outlines the dimensions and layout of the foundation and floor, providing essential information for construction. The lintel and assembly schedules offer specifications for structural components, ensuring proper installation and support."
+    }
+  ]
+}

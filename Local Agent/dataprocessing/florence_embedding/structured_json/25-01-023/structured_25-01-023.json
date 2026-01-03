@@ -1,0 +1,267 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation of timber frame structure",
+      "level": "Unknown",
+      "orientation": "Front elevation view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Frame Structure",
+      "element_callouts": [],
+      "key_components": [
+        "Eastern White Pine Beams",
+        "Douglas Fir Beams",
+        "Concrete Footings"
+      ],
+      "text_verbatim": "8X16 D.FIR NO.1\n20' x 29'-10 1/2\"\nEastern White Pine",
+      "summary": "This elevation view shows a timber frame structure with dimensions of 20' x 29'-10 1/2\". The structure uses Eastern White Pine and Douglas Fir beams, with a specific callout for an 8X16 D.FIR NO.1 beam. The view highlights the spatial arrangement and aesthetic of the building, emphasizing the use of timber materials. Concrete footings are noted as provided by others, indicating the structural support system for the building.",
+      "project_id": "25-01-023",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Side elevation of timber frame structure",
+      "level": "Unknown",
+      "orientation": "Side elevation view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Frame Structure",
+      "element_callouts": [],
+      "key_components": [
+        "Eastern White Pine Beams",
+        "Douglas Fir Beams",
+        "Concrete Footings"
+      ],
+      "text_verbatim": "8X16 D.FIR NO.1\n20' x 29'-10 1/2\"\nEastern White Pine",
+      "summary": "This side elevation view presents a timber frame structure with overall dimensions of 20' x 29'-10 1/2\". The structure is constructed using Eastern White Pine and Douglas Fir beams, with a specific callout for an 8X16 D.FIR NO.1 beam. The view provides a visual representation of the structural design, emphasizing the use of timber materials. Concrete footings are noted as provided by others, indicating the structural support system for the building.",
+      "project_id": "25-01-023",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation for beam sizing",
+      "level": "Unknown",
+      "orientation": "Front elevation view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam Sizing",
+      "element_callouts": [],
+      "key_components": [
+        "Eastern White Pine Beams",
+        "Douglas Fir Beams",
+        "Concrete Footings"
+      ],
+      "text_verbatim": "8X8 E.W.P NO.1\n6X8 E.W.P NO.1\n8X16 E.W.P NO.1\n**MIDDLE BEAM TO BE 8X16 D.FIR NO.1\nPOURED CONC. FDTN (BY OTHERS)\nSIMPSON CPT8Z CONCEALED POST BASE",
+      "summary": "This elevation view provides beam sizing details for a timber frame structure. It specifies the use of Eastern White Pine beams (8X8, 6X8, 8X16) and notes that the middle beam should be 8X16 D.FIR NO.1. The view includes dimensions and specifications for beams and highlights the use of Simpson CPT8Z concealed post bases. Concrete footings are noted as provided by others, indicating the structural support system for the building.",
+      "project_id": "25-01-023",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Side elevation for beam sizing",
+      "level": "Unknown",
+      "orientation": "Side elevation view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam Sizing",
+      "element_callouts": [],
+      "key_components": [
+        "Eastern White Pine Beams",
+        "Douglas Fir Beams",
+        "Concrete Footings"
+      ],
+      "text_verbatim": "8X12 E.W.P NO.1\n4X6 E.W.P NO.1\nTYP. OUTER POST LOADING (UNFACTORED)\nLIVE: 15 kN\nDEAD: 5 kN\nLATERAL: 5 kN\nSIMPSON CPT8Z CONCEALED POST BASE",
+      "summary": "This side elevation view provides beam sizing details for a timber frame structure. It specifies the use of Eastern White Pine beams (8X12, 4X6) and includes typical outer post loading values (Live: 15 kN, Dead: 5 kN, Lateral: 5 kN). The view highlights the use of Simpson CPT8Z concealed post bases. Concrete footings are noted as provided by others, indicating the structural support system for the building.",
+      "project_id": "25-01-023",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation with connection callouts",
+      "level": "Unknown",
+      "orientation": "Front elevation view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Connection Callouts",
+      "element_callouts": [],
+      "key_components": [
+        "Eastern White Pine Beams",
+        "Concrete Footings",
+        "Simpson CPT8Z Concealed Post Base"
+      ],
+      "text_verbatim": "CONNECTION I\nCONNECTION J\n8X12 E.W.P NO.1\n4X6 E.W.P NO.1\nSIMPSON CPT8Z CONCEALED POST BASE\nPOURED CONC. FDTN (BY OTHERS)",
+      "summary": "This elevation view shows detailed connection callouts for a timber frame structure. It highlights specific connection points labeled as CONNECTION I and CONNECTION J, ensuring proper assembly and structural integrity. The structure uses Eastern White Pine beams (8X12, 4X6) and Simpson CPT8Z concealed post bases. Concrete footings are noted as provided by others, emphasizing the importance of foundational support.",
+      "project_id": "25-01-023",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Front and side elevation views",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Frame Structure Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Timber Beams",
+        "Timber Posts",
+        "Concrete Footings"
+      ],
+      "text_verbatim": "CONNECTION E\nCONNECTION D\nCONNECTION C\nCONNECTION B\nCONNECTION A\nCONNECTION H\nCONNECTION F\nCONNECTION G\n8X8 E.W.P NO.1\n6X8 E.W.P NO.1\n8X16 E.W.P NO.1\n4X8 E.W.P NO.1\nPOURED CONC. FDTN (BY OTHERS)",
+      "summary": "This elevation view shows a timber frame structure with detailed connection callouts labeled as CONNECTION A through CONNECTION H. The beams and posts are specified as 8x8 E.W.P NO.1, 6x8 E.W.P NO.1, and 8x16 E.W.P NO.1. The structure rests on a poured concrete foundation, noted as provided by others. The connections ensure proper assembly and structural integrity, with emphasis on the foundational support.",
+      "project_id": "25-01-023",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Tenon",
+        "Oak Dowels"
+      ],
+      "text_verbatim": "1.5” Wide x 4.5” Long Tenon w.1/2” Housing\nFastened w. (1)- 1” Dia. Oak Dowels\n4”\n4 1/2”\n2”",
+      "summary": "This detail illustrates a timber connection featuring a 1.5” wide by 4.5” long tenon with a 1/2” housing. The connection is fastened using one 1” diameter oak dowel. Dimensions are provided for precise assembly, with measurements of 4”, 4 1/2”, and 2” indicating the size and placement of the tenon and dowel.",
+      "project_id": "25-01-023",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Tenon",
+        "Oak Dowels"
+      ],
+      "text_verbatim": "1.5” Wide x 4.5” Long Tenon\nFastened w. (1)- 1” Dia. Oak Dowels\n6 1/2”\n3 1/4”\n2”\n4 1/2”",
+      "summary": "This detail shows a timber connection with a 1.5” wide by 4.5” long tenon, fastened with a 1” diameter oak dowel. The drawing provides dimensions of 6 1/2”, 3 1/4”, 2”, and 4 1/2”, ensuring precise assembly and alignment of the timber components.",
+      "project_id": "25-01-023",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Tenon",
+        "Oak Dowels",
+        "Fasteners"
+      ],
+      "text_verbatim": "(2) 10 5/16” Dia U2 Fasteners\nConnection W. Min 4” Embed Into Beam @ Sight Angle\n1.5” Wide x 4.5” Long Tenon\nFastened w. (1)- 1” Dia. Oak Dowels\n2”\n1”",
+      "summary": "This detail provides a timber connection with a 1.5” wide by 4.5” long tenon, fastened using one 1” diameter oak dowel. It includes two 10 5/16” diameter U2 fasteners with a minimum 4” embedment into the beam at a sight angle. Dimensions of 2” and 1” are specified for accurate construction.",
+      "project_id": "25-01-023",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": "page_005/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Tenon",
+        "Oak Dowels"
+      ],
+      "text_verbatim": "1.5” Wide x 4.5” Long Tenon w.1/2” Housing\nFastened w. (1)- 1” Dia. Oak Dowels\n4”\n4 1/2”\n2”",
+      "summary": "This detail illustrates a timber connection featuring a 1.5” wide by 4.5” long tenon with a 1/2” housing. The connection is fastened using one 1” diameter oak dowel. Dimensions are provided for precise assembly, with measurements of 4”, 4 1/2”, and 2” indicating the size and placement of the tenon and dowel.",
+      "project_id": "25-01-023",
+      "page_number": 5,
+      "region_number": 4,
+      "relative_path": "page_005/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Connection Details",
+      "element_callouts": [],
+      "key_components": [
+        "Stub Tenon",
+        "Rothoblaas VGZ 7400",
+        "Oak Dowel",
+        "U2 Fasteners"
+      ],
+      "text_verbatim": "B\n2 3/4\"\n4 1/2\"\n2\"\n2 1/2\"\n1.5\" Wide x 4.5\" Long Tenon w/ 1/2\" Housing Fastened w/ (1) 1\" Dia. Oak Dowel\nC\n1\" Long x 1.5\" Wide Stub Tenon\n1 1/4\"\n(4) - Rothoblaas VGZ 7400\nD\n(2) 12x 3/8\" Dia U2 Fasteners Construction Screw W/ Min 4\" Embed Into Beam",
+      "summary": "This detail sheet illustrates various timber connection methods, focusing on tenons and dowels. Detail B shows a tenon that is 1.5 inches wide and 4.5 inches long with a 1/2-inch housing, fastened with a 1-inch diameter oak dowel. Detail C features a stub tenon that is 1 inch long and 1.5 inches wide, reinforced with four Rothoblaas VGZ 7400 fasteners. Detail D specifies the use of two 12x 3/8-inch diameter U2 fasteners, construction screws with a minimum 4-inch embedment into the beam. These connections are crucial for the structural integrity and aesthetic quality of the timber frame.",
+      "project_id": "25-01-023",
+      "page_number": 5,
+      "region_number": 5,
+      "relative_path": "page_005/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Connection Details",
+      "element_callouts": [],
+      "key_components": [
+        "Stub Tenon",
+        "Rothoblaas VGZ 7400",
+        "Oak Dowel",
+        "U2 Fasteners"
+      ],
+      "text_verbatim": "E\n(2) 12x 3/8\" Dia U2 Fasteners Construction Screw W/ Min 4\" Embed Into Beam\nH\n(2) 10x 3/8\" Dia U2 Fasteners Construction Screw W/ Min 4\" Embed Into Beam\n1/2\" Housing\n1.5\" Wide x 4.5\" Long Tenon Fastened w/ (2) 1\" Dia. Oak Dowels\nI\n6 1/2\"\n3 1/4\"\n2\"\n4 1/2\"\n1.5\" Wide x 4.5\" Long Tenon Fastened w/ (1) 1\" Dia. Oak Dowels",
+      "summary": "This detail sheet provides specifications for timber connections, emphasizing tenons and dowels. Detail E uses two 12x 3/8-inch diameter U2 fasteners, construction screws with a minimum 4-inch embedment into the beam. Detail H shows a 1.5-inch wide by 4.5-inch long tenon fastened with two 1-inch diameter oak dowels, and includes a 1/2-inch housing. Detail I specifies a tenon fastened with a single 1-inch diameter oak dowel, with dimensions of 6 1/2 inches, 3 1/4 inches, 2 inches, and 4 1/2 inches. These details ensure precise assembly and structural integrity of the timber frame.",
+      "project_id": "25-01-023",
+      "page_number": 5,
+      "region_number": 6,
+      "relative_path": "page_005/region_06_red_box.png"
+    }
+  ]
+}

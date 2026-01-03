@@ -1,0 +1,63 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": null,
+      "drawing_title": "STRUCTURAL MEMO",
+      "overall_classification": "Notes",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Steel Beam",
+        "Temporary Posts"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nWednesday, January 15, 2025\nTo: Bob McLean, Municipality of West Perth; CBO\nFrom: Sam DesRoches, Waddell Engineering Ltd.\nProject: Steel Beam at 26 Nelson St.\nLocation: 26 Nelson St, Mitchell, Ontario\nProject No.: 25-01-083\n119 Pinebush Road, Unit C, Cambridge, ON N1R 7J8 – Phone 519-267-6789",
+      "general_notes_verbatim": "To whom it may concern,\nWaddell Engineering Ltd. (WEL) has been retained to provide a structural review of the design for the project mentioned above.\nBackground:\nA site inspection of the referenced project was conducted on January 14, 2025, by WEL personnel. During this inspection, it was discovered that the W200x21 steel beam in the basement was cut too short and is not supported by the foundation wall at each end. Instead, this beam was supported by a built-up 4 ply 2x6 post at both ends. This is shown in Figures 1 and 2 below.",
+      "page_overview_summary": "This page is a structural memo from Waddell Engineering Ltd. regarding a steel beam at 26 Nelson St. The memo describes a site inspection revealing that a steel beam in the basement is inadequately supported by temporary posts instead of the foundation wall. The document sets the context for the structural review and includes images of the existing conditions."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": null,
+      "drawing_title": "STRUCTURAL MEMO",
+      "overall_classification": "Plan",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Steel Beam",
+        "Design Loads"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nWednesday, January 15, 2025\n119 Pinebush Road, Unit C, Cambridge, ON N1R 7J8 – Phone 519-267-6789",
+      "general_notes_verbatim": "Design Loads:\nThe following design loads were used for the review of the installed steel beam in the basement. This beam is highlighted in Figure 3 above.\nDead load = 0.57 kPa\nLive load = 1.90 kPa",
+      "page_overview_summary": "This page includes a plan view highlighting the basement beam that requires support. It specifies the design loads used for the review, indicating dead and live loads. The plan provides a visual reference for the location and context of the beam within the basement."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": null,
+      "drawing_title": "STRUCTURAL MEMO",
+      "overall_classification": "Detail",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Proposed Footing",
+        "Telepost"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nWednesday, January 15, 2025\n119 Pinebush Road, Unit C, Cambridge, ON N1R 7J8 – Phone 519-267-6789",
+      "general_notes_verbatim": "Proposed Repair:\nThe temporary wood post that was installed at each end of the beam shall be replaced with a telepost rated for a min factored load of 6,000 lbs. This post shall be installed as per the manufacturers recommendations and fastened to the bottom flange of the beam. The 2x4 stud wall that will be installed next to the foundation wall shall have a stud installed tight to against each side of the steel beam.\nThe strip footing shall be widened with a 36” x 18” x 10” thick footing installed below the post and doweled into the existing strip footing as shown in Figure 4.\nComments:\nIt is the opinion of Waddell Engineering Ltd. that the design is structurally adequate and agrees with the Ontario Building Code.\nAny questions or comments can be directed to the writer.\nRegards,\nSam DesRoches P.Eng.",
+      "page_overview_summary": "This page details the proposed repair for the basement beam support. It includes a diagram of the proposed footing and telepost installation. The repair involves replacing temporary wood posts with teleposts and widening the strip footing. The page concludes with a professional opinion that the design is structurally adequate."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": null,
+      "drawing_title": "STRUCTURAL MEMO",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Limitations"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nWednesday, January 15, 2025\n119 Pinebush Road, Unit C, Cambridge, ON N1R 7J8 – Phone 519-267-6789",
+      "general_notes_verbatim": "Limitations\nThis report has been prepared by Waddell Engineering Ltd. (WEL) at the request of the above-mentioned company.\nThe information and opinions expressed in this report are only for the sole benefit of the above-mentioned client at the address listed above. No other party may use or rely upon this report or any portion thereof without WEL’s written consent and such use shall be on such terms and conditions as WEL may expressly approve. Ownership in and copyright for the contents of this report belong to WEL. Any use which a third party makes of this report, is the sole responsibility of such third party. WEL accepts no responsibility whatsoever for damages suffered by any third party resulting from use of the report without WEL’s express written permission. WEL does not accept responsibility for independent conclusions, interpretations, interpolations, actions and/or decisions of the client, or others who may come into possession of the report, or any part thereof, which may be based on information contained in the report, unless WEL is specifically advised of and participates in such actions, in which case WEL’s responsibility will be agreed to at that time. In order to properly understand the suggestions, recommendations and opinions expressed herein, reference must be made to the whole of the report. WEL is not responsible for use by any party of portions of the report without reference to the whole report. Any user of this report denies any right to claim against the Consultant, Sub-consultants, the Officers, Agents and Employees in excess of the fee paid for the professional services.\nThe information, interpretations and conclusions in this report are based on WEL’s interpretation of conditions revealed through limited investigation conducted within a defined scope of services. No physical or destructive testing and no engineering calculations have been performed unless specifically mentioned in the report. Existing conditions which have not been record...",
+      "page_overview_summary": "This page outlines the limitations of the structural memo prepared by Waddell Engineering Ltd. It specifies the conditions under which the report can be used, the scope of the investigation, and the responsibilities of the parties involved. The page emphasizes the limitations of the findings due to the defined scope and reliance on provided information."
+    }
+  ]
+}

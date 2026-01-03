@@ -1,0 +1,499 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – main area layout",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "ICF1",
+        "FL1",
+        "P1",
+        "P3",
+        "B1",
+        "C1"
+      ],
+      "key_components": [
+        "ICF Wall Assemblies",
+        "Concrete Piers",
+        "Steel Beam",
+        "Floor Joists"
+      ],
+      "text_verbatim": "FOUNDATION\nSCALE: 3/16\" = 1'-0\"\nICF1\nFL1\nP1\nP3\nB1 (FLUSH)\nC1\nW8x18 STEEL BEAM\nEXISTING FLOOR SYSTEM\nSTAIRS & RAILINGS AS PER OBC\nREMOVE EXISTING RIM JOIST FOR NEW JOIST BEARING ON EXISTING FDN.\n28'-0\"\n13'-0 1/2\"\n20'-0\"\n10'-0\"\n10'-0\"\n28'-2\"\n16'-0\"\n12'-0\"\n56'-0\"",
+      "summary": "This foundation plan shows the layout for the foundation of a renovation project. Key elements include ICF wall assemblies labeled as 'ICF1', concrete piers marked 'P1' and 'P3', and a steel beam labeled 'W8x18'. The plan specifies a foundation area of 56'-0\" by 28'-0\" with floor joists and stairs as per the Ontario Building Code (OBC). The foundation supports an existing floor system and includes notes for removing existing rim joists for new joist bearing on existing foundations. Dimensions such as 28'-2\" and 13'-0 1/2\" indicate specific areas within the foundation layout.",
+      "project_id": "25-01-038",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – detailed layout with schedules",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan with Schedules",
+      "element_callouts": [
+        "ICF1",
+        "FL1",
+        "P1",
+        "P3",
+        "B1",
+        "C1"
+      ],
+      "key_components": [
+        "ICF Wall Assemblies",
+        "Concrete Piers",
+        "Steel Beam",
+        "Floor Joists",
+        "Ledger Schedule",
+        "Column Schedule",
+        "Beam Schedule"
+      ],
+      "text_verbatim": "FOUNDATION\nSCALE: 3/16\" = 1'-0\"\nICF WALL ASSEMBLIES\nCONCRETE PIER SCHEDULE\nLEDGER SCHEDULE\nCOLUMN SCHEDULE\nBEAM SCHEDULE\nICF1\nFL1\nP1\nP3\nB1 (FLUSH)\nC1\nW8x18 STEEL BEAM\nEXISTING FLOOR SYSTEM\nSTAIRS & RAILINGS AS PER OBC\nREMOVE EXISTING RIM JOIST FOR NEW JOIST BEARING ON EXISTING FDN.\n28'-0\"\n13'-0 1/2\"\n20'-0\"\n10'-0\"\n10'-0\"\n28'-2\"\n16'-0\"\n12'-0\"\n56'-0\"",
+      "summary": "This foundation plan includes detailed schedules for ICF wall assemblies, concrete piers, ledgers, columns, and beams. The plan outlines the foundation layout with elements such as 'ICF1' for wall assemblies, 'P1' and 'P3' for concrete piers, and 'W8x18' for steel beams. The foundation supports an existing floor system and includes stairs and railings as per the Ontario Building Code (OBC). Dimensions like 28'-2\" and 13'-0 1/2\" define specific areas within the foundation. The plan ensures proper drainage and structural support, adhering to building standards.",
+      "project_id": "25-01-038",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": "Ground Floor – general notes and schedules",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan Notes and Schedules",
+      "element_callouts": [
+        "FL2",
+        "FL3",
+        "EW1",
+        "EW2",
+        "C1",
+        "C2",
+        "B3",
+        "B4"
+      ],
+      "key_components": [
+        "Floor Assemblies",
+        "Wall Assemblies",
+        "Column Schedule",
+        "Beam Schedule"
+      ],
+      "text_verbatim": "LEGEND\nSMOKE & C.O. DETECTOR\nMAIN FLOOR PLAN NOTES\n1. ALL FASTENERS IN TO TREATED WOOD SHALL BE ACQ RATED.\n2. ALL INTERIOR WALLS ARE \"IW1\" UNLESS OTHERWISE NOTED.\n3. ENSURE SOLID CONNECTION OF NEW EXT. WALLS TO EXISTING WALLS.\nFLOOR ASSEMBLIES\nFL2 MAIN FLOOR SYSTEM :\nFINISH FLOOR ON UNDERLAY AS REQ'D.\n3/4\" T&G SHEATHING SCREWED & GLUED\nFLOOR JOISTS PER PLAN\nBRIDGING PER PLAN\nFL3 P.T. DECK SYSTEM :\n5/4 P.T. DECKING SCREWED TO\nP.T. DECK JOISTS PER PLAN\nWALL ASSEMBLIES\nEW1 2x6 SIDING EXTERIOR WALL:\nSIDING PER CLIENT\n1\" RIGID INSULATION (JOINTS TAPED)\n7/16\" OSB SHEATHING\n2x6 STUDS @ 16\" o.c.\nR22 BATT INSULATION\nS6 MIL POLY VAPOR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nEW2 EXISTING EXTERIOR WALL\nCOLUMN SCHEDULE\nC1 6x6 P.T. No.2 OR BETTER POST c/w SIMPSON\nABU66Z POST BASE TO PIER AND FASTENED\nTO BEAM ABOVE WITH BC66 BRACKET (OR\nEQUIVALENT) (SEE DETAIL 1/D1)\nC2 (3) PLY 2x6 BUILT-UP POST\nBEAM SCHEDULE\nB3 (2) 2x10 P.T. BUILT-UP BEAM\nB4 (3) 2x10 P.T. BUILT-UP BEAM",
+      "summary": "This section contains notes and schedules for the main floor plan. The notes emphasize the use of ACQ-rated fasteners for treated wood and the requirement for solid connections between new and existing exterior walls. Floor assemblies include 'FL2' for the main floor system with 3/4\" T&G sheathing and 'FL3' for the P.T. deck system. Wall assemblies 'EW1' and 'EW2' detail the construction of exterior walls with components like 2x6 studs, R22 batt insulation, and 1/2\" drywall. The column schedule lists 'C1' as a 6x6 P.T. post with Simpson hardware and 'C2' as a 3-ply 2x6 built-up post. The beam schedule includes 'B3' and 'B4' as built-up beams using 2x10 P.T. lumber.",
+      "project_id": "25-01-038",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "FL2",
+        "FL3",
+        "EW1",
+        "EW2",
+        "C1",
+        "B3"
+      ],
+      "key_components": [
+        "Deck",
+        "Covered Deck",
+        "Stairs",
+        "Truss Girder"
+      ],
+      "text_verbatim": "STAIRS & RAILINGS AS PER OBC\nDECK\nFL3\nB3\nC1\nCOVERED DECK\n(3) PLY TRUSS GIRDER SEE ROOF PLAN\n20'-0\"\n13'-10 1/4\"\n81'-1 1/4\"\n9'-1\"\n8'-0\"\n5'-0\"\n28'-0\"",
+      "summary": "This main floor plan outlines the layout for the ground floor, featuring elements such as decks, covered decks, and stairs with railings as per the Ontario Building Code (OBC). Key components include 'FL3' for the deck system, 'B3' for built-up beams, and 'C1' for columns. The plan also references a 3-ply truss girder, indicating its location in relation to the roof plan. Dimensions such as 20'-0\" and 81'-1 1/4\" define the spatial layout of the floor. The plan integrates new and existing structures, ensuring compliance with building standards.",
+      "project_id": "25-01-038",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – extended layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan Extension",
+      "element_callouts": [
+        "FL2",
+        "FL3",
+        "EW2",
+        "C2"
+      ],
+      "key_components": [
+        "Covered Porch",
+        "New Build Layout"
+      ],
+      "text_verbatim": "NEW BUILD LAYOUT TBD\nFL2\nEW2\nC2\nCOVERED PORCH\nFL3\n20'-0\"\n5'-0\"\n28'-0\"\n12'-0\"\n56'-0\"",
+      "summary": "This section of the main floor plan extends the layout to include a covered porch and a new build layout, which is to be determined (TBD). Key elements include 'FL2' for the floor system, 'FL3' for the deck system, and 'EW2' for existing exterior walls. The plan also features 'C2' as a column type. Dimensions such as 20'-0\" and 56'-0\" provide spatial context for the layout. The plan emphasizes the integration of new structures with existing ones, ensuring compliance with building standards.",
+      "project_id": "25-01-038",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": "page_003/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main deck and covered deck area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/A2"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "FL3",
+        "B3",
+        "B4",
+        "C1",
+        "EW1",
+        "EW2"
+      ],
+      "key_components": [
+        "Deck",
+        "Covered Deck",
+        "Existing Manufactured Home"
+      ],
+      "text_verbatim": "13'-10 1/4\" 81'-1 1/4\" 20'-0\" 27'-3\" 10'-0\" 26'-0\" 8'-0\" 8'-0\" 5'-0\" DECK COVERED DECK (3) PLY TRUSS GIRDER SEE ROOF PLAN EXISTING MANUFACTURED HOME A A2 FL3 B3 B4 C1 EW1 EW2",
+      "summary": "This plan view shows the main floor layout, focusing on the deck and covered deck areas. The dimensions provided are 13'-10 1/4\", 81'-1 1/4\", 20'-0\", 27'-3\", and 10'-0\", indicating the spatial layout of the decks. The section callout 'A/A2' suggests a related section view. Element callouts include 'FL3', 'B3', 'B4', 'C1', 'EW1', and 'EW2', identifying specific structural components like beams and columns. The note '(3) PLY TRUSS GIRDER SEE ROOF PLAN' indicates a connection to the roof structure. The plan integrates with the existing manufactured home, ensuring structural continuity.",
+      "project_id": "25-01-038",
+      "page_number": 3,
+      "region_number": 4,
+      "relative_path": "page_003/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan Notes",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "R3",
+        "CLG1",
+        "CLG2",
+        "CLG3"
+      ],
+      "key_components": [
+        "Truss Roof",
+        "Waterproofing Membrane",
+        "Insulation",
+        "Drywall"
+      ],
+      "text_verbatim": "ROOF PLAN NOTES 1. MAINTAIN 10\" TRUSS HEEL FOR INSULATION AND ROOF VENTING. 2. PROVIDE VENTED SOFFITS AND 1 1/2\" VENTING BETWEEN SHEATHING AND INSULATION (INSTALL ATTIC VENTS). 3. PROVIDE FOR 24\" EAVE, 24\" GABLE FINISHED OVERHANGS UNLESS NOTED OTHERWISE. 4. WALLS AND BEAMS SHOWN ARE BEARING. 5. PROVIDE ACCESS TO ATTIC FROM FLOOR BELOW. 6. PROVIDE PRE-ENGINEERED TRUSS DRAWINGS TO BUILDING DEPARTMENT PRIOR TO SITE INSPECTION. 7. VERIFY DIMENSIONS AND SUITABILITY BEFORE MANUFACTURE OF TRUSSES. 8. PROVIDE TRUSS LAYOUT TO DESIGNER PRIOR TO WALL FRAMING AND MANUFACTURE OF TRUSS. ROOF ASSEMBLIES ID NOTE R1 PRE ENGINEERED WOOD TRUSS ROOF: PRE FINISHED METAL WATERPROOFING MEMBRANE 1/2\" ROOFING PLYWOOD c/w 'H' CLIPS (ALTERNATE: 5/8\" T&G OSB SHEATHING) OR 1x4 STRAPPING @ 24\" o.c. PRE-ENGINEERED TRUSSES 2x4 TRUSS BRACING AS REQ'D R2 PRE ENGINEERED WOOD TRUSS ROOF: PRE FINISHED METAL WATERPROOFING MEMBRANE 1/2\" ROOFING PLYWOOD c/w 'H' CLIPS (ALTERNATE: 5/8\" T&G OSB SHEATHING) OR 1x4 STRAPPING @ 24\" o.c. PRE-ENGINEERED SCISSOR TRUSSES 2x4 TRUSS BRACING AS REQ'D R3 OVERLAY FRAMING c/w 2x8 VALLEY BOARDS 2x8 RIDGE BOARD & 2x6 RAFTERS @ 24\" o.c. CEILING ASSEMBLIES ID NOTE CLG1 VAULTED CEILING ASSEMBLY: R32 BATT INSULATION S-6 mil POLY VAPOUR BARRIER 1/2\" DRYWALL TAPED AND SANDED. CLG2 PORCH CEILING ASSEMBLY: 1x4 STRAPPING @ 16\" o/c VENTED ALUMINUM SOFFIT CLG3 FLAT CEILING ASSEMBLY: R50 INSULATION S-6 mil POLY VAPOUR BARRIER 1/2\" DRYWALL TAPED AND SANDED.",
+      "summary": "This image contains roof plan notes and assemblies. Key notes include maintaining a 10\" truss heel for insulation and venting, providing vented soffits, and ensuring 24\" eave and gable overhangs. Roof assemblies are detailed with IDs R1, R2, and R3, describing pre-engineered wood truss roofs with metal waterproofing membranes and specific plywood or OSB sheathing options. Ceiling assemblies CLG1, CLG2, and CLG3 specify insulation, vapor barriers, and drywall finishes. These notes ensure the roof's structural integrity and compliance with design specifications.",
+      "project_id": "25-01-038",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – truss and ceiling layout",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "CLG2",
+        "CLG3"
+      ],
+      "key_components": [
+        "Structural Gable Truss",
+        "Pre-Engineered Trusses",
+        "Girder Truss"
+      ],
+      "text_verbatim": "BDC 2'-0\" 81'-0\" 27'-0\" 2'-0\" STRUCTURAL GABLE TRUSS PRE-ENG. TRUSSES @ 24\" o.c. PRE-ENG. (3) PLY GIRDER TRUSS R1 CLG2 R2 CLG3 PRE-ENG. SCISSOR TRUSSES @ 24\" o.c. 2x8 VALLEY BOARD 2x8 RIDGE BOARD & 2x6 RAFTERS @ 24\" o.c.",
+      "summary": "This roof plan details the layout of trusses and ceiling assemblies. Dimensions include 2'-0\", 81'-0\", and 27'-0\", defining the roof's spatial configuration. Structural components such as the 'Structural Gable Truss', 'Pre-Engineered Trusses', and 'Pre-Eng. (3) Ply Girder Truss' are highlighted. Element callouts 'R1', 'R2', 'CLG2', and 'CLG3' identify specific truss and ceiling types. The plan ensures proper spacing and alignment of trusses and rafters, maintaining the roof's structural integrity.",
+      "project_id": "25-01-038",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Rear elevation",
+      "level": "Multiple",
+      "orientation": "Rear elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Rear Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Vinyl Siding",
+        "Deck"
+      ],
+      "text_verbatim": "REAR ELEVATION SCALE: 3/16\" = 1'-0\" T/O ROOF 7'-9 11/16\" T/O DK BM T/O SUB FLR T/O FDN WALL 8'-1 1/2\" T/O FTG 8'-0\" 8'-9 7/8\" METAL ROOFING VINYL SIDING SIZE AND POSITION OF OPENINGS TBD",
+      "summary": "This rear elevation view shows the building's exterior, featuring metal roofing and vinyl siding. Key dimensions include the top of the roof at 7'-9 11/16\" and the top of the footing at 8'-0\". The deck is supported by columns, and the size and position of openings are to be determined. The elevation provides a visual representation of the building's appearance and structural elements, ensuring aesthetic and functional design alignment.",
+      "project_id": "25-01-038",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation",
+      "level": "Multiple",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Front Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Vinyl Siding",
+        "Existing Structure"
+      ],
+      "text_verbatim": "FRONT ELEVATION SCALE: 3/16\" = 1'-0\" T/O ROOF 7'-9 11/16\" T/O WALL 8'-1 1/8\" T/O SUB FLR T/O FDN 11 1/2\" GRADE T/O FTG 8'-0\" MIN 4'-0\" BELOW GRADE EXISTING",
+      "summary": "This front elevation view displays the building's exterior, highlighting the metal roofing and vinyl siding. The top of the roof is at 7'-9 11/16\", and the top of the footing is at 8'-0\". The elevation includes an existing structure, ensuring integration with new elements. The design aligns with aesthetic and functional requirements, providing a comprehensive view of the building's appearance.",
+      "project_id": "25-01-038",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Right elevation of the building",
+      "level": "Unknown",
+      "orientation": "Right elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Vinyl Siding",
+        "Metal Roofing",
+        "Deck",
+        "Foundation",
+        "Lintels"
+      ],
+      "text_verbatim": "T/O ROOF 8'-0 11/16\"\nT/O WALL 8'-1 1/8\"\nT/O SUB FLR 11 1/2\"\nT/O FDN\nGRADE\nT/O FTG 8'-0\"\nRIGHT ELEVATION\nSCALE: 3/16\" = 1'-0\"\nENSURE LINTELS OVER EXISTING OPENINGS AS PER OBC\nSIZE AND POSITION OF OPENINGS TBD\nVINYL SIDING\nMETAL ROOFING\nEXISTING\n6 12\n12 6\n8'-1 1/8\" T/O DECK\n11\" TO SCREENED DECK\n28'-2\"",
+      "summary": "This right elevation view of the building shows the exterior design elements, including vinyl siding and metal roofing. The elevation indicates the top of the roof at 8'-0 11/16\" and the top of the wall at 8'-1 1/8\". The deck is positioned at 8'-1 1/8\" with an 11\" rise to the screened deck. The foundation is noted with a top of footing at 8'-0\". The drawing emphasizes ensuring lintels over existing openings as per OBC, with the size and position of openings to be determined. The slope of the roof is indicated by a 6:12 pitch. The scale of the drawing is 3/16\" = 1'-0\".",
+      "project_id": "25-01-038",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Left elevation of the building",
+      "level": "Unknown",
+      "orientation": "Left elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Vinyl Siding",
+        "Metal Roofing",
+        "Foundation"
+      ],
+      "text_verbatim": "T/O ROOF 8'-0 11/16\"\nT/O WALL 8'-1 1/8\"\nT/O SUB FLR 11 1/2\"\nT/O FDN\nGRADE\nT/O FTG 8'-0\"\nLEFT ELEVATION\nSCALE: 3/16\" = 1'-0\"\nSIZE AND POSITION OF OPENINGS TBD\nVINYL SIDING\nMETAL ROOFING\nEXISTING\n6 12\n12 6\n4'-0\"\n1'-4\"",
+      "summary": "This left elevation view of the building highlights the exterior features such as vinyl siding and metal roofing. The top of the roof is marked at 8'-0 11/16\", and the top of the wall is at 8'-1 1/8\". The foundation is indicated with a top of footing at 8'-0\". The drawing notes that the size and position of openings are to be determined. The roof slope is shown with a 6:12 pitch. The scale of the drawing is 3/16\" = 1'-0\".",
+      "project_id": "25-01-038",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Right elevation of the building",
+      "level": "Unknown",
+      "orientation": "Right elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Vinyl Siding",
+        "Metal Roofing",
+        "Deck",
+        "Foundation"
+      ],
+      "text_verbatim": "T/O ROOF 8'-0 11/16\"\nT/O WALL 8'-1 1/8\"\nT/O SUB FLR 11 1/2\"\nT/O FDN WALL\nGRADE\nT/O TUBE FTG\n1'-6\"\nMIN. 4'-0\" BELOW GRADE\nSIZE AND POSITION OF OPENINGS TBD\nVINYL SIDING\nMETAL ROOFING\nEXISTING\n6 12\n12 6\n1'-0\" T/O DECK",
+      "summary": "This right elevation view of the building shows the exterior design with vinyl siding and metal roofing. The top of the roof is at 8'-0 11/16\", and the top of the wall is at 8'-1 1/8\". The deck is positioned at 1'-0\" above grade. The foundation wall and tube footing are noted, with a minimum depth of 4'-0\" below grade. The size and position of openings are to be determined. The roof slope is indicated by a 6:12 pitch.",
+      "project_id": "25-01-038",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": "page_006/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "Right elevation of the building",
+      "level": "Unknown",
+      "orientation": "Right elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Vinyl Siding",
+        "Metal Roofing",
+        "Deck",
+        "Foundation",
+        "Lintels"
+      ],
+      "text_verbatim": "T/O ROOF 8'-0 11/16\"\nT/O WALL 8'-1 1/8\"\nT/O SUB FLR 11 1/2\"\nT/O FDN WALL\nGRADE\nT/O FTG\n9'-4\"\nENSURE LINTELS OVER EXISTING OPENINGS AS PER OBC\nSIZE AND POSITION OF OPENINGS TBD\nVINYL SIDING\nMETAL ROOFING\nEXISTING\n6 12\n12 6\n28'-2\"",
+      "summary": "This right elevation view of the building illustrates the exterior elements such as vinyl siding and metal roofing. The top of the roof is marked at 8'-0 11/16\", and the top of the wall is at 8'-1 1/8\". The foundation wall is noted with a top of footing at 9'-4\". The drawing emphasizes ensuring lintels over existing openings as per OBC, with the size and position of openings to be determined. The roof slope is shown with a 6:12 pitch. The scale of the drawing is 3/16\" = 1'-0\".",
+      "project_id": "25-01-038",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": "page_006/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof and Ceiling Assemblies Schedule",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "R3",
+        "CLG1",
+        "CLG2",
+        "CLG3"
+      ],
+      "key_components": [
+        "Pre-Engineered Wood Truss Roof",
+        "Pre-Finished Metal",
+        "Waterproofing Membrane",
+        "Roofing Plywood",
+        "OSB Sheathing",
+        "Trusses",
+        "Truss Bracing",
+        "Batt Insulation",
+        "Poly Vapour Barrier",
+        "Drywall",
+        "Strapping",
+        "Soffit"
+      ],
+      "text_verbatim": "ROOF ASSEMBLIES\nID NOTE\nR1 PRE ENGINEERED WOOD TRUSS ROOF:\nPRE FINISHED METAL\nWATERPROOFING MEMBRANE\n1/2\" ROOFING PLYWOOD c/w 'H' CLIPS\n(ALTERNATE: 5/8\" T&G OSB SHEATHING)\nOR 1x4 STRAPPING @ 24\" o.c.\nPRE-ENGINEERED TRUSSES\n2x4 TRUSS BRACING AS REQ'D\nR2 PRE ENGINEERED WOOD TRUSS ROOF:\nPRE FINISHED METAL\nWATERPROOFING MEMBRANE\n1/2\" ROOFING PLYWOOD c/w 'H' CLIPS\n(ALTERNATE: 5/8\" T&G OSB SHEATHING)\nOR 1x4 STRAPPING @ 24\" o.c.\nPRE-ENGINEERED SCISSOR TRUSSES\n2x4 TRUSS BRACING AS REQ'D\nR3 OVERLAY FRAMING c/w 2x8 VALLEY BOARDS\n2x8 RIDGE BOARD & 2x6 RAFTERS @ 24\" o.c.\nCEILING ASSEMBLIES\nID NOTE\nCLG1 VAULTED CEILING ASSEMBLY:\nR32 BATT INSULATION\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED AND SANDED.\nCLG2 PORCH CEILING ASSEMBLY:\n1x4 STRAPPING @ 16\" o/c\nVENTED ALUMINUM SOFFIT\nCLG3 FLAT CEILING ASSEMBLY:\nR50 INSULATION\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED AND SANDED",
+      "summary": "This schedule outlines the roof and ceiling assemblies for the building. Roof assemblies include pre-engineered wood truss roofs with pre-finished metal and waterproofing membranes. R1 and R2 specify 1/2\" roofing plywood with 'H' clips, with an alternate option of 5/8\" T&G OSB sheathing or 1x4 strapping at 24\" o.c. R1 uses pre-engineered trusses, while R2 uses scissor trusses. R3 involves overlay framing with 2x8 valley boards and 2x6 rafters at 24\" o.c. Ceiling assemblies include CLG1, a vaulted ceiling with R32 batt insulation and a poly vapour barrier, CLG2, a porch ceiling with 1x4 strapping at 16\" o.c. and vented aluminum soffit, and CLG3, a flat ceiling with R50 insulation and a poly vapour barrier. Each assembly is detailed with specific materials and construction methods.",
+      "project_id": "25-01-038",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Building Section – showing roof and crawl space",
+      "level": "Multiple",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "R4",
+        "R2",
+        "R1",
+        "CLG1",
+        "CLG2"
+      ],
+      "key_components": [
+        "Pre-engineered Girder Truss",
+        "Vented Soffit",
+        "Existing Roof",
+        "Screened Deck",
+        "Existing Crawl Space"
+      ],
+      "text_verbatim": "PRE-ENG GIRDER TRUSS\nR4\nR2\nR1\nCLG1\nCLG2\nEXISTING ROOF\nSCREENED DECK\nEXISTING CRAWL SPACE\nVENTED SOFFIT\nT/O ROOF\n7'-9 11/16\"\nT/O WALL\n8'-1 1/8\"\n1'-1 1/2\"\n1\" T/O SCREENED DK\n8 1/2\" T/O DK\nT/O SUB FLR\nT/O FDN\n8'-0\"\nT/O FTG\nENSURE MIN 4'-0\" COVER TO CONC. PEIR FTGS",
+      "summary": "This section view illustrates a building cross-section, highlighting the roof and crawl space. The section includes pre-engineered girder trusses labeled as R4, R2, and R1. The ceiling levels are marked as CLG1 and CLG2. The section shows a vented soffit and existing roof structure above a screened deck. The crawl space is labeled as 'Existing Crawl Space'. Vertical dimensions are provided, such as the top of the roof at 7'-9 11/16\", top of the wall at 8'-1 1/8\", and top of foundation at 8'-0\". The note 'Ensure min 4'-0\" cover to conc. pier ftgs' specifies the required concrete cover for pier footings. This section is crucial for understanding the vertical relationships and structural components within the building.",
+      "project_id": "25-01-038",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Concrete Pier Detail",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/D1"
+      ],
+      "element_type": "Concrete Pier Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Pier",
+        "Simpson Bracket",
+        "Hilti Kwik Anchors",
+        "A307 Lag Screws",
+        "Reinforcing"
+      ],
+      "text_verbatim": "1/D1 CONC. PIER DETAIL\nSCALE 3/4\" = 1'-0\"\nGUARDS PER OBC\nCOLUMNS FASTENED TO BEAM WITH SIMPSON BRACKET\nNOTE: ALL FASTENERS INTO TREATED LUMBER SHALL BE ACQ RATED.\n2 - 1/2\" DIA. x 3 1/2\" A307 LAG SCREWS (4 TOTAL)\nGRADE\nCONCRETE PIER ON FTG. PER PLAN\n2 - 15M INTO FOOTING\nPROVIDE 2\" CONC. COVER TO ALL REINFORCING\nFOOTING PER PLAN\nCOLUMN PER PLAN\nSIMPSON BASE SADDLE C/W 2 - 1/2\" x 4\" HILTI KWIK ANCHORS INTO PIER (OR EQUIVALENT)",
+      "summary": "This detail shows a concrete pier with specific construction instructions. The pier is anchored with a Simpson base saddle and Hilti Kwik anchors. Columns are fastened to the beam using a Simpson bracket, with all fasteners into treated lumber being ACQ rated. The detail specifies the use of 2 - 1/2\" diameter x 3 1/2\" A307 lag screws, totaling four. Reinforcement includes 2 - 15M bars into the footing, with a 2\" concrete cover required for all reinforcing. The note 'Footing per plan' indicates that the footing details are specified elsewhere. This detail ensures the structural integrity of the pier and its compliance with design standards.",
+      "project_id": "25-01-038",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Deck Ledger Detail",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/D1"
+      ],
+      "element_type": "Deck Ledger Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Deck",
+        "Existing Wall",
+        "Existing Floor System",
+        "Existing Foundation"
+      ],
+      "text_verbatim": "2/D1 DECK LEDGER DETAIL\nSCALE 3/4\" = 1'-0\"\nEXISTING EXT. WALL\nEXISTING FLOOR SYS.\nEXISTING FOUNDATION\nDECK PER PLAN\nSCREWS PER PLAN",
+      "summary": "This detail illustrates the deck ledger connection to an existing structure. The deck is attached to the existing exterior wall and floor system, with the foundation shown below. The detail specifies 'Deck per plan' and 'Screws per plan', indicating that the exact specifications for these elements are detailed elsewhere. The scale of the drawing is 3/4\" = 1'-0\", providing precise measurements for construction. This detail is essential for ensuring the proper installation and structural integrity of the deck ledger.",
+      "project_id": "25-01-038",
+      "page_number": 8,
+      "region_number": 2,
+      "relative_path": "page_008/region_02_red_box.png"
+    }
+  ]
+}

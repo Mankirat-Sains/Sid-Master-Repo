@@ -1,0 +1,325 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – FW1 Sandwich Wall Detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "FW1 Sandwich Wall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Wall",
+        "Rebar",
+        "Foam Insulation",
+        "Dowel",
+        "Footing"
+      ],
+      "text_verbatim": "TYPICAL DETAIL: 1/2\" DIA. BOLT WELDED TO EVERY OTHER STIRRUP\n2x6 PLATE W/ SILL GASKET\nCHAMFER TOP EDGE OF CONC. WALL\n10\" CONCRETE WALL 25 Mpa\nCONC. FLOOR\n2\"x 6'-0\" RIGID SM FOAM INSULATION\n15M x 24\" DOWEL @ 24\" O.C W/ 6\" EMBEDMENT INTO FOOTING\n8\"x 24\" FTG 20 Mpa\nFW1 SANDWICH WALL DETAIL\nSCALE: 3/8\" = 1'-0\"\nTOP OF FOUNDATION\n15M STIRRUP BAR 18\"x6\"x 18\" TIED TO VERT. BARS @ 24\" O.C.\n2/15M BARS CONT.\n10M HORIZ. BARS @ 16\" O.C. (EACH FACE)\nGRADE\n4'-0\" COVER MIN.\n10m UPRIGHT BARS @ 24\" O.C.\nTOP OF FOOTING\n2/15M BARS CONT.",
+      "summary": "This detail illustrates the FW1 Sandwich Wall, a structural element in the foundation level. The wall is constructed with a 10-inch concrete wall rated at 25 Mpa, reinforced with 15M stirrup bars tied to vertical bars at 24 inches on center. Horizontal reinforcement consists of 10M bars at 16 inches on center on each face. The wall includes a 2-inch by 6-foot rigid SM foam insulation and is anchored with 15M dowels embedded 6 inches into the footing. The footing itself measures 8 inches by 24 inches and is rated at 20 Mpa. The detail specifies a chamfered top edge and a sill gasket with a 2x6 plate. The drawing scale is 3/8 inch equals 1 foot.",
+      "project_id": "25-01-078",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Main Floor Plan",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/A",
+        "P2"
+      ],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "FW1",
+        "L1",
+        "L2"
+      ],
+      "key_components": [
+        "Concrete Floor",
+        "Epoxied Dowels",
+        "Compacted Granular Soil",
+        "Existing Wall"
+      ],
+      "text_verbatim": "FOUNDATION PLAN\nSCALE: 1/8\" = 1'-0\"\nFOUNDATION WALL & FOOTING SCHEDULE\nFW1 - 10\"x 8'-0\" SANDWICH CONCRETE WALL\nCONTINUOUS STRIP FOOTING\n24\" WIDE x 8\" DEEP\nREINFORCEMENT AS PER FW1 DETAIL\nNOTE:\n-DROP WALL AT DOOR LOCATIONS TO 6\" BELOW FINISHED FLOOR POUR FLOOR OVER\n(TYP OF ALL OPENINGS)\n-BOXED NUMBERS INDICATE GRADE\nKEEP RIGID INSULATION BACK 24\" (TYP) ALL OPENINGS IN SANDWICH WALL\nPROVIDE 10M EPOXIED DOWELS x24\" lg. @ 24\" O.C. W/ 4\" EMBEDMENT. APPLY BONDING AGENT TO FACE OF SLAB JOINT. (TYP.)\n6\" CONC. FLOOR 32 MPA MIN 6\" COMPACTED GRANULAR 'A' ON UNDISTURBED SOIL\nREMOVE EXISTING CONC. WALL\nPROVIDE (2) 15M EPOXIED DOWELS x 24\"lg. W/ 6\" EMBED. INTO EXISTING FOOTING\n4 PROVIDE (2) 10M EPOXIED DOWELS x 24\" lg. @ 16\" O.C. VERTICALLY W/ 6\" EMBEDMENT INTO (TYP.) EXISTING FOUNDATION WALL",
+      "summary": "This foundation plan outlines the structural layout for the ground floor, focusing on the FW1 sandwich concrete wall system. The wall is 10 inches by 8 feet, with a continuous strip footing 24 inches wide and 8 inches deep. Reinforcement details are as per the FW1 detail. The plan includes instructions to drop the wall at door locations and pour the floor over, typical for all openings. Rigid insulation is to be kept back 24 inches at all openings. The concrete floor is specified as 6 inches thick with a 32 MPA rating, placed over a minimum of 6 inches of compacted granular 'A' on undisturbed soil. Existing concrete walls are to be removed, and epoxied dowels are specified for connections to existing footings and foundation walls. The drawing scale is 1/8 inch equals 1 foot.",
+      "project_id": "25-01-078",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – Roof Plan",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Truss System",
+        "Roof Strapping",
+        "Lateral Bracing"
+      ],
+      "text_verbatim": "ROOF PLAN\nSCALE: 1/8\" = 1'-0\"\nNOTES:\n-TRUSS BRACING AS PER NOTE 4\n-ROOF C/W ROOF DESIGN\n-ROOF TRUSS SYSTEM TO BE DESIGNED FOR POSSIBLE SNOW DRIFT\n-ENGINEERED TRUSSES FASTENED INTO TRUSS PLATE\n-FASTEN TRUSSES TO STUD USING 3\" NAILS AS PER TRUSS MANUAL\n-PROVIDE ATTIC FIRE STOPS\n-SHOWN 1/3\" C/C (REQUIRED)\n-TRUSS ON 24\" FRAMING AS PER ALL JOINTS SHALL BE CONSTRUCTED\n-COMP. MINIMUM IN COMPARTMENT SHALL EXCEED FIRE STOP NOT TO INTERFERE WITH ROOF VENTILATION\n-PROVIDE ATTIC HATCHES IN ROOF OR PROVIDE 1 ATTIC HATCH FIRESTOPS.\nROOF NOTES:\n1 - 2x6 ON TOP OF BOTTOM CHORD\n2 - 2x6 ON BOTTOM OF TOP CHORD\n3 - 2x4 ROOF STRAPPING\n4 - ENGINEERED TRUSSES\n9 - LATERAL BRACING ON\nFASTEN BTM CHORD OF TOP PLATE W/ 3\" NAILS @ 16\" O.C.\nTOP AND BOTTOM CHORDS",
+      "summary": "The roof plan provides a detailed layout of the roof structure, highlighting the truss system and associated components. The truss system is designed to accommodate possible snow drift and is engineered with trusses fastened into truss plates. Trusses are to be attached to studs using 3-inch nails as per the truss manual. The plan specifies attic fire stops and requires attic hatches for ventilation. Roof notes include the use of 2x6 on top of the bottom chord and bottom of the top chord, 2x4 roof strapping, and lateral bracing. The drawing scale is 1/8 inch equals 1 foot.",
+      "project_id": "25-01-078",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Main Floor Plan",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/A",
+        "P2"
+      ],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "FW1",
+        "L1",
+        "L2"
+      ],
+      "key_components": [
+        "Concrete Floor",
+        "Epoxied Dowels",
+        "Compacted Granular Soil",
+        "Existing Wall"
+      ],
+      "text_verbatim": "FOUNDATION PLAN\nSCALE: 1/8\" = 1'-0\"\nFOUNDATION WALL & FOOTING SCHEDULE\nFW1 - 10\"x 8'-0\" SANDWICH CONCRETE WALL\nCONTINUOUS STRIP FOOTING\n24\" WIDE x 8\" DEEP\nREINFORCEMENT AS PER FW1 DETAIL\nNOTE:\n-DROP WALL AT DOOR LOCATIONS TO 6\" BELOW FINISHED FLOOR POUR FLOOR OVER\n(TYP OF ALL OPENINGS)\n-BOXED NUMBERS INDICATE GRADE\nKEEP RIGID INSULATION BACK 24\" (TYP) ALL OPENINGS IN SANDWICH WALL\nPROVIDE 10M EPOXIED DOWELS x24\" lg. @ 24\" O.C. W/ 4\" EMBEDMENT. APPLY BONDING AGENT TO FACE OF SLAB JOINT. (TYP.)\n6\" CONC. FLOOR 32 MPA MIN 6\" COMPACTED GRANULAR 'A' ON UNDISTURBED SOIL\nREMOVE EXISTING CONC. WALL\nPROVIDE (2) 15M EPOXIED DOWELS x 24\"lg. W/ 6\" EMBED. INTO EXISTING FOOTING\n4 PROVIDE (2) 10M EPOXIED DOWELS x 24\" lg. @ 16\" O.C. VERTICALLY W/ 6\" EMBEDMENT INTO (TYP.) EXISTING FOUNDATION WALL",
+      "summary": "This foundation plan outlines the structural layout for the ground floor, focusing on the FW1 sandwich concrete wall system. The wall is 10 inches by 8 feet, with a continuous strip footing 24 inches wide and 8 inches deep. Reinforcement details are as per the FW1 detail. The plan includes instructions to drop the wall at door locations and pour the floor over, typical for all openings. Rigid insulation is to be kept back 24 inches at all openings. The concrete floor is specified as 6 inches thick with a 32 MPA rating, placed over a minimum of 6 inches of compacted granular 'A' on undisturbed soil. Existing concrete walls are to be removed, and epoxied dowels are specified for connections to existing footings and foundation walls. The drawing scale is 1/8 inch equals 1 foot.",
+      "project_id": "25-01-078",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": "page_001/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Schedule",
+      "location": "Main Floor – Wall and Lintel/Beam Schedule",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall and Lintel/Beam Schedule",
+      "element_callouts": [
+        "W1",
+        "L1",
+        "L2"
+      ],
+      "key_components": [
+        "Gauge Steel",
+        "Strapping",
+        "Studs",
+        "Roxul",
+        "Poly",
+        "Blocking"
+      ],
+      "text_verbatim": "MAIN FLOOR PLAN\nSCALE : 1/8\" = 1'-0\"\nADDITION AREA: 1,120 sq ft.\nWALL SCHEDULE\nW1 - 29 GAUGE STEEL\n2x4 STRAPPING @ 24\" o.c.\nTYVEK\n2x8 STUDS @ 16\" o.c.\nR-28 ROXUL\n6 MIL POLY\n1x4 STRAPPING @ 24\" o.c.\n29 GAUGE STEEL\n3 ROWS 2x6 BLOCKING @ QUARTER POINTS\nLINTEL/BEAM SCHEDULE\nL1 - 3-2x10 c/w 2 STUD BEARING + 1 KING STUD\nL2 - W12x26 c/w (2) STUD BEARING + (3) STUD KING",
+      "summary": "This schedule provides details for the main floor's wall and lintel/beam construction. The wall schedule specifies W1 as 29 gauge steel with 2x4 strapping at 24 inches on center, Tyvek, 2x8 studs at 16 inches on center, R-28 Roxul insulation, and 6 mil poly. Additional components include 1x4 strapping at 24 inches on center, 29 gauge steel, and 3 rows of 2x6 blocking at quarter points. The lintel/beam schedule includes L1, consisting of 3-2x10 with 2 stud bearing and 1 king stud, and L2, a W12x26 with 2 stud bearing and 3 king studs. The drawing scale is 1/8 inch equals 1 foot, with an addition area of 1,120 square feet.",
+      "project_id": "25-01-078",
+      "page_number": 1,
+      "region_number": 5,
+      "relative_path": "page_001/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Stud wall bracing detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Stud Wall Single Brace Detail",
+      "element_callouts": [],
+      "key_components": [
+        "2x6 Diagonal Brace",
+        "3-Ply Solid Blocking",
+        "Common Spiral Nails",
+        "Wedge Bolt"
+      ],
+      "text_verbatim": "NOTES:\n1. 2x6 BRACE IS TO BE CONTINUOUS AND END AT STUD CONNECTION TO PLATE.\n2. DO NOT NOTCH BRACES INTO STUDS.\n3. INSTALL BRACES AT APPROXIMATELY 45 deg. ANGLES.\n4. MIN. NAIL SPACING 14\"\nFASTEN w/ (6) 3½\" NAILS THROUGH FACE & (3) NAILS THROUGH STUD INTO EACH END OF EACH BLOCK\nFASTEN BRACE w/ (12) 3½\" COMMON SPIRAL NAILS EACH BRACE (TOP & BOTTOM OF WALL)\nDOUBLE SOLID BLOCKING BETWEEN STUDS\n(2) 3½\" COMMON SPIRAL NAILS EACH STUD (TYP.)\n2 - POWERS ½\"x 6\" WEDGE BOLT AT BRACING LOCATION\n3-PLY SOLID BLOCKING BETWEEN STUDS TYP. FASTENED w/ (6) 3½\" NAILS THROUGH FACE & (3) NAILS THROUGH STUD INTO EACH END OF EACH BLOCK\nB2 STUD WALL SINGLE BRACE DETAIL N.T.S.",
+      "summary": "This detail shows a stud wall single brace with a 2x6 diagonal brace installed at approximately 45-degree angles. The brace is to be continuous and end at the stud connection to the plate, as noted in the instructions. The brace is fastened with (12) 3½\" common spiral nails at both the top and bottom of the wall. The detail includes double solid blocking between studs, which is fastened with (6) 3½\" nails through the face and (3) nails through the stud into each end of each block. Additionally, two Powers ½\"x 6\" wedge bolts are used at the bracing location. The minimum nail spacing is specified as 14\". The drawing is not to scale (N.T.S.).",
+      "project_id": "25-01-078",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Opening detail with steel beam",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Opening Detail with Steel Beam",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Beam",
+        "Engineered Trusses",
+        "Concrete Foundation Wall",
+        "Anchor Bolts",
+        "Ardox Nails"
+      ],
+      "text_verbatim": "ENGINEERED TRUSSES AS PER PLAN\n6\" WIDE STRAPPING @ TOP OF WALL\nSTEEL BEAM AS PER PLAN\n1½\" PLATE x WIDTH OF BEAM FASTENED TO STL BEAM w/ ½\" BOLTS STAGGERED @ 24\" o.c.\n2½\" BOLTS @ EACH END TYP.\n3/16\"\nEA PLY\n3/8\" STL PLATE WELDED TO BEAM C/W 4½\" BOLTS\nSTUDS & STRAPPING AS PER PLAN\nJACK & KING STUDS AS PER PLAN\n2½\" ANCHOR BOLTS BY OPENINGS\nCONCRETE FOUNDATION WALL AS PER PLAN\nNOTE:\n-ADD BACKER FOR ROLL DOOR\n2/15M BARS CONT. 1½\" COVER\n2/15M VERT EACH SIDE OF OPENING\nD1 OPENING DETAIL W/ STL BEAM N.T.S.\n- * 4\" COMMON ARDOX NAILS",
+      "summary": "This detail illustrates an opening with a steel beam, supported by engineered trusses and a concrete foundation wall. The steel beam is fastened with a 1½\" plate using ½\" bolts staggered at 24\" on center, with 2½\" bolts at each end. A 3/8\" steel plate is welded to the beam with 4½\" bolts. The drawing specifies the use of jack and king studs, with 2½\" anchor bolts by openings. The concrete foundation wall is detailed as per plan, with 2/15M bars continuous with 1½\" cover and 2/15M vertical bars on each side of the opening. The note advises adding a backer for a roll door. The drawing is not to scale (N.T.S.).",
+      "project_id": "25-01-078",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Site plan",
+      "level": "Site",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Site Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Existing Shed",
+        "Proposed Shop Addition",
+        "Existing House",
+        "Property Line"
+      ],
+      "text_verbatim": "PROPERTY LINE BEYOND\nREMOVE EXISTING SHED\nPROPOSED 32'-0\"x SHOP ADDITION\nEXISTING SHOP\nEXISTING SHED\nEXISTING HOUSE\nENSURE THIS EXISTING ENDWALL HAS MIN (2) SETS OF B2\nSITE PLAN\nSCALE: 0'-1\" = 50'-0\"\nADRESS: 6464 YATTON SIDE ROAD WALLENSTEIN, ONTARIO",
+      "summary": "This site plan outlines the property layout at 6464 Yatton Side Road, Wallenstein, Ontario, with a scale of 0'-1\" = 50'-0\". It shows existing structures, including multiple sheds, a shop, and a house. A proposed 32'-0\"x shop addition is indicated, with a note to remove an existing shed. The plan emphasizes ensuring the existing endwall has a minimum of two sets of B2. Property lines are clearly marked, and the plan provides a comprehensive overview of the site layout and proposed changes.",
+      "project_id": "25-01-078",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "North elevation",
+      "level": "Unknown",
+      "orientation": "North",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "North Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Diamond Rib Steel Cladding",
+        "Foundation",
+        "Footing"
+      ],
+      "text_verbatim": "29 GA. DIAMOND RIB STEEL CLADDING\nTOP OF PLATE\nTOP OF FOUNDATION\nTOP OF FOOTING\nNORTH ELEVATION\nSCALE: 1/16\" = 1'-0\"\n- SEE BRACE DETAIL",
+      "summary": "This north elevation view shows a building clad with 29 gauge diamond rib steel. The elevation indicates the top of the plate, foundation, and footing, with dimensions of 15'-10\" from the top of the plate to the top of the foundation, and 8'-0\" from the top of the foundation to the top of the footing. The scale is 1/16\" = 1'-0\". A note directs to see the brace detail for additional information.",
+      "project_id": "25-01-078",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": "page_002/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Elevation",
+      "location": "East and West elevations",
+      "level": "Unknown",
+      "orientation": "East and West",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "East and West Elevations",
+      "element_callouts": [],
+      "key_components": [
+        "High Tensile Century Rib Steel",
+        "Foundation",
+        "Footing"
+      ],
+      "text_verbatim": "29 GA. HIGH TENSILE CENTURY RIB STEEL\nENSURE EXISTING HAS MIN. 2 SETS OF B2 E.W.\nTOP OF PLATE\nTOP OF FOUNDATION\nTOP OF FOOTING\nEAST ELEVATION\nSCALE: 1/16\" = 1'-0\"\n- SEE BRACE DETAIL\nWEST ELEVATION\nSCALE: 1/16\" = 1'-0\"\n- SEE BRACE DETAIL",
+      "summary": "These east and west elevation views depict a building clad with 29 gauge high tensile century rib steel. Both elevations show the top of the plate, foundation, and footing, with dimensions of 15'-10\" from the top of the plate to the top of the foundation, and 8'-0\" from the top of the foundation to the top of the footing. The scale for both elevations is 1/16\" = 1'-0\". A note ensures that the existing structure has a minimum of two sets of B2 E.W., and references are made to see the brace detail for further information.",
+      "project_id": "25-01-078",
+      "page_number": 2,
+      "region_number": 5,
+      "relative_path": "page_002/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Mixed",
+      "location": "Site Plan and West Elevation",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Site Plan and Elevation",
+      "element_callouts": [
+        "B2"
+      ],
+      "key_components": [
+        "Stud Wall",
+        "Truss",
+        "Foundation",
+        "Shed",
+        "Shop Addition"
+      ],
+      "text_verbatim": "NOTES:\n1. 2x6 BRACE IS TO BE CONTINUOUS AND END AT STUD CONNECTING TO PLATE.\n2. NAIL BRACE AT APPROXIMATELY 45 deg. ANGLE.\n3. NAIL SPACING:\nFASTEN (4) 8d 1-1/2\" NAILS THROUGH FACE OF EACH STUD TO EACH END OF EACH BRACE.\nFASTEN BRACE AT (3) 8d 1-1/2\" NAILS THROUGH FACE OF EACH BRACE INTO BOTTOM OF WALL.\nDOUBLE SOLID BLOCKING BETWEEN STUDS (TYP.)\n3-PLY STUD BLOCKING BETWEEN STUDS (TYP.)\nFASTEN BLOCKING AT (3) 7\" NAILS THROUGH FACE OF EACH BLOCK INTO EACH END OF EACH BLOCK.\n2'-0\" POWDER 8 1/2\" NAILS @ 2'-0\" O.C. AT BRACING LOCATION.\nB2 STUD WALL SINGLE BRACE DETAIL N.T.S.\nWEST ELEVATION\nSCALE: 1/16\" = 1'-0\"\nSEE BRACE DETAIL\nNOTE:\n- ROOF TRUSS TO BE LOCATED DIRECTLY OVER ALL STUD SPACING\nTYPICAL TRUSS ROOF.\n2 GAUGE STEEL.\n2x4 STRAPPING @ 2'-0\" O.C.\nENGINEERED ROOF TRUSS @ 48\" O.C.\nTOP OF PLATE\nTOP OF FOUNDATION\nTOP OF FOUNDATION\nTOP OF FOUNDATION\nTOP OF FOUNDATION\nUPLIFT CLIPS AS PER TRUSS MANUFACTURERS\n2x6 TOP STRAPPING (2) AT 3/12\" L.C. COMMON NAIL NAILS EACH INTO TOP PLATE & STUD. (TYP.)\nTYPICAL BLOCKING 3 QUARTER POINTS\n1/2\" DIA. ANCHOR BOLTS WELDED TO HOOKS\nSILL PLATE & SILL GASKET\n2x6 BOTTOM STRAPPING (2) AT 3/12\" L.C. COMMON NAILS EACH INTO TOP PLATE & STUD. (TYP.)\nMATCH EXISTING\nPROPERTY LINE BEYOND\nSITE PLAN\nSCALE: 0.1\" = 50'-0\"\nADDRESS: 6464 TATTON SIDE ROAD WALLENSTEIN, ONTARIO\nPROPERTY LINE BEYOND\nREMOVE EXISTING SHED\nPROPOSED 32'-0\" SHOP ADDITION\nEXISTING SHED\nEXISTING SHED\n35'-0\"\nEXISTING SHED\nEXISTING SHED\n35'-0\"\n105'-0\"\nEXISTING SHED\nEXISTING HOUSE\nPROPERTY LINE\nTATTON SIDE ROAD\nENSURE THIS EXISTING ENDWALL HAS MIN (2) SETS OF B2",
+      "summary": "This image combines a site plan and a west elevation view. The site plan shows the layout of existing structures and a proposed 32'-0\" shop addition at 6464 Tatton Side Road, Wallenstein, Ontario. The plan includes dimensions for existing sheds and property lines. The west elevation details a B2 stud wall single brace, specifying 2x6 braces to be continuous and nailed at a 45-degree angle. The elevation includes notes on roof truss placement, uplift clips, and anchor bolts. The B2 element callout refers to the stud wall brace detail. Key components include the stud wall, truss, foundation, and existing sheds.",
+      "project_id": "25-01-078",
+      "page_number": 2,
+      "region_number": 6,
+      "relative_path": "page_002/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Diagonal Truss Bracing",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Truss Bracing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Truss",
+        "Diagonal Brace",
+        "Strut",
+        "Nails"
+      ],
+      "text_verbatim": "SPACING AS SPECIFIED BY BRACE DESIGNER 48'-0\" MAXIMUM\n2x4 STRUT x 5'-0\" LONG TOP & BOTTOM WITH TWO OF 3-1/2\" NAILS EACH TRUSS WEB MEMBER\nANCHOR 2x4 DIAGONAL BRACE TO LATERAL WITH FOUR OF 3-1/2\" NAILS INTERSECTION OF TRUSS WEB & TRUSS LATERAL\n2x4 DIAGONAL BRACING SPACED AS REQUIRED BY THE BRACING DESIGNER\nTRUSS TOP CHORD\nTRUSS WEB MEMBER\nEQUAL\nEQUAL\nANCHOR DIAGONAL BRACE TO STRUT BOTH ENDS WITH FOUR 3-1/2\" NAILS\nBUTT 2x4 LATERALS ALL SPLICE LOCATIONS. ENSURE BUTT JOINT IS TIGHT CENTERED ON TRUSS\nLAP 2x4 DIAGONAL (MIN. 2 TRUSSES) TO ENSURE DIAGONAL BRACE EXTENDS COMPLETELY FROM TOP CHORD TO BOTTOM CHORD OF TRUSS (AS REQUIRED)\nTRUSS BOTTOM CHORD\nD2 DIAGONAL TRUSS BRACING DETAIL",
+      "summary": "This detail image focuses on the D2 diagonal truss bracing system. It specifies the use of 2x4 struts, each 5'-0\" long, attached with 3-1/2\" nails to each truss web member. Diagonal braces are anchored to laterals with four 3-1/2\" nails at the intersection of truss webs. The bracing is spaced as required by the designer, with a maximum spacing of 48'-0\". The detail includes instructions for butt joints and lap joints to ensure stability. Key components include the truss, diagonal brace, strut, and nails, emphasizing the integration and support of the truss system.",
+      "project_id": "25-01-078",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Diagonal Truss Bracing",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Truss Bracing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Truss",
+        "Diagonal Brace",
+        "Strut",
+        "Nails"
+      ],
+      "text_verbatim": "SPACING AS SPECIFIED BY BRACE DESIGNER 48'-0\" MAXIMUM\n2x4 STRUT x 5'-0\" LONG TOP & BOTTOM WITH TWO OF 3-1/2\" NAILS EACH TRUSS WEB MEMBER\nANCHOR 2x4 DIAGONAL BRACE TO LATERAL WITH FOUR OF 3-1/2\" NAILS INTERSECTION OF TRUSS WEB & TRUSS LATERAL\n2x4 DIAGONAL BRACING SPACED AS REQUIRED BY THE BRACING DESIGNER\nTRUSS TOP CHORD\nTRUSS WEB MEMBER\nEQUAL\nEQUAL\nANCHOR DIAGONAL BRACE TO STRUT BOTH ENDS WITH FOUR 3-1/2\" NAILS\nBUTT 2x4 LATERALS ALL SPLICE LOCATIONS. ENSURE BUTT JOINT IS TIGHT CENTERED ON TRUSS\nLAP 2x4 DIAGONAL (MIN. 2 TRUSSES) TO ENSURE DIAGONAL BRACE EXTENDS COMPLETELY FROM TOP CHORD TO BOTTOM CHORD OF TRUSS (AS REQUIRED)\nTRUSS BOTTOM CHORD\nD2 DIAGONAL TRUSS BRACING DETAIL",
+      "summary": "This detail image provides specifications for the D2 diagonal truss bracing system. It includes 2x4 struts, each 5'-0\" long, secured with 3-1/2\" nails to each truss web member. Diagonal braces are anchored to laterals with four 3-1/2\" nails at truss web intersections. The bracing is spaced as required by the designer, with a maximum spacing of 48'-0\". Instructions for butt joints and lap joints ensure proper alignment and stability. Key components are the truss, diagonal brace, strut, and nails, highlighting the structural integration of the truss system.",
+      "project_id": "25-01-078",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    }
+  ]
+}

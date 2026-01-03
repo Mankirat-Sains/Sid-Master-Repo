@@ -1,0 +1,127 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Thickened edge detail",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S1"
+      ],
+      "element_type": "Thickened Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "15M Rebar",
+        "Compacted Granular Fill 'A'",
+        "Bedrock"
+      ],
+      "text_verbatim": "(2) 15M CONT. REBAR (SEE NOTES FOR COVER)\nCOMPACTED GRANULAR FILL 'A'\nBEDROCK\nSECTION\nTHICKENED EDGE\n1/2\"=1'-0\"\n3\nS1\n6\" MIN.\n1'-0\"\n5 1/2\"\n11\"",
+      "summary": "This section view shows a thickened edge detail of a foundation. The detail includes (2) 15M continuous rebar as reinforcement, with a note to see additional notes for cover specifications. The foundation sits on compacted granular fill 'A' and bedrock. The section is labeled as 3/S1, indicating its reference on sheet S1. The dimensions include a minimum thickness of 6 inches, a 1-foot width, and an 11-inch height for the thickened edge. The drawing scale is 1/2\"=1'-0\".",
+      "project_id": "25-01-069",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Slab-on-grade section",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Slab-on-Grade Section",
+      "element_callouts": [],
+      "key_components": [
+        "15M Rebar",
+        "Compacted Granular Fill 'A'",
+        "Bedrock",
+        "Foam Construction Gasket"
+      ],
+      "text_verbatim": "PROVIDE FOAM CONSTRUCTION GASKET BETWEEN NEW & EXISTING CONCRETE\n(2) 15M CONT. REBAR (SEE NOTES FOR COVER)\nCOMPACTED GRANULAR FILL 'A'\nBEDROCK\nFOAM CONSTRUCTION GASKET\nPIER, PER PLAN PINNED TO BEDROCK w/ (4) 12\" LONG 15M REBAR DOWELS\nSLOPE GRADE AWAY 2%\nJOINT BETWEEN ROCK & CONCRETE SLAB TO BE GROUTED w/ WATERPROOF HYDRAULIC CEMENT CONT. ALL AROUND\nCLEAN & ROUGHEN BEDROCK SURFACE & APPLY BONDING AGENT\n1/2\"=1'-0\"",
+      "summary": "This section illustrates a slab-on-grade foundation with specific construction details. It includes (2) 15M continuous rebar for reinforcement, with compacted granular fill 'A' beneath the slab and bedrock as the base layer. A foam construction gasket is provided between new and existing concrete. The section also details a pier pinned to bedrock with (4) 12-inch long 15M rebar dowels. The slope grade is specified to be away at 2%. The joint between rock and concrete slab is to be grouted with waterproof hydraulic cement. The bedrock surface must be cleaned and roughened, with a bonding agent applied. The drawing scale is 1/2\"=1'-0\".",
+      "project_id": "25-01-069",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Slab-on-grade plan",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S1",
+        "3/S1"
+      ],
+      "element_type": "Slab-on-Grade Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Slab-on-Grade",
+        "Foam Construction Gasket",
+        "Concrete Pier"
+      ],
+      "text_verbatim": "PLAN\nSLAB-ON-GRADE\n1/8\"=1'-0\"\n1\nS1\nSLAB-ON-GRADE CONSTRUCTION:\n5 1/2\" - 32MPa POURED CONCRETE\nr/w 6x6x6/6 WWM\nOR\n16\" x 16\" 10M REBAR GRID\nOR\nFIBRE MESH\nON MIN. 6\" COMPACTED GRANULAR FILL 'A'\nPROVIDE FOAM CONSTRUCTION GASKET WHERE NEW SLAB ABUTS EXIST. FOUNDATION\nPROVIDE FOAM CONSTRUCTION GASKET AROUND EACH SONOTUBE\n16\" x 16\" CONCRETE PIER PINNED TO BEDROCK w/ (4) 12\" LONG 15M REBAR DOWELS w/ MIN. 6\" EMBEDMENT (JOINT BETWEEN CONCRETE & BEDROCK TO BE GROUTED w/ WATERPROOF HYDRAULIC CEMENT, CONT. ALL AROUND) [TYP.]\n36'-0\"\n17'-0\"\n16'-0\"\n1'-0\"\n4'-0\"\n7'-0\"\n7'-0\"\n7'-0\"\n4'-0\"",
+      "summary": "This plan view shows the layout of a slab-on-grade foundation. The slab is constructed with 5 1/2 inches of 32MPa poured concrete, reinforced with either 6x6x6/6 welded wire mesh (WWM), a 16\" x 16\" 10M rebar grid, or fiber mesh, all on a minimum of 6 inches of compacted granular fill 'A'. Foam construction gaskets are specified where the new slab abuts existing foundations and around each sonotube. Concrete piers, 16\" x 16\", are pinned to bedrock with (4) 12-inch long 15M rebar dowels with a minimum 6-inch embedment. The joint between concrete and bedrock is to be grouted with waterproof hydraulic cement. The plan includes dimensions of 36'-0\" by 17'-0\" with various internal dimensions. The drawing scale is 1/8\"=1'-0\".",
+      "project_id": "25-01-069",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Slab-on-grade plan with section",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S1",
+        "2/S1",
+        "3/S1"
+      ],
+      "element_type": "Slab-on-Grade Plan with Section",
+      "element_callouts": [],
+      "key_components": [
+        "Slab-on-Grade",
+        "Foam Construction Gasket",
+        "Concrete Pier"
+      ],
+      "text_verbatim": "PLAN\nSLAB-ON-GRADE\n1/8\"=1'-0\"\n1\nS1\nSLAB-ON-GRADE CONSTRUCTION:\n5 1/2\" - 32MPa POURED CONCRETE\nr/w 6x6x6/6 WWM\nOR\n16\" x 16\" 10M REBAR GRID\nOR\nFIBRE MESH\nON MIN. 6\" COMPACTED GRANULAR FILL 'A'\nPROVIDE FOAM CONSTRUCTION GASKET WHERE NEW SLAB ABUTS EXIST. FOUNDATION\nPROVIDE FOAM CONSTRUCTION GASKET AROUND EACH SONOTUBE\n16\" x 16\" CONCRETE PIER PINNED TO BEDROCK w/ (4) 12\" LONG 15M REBAR DOWELS w/ MIN. 6\" EMBEDMENT (JOINT BETWEEN CONCRETE & BEDROCK TO BE GROUTED w/ WATERPROOF HYDRAULIC CEMENT, CONT. ALL AROUND) [TYP.]\n36'-0\"\n17'-0\"\n16'-0\"\n1'-0\"\n4'-0\"\n7'-0\"\n7'-0\"\n7'-0\"\n4'-0\"\nFOAM CONSTRUCTION GASKET\nPIER, PER PLAN PINNED TO BEDROCK w/ (4) 12\" LONG 15M REBAR DOWELS\nSLOPE GRADE AWAY 2%\nJOINT BETWEEN ROCK & CONCRETE SLAB TO BE GROUTED w/ WATERPROOF HYDRAULIC CEMENT CONT. ALL AROUND\nCLEAN & ROUGHEN BEDROCK SURFACE & APPLY BONDING AGENT",
+      "summary": "This image combines a plan view of a slab-on-grade foundation with a section detail. The slab is constructed with 5 1/2 inches of 32MPa poured concrete, reinforced with either 6x6x6/6 welded wire mesh (WWM), a 16\" x 16\" 10M rebar grid, or fiber mesh, all on a minimum of 6 inches of compacted granular fill 'A'. Foam construction gaskets are specified where the new slab abuts existing foundations and around each sonotube. Concrete piers, 16\" x 16\", are pinned to bedrock with (4) 12-inch long 15M rebar dowels with a minimum 6-inch embedment. The joint between concrete and bedrock is to be grouted with waterproof hydraulic cement. The plan includes dimensions of 36'-0\" by 17'-0\" with various internal dimensions. The section detail shows a slope grade away of 2% and specifies cleaning and roughening the bedrock surface with a bonding agent applied. The drawing scale is 1/8\"=1'-0\".",
+      "project_id": "25-01-069",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": "page_001/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Slab-on-grade section",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Slab-on-Grade Section",
+      "element_callouts": [],
+      "key_components": [
+        "15M Rebar",
+        "Compacted Granular Fill 'A'",
+        "Bedrock",
+        "Foam Construction Gasket"
+      ],
+      "text_verbatim": "PROVIDE FOAM CONSTRUCTION GASKET BETWEEN NEW & EXISTING CONCRETE\n(2) 15M CONT. REBAR (SEE NOTES FOR COVER)\nCOMPACTED GRANULAR FILL 'A'\nBEDROCK\nPIER, PER PLAN PINNED TO BEDROCK w/ (4) 12\" LONG 15M REBAR DOWELS\nSLOPE GRADE AWAY 2%\nJOINT BETWEEN ROCK & CONCRETE SLAB TO BE GROUTED w/ WATERPROOF HYDRAULIC CEMENT CONT. ALL AROUND\nCLEAN & ROUGHEN BEDROCK SURFACE & APPLY BONDING AGENT\nSECTION\nSLAB-ON-GRADE\n1/2\"=1'-0\"\n2\nS1\n6\" MIN.\n1'-0\"\n5 1/2\"\n11\"",
+      "summary": "This section view illustrates a slab-on-grade foundation with detailed construction specifications. It includes (2) 15M continuous rebar for reinforcement, with compacted granular fill 'A' beneath the slab and bedrock as the base layer. A foam construction gasket is provided between new and existing concrete. The section also details a pier pinned to bedrock with (4) 12-inch long 15M rebar dowels. The slope grade is specified to be away at 2%. The joint between rock and concrete slab is to be grouted with waterproof hydraulic cement. The bedrock surface must be cleaned and roughened, with a bonding agent applied. The section is labeled as 2/S1, indicating its reference on sheet S1. The dimensions include a minimum thickness of 6 inches, a 1-foot width, and an 11-inch height for the thickened edge. The drawing scale is 1/2\"=1'-0\".",
+      "project_id": "25-01-069",
+      "page_number": 1,
+      "region_number": 5,
+      "relative_path": "page_001/region_05_red_box.png"
+    }
+  ]
+}

@@ -1,0 +1,402 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Basement – existing conditions and structural layout",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "COLUMN TO FDN WALL DETAIL",
+        "STEEL BEAM TO POST CONNECTIONS"
+      ],
+      "element_type": "Basement Plan",
+      "element_callouts": [
+        "EXISTING"
+      ],
+      "key_components": [
+        "Columns",
+        "Beams",
+        "Foundation Walls"
+      ],
+      "text_verbatim": "BASEMENT\nSCALE: 3/16\" = 1'-0\"\nEXISTING\nSEE COLUMN TO FDN WALL DETAIL\nNEW FOUNDATION STEP FOOTING TO EXISTING FOOTING AS REQUIRED\nREMOVE EXISTING STAIR WELL TO BASEMENT\nSALVAGE EXISTING PORCH FOUNDATION IF POSSIBLE OTHERWISE REMOVE AND REPLACE AS NEW FOUNDATION\nEXISTING OIL FURNACE\nEXISTING BUNKER\nDETAIL\nCOLUMN TO FDN WALL DETAIL\nSTEEL BEAM TO POST CONNECTIONS",
+      "summary": "This basement plan shows the existing conditions and structural layout, including columns and beams. The plan includes callouts for 'COLUMN TO FDN WALL DETAIL' and 'STEEL BEAM TO POST CONNECTIONS', indicating specific structural details. The text 'EXISTING' marks current elements, and notes such as 'NEW FOUNDATION STEP FOOTING TO EXISTING FOOTING AS REQUIRED' provide guidance for modifications. The plan also notes the removal of the existing stairwell to the basement and the potential salvage of the existing porch foundation.",
+      "project_id": "25-01-025",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main floor layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "PACKED BEAM DETAIL"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "EXISTING JOISTS",
+        "NEW HEADERS"
+      ],
+      "key_components": [
+        "Kitchen",
+        "Family Room",
+        "Office",
+        "Headers",
+        "Joists"
+      ],
+      "text_verbatim": "MAIN FLOOR\nSCALE: 3/16\" = 1'-0\"\nEXISTING JOISTS\nNEW HEADERS TO BE 2 PLY 2X6 WITH 1 STUD JACK + 1 STUD KING EACH END U.N.O.\nREMOVE EXISTING KITCHEN CABINETRY\nADD NEW STAIRS TO SECOND FLOOR\nREPLACE EXISTING WINDOW\nREMOVE EXISTING CHIMNEY\nPACKED BEAM DETAIL",
+      "summary": "This main floor plan illustrates the layout of key areas such as the kitchen, family room, and office. It includes structural notes on 'EXISTING JOISTS' and 'NEW HEADERS TO BE 2 PLY 2X6 WITH 1 STUD JACK + 1 STUD KING EACH END U.N.O.', providing essential information for construction and renovation. The plan also includes callouts like 'PACKED BEAM DETAIL' and notes on removing existing kitchen cabinetry and adding new stairs to the second floor.",
+      "project_id": "25-01-025",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main floor layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "PACKED BEAM DETAIL"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "EXISTING JOISTS",
+        "NEW HEADERS"
+      ],
+      "key_components": [
+        "Kitchen",
+        "Family Room",
+        "Office",
+        "Headers",
+        "Joists"
+      ],
+      "text_verbatim": "MAIN FLOOR\nSCALE: 3/16\" = 1'-0\"\nEXISTING JOISTS\nNEW HEADERS TO BE 2 PLY 2X6 WITH 1 STUD JACK + 1 STUD KING EACH END U.N.O.\nREMOVE EXISTING KITCHEN CABINETRY\nADD NEW STAIRS TO SECOND FLOOR\nREPLACE EXISTING WINDOW\nREMOVE EXISTING CHIMNEY\nPACKED BEAM DETAIL",
+      "summary": "This main floor plan illustrates the layout of key areas such as the kitchen, family room, and office. It includes structural notes on 'EXISTING JOISTS' and 'NEW HEADERS TO BE 2 PLY 2X6 WITH 1 STUD JACK + 1 STUD KING EACH END U.N.O.', providing essential information for construction and renovation. The plan also includes callouts like 'PACKED BEAM DETAIL' and notes on removing existing kitchen cabinetry and adding new stairs to the second floor.",
+      "project_id": "25-01-025",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Second Floor – layout of bedrooms and bathrooms",
+      "level": "Second Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Second Floor Plan",
+      "element_callouts": [
+        "EXISTING CEILING JOISTS"
+      ],
+      "key_components": [
+        "Master Bedroom",
+        "Bedrooms",
+        "Bathrooms",
+        "Closet"
+      ],
+      "text_verbatim": "SECOND FLOOR\nSCALE: 3/16\" = 1'-0\"\nEXISTING CEILING JOISTS\nCONTRACTOR TO CONTACT PROJECT ENGINEER DURING DEMOLITION WITH PHOTOS TO CONFIRM THAT ALL WALLS TO BE REMOVED ARE NON LOAD BEARING.",
+      "summary": "This second floor plan shows the layout of rooms such as the master bedroom, additional bedrooms, and bathrooms. It includes dimensions and notes regarding 'EXISTING CEILING JOISTS' and the requirement for the contractor to confirm with the project engineer that all walls to be removed are non-load bearing. This plan is essential for understanding the spatial arrangement and structural considerations of the second floor.",
+      "project_id": "25-01-025",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "East Elevation – exterior view",
+      "level": "Multiple",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [
+        "EXISTING"
+      ],
+      "key_components": [
+        "Windows",
+        "Roof",
+        "Subfloor",
+        "Foundation"
+      ],
+      "text_verbatim": "EAST ELEVATION\nSCALE: 1/4\" = 1'-0\"\nEXISTING\nTOP OF ROOF\nTOP OF PLATE\nTOP OF SUBFLOOR\nTOP OF FOUNDATION\nGRADE\nTOP OF FOOTING",
+      "summary": "This east elevation shows the exterior appearance and architectural features of the building. It includes vertical dimensions such as 'TOP OF ROOF', 'TOP OF PLATE', 'TOP OF SUBFLOOR', 'TOP OF FOUNDATION', and 'TOP OF FOOTING'. The text 'EXISTING' indicates current elements. This elevation is essential for visualizing the building's facade and ensuring compliance with design specifications.",
+      "project_id": "25-01-025",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "West Elevation",
+      "level": "Multiple",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Shingle Roof",
+        "Hardie Siding"
+      ],
+      "text_verbatim": "TOP OF ROOF\nTOP OF PLATE\n10'-0\"\nTOP OF SUBFLOOR\nTOP OF PLATE\n10'-6 3/4\"\nTOP OF SUBFLOOR\nTOP OF FOUNDATION\nGRADE\n6'-10\"\nTOP OF FOOTING\nTOP OF FOOTING\n32'-1 3/4\"\nEXISTING\nNew Steel Shingle roof\nNew Hardie Siding\nWEST ELEVATION\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "This image shows the west elevation of the building, highlighting the exterior architectural features. The elevation includes vertical dimensions such as 'TOP OF ROOF', 'TOP OF PLATE', and 'TOP OF FOOTING', with specific heights like '10'-0\"', '10'-6 3/4\"', and '32'-1 3/4\"'. The materials specified include a 'New Steel Shingle roof' and 'New Hardie Siding'. The elevation is labeled as 'EXISTING' and is drawn to a scale of 1/4\" = 1'-0\". These details are crucial for visualizing the building's facade and ensuring compliance with design specifications.",
+      "project_id": "25-01-025",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "East Elevation",
+      "level": "Multiple",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Shingle Roof"
+      ],
+      "text_verbatim": "TOP OF ROOF\nTOP OF PLATE\n8'-0\"\nTOP OF SUBFLOOR\nTOP OF PLATE\nTOP OF SUBFLOOR\nTOP OF FOOTING\nGRADE\n6'-6 1/2\"\nTOP OF FOOTING\n32'-10 1/32\"\nEXISTING\nEAST ELEVATION\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "This image presents the east elevation of the building, detailing the exterior appearance and architectural features. Key vertical dimensions include 'TOP OF ROOF', 'TOP OF PLATE', and 'TOP OF FOOTING', with heights such as '8'-0\"', '6'-6 1/2\"', and '32'-10 1/32\"'. The elevation is marked as 'EXISTING' and features a 'Steel Shingle Roof'. The drawing is scaled at 1/4\" = 1'-0\", providing essential information for visualizing the building's facade and ensuring design compliance.",
+      "project_id": "25-01-025",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": "page_005/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "North Elevation",
+      "level": "Multiple",
+      "orientation": "North elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Hardie Siding"
+      ],
+      "text_verbatim": "TOP OF ROOF\nTOP OF PLATE\n8'-0\"\nTOP OF SUBFLOOR\nTOP OF FOUNDATION\nGRADE\n6'-8 1/2\"\nTOP OF FOOTING\n32'-9 3/8\"\nNew Hardie Siding\nNORTH ELEVATION\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "This image illustrates the north elevation of the building, showcasing the exterior design and architectural elements. Vertical dimensions such as 'TOP OF ROOF', 'TOP OF PLATE', and 'TOP OF FOOTING' are provided, with measurements like '8'-0\"', '6'-8 1/2\"', and '32'-9 3/8\"'. The elevation features 'New Hardie Siding' and is drawn to a scale of 1/4\" = 1'-0\". These details are vital for visualizing the building's facade and ensuring adherence to design specifications.",
+      "project_id": "25-01-025",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "South Elevation",
+      "level": "Multiple",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Hardie Siding"
+      ],
+      "text_verbatim": "TOP OF ROOF\nTOP OF PLATE\n8'-0\"\nT.O. SUBFLOOR\nT.O. FOUNDATION\nGRADE\n6'-6\"\nT.O. PORCH FOOTING\nTOP OF FOOTING\n32'-9 3/8\"\nNew Hardie Siding\nSOUTH ELEVATION\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "This image displays the south elevation of the building, detailing the exterior architectural features. The elevation includes vertical dimensions such as 'TOP OF ROOF', 'TOP OF PLATE', and 'T.O. PORCH FOOTING', with specific heights like '8'-0\"', '6'-6\"', and '32'-9 3/8\"'. The materials specified include 'New Hardie Siding'. The elevation is drawn to a scale of 1/4\" = 1'-0\", providing essential information for visualizing the building's facade and ensuring compliance with design specifications.",
+      "project_id": "25-01-025",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section F",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Cross Section",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Drop Beam",
+        "Floor Joists",
+        "Load-Bearing Wall"
+      ],
+      "text_verbatim": "F\n2\nCROSS SECTION F\nSCALE: 1/4\" = 1'-0\"\nFLOOR JOISTS BEARING ON T/O BEAM\nT/O STEEL DROP BEAM\nB/O STEEL DROP BEAM\nREPLACE EXISTING LOAD-BEARING WALL WITH DROPPED I-BEAM\nGREAT ROOM\nPOST PER PLAN\nTOP OF FOUNDATION\nTOP OF FOOTING",
+      "summary": "This image shows a cross-sectional view labeled 'Cross Section F', providing detailed insights into the building's structural components. Key elements include 'FLOOR JOISTS BEARING ON T/O BEAM', 'T/O STEEL DROP BEAM', and 'B/O STEEL DROP BEAM'. The section also notes the replacement of an 'EXISTING LOAD-BEARING WALL WITH DROPPED I-BEAM'. Vertical dimensions such as 'TOP OF FOUNDATION' and 'TOP OF FOOTING' are indicated. The section is drawn to a scale of 1/4\" = 1'-0\", crucial for understanding the internal structure and load distribution across different levels of the building.",
+      "project_id": "25-01-025",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section A",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "Foundation",
+        "Footing",
+        "Subfloor",
+        "Plate"
+      ],
+      "text_verbatim": "TOP OF FOUNDATION\nTOP OF FOOTING\n4'-0\"\nTOP OF FOOTING\n3'-3\"\nTOP OF FOOTING\nTOP OF PLATE\n8'-0\"\nTOP OF SUBFLOOR\n0'-3 3/4\"\n1'-8\"\nCROSS SECTION A\nSCALE: 3/8\" = 1'-0\"",
+      "summary": "This image shows Cross Section A, a transverse section of a building wall. The section details the vertical alignment of structural components, including the foundation, footings, subfloor, and plate. The top of the foundation is marked, with footings at 4'-0\" and 3'-3\" below. The top of the plate is at 8'-0\", and the top of the subfloor is 0'-3 3/4\" above the footing. The scale is 3/8\" = 1'-0\".",
+      "project_id": "25-01-025",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section H",
+      "level": "Multiple",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Foundation",
+        "Footing",
+        "Subfloor",
+        "Plate",
+        "Rooms"
+      ],
+      "text_verbatim": "TOP OF PLATE\n8'-0\"\nTOP OF SUBFLOOR\nTOP OF FOOTING\n3'-3\"\nTOP OF FOOTING\n1'-8\"\nTOP OF PLATE\n10'-0\"\nTOP OF SUBFLOOR\n10'-3 3/4\"\n11'-6 1/4\"\nBEDROOM #3\nHALLWAY\nCLINIC\nOFFICE\nGREAT ROOM\nCROSS SECTION H\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "Cross Section H is a longitudinal section showing various rooms such as Bedroom #3, Hallway, Clinic, Office, and Great Room. The section highlights the vertical dimensions of structural elements like the top of the plate at 8'-0\" and 10'-0\", and the top of the subfloor at 10'-3 3/4\" and 11'-6 1/4\". Footings are shown at 3'-3\" and 1'-8\". The scale is 1/4\" = 1'-0\".",
+      "project_id": "25-01-025",
+      "page_number": 7,
+      "region_number": 3,
+      "relative_path": "page_007/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section D",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Section with I-Beam",
+      "element_callouts": [],
+      "key_components": [
+        "Rubble Stone Wall",
+        "I-Beam",
+        "Steel Flush Beam",
+        "Subfloor",
+        "Plate"
+      ],
+      "text_verbatim": "TOP OF PLATE\nTOP OF SUBFLOOR\nTOP OF PLATE\n8'-0\"\nTOP OF SUBFLOOR\nTOP OF FOUNDATION\n5'-9 3/4\"\nTOP OF FOOTING\nRUBBLE STONE WALL TO BEAR ON I-BEAM BELOW\nT/O STEEL FLUSH BEAM\nB/O STEEL FLUSH BEAM\nRUN FLOOR JOISTS INTO I-BEAM\nSPAN OF I-BEAM\nCROSS SECTION D\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "Cross Section D illustrates a wall section with an I-Beam. The rubble stone wall bears on the I-Beam below. The section includes a steel flush beam with floor joists running into the I-Beam. The top of the plate and subfloor are marked, with the foundation at 5'-9 3/4\". The scale is 1/4\" = 1'-0\".",
+      "project_id": "25-01-025",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section E",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Section with Drop Beam",
+      "element_callouts": [],
+      "key_components": [
+        "Stone Rubble Wall",
+        "I-Beam",
+        "Steel Drop Beam",
+        "Subfloor",
+        "Plate"
+      ],
+      "text_verbatim": "TOP OF PLATE\n14'-6 3/8\"\nTOP OF SUBFLOOR\n6'-11\"\nTOP OF SUBFLOOR\nTOP OF FOUNDATION\n5'-10\"\nTOP OF FOOTING\nEXISTING STONE RUBBLE WALL TO BEAR ON I-BEAM\nT/O STEEL DROP BEAM\nB/O STEEL DROP BEAM\nDROP-BEAM SPAN\nCROSS SECTION E\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "Cross Section E shows a wall section with a drop beam. The existing stone rubble wall bears on an I-Beam. The section includes a steel drop beam with a span indicated. The top of the plate is at 14'-6 3/8\", and the subfloor is at 6'-11\". The foundation is at 5'-10\". The scale is 1/4\" = 1'-0\".",
+      "project_id": "25-01-025",
+      "page_number": 8,
+      "region_number": 2,
+      "relative_path": "page_008/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section G",
+      "level": "Multiple",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Foundation",
+        "Footing",
+        "Subfloor",
+        "Plate",
+        "Rooms"
+      ],
+      "text_verbatim": "TOP OF PLATE\n10'-0\"\nTOP OF SUBFLOOR\n10'-3 3/4\"\nTOP OF SUBFLOOR\n10'-9\"\nHALLWAY\nGREAT ROOM\nKITCHEN\nFAMILY ROOM\nMASTER BEDROOM\nMASTER - CLOSET\nCROSS SECTION G\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "Cross Section G is a longitudinal section showing rooms such as Hallway, Great Room, Kitchen, Family Room, Master Bedroom, and Master Closet. The section details the top of the plate at 10'-0\" and the subfloor at 10'-3 3/4\" and 10'-9\". The scale is 1/4\" = 1'-0\".",
+      "project_id": "25-01-025",
+      "page_number": 8,
+      "region_number": 3,
+      "relative_path": "page_008/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Second Floor – Roof",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [],
+      "key_components": [
+        "New Roof",
+        "Existing Roof"
+      ],
+      "text_verbatim": "SECOND FLOOR - ROOF\nSCALE: 3/16\" = 1'-0\"\nNEW ROOF\nEXST. ROOF\n12\n7\n6",
+      "summary": "This roof plan for the second floor shows the layout of both new and existing roofing areas. The text 'SECOND FLOOR - ROOF' indicates the level and type of plan. The scale is provided as 3/16\" = 1'-0\", which is crucial for understanding the drawing's dimensions. The plan distinguishes between 'NEW ROOF' and 'EXST. ROOF', highlighting areas of construction and existing structures. The numbers '12', '7', and '6' likely refer to roof slopes or other specific elements but are not explicitly detailed in the image.",
+      "project_id": "25-01-025",
+      "page_number": 9,
+      "region_number": 1,
+      "relative_path": "page_009/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Main Floor – Roof",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Roof Structure"
+      ],
+      "text_verbatim": "MAIN FLOOR - ROOF\nSCALE: 3/16\" = 1'-0\"\n12\n4\n5\n6\n3'-5\"\n4'-6\"",
+      "summary": "This roof plan for the main floor illustrates the structural layout and roofing materials. The title 'MAIN FLOOR - ROOF' specifies the level and type of plan, with a scale of 3/16\" = 1'-0\" for accurate dimension interpretation. The numbers '12', '4', '5', and '6' may indicate roof slopes or other specific elements. Dimensions '3'-5\"' and '4'-6\"' are provided, likely representing specific structural or spatial measurements within the plan. The plan is essential for understanding the construction and installation of the roof, ensuring proper load distribution and weatherproofing.",
+      "project_id": "25-01-025",
+      "page_number": 9,
+      "region_number": 2,
+      "relative_path": "page_009/region_02_red_box.png"
+    }
+  ]
+}

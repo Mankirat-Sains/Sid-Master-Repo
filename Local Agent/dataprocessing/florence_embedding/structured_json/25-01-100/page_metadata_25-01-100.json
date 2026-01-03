@@ -1,0 +1,21 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "370_AR_01_01",
+      "drawing_title": "MAIN FLOOR",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Racking Layout",
+        "Office and Utility Rooms",
+        "Structural Grid",
+        "Access Points"
+      ],
+      "text_verbatim_title_block": "Saputo\nGEORGETOWN PLANT\nMAIN FLOOR\n370_AR_01_01",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the main floor plan of the Georgetown Plant, focusing on the racking layout and associated office and utility rooms. The structural grid is clearly defined, providing a framework for the layout. Key components include access points and various room allocations, essential for understanding the spatial organization of the facility."
+    }
+  ]
+}

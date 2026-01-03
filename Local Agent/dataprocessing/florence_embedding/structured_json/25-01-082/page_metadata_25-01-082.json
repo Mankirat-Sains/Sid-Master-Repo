@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "23-1321",
+      "drawing_title": "LIFTING LUG",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Lifting Lug Design",
+        "Anchor Details",
+        "Material Specifications"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nBGL CONTRACTORS CORP.\nCHECK VALVE LIFTING LUG\nREVISION #: 01\nPROJECT: 25-01-082\nDATE: 2025-02-18\nHEADON RESERVOIR\nLIFTING LUG\nSCALE: 1/2\nDRAWING NO: 23-1321",
+      "general_notes_verbatim": "DESIGN LOADS:\nMAX LIFTED LOAD (CHECK VALVE LUGS) = 5 kN\n\nLIFTING NOTES:\n1. LUGS ARE DESIGNED IN ACCORDANCE WITH ASME BTH-1-2005/ASME B30.20, CAT B, Nd = 3.0\n2. MINIMUM 50.8mm DIA. SHACKLE PINS MUST BE USED ON THE LIFTING LUG.\n3. LUGS TO BE USED FOR VERTICAL LIFTS ONLY.\n4. PROPER PROVISIONS SHALL BE MADE TO ENSURE LIFTING LUGS ARE CENTERED ON THE SHACKLE PIN.\n5. LIFTING LUG WELDS SHALL HAVE 100% MAGNETIC PARTICLE INSPECTION (MPI)\n6. RIGGING BY OTHERS.\n\nNOTES:\n1. 2 ASSEMBLIES REQUIRED AS SHOWN\n2. WEIGHT OF CHECK VALVE TO BE LIFTED IS 457kg\n3. MATERIAL TO BE ASTM A36 OR EQUIVALENT\n4. MILD STEEL TO BE HOT DIPPED GALVANIZED AFTER FABRICATION\n5. ALL WELDING TO CONFORM TO CSA W59\n6. ALL WELDS TO BE VISUALLY INSPECTED AND TESTED AS PER CWB REQUIREMENTS",
+      "page_overview_summary": "This sheet provides detailed drawings and specifications for a lifting lug designed for a check valve. The design includes dimensions, material specifications, and anchoring details. The lifting lug is designed to handle a maximum load of 5 kN and must be used with specific shackle pins for vertical lifts only. The sheet includes notes on fabrication, material standards, and inspection requirements, ensuring compliance with ASME and CSA standards."
+    }
+  ]
+}

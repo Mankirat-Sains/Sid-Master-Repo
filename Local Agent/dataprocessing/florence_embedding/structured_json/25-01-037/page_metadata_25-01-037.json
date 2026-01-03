@@ -1,0 +1,21 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": null,
+      "drawing_title": "Footing Insulation Detail",
+      "overall_classification": "Detail",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Footing",
+        "Rigid Foam Insulation",
+        "Interior Slab",
+        "Basement Wall"
+      ],
+      "text_verbatim_title_block": "Project Info:\n25-01-037: David Bauman House Addition\nAddress: 2847 Floradale Road, Elmira, Ontario, N3B2Z1",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides a detailed drawing of the footing insulation for the David Bauman House Addition. It shows the placement of rigid foam insulation between the footing and the interior slab, which is specified to be 5 inches above the top of the footing. The basement wall is noted to be as per plans by others. The detail ensures proper thermal insulation and structural support at the foundation level."
+    }
+  ]
+}

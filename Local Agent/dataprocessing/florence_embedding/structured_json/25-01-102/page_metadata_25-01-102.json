@@ -1,0 +1,208 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "S0",
+      "drawing_title": "Notes",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Structural Notes",
+        "Concrete Masonry Wall Anchorage",
+        "Steel Notes",
+        "Climbing Wall Notes",
+        "ECO Frame Notes",
+        "Climbing Wall Design Loads"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nNotes\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS0\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "CONCRETE MASONRY WALL ANCHORAGE NOTES\n1. CONCRETE MASONRY UNITS SHALL CONFORM TO ASTM C90 WITH 2,000 PSI COMPRESSIVE STRENGTH TO ASTM C744.\n2. A MAXIMUM OF ONE ANCHOR IS PERMITTED TO BE INSTALLED IN EACH UNIT CELL.\n3. EMBEDMENT IS MEASURED FROM OUTSIDE SURFACE OF CMU TO THE EMBEDDED END OF THE ANCHOR.\n4. ADJACENT ANCHORS MUST BE NO LESS THAN 4\" APART. ANCHORS MUST BE INSTALLED A MINIMUM OF 12\" FROM THE EDGE OF THE MASONRY WALL TO THE CENTRE OF THE ANCHOR\n\nABBREVIATIONS\nAB - ANCHOR BOLTS\nBP - BASEPLATE\nC/W - CONNECTED WITH\nDIA. Ø(Ø) = DIAMETER\nEL - ELEVATION\nELEV. = EACH WAY\nGR - GUARDRAIL\nHR - HANDRAIL\nID. = INNER DIAMETER\nIL - INNER DIAMETER\nMIN. = MINIMUM\nMAX. = MAXIMUM\nO.C. = ON CENTRE\nPL = POINT LOAD\nTHK = THICKNESS\nT.O.C. = TOP OF CONCRETE\nTYP. = TYPICAL\nUNO = UNLESS NOTED OTHERWISE\n\nGENERAL NOTES\n1. DESIGN AND CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO LATEST EDITIONS OF THE FOLLOWING:\n- NATIONAL BUILDING CODE\n- ONTARIO BUILDING CODE\n- LOCAL REGULATIONS\n- OSHA REGULATIONS\n- CWA GENERAL SPECIFICATION FOR THE DESIGN AND ENGINEERING OF ARTIFICIAL CLIMBING STRUCTURES.\n2. DRAWINGS ARE NOT TO BE SCALED.\n3. THE CONTRACTOR SHALL CHECK AND VERIFY ALL SITE CONDITIONS AND MEASUREMENTS AND REPORT ANY DISCREPANCIES TO THE ENGINEER.\n4. NO CHANGES SHALL BE MADE WITHOUT THE ENGINEER'S APPROVAL.\n5. CONTRACTOR SHALL MAKE ADEQUATE PROVISIONS FOR TEMPORARY BRACING AND SHORING. CONSTRUCTION LOADS SHALL NOT EXCEED THE DESIGN LOADS NOTED ON DRAWINGS.\n\nSTEEL NOTES\n1. ALL DIMENSIONS ARE IN INCHES UNLESS NOTED OTHERWISE.\n2. ALL HOLE SIZES ARE 9/16\" DIAMETER UNLESS OTHERWISE NOTED.\n3. ALL BOLTS SHALL BE 1/2\" DIAMETER A325 STRUCTURAL BOLTS UNLESS OTHERWISE NOTED.\n4. WHERE NO WELD SYMBOL IS SHOWN, ASSUME FILLET ALL AROUND, WITH SIZE EQUAL TO THE LESSER OF 3/16\" OR THE MINIMUM THICKNESS OF ADJOINING STRUCTURAL STEEL.\n5. STRUCTURAL STEEL PLATES, ANGLES, AND CHANNELS SHALL CONFORM TO CSA G40.20/.21-350W.\n6. WELDING SHALL CONFORM TO THE REQUIREMENTS OF CSA STANDARD W59 AND SHAL...",
+      "page_overview_summary": "This sheet provides comprehensive general notes for the design and construction of a modular panel climbing wall and ECO frames. It includes specifications for concrete masonry wall anchorage, steel components, and climbing wall design loads. The notes emphasize compliance with national and local building codes, and detail the responsibilities of the contractor and owner. Important load factors and seismic considerations for the Brampton, ON location are also included."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "S1.1",
+      "drawing_title": "Isometric View",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Modular Panel Climbing Wall",
+        "ECO Frames",
+        "Obstacle Course"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nIsometric View\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS1.1\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents an isometric view of the modular panel climbing wall and ECO frames, highlighting the spatial arrangement and integration of the climbing wall with the existing structure. Key components such as the obstacle course and ECO frames are depicted, providing a three-dimensional perspective of the design."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "S1.2",
+      "drawing_title": "Annotated Eco Frame Iso View",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Eco Frame",
+        "Climbing Elements",
+        "Monkey Bars",
+        "Cargo Mesh",
+        "Floating Bridge"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nAnnotated Eco Frame Iso View\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS1.2\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides an annotated isometric view of the ECO frame with climbing elements. It highlights various components such as monkey bars, cargo mesh, and floating bridges, offering a detailed visual reference for the layout and design of the climbing structure."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "S2.1",
+      "drawing_title": "Plan View",
+      "overall_classification": "Plan",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Modular Climbing Wall Panels",
+        "ECO Frame Angled Monkey Bars"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nPlan View\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS2.1\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This plan view sheet illustrates the layout of the modular climbing wall panels and ECO frame angled monkey bars. It provides a top-down perspective, detailing the spatial arrangement and connections between different elements of the climbing structure."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "S2.2",
+      "drawing_title": "Elevation Views",
+      "overall_classification": "Elevation",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Climbing Wall",
+        "ECO Frame"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nElevation Views\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS2.2\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides elevation views of the climbing wall and ECO frame, showing the vertical dimensions and relationships between different components. It helps in understanding the height and structural integration of the climbing elements within the overall design."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "S3",
+      "drawing_title": "Climbing Wall Sections",
+      "overall_classification": "Section",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Climbing Wall Sections",
+        "Plywood Panels"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nClimbing Wall Sections\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS3\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet details sections of the climbing wall, focusing on the construction and arrangement of plywood panels. It provides insights into the structural composition and anchorage of the climbing wall elements."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "S4",
+      "drawing_title": "Climbing Wall Sections",
+      "overall_classification": "Section",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Climbing Wall Sections",
+        "Plywood Panels"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nClimbing Wall Sections\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS4\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet continues to detail sections of the climbing wall, emphasizing the layout and structural details of the plywood panels. It provides additional sectional views to aid in the construction and assembly of the climbing wall."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "S5",
+      "drawing_title": "ECO Frame Elevations, Plan & Iso View",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "ECO Frame",
+        "Plan View",
+        "Isometric View",
+        "Front View",
+        "Side View"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nECO Frame Elevations, Plan & Iso View\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS5\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides a comprehensive view of the ECO frame, including plan, isometric, front, and side views. It illustrates the structural design and layout of the ECO frame, offering multiple perspectives to aid in understanding the assembly and integration of the frame components."
+    },
+    {
+      "page_number": 9,
+      "sheet_id": "S6",
+      "drawing_title": "ECO Frame Sections",
+      "overall_classification": "Section",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "ECO Frame Sections"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nECO Frame Sections\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS6\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet details sections of the ECO frame, focusing on the structural components and connections. It provides sectional views to assist in the construction and understanding of the ECO frame's design and assembly."
+    },
+    {
+      "page_number": 10,
+      "sheet_id": "S7",
+      "drawing_title": "ECO Frame Sections",
+      "overall_classification": "Section",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "ECO Frame Sections"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nECO Frame Sections\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS7\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet continues to provide sectional views of the ECO frame, detailing the structural elements and connections. It offers additional insights into the design and construction of the ECO frame, supporting the overall assembly process."
+    },
+    {
+      "page_number": 11,
+      "sheet_id": "S8",
+      "drawing_title": "ECO Frame Sections",
+      "overall_classification": "Section",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "ECO Frame Sections"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nECO Frame Sections\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS8\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides further sectional views of the ECO frame, focusing on the structural details and connections. It supports the understanding of the ECO frame's design and aids in the construction and assembly process."
+    },
+    {
+      "page_number": 12,
+      "sheet_id": "S9",
+      "drawing_title": "ECO Frames Baseplate Plan",
+      "overall_classification": "Plan",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "ECO Frame Baseplate",
+        "Structural Slab on Grade"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nECO Frames Baseplate Plan\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS9\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents a plan view of the ECO frame baseplate, showing the layout and connection to the structural slab on grade. It provides detailed information on the anchorage and support of the ECO frame, essential for the construction process."
+    },
+    {
+      "page_number": 13,
+      "sheet_id": "S10",
+      "drawing_title": "Connection Details",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Connection Details",
+        "HSS Columns",
+        "Stub Beams"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD., UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-2769\nFax: 1-866-369-6259\nwww.waddelleng.com\nENGINEER STAMP\nC.O. WICKHAM\n100523812\nFebruary 7th, 2025\nCLIENT:\nIMPACT Climbing Inc.\nDRAWING TITLE:\nConnection Details\nPROJECT:\nModular Panel Climbing Wall & ECO Frame\nDaniel's MVP - 10 All Nations Drive,\nBrampton, ON, L7A 5G6\nDRAWN BY: C.O.W.\nDATE: 2025-01-31\nSCALE: N. Noted\nSHEET NO:\nS10\nPROJECT NO:\n25-01-102",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed connection drawings for the ECO frame, focusing on the HSS columns and stub beams. It includes specific details on the connections and anchorage, essential for ensuring the structural integrity and stability of the climbing wall and ECO frame."
+    }
+  ]
+}

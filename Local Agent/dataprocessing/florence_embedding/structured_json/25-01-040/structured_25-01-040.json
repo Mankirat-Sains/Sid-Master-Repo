@@ -1,0 +1,501 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Residential Accessory Building",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "D1"
+      ],
+      "element_type": "Floating Slab Plan",
+      "element_callouts": [
+        "FL1"
+      ],
+      "key_components": [
+        "Floating Slab",
+        "Thickened Edge",
+        "Rigid Insulation",
+        "Concrete Slab"
+      ],
+      "text_verbatim": "DIM. O/S OF CONC. SLAB\n(R10) RIGID INSULATION PERIMETER OF EXISTING CONC. SLAB\n24'-0\"\n30'-0\"\nRESIDENTIAL ACCESSORY BUILDING\nFL1\nTHICKENED EDGE 1'-0\" WIDE X 1'-6\" THICK c/w 4 - 15M CONTINUOUS SEE DETAILS BELOW\nFLOATING SLAB PLAN\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "This plan illustrates the floating slab for a residential accessory building's foundation. The slab measures 24'-0\" by 30'-0\" and includes a thickened edge that is 1'-0\" wide and 1'-6\" thick, reinforced with 4 continuous 15M rebar. The perimeter of the existing concrete slab is insulated with R10 rigid insulation. The plan references detail D1 for further specifications on the slab edge. The floating slab is identified as FL1, indicating its specific type and construction details.",
+      "project_id": "25-01-040",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Slab Edge",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "D1"
+      ],
+      "element_type": "Typical Slab Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Poured Concrete",
+        "Welded Wire Mesh",
+        "Compacted Granular Fill",
+        "Rebar",
+        "Polystyrene Insulation"
+      ],
+      "text_verbatim": "D1\nTYPICAL SLAB EDGE DETAIL\nSCALE: 1/2\" = 1'-0\"\n1/2\" SLEEVE ANCHORS @ 48\" o.c.\n6\" POURED CONC.\n6\"x6\"x6/6 W.W.M. CENTERED IN SLAB\nMIN. (R10) SPRAYED URETHANE INSUL.\nCOMPACTED GRAN. 'A' OR 3/4\" STONE BASE, 6\" MIN.\n1'-6\"\n1'-0\"\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE MIN. COMPRESSIVE STRENGTH OF 20 psi\n4 - 15M CONTINUOUS\n2% SLOPE AWAY\nSINGLE STOREY WOOD FRAMED NO MASONRY\nMETAL CAP OVER INSULATION & FINEX\n15M X 22\" LONG REBAR @ 48\" o.c. MIN. 6\" EMBED. FILL CORE WITH MORTAR (LEAVE OPENING IN BLOCK AT DOOR LOCATIONS)",
+      "summary": "This detail shows the typical slab edge for the foundation, labeled as D1. The slab consists of 6\" poured concrete with 6\"x6\"x6/6 welded wire mesh centered within. The edge includes a 1'-6\" thickened section with continuous 15M rebar and is insulated with R10 sprayed urethane. The base comprises compacted granular fill or 3/4\" stone, with a minimum thickness of 6\". Extruded polystyrene insulation with a compressive strength of 20 psi is used. The detail specifies 1/2\" sleeve anchors at 48\" on center and a 2% slope away from the building. Rebar is embedded 6\" into the slab, with metal caps over insulation and Finex for single-story wood framing.",
+      "project_id": "25-01-040",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Notes",
+      "location": "Foundation – Floating Slab",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Floating Slab Plan Notes",
+      "element_callouts": [
+        "FL1"
+      ],
+      "key_components": [
+        "Concrete Floor",
+        "Welded Wire Mesh",
+        "Urethane Insulation",
+        "Granular Fill"
+      ],
+      "text_verbatim": "FLOATING SLAB PLAN NOTES\n1. ALL FASTENERS IN TO TREATED WOOD SHALL BE ACQ RATED.\nFLOOR ASSEMBLIES\nID NOTE\nFL1 6\" CONCRETE FLOOR\n32MPa + 6% AIR ENTRAINMENT\nPOURED CONCRETE r/w\n6\" x 6\" x 6/6 W.W.M. (AT MID-DEPTH OF SLAB)\nSPRAYED URETHANE INSULATION (R10)\nCOMPACTED GRANULAR FILL, 6\" MIN.",
+      "summary": "This section provides notes for the floating slab plan, emphasizing that all fasteners into treated wood must be ACQ rated. The floor assembly, identified as FL1, consists of a 6\" concrete floor with a compressive strength of 32 MPa and 6% air entrainment. The concrete is reinforced with 6\"x6\"x6/6 welded wire mesh at the slab's mid-depth. The assembly includes R10 sprayed urethane insulation and a minimum of 6\" compacted granular fill.",
+      "project_id": "25-01-040",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Notes",
+      "location": "Foundation – General",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete",
+        "Rebar",
+        "Granular Fill",
+        "Insulation"
+      ],
+      "text_verbatim": "GENERAL NOTES:\nFOUNDATIONS:\n1. REMOVE ALL TOPSOIL AND ORGANIC MATERIAL FROM THE BUILDING AREA.\n2. SLAB MUST BE CARRIED DOWN TO NATURAL UNDISTURBED SOIL CAPABLE OF SUSTAINING 1500 PSF (75 kPa) [STRUCTURE UNDER PART 9] OR 3000 PSF (150kPa) [ALL OTHER STRUCTURES] ALLOWABLE SOIL BEARING PRESSURE.\n3. IF GRADE TO BE BUILT UP, GRANULAR FILL 'A' IS TO BE USED & COMPACTED IN MAXIMUM 6\" LIFTS.\n4. IF INSULATION IS SHOWN ON DRAWINGS PROVIDE INSULATION AS PER CANADIAN FOUNDATION ENGINEERING MANUAL.\n5. UNDER SLAB INSULATION: IF NOT INSTALLED, CLIENT / CONTRACTOR ACCEPTS THE POTENTIAL OF CRACKING / HEAVING OVER TIME (IF BUILDING IS NOT HEATED) OR HEAT LOSS (IF BUILDING IS HEATED)\n6. PERIMETER INSULATION: IF NOT INSTALLED, CLIENT / CONTRACTOR ACCEPTS THE POTENTIAL OF CRACKING / HEAVING OVER TIME.\n7. IF SLAB IS INSULATED, BRICK VENEER MAY BE USED UP TO MAXIMUM OF 4'-0\" ABOVE SLAB.\n8. CLIENT / CONTRACTOR TO CONFIRM SLAB DIMENSIONS BEFORE ORDERING MATERIAL & CONSTRUCTION.\nCONCRETE:\n1. ALL CONCRETE ON THIS PROJECT SHALL HAVE A MINIMUM OF 28 DAYS COMPRESSIVE STRENGTH OF 32 MPa. WITH 6% AIR-ENTRAINMENT AND 0.45 MAX WATER-TO-CEMENT RATIO.\n2. ALL REINFORCEMENT IS TO BE GRADE 400 MPa.\n3. REBAR SPLICE LENGTH: 15M BAR: 18\" LAP WELDED WIRE MESH (WWM): 9\" LAP\n4. ALL CONCRETE WORK SHALL BE CARRIED OUT IN ACCORDANCE TO THE LATEST EDITION OF THE ONTARIO BUILDING CODE, CAN/CSA-A23.1/A23.2-M90 AND LOCAL BY-LAWS.\n5. CONCRETE COVER SHALL BE AS FOLLOWS:\na) 3\" WHERE CONCRETE IS IN CONTACT WITH EARTH (I.E. FOOTINGS)\nb) 2\" WHERE IN FORMS TO WEATHER OR EARTH (I.E. SIDE OF FLOATING SLAB)\n6. SLAB ON GRADE SHALL BEAR ON MIN. 6\" GRANULAR 'A' FILL (COMPACTED TO 98% SPDD) ON ORIGINAL SUBGRADE.\n7. SLOPE GRADE AWAY FROM BUILDING\n8. SAW CUT SLAB TO DEPTH OF 1/4\" THE SLAB THICKNESS (1½\"). SPACE THE SAW CUTS @ 15'-0\".\n9. SLAB IS NOT TO BE POURED ON FROZEN GROUND.",
+      "summary": "The general notes provide comprehensive guidelines for foundation preparation and concrete specifications. Key instructions include removing all topsoil and organic material, ensuring the slab reaches undisturbed soil with specified bearing pressures, and using granular fill compacted in 6\" lifts. Insulation must comply with the Canadian Foundation Engineering Manual. Concrete must have a 28-day compressive strength of 32 MPa with 6% air entrainment. Rebar is specified as Grade 400 MPa, with splice lengths detailed for 15M bars and welded wire mesh. Concrete cover requirements are outlined for different conditions, and all work must adhere to the Ontario Building Code. Additional notes cover slab slope, saw cuts, and conditions for pouring on frozen ground.",
+      "project_id": "25-01-040",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": "page_002/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – CMU Wall",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "CMU Wall Plan",
+      "element_callouts": [
+        "FL1",
+        "EW1"
+      ],
+      "key_components": [
+        "Concrete Floor",
+        "CMU Wall",
+        "Rebar",
+        "Granular Fill"
+      ],
+      "text_verbatim": "CMU PLAN NOTES\n1. ALL FASTENERS IN TO TREATED WOOD SHALL BE ACQ RATED.\nFLOOR ASSEMBLIES\nID NOTE\nFL1 6\" CONCRETE FLOOR\n32MPa + 6% AIR ENTRAINMENT\nPOURED CONCRETE r/w\n6\" x 6\" x 6/6 W.W.M. (AT MID-DEPTH OF SLAB)\nSPRAYED URETHANE INSULATION (R10)\nCOMPACTED GRANULAR FILL, 6\" MIN.\nWALL ASSEMBLIES\nID NOTE\nEW1 6\" CMU WALL:\n(2) ROWS 6\" CONCRETE MASONRY UNITS\nc/w 15M x 22\" LONG REBAR INTO CONC. SLAB @ 48\" o.c.\nINTERIOR LINER PER OWNER\nSEE DETAILS ON PAGE A1",
+      "summary": "This plan outlines the CMU wall construction for the foundation level, emphasizing the use of ACQ-rated fasteners for treated wood. The floor assembly FL1 includes a 6\" concrete floor with 32 MPa strength and 6% air entrainment, reinforced with welded wire mesh. The wall assembly EW1 consists of 6\" CMU walls with two rows of concrete masonry units, reinforced with 15M x 22\" rebar embedded into the concrete slab at 48\" on center. The plan specifies the use of sprayed urethane insulation and compacted granular fill, ensuring structural stability and compliance with building standards.",
+      "project_id": "25-01-040",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Residential Accessory Building",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/A2",
+        "A/A2"
+      ],
+      "element_type": "Concrete Block Wall Plan",
+      "element_callouts": [
+        "FL1"
+      ],
+      "key_components": [
+        "Concrete Block Walls",
+        "Door Opening"
+      ],
+      "text_verbatim": "RESIDENTIAL ACCESSORY BUILDING\nFL1\nCONCRETE BLOCK WALL PLAN\nSCALE: 1/4\" = 1'-0\"\n24'-0\"\n30'-0\"\n21'-2\"\n2'-10\"\n6'-0\"\n2'-0\"\n9'-0\" x 8'-0\"\n9'-0\" x 8'-0\"\n2'-0\"\n24'-0\"\nA\nA2\nA\nA2",
+      "summary": "This plan shows the foundation level of a residential accessory building, specifically the concrete block wall plan. The building dimensions are 24'-0\" by 30'-0\". The plan includes a door opening with dimensions 2'-10\" by 6'-0\". The section callouts 'A/A2' indicate where sections are taken through the plan. The element callout 'FL1' refers to a specific floor type. The scale of the drawing is 1/4\" = 1'-0\". The plan emphasizes the layout of concrete block walls, ensuring structural stability for the foundation.",
+      "project_id": "25-01-040",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Residential Accessory Building",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/A2",
+        "A/A2"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "EW2",
+        "C1",
+        "C2",
+        "L1",
+        "FL1"
+      ],
+      "key_components": [
+        "Pre-Engineered Attic Trusses",
+        "2x8 Floor Joists",
+        "Steel Beam",
+        "Gasproofing"
+      ],
+      "text_verbatim": "RESIDENTIAL ACCESSORY BUILDING\n(9'-5 1/8\" CEILING HEIGHT)\n2x8 FLOOR JOIST @ 16\" o.c. c/w BRIDGING MID-SPAN\nW8 x 18 STEEL BEAM (DROPPED)\nGASPROOFING BETWEEN GARAGE AND LOFT c/w 1/2\" DRYWALL TAPED AND SANDED\nEW2\nC1\nC2\nL1\nFL1\nMAIN FLOOR\nSCALE: 1/4\" = 1'-0\"\n24'-2\"\n30'-2\"\n12'-8\"\n7'-6\"\n2'-1\"\n9'-0\" x 8'-0\"\n9'-0\" x 8'-0\"\n2'-1\"\nA\nA2\nA\nA2",
+      "summary": "This main floor plan for a residential accessory building details the layout and structural components. The building has a ceiling height of 9'-5 1/8\". Key components include pre-engineered attic trusses, 2x8 floor joists spaced at 16 inches on center with mid-span bridging, and a W8 x 18 steel beam. Gasproofing is provided between the garage and loft with 1/2\" drywall. Element callouts 'EW2', 'C1', 'C2', 'L1', and 'FL1' specify wall, column, lintel, and floor types. The section callouts 'A/A2' indicate where sections are taken. The scale is 1/4\" = 1'-0\".",
+      "project_id": "25-01-040",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": "Ground Floor – Residential Accessory Building",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan Notes",
+      "element_callouts": [
+        "FL1",
+        "EW2",
+        "IW1",
+        "L1",
+        "C1",
+        "C2"
+      ],
+      "key_components": [
+        "ACQ Rated Fasteners",
+        "Concrete Floor",
+        "Siding Exterior Wall",
+        "Partition Wall",
+        "Lintel",
+        "Column"
+      ],
+      "text_verbatim": "MAIN FLOOR PLAN NOTES\n1. ALL FASTENERS INTO TREATED WOOD SHALL BE ACQ RATED.\n2. ALL INTERIOR WALLS ARE \"IW1\" UNLESS OTHERWISE NOTED.\nFLOOR ASSEMBLIES\nID NOTE\nFL1 6\" CONCRETE FLOOR\n32MPa + 6% AIR ENTRAINMENT\nPOURED CONCRETE r/w\n6\" x 6\" x 6/6 W.W.M. (AT MID-DEPTH OF SLAB)\nSPRAYED URETHANE INSULATION (R10)\nCOMPACTED GRANULAR FILL, 6\" MIN.\nWALL ASSEMBLIES\nID NOTE\nEW2 2x6 SIDING EXTERIOR WALL:\nSIDING PER CLIENT\n1\" RIGID INSULATION (JOINTS TAPED)\n7/16\" OSB SHEATHING\n2x6 STUDS @16\" o.c.\nR20 BATT INSULATION\nS6 MIL POLY VAPOR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nIW1 2x4 PARTION WALL:\n1/2\" DRYWALL TAPED & SANDED\n2x4 STUDS @ 16\" o.c.\n1/2\" DRYWALL TAPED & SANDED\nLINTEL SCHEDULE\nID NOTE # JACK # KING\nL1 (2) - 2x8 HEADER 1 1\nCOLUMN SCHEDULE\nID NOTE\nC1 (4) PLY 2x6 STUD POST\nC2 (2) PLY 2x6 STUD POST",
+      "summary": "This image contains notes and schedules for the main floor plan. It specifies that all fasteners into treated wood must be ACQ rated and that all interior walls are 'IW1' unless noted otherwise. The floor assembly 'FL1' consists of a 6-inch concrete floor with 32MPa strength and 6% air entrainment, reinforced with welded wire mesh and insulated with R10 urethane. Wall assembly 'EW2' is a 2x6 siding exterior wall with rigid insulation, OSB sheathing, and R20 batt insulation. The lintel schedule lists 'L1' as a 2x8 header with one jack and king stud. The column schedule includes 'C1' and 'C2' as 2x6 stud posts.",
+      "project_id": "25-01-040",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Loft – Residential Accessory Building",
+      "level": "Loft",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Loft Plan",
+      "element_callouts": [
+        "FL2",
+        "EW2",
+        "IW2",
+        "IW3",
+        "L2"
+      ],
+      "key_components": [
+        "Vaulted Ceiling",
+        "Exterior Walls",
+        "Interior Walls",
+        "Bathroom"
+      ],
+      "text_verbatim": "LOFT\nFL2\nLOFT PLAN\nSCALE: 1/4\" = 1'-0\"\n24'-2\"\n30'-2\"\n16'-0\"\n4'-9\"\n4'-9\"\n7'-4\"\n14'-8\"\n7'-4\"\n4'-9\"\n4'-0\" x 3'-0\"\n23'-0\"\n13'-11 1/4\"\n3'-0\"\n2'-6\"\n3'-1\"\n3'-1 1/2\"\n4'-1 3/4\"\n12'-5 1/4\"\n2'-8 1/4\"\nBATH\ninstall grab bar blocking\nEXTERIOR WALL DIMENSION TO OUTSIDE OF RIGID INSULATION\nENSURE GASPROOFING BETWEEN GARAGE AND DWELLING c/w 1/2\" DRYWALL TAPED & SANDED\nEW2\nIW2\nIW3\nL2\nEXT. TYPE DOOR c/w SELF CLOSE HINGE",
+      "summary": "This loft plan illustrates the layout and structural details for the loft level of a residential accessory building. The plan includes dimensions and features such as vaulted ceilings, exterior walls 'EW2', and interior walls 'IW2' and 'IW3'. The loft floor 'FL2' is detailed with specific dimensions for rooms and features a bathroom with grab bar blocking. The lintel 'L2' is specified as a 2x6 header. The plan emphasizes gasproofing between the garage and dwelling with 1/2\" drywall. The scale is 1/4\" = 1'-0\".",
+      "project_id": "25-01-040",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": "Loft – Residential Accessory Building",
+      "level": "Loft",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Loft Plan Notes",
+      "element_callouts": [
+        "FL2",
+        "EW2",
+        "IW1",
+        "IW2",
+        "IW3",
+        "L2"
+      ],
+      "key_components": [
+        "ACQ Rated Fasteners",
+        "Loft Floor Finish",
+        "Siding Exterior Wall",
+        "Partition Wall",
+        "Insulated Wall",
+        "Lintel"
+      ],
+      "text_verbatim": "LEGEND\nEXHAUST FAN\nSMOKE & C.O. DETECTOR\nMAIN FLOOR PLAN NOTES\n1. ALL FASTENERS IN TO TREATED WOOD SHALL BE ACQ RATED.\n2. ALL INTERIOR WALLS ARE \"IW1\" UNLESS OTHERWISE NOTED.\nFLOOR ASSEMBLIES\nID NOTE\nFL2 LOFT FLOOR FINISH:\n3/4\" T&G SHEATHING SCREWED & GLUED\nFLOOR JOISTS PER PLAN\nBRIDGING PER PLAN\nWALL ASSEMBLIES\nID NOTE\nEW2 2x6 SIDING EXTERIOR WALL:\nSIDING PER CLIENT\n1\" RIGID INSULATION (JOINTS TAPED)\n7/16\" OSB SHEATHING\n2x6 STUDS @16\" o.c.\nR20 BATT INSULATION\nS6 MIL POLY VAPOR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nIW1 2x4 PARTION WALL:\n1/2\" DRYWALL TAPED & SANDED\n2x4 STUDS @ 16\" o.c.\n1/2\" DRYWALL TAPED & SANDED\nIW2 VERTICAL TRUSS WEB:\n1\" RIGID FOAM (JOINTS TAPED)\nR20 BATT INSULATION\nS6 MIL POLY VAPOR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nIW3 INSULATED WALL:\n1\" RIGID FOAM (JOINTS TAPED)\n2x6 STUDS @16\" o.c.\nR20 BATT INSULATION\nS6 MIL POLY VAPOR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nLINTEL SCHEDULE\nID NOTE # JACK # KING\nL2 (2) - 2x6 HEADER 1 1",
+      "summary": "This image contains notes and schedules for the loft plan. It specifies that all fasteners into treated wood must be ACQ rated and that all interior walls are 'IW1' unless noted otherwise. The loft floor assembly 'FL2' includes 3/4\" T&G sheathing screwed and glued. Wall assembly 'EW2' is a 2x6 siding exterior wall with rigid insulation and R20 batt insulation. 'IW2' and 'IW3' are partition and insulated walls with similar specifications. The lintel schedule lists 'L2' as a 2x6 header with one jack and king stud. The legend includes symbols for exhaust fans and smoke detectors.",
+      "project_id": "25-01-040",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – entire layout",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "CLG1",
+        "CLG2"
+      ],
+      "key_components": [
+        "Structural Gable Truss",
+        "Pre-Eng Attic Trusses",
+        "Pre-Eng Scissor Trusses"
+      ],
+      "text_verbatim": "ROOF PLAN\nSCALE: 1/4\" = 1'-0\"\n28'-3\"\n24'-3\"\n12'-1½\"\n5'-9½\"\n16'-0\"\n34'-3\"\nR1\nCLG2\nR2\nCLG1\n<STRUCTURAL GABLE TRUSS>\n<PRE-ENG ATTIC TRUSSES>\n<PRE-ENG SCISSOR TRUSSES>\n16\" EAVE AND 16\" GABLE FINISHED OVERHANG ON SHED DORMER\n(2) PLY ATTIC TRUSS BESIDE STAIRWELL\n12'-1½\"\n12'-1½\"\n1'-4\"\n1'-4\"\n2'-0\"\n2'-0\"\n5'-9½\"\n1'-4\"\n1'-4\"\n2'-0\"\n2'-0\"\n34'-3\"\n16'-0\"\n18'-8\"\n5'-9½\"\n1'-4\"\n1'-4\"\n2'-0\"\n2'-0\"",
+      "summary": "This roof plan illustrates the layout of the roof structure, including dimensions and truss placements. The plan specifies structural gable trusses, pre-engineered attic trusses, and pre-engineered scissor trusses. Key dimensions include a total roof width of 28'-3\" and various sections measuring 24'-3\" and 12'-1½\". The plan also notes a 16\" eave and gable finished overhang on the shed dormer. Element callouts such as R1, R2, CLG1, and CLG2 identify specific roof and ceiling assemblies. The plan ensures proper insulation and ventilation, contributing to the building's energy efficiency and structural integrity.",
+      "project_id": "25-01-040",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan Notes",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "CLG1"
+      ],
+      "key_components": [
+        "Truss Heel",
+        "Vented Soffits",
+        "Pre-Engineered Trusses",
+        "Batt Insulation",
+        "Poly Vapour Barrier"
+      ],
+      "text_verbatim": "ROOF PLAN NOTES\n1. MAINTAIN 10\" TRUSS HEEL FOR INSULATION AND ROOF VENTING.\n2. PROVIDE VENTED SOFFITS AND 1 1/2\" VENTING BETWEEN SHEATHING AND INSULATION (INSTALL MORVENTS).\n3. PROVIDE FOR 24\" EAVE, 24\" GABLE FINISHED OVERHANGS UNLESS NOTED OTHERWISE.\n4. WALLS AND BEAMS SHOWN ARE BEARING.\n5. PROVIDE ACCESS TO ATTIC FROM FLOOR BELOW.\n6. PROVIDE PRE-ENGINEERED TRUSS DRAWINGS TO BUILDING DEPARTMENT PRIOR TO SITE INSPECTION.\n7. VERIFY DIMENSIONS AND SUITABILITY BEFORE MANUFACTURE OF TRUSSES.\n8. PROVIDE TRUSS LAYOUT TO DESIGNER PRIOR TO WALL FRAMING AND MANUFACTURE OF TRUSS.\n\nROOF ASSEMBLIES\nID NOTE\nR1 PRE ENGINEERED WOOD TRUSS ROOF: PRE FINISHED METAL WATERPROOFING MEMBRANE 1/2\" ROOFING PLYWOOD c/w 'H' CLIPS (ALTERNATE: 5/8\" T&G OSB SHEATHING) OR 1x4 STRAPPING @ 24\" o.c. PRE-ENGINEERED ATTIC TRUSSES 2x4 TRUSS BRACING AS REQ'D\nR2 PRE ENGINEERED WOOD TRUSS ROOF: PRE FINISHED METAL WATERPROOFING MEMBRANE 1/2\" ROOFING PLYWOOD c/w 'H' CLIPS (ALTERNATE: 5/8\" T&G OSB SHEATHING) OR 1x4 STRAPPING @ 24\" o.c. PRE-ENGINEERED SCISSOR TRUSSES 2x4 TRUSS BRACING AS REQ'D\n\nCEILING ASSEMBLIES\nID NOTE\nCLG1 VAULTED CEILING ASSEMBLY: R32 BATT INSULATION S-6 mil POLY VAPOUR BARRIER 1/2\" DRYWALL TAPED AND SANDED.",
+      "summary": "The roof plan notes provide detailed instructions for the construction and assembly of the roof. Key points include maintaining a 10\" truss heel for insulation and roof venting, providing vented soffits, and ensuring 24\" eave and gable finished overhangs. Pre-engineered truss drawings must be submitted to the building department before site inspection. Roof assemblies R1 and R2 specify pre-engineered wood truss roofs with pre-finished metal waterproofing membranes and 1/2\" roofing plywood. Ceiling assembly CLG1 includes a vaulted ceiling with R32 batt insulation and a poly vapour barrier. These notes ensure proper construction practices and compliance with design specifications.",
+      "project_id": "25-01-040",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Rear elevation",
+      "level": "Multiple",
+      "orientation": "Rear view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Rear Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Wood Siding",
+        "Window",
+        "Concrete Footing"
+      ],
+      "text_verbatim": "REAR ELEVATION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O LOFT WALL\nT/O LOFT WINDOW\nT/O LOFT SUB FLR\nT/O WALL\nT/O CMU\nT/O CON FLR\nCONC FTG\n20'-9 15/16\"\n3'-7 11/16\"\n6'-1 1/2\"\n7'-1 1/8\"\n8'-1 1/8\"\n1'-4\"\n1'-6\"\nWOOD SIDING\n12\n10",
+      "summary": "This rear elevation view shows the exterior design of the building, featuring wood siding and a window. The elevation provides key dimensions, such as the total height of 20'-9 15/16\" from the top of the roof to the concrete footing. The view includes top-of-wall and top-of-loft window measurements, ensuring compliance with design specifications. The wood siding and window placement contribute to the building's aesthetic and functional design.",
+      "project_id": "25-01-040",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation",
+      "level": "Multiple",
+      "orientation": "Front view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Front Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Wood Siding",
+        "Windows",
+        "Garage Doors",
+        "Concrete Footing"
+      ],
+      "text_verbatim": "FRONT ELEVATION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O LOFT WALL\nT/O LOFT WINDOW\nT/O LOFT SUB FLR\nT/O WALL\nT/O CMU\nT/O CON FLR\nCONC FTG\n20'-9 15/16\"\n3'-7 11/16\"\n6'-1 1/2\"\n7'-1 1/8\"\n8'-1 1/8\"\n1'-4\"\n1'-6\"\nWOOD SIDING\n12\n10",
+      "summary": "The front elevation displays the building's exterior, featuring wood siding, windows, and garage doors. The elevation provides dimensions such as a total height of 20'-9 15/16\" from the top of the roof to the concrete footing. The placement of the garage doors and windows is shown, ensuring aesthetic consistency and functionality. The wood siding and structural elements are detailed to meet architectural requirements.",
+      "project_id": "25-01-040",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Right elevation",
+      "level": "Multiple",
+      "orientation": "Right view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Right Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Wood Siding",
+        "Metal Roofing",
+        "Windows",
+        "Concrete Footing"
+      ],
+      "text_verbatim": "RIGHT ELEVATION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O LOFT WALL\nT/O LOFT WINDOW\nT/O LOFT SUB FLR\nT/O WALL\nT/O CMU\nT/O CON FLR\nCONC FTG\n20'-9 15/16\"\n3'-7 11/16\"\n6'-0\"\n7'-1 1/8\"\n8'-1 1/8\"\n1'-4\"\n1'-6\"\nWOOD SIDING\nMETAL ROOFING",
+      "summary": "The right elevation illustrates the side view of the building, highlighting wood siding, metal roofing, and windows. The elevation provides dimensions such as a total height of 20'-9 15/16\" from the top of the roof to the concrete footing. The arrangement of windows and the use of metal roofing are shown, ensuring the building's design meets structural and aesthetic standards. The wood siding and roofing materials are specified for durability and appearance.",
+      "project_id": "25-01-040",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Left elevation of the building",
+      "level": "Unknown",
+      "orientation": "Left elevation view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Wood Siding",
+        "Metal Roofing",
+        "Windows",
+        "Doors"
+      ],
+      "text_verbatim": "T/O ROOF\n20'-9 15/16\"\nT/O LOFT WINDOW\n7'-11 1/8\"\nT/O LOFT SUB FLR\n8\"\nT/O WALL\n8'-1 1/8\"\nT/O CON FLR\n1'-6\"\nCON FTG\n1'-4\"\nLEFT ELEVATION\nSCALE: 1/4\" = 1'-0\"\nWOOD SIDING\nMETAL ROOFING\nT/O CMU\nLOFT CEILING\nT/O LOFT WINDOW\nT/O LOFT SUB FLR\nT/O WALL",
+      "summary": "This image shows the left elevation of a building, featuring wood siding and metal roofing. The elevation indicates various top-of-level measurements: the top of the roof is at 20'-9 15/16\", the top of the loft window is at 7'-11 1/8\", the top of the loft subfloor is at 8\", and the top of the wall is at 8'-1 1/8\". The top of the concrete floor is at 1'-6\", and the concrete footing is at 1'-4\". The elevation includes windows and a door, with the scale noted as 1/4\" = 1'-0\".",
+      "project_id": "25-01-040",
+      "page_number": 8,
+      "region_number": 2,
+      "relative_path": "page_008/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Assembly Schedule",
+      "element_callouts": [
+        "FL1",
+        "FL2",
+        "EW1",
+        "EW2",
+        "IW1",
+        "IW2",
+        "IW3",
+        "R1",
+        "R2",
+        "CLG1",
+        "CLG2",
+        "CLG3"
+      ],
+      "key_components": [
+        "Concrete Floor",
+        "Wood Truss Roof",
+        "CMU Wall",
+        "Siding",
+        "Insulation",
+        "Drywall"
+      ],
+      "text_verbatim": "FLOOR ASSEMBLIES\nID NOTE\nFL1 6\" CONCRETE FLOOR\n32MPa + 6% AIR ENTRAINMENT\nPOURED CONCRETE r/w\n6\" x 6\" x 6/6 W.W.M. (AT MID-DEPTH OF SLAB)\nSPRAYED URETHANE INSULATION (R10)\nCOMPACTED GRANULAR FILL, 6\" MIN.\nFL2 LOFT FLOOR FINISH:\n3/4\" T&G SHEATHING SCREWED & GLUED\nFLOOR JOISTS PER PLAN\nBRIDGING PER PLAN\nWALL ASSEMBLIES\nID NOTE\nEW1 6\" CMU WALL:\n(2) ROWS 6\" CONCRETE MASONRY UNITS\nc/w 15M x 22\" LONG REBAR INTO CONC.\nSLAB @ 48\" o.c.\nINTERIOR LINER PER OWNER\nSEE DETAILS ON PAGE A1\nEW2 2x6 SIDING EXTERIOR WALL:\nSIDING PER CLIENT\n1\" RIGID INSULATION (JOINTS TAPED)\n7/16\" OSB SHEATHING\n2x6 STUDS @16\" o.c.\nR20 BATT INSULATION\nS6 MIL POLY VAPOR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nIW1 2x4 PARTION WALL:\n1/2\" DRYWALL TAPED & SANDED\n2x4 STUDS @ 16\" o.c.\n1/2\" DRYWALL TAPED & SANDED\nIW2 VERTICAL TRUSS WEB:\n1\" RIGID FOAM (JOINTS TAPED)\nR20 BATT INSULATION\nS6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nIW3 INSULATED WALL:\n1\" RIGID FOAM (JOINTS TAPED)\n2x6 STUDS @ 16\" o.c.\nR20 BATT INSULATION\nS6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nROOF ASSEMBLIES\nID NOTE\nR1 PRE ENGINEERED WOOD TRUSS ROOF:\nPRE FINISHED METAL\nWATERPROOFING MEMBRANE\n1/2\" ROOFING PLYWOOD c/w 'H' CLIPS\n(ALTERNATE: 5/8\" T&G OSB SHEATHING)\nOR 1x4 STRAPPING @ 24\" o.c.\nPRE-ENGINEERED ATTIC TRUSSES\n2x4 TRUSS BRACING AS REQ'D\nR2 PRE ENGINEERED WOOD TRUSS ROOF:\nPRE FINISHED METAL\nWATERPROOFING MEMBRANE\n1/2\" ROOFING PLYWOOD c/w 'H' CLIPS\n(ALTERNATE: 5/8\" T&G OSB SHEATHING)\nOR 1x4 STRAPPING @ 24\" o.c.\nPRE-ENGINEERED SCISSOR TRUSSES\n2x4 TRUSS BRACING AS REQ'D\nCEILING ASSEMBLIES\nID NOTE\nCLG1 VAULTED CEILING ASSEMBLY:\nR32 BATT INSULATION\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED AND SANDED\nCLG2 CEILING ASSEMBLY:\nR60 CELLULOSE\n1x4 STRAPPING @ 16\" o/c\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED AND SANDED\nCLG3 GARAGE CEILING ASSEMBLY:\nR32 BATT INSULATION\nBOTTOM CEILING CHORD\n1x4 STRAPPING @ 16\" o.c.\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED AND SANDED",
+      "summary": "This schedule outlines the specifications for various assemblies within the building, including floor, wall, roof, and ceiling assemblies. Floor assemblies include FL1, a 6\" concrete floor with 32MPa strength and air entrainment, and FL2, a loft floor finish with 3/4\" T&G sheathing. Wall assemblies include EW1, a 6\" CMU wall with rebar and EW2, a 2x6 siding exterior wall with insulation and drywall. Roof assemblies R1 and R2 describe pre-engineered wood truss roofs with metal waterproofing and plywood. Ceiling assemblies CLG1, CLG2, and CLG3 detail insulation and vapor barriers. Each assembly is designed to meet specific structural and insulation requirements.",
+      "project_id": "25-01-040",
+      "page_number": 9,
+      "region_number": 1,
+      "relative_path": "page_009/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Longitudinal section through the building",
+      "level": "Multiple",
+      "orientation": "Longitudinal section view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "FL1",
+        "FL2",
+        "EW1",
+        "EW2",
+        "IW3",
+        "R1",
+        "R2",
+        "CLG1",
+        "CLG2",
+        "CLG3"
+      ],
+      "key_components": [
+        "Concrete Footing",
+        "CMU Wall",
+        "Wood Truss Roof",
+        "Loft",
+        "Stairs"
+      ],
+      "text_verbatim": "T/O ROOF\nT/O LOFT CLG\nT/O LOFT WALL\nT/O LOFT SUB FLR\nT/O WALL\nT/O CMU\nT/O CON FLR\nCONC FTG\nBUILDING SECTION\nSCALE: 3/8\" = 1'-0\"\nLOFT\nRESIDENTIAL ACCESSORY BUILDING\nFL1\nFL2\nEW1\nEW2\nIW3\nR1\nR2\nCLG1\nCLG2\nCLG3\n14'-0 1/2\"\n11'-8\"\n9'-5 1/8\"\n8'-9 3/4\"\n11'-5\"\n1'-0\"",
+      "summary": "This longitudinal building section provides a detailed view from foundation to roof. It includes various assemblies such as FL1 and FL2 for floors, EW1 and EW2 for walls, and R1 and R2 for roofs. The section shows a loft area with a height of 8'-9 3/4\" and a residential accessory building with a total height of 14'-0 1/2\". The section illustrates the integration of structural components like concrete footings, CMU walls, and wood truss roofs. The scale is 3/8\" = 1'-0\", ensuring precise alignment and integration of all elements.",
+      "project_id": "25-01-040",
+      "page_number": 9,
+      "region_number": 2,
+      "relative_path": "page_009/region_02_red_box.png"
+    }
+  ]
+}

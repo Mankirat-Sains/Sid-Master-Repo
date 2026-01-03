@@ -1,0 +1,128 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Fall Arrest Track System",
+      "level": "Unknown",
+      "orientation": "Elevation view",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S2",
+        "2/S2",
+        "1/S1"
+      ],
+      "element_type": "Fall Arrest Track Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "NIKO 26.000 Track",
+        "C6x8.2 Back-to-Back",
+        "Vertical Support",
+        "Support Bracket"
+      ],
+      "text_verbatim": "ELEVATION\n1/S1\nFALL ARREST TRACK (1 REQ'D)\n1/2\" = 1'-0\"\nNIKO 26.000 TRACK\nC6x8.2 BACK-TO-BACK W/ SPACERS FASTENED TO BEAM\n5/8\"Ø A325 BOLT w/ 3/8\" THK (TYP.)\n30\" LONG 3\" x 3/4\" THK FLAT BAR VERTICAL SUPPORT (TYP.)\nNIKO 26.B03 SUPPORT BRACKET (TYP.)\n19'-8¼\"\n5'-10\"\n5'-10\"\n5'-10\"\n1'-1⅛\"\n10'5/16\"",
+      "summary": "This elevation view shows the fall arrest track system, specifically the NIKO 26.000 Track supported by C6x8.2 back-to-back beams. The track is supported by vertical supports made of 30-inch long, 3-inch by 3/4-inch thick flat bars. The system is fastened with 5/8-inch diameter A325 bolts with 3/8-inch thick spacers, typical for the assembly. The total length of the track is 19 feet 8 1/4 inches, with sections spaced at 5 feet 10 inches apart. The elevation includes section callouts 1/S2 and 2/S2, indicating further details on another sheet. The drawing scale is 1/2 inch equals 1 foot.",
+      "project_id": "25-01-021",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "C6 Back-to-Back at Cope",
+      "level": "Unknown",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S2"
+      ],
+      "element_type": "Back-to-Back Connection Section",
+      "element_callouts": [],
+      "key_components": [
+        "C6x8.2 Back-to-Back",
+        "HSS1.5x1.5x1/4",
+        "A325 Bolt",
+        "OWSJ Bottom Chord"
+      ],
+      "text_verbatim": "SECTION\n3/S2\nC6 BACK-TO-BACK @ COPE\n1 1/2\" = 1'-0\"\n5/8\"Ø A325 BOLT\nC6x8.2 BACK-TO-BACK (COPED)\nINSTALL HSS1.5x1.5x1/4 x 24\" LONG ON BOTH SIDES\n3\" x 3/8\" THK WASHER (TYP.)\nOWSJ BOTTOM CHORD",
+      "summary": "This section view details the back-to-back connection at the cope for the fall arrest system. It features C6x8.2 back-to-back beams coped to fit around the existing structure. The connection is reinforced with HSS1.5x1.5x1/4 sections, 24 inches long, installed on both sides. Fastening is achieved using 5/8-inch diameter A325 bolts with 3-inch by 3/8-inch thick washers, typical for the assembly. The section highlights the connection to the OWSJ bottom chord. The drawing scale is 1 1/2 inches equals 1 foot, and it references section 3/S2 for further details.",
+      "project_id": "25-01-021",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Plate to Flat Bar Connection",
+      "level": "Unknown",
+      "orientation": "Detail view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Fabrication Detail",
+      "element_callouts": [],
+      "key_components": [
+        "3/4\" THK Flat Bar",
+        "4 5/16\" x 3/8\" THK Plate",
+        "A325 Bolt"
+      ],
+      "text_verbatim": "FABRICATION DETAIL\n3/S2\nPLATE TO FLAT BAR CONNECTION\n1 1/2\" = 1'-0\"\n3/4\" THK FLAT BAR\n4 5/16\" x 3/8\" THK PLATE c/w 1/16\" BOLT HOLE FOR 5/8\"Ø A325 BOLT\nNOTCH FLAT BAR\nFRONT VIEW\nSIDE VIEW\n5 1/2\"\n2 1/2\"\n3\"\n4 5/16\"\n1/4\"",
+      "summary": "This fabrication detail illustrates the plate to flat bar connection for the fall arrest system. It includes a 3/4-inch thick flat bar and a 4 5/16-inch by 3/8-inch thick plate, complete with a 1/16-inch bolt hole for a 5/8-inch diameter A325 bolt. The flat bar is notched to accommodate the plate. The detail provides both front and side views, with dimensions of 5 1/2 inches and 2 1/2 inches for the flat bar, and a 4 5/16-inch length for the plate. The drawing scale is 1 1/2 inches equals 1 foot.",
+      "project_id": "25-01-021",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Fall Arrest System",
+      "level": "Unknown",
+      "orientation": "Detail view",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S2",
+        "3/S2"
+      ],
+      "element_type": "Fall Arrest System Fabrication Detail",
+      "element_callouts": [],
+      "key_components": [
+        "C6x8.2 Back-to-Back",
+        "L2x2x1/4 Sway Brace",
+        "NIKO 26.803 Support Bracket",
+        "A325 Bolt"
+      ],
+      "text_verbatim": "FABRICATION DETAIL\n1/S2\nFALL ARREST SYSTEM (4 REQD)\n1\" = 1'-0\"\nEXIST. PIPE\nEXIST. OWSJ (TYP.)\nCOPE AS DIMENSIONED TO AVOID EXIST. PIPE (MIN. 1/2\" RADIUS ON COPE)\nEXTEND HSS PAST COPE MIN. 6\"\nLIMIT COPE TO 12\" MAX. ON THE EXIST. PIPE SIDE\n5/8\"Ø A325 BOLT c/w (1) 3\"Ø x 3/8\" THK WASHER, EACH SIDE (TYP.)\nINSTALL HSS1.5x1.5x1/4 x 24\" LONG ON BOTH SIDES (SEE SECTION 3/S2)\n(2) C6x8.2 BACK-TO-BACK\n(2) 4 9/16\" x 5 5/16\" x 3/8\" THK PLATES c/w 1/16\" BOLT HOLES FOR (1) 5/8\"Ø A325 BOLT\nL2x2x1/4\" SWAY BRACE c/w (1) 9/16\"Ø BOLT HOLE FOR (1) 1/2\"Ø A325 BOLT\n30\" LONG 3\" x 3/4\" THK FLAT BAR SUPPORT c/w (1) 9/16\"Ø BOLT HOLE FOR SWAY BRACE BOLT & 1 1/16\"Ø BOLT HOLE FOR 5/8\"Ø SUPPORT BRACKET BOLT (MACHINE FLAT BAR TO 3/8\" THK TO SUIT SUPPORT BRACKET)\n3/8\" THK PLATE NOTCHED INTO FLAT BAR SUPPORT\nNIKO 26.803 SUPPORT BRACKET\nNIKO 26.000 TRACK c/w TRACK END STOP w/ SAFETY BOLT & TRACK PUNCHING, EACH END",
+      "summary": "This fabrication detail shows the fall arrest system, requiring four assemblies. It includes C6x8.2 back-to-back beams, L2x2x1/4 sway braces, and NIKO 26.803 support brackets. The system uses 5/8-inch diameter A325 bolts with 3-inch diameter by 3/8-inch thick washers on each side. The HSS1.5x1.5x1/4 sections, 24 inches long, are installed on both sides, as referenced in section 3/S2. The detail specifies coping dimensions to avoid existing pipes, with a minimum 1/2-inch radius and a maximum 12-inch limit on the existing pipe side. The drawing scale is 1 inch equals 1 foot.",
+      "project_id": "25-01-021",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Section",
+      "location": "C6 Back-to-Back",
+      "level": "Unknown",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S2"
+      ],
+      "element_type": "Back-to-Back Connection Section",
+      "element_callouts": [],
+      "key_components": [
+        "C6x8.2 Back-to-Back",
+        "A325 Bolt",
+        "OWSJ Bottom Chord"
+      ],
+      "text_verbatim": "SECTION\n2/S2\nC6 BACK-TO-BACK\n1 1/2\" = 1'-0\"\n5/8\"Ø A325 BOLT\nC6x8.2 BACK-TO-BACK\nOWSJ BOTTOM CHORD\n3\" x 3/8\" THK WASHER (TYP.)",
+      "summary": "This section view details the C6 back-to-back connection for the fall arrest system. It features C6x8.2 back-to-back beams connected with 5/8-inch diameter A325 bolts and 3-inch by 3/8-inch thick washers, typical for the assembly. The connection is made to the OWSJ bottom chord. The drawing scale is 1 1/2 inches equals 1 foot, and it references section 2/S2 for further details.",
+      "project_id": "25-01-021",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": "page_002/region_04_red_box.png"
+    }
+  ]
+}

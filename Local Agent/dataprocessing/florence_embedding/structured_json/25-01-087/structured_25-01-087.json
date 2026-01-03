@@ -1,0 +1,304 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – entire footprint",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Foundation Slab",
+        "Thickened Slab"
+      ],
+      "text_verbatim": "FOUNDATION PLAN\nSCALE: 3/16\" = 1'-0\"\n26'-0\"\n24'-0\"\nTHICKEN SLAB @ POST LOCATION TO BE 2'-6\" x 2'-6\"",
+      "summary": "This foundation plan shows the layout of the foundation for a 2-storey garage. The plan is scaled at 3/16\" = 1'-0\" and outlines the dimensions of the foundation as 26'-0\" by 24'-0\". A thickened slab is indicated at the post location, measuring 2'-6\" x 2'-6\". The plan provides a top-down view of the foundation slab and includes notes for thickening the slab at specific post locations.",
+      "project_id": "25-01-087",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – edge detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Typical Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Rebar",
+        "Concrete",
+        "Extruded Polystyrene",
+        "Vapour Barrier"
+      ],
+      "text_verbatim": "TYPICAL EDGE DETAIL\nSCALE: 3/8\" = 1'-0\"\n6x6 6 GA. WWF OR 16\" x 16\" x 10M GRID OR FIBRE MESH\n(4) RUNS 15M REBAR MIN. 3\" COVER\nCOMPACTED GRANULAR 'A'\n2\" (R-10) OF EXTRUDED POLYSTYRENE MIN. COMPRESSIVE STRENGTH OF 30 PSI\nWOOD STUD w/ SIDING\nSILL PLATE & GASKET\n1/2\" Ø ANCHOR BOLTS @ 48\" o.c. (LEAVE OPENING IN SILL PLATE FOR DOOR LOCATIONS)\nSLOPE GRADE AWAY 2%\n2\" (R-10) OF EXTRUDED POLYSTYRENE MIN. COMPRESSIVE STRENGTH OF 30 PSI\nCONTINUE INSULATION VERTICALLY UP TO 2' BELOW GRADE\n6 MIL POLY VAPOUR BARRIER",
+      "summary": "This typical edge detail illustrates the construction of the foundation edge for the garage. The detail is scaled at 3/8\" = 1'-0\" and includes components such as 6x6 6 GA. welded wire fabric (WWF) or a 16\" x 16\" x 10M grid, and fibre mesh. Four runs of 15M rebar with a minimum 3\" cover are specified. The foundation includes compacted granular 'A' and 2\" (R-10) extruded polystyrene with a minimum compressive strength of 30 PSI. A wood stud with siding, sill plate, gasket, and 1/2\" Ø anchor bolts at 48\" on center are detailed. The grade is sloped away at 2%, and insulation continues vertically up to 2' below grade. A 6 mil poly vapour barrier is also included.",
+      "project_id": "25-01-087",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – entire layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "Grid A-C",
+        "Grid 2-6"
+      ],
+      "section_callouts": [
+        "A/24",
+        "B/25",
+        "C/26"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Beam",
+        "Joists",
+        "Columns"
+      ],
+      "text_verbatim": "MAIN FLOOR\n(2) 1-3/4\" x 11-7/8\" LVL 2.0E (2) JACKS & (2) KINGS\nW12x45 STEEL BEAM\nTYP DECK 2x4 PT JOIST @ 16\" o.c.\n5/4 PT DECKING\nFASTEN DECK RIM TO GARAGE W/ 2\" BOLTS @ 16\" o.c. STAGGERED\nTYP 6x6 PT COLUMNS IN H.G. CARPORT SADDLE IN 19\" Ø CONCRETE COLUMN\nSCALE: 3/16\" = 1'-0\"\n26'-0\"\n24'-0\"",
+      "summary": "The main floor plan for the garage is detailed, showing the layout and dimensions of the ground floor. The plan is scaled at 3/16\" = 1'-0\" and includes a W12x45 steel beam and engineered joists. The floor plan specifies (2) 1-3/4\" x 11-7/8\" LVL 2.0E beams with (2) jacks and (2) kings. Typical deck construction includes 2x4 pressure-treated joists at 16\" on center and 5/4 pressure-treated decking. The deck rim is fastened to the garage with 2\" bolts at 16\" on center, staggered. Typical 6x6 pressure-treated columns are set in high-grade carport saddles in 19\" Ø concrete columns. Section callouts A/24, B/25, and C/26 indicate connections to other views.",
+      "project_id": "25-01-087",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Mezzanine – entire layout",
+      "level": "Mezzanine",
+      "orientation": null,
+      "grid_references": [
+        "Grid A-C",
+        "Grid 2-6"
+      ],
+      "section_callouts": [
+        "A/24",
+        "B/25",
+        "C/26"
+      ],
+      "element_type": "Loft Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Attic Trusses",
+        "Joists"
+      ],
+      "text_verbatim": "LOFT FLOOR\nSCALE: 3/16\" = 1'-0\"\n26'-3\"\n24'-0\"\nENGINEERED SCISSOR TRUSSES @ 24\" o.c.\nENGINEERED ATTIC TRUSSES @ 24\" o.c.",
+      "summary": "The loft floor plan provides the layout for the mezzanine level of the garage. The plan is scaled at 3/16\" = 1'-0\" and includes engineered scissor trusses and attic trusses spaced at 24\" on center. The dimensions are 26'-3\" by 24'-0\". Section callouts A/24, B/25, and C/26 indicate connections to other views. The plan ensures proper support and load distribution for the mezzanine level.",
+      "project_id": "25-01-087",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Longitudinal section through garage",
+      "level": "Multiple",
+      "orientation": "Longitudinal section looking East",
+      "grid_references": [
+        "Grid A-C",
+        "Grid 2-6"
+      ],
+      "section_callouts": [
+        "A/24"
+      ],
+      "element_type": "Cross Section A",
+      "element_callouts": [],
+      "key_components": [
+        "Roof Trusses",
+        "Wall Studs",
+        "Subfloor"
+      ],
+      "text_verbatim": "CROSS SECTION A\nSCALE: 1/4\" = 1'-0\"\nASPHALT SHINGLES\n36\" EAVE PROTECTION\n1/2\" SPRUCE PLYWOOD ROOF SHTG\nENGINEERED SCISSOR TRUSSES @ 24\" o.c.\nVINYL SIDING\nHOUSEWRAP\n1/2\" PLY WALL SHTG\n2x6 STUDS @ 24\" o.c.\n1/2\" Ø ANCHOR BOLTS @ 48\" o.c.\n2x6 SILL PLATE\nFOAM SILL GASKET (TYP)\nENGINEERED SLAB SEE ENG'D DETAILS\nTOP OF SUBFLOOR\nTOP OF PLATE\nTOP OF FLOOR\n10'-0\"",
+      "summary": "Cross Section A provides a longitudinal view of the garage, detailing the wall and roof construction. The section is scaled at 1/4\" = 1'-0\" and includes asphalt shingles, 36\" eave protection, and 1/2\" spruce plywood roof sheathing. Engineered scissor trusses are spaced at 24\" on center. The walls feature vinyl siding, housewrap, 1/2\" plywood wall sheathing, and 2x6 studs at 24\" on center. Anchor bolts are 1/2\" Ø at 48\" on center, with a 2x6 sill plate and foam sill gasket. The engineered slab is noted with a reference to engineered details. The section illustrates the relationship between different structural components across multiple levels, including the top of the subfloor, plate, and floor at 10'-0\". Section callout A/24 indicates a connection to other views.",
+      "project_id": "25-01-087",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section B – transverse view of garage",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Garage Cross Section",
+      "element_callouts": [],
+      "key_components": [
+        "Asphalt Shingles",
+        "Spruce Plywood Roof Sheathing",
+        "Engineered Scissor Trusses",
+        "Floor Joists",
+        "Vinyl Siding",
+        "Housewrap",
+        "Plywood Wall Sheathing",
+        "Studs",
+        "Anchor Bolts",
+        "Sill Plate",
+        "Foam Sill Gasket"
+      ],
+      "text_verbatim": "CROSS SECTION B\nSCALE: 1/4\" = 1'-0\"\nASPHALT SHINGLES\n36\" EAVE PROTECTION\n1/2\" SPRUCE PLYWOOD ROOF SHTG\nENGINEERED SCISSOR TRUSSES @ 24\" o.c.\nHURRICANE TIES (TYP)\n5/8\" T&G FLOOR SHTG GLUED & NAILED TO\n2x10 FLR JSTS @ 16\" o.c.\n2x2 'X' BRIDGING @ MIDSPAN\nVINYL SIDING\nHOUSEWRAP\n1/2\" PLY WALL SHTG\n2x6 STUDS @ 24\" o.c.\nTOP OF PLATE\nTOP OF SUBFLOOR\n2x6 OR 2x8 NAILER (MATCH BEAM FLANGE WIDTH) FASTENED TO STEEL BEAM w/ 1/2\" BOLTS @ 24\"o.c. (STAGGER SIDES OF FLANGE)\n1/2\" Ø ANCHOR BOLTS @ 48\" o.c.\n2x6 SILL PLATE\nFOAM SILL GASKET (TYP)\nENGINEERED SLAB SEE ENG'D DETAILS\nTOP OF FLOOR",
+      "summary": "This section view, labeled 'Cross Section B', provides a transverse view of a garage, highlighting key structural elements such as the roof and floor construction. The roof is covered with asphalt shingles and features 36-inch eave protection. The roof structure includes 1/2-inch spruce plywood sheathing and engineered scissor trusses spaced at 24 inches on center. Hurricane ties are noted as typical. The floor system consists of 5/8-inch tongue and groove floor sheathing, glued and nailed to 2x10 floor joists spaced at 16 inches on center, with 2x2 'X' bridging at midspan. The walls are constructed with vinyl siding, housewrap, and 1/2-inch plywood wall sheathing, supported by 2x6 studs spaced at 24 inches on center. The section also details the use of 1/2-inch diameter anchor bolts at 48 inches on center, a 2x6 sill plate, and a foam sill gasket. An engineered slab is noted, with further details to be seen in engineering documents.",
+      "project_id": "25-01-087",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section C – transverse view of garage",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Garage Cross Section",
+      "element_callouts": [],
+      "key_components": [
+        "Asphalt Shingles",
+        "Spruce Plywood Roof Sheathing",
+        "Engineered Attic Trusses",
+        "Floor Sheathing",
+        "Vinyl Siding",
+        "Housewrap",
+        "Plywood Wall Sheathing",
+        "Studs",
+        "Anchor Bolts",
+        "Sill Plate",
+        "Foam Sill Gasket"
+      ],
+      "text_verbatim": "CROSS SECTION C\nSCALE: 1/4\" = 1'-0\"\nASPHALT SHINGLES\n36\" EAVE PROTECTION\n1/2\" SPRUCE PLYWOOD ROOF SHTG\nENGINEERED ATTIC TRUSSES @ 24\" o.c.\n5/8\" T&G FLOOR SHTG GLUED & NAILED TO BOTTOM CHORD OF TRUSS\nHURRICANE TIES (TYP)\nVINYL SIDING\nHOUSEWRAP\n1/2\" PLY WALL SHTG\n2x6 STUDS @ 24\" o.c.\n1/2\" Ø ANCHOR BOLTS @ 48\" o.c.\n2x6 SILL PLATE\nFOAM SILL GASKET (TYP)\nENGINEERED SLAB SEE ENG'D DETAILS\nTOP OF PLATE\nTOP OF FLOOR",
+      "summary": "This section view, labeled 'Cross Section C', provides a transverse view of a garage, focusing on structural details. The roof is covered with asphalt shingles and includes 36-inch eave protection. The roof structure is composed of 1/2-inch spruce plywood sheathing and engineered attic trusses spaced at 24 inches on center. The floor sheathing is 5/8-inch tongue and groove, glued and nailed to the bottom chord of the truss. Hurricane ties are noted as typical. The walls feature vinyl siding, housewrap, and 1/2-inch plywood wall sheathing, supported by 2x6 studs spaced at 24 inches on center. The section also specifies 1/2-inch diameter anchor bolts at 48 inches on center, a 2x6 sill plate, and a foam sill gasket. An engineered slab is mentioned, with additional details available in engineering documents.",
+      "project_id": "25-01-087",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation of garage",
+      "level": "Ground Floor",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Garage Front Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Asphalt Shingles",
+        "Vinyl Siding",
+        "Garage Doors",
+        "Windows"
+      ],
+      "text_verbatim": "FRONT ELEVATION\nSCALE: 3/16\" = 1'-0\"\nASPHALT SHINGLES\nVINYL SIDING\nTOP OF ROOF\nTOP OF PLATE\nTOP OF SUBFLOOR\nTOP OF PLATE\nTOP OF FLOOR\n21'-9 17/32\"",
+      "summary": "This front elevation view of the garage shows the exterior facade, including the roof covered with asphalt shingles and walls clad in vinyl siding. The elevation features three windows and two garage doors. Key vertical dimensions are noted, with the top of the roof, plate, subfloor, and floor clearly marked. The overall height from the top of the floor to the top of the roof is 21'-9 17/32\". The scale of the drawing is 3/16 inch equals 1 foot.",
+      "project_id": "25-01-087",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Rear elevation of garage",
+      "level": "Ground Floor",
+      "orientation": "Rear elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Garage Rear Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Asphalt Shingles",
+        "Vinyl Siding",
+        "Windows"
+      ],
+      "text_verbatim": "REAR ELEVATION\nSCALE: 3/16\" = 1'-0\"\nASPHALT SHINGLES\nVINYL SIDING",
+      "summary": "This rear elevation view of the garage displays the exterior with asphalt shingles on the roof and vinyl siding on the walls. The elevation includes three windows on the upper level. The scale of the drawing is 3/16 inch equals 1 foot, providing a detailed view of the rear facade.",
+      "project_id": "25-01-087",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Left elevation of garage",
+      "level": "Ground Floor",
+      "orientation": "Left elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Garage Left Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Asphalt Shingles",
+        "Vinyl Siding",
+        "Window",
+        "Stairs"
+      ],
+      "text_verbatim": "LEFT ELEVATION\nSCALE: 3/16\" = 1'-0\"\nASPHALT SHINGLES\nVINYL SIDING\nTOP OF ROOF\nTOP OF PLATE\nTOP OF SUBFLOOR\nTOP OF PLATE\nTOP OF FLOOR\n21'-9 17/32\"",
+      "summary": "This left elevation view of the garage shows the side facade, featuring asphalt shingles on the roof and vinyl siding on the walls. The elevation includes one window and a set of stairs leading to an upper level. Key vertical dimensions are indicated, with the top of the roof, plate, subfloor, and floor clearly marked. The overall height from the top of the floor to the top of the roof is 21'-9 17/32\". The scale of the drawing is 3/16 inch equals 1 foot.",
+      "project_id": "25-01-087",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Right elevation of the building",
+      "level": "Unknown",
+      "orientation": "Right elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Vinyl Siding",
+        "42\" High Guard",
+        "Staircase"
+      ],
+      "text_verbatim": "RIGHT ELEVATION\nSCALE: 3/16\" = 1'-0\"\nVINYL SIDING\n42\" HIGH GUARD AS PER SB-7 O.B.C.",
+      "summary": "This image shows the right elevation of a building. The elevation is scaled at 3/16\" = 1'-0\". The building features vinyl siding and a staircase leading to a platform with a 42-inch high guardrail, which is compliant with SB-7 O.B.C. standards. The elevation provides a side view of the building, highlighting the exterior finishes and safety features.",
+      "project_id": "25-01-087",
+      "page_number": 8,
+      "region_number": 2,
+      "relative_path": "page_008/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Sheathing Rating Schedule",
+      "element_callouts": [],
+      "key_components": [
+        "Wall Sheathing",
+        "Support Spacing",
+        "Panel Marks"
+      ],
+      "text_verbatim": "Table 9.23.16.2.B.\nRating For Wall Sheathing When Applying CAN/CSA-0325.0\nForming Part of Sentence 9.23.16.2.(1)\nItem Column 1 Column 2\nMaximum Spacing of Supports, mm Panel Mark\n1. 406 W16\n2. 508 W20\n3. 610 W24",
+      "summary": "This image presents a schedule titled 'Table 9.23.16.2.B.' which rates wall sheathing when applying CAN/CSA-0325.0 standards. It forms part of Sentence 9.23.16.2.(1). The table lists maximum spacing of supports in millimeters alongside corresponding panel marks. The entries include: 406 mm with panel mark W16, 508 mm with panel mark W20, and 610 mm with panel mark W24. This schedule is essential for determining appropriate wall sheathing based on support spacing and panel specifications.",
+      "project_id": "25-01-087",
+      "page_number": 9,
+      "region_number": 1,
+      "relative_path": "page_009/region_01_red_box.png"
+    }
+  ]
+}

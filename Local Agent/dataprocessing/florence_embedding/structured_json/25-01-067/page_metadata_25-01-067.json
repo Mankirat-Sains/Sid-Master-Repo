@@ -1,0 +1,22 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "S1",
+      "drawing_title": "ROOF FRAMING PLAN",
+      "overall_classification": "Mixed",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Framing Plan",
+        "Anchor Plan",
+        "Sections",
+        "Typical Column to Beam Connection",
+        "Anchor Bolt Details"
+      ],
+      "text_verbatim_title_block": "PROJECT: PFI Boiler Room\nSHEET: S1\nTITLE: ROOF FRAMING PLAN\nCLIENT: Custom CAD Consulting Inc.\nENGINEER: Waddell Engineering\nDATE: 2025-01-16\nISSUED FOR: Construction\nPROJECT NO: 25-01-067",
+      "general_notes_verbatim": "GENERAL NOTES:\n1. ALL STEEL TO BE ASTM A992.\n2. ALL WELDING TO CONFORM TO AWS D1.1.\n3. VERIFY ALL DIMENSIONS ON SITE.",
+      "page_overview_summary": "This sheet primarily features a roof framing plan for the PFI Boiler Room, detailing the layout and dimensions of the roof structure. It includes an anchor plan and several sections illustrating specific structural connections. Key details such as typical column to beam connections and anchor bolt details are provided. The sheet is issued for construction and includes general notes on material specifications and welding standards."
+    }
+  ]
+}

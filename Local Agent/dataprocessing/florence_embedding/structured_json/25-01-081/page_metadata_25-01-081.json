@@ -1,0 +1,115 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "01/02",
+      "drawing_title": "Existing Foundation Plan",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Existing Foundation Walls",
+        "Retaining Wall",
+        "Floor Joists"
+      ],
+      "text_verbatim_title_block": "Project: 296 Alderview Drive\nClient: Josh Hunke & Jenna Hunke\nDrg. Title: Existing Foundation Plan\nCAD Ref:\nScale:\nDrawn By: Thasleema Shaji\nChecked By:\nSheet No: 01/02\nJob No: HUNKE\nRevision No: 002\nDate: 02/06/2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the existing foundation plan for the project at 296 Alderview Drive. It includes the layout of existing foundation walls, a 10' retaining wall, and floor joists at specified spacing. The plan outlines areas such as a cistern and unexcavated sections, providing dimensions for various structural elements."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "01/02",
+      "drawing_title": "Existing Ground Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Existing Steel Beams",
+        "Floor Joists",
+        "Trusses"
+      ],
+      "text_verbatim_title_block": "Project: 296 Alderview Drive\nClient: Josh Hunke & Jenna Hunke\nDrg. Title: Existing Ground Floor Plan\nCAD Ref:\nScale:\nDrawn By: Thasleema Shaji\nChecked By:\nSheet No: 01/02\nJob No: HUNKE\nRevision No: 002\nDate: 02/06/2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet shows the existing ground floor plan, detailing the layout of rooms such as the family room, dining room, and garage. It includes existing steel beams and floor joists, as well as trusses in the garage area. Dimensions are provided for various structural and architectural elements."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "01/02",
+      "drawing_title": "Existing First Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Second Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Floor Joists",
+        "Sun Deck"
+      ],
+      "text_verbatim_title_block": "Project: 296 Alderview Drive\nClient: Josh Hunke & Jenna Hunke\nDrg. Title: Existing First Floor Plan\nCAD Ref:\nScale:\nDrawn By: Thasleema Shaji\nChecked By:\nSheet No: 01/02\nJob No: HUNKE\nRevision No: 002\nDate: 02/06/2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The existing first floor plan outlines the layout of bedrooms, a sewing room, and a sun deck. It includes dimensions and details of floor joists and other structural elements, providing a comprehensive view of the existing second floor layout."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "01/01",
+      "drawing_title": "Proposed Foundation Plan",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Proposed Foundation Walls",
+        "Mechanical Room",
+        "Cold Cellar"
+      ],
+      "text_verbatim_title_block": "Project: 296 Alderview Drive\nClient: Josh Hunke & Jenna Hunke\nDrg. Title: Proposed Foundation Plan\nCAD Ref:\nScale:\nDrawn By: Thasleema Shaji\nChecked By:\nSheet No: 01/01\nJob No: HUNKE\nRevision No: 002\nDate: 02/06/2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This proposed foundation plan details the layout for new foundation walls, a mechanical room, and a cold cellar. It includes specifications for wall construction and dimensions for various structural elements, providing a clear view of the proposed foundation modifications."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "01/02",
+      "drawing_title": "Proposed Ground Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "New Walls",
+        "Steel Beams",
+        "Garage"
+      ],
+      "text_verbatim_title_block": "Project: 296 Alderview Drive\nClient: Josh Hunke & Jenna Hunke\nDrg. Title: Proposed Ground Floor Plan\nCAD Ref:\nScale:\nDrawn By: Thasleema Shaji\nChecked By:\nSheet No: 01/02\nJob No: HUNKE\nRevision No: 008\nDate: 02/06/2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The proposed ground floor plan outlines modifications including new walls, steel beams, and a redesigned garage area. It provides detailed dimensions and specifications for the new layout, enhancing the functionality and aesthetics of the ground floor."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "02/02",
+      "drawing_title": "Proposed Second Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Second Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "New Walls",
+        "Upper Loft",
+        "Kids Play Area"
+      ],
+      "text_verbatim_title_block": "Project: 296 Alderview Drive\nClient: Josh Hunke & Jenna Hunke\nDrg. Title: PROPOSED SECOND FLOOR\nCAD Ref:\nScale:\nDrawn By: Thasleema Shaji\nChecked By:\nSheet No: 02/02\nJob No: HUNKE\nRevision No: 008\nDate: 02/06/2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This proposed second floor plan includes new walls, an upper loft TV room, and a kids play area. It provides a comprehensive layout with dimensions and specifications, enhancing the living space and functionality of the second floor."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "01/02",
+      "drawing_title": "STRUCTURAL NOTES",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Structural Notes",
+        "Material Specifications",
+        "Footings and Foundations"
+      ],
+      "text_verbatim_title_block": "Project: 296 Alderview Drive\nClient: Josh Hunke & Jenna Hunke\nDrg. Title: STRUCTURAL NOTES\nCAD Ref:\nScale:\nDrawn By: Thasleema Shaji\nChecked By:\nSheet No: 01/02\nJob No: HUNKE\nRevision No: 00\nDate: 02/06/2025",
+      "general_notes_verbatim": "GENERAL:\n1. DESIGN & CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO THE LATEST EDITION OF:\n   - ONTARIO BUILDING CODE\n   - CANADA BUILDING CODE\n   - LOCAL BUILDING CODE\n2. THE STRUCTURAL ENGINEERING REVIEW BY WADDELL ENGINEERING LTD. LEVELS OF FLOOR TO BE MAINTAINED UNLESS OTHERWISE NOTED.\n3. THE CONTRACTOR MUST VERIFY ALL DIMENSIONS AT SITE AND REPORT ANY DISCREPANCIES TO THE DESIGNER BEFORE EXECUTING THE WORK.\n4. ALL DIMENSIONS ARE IN FEET AND INCHES, UNLESS OTHERWISE SPECIFIED.\n\nMATERIALS:\n1. MATERIALS SHALL CONFORM TO THE FOLLOWING REQUIREMENTS U.N.O. ON THE STAMPED DRAWING:\n   - CONCRETE: OBC 3.3.1\n   - REINFORCING STEEL: OBC 3.3.2\n   - LUMBER & WOOD PRODUCTS: OBC 3.3.3\n   - STEEL COLUMNS: OBC 3.3.4\n   - STRUCTURAL STEEL: OBC 3.3.5\n   - STEEL DECKING: OBC 3.3.6\n   - STRUCTURAL BOLTS: ASTM A325",
+      "page_overview_summary": "This sheet contains comprehensive structural notes for the project, covering general design guidelines, material specifications, and requirements for footings and foundations. It provides essential information for ensuring compliance with building codes and standards, serving as a reference for the construction process."
+    }
+  ]
+}

@@ -1,0 +1,757 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "Sheet ID: S0.00 | Drawing Title: GENERAL NOTES | Page Classification: Notes | Primary Level: Unknown",
+      "summary": "This image contains general notes for the structural drawings. It is classified as 'Notes' and provides context for the entire set of drawings. The sheet ID is S0.00, and the drawing title is 'GENERAL NOTES'. The primary level is unknown, indicating that this page serves as a reference for other detailed drawings.",
+      "project_id": "25-01-105",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "General Arrangement",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Arrangement Plan",
+      "element_callouts": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "key_components": [
+        "Steel Frame",
+        "Bracing"
+      ],
+      "text_verbatim": "PLAN 1 - GENERAL ARRANGEMENT\nSCALE: NTS\n11'-10\"\n28'-10\"\n15'-4\"\n18'-4\"\n16'-8\"\nC1\nC2\nC3\nC4\nC5\nC6",
+      "summary": "This plan view shows the general arrangement of a steel frame structure. The dimensions provided are 11'-10\", 28'-10\", 15'-4\", 18'-4\", and 16'-8\", indicating the layout and spacing of structural elements. The plan is labeled 'PLAN 1 - GENERAL ARRANGEMENT' and is not to scale (NTS). Element callouts C1 through C6 identify specific columns or structural components within the frame. The key components visible include the steel frame and bracing elements.",
+      "project_id": "25-01-105",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "General Arrangement",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Isometric View",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Frame",
+        "Bracing"
+      ],
+      "text_verbatim": "ISO 1 - GENERAL ARRANGEMENT\nSCALE: NTS",
+      "summary": "This isometric view provides a detailed perspective of the steel frame structure, labeled 'ISO 1 - GENERAL ARRANGEMENT'. The view is not to scale (NTS) and highlights the arrangement of steel beams and bracing. This detail complements the plan view by offering a three-dimensional understanding of the structural layout.",
+      "project_id": "25-01-105",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Column Arrangement",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Column Arrangement",
+      "element_callouts": [
+        "C2",
+        "C4",
+        "C6",
+        "C1",
+        "C3",
+        "C5"
+      ],
+      "key_components": [
+        "Columns"
+      ],
+      "text_verbatim": "ISO 1 - COLUMN ARRANGEMENT\nSCALE: NTS\nC2\nC4\nC6\nC1\nC3\nC5",
+      "summary": "This isometric detail shows the arrangement of columns within the structure, labeled 'ISO 1 - COLUMN ARRANGEMENT'. The view is not to scale (NTS) and identifies columns C1 through C6. This detail provides a clear visualization of the column layout and their spatial relationships within the overall structure.",
+      "project_id": "25-01-105",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Column/Anchor Arrangement",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Column/Anchor Arrangement Plan",
+      "element_callouts": [
+        "C2",
+        "C4",
+        "C6",
+        "C1",
+        "C3",
+        "C5"
+      ],
+      "key_components": [
+        "Columns",
+        "Anchors"
+      ],
+      "text_verbatim": "PLAN 1 - COLUMN/ANCHOR ARRANGEMENT\nSCALE: NTS\n11'-10\"\n15'-4\"\n16'-8\"\n(4) 1 1/8\" DIA HOLES FOR 1\" DIA CAST-IN-PLACE ANCHOR RODS.\n(5) EMBED. PL. HOOK-UP PROD. ARE PROJECTED 6\" MIN. (TYP ALL COL.) (PRE-INSTALLED ANCHORS)\nC2\nW8x31\nC4\nW8x31\nC6\nW8x31\nC1\nW8x31\nC3\nW8x31\nC5\nW8x31",
+      "summary": "This plan shows the column and anchor arrangement, labeled 'PLAN 1 - COLUMN/ANCHOR ARRANGEMENT'. The scale is not to scale (NTS). Dimensions include 11'-10\" and 15'-4\". The plan specifies (4) 1 1/8\" diameter holes for 1\" diameter cast-in-place anchor rods and (5) embedded plate hook-up products projected 6\" minimum, typical for all columns. Columns C1 through C6 are identified with W8x31 sections, indicating the size and type of steel used for the columns. This plan provides essential details for the installation of columns and anchors.",
+      "project_id": "25-01-105",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Column/Anchor Arrangement",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Column/Anchor Arrangement",
+      "element_callouts": [
+        "W8x31"
+      ],
+      "key_components": [
+        "Columns",
+        "Anchors"
+      ],
+      "text_verbatim": "PLAN 1 - COLUMN/ANCHOR ARRANGEMENT\nSCALE: NTS\nW8x31\n11'-10\"\n15'-4\"\n11'-10\"\n15'-4\"\nISO 1 - COLUMN ARRANGEMENT\nSCALE: NTS\nFOR CONNECTION DESIGN ONLY\n1\" DIA. HOLES FOR 1\" DIA. ASTM F1554 ANCHOR RODS\nTYPICAL ACE ANCHOR RODS\nSEE PROJECT ARCHIVING (TYP ALL COL)\nINSTALLED ANCHORS\n0 11/09/2025 JP ISSUED FOR CONSTRUCTION\nProject No. 24803\nNEW BOILER BUILDING\nDrawing Num. S1.01\nCOLUMN ARRANGEMENT\nClient: BARTEK INGREDIENTS\nLocation: 690 SOUTH SERVICE RD, STONEY CREEK, ON",
+      "summary": "This plan view shows the column and anchor arrangement for the ground floor of a new boiler building. The columns are identified as W8x31, and the arrangement includes specific spacing dimensions of 11'-10\" and 15'-4\" between columns. The drawing is labeled as 'PLAN 1 - COLUMN/ANCHOR ARRANGEMENT' and 'ISO 1 - COLUMN ARRANGEMENT', both at a scale of NTS (Not to Scale). The notes specify 1\" diameter holes for 1\" diameter ASTM F1554 anchor rods, typical ACE anchor rods, and installed anchors. The drawing is part of project number 24803 for Bartek Ingredients, located at 690 South Service Rd, Stoney Creek, ON. The drawing number is S1.01, and it was issued for construction on 11/09/2025 by JP.",
+      "project_id": "25-01-105",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": "page_003/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Angle Detail",
+      "element_callouts": [
+        "b1053"
+      ],
+      "key_components": [
+        "L3X3X1/4 Angle",
+        "G40.21M-300W"
+      ],
+      "text_verbatim": "1 - b1053 L3X3X1/4 - G40.21M-300W\nSCALE: NTS\n4'-0 1/2\"\n4 5/16\"\n3'-4\"\n4 5/16\"\n2x 5/8\" ø\n3\"\n1 3/4\"",
+      "summary": "This detail shows an angle component labeled as 'b1053', made from L3X3X1/4 steel with a specification of G40.21M-300W. The dimensions include a total length of 4'-0 1/2\", with specific segments measuring 3'-4\" and two sections of 4 5/16\". The angle has a height of 3\" and a thickness of 1 3/4\". It includes two 5/8\" diameter holes. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Angle Detail",
+      "element_callouts": [
+        "b1055"
+      ],
+      "key_components": [
+        "L3X3X1/4 Angle",
+        "G40.21M-300W"
+      ],
+      "text_verbatim": "1 - b1055 L3X3X1/4 - G40.21M-300W\nSCALE: NTS\n2'-3 3/4\"\n2 3/4\"\n1'-8\"\n5\"\n3\"\n1 3/4\"\n12\"\n2x 5/8\" ø",
+      "summary": "This detail illustrates an angle component labeled 'b1055', constructed from L3X3X1/4 steel with a G40.21M-300W specification. The component measures 2'-3 3/4\" in length, with sections of 2 3/4\" and 1'-8\". It has a height of 3\" and a thickness of 1 3/4\", with a 12\" extension. Two holes with a 5/8\" diameter are included. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Angle Detail",
+      "element_callouts": [
+        "b1054"
+      ],
+      "key_components": [
+        "L3X3X1/4 Angle",
+        "G40.21M-300W"
+      ],
+      "text_verbatim": "1 - b1054 L3X3X1/4 - G40.21M-300W\nSCALE: NTS\n3'-4 7/8\"\n5\"\n2'-9\"\n2 7/8\"\n3\"\n1 3/4\"\n12\"\n2x 5/8\" ø",
+      "summary": "This detail shows an angle component labeled 'b1054', made from L3X3X1/4 steel with a G40.21M-300W specification. The component is 3'-4 7/8\" long, with segments of 5\" and 2'-9\". It has a height of 3\" and a thickness of 1 3/4\", with a 12\" extension. Two 5/8\" diameter holes are present. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": "page_004/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Angle Detail",
+      "element_callouts": [
+        "b1056"
+      ],
+      "key_components": [
+        "L3X3X1/4 Angle",
+        "G40.21M-300W"
+      ],
+      "text_verbatim": "1 - b1056 L3X3X1/4 - G40.21M-300W\nSCALE: NTS\n1'-11 1/4\"\n5\"\n1'-4\"\n2 1/4\"\n3\"\n1 3/4\"\n12\"\n2x 5/8\" ø",
+      "summary": "This detail depicts an angle component labeled 'b1056', constructed from L3X3X1/4 steel with a G40.21M-300W specification. The component measures 1'-11 1/4\" in length, with sections of 5\" and 1'-4\". It has a height of 3\" and a thickness of 1 3/4\", with a 12\" extension. Two holes with a 5/8\" diameter are included. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 4,
+      "relative_path": "page_004/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Not determinable",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Angle Detail",
+      "element_callouts": [
+        "b1043"
+      ],
+      "key_components": [
+        "L3X3X1/4",
+        "G40.21M-300W",
+        "Bolts"
+      ],
+      "text_verbatim": "12'-6 1/2\"\n4 1/2\"\n3'-11\"\n3'-11\"\n3'-11\"\n5\"\n3\"\n1 3/4\"\n1'-0\"\n12\"\n4x 5/8\" ø\n1 - b1043 L3X3X1/4 - G40.21M-300W\nSCALE: NTS",
+      "summary": "This detail shows an angle section labeled b1043 with dimensions and bolt placements. The total length is 12'-6 1/2\" with segments of 4 1/2\", 3'-11\", and 5\". The angle is specified as L3X3X1/4 with a material specification of G40.21M-300W. Bolts are indicated as 4x 5/8\" ø. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 5,
+      "relative_path": "page_004/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Not determinable",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Angle Detail",
+      "element_callouts": [
+        "b1036"
+      ],
+      "key_components": [
+        "L3X3X1/4",
+        "G40.21M-300W",
+        "Bolts"
+      ],
+      "text_verbatim": "28'-10\"\n5\"\n4'-0\"\n4'-0\"\n4'-0\"\n4'-0\"\n5\"\n3\"\n1 3/4\"\n1'-0\"\n12\"\n8x 5/8\" ø\n1 - b1036 L3X3X1/4 - G40.21M-300W\nSCALE: NTS",
+      "summary": "This detail shows an angle section labeled b1036 with a total length of 28'-10\". The segments are divided into 5\", 4'-0\", and 5\". The angle is specified as L3X3X1/4 with a material specification of G40.21M-300W. Bolts are indicated as 8x 5/8\" ø. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 6,
+      "relative_path": "page_004/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Plan",
+      "location": "Base Angle Arrangement",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Base Angle Arrangement Plan",
+      "element_callouts": [
+        "b1054",
+        "b1056",
+        "b1053",
+        "b1055",
+        "b1043",
+        "b1040",
+        "b1036"
+      ],
+      "key_components": [
+        "Chemical Anchors",
+        "Anchor Rod",
+        "Hex Nuts"
+      ],
+      "text_verbatim": "10\"\n11'-10\"\n28'-10\"\n15'-4\"\n10\"\n10\"\n16'-8\"\n1/2\" ø CHEMICAL ANCHORS, HILTI HVU2 ANCHOR CAPSULE & HAS-V-36 ANCHOR ROD X 10\" LG OR EQUIV, 7\" EMBEDMENT C/W FW & (2) HEX NUTS ASTM A194. (TYP.)\nPLAN - BASE ANGLE ARRANGEMENT\nSCALE: NTS",
+      "summary": "This plan view shows the base angle arrangement with various angle sections labeled b1054, b1056, b1053, b1055, b1043, b1040, and b1036. The dimensions include 10\", 11'-10\", 28'-10\", 15'-4\", and 16'-8\". The plan specifies the use of 1/2\" ø chemical anchors with Hilti HVU2 anchor capsules and HAS-V-36 anchor rods, embedded 7\" with two hex nuts ASTM A194. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 7,
+      "relative_path": "page_004/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Detail",
+      "location": "Not determinable",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Angle Detail",
+      "element_callouts": [
+        "b1040"
+      ],
+      "key_components": [
+        "L3X3X1/4",
+        "G40.21M-300W",
+        "Bolts"
+      ],
+      "text_verbatim": "18'-4\"\n5\"\n3'-6\"\n3'-6\"\n3'-6\"\n3'-6\"\n5\"\n3\"\n1 3/4\"\n1'-0\"\n12\"\n6x 5/8\" ø\n1 - b1040 L3X3X1/4 - G40.21M-300W\nSCALE: NTS",
+      "summary": "This detail shows an angle section labeled b1040 with a total length of 18'-4\". The segments are divided into 5\", 3'-6\", and 5\". The angle is specified as L3X3X1/4 with a material specification of G40.21M-300W. Bolts are indicated as 6x 5/8\" ø. The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 4,
+      "region_number": 8,
+      "relative_path": "page_004/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Front Elevation",
+      "level": "Unknown",
+      "orientation": "Front",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam and Column Arrangement",
+      "element_callouts": [
+        "C6",
+        "C4",
+        "C2"
+      ],
+      "key_components": [
+        "Beams",
+        "Columns"
+      ],
+      "text_verbatim": "27'-10\"\n23'-0\"\n12'-9\"\n10'-3\"\n15'-4\"\n11'-10\"\nFRONT ELEVATION - BEAM AND COLUMN ARRANGEMENT\nSCALE: NTS",
+      "summary": "This elevation view shows the front beam and column arrangement with columns labeled C6, C4, and C2. The overall width is 27'-10\" with column heights of 23'-0\" and 12'-9\". The beam spans are 15'-4\" and 11'-10\". The drawing is not to scale (NTS).",
+      "project_id": "25-01-105",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Left elevation of beam and column arrangement",
+      "level": "Unknown",
+      "orientation": "Left elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam and Column Arrangement",
+      "element_callouts": [],
+      "key_components": [
+        "Beams",
+        "Columns"
+      ],
+      "text_verbatim": "LEFT ELEVATION - BEAM AND COLUMN ARRANGEMENT\nSCALE: NTS\n17'-4\"\n24'-7\"\n23'-0\"\n16'-8\"",
+      "summary": "This image shows the left elevation of a beam and column arrangement. The dimensions indicate a width of 17'-4\" and a height of 24'-7\" on the left side and 23'-0\" on the right side. The base width is 16'-8\". The drawing is not to scale (NTS). The elevation view highlights the structural arrangement of beams and columns.",
+      "project_id": "25-01-105",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Back elevation of beam and column arrangement",
+      "level": "Unknown",
+      "orientation": "Back elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam and Column Arrangement",
+      "element_callouts": [
+        "C1",
+        "C3",
+        "C5"
+      ],
+      "key_components": [
+        "Beams",
+        "Columns"
+      ],
+      "text_verbatim": "BACK ELEVATION - BEAM AND COLUMN ARRANGEMENT\nSCALE: NTS\n27'-10\"\n24'-7\"\n11'-10\"\n12'-9\"\nC1\nC3\nC5",
+      "summary": "This image displays the back elevation of a beam and column arrangement. The total width is 27'-10\", with a height of 24'-7\". The elevation is divided into sections with dimensions of 11'-10\" and 15'-4\". Column callouts C1, C3, and C5 are labeled. The drawing is not to scale (NTS) and shows the structural layout of beams and columns.",
+      "project_id": "25-01-105",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": "page_005/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Isometric view of beam and column arrangement",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam and Column Arrangement",
+      "element_callouts": [
+        "B25",
+        "B56",
+        "B57",
+        "B58",
+        "B59",
+        "B62",
+        "B63",
+        "B64",
+        "B66",
+        "B68",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "key_components": [
+        "Beams",
+        "Columns",
+        "Bracing"
+      ],
+      "text_verbatim": "ISO 1 - BEAM AND COLUMN ARRANGEMENT\nSCALE: NTS\nB25\nB56\nB57\nB58\nB59\nB62\nB63\nB64\nB66\nB68\nC1\nC2\nC3\nC4\nC5\nC6",
+      "summary": "This isometric view illustrates the beam and column arrangement with various labeled elements. Beam callouts include B25, B56, B57, B58, B59, B62, B63, B64, B66, and B68. Column callouts include C1, C2, C3, C4, C5, and C6. The drawing is not to scale (NTS) and provides a three-dimensional perspective of the structural framework, highlighting the beams, columns, and bracing.",
+      "project_id": "25-01-105",
+      "page_number": 5,
+      "region_number": 4,
+      "relative_path": "page_005/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Plate Detail",
+      "element_callouts": [
+        "p1040"
+      ],
+      "key_components": [
+        "Plate",
+        "Holes"
+      ],
+      "text_verbatim": "1 - p1040 PL 3/8\"x9-11/16\"x0'-10 11/16\" - A36\nSCALE: NTS\n10 3/4\"\n2 3/4\"\n12\"\n11 9/16\"\n9 11/16\"\n7\"\n6 3/4\"\n5\"\n2\"\n2 1/4\"\n6 1/4\"\n8 1/2\"\n6 7/8\"\n1 1/2\"\n3\"\n2x 13/16\" Ø",
+      "summary": "This detail shows a plate labeled p1040 with dimensions of 3/8\"x9-11/16\"x0'-10 11/16\" made of A36 steel. The drawing is not to scale (NTS). Various dimensions are provided, including 10 3/4\", 2 3/4\", and 12\". The plate features two holes with a diameter of 13/16\". The detail highlights the precise measurements and layout of the plate and its components.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Plate Detail",
+      "element_callouts": [
+        "p1036"
+      ],
+      "key_components": [
+        "Plate",
+        "Holes"
+      ],
+      "text_verbatim": "1 - p1036 PL 3/8\"x7-9/16\"x0'-9 1/4\" - A36\nSCALE: NTS\n9 1/4\"\n2 7/8\"\n12\"\n8 5/8\"\n7 9/16\"\n4 11/16\"\n3\"\n2 15/16\"\n1 3/4\"\n4 1/16\"\n2 7/16\"\n6 1/2\"\n3 9/16\"\n1 1/2\"\n3\"\n2x 13/16\" Ø",
+      "summary": "This detail shows a plate labeled p1036 with dimensions of 3/8\"x7-9/16\"x0'-9 1/4\" made of A36 steel. The drawing is not to scale (NTS). Various dimensions are provided, including 9 1/4\", 2 7/8\", and 12\". The plate features two holes with a diameter of 13/16\". The detail highlights the precise measurements and layout of the plate and its components.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Material Schedule",
+      "element_callouts": [
+        "c1000",
+        "bp1000",
+        "p1001",
+        "p1006",
+        "p1036",
+        "p1040"
+      ],
+      "key_components": [
+        "W8x31",
+        "PL 1\"x14\"x1'-2\"",
+        "PL 1/4\"x4\"x0'-5\"",
+        "PL 3/8\"x7-1/4\"x0'-8\"",
+        "PL 3/8\"x7-9/16\"x0'-9 1/4\"",
+        "PL 3/8\"x9-11/16\"x0'-10 3/4\""
+      ],
+      "text_verbatim": "Mark Quantity Description Length Grade Part weight Total weight\nc1000 1 W8x31 24'-5 5/8\" G40.21M-350W 758.55 758.55\n1 758.55\nbp1000 1 PL 1\"x14\"x1'-2\" 1'-2\" G40.21M-300W 55.59 55.59\np1001 3 PL 1/4\"x4\"x0'-5\" 0'-5\" G40.21M-300W 1.42 4.25\np1006 1 PL 3/8\"x7-1/4\"x0'-8\" 0'-8\" G40.21M-300W 6.48 6.48\np1036 1 PL 3/8\"x7-9/16\"x0'-9 1/4\" 0'-9 1/4\" G40.21M-300W 5.30 5.30\np1040 1 PL 3/8\"x9-11/16\"x0'-10 3/4\" 0'-10 3/4\" G40.21M-300W 9.43 9.43\n7 81.05\nNOTE 1: ALL PLATES SHALL BE CSA-G40.20/G40.21 M300W.\nNOTE 2: ALL WEIGHTS ARE IN LBS.",
+      "summary": "This image shows a material schedule listing various steel components with their descriptions, lengths, grades, part weights, and total weights. The components include a W8x31 beam (c1000) with a length of 24'-5 5/8\" and a grade of G40.21M-350W, weighing 758.55 lbs. Several plates are listed, such as bp1000 (PL 1\"x14\"x1'-2\") with a length of 1'-2\" and a grade of G40.21M-300W, weighing 55.59 lbs. Other plates include p1001, p1006, p1036, and p1040, each with specific dimensions and weights. Notes specify that all plates must meet CSA-G40.20/G40.21 M300W standards and that all weights are in pounds.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": "page_006/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Plate Detail",
+      "element_callouts": [
+        "p1001"
+      ],
+      "key_components": [
+        "Plate",
+        "Holes"
+      ],
+      "text_verbatim": "3 - p1001 PL 1/4\"x4\"x0'-5\" - A36\nSCALE: NTS\n5\"\n1 1/4\" 2 1/2\" 1 1/4\"\n4\"\n2\"\n2x 9/16\" Ø",
+      "summary": "This detail shows a plate labeled p1001 with dimensions 1/4\"x4\"x0'-5\" made of A36 steel. The plate has two holes with a diameter of 9/16\". The dimensions between holes and edges are specified as 1 1/4\", 2 1/2\", and 1 1/4\". The overall dimensions of the plate are 5\" by 4\". The scale is noted as NTS (Not to Scale).",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": "page_006/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Section",
+      "location": null,
+      "level": "Unknown",
+      "orientation": "Section A-A",
+      "grid_references": [],
+      "section_callouts": [
+        "A-A"
+      ],
+      "element_type": "Base Plate Section",
+      "element_callouts": [
+        "bp1000",
+        "p1036",
+        "p1040"
+      ],
+      "key_components": [
+        "Base Plate",
+        "Gusset",
+        "Column"
+      ],
+      "text_verbatim": "bp1000\np1036\np1040\n5 1/2\" 5 1/2\"\n1 1/2\"\n1\"\nTYP. COL TO BASE PLATE\nTYP. GUSSET TO COL/BASE PLATE\nSection A - A",
+      "summary": "This section view, labeled Section A-A, shows a base plate assembly with components bp1000, p1036, and p1040. The base plate dimensions are 5 1/2\" by 5 1/2\", with gussets typically connecting the column to the base plate. The section illustrates the typical connections and spacing between elements, with dimensions such as 1 1/2\" and 1\" specified for certain components.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 5,
+      "relative_path": "page_006/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Base Plate Detail",
+      "element_callouts": [
+        "bp1000"
+      ],
+      "key_components": [
+        "Base Plate",
+        "Holes"
+      ],
+      "text_verbatim": "1 - bp1000 PL 1\"x14\"x1'-2\" - A36\nSCALE: NTS\n1'-2\"\n11\"\n1 1/2\"\n4x1 1/8\" Ø",
+      "summary": "This detail shows a base plate labeled bp1000 with dimensions 1\"x14\"x1'-2\" made of A36 steel. The plate includes four holes with a diameter of 1 1/8\". The dimensions from the edges to the holes are specified as 1 1/2\". The overall dimensions of the plate are 1'-2\" by 11\". The scale is noted as NTS (Not to Scale).",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 6,
+      "relative_path": "page_006/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Plate Detail",
+      "element_callouts": [
+        "p1006"
+      ],
+      "key_components": [
+        "Plate"
+      ],
+      "text_verbatim": "1 - p1006 PL 3/8\"x7-1/4\"x0'-8\" - A36\nSCALE: NTS\n8\"\n7 1/4\"",
+      "summary": "This detail shows a plate labeled p1006 with dimensions 3/8\"x7-1/4\"x0'-8\" made of A36 steel. The overall dimensions of the plate are 8\" by 7 1/4\". The scale is noted as NTS (Not to Scale).",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 7,
+      "relative_path": "page_006/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Section",
+      "location": null,
+      "level": "Unknown",
+      "orientation": "Section B-B",
+      "grid_references": [],
+      "section_callouts": [
+        "B-B"
+      ],
+      "element_type": "Beam Section Detail",
+      "element_callouts": [
+        "p1001"
+      ],
+      "key_components": [
+        "Beam",
+        "Plate",
+        "Fasteners"
+      ],
+      "text_verbatim": "2 1/2\" 5 1/4\"\n2 1/2\" 1 1/4\"\np1001\n4\" 4\"\nTYP\n3/16\"\nSection B - B",
+      "summary": "This section detail, labeled 'Section B-B', shows a beam with specific dimensions and fastener details. The beam is 4 inches by 4 inches, with additional dimensions of 2 1/2 inches and 5 1/4 inches, as well as 2 1/2 inches and 1 1/4 inches. The label 'p1001' indicates a specific plate or component associated with the beam. The notation 'TYP' with '3/16\"' suggests typical fastener spacing or size. This detail is crucial for understanding the beam's assembly and connection requirements.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 8,
+      "relative_path": "page_006/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_09_red_box.png",
+      "classification": "Section",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A-A",
+        "B-B"
+      ],
+      "element_type": "Column Assembly",
+      "element_callouts": [
+        "p1001",
+        "p1006",
+        "c1000",
+        "bp1000",
+        "p1036",
+        "p1040"
+      ],
+      "key_components": [
+        "Column",
+        "Base Plate",
+        "Plates",
+        "W8x31 Beam"
+      ],
+      "text_verbatim": "p1006\nCT\nTC\np1006\nPL 3/8\"x7-1/4\"x0'-8\"\nTYP. COL TO BASE PLATE\n5 1/4\" 5 1/2\"\np1001\nPL 1/4\"x4\"x0'-5\"\nT.O.P.\n6'-6\"\np1001\nPL 1/4\"x4\"x0'-5\"\nT.O.P.\nc1000\nW8x31\n24'-5 5/8\"\n24'-7\"\np1001\nPL 1/4\"x4\"x0'-5\"\nT.O.P.\nB\n6'-5 5/8\"\nA\n7 7/8\"\n4 7/8\"\n6 1/2\"\n9 1/4\"\nbp1000\np1040\nPL 3/8\"x9-11/16\"x0'-10 3/4\"\n9 1/8\"\n7\"\np1036\nPL 3/8\"x7-9/16\"x0'-9 1/4\"\n1\"\n1 - C1 - COLUMN ASSEMBLY\nSCALE: NTS",
+      "summary": "This section view illustrates a column assembly labeled '1 - C1 - COLUMN ASSEMBLY'. The column includes a W8x31 beam and various plates such as 'p1001' (PL 1/4\"x4\"x0'-5\") and 'p1006' (PL 3/8\"x7-1/4\"x0'-8\"). The assembly features a base plate 'bp1000' and additional plates 'p1036' and 'p1040'. The column height is noted as 24'-5 5/8\" with a total height of 24'-7\". The section callouts 'A-A' and 'B-B' indicate different views of the column. The detail includes typical column-to-base plate connections and various dimensions for precise assembly.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 9,
+      "relative_path": "page_006/region_09_red_box.png"
+    },
+    {
+      "image_id": "region_10_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam Connection Detail",
+      "element_callouts": [
+        "RD"
+      ],
+      "key_components": [
+        "Beam",
+        "Fasteners"
+      ],
+      "text_verbatim": "11'-9 1/2\"\n2 1/2\"\n3\"\n9\"\n3\"\n2 1/2\"\n3 1/2\"\n2 5/16\"\n4x 13/16\" Ø\nRD\n24'-5 5/8\"",
+      "summary": "This detail shows a beam connection with specific fastener arrangements. The beam spans 24'-5 5/8\" with a segment length of 11'-9 1/2\". Fasteners are arranged in a pattern, with dimensions such as 2 1/2\", 3\", and 9\" indicating spacing. The notation '4x 13/16\" Ø' specifies the diameter and quantity of fasteners. The label 'RD' may refer to a specific detail or component related to the beam. This detail is essential for understanding the connection and load distribution across the beam.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 10,
+      "relative_path": "page_006/region_10_red_box.png"
+    },
+    {
+      "image_id": "region_11_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam Detail",
+      "element_callouts": [
+        "c1000"
+      ],
+      "key_components": [
+        "Beam",
+        "Fasteners"
+      ],
+      "text_verbatim": "1 - c1000 W8x31 - G40.21M-350W\nSCALE: NTS\n8x 13/16\" Ø\n4\" 4\" 4\"\n1 13/16\"\n5 1/2\"\n1 1/4\"",
+      "summary": "This detail illustrates a beam labeled 'c1000 W8x31 - G40.21M-350W'. The beam includes fasteners with a specification of '8x 13/16\" Ø', indicating the number and diameter. The beam's dimensions include 4\" spacings and a total width of 5 1/2\". The detail provides critical information for the beam's assembly and load-bearing capacity, with the notation 'SCALE: NTS' indicating that the drawing is not to scale.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 11,
+      "relative_path": "page_006/region_11_red_box.png"
+    },
+    {
+      "image_id": "region_12_red_box.png",
+      "classification": "Section",
+      "location": null,
+      "level": "Unknown",
+      "orientation": "Section C-C",
+      "grid_references": [],
+      "section_callouts": [
+        "C-C"
+      ],
+      "element_type": "Column Section Detail",
+      "element_callouts": [
+        "p1006"
+      ],
+      "key_components": [
+        "Column",
+        "Plate"
+      ],
+      "text_verbatim": "1/4\"\np1006\n8\"\n7 1/4\"\nSection C - C",
+      "summary": "This section detail, labeled 'Section C-C', shows a column with a plate 'p1006'. The column has dimensions of 8 inches in height and 7 1/4 inches in width. The notation '1/4\"' may refer to the thickness of the plate or another component. This detail is crucial for understanding the column's structural configuration and the integration of the plate within the assembly.",
+      "project_id": "25-01-105",
+      "page_number": 6,
+      "region_number": 12,
+      "relative_path": "page_006/region_12_red_box.png"
+    }
+  ]
+}

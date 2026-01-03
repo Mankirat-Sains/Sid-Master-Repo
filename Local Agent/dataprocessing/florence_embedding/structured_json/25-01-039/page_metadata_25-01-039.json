@@ -1,0 +1,166 @@
+{
+  "pages": [
+    {
+      "page_number": 2,
+      "sheet_id": "A02",
+      "drawing_title": "SITE PLAN",
+      "overall_classification": "Plan",
+      "level": "Site",
+      "primary_orientation": null,
+      "key_components": [
+        "Property Lines",
+        "Proposed Septic Tank",
+        "Proposed Leaching Bed",
+        "Building Footprint"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nA02\nSITE PLAN",
+      "general_notes_verbatim": "SITE PLAN NOTES:\n1. DIMENSIONS TO PROPERTY LINES ARE APPROXIMATE. THIS IS NOT A SURVEY.\n2. PROVIDE MINIMUM 2% OF SLOPE FOR ADEQUATE DRAINAGE AWAY FROM THE NEW BUILDING.\n3. PROVIDE EAVESTROUGH CONNECTED TO DOWN PIPES TO STORM SEWERS OR FIELD TILES.\nDIMENSIONS SHOWN ARE IN METRIC AND CAN BE CONVERTED TO IMPERIAL BY MULTIPLYING BY 3.281",
+      "page_overview_summary": "This site plan provides an overview of the property layout, including approximate dimensions to property lines and the location of the proposed septic tank and leaching bed. Key notes emphasize the importance of proper drainage and eavestrough connections. The plan is primarily concerned with site-level considerations for the new building."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "A2",
+      "drawing_title": "MAIN FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Room Layout",
+        "Wall Assemblies",
+        "Floor Assemblies",
+        "Lintel Schedule",
+        "Beam Schedule",
+        "Column Schedule"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nA2\nMAIN FLOOR PLAN",
+      "general_notes_verbatim": "MAIN FLOOR PLAN NOTES\n1. ALL DIMENSIONS ARE TO FACE OF STUD UNLESS NOTED OTHERWISE.\n2. ALL INTERIOR WALLS TO BE 2x4 WOOD STUDS @ 16\" O.C. U.N.O.\n3. ALL EXTERIOR WALLS TO BE 2x6 WOOD STUDS @ 16\" O.C. U.N.O.\n4. ALL WINDOWS AND DOORS TO BE INSTALLED AS PER MANUFACTURER'S SPECIFICATIONS.",
+      "page_overview_summary": "The main floor plan outlines the layout of the ground floor, detailing room dimensions and placements. It includes schedules for lintels, beams, and columns, as well as notes on wall and floor assemblies. The plan provides essential information for constructing the main living areas of the building."
+    },
+    {
+      "page_number": 1,
+      "sheet_id": "A01",
+      "drawing_title": "COVER PAGE",
+      "overall_classification": "Notes",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "General Construction Notes",
+        "Foundation Notes",
+        "Framing Notes",
+        "Index of Drawings",
+        "Area Calculations"
+      ],
+      "text_verbatim_title_block": "NEW 1 STOREY RESIDENCE FOR DAVE AND CORY MATTHEWS\nA01\nCOVER PAGE",
+      "general_notes_verbatim": "GENERAL CONSTRUCTION NOTES:\n1. The contractor shall verify all dimensions, complete on-site check of all conditions, and report any discrepancies to the designer before proceeding with the work.\n2. All work shall conform to the latest edition of the Ontario Building Code.\nFOUNDATION NOTES:\n1. Concrete for footings shall be 20 MPa minimum compressive strength at 28 days.\nFRAMING NOTES:\n1. All wood framing shall be SPF No. 2 or better.",
+      "page_overview_summary": "The cover page provides an overview of the project, including general construction, foundation, and framing notes. It includes an index of drawings and area calculations for different sections of the building. This sheet sets the stage for the detailed plans and specifications that follow."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "A1",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Layout",
+        "Concrete Lintel Schedule",
+        "Column Schedule",
+        "Footing Schedule",
+        "ICF Wall Assemblies"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nA1\nFOUNDATION PLAN",
+      "general_notes_verbatim": "BASEMENT PLAN NOTES\n1. ALL INTERIOR WALLS TO BE 2x4 WOOD STUDS @ 16\" O.C. U.N.O.\n2. ALL EXTERIOR WALLS TO BE 2x6 WOOD STUDS @ 16\" O.C. U.N.O.\n3. ALL FOOTINGS TO BE 20 MPa CONCRETE.",
+      "page_overview_summary": "The foundation plan details the layout and specifications for the building's foundation, including schedules for concrete lintels, columns, and footings. It outlines the use of ICF wall assemblies and provides notes on basement construction. This sheet is crucial for ensuring the structural integrity of the building's base."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "A3",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Truss Layout",
+        "Roof Assemblies",
+        "Ceiling Assemblies",
+        "Column Schedule"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nA3\nROOF PLAN",
+      "general_notes_verbatim": "ROOF PLAN NOTES\n1. PROVIDE VENTILATION FOR ROOF SPACES.\n2. ALL ROOF TRUSSES TO BE INSTALLED AS PER MANUFACTURER'S SPECIFICATIONS.",
+      "page_overview_summary": "The roof plan illustrates the layout of roof trusses and assemblies, including ceiling assemblies and column schedules. It provides essential details for constructing the roof structure, ensuring proper ventilation and adherence to manufacturer specifications."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "A4",
+      "drawing_title": "FRONT & REAR ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Front and Rear",
+      "key_components": [
+        "Front Elevation",
+        "Rear Elevation",
+        "Exterior Finishes",
+        "Roofing Details"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nA4\nFRONT & REAR ELEVATIONS",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the front and rear elevations of the building, showing exterior finishes and roofing details. It provides a visual representation of the building's appearance from these perspectives, highlighting key architectural features and dimensions."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "A5",
+      "drawing_title": "L&R ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Left and Right",
+      "key_components": [
+        "Left Elevation",
+        "Right Elevation",
+        "Exterior Finishes",
+        "Roofing Details"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nA5\nL&R ELEVATIONS",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The left and right elevations provide views of the building from the sides, detailing exterior finishes and roofing. These elevations are essential for understanding the building's side profiles and ensuring consistency with the overall architectural design."
+    },
+    {
+      "page_number": 9,
+      "sheet_id": "D1",
+      "drawing_title": "DETAILS",
+      "overall_classification": "Detail",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Insulated Concrete Footing Detail",
+        "Steel Column Detail",
+        "ICF Opening Detail",
+        "Concrete Pier Detail",
+        "Deck Ledger Detail",
+        "Interior Footing Detail",
+        "ICF Corner Detail",
+        "Bath Blocking Detail"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nD1\nDETAILS",
+      "general_notes_verbatim": "INSULATION NOTES:\n1. CONTINUOUS SUB-GRADE INSULATION INCLUDES:\nA) 4\" THICK (R20-2.99RSI) DOW SM EXTRUDED POLYSTYRENE INSULATION\nB) 6\" THICK (R30-5.28RSI) DOW CALMATE C3000 EXTRUDED POLYSTYRENE INSULATION\nC) 6\" THICK (R30-5.28RSI) CLOSED CELL SPRAY POLYURETHANE FOAM INSULATION",
+      "page_overview_summary": "This details sheet provides specific construction details for various components, including insulated concrete footings, steel columns, and ICF openings. It includes insulation notes and detailed drawings for critical structural elements, ensuring precise construction methods are followed."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "A6",
+      "drawing_title": "BUILDING SECTION",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Longitudinal",
+      "key_components": [
+        "Building Section",
+        "Steel Beam and Column Detail",
+        "Wall Assemblies",
+        "Floor Assemblies",
+        "Ceiling Assemblies"
+      ],
+      "text_verbatim_title_block": "NEW COTTAGE\nA6\nBUILDING SECTION",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The building section sheet provides a longitudinal view of the structure, detailing wall, floor, and ceiling assemblies. It includes a steel beam and column detail, offering insights into the structural framework and load-bearing elements of the building."
+    }
+  ]
+}

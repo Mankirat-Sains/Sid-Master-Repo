@@ -1,0 +1,177 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "A000",
+      "drawing_title": "COVER PAGE",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Perspective Views"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. COVER PAGE A000",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This cover page provides perspective views of the Malcolm Crescent Townhomes Block 'A'. It includes four different perspective views from various angles, providing a visual overview of the building's exterior design. The title block indicates the project name and location."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "A001",
+      "drawing_title": "CONSTRUCTION NOTES",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Notes",
+        "Abbreviations",
+        "Hatching Legend"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. CONSTRUCTION NOTES A001",
+      "general_notes_verbatim": "GENERAL NOTES: 1. CONSTRUCTION DRAWINGS... (truncated for brevity)",
+      "page_overview_summary": "This sheet contains extensive construction notes, general notes, and abbreviations relevant to the entire project. It serves as a reference for understanding the symbols and terminology used throughout the drawings. The hatching legend provides details on material representations."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "A002",
+      "drawing_title": "BUILDING CODE PLANS & ELEVATIONS",
+      "overall_classification": "Mixed",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Ground Floor Plan",
+        "Elevations",
+        "Building Code Matrix"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. BUILDING CODE PLANS & ELEVATIONS A002",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet includes the ground floor plan and various building elevations, along with a building code matrix. It provides a comprehensive overview of the building's layout and compliance with local building codes. The elevations show the exterior views from different sides."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "A003",
+      "drawing_title": "DOOR/WINDOW SCHEDULE & CONSTRUCTION ASSEMBLIES",
+      "overall_classification": "Mixed",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Door & Hardware Schedule",
+        "Wall Assemblies",
+        "Roof Assemblies"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. DOOR/WINDOW SCHEDULE & CONSTRUCTION ASSEMBLIES A003",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed schedules for doors and hardware, along with construction assemblies for walls and roofs. It includes specific details for masonry, foundation, and interior wall assemblies, as well as notes on door and window installations."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "A200",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Thickened Slab",
+        "Strip Footing Schedule",
+        "Built-up Post Schedule"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. FOUNDATION PLAN A200",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The foundation plan sheet details the layout of the building's foundation, including thickened slabs and strip footings. It includes schedules for strip footings and built-up posts, providing essential information for constructing the foundation system."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "A201",
+      "drawing_title": "GROUND FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Room Layouts",
+        "Dimensions",
+        "Lintel Schedule"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. GROUND FLOOR PLAN A201",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the ground floor plan, showing the layout of rooms and spaces within the building. It includes detailed dimensions and a lintel schedule, providing critical information for the construction of the ground floor structure."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "A202",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Layout",
+        "Roof Plan Notes"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. ROOF PLAN A202",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The roof plan sheet illustrates the layout of the roof structure, including dimensions and notes specific to the roof design. It provides essential information for the construction and installation of the roofing system."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "A220",
+      "drawing_title": "REFLECTED CEILING PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Ceiling Layout",
+        "Lighting Fixtures"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. REFLECTED CEILING PLAN A220",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the reflected ceiling plan for the ground floor, showing the arrangement of ceiling elements and lighting fixtures. It is crucial for the installation of electrical and lighting systems within the building."
+    },
+    {
+      "page_number": 9,
+      "sheet_id": "A300",
+      "drawing_title": "EXTERIOR ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "South Elevation",
+        "North Elevation",
+        "East Elevation",
+        "West Elevation"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. EXTERIOR ELEVATIONS A300",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet displays the exterior elevations of the building, providing views from the south, north, east, and west. It includes detailed dimensions and notes on exterior finishes, essential for understanding the building's external appearance."
+    },
+    {
+      "page_number": 10,
+      "sheet_id": "A400",
+      "drawing_title": "BUILDING & WALL SECTIONS",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Long Building Section",
+        "Short Building Sections",
+        "Wall Sections"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. BUILDING & WALL SECTIONS A400",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet contains detailed building and wall sections, including long and short sections. It provides critical information on the vertical construction elements and is essential for understanding the building's structural integrity."
+    },
+    {
+      "page_number": 11,
+      "sheet_id": "A500",
+      "drawing_title": "STANDARD DETAILS",
+      "overall_classification": "Detail",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Fire Rated Assemblies",
+        "Foundation to Brick Wall Detail",
+        "Fire Blocking Notes"
+      ],
+      "text_verbatim_title_block": "MALCOLM CRESCENT TOWNHOMES BLOCK 'A' LISTOWEL, ON. STANDARD DETAILS A500",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides standard construction details, including fire-rated assemblies and foundation to brick wall details. It includes notes on fire blocking, which are crucial for ensuring compliance with fire safety regulations."
+    }
+  ]
+}

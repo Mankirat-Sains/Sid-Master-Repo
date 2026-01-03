@@ -1,0 +1,52 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Lifting Lug Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Lifting Lug",
+        "Concrete Beam",
+        "Shackle Pins",
+        "Mild Steel",
+        "Threaded Rod"
+      ],
+      "text_verbatim": "WADDELL ENGINEERING LTD.\nBGL CONTRACTORS CORP.\nCHECK VALVE LIFTING LUG\nREVISION #: 01\nPROJECT: 25-01-082\nDATE: 2025-02-18\nMAX LIFTED LOAD (CHECK VALVE LUGS) = 5 kN\nLIFTING NOTES:\n1. LUGS ARE DESIGNED IN ACCORDANCE WITH ASME BTH-1-2005/ASME B30.20, CAT B, Nd = 3.0.\n2. MINIMUM 50.0mm DIA. SHACKLE PINS MUST BE USED ON THE LIFTING LUG.\n3. LUGS TO BE USED FOR VERTICAL LIFTS ONLY.\n4. PROPER PROVISIONS SHALL BE MADE TO ENSURE LIFTING LUGS ARE CENTERED ON THE SHACKLE PIN.\n5. LIFTING LUG WELDS SHALL HAVE 100% MAGNETIC PARTICLE INSPECTION (MPI)\n6. RIGGING BY OTHERS.\nNOTES:\n1. 2 ASSEMBLIES REQUIRED AS SHOWN\n2. WEIGHT OF CHECK VALVE TO BE LIFTED IS 457kg\n3. MATERIAL TO BE ASTM A36 OR EQUIVALENT\n4. MILD STEEL TO BE HOT DIPPED GALVANIZED AFTER FABRICATION\n5. ALL WELDING TO CONFORM TO CSA W59\n6. ALL WELDS TO BE VISUALLY INSPECTED AND TESTED AS PER CWB REQUIREMENTS\nØ64\n19\n152\n76\n203\n171\n32\nØ22 TYP\nANCHOR TO 712mm\nCONCRETE BEAM USING\n19mm THREADED ROD\nEMBEDDED MIN. 125 mm\nWITH HILTI HY200",
+      "summary": "This detail drawing from Waddell Engineering Ltd. and BGL Contractors Corp. illustrates a lifting lug designed for a check valve. The lug is engineered to handle a maximum load of 5 kN, as specified in the design loads. The drawing includes dimensions such as a diameter of Ø64 mm for the main hole and Ø22 mm for typical holes, with a thickness of 19 mm. The lug must be used with minimum 50.0 mm diameter shackle pins for vertical lifts only. The material specified is ASTM A36 or equivalent mild steel, which must be hot-dipped galvanized after fabrication. The drawing notes that all welding must conform to CSA W59 standards and undergo visual inspection and testing as per CWB requirements. The lug is to be anchored to a 712 mm concrete beam using a 19 mm threaded rod embedded a minimum of 125 mm with Hilti HY200. The drawing also specifies that two assemblies are required, and the weight of the check valve to be lifted is 457 kg. The lifting lug welds require 100% magnetic particle inspection (MPI), and rigging is to be provided by others.",
+      "project_id": "25-01-082",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Lifting Lug Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Lifting Lug",
+        "Concrete Beam",
+        "Shackle Pins",
+        "Mild Steel",
+        "Threaded Rod"
+      ],
+      "text_verbatim": "MAX LIFTED LOAD (CHECK VALVE LUGS) = 5 kN\nLIFTING NOTES:\n1. LUGS ARE DESIGNED IN ACCORDANCE WITH ASME BTH-1-2005/ASME B30.20, CAT B, Nd = 3.0.\n2. MINIMUM 50.0mm DIA. SHACKLE PINS MUST BE USED ON THE LIFTING LUG.\n3. LUGS TO BE USED FOR VERTICAL LIFTS ONLY.\n4. PROPER PROVISIONS SHALL BE MADE TO ENSURE LIFTING LUGS ARE CENTERED ON THE SHACKLE PIN.\n5. LIFTING LUG WELDS SHALL HAVE 100% MAGNETIC PARTICLE INSPECTION (MPI)\n6. RIGGING BY OTHERS.\nNOTES:\n1. 2 ASSEMBLIES REQUIRED AS SHOWN\n2. WEIGHT OF CHECK VALVE TO BE LIFTED IS 457kg\n3. MATERIAL TO BE ASTM A36 OR EQUIVALENT\n4. MILD STEEL TO BE HOT DIPPED GALVANIZED AFTER FABRICATION\n5. ALL WELDING TO CONFORM TO CSA W59\n6. ALL WELDS TO BE VISUALLY INSPECTED AND TESTED AS PER CWB REQUIREMENTS\nØ64\n19\n203\n171\n32\nØ22 TYP\nANCHOR TO 712mmx300mm\nCONCRETE BEAM USING\n19mm THREADED ROD\nEMBEDDED MIN. 125 mm\nWITH HILTI HY200",
+      "summary": "This detail drawing provides specifications for a lifting lug designed for a check valve, capable of handling a maximum load of 5 kN. The lug is to be used with minimum 50.0 mm diameter shackle pins for vertical lifts only. The material specified is ASTM A36 or equivalent mild steel, which is to be hot-dipped galvanized after fabrication. The drawing specifies that all welding must conform to CSA W59 standards and undergo visual inspection and testing as per CWB requirements. The lug is to be anchored to a 712 mm x 300 mm concrete beam using a 19 mm threaded rod embedded a minimum of 125 mm with Hilti HY200. The drawing also notes that two assemblies are required, and the weight of the check valve to be lifted is 457 kg. The lifting lug welds require 100% magnetic particle inspection (MPI), and rigging is to be provided by others. Dimensions include a Ø64 mm main hole and Ø22 mm typical holes, with a thickness of 19 mm.",
+      "project_id": "25-01-082",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    }
+  ]
+}

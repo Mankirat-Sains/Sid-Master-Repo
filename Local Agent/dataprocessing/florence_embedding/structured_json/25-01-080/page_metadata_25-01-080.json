@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "25003-E1",
+      "drawing_title": "INSTALLATION DRAWING",
+      "overall_classification": "Detail",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Vent",
+        "Vent Mount Curb",
+        "Existing Roof Plate"
+      ],
+      "text_verbatim_title_block": "Project Number: 25003\nProject Name: EAST PUBNICO, NS\nClient: BGI CONTRACTORS\nSheet Title: INSTALLATION DRAWING\nSheet Number: 25003-E1\nRevision: B\nDate: 25-01-080\nEngineer: WADDELL ENGINEERING LTD.",
+      "general_notes_verbatim": "DESIGN LOADS:\n1. DESIGN LOADS ANY UNFACTORED, UNLESS NOTED\nCLIMATE DATA (YARMOUTH, NOVA SCOTIA)\nS = 2.4 kPa\nW = 0.5 kPa\nC(1/50) = 0.54 kPa\nA) DEAD LOAD = SELF WEIGHT OF SUPPORT STRUCTURE\nB) SNOW LOAD (FLAT ROOF) = 2.68 kPa\nC) WIND LOAD = 0.5 kPa\nCALCULATED IN ACCORDANCE WITH NBC 2015\nNOTES:\n1. ALL DIMENSIONS ARE IN MILLIMETERS UNLESS NOTED\n2. CONFIRM VENT DIMENSIONS PRIOR TO MANUFACTURING",
+      "page_overview_summary": "This sheet provides installation details for a roof vent, including the vent mount curb and existing roof plate. It specifies design loads for dead load, snow load, and wind load, calculated according to NBC 2015 standards. The drawing includes dimensions and notes for proper installation, emphasizing the need to confirm vent dimensions prior to manufacturing."
+    }
+  ]
+}

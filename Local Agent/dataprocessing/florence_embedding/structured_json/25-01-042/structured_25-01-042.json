@@ -1,0 +1,185 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Crane Basket Modification - Isometric View",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Crane Basket Frame",
+      "element_callouts": [
+        "b01",
+        "b02",
+        "b03",
+        "b04",
+        "b05",
+        "c01",
+        "p01"
+      ],
+      "key_components": [
+        "Steel Frame",
+        "Checker Plate",
+        "Handrail"
+      ],
+      "text_verbatim": "HANDRAIL NOT SHOWN FOR CLARITY\n1/4\" CHECKER PLATE NOT SHOWN FOR CLARITY\n1\nET\nCRANE BASKET MODIFICATION - ISOMETRIC VIEW\nSCALE: 1:14",
+      "summary": "This isometric view of the crane basket modification highlights the steel frame components with part numbers b01, b02, b03, b04, b05, c01, and p01. The handrail and 1/4\" checker plate are not shown for clarity. The drawing is labeled 'CRANE BASKET MODIFICATION - ISOMETRIC VIEW' and is scaled at 1:14. The frame consists of steel components designed for structural integrity, with specific parts identified for assembly.",
+      "project_id": "25-01-042",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Crane Basket Modification - Side View",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Crane Basket Side View",
+      "element_callouts": [
+        "b01",
+        "b02",
+        "b03",
+        "b05",
+        "c01",
+        "kb01"
+      ],
+      "key_components": [
+        "Steel Frame",
+        "Brace"
+      ],
+      "text_verbatim": "SCALE 1:18\n1/4\" TYP.\n1/4\" TYP.\n87\"\n14 3/4\"\n17 3/4\"\n3\nE2\nCRANE BASKET MODIFICATION - SIDE VIEW\nSCALE: 1:18",
+      "summary": "This side view of the crane basket modification shows the spatial arrangement of steel frame components, including parts b01, b02, b03, b05, c01, and kb01. The dimensions include a width of 87 inches and heights of 14 3/4 inches and 17 3/4 inches. The drawing is labeled 'CRANE BASKET MODIFICATION - SIDE VIEW' and is scaled at 1:18. The typical 1/4\" thickness is noted for the steel components, ensuring structural compliance.",
+      "project_id": "25-01-042",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Crane Basket Modification - Front View",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Crane Basket Front View",
+      "element_callouts": [
+        "b02",
+        "b03",
+        "b04"
+      ],
+      "key_components": [
+        "Steel Frame"
+      ],
+      "text_verbatim": "SCALE 1:18\n1/4\" TYP.\n1/4\" TYP. EACH END\n7\"\n60\"\n66\"\n2\nE2\nCRANE BASKET MODIFICATION - FRONT VIEW\nSCALE: 1:18",
+      "summary": "This front view of the crane basket modification illustrates the steel frame components, including parts b02, b03, and b04. The dimensions are specified as 7 inches, 60 inches, and 66 inches. The drawing is labeled 'CRANE BASKET MODIFICATION - FRONT VIEW' and is scaled at 1:18. The typical 1/4\" thickness is noted for each end of the steel components, ensuring uniformity and structural integrity.",
+      "project_id": "25-01-042",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Crane Basket Modification - Brace Detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Brace Detail",
+      "element_callouts": [
+        "kb01"
+      ],
+      "key_components": [
+        "Brace",
+        "HSS3X3X1/4"
+      ],
+      "text_verbatim": "kb01 BRACE - HSS3X3X1/4\" - 2 Req'd\nSCALE 1:18\n24\"\n21\"\n3\"\n45°\n135°",
+      "summary": "This detail shows the kb01 brace, specified as HSS3X3X1/4\" with two required. Dimensions include 24 inches and 21 inches, with angles of 45° and 135°. The drawing is scaled at 1:18. This detail provides precise measurements and specifications for the brace, ensuring accurate fabrication and assembly.",
+      "project_id": "25-01-042",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Crane Basket Modification - Top View",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A-A"
+      ],
+      "element_type": "Crane Basket Top View",
+      "element_callouts": [
+        "b01",
+        "b02",
+        "b03",
+        "b04",
+        "c01",
+        "p01"
+      ],
+      "key_components": [
+        "Steel Frame"
+      ],
+      "text_verbatim": "SCALE 1:18\n1/4\" TYP. EACH END\n87\"\n60\"\n66\"\n16\"\n37 3/8\"\n1\nE2\nCRANE BASKET MODIFICATION - TOP VIEW\nSCALE: 1:18",
+      "summary": "This top view of the crane basket modification shows the layout of steel frame components, including parts b01, b02, b03, b04, c01, and p01. Dimensions include 87 inches, 60 inches, 66 inches, 16 inches, and 37 3/8 inches. The drawing is labeled 'CRANE BASKET MODIFICATION - TOP VIEW' and is scaled at 1:18. The typical 1/4\" thickness is noted for each end, ensuring consistency in the structural design. The section callout A-A indicates a related section view.",
+      "project_id": "25-01-042",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": "page_002/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Plate Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Plate",
+        "Holes"
+      ],
+      "text_verbatim": "5 1/2\"\n1 1/2\"\n2 1/2\"\n1 1/2\"\n3/8\"\n2\"\nφ 7/16\"\np02 PLATE - 3/8\" THK. - 4 Req'd\nSCALE 1:4",
+      "summary": "This detail shows a plate with dimensions and hole specifications. The plate is 5 1/2 inches long and 2 inches wide, with two holes each having a diameter of 7/16 inches. The holes are spaced 2 1/2 inches apart, with 1 1/2 inches from each edge. The plate thickness is specified as 3/8 inches, and four such plates are required. The drawing is scaled at 1:4, indicating a detailed view of the plate's dimensions and hole placements.",
+      "project_id": "25-01-042",
+      "page_number": 2,
+      "region_number": 5,
+      "relative_path": "page_002/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Section A-A",
+      "grid_references": [],
+      "section_callouts": [
+        "A-A"
+      ],
+      "element_type": "Crane Basket Section",
+      "element_callouts": [
+        "kb01"
+      ],
+      "key_components": [
+        "Crane Basket",
+        "Handrails",
+        "Brackets"
+      ],
+      "text_verbatim": "7/8\"\n1/4\"\n45°\n14 3/4\"\n2\"\n21 3/8\"\n39 1/8\"\n37 3/8\"\n17 3/4\"\n16\"\n2 3/8\"\n7\"\n1 1/4\"\n3/4\"\nTYP. EACH TO EXISTING BASKET\nEXISTING CRANE BASKET THIS SIDE NOT SHOWN FOR CLARITY\nVERTICAL DISTANCE BETWEEN THE HANDRAILS TO NOT EXCEED 21\" O.C\nSECTION A-A\nSCALE 1:18",
+      "summary": "This section view (A-A) illustrates a detailed cut through the crane basket modification. The section shows the vertical arrangement of handrails, with a specified maximum vertical distance of 21 3/8 inches on center. The drawing includes dimensions for various components, such as a 14 3/4-inch bracket and a 7/8-inch top plate. The section also notes a 45-degree angle for a specific component and a typical connection to the existing basket. The scale is 1:18, providing a comprehensive view of the structural arrangement and connections within the crane basket.",
+      "project_id": "25-01-042",
+      "page_number": 2,
+      "region_number": 6,
+      "relative_path": "page_002/region_06_red_box.png"
+    }
+  ]
+}

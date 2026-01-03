@@ -1,0 +1,39 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "SP1",
+      "drawing_title": "SITE PLAN",
+      "overall_classification": "Plan",
+      "level": "Site",
+      "primary_orientation": null,
+      "key_components": [
+        "Site Layout",
+        "Property Boundaries",
+        "Building Footprint",
+        "Driveway",
+        "Sidewalk"
+      ],
+      "text_verbatim_title_block": "PROJECT NAME: BROPHY RESIDENCE\nLIVING RM ADDITION\n1181 DALMAGARRY RD. LONDON\nPROJECT NO.: 24-069\nDATE: 12/12/24\nDRAWN BY: M. HARTMAN\nSHEET NO.: SP1\nSHEET: 1 OF 1",
+      "general_notes_verbatim": "FRONT YARD SET BACK: 4.5M\nINTERIOR SIDE YARD SET BACK: 1.2M\nEXTERIOR SIDE YARD SET BACK: 3.0M\nTOTAL PERMITTED LOT COVERAGE: 35%\nTOTAL LOT AREA: 359M2\nEXIST BUILDING AREA: 114M2\nPROPOSED BUILDING AREA: 14M2\nPROPOSED TOTAL LOT COVERAGE: 35%\nFINISHED SITE GRADING\nAS PER OBC TABLE 9.14.6.3.\nTHE BUILDING SHALL BE LOCATED AND THE\nBUILDING SITE GRADED SO THAT WATER\nWILL NOT ACCUMULATE AT OR NEAR THE\nBUILDING AND WILL NOT ADVERSELY\nAFFECT ADJACENT PROPERTIES.\nEXTERIOR FOUNDATION WALLS SHALL BE\nEXTENDED NOT LESS THAN 150MM\nABOVE FINISHED GROUND LEVEL.",
+      "page_overview_summary": "This site plan provides an overview of the property layout for the Brophy Residence, including the existing and proposed building footprints. It shows the property boundaries, setbacks, and the location of the driveway and sidewalk. The plan includes notes on site grading and zoning requirements, ensuring compliance with local regulations. The overall layout is designed to prevent water accumulation near the building and to maintain proper drainage."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "1",
+      "drawing_title": "EXISTING & PROPOSED FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Walls",
+        "Footings",
+        "Reinforcement Details",
+        "Loading Information"
+      ],
+      "text_verbatim_title_block": "PROJECT NAME: BROPHY RESIDENCE\nLIVING RM ADDITION\n1181 DALMAGARRY RD. LONDON\nPROJECT NO.: 24-069\nDATE: 12/12/24\nDRAWN BY: M. HARTMAN\nSHEET NO.: 1 OF 5",
+      "general_notes_verbatim": "FOUNDATION NOTES\nALL CONCRETE WALLS 8\" THK (TYP) U.N.O.\nALL FOOTINGS 20\" WIDE X 10\" DEEP (TYP)\nREFER TO PLAN FOR FOOTING SIZES\nALL FOOTINGS ARE BASED ON\nASSUMED SOIL BEARING OF 1500 PSF\nALL FOOTINGS SHALL BEAR ON\nUNDISTURBED SOIL OR ENGINEERED FILL\nALL FOOTINGS SHALL BE STEPPED\nWHERE REQUIRED TO MAINTAIN\nMIN. 4'-0\" COVER OVER FOOTINGS\nALL FOOTINGS SHALL BEAR ON\nCONCRETE FOUNDATION WALLS",
+      "page_overview_summary": ""
+    }
+  ]
+}

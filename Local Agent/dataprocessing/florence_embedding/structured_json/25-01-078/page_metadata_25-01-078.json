@@ -1,0 +1,57 @@
+{
+  "pages": [
+    {
+      "page_number": 3,
+      "sheet_id": "3",
+      "drawing_title": "D2 DIAGONAL TRUSS BRACING DETAIL",
+      "overall_classification": "Detail",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Diagonal Truss Bracing",
+        "Structural Notes",
+        "Design Loads",
+        "Truss Design",
+        "Concrete/Foundation"
+      ],
+      "text_verbatim_title_block": "BLUEPRINT STATION™\nOwner: DAN RAMER\nPhone: 519-500-3983\nEmail: blueprints@blueprintstation.ca\nWeb: www.blueprintstation.ca\nDESIGNED & DRAWN BY: ZACH AND DAN RAMER\nPROJECT CONTRACTOR: BOWMAN CARPENTRY INC.\nPROJECT: #6447 YATTON SIDE RD.\nLOCATION: WALLENSTEIN, ON\nPROJECT #: 25-01-078\nPROJECT ENGINEER: WADDELL ENGINEERING LTD.\nDATE: March 10, 2023\nPAGE: 3",
+      "general_notes_verbatim": "GENERAL NOTES\n1. DESIGN AND CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO THE LATEST EDITIONS OF THE FOLLOWING:\n- ONTARIO BUILDING CODE\n- CANADIAN WOOD COUNCIL\n- CSA STANDARDS\n2. DRAWINGS ARE NOT TO BE SCALED.\n3. CONTRACTOR SHALL GIVE THE ENGINEER 48 HRS NOTICE IF INSPECTION BY THE ENGINEER IS REQUIRED.\n4. CONTRACTOR SHALL VERIFY ALL DIMENSIONS AND SITE CONDITIONS PRIOR TO COMMENCEMENT OF WORK.\n5. CONTRACTOR SHALL BE RESPONSIBLE FOR THE DESIGN OF TEMPORARY BRACING AND SHORING REQUIRED DURING CONSTRUCTION.\n6. CONTRACTOR SHALL BE RESPONSIBLE FOR THE DESIGN OF ALL CONNECTIONS UNLESS NOTED OTHERWISE.\n7. CONTRACTOR SHALL PROVIDE SHOP DRAWINGS FOR THE FOLLOWING:\n- TRUSSES\n- STEEL BEAM CONNECTIONS\n- STEEL POST CONNECTIONS\n- STEEL ROOF DIAPHRAGMS (DESIGNED BY P. ENG.)",
+      "page_overview_summary": "This sheet provides detailed information on the diagonal truss bracing system, including structural notes, design loads, and truss design specifications. It covers multiple levels of the building, focusing on the integration and support of trusses. The sheet includes general notes applicable to the entire project, emphasizing compliance with relevant codes and standards. Key components such as concrete and foundation specifications are also detailed, ensuring comprehensive understanding for construction and inspection purposes."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "2",
+      "drawing_title": "ELEVATIONS AND SITE PLAN",
+      "overall_classification": "Mixed",
+      "level": "Multiple",
+      "primary_orientation": "North and East Elevations",
+      "key_components": [
+        "North Elevation",
+        "East Elevation",
+        "West Elevation",
+        "Site Plan",
+        "Cross Section"
+      ],
+      "text_verbatim_title_block": "BLUEPRINT STATION™\nOwner: DAN RAMER\nPhone: 519-500-3983\nEmail: blueprints@blueprintstation.ca\nWeb: www.blueprintstation.ca\nDESIGNED & DRAWN BY: ZACH AND DAN RAMER\nPROJECT CONTRACTOR: BOWMAN CARPENTRY INC.\nPROJECT: #6447 YATTON SIDE RD.\nLOCATION: WALLENSTEIN, ON\nPROJECT #: 25-01-078\nPROJECT ENGINEER: WADDELL ENGINEERING LTD.\nDATE: March 10, 2023\nPAGE: 2",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents a combination of elevation views and a site plan for the project. It includes detailed north, east, and west elevations, providing a comprehensive view of the building's exterior design. The site plan outlines the property layout, including existing structures and proposed additions. A cross-section is also included, offering insight into the structural components and construction details. This mixed sheet is crucial for visualizing the building's appearance and its integration into the site."
+    },
+    {
+      "page_number": 1,
+      "sheet_id": "1",
+      "drawing_title": "FOUNDATION, MAIN FLOOR, AND ROOF PLANS",
+      "overall_classification": "Plan",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Plan",
+        "Main Floor Plan",
+        "Roof Plan",
+        "Wall Detail"
+      ],
+      "text_verbatim_title_block": "BLUEPRINT STATION™\nOwner: DAN RAMER\nPhone: 519-500-3983\nEmail: blueprints@blueprintstation.ca\nWeb: www.blueprintstation.ca\nDESIGNED & DRAWN BY: ZACH AND DAN RAMER\nPROJECT CONTRACTOR: BOWMAN CARPENTRY INC.\nPROJECT: #6447 YATTON SIDE RD.\nLOCATION: WALLENSTEIN, ON\nPROJECT #: 25-01-078\nPROJECT ENGINEER: WADDELL ENGINEERING LTD.\nDATE: March 10, 2023\nPAGE: 1",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet contains the foundation, main floor, and roof plans for the project, providing a comprehensive overview of the building's structural layout. The foundation plan details footing and wall placements, while the main floor plan outlines room layouts and structural elements. The roof plan includes truss and bracing specifications. Additionally, a wall detail is provided, offering insight into construction techniques and materials. This sheet is essential for understanding the building's structural framework and ensuring proper construction execution."
+    }
+  ]
+}

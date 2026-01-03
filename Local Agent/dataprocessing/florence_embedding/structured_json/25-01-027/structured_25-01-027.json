@@ -1,0 +1,671 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Sandwich Wall Detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A1"
+      ],
+      "element_type": "Sandwich Wall Detail",
+      "element_callouts": [
+        "FW:1"
+      ],
+      "key_components": [
+        "Concrete Sandwich Wall",
+        "Anchor Bolt",
+        "Rebar",
+        "Footing"
+      ],
+      "text_verbatim": "FW:1\n1\" ANCHOR BOLT WELDED TO \"U\" @ 48\" o.c.\nANCHOR BOLT DETAIL A1\n1/2\" ANCHOR BOLT WELDED TO \"U\" @48\"o.c.\nTYPICAL STUD WALL\nSILL PLATE ON SILL GASKET\n1x4 STRAPPING @ 24\" o.c.\nBASE TRIM DRIP CAP\n10\" CONCRETE SANDWICH WALL: 25 MPa POURED CONCRETE 2\" RIGID INSULATION IN WALL c/w (3) 10M HORIZONTAL REBAR EACH SIDE AND 10M VERTICAL REBAR 24\" o.c. PROVIDE 1-1/2\" CONCRETE COVERAGE TO ALL REINFORCING BARS\nCONC. FLOOR AS PER PLAN\nBEAR ON NATIVE MATERIAL SUITABLE FOR 3000 PSF BEARING CAPACITY\n24\" WIDE x 8\" THK. FOOTING 20MPa CONCRETE 2 RUNS 15M REBAR UNDISTURBED SOIL\n4\" EMBEDMENT INTO FOOTING\nSANDWICH WALL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a sandwich wall with a 10-inch concrete wall reinforced with 25 MPa poured concrete. The wall includes 2-inch rigid insulation and is reinforced with 10M horizontal rebar on each side and 10M vertical rebar spaced at 24 inches on center. The wall is supported by a 24-inch wide by 8-inch thick footing made of 20 MPa concrete with two runs of 15M rebar. The footing is embedded 4 inches into undisturbed soil, suitable for a 3000 PSF bearing capacity. An anchor bolt detail (A1) specifies a 1-inch anchor bolt welded to a 'U' at 48 inches on center. The wall includes a typical stud wall, sill plate on sill gasket, and 1x4 strapping at 24 inches on center. The base trim drip cap is also noted. The scale of the drawing is 1/2 inch equals 1 foot.",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Retaining Wall 1",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Retaining Wall Detail",
+      "element_callouts": [
+        "RW:1"
+      ],
+      "key_components": [
+        "Concrete Wall",
+        "Rebar",
+        "Footing",
+        "Insulation"
+      ],
+      "text_verbatim": "RETAINING WALL 1\nRW:1\n8\" CONCRETE WALL 25 MPa\nSILL PLATE ON SILL GASKET\n1/2\" ANCHOR BOLTS @ 48\" o.c.\n(2) 15M CONT. @ TOP OF WALL\n15M HORIZ. @ 16\" o.c.\n15M VERT. @ 16\" o.c.\n2\" COVER\n2\" RIGID INSULATION BELOW COOLER FLOOR\n2\" RIGID INSULATION TO 28\" BELOW GRADE\n15M x 28\" HOOK BARS @ 16\" o.c.\n36\" x12\" FOOTING c/w (3) 15M CONT.\n15M TRANSVERSAL BAR @ 16\" o.c.\nBEAR ON NATIVE MATERIAL SUITABLE FOR 3000 PSF BEARING CAPACITY\nSLAB AS PER PLAN\nRET. WALL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates a retaining wall with an 8-inch concrete wall reinforced with 25 MPa concrete. The wall includes a sill plate on a sill gasket and is anchored with 1/2-inch anchor bolts at 48 inches on center. Reinforcement consists of continuous 15M rebar at the top of the wall, with horizontal and vertical 15M rebar spaced at 16 inches on center. The wall features 2-inch rigid insulation below the cooler floor and extends to 28 inches below grade. The footing is 36 inches by 12 inches, reinforced with three continuous 15M rebars and 15M transversal bars at 16 inches on center. The structure bears on native material suitable for a 3000 PSF bearing capacity. The scale is 1/2 inch equals 1 foot.",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Wall FW 2",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Wall Detail",
+      "element_callouts": [
+        "FW:2"
+      ],
+      "key_components": [
+        "Concrete Wall",
+        "Rebar",
+        "Shear Key",
+        "Water Stop"
+      ],
+      "text_verbatim": "WALL FW 2\nSILL PLATE ON SILL GASKET c/w 1/2\" ANCHOR BOLTS @ 48\" o.c.\n(2) 15M CONT. @ TOP OF WALL\n15M VERTICALS @ 16\" O.C. BOTH FACES (2\" COVER)\n15M HORIZONTAL AT 16\" O.C. ON BOTH FACES.\n3\" COVER FROM MANURE SIDE\n2\" COVER FROM OUTSIDE\n10\" CONCRETE FDN. WALL 32 MPa\n15M TRANSVERSE BARS @ 16\" O.C.\n2x4 SHEAR KEY\nPVC WATER STOP TO PROTECT REBAR\n15M x 36\" VERT. x 12\" HORIZ. @ VERT. SPACING EACH FACE\n(4) 15M LONGITUDINAL BARS\nCONCRETE SLAB c/w 6\"x6\"x6/6 WWM REINFORCED\n15M TRANSVERSE BARS @ 16\" o.c.\n8'-0\"\n1'-0\"\n5'-7\"\n2'-0\"\n2'-9\"\n10\"\n3\" BOTTOM COVER\nSCALE: 3/8\" = 1'-0\"",
+      "summary": "This detail shows a foundation wall (FW 2) with a 10-inch concrete wall reinforced to 32 MPa. The wall includes a sill plate on a sill gasket with 1/2-inch anchor bolts at 48 inches on center. Reinforcement consists of 15M verticals and horizontals at 16 inches on center on both faces, with 2-inch cover from the outside and 3-inch cover from the manure side. The wall features a 2x4 shear key and a PVC water stop to protect the rebar. The foundation includes a concrete slab reinforced with 6\"x6\"x6/6 welded wire mesh. The drawing specifies 15M transverse bars at 16 inches on center and longitudinal bars. The scale is 3/8 inch equals 1 foot.",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Thickened Edge Detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Thickened Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Floor Slab",
+        "Rebar",
+        "Slope Grade"
+      ],
+      "text_verbatim": "THICKENED EDGE DETAIL\nTYPICAL FLOOR SLAB CONSTRUCTION; SEE PLAN\n(2) 15M CONTINUOUS, PROVIDE MINIMUM 1'-8\" LAP AT SPLICES, TYP.\n2\" COVER AT TOP\n2\" COVER AT SIDE\n3\" COVER AT BOTTOM\n2'-0\"\n10\"\nSLOPE GRADE AWAY",
+      "summary": "This detail illustrates a thickened edge for a floor slab. The slab construction includes two continuous 15M rebars with a minimum lap of 1'-8\" at splices. The slab provides 2-inch cover at the top and side, and 3-inch cover at the bottom. The edge is thickened to 2 feet and slopes away from the structure. The drawing references typical floor slab construction as per the plan.",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": "page_002/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Gutter Detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Gutter Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Grating",
+        "Planking",
+        "Water Stop",
+        "Rebar"
+      ],
+      "text_verbatim": "GUTTER DETAIL\nGRATING OR PLANKING AS PER PLAN\nTHICKEN EDGE OF FLOOR TO 8\"\nWATER STOP\n15M x 12\" V. x 16\" HOOK BENT DOWELS @ 24\" o.c.\nFLOOR PER PLAN\nMIN 2\" COVER\n15M x VERT. MATCH WALL HEIGHT c/w 12\" HOOK BENT DOWELS @ 24\" o.c.\n1'-6\"\n1'-4\"\n8\"\n3\"\n2'-0\"",
+      "summary": "This detail shows a gutter with grating or planking as per the plan. The floor edge is thickened to 8 inches. The gutter includes a water stop and is reinforced with 15M x 12-inch vertical x 16-inch hook bent dowels at 24 inches on center. The drawing specifies a minimum 2-inch cover and includes vertical reinforcement matching the wall height with 12-inch hook bent dowels at 24 inches on center. The dimensions include 1'-6\", 1'-4\", 8\", 3\", and 2'-0\".",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 5,
+      "relative_path": "page_002/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – thickened slab edge detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Thickened Slab Edge",
+        "Floor Slab",
+        "Rebar"
+      ],
+      "text_verbatim": "THICKENED EDGE DETAIL\nTYPICAL FLOOR SLAB CONSTRUCTION, SEE PLAN\n(2) 15M CONTINUOUS, PROVIDE MINIMUM 16\" LAP AT SPLICES, TYP.\n2\" COVER AT TOP\nSLOPE GRADE AWAY\n2\" COVER AT SIDE\n3\" COVER AT BOTTOM\n2'0\"\n2'0\"",
+      "summary": "This plan view shows a foundation layout with a focus on thickened slab edge details. The thickened edge detail includes typical floor slab construction with two 15M continuous rebars, providing a minimum 16-inch lap at splices. The detail specifies a 2-inch cover at the top and side, and a 3-inch cover at the bottom. The slab edge is designed to slope the grade away from the structure, ensuring proper drainage. The dimensions '2'0\"' indicate the width of the thickened edge.",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 6,
+      "relative_path": "page_002/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – retaining wall layout",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Retaining Wall",
+        "Thickened Slab Edge",
+        "Concrete"
+      ],
+      "text_verbatim": "FOUNDATION PLAN\nSCALE: 1/8\" = 1'-0\"\nRETAINING WALL 1\nTHICKENED EDGE DETAIL\nGUTTER DETAIL\nSEE CODE NOTE\n",
+      "summary": "This foundation plan illustrates the layout of retaining walls and thickened slab edges. The plan is drawn to a scale of 1/8 inch equals 1 foot. It includes specific details such as the 'THICKENED EDGE DETAIL' and 'GUTTER DETAIL'. The retaining wall is labeled as 'RETAINING WALL 1'. The plan provides essential information for constructing the foundation, ensuring stability and support for the structure above.",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 7,
+      "relative_path": "page_002/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – retaining wall and wall detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "FW:2",
+        "RW:1"
+      ],
+      "key_components": [
+        "Retaining Wall",
+        "Concrete Slab",
+        "Rebar",
+        "Shear Key"
+      ],
+      "text_verbatim": "WALL FW 2\nSILL PLATE ON SILL GASKET C/W 1/2\" ANCHOR BOLTS @ 48\" O.C.\n(2) 15M CONT. @ TOP OF WALL\nMANURE REPOSE\n15M VERTICALS @ 16\" O.C. BOTH FACES (2\" COVER)\n15M HORIZONTAL AT 16\" O.C. ON BOTH FACES\n3\" COVER FROM MANURE SIDE\n2\" COVER FROM OUTSIDE\n10\" CONCRETE FDN. WALL 32 MPa\n15M TRANSVERSE BARS @ 16\" O.C.\n2x4 SHEAR KEY\nPVC WATER STOP TO PROTECT REBAR\n15M x 36\" VERT. x 12\" HORIZ. @ VERT. SPACING EACH FACE LONGITUDINAL BARS\nCONCRETE SLAB C/W 6x6x6 WWM REINFORCED\n15M TRANSVERSE BARS @ 16\" O.C.",
+      "summary": "This foundation plan section details the construction of retaining walls and wall FW 2. The wall includes a sill plate on a sill gasket with 1/2-inch anchor bolts spaced at 48 inches on center. Two 15M continuous rebars are placed at the top of the wall. The wall features 15M verticals at 16 inches on center on both faces with 2-inch cover, and 15M horizontal bars at the same spacing. The concrete foundation wall is 10 inches thick with a strength of 32 MPa. A 2x4 shear key and PVC water stop are included to protect the rebar. The concrete slab is reinforced with 6x6x6 welded wire mesh.",
+      "project_id": "25-01-027",
+      "page_number": 2,
+      "region_number": 8,
+      "relative_path": "page_002/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – diagonal brace detail",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Diagonal Brace Detail",
+      "element_callouts": [],
+      "key_components": [
+        "2x6 Diagonal Brace",
+        "Nails",
+        "Solid Blocking"
+      ],
+      "text_verbatim": "(2) 2x6 DIAGONAL BRACE DETAIL\nNOTES:\n1. 2x6 BRACE IS TO BE CONTINUOUS AND END AT STUD CONNECTION TO PLATE.\n2. DO NOT NOTCH BRACES INTO STUDS.\n3. INSTALL BRACES AT APPROXIMATELY 45 deg. ANGLES.\n4. MIN. NAIL SPACING 1 1/2\"\nDOUBLE SOLID BLOCKING BETWEEN STUDS FASTEN W/ (6) 3 1/2\" NAILS THROUGH FACE & (3) NAILS THROUGH STUD INTO EACH END OF EACH BLOCK\n(12) 3 1/2\" COMMON SPIRAL NAILS EACH BRACE (TOP & BOTTOM OF WALL)\n3-PLY SOLID BLOCKING BETWEEN STUDS TYP. FASTEN W/ (6) 3 1/2\" NAILS THROUGH FACE & (3) NAILS THROUGH STUD INTO EACH END OF EACH BLOCK\n(2) 3 1/2\" COMMON SPIRAL NAILS EACH STUD (TYP.)\n(3) 3 1/2\" COMMON SPIRAL NAILS THROUGH 2x6 PLATE (4 FOR 2x8) INTO EACH STUD END GRAIN (TOP & BOTTOM OF WALL)\n(2) 1/2\"x6\" WEDGE ANCHOR TYP. AT EACH BRACE LOCATION",
+      "summary": "This detail illustrates the installation of 2x6 diagonal braces on the ground floor. The braces are to be continuous and end at the stud connection to the plate. They should not be notched into studs and must be installed at approximately 45-degree angles. Minimum nail spacing is specified at 1 1/2 inches. Double solid blocking between studs is fastened with six 3 1/2-inch nails through the face and three nails through the stud into each end of each block. Each brace requires twelve 3 1/2-inch common spiral nails at the top and bottom of the wall. Additional details include 3-ply solid blocking and wedge anchors at each brace location.",
+      "project_id": "25-01-027",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – wind column detail",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wind Column Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Wind Column",
+        "Engineered Truss",
+        "Steel Plate",
+        "Footing"
+      ],
+      "text_verbatim": "WIND COLUMN DETAILS\nEDGE OF FOOTING\nPROVIDE SLOTTED HOLES FOR 15M HAIRPIN\nTHICKEN WALL TO 14 AT WIND COLUMN (CHAMFER TOP OF THICKENED WALL)\nOUTSIDE\nINSIDE\nDOUBLE 15M HAIRPINS\nTHICKEN FLOOR SLAB TO 8\" AT HAIRPIN LOCATIONS\n6\"x14\"x1/2\" PLATE C/W 16 3/4\" THRU BOLTS (USE CARRIAGE BOLTS OR PLATE WASHERS)\nTYP.\nC6x8.2 CHANNEL\nDOUBLE TOP PLATES\n14\" x (COLUMN DEPTH + 1/2\") x 3/4\" BASEPLATE\nWIND COLUMN AS PER PLAN\nENGINEERED TRUSS\n(2) 1/2\"x6\" LONG SLEEVE ANCHORS INTO FOOTING\n36\"x36\"x12\" THK FOOTING UNDER WIND COLUMN (TYP.)\n14\" x (COLUMN DEPTH + 1/2\") x 3/4\" BASEPLATE C/W (2) 5/8\" SLEEVE ANCHORS (6\" EMBEDMENT)\nTHICKEN FOOTING AT EACH WIND COLUMN LOCATION TO 36\"x12\"\n2'0\"\n3'0\"\n(2) 15M HAIRPIN THRU SLOTTED HOLE IN STEEL COLUMN\n(2) 15M x 8'0\" THRU HOLES IN WEB OF BEAM",
+      "summary": "This detail provides specifications for wind column installation on the ground floor. The wind column is supported by a 36x36x12-inch thick footing, with provisions for slotted holes for 15M hairpins. The wall is thickened to 14 inches at the wind column, with a chamfered top. Double 15M hairpins are used, and the floor slab is thickened to 8 inches at hairpin locations. The detail includes a 6x14x1/2-inch steel plate with 16 3/4-inch thru bolts, and a C6x8.2 channel. Double top plates and engineered trusses are part of the assembly. The baseplate is specified as 14 inches by the column depth plus 1/2 inch by 3/4 inch, with sleeve anchors embedded 6 inches.",
+      "project_id": "25-01-027",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Schedule",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W3",
+        "W4",
+        "W5",
+        "W6"
+      ],
+      "key_components": [
+        "29 Gauge Steel Exterior Cladding",
+        "Air Barrier",
+        "O.S.B.",
+        "Studs",
+        "Solid Blocking",
+        "Roxul Bats",
+        "Poly",
+        "PVC",
+        "Truss Core Liner",
+        "Pine Barn Board Siding",
+        "AG Tuff Barn Side"
+      ],
+      "text_verbatim": "WALL SCHEDULE\nW1 -29 GAUGE STEEL EXTERIOR CLADDING\n-AIR BARRIER\n-7/16\" O.S.B.\n-2x6@24\" O.C. STUDS\n-SOLID BLOCKING @48\" O.C.\n-R 22 ROXUL BATS\n-6 MIL. POLY\n-7/16\" O.S.B.\n-PVC, AGTUFF LINER\nW2 -1\" PINE BARN BOARD SIDING\n-2x6@24\" O.C. STUDS\n-SOLID BLOCKING @ 2' O.C.\nW3 -29 GAUGE STEEL EXTERIOR CLADDING\n-AIR BARRIER\n-7/16\" O.S.B.\n-2x6@24\" O.C. STUDS\n-SOLID BLOCKING @48\" O.C.\n-R 22 ROXUL BATS\n-6 MIL. POLY\n-7/16\" O.S.B.\n-TRUSS CORE LINER\nW4 -TRUSS CORE LINER\n-7/16\" O.S.B.\n-2x6@24\" O.C. STUDS\n-SOLID BLOCKING @48\" O.C.\n-R 22 ROXUL BATS\n-6 MIL. POLY\n-7/16\" O.S.B.\n-TRUSS CORE LINER\nW5 -TRUSS CORE LINER\n-7/16\" O.S.B.\n-2x4@24\" O.C. STUDS\n-SOLID BLOCKING @48\" O.C.\n-7/16\" O.S.B.\n-TRUSS CORE LINER\nW6 -TRUSS CORE LINER\n-6 MIL. POLY\n-7/16\" O.S.B.\n-2x6@24\" O.C. STUDS\n-R 22 ROXUL BATS\n-SOLID BLOCKING @48\" O.C.\n-7/16\" O.S.B.\n-AG TUFF BARN SIDE",
+      "summary": "This image presents a wall schedule detailing six different wall types (W1 to W6) for the ground floor framing plan. Each wall type specifies the materials and construction methods, including cladding, air barriers, O.S.B. sheathing, stud sizes and spacing, solid blocking, insulation (R 22 Roxul Bats), and additional layers such as poly and liners. For instance, W1 includes 29 gauge steel exterior cladding and PVC, AGTUFF liner, while W2 features 1\" pine barn board siding. The schedule provides comprehensive specifications for constructing walls with varying materials and structural components, ensuring the building's integrity and performance.",
+      "project_id": "25-01-027",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": "page_003/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main barn bay",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "L-4",
+        "L-3",
+        "L-2",
+        "L-1"
+      ],
+      "section_callouts": [],
+      "element_type": "Framing Plan",
+      "element_callouts": [
+        "C1",
+        "L-1",
+        "L-2",
+        "L-3",
+        "L-4"
+      ],
+      "key_components": [
+        "Wind Columns",
+        "Diagonal Braces",
+        "Lintels",
+        "Stud Walls"
+      ],
+      "text_verbatim": "FRAMING PLAN\nSCALE: 1/8\" = 1'-0\"\nC1 WIND COLUMN\nL-1\nL-2\nL-3\nL-4\nADJUSTED TRUSS SPACING @ 48\" O.C.\nP.T. RATING:\nC1/C2 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC3/C4 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC5/C6 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC7/C8 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC9/C10 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC11/C12 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC13/C14 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC15/C16 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC17/C18 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC19/C20 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC21/C22 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC23/C24 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC25/C26 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC27/C28 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC29/C30 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC31/C32 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC33/C34 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC35/C36 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC37/C38 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC39/C40 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC41/C42 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC43/C44 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC45/C46 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC47/C48 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC49/C50 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC51/C52 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC53/C54 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC55/C56 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC57/C58 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC59/C60 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC61/C62 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC63/C64 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC65/C66 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC67/C68 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC69/C70 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC71/C72 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC73/C74 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC75/C76 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC77/C78 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC79/C80 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC81/C82 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC83/C84 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC85/C86 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC87/C88 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC89/C90 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC91/C92 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC93/C94 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC95/C96 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC97/C98 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC99/C100 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC101/C102 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC103/C104 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC105/C106 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC107/C108 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC109/C110 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC111/C112 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC113/C114 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC115/C116 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC117/C118 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC119/C120 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC121/C122 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC123/C124 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC125/C126 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC127/C128 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC129/C130 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC131/C132 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC133/C134 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC135/C136 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC137/C138 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC139/C140 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC141/C142 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC143/C144 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC145/C146 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC147/C148 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC149/C150 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC151/C152 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC153/C154 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC155/C156 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC157/C158 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS\nC159/C160 - TREATED WOOD NOT IN CONTACT W/ GROUND OR FOUNDATIONS",
+      "project_id": "25-01-027",
+      "page_number": 3,
+      "region_number": 4,
+      "relative_path": "page_003/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S1.0",
+        "2/S1.0",
+        "3/S1.0"
+      ],
+      "element_type": "Framing Plan",
+      "element_callouts": [
+        "L4",
+        "C1"
+      ],
+      "key_components": [
+        "Wind Columns",
+        "Diagonal Braces",
+        "Trusses"
+      ],
+      "text_verbatim": "TRUSS DESIGNED AS LINTEL\nENGINEERED TRUSS\nADD 2x6 KICK BRACES\n8'-0\" O.C. 4'-0\" DOWN FROM TOP OF WALL\nTRUSS BRACE AT EACH BRACE LOCATION\n2x4 SPF BRACE EACH END DO NOT NAIL INTO BOTTOM CHORD\nP.T. RATING\nC1: 6x6 POST\nC2: 6x6 POST\nC3: 6x6 POST\nC4: 6x6 POST\nC5: 6x6 POST\nC6: 6x6 POST\nC7: 6x6 POST\nC8: 6x6 POST\nC9: 6x6 POST\nC10: 6x6 POST\nC11: 6x6 POST\nC12: 6x6 POST\nC13: 6x6 POST\nC14: 6x6 POST\nC15: 6x6 POST\nC16: 6x6 POST\nC17: 6x6 POST\nC18: 6x6 POST\nC19: 6x6 POST\nC20: 6x6 POST\nC21: 6x6 POST\nC22: 6x6 POST\nC23: 6x6 POST\nC24: 6x6 POST\nC25: 6x6 POST\nC26: 6x6 POST\nC27: 6x6 POST\nC28: 6x6 POST\nC29: 6x6 POST\nC30: 6x6 POST\nC31: 6x6 POST\nC32: 6x6 POST\nC33: 6x6 POST\nC34: 6x6 POST\nC35: 6x6 POST\nC36: 6x6 POST\nC37: 6x6 POST\nC38: 6x6 POST\nC39: 6x6 POST\nC40: 6x6 POST\nC41: 6x6 POST\nC42: 6x6 POST\nC43: 6x6 POST\nC44: 6x6 POST\nC45: 6x6 POST\nC46: 6x6 POST\nC47: 6x6 POST\nC48: 6x6 POST\nC49: 6x6 POST\nC50: 6x6 POST\nC51: 6x6 POST\nC52: 6x6 POST\nC53: 6x6 POST\nC54: 6x6 POST\nC55: 6x6 POST\nC56: 6x6 POST\nC57: 6x6 POST\nC58: 6x6 POST\nC59: 6x6 POST\nC60: 6x6 POST\nC61: 6x6 POST\nC62: 6x6 POST\nC63: 6x6 POST\nC64: 6x6 POST\nC65: 6x6 POST\nC66: 6x6 POST\nC67: 6x6 POST\nC68: 6x6 POST\nC69: 6x6 POST\nC70: 6x6 POST\nC71: 6x6 POST\nC72: 6x6 POST\nC73: 6x6 POST\nC74: 6x6 POST\nC75: 6x6 POST\nC76: 6x6 POST\nC77: 6x6 POST\nC78: 6x6 POST\nC79: 6x6 POST\nC80: 6x6 POST\nC81: 6x6 POST\nC82: 6x6 POST\nC83: 6x6 POST\nC84: 6x6 POST\nC85: 6x6 POST\nC86: 6x6 POST\nC87: 6x6 POST\nC88: 6x6 POST\nC89: 6x6 POST\nC90: 6x6 POST\nC91: 6x6 POST\nC92: 6x6 POST\nC93: 6x6 POST\nC94: 6x6 POST\nC95: 6x6 POST\nC96: 6x6 POST\nC97: 6x6 POST\nC98: 6x6 POST\nC99: 6x6 POST\nC100: 6x6 POST\nC101: 6x6 POST\nC102: 6x6 POST\nC103: 6x6 POST\nC104: 6x6 POST\nC105: 6x6 POST\nC106: 6x6 POST\nC107: 6x6 POST\nC108: 6x6 POST\nC109: 6x6 POST\nC110: 6x6 POST\nC111: 6x6 POST\nC112: 6x6 POST\nC113: 6x6 POST\nC114: 6x6 POST\nC115: 6x6 POST\nC116: 6x6 POST\nC117: 6x6 POST\nC118: 6x6 POST\nC119: 6x6 POST\nC120: 6x6 POST\nC121: 6x6 POST\nC122: 6x6 POST\nC123: 6x6 POST\nC124: 6x6 POST\nC125: 6x6 POST\nC126: 6x6 POST\nC127: 6x6 POST\nC128: 6x6 POST\nC129: 6x6 POST\nC130: 6x6 POST\nC131: 6x6 POST\nC132: 6x6 POST\nC133: 6x6 POST\nC134: 6x6 POST\nC135: 6x6 POST\nC136: 6x6 POST\nC137: 6x6 POST\nC138: 6x6 POST\nC139: 6x6 POST\nC140: 6x6 POST\nC141: 6x6 POST\nC142: 6x6 POST\nC143: 6x6 POST\nC144: 6x6 POST\nC145: 6x6 POST\nC146: 6x6 POST\nC147: 6x6 POST\nC148: 6x6 POST\nC149: 6x6 POST\nC150: 6x6 POST\nC151: 6x6 POST\nC152: 6x6 POST\nC153: 6x6 POST\nC154: 6x6 POST\nC155: 6x6 POST\nC156: 6x6 POST\nC157: 6x6 POST\nC158: 6x6 POST\nC159: 6x6 POST\nC160: 6x6 POST\nC161: 6x6 POST\nC162: 6x6 POST\nC163: 6x6 POST\nC164: 6x6 POST\nC165: 6x6 POST\nC166: 6x6 POST\nC167: 6x6 POST\nC168: 6x6 POST\nC169: 6x6 POST\nC170: 6x6 POST\nC171: 6x6 POST\nC172: 6x6 POST\nC173: 6x6 POST\nC174: 6x6 POST\nC175: 6x6 POST\nC176: 6x6 POST\nC177: 6x6 POST\nC178: 6x6 POST\nC179: 6x6 POST\nC180: 6x6 POST\nC181: 6x6 POST\nC182: 6x6 POST\nC183: 6x6 POST\nC184: 6x6 POST\nC185: 6x6 POST\nC186: 6x6 POST\nC187: 6x6 POST\nC188: 6x6 POST\nC189: 6x6 POST\nC190: 6x6 POST\nC191: 6x6 POST\nC192: 6x6 POST\nC193: 6x6 POST\nC194: 6x6 POST\nC195: 6x6 POST\nC196: 6x6 POST\nC197: 6x6 POST\nC198: 6x6 POST\nC199: 6x6 POST\nC200: 6x6 POST\nC201: 6x6 POST\nC202: 6x6 POST\nC203: 6x6 POST\nC204: 6x6 POST\nC205: 6x6 POST\nC206: 6x6 POST\nC207: 6x6 POST\nC208: 6x6 POST\nC209: 6x6 POST\nC210: 6x6 POST\nC211: 6x6 POST\nC212: 6x6 POST\nC213: 6x6 POST\nC214: 6x6 POST\nC215: 6x6 POST\nC216: 6x6 POST\nC217: 6x6 POST\nC218: 6x6 POST\nC219: 6x6 POST\nC220: 6x6 POST\nC221: 6x6 POST\nC222: 6x6 POST\nC223: 6x6 POST\nC224: 6x6 POST\nC225: 6x6 POST\nC226: 6x6 POST\nC227: 6x6 POST\nC228: 6x6 POST\nC229: 6x6 POST\nC230: 6x6 POST\nC231: 6x6 POST\nC232: 6x6 POST\nC233: 6x6 POST\nC234: 6x6 POST\nC235: 6x6 POST\nC236: 6x6 POST\nC237: 6x6 POST\nC238: 6x6 POST\nC239: 6x6 POST\nC240: 6x6 POST\nC241: 6x6 POST\nC242: 6x6 POST\nC243: 6x6 POST\nC244: 6x6 POST\nC245: 6x6 POST\nC246: 6x6 POST\nC247: 6x6 POST\nC248: 6x6 POST\nC249: 6x6 POST\nC250: 6x6 POST\nC251: 6x6 POST\nC252: 6x6 POST\nC253: 6x6 POST\nC254: 6x6 POST\nC255: 6x6 POST\nC256: 6x6 POST\nC257: 6x6 POST\nC258: 6x6 POST\nC259: 6x6 POST\nC260: 6x6 POST\nC261: 6x6 POST\nC262: 6x6 POST\nC263: 6x6 POST\nC264: 6x6 POST\nC265: 6x6 POST\nC266: 6x6 POST\nC267: 6x6 POST\nC268: 6x6 POST\nC269: 6x6 POST\nC270: 6x6 POST\nC271: 6x6 POST\nC272: 6x6 POST\nC273: 6x6 POST\nC274: 6x6 POST\nC275: 6x6 POST\nC276: 6x6 POST\nC277: 6x6 POST\nC278: 6x6 POST\nC279: 6x6 POST\nC280: 6x6 POST\nC281: 6x6 POST\nC282: 6x6 POST\nC283: 6x6 POST\nC284: 6x6 POST\nC285: 6x6 POST\nC286: 6x6 POST\nC287: 6x6 POST\nC288: 6x6 POST\nC289: 6x6 POST\nC290: 6x6 POST\nC291: 6x6 POST\nC292: 6x6 POST\nC293: 6x6 POST\nC294: 6x6 POST\nC295: 6x6 POST\nC296: 6x6 POST\nC297: 6x6 POST\nC298: 6x6 POST\nC299: 6x6 POST\nC300: 6x6 POST\nC301: 6x6 POST\nC302: 6x6 POST\nC303: 6x6 POST\nC304: 6x6 POST\nC305: 6x6 POST\nC306: 6x6 POST\nC307: 6x6 POST\nC308: 6x6 POST\nC309: 6x6 POST\nC310: 6x6 POST\nC311: 6x6 POST\nC312: 6x6 POST\nC313: 6x6 POST\nC314: 6x6 POST\nC315: 6x6 POST\nC316: 6x6 POST\nC317: 6x6 POST\nC318: 6x6 POST\nC319: 6x6 POST\nC320: 6x6 POST\nC321: 6x6 POST\nC322: 6x6 POST\nC323: 6x6 POST\nC324: 6x6 POST\nC325: 6x6 POST\nC326: 6x6 POST\nC327: 6x6 POST\nC328: 6x6 POST\nC329: 6x6 POST\nC330: 6x6 POST\nC331: 6x6 POST\nC332: 6x6 POST\nC333: 6x6 POST\nC334: 6x6 POST\nC335: 6x6 POST\nC336: 6x6 POST\nC337: 6x6 POST\nC338: 6x6 POST\nC339: 6x6 POST\nC340: 6x6 POST\nC341: 6x6 POST\nC342: 6x6 POST\nC343: 6x6 POST\nC344: 6x6 POST\nC345: 6x6 POST\nC346: 6x6 POST\nC347: 6x6 POST\nC348: 6x6 POST\nC349: 6x6 POST\nC350: 6x6 POST\nC351: 6x6 POST\nC352: 6x6 POST\nC353: 6x6 POST\nC354: 6x6 POST\nC355: 6x6 POST\nC356: 6x6 POST\nC357: 6x6 POST\nC358: 6x6 POST\nC359: 6x6 POST\nC360: 6x6 POST\nC361: 6x6 POST\nC362: 6x6 POST\nC363: 6x6 POST\nC364: 6x6 POST\nC365: 6x6 POST\nC366: 6x6 POST\nC367: 6x6 POST\nC368: 6x6 POST\nC369: 6x6 POST\nC370: 6x6 POST\nC371: 6x6 POST\nC372: 6x6 POST\nC373: 6x6 POST\nC374: 6x6 POST\nC375: 6x6 POST\nC376: 6x6 POST\nC377: 6x6 POST\nC378: 6x6 POST\nC379: 6x6 POST\nC380: 6x6 POST\nC381: 6x6 POST\nC382: 6x6 POST\nC383: 6x6 POST\nC384: 6x6 POST\nC385: 6x6 POST\nC386: 6x6 POST\nC387: 6x6 POST\nC388: 6x6 POST\nC389: 6x6 POST\nC390: 6x6 POST\nC391: 6x6 POST\nC392: 6x6 POST\nC393: 6x6 POST\nC394: 6x6 POST\nC395: 6x6 POST\nC396: 6x6 POST\nC397: 6x6 POST\nC398: 6x6 POST\nC399: 6x6 POST\nC400: 6x6 POST\nC401: 6x6 POST\nC402: 6x6 POST\nC403: 6x6 POST\nC404: 6x6 POST\nC405: 6x6 POST\nC406: 6x6 POST\nC407: 6x6 POST\nC408: 6x6 POST\nC409: 6x6 POST\nC410: 6x6 POST\nC411: 6x6 POST\nC412: 6x6 POST\nC413: 6x6 POST\nC414: 6x6 POST\nC415: 6x6 POST\nC416: 6x6 POST\nC417: 6x6 POST\nC418: 6x6 POST\nC419: 6x6 POST\nC420: 6x6 POST\nC421: 6x6 POST\nC422: 6x6 POST\nC423: 6x6 POST\nC424: 6x6 POST\nC425: 6x6 POST\nC426: 6x6 POST\nC427: 6x6 POST\nC428: 6x6 POST\nC429: 6x6 POST\nC430: 6x6 POST\nC431: 6x6 POST\nC432: 6x6 POST\nC433: 6x6 POST\nC434: 6x6 POST\nC435: 6x6 POST\nC436: 6x6 POST\nC437: 6x6 POST\nC438: 6x6 POST\nC439: 6x6 POST\nC440: 6x6 POST\nC441: 6x6 POST\nC442: 6x6 POST\nC443: 6x6 POST\nC444: 6x6 POST\nC445: 6x6 POST\nC446: 6x6 POST\nC447: 6x6 POST\nC448: 6x6 POST\nC449: 6x6 POST\nC450: 6x6 POST\nC451: 6x6 POST\nC452: 6x6 POST\nC453: 6x6 POST\nC454: 6x6 POST\nC455: 6x6 POST\nC456: 6x6 POST\nC457: 6x6 POST\nC458: 6x6 POST\nC459: 6x6 POST\nC460: 6x6 POST\nC461: 6x6 POST\nC462: 6x6 POST\nC463: 6x6 POST\nC464: 6x6 POST\nC465: 6x6 POST",
+      "project_id": "25-01-027",
+      "page_number": 3,
+      "region_number": 8,
+      "relative_path": "page_003/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "North elevation",
+      "level": "Unknown",
+      "orientation": "North elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Barn Board Siding",
+        "2x6 Brace"
+      ],
+      "text_verbatim": "TOP OF ROOF\n25'-0\"\n9'-6\"\nTop of Plate\nTop of Subfloor\n8'-0\"\nGRADE\nTop of Footing\n5'-2\"\nTop of Foundation\n25'-4 25/32\"\n(2) 2x6 BRACE ON INSIDE\nBARN BOARD SIDING\nNORTH ELEVATION\nSCALE: 1/8\" = 1'-0\"",
+      "summary": "This image shows the north elevation of a building. The elevation provides key dimensions such as the top of the roof at 25'-0\" and the top of the foundation at 25'-4 25/32\". The grade is marked at 8'-0\" above the top of footing, which is 5'-2\". The building features barn board siding and includes (2) 2x6 braces on the inside for structural support. The scale of the drawing is 1/8\" = 1'-0\". These details are crucial for understanding the exterior appearance and structural elements of the building.",
+      "project_id": "25-01-027",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "South elevation",
+      "level": "Unknown",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Barn Board Siding",
+        "2x6 Brace"
+      ],
+      "text_verbatim": "TOP OF ROOF\n24'-0 25/32\"\nGRADE\n5'-2\"\nTop of Subfloor\n1'-4\"\nTop of Footing\n(2) 2x6 BRACE ON INSIDE E.W.\nSOUTH ELEVATION\nSCALE: 1/8\" = 1'-0\"",
+      "summary": "This image depicts the south elevation of a building. The top of the roof is at 24'-0 25/32\", and the top of the footing is 5'-2\" below the grade. The top of the subfloor is 1'-4\" above the footing. The building is clad in barn board siding and includes (2) 2x6 braces on the inside of the east wall for additional support. The scale of the drawing is 1/8\" = 1'-0\". These details help visualize the building's exterior and structural components.",
+      "project_id": "25-01-027",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "West elevation",
+      "level": "Unknown",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Barn Board Siding",
+        "2x6 Brace"
+      ],
+      "text_verbatim": "TOP OF ROOF\n25'-4 25/32\"\nTop of Footing\n(2) 2x6 BRACE ON INSIDE\nWEST ELEVATION\nSCALE: 1/8\" = 1'-0\"",
+      "summary": "This image illustrates the west elevation of a building. The top of the roof is at 25'-4 25/32\". The building features barn board siding and includes (2) 2x6 braces on the inside for structural reinforcement. The scale of the drawing is 1/8\" = 1'-0\". These elevation details are essential for understanding the building's exterior design and structural elements.",
+      "project_id": "25-01-027",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": "page_005/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "East elevation",
+      "level": "Unknown",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Barn Board Siding"
+      ],
+      "text_verbatim": "EAST ELEVATION\nSCALE: 1/8\" = 1'-0\"",
+      "summary": "This image presents the east elevation of a building. The building is clad in barn board siding. The scale of the drawing is 1/8\" = 1'-0\". This elevation provides a view of the building's exterior design, contributing to the overall understanding of its architectural appearance.",
+      "project_id": "25-01-027",
+      "page_number": 5,
+      "region_number": 4,
+      "relative_path": "page_005/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Elevation",
+      "location": "East elevation continuation",
+      "level": "Unknown",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Barn Board Siding"
+      ],
+      "text_verbatim": "EAST ELEVATION\nSCALE: 1/8\" = 1'-0\"",
+      "summary": "This image continues the east elevation of a building. It features barn board siding and maintains a scale of 1/8\" = 1'-0\". This continuation helps complete the view of the building's east side, providing additional context for its architectural design.",
+      "project_id": "25-01-027",
+      "page_number": 5,
+      "region_number": 5,
+      "relative_path": "page_005/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Elevation",
+      "location": "West elevation of the building",
+      "level": "Unknown",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Exterior walls",
+        "Roof",
+        "Foundation"
+      ],
+      "text_verbatim": "WEST ELEVATION\nSCALE: 1/8\" = 1'-0\"\n(2) 2x6 BRACE ON INSIDE",
+      "summary": "This image shows the west elevation of the building. The elevation is drawn to a scale of 1/8\" = 1'-0\". It features exterior walls supported by a foundation and a roof structure. A note indicates the presence of two 2x6 braces on the inside of the structure. This elevation provides a visual representation of the building's exterior appearance and structural elements.",
+      "project_id": "25-01-027",
+      "page_number": 5,
+      "region_number": 6,
+      "relative_path": "page_005/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Elevation",
+      "location": "East elevation of the building",
+      "level": "Unknown",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Exterior walls",
+        "Roof",
+        "Foundation"
+      ],
+      "text_verbatim": "Paul & Erma Martin chicken barn\nPHONE: 519-555-7248",
+      "summary": "This image depicts the east elevation of the building, specifically a chicken barn. The elevation shows the exterior walls, roof, and foundation. The text includes the project name 'Paul & Erma Martin chicken barn' and a contact phone number '519-555-7248'. This elevation helps visualize the building's design and structural elements from the east side.",
+      "project_id": "25-01-027",
+      "page_number": 5,
+      "region_number": 7,
+      "relative_path": "page_005/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section A",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "A/2/6"
+      ],
+      "element_type": "Building Cross Section",
+      "element_callouts": [
+        "W:3",
+        "W:4",
+        "W:5",
+        "RW:1"
+      ],
+      "key_components": [
+        "Trusses",
+        "Sill assembly",
+        "Anchor bolts",
+        "Insulation"
+      ],
+      "text_verbatim": "CROSS SECTION A\nSCALE: 1/4\" = 1'-0\"\nTRUSS UPLIFT CLIPS AS PER TRUSS MANUF. DRAWINGS.\nTYP. SILL ASSEMBLY\nSILL PLATE C/W 1/4\" SILL GASKET\n1/2\" ANCHOR BOLTS AT 4' O.C.\nMIN. 4\" EMBEDMENT\nINSUL. ON INSIDE OF WALL TO 24\" BELOW GRADE",
+      "summary": "This section view, labeled 'Cross Section A', shows a detailed transverse cut through the building. The scale is 1/4\" = 1'-0\". Key structural elements include trusses with uplift clips as per manufacturer drawings, a typical sill assembly with a sill plate complete with a 1/4\" sill gasket, and 1/2\" anchor bolts spaced at 4 feet on center with a minimum 4-inch embedment. Insulation is specified on the inside of the wall extending 24 inches below grade. The section provides insight into the vertical alignment and construction details of the building.",
+      "project_id": "25-01-027",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section B",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "B/2/6"
+      ],
+      "element_type": "Building Cross Section",
+      "element_callouts": [
+        "W:1",
+        "FW:1"
+      ],
+      "key_components": [
+        "Trusses",
+        "Sill assembly",
+        "Anchor bolts",
+        "Foundation wall"
+      ],
+      "text_verbatim": "CROSS SECTION B\nSCALE: 1/4\" = 1'-0\"\nCONT. 2x6 'X' BRACE FASTENED TO TOP OF BOTTOM CHORD\nTYP. SILL ASSEMBLY\nSILL PLATE C/W 1/4\" SILL GASKET\n1/2\" ANCHOR BOLTS AT 4' O.C.\nWELDED TO HOOK",
+      "summary": "This section view, labeled 'Cross Section B', illustrates a transverse cut through the building. The scale is 1/4\" = 1'-0\". It features continuous 2x6 'X' bracing fastened to the top of the bottom chord of the trusses. The typical sill assembly includes a sill plate with a 1/4\" sill gasket and 1/2\" anchor bolts at 4 feet on center, welded to a hook. The section highlights the structural components and their connections, including the foundation wall.",
+      "project_id": "25-01-027",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section C",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "C/2/6"
+      ],
+      "element_type": "Building Cross Section",
+      "element_callouts": [
+        "W:1",
+        "FW:2"
+      ],
+      "key_components": [
+        "Trusses",
+        "Sill assembly",
+        "Anchor bolts",
+        "Foundation wall",
+        "Slope"
+      ],
+      "text_verbatim": "CROSS SECTION C\nSCALE: 1/4\" = 1'-0\"\nFASTEN GABLE END TRUSS TO TOP PLATE W/ 3.5\" NAILS @ 10\" O.C.\nTYP. SILL ASSEMBLY\nSILL PLATE C/W 1/4\" SILL GASKET\n1/2\" ANCHOR BOLTS AT 4' O.C.\nMIN. 4\" EMBEDMENT\nSLOPE 3'-0\"",
+      "summary": "This section view, labeled 'Cross Section C', provides a transverse cut through the building. The scale is 1/4\" = 1'-0\". It shows the fastening of the gable end truss to the top plate with 3.5\" nails at 10 inches on center. The typical sill assembly includes a sill plate with a 1/4\" sill gasket and 1/2\" anchor bolts at 4 feet on center with a minimum 4-inch embedment. The section also indicates a slope of 3 feet. This view details the structural components and their connections, including the foundation wall and slope.",
+      "project_id": "25-01-027",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": "page_006/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section E",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Cross Section E",
+      "element_callouts": [
+        "W:2",
+        "FW:2"
+      ],
+      "key_components": [
+        "Truss",
+        "Sill Assembly",
+        "Anchor Bolts",
+        "Knee Braces"
+      ],
+      "text_verbatim": "ROOF AS PER PLAN\nVENTS AS PER OBC, BY OTHERS\nTRUSS MAY NOT BE AS SHOWN\nINSTALL X BRACES ON ALL TRUSS LATERAL BRACES AS DIRECTED BY ENGINEER UPON REVIEW OF PRE-ENGINEERED ROOF TRUSS SHOP DRAWINGS.\nADD THE EQUIVALENT OF THE TRUSS MFR SPECIFIED UPLIFT CLIP FROM TOP PLATE TO STUD.\nCONT. 2x6 'X' BRACE FASTENED TO TOP OF BOTTOM CHORD\nCEILING AS PER PLAN\nTRUSS UPLIFT CLIPS AS PER TRUSS MANUF. DRAWINGS. (TYP, EACH END) DOUBLE TOP PLATE, CONT.\nADD 2x8 KNEE BRACES @ 8'-0\" O.C. AT 3'-0\" DOWN FROM TOP OF WALL\nTRIPLE STUD AT KNEE BRACE LOCATIONS\n(6) 4\" SPIRALS EACH END DO NOT NAIL INTO BG\nCONNECT EACH STUD UNDER A TRUSS TO SILL w/ SPH6\nTYP. SILL ASSEMBLY\nSILL PLATE C/W 1/4\" SILL GASKET\n1/2\" ANCHOR BOLTS AT 4' O.C., MIN. 4\" EMBEDMENT\nFLOOR AS PER PLAN\nTop of Plate\nTop of Foundation\nTop of Footing\nCROSS SECTION E\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "This image shows Cross Section E, highlighting the structural framework of a building. The section includes a roof truss system with notes indicating that trusses may not be as shown and require X braces on all lateral braces as directed by the engineer. The truss uplift clips are specified per the manufacturer's drawings, with a double top plate continuing across the section. Knee braces are added at 8'-0\" on center, 3'-0\" down from the top of the wall, with triple studs at these locations. The sill assembly includes a sill plate with a 1/4\" sill gasket and 1/2\" anchor bolts at 4' on center with a minimum 4\" embedment. The section also details the connection of each stud under a truss to the sill with SPH6. The floor and ceiling are as per plan, and the section is drawn to a scale of 1/4\" = 1'-0\".",
+      "project_id": "25-01-027",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Cross Section D",
+      "level": "Multiple",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Cross Section D",
+      "element_callouts": [
+        "W:3",
+        "RW:1",
+        "W:6",
+        "FW:1"
+      ],
+      "key_components": [
+        "Truss",
+        "Sill Assembly",
+        "Anchor Bolts",
+        "Stairs"
+      ],
+      "text_verbatim": "2x6 OVER FRAMING\nVENTS AS PER OBC, BY OTHERS\nROOF AS PER PLAN\nTRUSS MAY NOT BE AS SHOWN\nINSTALL X BRACES ON ALL TRUSS LATERAL BRACES AS DIRECTED BY ENGINEER UPON REVIEW OF PRE-ENGINEERED ROOF TRUSS SHOP DRAWINGS.\nCONT. 2x6 'X' BRACE FASTENED TO TOP OF BOTTOM CHORD\nCEILING AS PER PLAN\nTRUSS UPLIFT CLIPS AS PER TRUSS MANUF. DRAWINGS. (TYP, EACH END) DOUBLE TOP PLATE, CONT.\nTYP. SILL ASSEMBLY\nSILL PLATE C/W 1/4\" SILL GASKET\n1/2\" ANCHOR BOLTS AT 4' O.C., MIN. 4\" EMBEDMENT\nWELDED TO HOOK\nSTAIRS AS PER OBC\nFLOOR AS PER PLAN\n43'-1\"\nTop of Subfloor\nTop of Foundation\nTop of Footing\n6'-1 1/2\"\n5'-2\"\nCROSS SECTION D\nSCALE: 1/4\" = 1'-0\"",
+      "summary": "This image shows Cross Section D, detailing the structural elements of a building. The section includes a truss system with X braces installed on all lateral braces as directed by the engineer. The truss uplift clips are specified per the manufacturer's drawings, with a double top plate continuing across the section. The sill assembly includes a sill plate with a 1/4\" sill gasket and 1/2\" anchor bolts at 4' on center with a minimum 4\" embedment, welded to a hook. Stairs are constructed as per OBC, and the floor is as per plan. The section is drawn to a scale of 1/4\" = 1'-0\". The section also includes a dimension of 43'-1\" for the floor span and heights of 6'-1 1/2\" and 5'-2\" for various elements.",
+      "project_id": "25-01-027",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Notes for Bracing of Roof Truss",
+      "element_callouts": [],
+      "key_components": [
+        "Truss",
+        "Bracing",
+        "Diagonal Bracing"
+      ],
+      "text_verbatim": "NOTES FOR BRACING OF ROOF TRUSS\n1 -- >> CONTRACTOR AND OWNER TO NOTIFY ENGINEER OF ANY TRUSS DEFICIENCIES SUCH AS DAMAGED OR BROKEN TRUSSES, WARPING OF TRUSS MEMBERS, AND MISSING OR OFFSET TRUSS PLATES.\n2 -- >> DIAGONAL BRACING MUST BE PROVIDED ON ALL WEB MEMBERS THAT REQUIRE LATERAL BRACING. DIAGONAL BRACING SHALL BE SPACED AS NOTED ON THE ATTACHED DRAWINGS & X-BRACING SHALL BE PROVIDED @ ENDWALLS @ INTERVALS NOTED BY THE ENGINEER.\n3 -- >> PERMANENT LATERAL BRACING TO BE INSTALLED ON WEB MEMBERS AS INDICATED BY ENGINEER.\n4 -->> PROVIDE DIAGONAL BRACING @ ALL DISCONTINUITIES IN LATERAL BRACING SUCH AS WHERE TRUSS TYPE CHANGES\n5 -->> THE TRUSS SUPPLIER SHALL DESIGN THE TRUSSES FOR THE BRACING NOTED. BRACING DETAILS WILL NOT BE MODIFIED UNLESS SPECIFIED BY THE ENGINEER.",
+      "summary": "This image contains notes for the bracing of roof trusses. Key instructions include notifying the engineer of any truss deficiencies such as damage or warping. Diagonal bracing is required on all web members needing lateral bracing, with specific spacing and X-bracing at endwalls as noted by the engineer. Permanent lateral bracing must be installed as indicated, and diagonal bracing should be provided at all discontinuities in lateral bracing. The truss supplier is responsible for designing the trusses for the specified bracing, and modifications to bracing details are only allowed if specified by the engineer.",
+      "project_id": "25-01-027",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Notes for Bracing of Roof Truss",
+      "element_callouts": [],
+      "key_components": [
+        "Truss",
+        "Bracing",
+        "Diagonal Bracing"
+      ],
+      "text_verbatim": "SPACING AS SPECIFIED BY BRACE DESIGNER 48'-0\" MAXIMUM\n2x4 DIAGONAL BRACING SPACED AS REQUIRED BY THE BRACING DESIGNER\n2x4 STRUT x 5'-0\" LONG @ TOP & BOTTOM WITH TWO OF 3 1/2\" NAILS @ EACH TRUSS WEB MEMBER\nANCHOR 2x4 DIAGONAL BRACE TO LATERAL WITH FOUR OF 3 1/2\" NAILS @ INTERSECTION OF TRUSS WEB & TRUSS LATERAL\nBUTT 2x4 LATERALS @ ALL SPLICE LOCATIONS. ENSURE BUTT JOINT IS TIGHT & CENTERED ON TRUSS WEB.\nLAP 2x4 DIAGONAL (Min. 2 TRUSSES) TO ENSURE DIAGONAL BRACE EXTENDS COMPLETELY FROM TOP CHORD TO BOTTOM CHORD OF TRUSS. { AS REQUIRED }\nANCHOR DIAGONAL BRACE TO STRUT @ BOTH ENDS WITH FOUR OF 3 1/2\" NAILS",
+      "summary": "This image provides detailed notes on the bracing of roof trusses. The spacing for bracing is specified by the brace designer, with a maximum of 48'-0\". Diagonal bracing using 2x4s is required, with specific instructions for struts and anchoring. Struts are 5'-0\" long and secured with nails at each truss web member. Diagonal braces must be anchored to laterals with nails at intersections, and butt joints for laterals should be tight and centered. Diagonal braces should lap over a minimum of two trusses to ensure complete extension from the top to the bottom chord. Anchoring of diagonal braces to struts is specified at both ends.",
+      "project_id": "25-01-027",
+      "page_number": 8,
+      "region_number": 2,
+      "relative_path": "page_008/region_02_red_box.png"
+    }
+  ]
+}

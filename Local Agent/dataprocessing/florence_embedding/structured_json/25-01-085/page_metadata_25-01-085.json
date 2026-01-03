@@ -1,0 +1,68 @@
+{
+  "pages": [
+    {
+      "page_number": 4,
+      "sheet_id": "S3.0",
+      "drawing_title": "BUILDING ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "North, South, East, West Elevations",
+      "key_components": [
+        "Prefinished Metal Roofing",
+        "Prefinished Metal Cladding",
+        "Concrete Foundation"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD. 25-01-085 VLEUTEN 50' x 90' SHED S3.0 SARNIA CONSTRUCTION BUILDING ELEVATIONS 2025-03-17",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the building elevations for the Vleuten 50' x 90' Shed, showing views from the north, south, east, and west. Key components include prefinished metal roofing and cladding, along with the concrete foundation. The elevations detail the overall height and width of the building, as well as the placement of doors and windows."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "S2.0",
+      "drawing_title": "ROOF FRAMING PLAN & BUILDING SECTIONS",
+      "overall_classification": "Mixed",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Truss Framing",
+        "Building Sections",
+        "Concrete Foundation"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD. 25-01-085 VLEUTEN 50' x 90' SHED S2.0 SARNIA CONSTRUCTION ROOF FRAMING PLAN & BUILDING SECTIONS 2025-03-17",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet includes the roof truss framing plan and building sections for the Vleuten 50' x 90' Shed. It details the layout of the roof trusses and provides sectional views showing the structural components, including the concrete foundation and wall assemblies. The sections illustrate the relationship between the roof and walls, highlighting key construction details."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "S1.0",
+      "drawing_title": "FND. & GROUND FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Plan",
+        "Ground Floor Plan",
+        "Lintel Schedule"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD. 25-01-085 VLEUTEN 50' x 90' SHED S1.0 SARNIA CONSTRUCTION FND. & GROUND FLOOR PLAN 2025-03-17",
+      "general_notes_verbatim": "FOUNDATION PLAN NOTES: 1. EXTERIOR DIMENSIONS TAKEN TO OUTSIDE FACE OF FOUNDATION. 2. VERIFY ALL DIMENSIONS ON SITE PRIOR TO CONSTRUCTION. 3. ALL FOOTINGS TO BEAR ON UNDISTURBED SOIL OR ENGINEERED FILL.",
+      "page_overview_summary": "This sheet presents the foundation and ground floor plans for the Vleuten 50' x 90' Shed. It includes detailed dimensions and notes on the foundation layout, as well as the ground floor plan. The sheet also contains a lintel schedule and sections showing connections and construction details for the foundation and walls."
+    },
+    {
+      "page_number": 1,
+      "sheet_id": "S0.0",
+      "drawing_title": "GENERAL NOTES",
+      "overall_classification": "Notes",
+      "level": "Site",
+      "primary_orientation": null,
+      "key_components": [
+        "General Notes",
+        "Site Plan",
+        "Roof Truss Bracing"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD. 25-01-085 VLEUTEN 50' x 90' SHED S0.0 SARNIA CONSTRUCTION GENERAL NOTES 2025-03-17",
+      "general_notes_verbatim": "GENERAL NOTES: 1. DESIGN AND CONSTRUCTION TO CONFORM TO ALL CODES AND REGULATIONS. 2. CONTRACTOR TO VERIFY ALL DIMENSIONS ON SITE. 3. ALL MATERIALS TO BE NEW AND OF GOOD QUALITY.",
+      "page_overview_summary": "This sheet contains the general notes and site plan for the Vleuten 50' x 90' Shed project. It outlines the design and construction requirements, including compliance with codes and regulations. The site plan shows the layout of the property, and additional notes provide specifications for roof truss bracing and other structural elements."
+    }
+  ]
+}

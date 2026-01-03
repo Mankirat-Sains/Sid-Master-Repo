@@ -1,0 +1,18 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "S1",
+      "drawing_title": "COMPONENT DRAWING",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Step Bracket"
+      ],
+      "text_verbatim_title_block": "CLIENT: D.C. RACKING\nDRAWING TITLE: COMPONENT DRAWING\nPROJECT: STEP BRACKET\nDRAWN BY: PF DATE: 2023-03-26\nSCALE: 1:2 SHEET NO:\nPROJECT NO: 25-01-095 S1",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed views of a step bracket, including a flattened view, front right view, and bottom view. The drawing specifies dimensions and hole placements for fabrication. The component is part of a project for D.C. Racking, with a scale of 1:2. The drawing is intended for precise manufacturing of the bracket."
+    }
+  ]
+}

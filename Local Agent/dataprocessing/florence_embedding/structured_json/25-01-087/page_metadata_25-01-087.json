@@ -1,0 +1,79 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "25-004",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Plan",
+        "Typical Edge Detail"
+      ],
+      "text_verbatim_title_block": "DRAWING TITLE: Foundation Plan\nDRAWING #: 25-004\nPAGE #: 1 of 9\nSCALE: 3/16\" = 1'-0\"\nPROJECT #: 25-01-087\nPROJECT: 2-Storey Garage\nCUSTOMER: Steve Allen\n327 Townsend Ave.\nBurlington, On\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 21611\nSIGNING DATE: Jan 7, 2025\nLAST REVISION DATE: Mar 17, 2025\nVANDERWOERD DRAFTING & DESIGN\nJohn Vanderwoerd, M.A.A.T.O.\n34 Duke Street, Cambridge, Ontario N3C 1A3\njohn@vanderwoerddesign.ca\n519-841-1248\nWADDELL ENGINEERING LTD.\n119 Pinebush Rd. Cambridge ON\nPh. 519-267-5059\nFax. 1-866-242-9659\ninfo@waddelleng.com\nPROFESSIONAL ENGINEER CERTIFICATION OF NOTED STRUCTURAL ITEMS\nL.S. DESROCHES 100224482\nMarch 17 2025",
+      "general_notes_verbatim": "NOTES:\nPREPARATION:\n1. REMOVE ALL TOPSOIL AND ORGANIC MATERIAL FROM THE BUILDING AREA.\n2. BACKFILL TO BE CLEAN GRANULAR MATERIAL, FREE OF ORGANIC MATERIAL.\n3. COMPACT FILL IN 8\" LIFTS TO 98% S.P.D.\n4. IF UNSUITABLE SOIL CONDITIONS ARE ENCOUNTERED, NOTIFY ENGINEER.\n5. ALL FOOTINGS TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL.\n6. FOOTINGS TO BE MINIMUM 4'-0\" BELOW FINISHED GRADE.\n7. CONCRETE TO BE 25 MPa AT 28 DAYS.\n8. REINFORCEMENT TO BE 10M BARS AT 12\" O.C. EACH WAY.\n9. PROVIDE 3\" MINIMUM COVER TO ALL REINFORCEMENT.\n10. ALL CONCRETE TO BE CURED FOR A MINIMUM OF 7 DAYS.",
+      "page_overview_summary": "This sheet presents the foundation plan for a 2-storey garage, including a typical edge detail. The plan outlines the dimensions and layout of the foundation, with notes on preparation and concrete specifications. Key components include the foundation slab and edge details, with specific instructions for soil preparation and concrete curing."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "25-004",
+      "drawing_title": "MAIN FLOOR",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Main Floor Plan",
+        "Steel Beam Layout"
+      ],
+      "text_verbatim_title_block": "DRAWING TITLE: Main Floor Plan\nDRAWING #: 25-004\nPAGE #: 2 of 9\nSCALE: 3/16\" = 1'-0\"\nPROJECT #: 25-01-087\nPROJECT: 2-Storey Garage\nCUSTOMER: Steve Allen\n327 Townsend Ave.\nBurlington, On\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 21611\nSIGNING DATE: Jan 7, 2025\nLAST REVISION DATE: Mar 17, 2025\nVANDERWOERD DRAFTING & DESIGN\nJohn Vanderwoerd, M.A.A.T.O.\n34 Duke Street, Cambridge, Ontario N3C 1A3\njohn@vanderwoerddesign.ca\n519-841-1248\nWADDELL ENGINEERING LTD.\n119 Pinebush Rd. Cambridge ON\nPh. 519-267-5059\nFax. 1-866-242-9659\ninfo@waddelleng.com\nPROFESSIONAL ENGINEER CERTIFICATION OF NOTED STRUCTURAL ITEMS\nL.S. DESROCHES 100224482\nMarch 17 2025",
+      "general_notes_verbatim": "P.T. RATING:\nCSA UC1: INDOOR WOOD NOT IN CONTACT WITH GROUND OR FOUNDATIONS\nCSA UC2: INDOOR WOOD NOT IN CONTACT WITH GROUND OR FOUNDATIONS BUT EXPOSED TO DAMPNESS\nCSA UC3: OUTDOOR WOOD NOT IN CONTACT WITH GROUND BUT PROTECTED AGAINST WEATHER OR WETTING\nCSA UC4: WOOD IN CONTACT WITH GROUND OR FRESHWATER",
+      "page_overview_summary": "The main floor plan for the 2-storey garage is detailed on this sheet, showing the layout and dimensions of the ground floor. Key components include the steel beam layout and various structural elements. The plan includes notes on pressure-treated wood ratings and specifications for different environmental exposures."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "25-004",
+      "drawing_title": "LOFT FLOOR",
+      "overall_classification": "Plan",
+      "level": "Mezzanine",
+      "primary_orientation": null,
+      "key_components": [
+        "Loft Floor Plan",
+        "Beam and Joist Layout"
+      ],
+      "text_verbatim_title_block": "DRAWING TITLE: Loft Floor Plan\nDRAWING #: 25-004\nPAGE #: 3 of 9\nSCALE: 3/16\" = 1'-0\"\nPROJECT #: 25-01-087\nPROJECT: 2-Storey Garage\nCUSTOMER: Steve Allen\n327 Townsend Ave.\nBurlington, On\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 21611\nSIGNING DATE: Jan 7, 2025\nLAST REVISION DATE: Mar 17, 2025\nVANDERWOERD DRAFTING & DESIGN\nJohn Vanderwoerd, M.A.A.T.O.\n34 Duke Street, Cambridge, Ontario N3C 1A3\njohn@vanderwoerddesign.ca\n519-841-1248\nWADDELL ENGINEERING LTD.\n119 Pinebush Rd. Cambridge ON\nPh. 519-267-5059\nFax. 1-866-242-9659\ninfo@waddelleng.com\nPROFESSIONAL ENGINEER CERTIFICATION OF NOTED STRUCTURAL ITEMS\nL.S. DESROCHES 100224482\nMarch 17 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the loft floor plan for the garage, highlighting the beam and joist layout. The plan includes dimensions and structural elements necessary for the mezzanine level, ensuring proper support and load distribution."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "25-004",
+      "drawing_title": "CROSS SECTION A",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Longitudinal building section",
+      "key_components": [
+        "Cross Section A",
+        "Wall and Roof Details"
+      ],
+      "text_verbatim_title_block": "DRAWING TITLE: Cross Section A\nDRAWING #: 25-004\nPAGE #: 4 of 9\nSCALE: 1/4\" = 1'-0\"\nPROJECT #: 25-01-087\nPROJECT: 2-Storey Garage\nCUSTOMER: Steve Allen\n327 Townsend Ave.\nBurlington, On\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 21611\nSIGNING DATE: Jan 7, 2025\nLAST REVISION DATE: Mar 17, 2025\nVANDERWOERD DRAFTING & DESIGN\nJohn Vanderwoerd, M.A.A.T.O.\n34 Duke Street, Cambridge, Ontario N3C 1A3\njohn@vanderwoerddesign.ca\n519-841-1248\nWADDELL ENGINEERING LTD.\n119 Pinebush Rd. Cambridge ON\nPh. 519-267-5059\nFax. 1-866-242-9659\ninfo@waddelleng.com\nPROFESSIONAL ENGINEER CERTIFICATION OF NOTED STRUCTURAL ITEMS\nL.S. DESROCHES 100224482\nMarch 17 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "Cross Section A provides a longitudinal view of the garage, detailing the wall and roof construction. This section illustrates the relationship between different structural components across multiple levels, including the engineered slab and roof trusses."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "25-004",
+      "drawing_title": "CROSS SECTION B",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Transverse building section",
+      "key_components": [
+        "Cross Section B",
+        "Floor and Roof Details"
+      ],
+      "text_verbatim_title_block": "DRAWING TITLE: Cross Section B\nDRAWING #: 25-004\nPAGE #: 5 of 9\nSCALE: 1/4\" = 1'-0\"\nPROJECT #: 25-01-087\nPROJECT: 2-Storey Garage\nCUSTOMER: Steve Allen\n327 Townsend Ave.\nBurlington, On\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 21611\nSIGNING DATE: Jan 7, 2025\nLAST REVISION DATE: Mar 17, 2025\nVANDERWOERD DRAFTING & DESIGN\nJohn Vanderwoerd, M.A.A.T.O.\n34 Duke Street, Cambridge, Ontario N3C 1A3\njohn@vanderwoerddesign.ca\n519-841-1248\nWADDELL ENGINEERING LTD.\n119 Pinebush Rd. Cambridge ON\nPh. 519-267-5059\nFax. 1-866-242-9659\ninfo@waddelleng.com\nPROFESSIONAL ENGINEER CERTIFICATION OF NOTED STRUCTURAL ITEMS\nL.S. DESROCHES 100224482\nMarch 17 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "Cross Section B offers a transverse view of the garage, focusing on floor and roof construction details. The section highlights the integration of structural elements such as floor joists and roof trusses, providing insight into the building's structural integrity."
+    }
+  ]
+}

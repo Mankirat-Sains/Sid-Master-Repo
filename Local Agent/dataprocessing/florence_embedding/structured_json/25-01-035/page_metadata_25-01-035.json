@@ -1,0 +1,167 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "C1",
+      "drawing_title": "CODE REQ. & BLDG SECTION",
+      "overall_classification": "Mixed",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "General Notes",
+        "Foundation Notes",
+        "Building Section",
+        "Wall Types",
+        "Roof Types",
+        "Floor Types"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: CODE REQ. & BLDG SECTION \nSHEET NO.: C1 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "GENERAL NOTES \n1. DESIGN & CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO THE LATEST EDITION OF THE ONTARIO BUILDING CODE. \n2. ALL DIMENSIONS ARE IN MILLIMETERS UNLESS OTHERWISE NOTED. \n3. ALL DRAWINGS SHALL BE REVIEWED BY WADDELL ENGINEERING LTD. (WEL) PRIOR TO CONSTRUCTION. \n4. CONTRACTOR TO VERIFY ALL DIMENSIONS AND CONDITIONS ON SITE PRIOR TO COMMENCING WORK. \n5. ANY DISCREPANCIES SHALL BE REPORTED TO THE ENGINEER IMMEDIATELY. \n6. ALL WORK SHALL BE CARRIED OUT IN A WORKMANLIKE MANNER. \n7. CONTRACTOR SHALL MAINTAIN THE SITE IN A SAFE CONDITION AT ALL TIMES. \n8. CONTRACTOR SHALL PROVIDE ADEQUATE PROTECTION FOR THE PUBLIC AND WORKERS AT ALL TIMES. \n9. CONTRACTOR SHALL BE RESPONSIBLE FOR THE PROTECTION OF ALL EXISTING STRUCTURES AND UTILITIES. \n10. CONTRACTOR SHALL PROVIDE ALL NECESSARY TEMPORARY SUPPORTS AND SHORING AS REQUIRED. \n11. CONTRACTOR SHALL PROVIDE ALL NECESSARY SAFETY BARRIERS AND SIGNAGE AS REQUIRED. \n12. CONTRACTOR SHALL PROVIDE ALL NECESSARY TEMPORARY FENCING AND HOARDING AS REQUIRED.",
+      "page_overview_summary": "This sheet provides a comprehensive overview of the building's structural requirements, including general and foundation notes, wall, roof, and floor types. It includes a building section that illustrates the relationship between different levels. The notes emphasize compliance with the Ontario Building Code and outline responsibilities for site safety and verification of dimensions. This sheet serves as a foundational reference for the project's structural design."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "C2",
+      "drawing_title": "FRONT & RIGHT ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Front and Right",
+      "key_components": [
+        "Front Elevation",
+        "Right Side Elevation",
+        "Units Layout"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: FRONT & RIGHT ELEVATIONS \nSHEET NO.: C2 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet illustrates the front and right side elevations of the 14-unit stacked townhouse project. It provides detailed views of the facade, including window and door placements, and architectural features across multiple units. The elevations help visualize the building's exterior appearance and are essential for understanding the design's aesthetic and structural elements."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "C3",
+      "drawing_title": "REAR & LEFT ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Rear and Left",
+      "key_components": [
+        "Rear Elevation",
+        "Left Side Elevation",
+        "Units Layout"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: REAR & LEFT ELEVATIONS \nSHEET NO.: C3 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the rear and left side elevations of the townhouse project, showing the architectural design and structural elements of these sides. It includes details on window and door placements and other facade features, providing a complete view of the building's exterior from these perspectives."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "C4",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Layout",
+        "Footings",
+        "Concrete Walls"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: FOUNDATION PLAN \nSHEET NO.: C4 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "FOUNDATION NOTES \n1. ALL FOOTINGS SHALL BEAR ON UNDISTURBED SOIL OR ENGINEERED FILL. \n2. ALL CONCRETE SHALL HAVE A MINIMUM COMPRESSIVE STRENGTH OF 25 MPa AT 28 DAYS. \n3. REINFORCEMENT SHALL BE AS SPECIFIED ON THE DRAWINGS. \n4. ALL FOOTINGS SHALL BE PLACED AT A MINIMUM DEPTH OF 1.2m BELOW FINISHED GRADE. \n5. ALL FOUNDATION WALLS SHALL BE WATERPROOFED AS SPECIFIED.",
+      "page_overview_summary": "The foundation plan details the layout and specifications for the building's foundation, including footings and concrete walls. It provides essential information for constructing the foundation, ensuring stability and compliance with structural requirements. The notes specify material strengths and construction depths, critical for the foundation's integrity."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "C5",
+      "drawing_title": "BASEMENT PLAN",
+      "overall_classification": "Plan",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Basement Layout",
+        "Room Dimensions",
+        "Structural Walls"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: BASEMENT PLAN \nSHEET NO.: C5 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the basement plan, showing the layout of rooms and structural walls. It includes dimensions and specifications necessary for constructing the basement level, ensuring proper space allocation and structural support for the building above."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "C6",
+      "drawing_title": "MAIN FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Main Floor Layout",
+        "Room Dimensions",
+        "Structural Walls"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: MAIN FLOOR PLAN \nSHEET NO.: C6 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The main floor plan outlines the layout of the ground floor, including room dimensions and structural walls. This plan is crucial for understanding the spatial organization and structural requirements of the main living areas, ensuring proper construction and functionality."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "C7",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Layout",
+        "Truss Design",
+        "Roof Openings"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: ROOF PLAN \nSHEET NO.: C7 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet details the roof plan, including the layout of trusses and roof openings. It provides essential information for constructing the roof structure, ensuring proper support and alignment with the building's design. The plan is crucial for understanding the roof's structural integrity and weatherproofing."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "C8",
+      "drawing_title": "WALL SECTIONS",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Wall Sections",
+        "Firewalls",
+        "Exterior Walls"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: WALL SECTIONS \nSHEET NO.: C8 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The wall sections sheet provides detailed cross-sections of various wall types, including firewalls and exterior walls. These sections are critical for understanding the construction and fire safety requirements of the building, ensuring compliance with structural and safety standards."
+    },
+    {
+      "page_number": 9,
+      "sheet_id": "C9",
+      "drawing_title": "HOLLOW CORE & SHEAR WALL DETAILS",
+      "overall_classification": "Detail",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Hollow Core Details",
+        "Shear Wall Details",
+        "Connection Details"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: HOLLOW CORE & SHEAR WALL DETAILS \nSHEET NO.: C9 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed drawings of hollow core and shear wall components, including connection details. These details are essential for ensuring the structural integrity and stability of the building, particularly in areas subject to lateral forces."
+    },
+    {
+      "page_number": 10,
+      "sheet_id": "C10",
+      "drawing_title": "DETAILS & STRUCTURAL NOTES",
+      "overall_classification": "Notes",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Structural Details",
+        "General Notes",
+        "Design Loads"
+      ],
+      "text_verbatim_title_block": "PROJECT: 14-UNIT STACKED TOWN 768 ARLINGTON ST. \nSHEET TITLE: DETAILS & STRUCTURAL NOTES \nSHEET NO.: C10 \nDATE: MAY 22, 2025 \nDRAWN BY: BLR \nCHECKED BY: BLR \nSCALE: AS NOTED \nJOB NO.: 25-01-035",
+      "general_notes_verbatim": "GENERAL \n1. DESIGN & CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO THE LATEST EDITION OF THE ONTARIO BUILDING CODE. \n2. ALL DIMENSIONS ARE IN MILLIMETERS UNLESS OTHERWISE NOTED. \n3. ALL DRAWINGS SHALL BE REVIEWED BY WADDELL ENGINEERING LTD. (WEL) PRIOR TO CONSTRUCTION. \n4. CONTRACTOR TO VERIFY ALL DIMENSIONS AND CONDITIONS ON SITE PRIOR TO COMMENCING WORK. \n5. ANY DISCREPANCIES SHALL BE REPORTED TO THE ENGINEER IMMEDIATELY. \n6. ALL WORK SHALL BE CARRIED OUT IN A WORKMANLIKE MANNER. \n7. CONTRACTOR SHALL MAINTAIN THE SITE IN A SAFE CONDITION AT ALL TIMES. \n8. CONTRACTOR SHALL PROVIDE ADEQUATE PROTECTION FOR THE PUBLIC AND WORKERS AT ALL TIMES. \n9. CONTRACTOR SHALL BE RESPONSIBLE FOR THE PROTECTION OF ALL EXISTING STRUCTURES AND UTILITIES. \n10. CONTRACTOR SHALL PROVIDE ALL NECESSARY TEMPORARY SUPPORTS AND SHORING AS REQUIRED. \n11. CONTRACTOR SHALL PROVIDE ALL NECESSARY SAFETY BARRIERS AND SIGNAGE AS REQUIRED. \n12. CONTRACTOR SHALL PROVIDE ALL NECESSARY TEMPORARY FENCING AND HOARDING AS REQUIRED.",
+      "page_overview_summary": "This sheet includes structural details and general notes that apply to the entire project. It outlines design loads and construction requirements, ensuring compliance with building codes and structural integrity. The notes provide guidance on construction practices and safety measures, serving as a critical reference for the project."
+    }
+  ]
+}

@@ -1,0 +1,1192 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "South/West perspective of Malcolm Crescent Townhomes Block 'A'",
+      "level": "Unknown",
+      "orientation": "South/West",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Perspective View",
+      "element_callouts": [],
+      "key_components": [
+        "Brick Exterior",
+        "Windows",
+        "Doors",
+        "Roof"
+      ],
+      "text_verbatim": "4\nA000\nPERSPECTIVE VIEW No.4 - SOUTH/WEST",
+      "summary": "This image shows a perspective view of the Malcolm Crescent Townhomes Block 'A' from the South/West angle. The building features a brick exterior with multiple windows and doors visible. The roof is sloped, and the perspective provides a comprehensive view of the building's design. The text 'PERSPECTIVE VIEW No.4 - SOUTH/WEST' indicates the orientation and view number, while '4' and 'A000' are identifiers for the drawing.",
+      "project_id": "25-01-068",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "North/East perspective of Malcolm Crescent Townhomes Block 'A'",
+      "level": "Unknown",
+      "orientation": "North/East",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Perspective View",
+      "element_callouts": [],
+      "key_components": [
+        "Brick and Stone Exterior",
+        "Windows",
+        "Doors",
+        "Roof"
+      ],
+      "text_verbatim": "1\nA000\nPERSPECTIVE VIEW No.1 - NORTH/EAST",
+      "summary": "This image presents a perspective view of the Malcolm Crescent Townhomes Block 'A' from the North/East angle. The building showcases a combination of brick and stone exterior finishes, with several windows and doors visible. The roof is sloped, contributing to the overall architectural style. The text 'PERSPECTIVE VIEW No.1 - NORTH/EAST' specifies the orientation and view number, while '1' and 'A000' are identifiers for the drawing.",
+      "project_id": "25-01-068",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "South/East perspective of Malcolm Crescent Townhomes Block 'A'",
+      "level": "Unknown",
+      "orientation": "South/East",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Perspective View",
+      "element_callouts": [],
+      "key_components": [
+        "Brick Exterior",
+        "Windows",
+        "Doors",
+        "Roof"
+      ],
+      "text_verbatim": "3\nA000\nPERSPECTIVE VIEW No.3 - SOUTH/EAST",
+      "summary": "This image displays a perspective view of the Malcolm Crescent Townhomes Block 'A' from the South/East angle. The building features a brick exterior with multiple windows and doors. The sloped roof is a prominent feature in the design. The text 'PERSPECTIVE VIEW No.3 - SOUTH/EAST' indicates the orientation and view number, while '3' and 'A000' are identifiers for the drawing.",
+      "project_id": "25-01-068",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "THE GENERAL CONTRACTOR SHALL VERIFY ALL DIMENSIONS AND REPORT ANY DISCREPENCIES TO THE CONSULTANTS PRIOR TO PROCEEDING WITH THE WORK.\nTHIS DRAWING SHALL NOT BE SCALED.\nTHIS DRAWING SHALL BE READ IN CONJUNCTION WITH ALL OTHER RELATED DOCUMENTS AND SPECIFICATIONS.\nTHIS DRAWING IS AN INSTRUMENT OF SERVICE & IS THE PROPERTY OF EDGEWOOD SOLUTIONS INC. & CANNOT BE MODIFIED AND/OR REPRODUCED WITHOUT THE PERMISSION OF EDGEWOOD SOLUTIONS INC.",
+      "summary": "This image contains general notes related to the construction project. Key instructions include verifying all dimensions and reporting discrepancies to consultants before proceeding. The drawing should not be scaled and must be read with all related documents and specifications. It is an instrument of service owned by Edgewood Solutions Inc. and cannot be modified or reproduced without permission.",
+      "project_id": "25-01-068",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": "page_001/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Table of Contents",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "ARCHITECTURAL\nA000 COVER PAGE\nA002 BUILDING CODE PLANS & ELEVATIONS\nA200 FOUNDATION PLAN\nA201 GROUND FLOOR PLAN\nA202 ROOF PLAN\nA220 REFLECTED CEILING PLAN\nA300 EXTERIOR ELEVATIONS\nA400 BUILDING & WALL SECTIONS\nA001 CONSTRUCTION NOTES\nA003 DOOR/WINDOW SCHEDULE & CONSTRUCTION ASSEMBLIES\nA500 STANDARD DETAILS",
+      "summary": "This image provides the table of contents for the architectural drawings. It lists various sheets, including the cover page (A000), building code plans and elevations (A002), foundation plan (A200), ground floor plan (A201), roof plan (A202), reflected ceiling plan (A220), exterior elevations (A300), building and wall sections (A400), construction notes (A001), door/window schedule and construction assemblies (A003), and standard details (A500).",
+      "project_id": "25-01-068",
+      "page_number": 1,
+      "region_number": 5,
+      "relative_path": "page_001/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Elevation",
+      "location": "North/West perspective view of Malcolm Crescent Townhomes Block 'A'",
+      "level": "Unknown",
+      "orientation": "North/West",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Perspective View",
+      "element_callouts": [],
+      "key_components": [
+        "Exterior Walls",
+        "Roof",
+        "Windows",
+        "Doors"
+      ],
+      "text_verbatim": "2\nA000\nPERSPECTIVE VIEW No.2 - NORTH/WEST",
+      "summary": "This image is a perspective view labeled as 'PERSPECTIVE VIEW No.2 - NORTH/WEST' of the Malcolm Crescent Townhomes Block 'A'. It shows the exterior design of the building from a north-west angle. The view includes key components such as exterior walls, roof, windows, and doors. The sheet ID is A000, and it is marked as view number 2. This perspective provides a visual overview of the building's architectural style and layout.",
+      "project_id": "25-01-068",
+      "page_number": 1,
+      "region_number": 6,
+      "relative_path": "page_001/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Material Legend",
+      "element_callouts": [],
+      "key_components": [
+        "Rigid Insulation",
+        "Semi-Rigid Insulation",
+        "Spray Foam Insulation",
+        "Batt Insulation",
+        "Finish Wood",
+        "Wood Blocking",
+        "Reserved"
+      ],
+      "text_verbatim": "RIGID INSULATION\nSEMI-RIGID INSULATION\nSPRAY FOAM INSULATION\nBATT INSULATION\nFINISH WOOD\nWOOD BLOCKING\nRESERVED",
+      "summary": "This image is a material legend from the construction notes sheet. It provides a visual representation of various materials used in the project, including rigid insulation, semi-rigid insulation, spray foam insulation, batt insulation, finish wood, wood blocking, and a reserved category. Each material is depicted with a unique hatching pattern to aid in identification throughout the construction drawings. This legend is essential for understanding the symbols and terminology used in the project.",
+      "project_id": "25-01-068",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Material Legend",
+      "element_callouts": [],
+      "key_components": [
+        "Precast Concrete Panel",
+        "Steel",
+        "Plywood",
+        "Sheathing/Fibreboard"
+      ],
+      "text_verbatim": "PRECAST CONCRETE PANEL\nSTEEL\nPLYWOOD\nSHEATHING/FIBREBOARD",
+      "summary": "This image is part of a material legend from the construction notes sheet. It shows the hatching patterns for precast concrete panels, steel, plywood, and sheathing/fibreboard. These patterns are used throughout the construction drawings to represent these materials visually. Understanding these symbols is crucial for interpreting the construction documents accurately.",
+      "project_id": "25-01-068",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "1.0"
+      ],
+      "section_callouts": [],
+      "element_type": "Ground Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Demising Walls"
+      ],
+      "text_verbatim": "BUILDING AREA\n3,711 S.F. (345 S.M.)\nMAX TO BE UNDER PART 9\nIS 6,458 S.F. (600 S.M.)\nOBC GROUND FLOOR PLAN\n1/8\" = 1'-0\"",
+      "summary": "This image is a ground floor plan labeled 'OBC GROUND FLOOR PLAN' with a scale of 1/8\" = 1'-0\". It shows the layout of the building's ground floor, including demising walls. The building area is specified as 3,711 square feet (345 square meters), with a maximum allowable area under Part 9 of 6,458 square feet (600 square meters). Grid references A, B, C, D, E, and 1.0 are visible, aiding in the spatial orientation of the plan.",
+      "project_id": "25-01-068",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "East elevation of the building",
+      "level": "Ground Floor",
+      "orientation": "East",
+      "grid_references": [
+        "1.0",
+        "2.0"
+      ],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [
+        "L1"
+      ],
+      "key_components": [
+        "Exterior Walls",
+        "Windows",
+        "Roof"
+      ],
+      "text_verbatim": "OBC EAST ELEVATION\n1/8\" = 1'-0\"\nT/O TOP PLATE 8'-1\"\nT/O SLAB 0'-0\"\nUNPROTECTED OPENINGS CALCULATION AS PER O.B.C. - DIV. 9.10.15.4\nLEFT ELEVATION\nEXPOSED BUILDING FACE AREA:\nL1 318.2 S.F. (29.6 S.M.)\n2.75m\n20.2%\n13.6% = 53.3 S.F. (5.0 S.M.)",
+      "summary": "This image is an east elevation labeled 'OBC EAST ELEVATION' with a scale of 1/8\" = 1'-0\". It shows the exterior view of the building from the east side, including key components such as exterior walls, windows, and the roof. The top of the top plate is at 8'-1\", and the top of the slab is at 0'-0\". The elevation includes an unprotected openings calculation as per O.B.C. Division 9.10.15.4, with exposed building face area L1 measuring 318.2 square feet (29.6 square meters). Grid references 1.0 and 2.0 are visible, and the element callout 'L1' is noted.",
+      "project_id": "25-01-068",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Ground Floor – West elevation",
+      "level": "Ground Floor",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [
+        "R1"
+      ],
+      "key_components": [
+        "Brick Exterior",
+        "Windows",
+        "Roof"
+      ],
+      "text_verbatim": "OBC WEST ELEVATION\n1/8\" = 1'-0\"\nUNPROTECTED OPENINGS CALCULATION AS PER O.B.C. - DIV. 9.10.15.4\nRIGHT ELEVATION\nEXPOSED BUILDING FACE AREA:\nR1 318.2 S.F. (29.6 S.M.)\nLIMITING DISTANCE:\n2.995m\n% OPENINGS ALLOWED:\n23%\nTOTAL OPENINGS PROVIDED:\n13.6% = 53.3 S.F. (5.0 S.M.)\nF.R.R. (HOURS):\n-\nNON-COMB. CLADDING:\n-\nNON-COMB. CONSTRUCTION:\n-\nT/O TOP PLATE 8'-1\"\nT/O SLAB 0'-0\"",
+      "summary": "This image shows the West elevation of a building, labeled as 'OBC WEST ELEVATION'. The elevation is drawn at a scale of 1/8\" = 1'-0\". The top of the top plate is at 8'-1\" and the top of the slab is at 0'-0\". The elevation includes a calculation for unprotected openings as per O.B.C. Division 9.10.15.4, with an exposed building face area of 318.2 square feet (29.6 square meters). The limiting distance is 2.995 meters, with 23% openings allowed. The total openings provided are 13.6%, equating to 53.3 square feet (5.0 square meters). The elevation features brick exterior walls, windows, and a roof. The element callout 'R1' is associated with this elevation.",
+      "project_id": "25-01-068",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": "page_003/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "Ground Floor – South elevation",
+      "level": "Ground Floor",
+      "orientation": "South elevation",
+      "grid_references": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "key_components": [
+        "Brick Exterior",
+        "Windows",
+        "Doors",
+        "Roof"
+      ],
+      "text_verbatim": "OBC SOUTH ELEVATION\n1/8\" = 1'-0\"\nUNPROTECTED OPENINGS CALCULATION AS PER O.B.C. - DIV. 9.10.15.4\nBACK ELEVATION\nEXPOSED BUILDING FACE AREA:\nB1 195.2 S.F. (17.9 S.M.)\nB2 190.0 S.F. (17.7 S.M.)\nB3 190.0 S.F. (17.7 S.M.)\nB4 195.2 S.F. (17.9 S.M.)\nLIMITING DISTANCE:\n≥10m\n% OPENINGS ALLOWED:\n100%\nTOTAL OPENINGS PROVIDED:\n30.7% = 60.0 S.F. (5.6 S.M.)\n31.6% = 60.0 S.F. (5.6 S.M.)\n31.6% = 60.0 S.F. (5.6 S.M.)\n30.7% = 60.0 S.F. (5.6 S.M.)\nF.R.R. (HOURS):\n-\nNON-COMB. CLADDING:\n-\nNON-COMB. CONSTRUCTION:\n-\nT/O TOP PLATE 8'-1\"\nT/O SLAB 0'-0\"",
+      "summary": "This image depicts the South elevation of a building, labeled 'OBC SOUTH ELEVATION', with a scale of 1/8\" = 1'-0\". The top of the top plate is 8'-1\" and the top of the slab is 0'-0\". The elevation includes calculations for unprotected openings as per O.B.C. Division 9.10.15.4. The exposed building face areas are listed for sections B1 to B4, each with a limiting distance of ≥10 meters and 100% openings allowed. The total openings provided range from 30.7% to 31.6%, equating to 60.0 square feet (5.6 square meters) for each section. The elevation features brick exterior walls, windows, doors, and a roof. Element callouts 'B1', 'B2', 'B3', and 'B4' are associated with this elevation.",
+      "project_id": "25-01-068",
+      "page_number": 3,
+      "region_number": 4,
+      "relative_path": "page_003/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Elevation",
+      "location": "Ground Floor – North elevation",
+      "level": "Ground Floor",
+      "orientation": "North elevation",
+      "grid_references": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [
+        "F1",
+        "F2",
+        "F3",
+        "F4"
+      ],
+      "key_components": [
+        "Brick Exterior",
+        "Stone Facade",
+        "Windows",
+        "Doors",
+        "Roof"
+      ],
+      "text_verbatim": "OBC NORTH ELEVATION\n1/8\" = 1'-0\"\nUNPROTECTED OPENINGS CALCULATION AS PER O.B.C. - DIV. 9.10.15.4\nFRONT ELEVATION\nEXPOSED BUILDING FACE AREA:\nF1 195.2 S.F. (17.9 S.M.)\nF2 190.0 S.F. (17.7 S.M.)\nF3 190.0 S.F. (17.7 S.M.)\nF4 195.2 S.F. (17.9 S.M.)\nLIMITING DISTANCE:\n≥10m\n% OPENINGS ALLOWED:\n100%\nTOTAL OPENINGS PROVIDED:\n30.7% = 60.0 S.F. (5.6 S.M.)\n31.6% = 60.0 S.F. (5.6 S.M.)\n31.6% = 60.0 S.F. (5.6 S.M.)\n30.7% = 60.0 S.F. (5.6 S.M.)\nF.R.R. (HOURS):\n-\nNON-COMB. CLADDING:\n-\nNON-COMB. CONSTRUCTION:\n-\nT/O TOP PLATE 8'-1\"\nT/O SLAB 0'-0\"",
+      "summary": "This image shows the North elevation of a building, labeled 'OBC NORTH ELEVATION', drawn at a scale of 1/8\" = 1'-0\". The top of the top plate is 8'-1\" and the top of the slab is 0'-0\". The elevation includes calculations for unprotected openings as per O.B.C. Division 9.10.15.4. The exposed building face areas are listed for sections F1 to F4, each with a limiting distance of ≥10 meters and 100% openings allowed. The total openings provided range from 30.7% to 31.6%, equating to 60.0 square feet (5.6 square meters) for each section. The elevation features a combination of brick and stone facade, windows, doors, and a roof. Element callouts 'F1', 'F2', 'F3', and 'F4' are associated with this elevation.",
+      "project_id": "25-01-068",
+      "page_number": 3,
+      "region_number": 5,
+      "relative_path": "page_003/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Plan Legend",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "OBC PLAN LEGEND\n0 HOUR FIRE RATING\n3/4 HOUR FIRE RATING\n1 HOUR FIRE RATING\n1-1/2 HOUR FIRE RATING\n2 HOUR FIRE RATING\nTRAVEL DISTANCE\nFIRE HOSE TRAVEL DISTANCE\nNOTE:\nREFER TO FLOOR PLANS FOR WALL TYPES THAT ARE LOAD BEARING AND REQUIRE A FIRE RESISTANCE RATING.",
+      "summary": "This image contains the 'OBC PLAN LEGEND', which provides information on fire ratings and travel distances. The legend includes symbols for 0 hour, 3/4 hour, 1 hour, 1-1/2 hour, and 2 hour fire ratings. It also indicates travel distance and fire hose travel distance. A note advises referring to floor plans for wall types that are load-bearing and require a fire resistance rating. This legend is essential for understanding the fire safety requirements and travel distances within the building.",
+      "project_id": "25-01-068",
+      "page_number": 3,
+      "region_number": 6,
+      "relative_path": "page_003/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Window/Door Opening",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Window/Door Flashing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "3M All Weather Self-Adhering Flashing Tape",
+        "Tyvek Air Barrier"
+      ],
+      "text_verbatim": "WINDOW/DOOR OPENING\n3M ALL WEATHER SELF-ADHERING FLASHING TAPE (8067)\nLINE FOR SELF-ADHERING FLASHING TAPE BEHIND TYVEK\nTYVEK AIR BARRIER\nTYVEK WRAPS BACK AT 45% ANGLE\nSELF-ADHERING TAPE BEHIND TYVEK. TURN UP TAPE 6\" BELOW THE TYVEK\nTAPE AND SEAL TYVEK OVER TAPE\nWINDOWS/DOORS - SELF ADHERING TAPE TYP. DETAIL\n1\" = 1'-0\"",
+      "summary": "This detail illustrates the installation of self-adhering flashing tape around a window or door opening. The detail is labeled 'WINDOWS/DOORS - SELF ADHERING TAPE TYP. DETAIL' and is drawn at a scale of 1\" = 1'-0\". It specifies the use of 3M All Weather Self-Adhering Flashing Tape (8067) and a Tyvek Air Barrier. The Tyvek wraps back at a 45-degree angle, and the self-adhering tape is positioned behind the Tyvek, with instructions to turn up the tape 6 inches below the Tyvek. The tape and Tyvek are sealed over each other to ensure a weather-tight installation. This detail is crucial for preventing water infiltration around window and door openings.",
+      "project_id": "25-01-068",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Interior Wall Assemblies",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Interior Wall Partition Details",
+      "element_callouts": [
+        "WS1",
+        "WS2",
+        "WS3",
+        "WS4",
+        "WSF2",
+        "R-1",
+        "FC1",
+        "FC2"
+      ],
+      "key_components": [
+        "Gypsum Board",
+        "Wood Studs",
+        "Vapour Barrier",
+        "Mineral Wool Insulation",
+        "Air Space",
+        "Asphalt Roof Shingles",
+        "O.S.B. Sheathing",
+        "Wood Roof Trusses",
+        "Blown-in Insulation",
+        "Poly Vapour Barrier",
+        "Concrete Slab",
+        "Rigid Insulation",
+        "Compacted Granular Fill"
+      ],
+      "text_verbatim": "WS1\nINTERIOR WALL - PARTITION\n• 1/2\" GYPSUM BOARD\n• 2\"x4\" WOOD STUDS @ 16\" o/c\n• 1/2\" GYPSUM BOARD\nWS2\nINTERIOR WALL - PARTITION\n• 1/2\" GYPSUM BOARD\n• 2\"x4\" WOOD STUDS @ 16\" o/c\nWS3\nINTERIOR WALL - PARTITION\n• 1/2\" GYPSUM BOARD\n• 2\"x6\" WOOD STUDS @ 16\" o/c\n• 1/2\" GYPSUM BOARD\nWS4\nINTERIOR WALL - PARTITION\n• 1/2\" GYPSUM BOARD\n• 2\"x6\" WOOD STUDS @ 16\" o/c\nWSF2\nINTERIOR WALL - SUITE DEMISING (1 HR FIRE RATED)\n• 5/8\" TYPE 'X' GYPSUM BOARD\n• VAPOUR BARRIER\n• 2\"x4\" WOOD STUDS @ 16\" o/c\n• FILL STUD CAVITY w/ MINERAL WOOL INSULATION\n• 1\" AIR SPACE\n• 2\"x4\" WOOD STUDS @ 16\" o/c\n• FILL STUD CAVITY w/ MINERAL WOOL INSULATION\n• 5/8\" TYPE 'X' GYPSUM BOARD\nPROVIDE AIR SEAL AT TOP AND EXTERIOR ENDS OF WALL. FIRE SEAL ALL PENETRATIONS\nSTC 57 RATING\n1 HR FIRE RATED AS PER OBC SB-3, W13a\nROOF ASSEMBLIES\nR-1\nSLOPED ROOF ASSEMBLY\n• ASPHALT ROOF SHINGLES\n• ROOF UNDERLAY MEMBRANE\n• 7/16\" O.S.B. SHEATHING c/w H-CLIPS\n• WOOD ROOF TRUSSES @ 24\" o/c\n• BLOWN IN INSULATION (MIN. R60)\n• 6 mil POLY VAPOUR BARRIER\n• 1/2\" GYPSUM BOARD\nFLOOR ASSEMBLIES - CONCRETE\nFC1\nFLOOR ASSEMBLY - SLAB-ON-GRADE (INTERIOR)\n• 3\" CAST-IN-PLACE CONCRETE SLAB (MIN. 25 MPa) 6\" x 6\" x 6/6 WWM\n• 6 mil POLY VAPOUR BARRIER\n• 2\" RIGID INSULATION (R10)\n• MIN. 6\" COMPACTED GRANULAR FILL ON UNDISTURBED SOIL\nFC2\nFLOOR ASSEMBLY - SLAB-ON-GRADE (EXTERIOR)\n• 3\" CAST-IN-PLACE CONCRETE SLAB (MIN. 25 MPa) w/ MIN. 5%-8% AIR ENTRAINMENT, SLOPE TO DRAIN MIN. 2%\n• 6 mil POLY VAPOUR BARRIER\n• MIN. 6\" COMPACTED GRANULAR FILL ON UNDISTURBED SOIL",
+      "summary": "This image provides detailed construction assemblies for various interior wall partitions, roof, and floor systems. The wall assemblies include WS1, WS2, WS3, WS4, and WSF2, each specifying different configurations of gypsum board and wood studs. WSF2 is a suite demising wall with a 1-hour fire rating, incorporating type 'X' gypsum board, vapour barrier, and mineral wool insulation. The roof assembly R-1 features asphalt shingles, OSB sheathing, wood trusses, and blown-in insulation. Floor assemblies FC1 and FC2 describe slab-on-grade systems with concrete slabs, vapour barriers, and compacted fill. These assemblies provide essential details for constructing fire-rated walls, insulated roofs, and durable floor systems.",
+      "project_id": "25-01-068",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Door Elevations",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Door Elevations",
+      "element_callouts": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "key_components": [
+        "Doors",
+        "Frames"
+      ],
+      "text_verbatim": "DOOR ELEVATIONS\nA\nB\nC\nD\nF.F.\n1/2\" = 1'-0\"\n5\nA003",
+      "summary": "This image shows the elevations of four different door types labeled A, B, C, and D. Each elevation provides a visual representation of the door design, including panel configurations and frame outlines. The scale is 1/2\" = 1'-0\", allowing for detailed examination of door features. These elevations are essential for understanding the aesthetic and functional aspects of door installations on the ground floor.",
+      "project_id": "25-01-068",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": "page_004/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Schedule",
+      "location": "Door & Hardware Schedule",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Door & Hardware Schedule",
+      "element_callouts": [
+        "F1",
+        "F2"
+      ],
+      "key_components": [
+        "Doors",
+        "Hardware"
+      ],
+      "text_verbatim": "FRAME ELEVATION\nF1\nF2\n3/4\" REFER TO DOOR SCHEDULE 3/4\"\n3/4\" REFER TO DOOR SCHEDULE 3/4\"\n6'-8\"\nF.F.\nD-1 - SUITE ENTRY (GLAZING)\nDOOR ELEVATION: A\nSIZE: 36\"x80\"\nFRAME: MFG. SPEC\nHARDWARE:\n• INSULATED CORE\n• WEATHERSTRIPPING\n• THRESHOLD\n• SILL SWEEP\n• LOCKSET\n• BUTT HINGES\n• CLOSER\nD-2 - REAR SLIDER\nDOOR ELEVATION: B\nSIZE: 72\"x80\"\nFRAME: MFG. SPEC\nHARDWARE:\n• SPRING LOADED LATCH SET\n• WEATHER STRIPPING\n• SLIDER HARDWARE (SEE MFG'S SPEC)\nD-3 - BEDROOM\nDOOR ELEVATION: C\nSIZE: 32\"x80\"\nFRAME: F1\nHARDWARE:\n• PRIVACY SET\n• BUTT HINGES\nD-4 - BATHROOM\nDOOR ELEVATION: C\nSIZE: 32\"x80\"\nFRAME: F1\nHARDWARE:\n• PRIVACY SET\n• BUTT HINGES\n• 1\" UNDERCUT\nD-5 - CLOSET (SINGLE)\nDOOR ELEVATION: C\nSIZE: 22\"x80\"\nFRAME: F1\nHARDWARE:\n• PASSAGE SET\n• BUTT HINGES\nD-6 - CLOSET (DOUBLE)\nDOOR ELEVATION: D\nSIZE: 2-32\"x80\"\nFRAME: F2\nHARDWARE:\n• BUTT HINGES\n• BALL CATCH\nD-7 - LAUNDRY/MECHANICAL\nDOOR ELEVATION: C\nSIZE: 32\"x80\"\nFRAME: F1\nHARDWARE:\n• PASSAGE SET\n• BUTT HINGES\nD-8 - WALK IN CLOSET/STORAGE (SINGLE)\nDOOR ELEVATION: C\nSIZE: 30\"x80\"\nFRAME: F1\nHARDWARE:\n• PASSAGE SET\n• BUTT HINGES\nDOOR & HARDWARE SCHEDULE\n6\nA003\n1/2\" = 1'-0\"",
+      "summary": "This schedule provides detailed specifications for various doors and their associated hardware. It includes door elevations labeled A, B, C, and D, with sizes ranging from 22\"x80\" to 72\"x80\". Each door type is associated with specific frames (F1, F2) and hardware sets, such as insulated cores, weatherstripping, privacy sets, and passage sets. The schedule is essential for ensuring proper door and hardware installation on the ground floor, providing clear guidance on dimensions and specifications.",
+      "project_id": "25-01-068",
+      "page_number": 4,
+      "region_number": 4,
+      "relative_path": "page_004/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Thickened Slab at Demising Wall",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Thickened Slab Detail",
+      "element_callouts": [
+        "WSF2",
+        "FC1"
+      ],
+      "key_components": [
+        "Vapour Barrier",
+        "Wood Sill Plate",
+        "Anchor Bolts",
+        "Rebar",
+        "Concrete",
+        "Granular Fill"
+      ],
+      "text_verbatim": "THICKENED SLAB AT DEMISING WALL (TYP.)\nVAPOUR BARRIER ON ONE SIDE (TYP.)\n5/8\" 3 1/2\" 1\" 3 1/2\" 5/8\"\n9 1/4\"\n2x6\" WOOD SILL PLATE c/w MIN. 3\" BEARING ANCHORED TO CONCRETE FOUNDATION w/ 1/2\" DIA. ANCHOR BOLTS AT 48\" o/c (TYP.)\nSILL GASKET TO BE INSTALLED AT ALL WOOD SILL PLATE TO CONCRETE WALL INTERFACES (TYP.)\nT/O SLAB 0' - 0\"\n2-15m CONT. REBAR IN FOOTING\nALL FOUNDATIONS TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER\n2\nA200\n1 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates a thickened slab at a demising wall, highlighting key construction elements such as a vapour barrier, wood sill plate, and anchor bolts. The slab includes 2-15m continuous rebar in the footing and is designed to bear on undisturbed native soil or compacted fill. The wood sill plate is anchored to the concrete foundation with 1/2\" diameter anchor bolts spaced at 48\" on center. This detail ensures structural integrity and moisture protection at the foundation level.",
+      "project_id": "25-01-068",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – entire layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "A-E",
+        "1-10"
+      ],
+      "section_callouts": [
+        "1/A201",
+        "2/A201"
+      ],
+      "element_type": "Ground Floor Plan",
+      "element_callouts": [
+        "WS1",
+        "WS2",
+        "WS3",
+        "WS4",
+        "WS5",
+        "WS6",
+        "WS7",
+        "WS8",
+        "WS9",
+        "WS10"
+      ],
+      "key_components": [
+        "Bedrooms",
+        "Living Rooms",
+        "Kitchens",
+        "Dining Rooms",
+        "Mechanical/Laundry Rooms",
+        "Closets",
+        "Foyers",
+        "Bathrooms"
+      ],
+      "text_verbatim": "GROUND FLOOR PLAN\nA201\n1/4\" = 1'-0\"\nDOWN SPOUTS TO SURFACE DISCHARGE\nPRE-ENGINEERED GABLE END ROOF ON TOP OF MAIN ROOF TRUSSES\nBEDROOM No. 2\n10'-0\" x 11'-5\"\nLIVING ROOM\n12'-4\" x 14'-2\"\nKITCHEN\n12'-4\" x 9'-0\"\nDINING ROOM\n10'-9\" x 9'-0\"\nMECHANICAL/LAUNDRY\n8'-7\" x 4'-0\"\nFOYER\n6'-6\" x 6'-8\"\nBATHROOM\n5'-0\" x 8'-0\"\nCLOSET\n2'-0\" x 2'-0\"\nENG. TRUSSES\nALLOW FOR GIRDERS TRUSS SUPPORT\nWS1\nWS2\nWS3\nWS4\nWS5\nWS6\nWS7\nWS8\nWS9\nWS10",
+      "summary": "This ground floor plan, labeled as 'GROUND FLOOR PLAN' on sheet A201, provides a detailed layout of the building's ground floor. It includes dimensions for various rooms such as bedrooms (10'-0\" x 11'-5\"), living rooms (12'-4\" x 14'-2\"), kitchens (12'-4\" x 9'-0\"), dining rooms (10'-9\" x 9'-0\"), mechanical/laundry rooms (8'-7\" x 4'-0\"), foyers (6'-6\" x 6'-8\"), and bathrooms (5'-0\" x 8'-0\"). The plan also shows closets and engineered trusses, with notes on pre-engineered gable end roofs and downspouts for surface discharge. Section callouts '1/A201' and '2/A201' indicate connections to other views. Element callouts such as 'WS1' to 'WS10' identify specific wall sections. The plan is crucial for understanding the spatial arrangement and structural components of the ground floor.",
+      "project_id": "25-01-068",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – entire layout",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [
+        "A-E",
+        "1-10"
+      ],
+      "section_callouts": [
+        "1/A202",
+        "2/A202"
+      ],
+      "element_type": "Roof Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Roof Box Vent",
+        "Non-Vented Shingle Ridge Cap",
+        "Valley Flashing",
+        "Aluminum Gutter"
+      ],
+      "text_verbatim": "ROOF PLAN\nA202\n1/4\" = 1'-0\"\nROOF BOX VENT TYP.\nNON-VENTED SHINGLE RIDGE CAP\nVALLEY FLASHING TYP.\nLINE OF EXTERIOR WALL BELOW TYP.\nALUMINUM GUTTER TYP.\nINSURE THE ROOF TRUSS MANUFACTURER ALLOWS FOR ADDITIONAL LOADS AS REQUIRED FOR SOLAR & EXTERIOR MECHANICAL",
+      "summary": "The roof plan on sheet A202 illustrates the roof structure, including dimensions and specific notes for construction. Key components include roof box vents, non-vented shingle ridge caps, valley flashing, and aluminum gutters. The plan emphasizes ensuring the roof truss manufacturer accommodates additional loads for solar and exterior mechanical systems. Section callouts '1/A202' and '2/A202' provide references to other views. This plan is essential for the construction and installation of the roofing system, detailing the layout and necessary components.",
+      "project_id": "25-01-068",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "ROOF PLAN NOTES\n1. SUPPLY AND MAINTAIN ON A DAILY BASIS ALL TEMPORARY FENCING, HOARDING, SIGNAGE AND OTHER SEPARATIONS REQUIRED TO MAINTAIN THE SAFETY OF THE PUBLIC AND PROVIDE ACCESS TO STORES AND SHOPS DURING WORK OF THIS CONTRACT. COORDINATE THESE PROTECTIVE MEASURES WITH THE OWNER AND INDIVIDUAL STORE AND SHOP OWNERS.\n2. MAINTAIN A CLEAN AND ORDERLY SITE AT ALL TIMES. ALL DEBRIS AND EXCESS MATERIALS NOT REQUIRED SHALL BE CLEARED FROM ROOF TOP NIGHTLY. ANY MATERIALS STORED ON THE ROOF SHALL BE PROPERLY SECURED TO PREVENT UPLIFT.\n3. MATERIALS THAT ARE STORED ON THE ROOF SHALL BE PLACED ON PROPER SLEEPERS TO PREVENT ANY DAMAGE TO THE INSTALLED ROOFING AND NOT TO IMPEDE THE INSTALLED ROOF WATER DRAINAGE.\n4. COORDINATE WITH OWNER AREA(S) FOR TAR KETTLE LOCATION AND MATERIALS STORAGE. SUPPLY AND INSTALL PROTECTIVE MEASURES TO ENSURE THE GENERAL PUBLIC'S SAFETY.\n5. COORDINATE WITH OWNER ANY STAGING OF WORK.",
+      "summary": "The roof plan notes provide guidelines for maintaining safety and order during construction. Key instructions include supplying and maintaining temporary fencing and signage to ensure public safety, maintaining a clean site by clearing debris nightly, and securing materials stored on the roof to prevent uplift. Materials should be placed on proper sleepers to avoid damage to the roofing and ensure proper drainage. Coordination with the owner is required for tar kettle locations and staging of work. These notes are crucial for ensuring safety and efficiency during the roofing process.",
+      "project_id": "25-01-068",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – ceiling layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "A-E",
+        "1-10"
+      ],
+      "section_callouts": [
+        "1/A220",
+        "2/A220"
+      ],
+      "element_type": "Reflected Ceiling Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Ceiling Elements",
+        "Lighting Fixtures"
+      ],
+      "text_verbatim": "GROUND FLOOR REFLECTED CEILING PLAN\nA220\n1/4\" = 1'-0\"\nBEDROOM No. 2\n10'-0\" x 11'-5\"\nLIVING ROOM\n12'-4\" x 14'-2\"\nKITCHEN\n12'-4\" x 9'-0\"\nDINING ROOM\n10'-9\" x 9'-0\"\nMECHANICAL/LAUNDRY\n8'-7\" x 4'-0\"\nFOYER\n6'-6\" x 6'-8\"\nBATHROOM\n5'-0\" x 8'-0\"\nCLOSET\n2'-0\" x 2'-0\"\n5A",
+      "summary": "The reflected ceiling plan on sheet A220 shows the arrangement of ceiling elements and lighting fixtures for the ground floor. It includes dimensions for rooms such as bedrooms, living rooms, kitchens, dining rooms, mechanical/laundry rooms, foyers, and bathrooms. Section callouts '1/A220' and '2/A220' indicate connections to other views. This plan is crucial for the installation of electrical and lighting systems, providing a detailed layout of ceiling components.",
+      "project_id": "25-01-068",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "East wall exterior",
+      "level": "Multiple",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "3/A300"
+      ],
+      "element_type": "East Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Black Roof Vent",
+        "Asphalt Roof Shingles",
+        "Valley Flashing",
+        "Aluminum Gutter",
+        "Brick Veneer",
+        "Precast Concrete Sill"
+      ],
+      "text_verbatim": "EAST ELEVATION\nA300\n3/16\" = 1'-0\"\nBLACK ROOF VENT (MIN. 75 SQ.IN. VENTING) TYP.\nASPHALT ROOF SHINGLES TYP.\nVALLEY FLASHING TYP.\nPREFINISHED ALUMINUM GUTTER & DOWNSPOUT TYP.\nT/O TOP PLATE 8'-1\"\nWINDOW HEAD HEIGHT\nBRICK VENEER TYP.\nGRADE\nT/O SLAB 0'-0\"\n60\" x 48\" FG\n40\" x 48\" FG\nHYDRO METERS TYP.\nGAS METERS TYP.\nPRECAST CONCRETE SILL TYP.",
+      "summary": "The east elevation on sheet A300 provides a detailed view of the building's east exterior. It includes features such as black roof vents, asphalt roof shingles, valley flashing, aluminum gutters, and brick veneer. The elevation shows the top of the slab at 0'-0\" and the top of the top plate at 8'-1\". Window dimensions are noted as 60\" x 48\" and 40\" x 48\". Section callout '3/A300' references additional views. This elevation is essential for understanding the building's exterior appearance and construction details.",
+      "project_id": "25-01-068",
+      "page_number": 9,
+      "region_number": 1,
+      "relative_path": "page_009/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "West elevation",
+      "level": "Unknown",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "2.0",
+        "1.0"
+      ],
+      "element_type": "Exterior Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Valley Flashing",
+        "Black Roof Vent",
+        "Asphalt Roof Shingles",
+        "Prefinished Aluminum Gutter & Downspout",
+        "Brick Veneer",
+        "Precast Concrete Sill"
+      ],
+      "text_verbatim": "VALLEY FLASHING TYP.\nBLACK ROOF VENT (MIN. 75 SQ.IN. VENTING) TYP.\nASPHALT ROOF SHINGLES TYP.\nPREFINISHED ALUMINUM GUTTER & DOWNSPOUT TYP.\nT/O TOP PLATE 8' - 1\"\nWINDOW HEAD HEIGHT\nBRICK VENEER TYP.\nT/O SLAB 0' - 0\"\nGRADE\n60\" x 48\"\n40\" x 48\"\n60\" x 48\"\nFG\nHYDRO METERS TYP.\nGAS METERS TYP.\nPRECAST CONCRETE SILL TYP.\nWEST ELEVATION\n4 A300\n3/16\" = 1'-0\"",
+      "summary": "This image shows the west elevation of the building, highlighting key exterior elements such as valley flashing, black roof vents with a minimum venting area of 75 square inches, and asphalt roof shingles. Prefinished aluminum gutters and downspouts are typical, as well as brick veneer and precast concrete sills. The top of the top plate is at 8'-1\", while the top of the slab is at 0'-0\". Window dimensions are indicated as 60\" x 48\" and 40\" x 48\", with FG noted. Utility meters for hydro and gas are typical. The elevation is part of sheet A300, with a scale of 3/16\" = 1'-0\".",
+      "project_id": "25-01-068",
+      "page_number": 9,
+      "region_number": 2,
+      "relative_path": "page_009/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "North elevation",
+      "level": "Unknown",
+      "orientation": "North elevation",
+      "grid_references": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "section_callouts": [],
+      "element_type": "Exterior Elevation",
+      "element_callouts": [
+        "D-1"
+      ],
+      "key_components": [
+        "Valley Flashing",
+        "Black Roof Vent",
+        "Asphalt Roof Shingles",
+        "Prefinished Aluminum Fascia and Soffit",
+        "Wall Sconce",
+        "Brick Veneer",
+        "Stone Veneer",
+        "Precast Concrete Sill"
+      ],
+      "text_verbatim": "BLACK ROOF VENT (MIN. 75 SQ.IN. VENTING) TYP.\nVALLEY FLASHING TYP.\nPREFINISHED ALUMINUM FASCIA AND SOFFIT TYP.\nASPHALT ROOF SHINGLES TYP.\nWALL SCONCE TYP.\nPREFINISHED ALUMINUM GUTTER & DOWNSPOUT TYP.\nT/O TOP PLATE 8' - 1\"\nDOOR/WINDOW HEAD HEIGHT\nBRICK VENEER TYP.\nGRADE\nT/O SLAB 0' - 0\"\nPRECAST CONCRETE SILL TYP.\nSTONE VENEER TYP.\n12\" SIDELIGHT TYP.\nNORTH ELEVATION\n2 A300\n3/16\" = 1'-0\"\nD-1",
+      "summary": "This image displays the north elevation of the building, featuring elements like valley flashing, black roof vents, and asphalt roof shingles. Prefinished aluminum fascia, soffit, gutters, and downspouts are typical. The elevation includes wall sconces, brick veneer, stone veneer, and precast concrete sills. The top of the top plate is at 8'-1\", with the slab at 0'-0\". Door/window head heights are noted, and a 12\" sidelight is typical. The elevation is marked with grid references A to E and includes door D-1. It is part of sheet A300, scaled at 3/16\" = 1'-0\".",
+      "project_id": "25-01-068",
+      "page_number": 9,
+      "region_number": 3,
+      "relative_path": "page_009/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "South elevation",
+      "level": "Unknown",
+      "orientation": "South elevation",
+      "grid_references": [
+        "E",
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "section_callouts": [],
+      "element_type": "Exterior Elevation",
+      "element_callouts": [
+        "D-2"
+      ],
+      "key_components": [
+        "Black Roof Vent",
+        "Asphalt Roof Shingles",
+        "Wall Sconce",
+        "Prefinished Aluminum Gutter & Downspout",
+        "Brick Veneer",
+        "Precast Concrete Sill"
+      ],
+      "text_verbatim": "BLACK ROOF VENT (MIN. 75 SQ.IN. VENTING) TYP.\nASPHALT ROOF SHINGLES TYP.\nWALL SCONCE TYP.\nPREFINISHED ALUMINUM GUTTER & DOWNSPOUT TYP.\nT/O TOP PLATE 8' - 1\"\nDOOR/WINDOW HEAD HEIGHT\nBRICK VENEER TYP.\nGRADE\nT/O SLAB 0' - 0\"\nPRECAST CONCRETE SILL TYP.\nSOUTH ELEVATION\n1 A300\n3/16\" = 1'-0\"\nD-2",
+      "summary": "This image illustrates the south elevation of the building, showing features such as black roof vents, asphalt roof shingles, and wall sconces. Prefinished aluminum gutters and downspouts are typical, along with brick veneer and precast concrete sills. The top of the top plate is at 8'-1\", and the slab is at 0'-0\". Door/window head heights are indicated. The elevation includes grid references E to A and door D-2. It is part of sheet A300, with a scale of 3/16\" = 1'-0\".",
+      "project_id": "25-01-068",
+      "page_number": 9,
+      "region_number": 4,
+      "relative_path": "page_009/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "THE GENERAL CONTRACTOR SHALL VERIFY ALL DIMENSIONS AND REPORT ANY DISCREPENCIES TO THE CONSULTANTS PRIOR TO PROCEEDING WITH THE WORK.\nTHIS DRAWING SHALL NOT BE SCALED.\nTHIS DRAWING SHALL BE READ IN CONJUNCTION WITH ALL OTHER RELATED DOCUMENTS AND SPECIFICATIONS.\nTHIS DRAWING IS AN INSTRUMENT OF SERVICE & IS THE PROPERTY OF EDGEWOOD SOLUTIONS INC. & CANNOT BE MODIFIED AND/OR REPRODUCED WITHOUT THE PERMISSION OF EDGEWOOD SOLUTIONS INC.",
+      "summary": "This image contains general notes for the construction project. It instructs the general contractor to verify all dimensions and report discrepancies to the consultants before proceeding. The drawing should not be scaled and must be read with all related documents and specifications. It is an instrument of service owned by Edgewood Solutions Inc. and cannot be modified or reproduced without permission.",
+      "project_id": "25-01-068",
+      "page_number": 9,
+      "region_number": 5,
+      "relative_path": "page_009/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Wall section",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2.0"
+      ],
+      "element_type": "Wall Section",
+      "element_callouts": [
+        "EWB1",
+        "R-1",
+        "FC1",
+        "FW1"
+      ],
+      "key_components": [
+        "Plywood Baffle",
+        "Sheathing",
+        "Insulation",
+        "Aluminum Flashing",
+        "Vented Soffit",
+        "Wall Sconce",
+        "Concrete Patio",
+        "Rebar",
+        "Waterproof Membrane",
+        "Weeping Tile"
+      ],
+      "text_verbatim": "1/2\" PLYWOOD BAFFLE WITH 2X2 NAILER AT EACH END (TYP.)\nCONTINUE SHEATHING AND INSULATION UP TO U/S OF ROOF (TYP.)\nT/O TOP PLATE 8' - 1\"\nPREFINISHED ALUMINUM FLASHING (TYP.)\nCONTINUOUS VENTED SOFFIT (TYP.)\nWALL SCONCE (TYP.)\n'FC2' CONCRETE PATIO IN FRONT OF DOOR (TYP.)\nT/O SLAB 0' - 0\"\n2-15m CONT. REBAR @ TOP OF WALL\nWATERPROOF MEMBRANE AND DRAINAGE BOARD ON ALL EXTERIOR CONCRETE WALLS (TYP.)\nTYP. 4\" DIA. WEEPING TILE W/ MIN. 6\" CLEAR STONE COVER AND GEO TEXTILE FABRIC AS PER OBC 9.14\n2-15m CONT. REBAR IN FOOTING\nALL FOUNDATIONS TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER\nSHORT BLDG. SECTION 2 - WALL SECTION 1\nBLOCK A\n7 A400\n3/8\" = 1'-0\"",
+      "summary": "This section view shows a detailed wall section, including a 1/2\" plywood baffle with 2x2 nailers, sheathing, and insulation extending to the underside of the roof. Prefinished aluminum flashing and continuous vented soffit are typical. The section includes a wall sconce and a 'FC2' concrete patio in front of the door. The top of the top plate is at 8'-1\", and the slab is at 0'-0\". Reinforcement includes 2-15m continuous rebar at the top of the wall and in the footing. A waterproof membrane and drainage board are applied to all exterior concrete walls. A typical 4\" diameter weeping tile with a minimum 6\" clear stone cover and geo textile fabric is specified as per OBC 9.14. All foundations must bear on undisturbed native soil or compacted fill approved by a geotechnical engineer. This section is part of sheet A400, with a scale of 3/8\" = 1'-0\".",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 1,
+      "relative_path": "page_010/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Long Building Section - Wall Section 1",
+      "level": "Multiple",
+      "orientation": "Vertical section through wall",
+      "grid_references": [],
+      "section_callouts": [
+        "4/A500",
+        "1/A200"
+      ],
+      "element_type": "Wall Section",
+      "element_callouts": [
+        "R-1",
+        "WSF2",
+        "FC1"
+      ],
+      "key_components": [
+        "Gypsum Board",
+        "Girder Truss",
+        "Wood Sill Plate",
+        "Concrete Foundation",
+        "Rebar"
+      ],
+      "text_verbatim": "FIRE CAULK JOINT TO ROOF SHEATHING AT TOP (TYP.)\n1HR RATED ASSEMBLY AS PER SB-2:\n- 5/8\" TYPE 'X' GYPSUM BOARD\n- GIRDER TRUSS\n- 5/8\" TYPE 'X' GYPSUM BOARD\n- GIRDER TRUSS\n- 5/8\" TYPE 'X' GYPSUM BOARD\nLAP AND SEAL VAPOUR BARRIER OVER TOP OF WALL\nT/O TOP PLATE 8' - 1\"\n2x6\" WOOD SILL PLATE c/w MIN. 3\" BEARING ANCHORED TO CONCRETE FOUNDATION w/ 1/2\" DIA. ANCHOR BOLTS AT 48\" o/c (TYP.)\nT/O SLAB 0' - 0\"\n2-15m CONT. REBAR IN FOOTING\nALL FOUNDATIONS TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER\nLONG BLDG. SECTION - WALL SECTION 1\nBLOCK A\n5 A400\n3/8\" = 1'-0\"",
+      "summary": "This section view, labeled 'Long Building Section - Wall Section 1', illustrates a detailed vertical cut through a wall assembly. The section includes a 1-hour rated assembly with multiple layers of 5/8\" Type 'X' gypsum board and girder trusses. The top of the wall is sealed with a vapor barrier, and fire caulking is applied at the roof sheathing joint. The top plate is at 8'-1\", and the slab is at 0'-0\". The wall is anchored with a 2x6\" wood sill plate to a concrete foundation using 1/2\" diameter anchor bolts spaced at 48\" on center. Continuous 15m rebar is used in the footing. The foundation is designed to bear on undisturbed native soil or compacted fill, as approved by a geotechnical engineer. Key components include gypsum board, girder truss, wood sill plate, concrete foundation, and rebar. Section callouts '4/A500' and '1/A200' indicate related views.",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 2,
+      "relative_path": "page_010/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Long Building Section - Wall Section 2",
+      "level": "Multiple",
+      "orientation": "Vertical section through wall",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Section",
+      "element_callouts": [
+        "R-1",
+        "EWB1",
+        "FC1",
+        "FW1"
+      ],
+      "key_components": [
+        "Plywood Baffle",
+        "Aluminum Flashing",
+        "Wood Sill Plate",
+        "Concrete Foundation",
+        "Rebar"
+      ],
+      "text_verbatim": "1/2\" PLYWOOD BAFFLE WITH 2X2 NAILER AT EACH END (TYP.)\nCONTINUE SHEATHING AND INSULATION UP TO U/S OF ROOF (TYP.)\nT/O TOP PLATE 8' - 1\"\nPREFINISHED ALUMINUM FLASHING (TYP.)\nCONTINUOUS VENTED SOFFIT (TYP.)\n2x6\" WOOD SILL PLATE c/w MIN. 3\" BEARING ANCHORED TO CONCRETE FOUNDATION w/ 1/2\" DIA. ANCHOR BOLTS AT 48\" o/c (TYP.)\nPREFIN. THRU-WALL BLACK POLY FLASHING & WEEP VENTS @ 32\" o/c (TYP.)\nT/O SLAB 0' - 0\"\n2-15m CONT. REBAR @ TOP OF WALL\nWATERPROOF MEMBRANE AND DRAINAGE BOARD ON ALL EXTERIOR CONCRETE WALLS (TYP.)\nTYP. 4\" DIA. WEEPING TILE W/ MIN. 6\" CLEAR STONE COVER AND GEO TEXTILE FABRIC AS PER OBC 9.14\n2-15m CONT. REBAR IN FOOTING\nALL FOUNDATIONS TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER\nLONG BLDG. SECTION - WALL SECTION 2\nBLOCK A\n6 A400\n3/8\" = 1'-0\"",
+      "summary": "This section view, 'Long Building Section - Wall Section 2', shows a vertical cut through a wall assembly featuring a 1/2\" plywood baffle with a 2x2 nailer. The sheathing and insulation extend up to the underside of the roof. The top plate is at 8'-1\", and the slab is at 0'-0\". Prefinished aluminum flashing and continuous vented soffit are typical. The wall is anchored with a 2x6\" wood sill plate to a concrete foundation using 1/2\" diameter anchor bolts at 48\" on center. Thru-wall black poly flashing and weep vents are spaced at 32\" on center. A waterproof membrane and drainage board are applied to all exterior concrete walls. A 4\" diameter weeping tile with a 6\" clear stone cover and geo textile fabric is used as per OBC 9.14. Continuous 15m rebar is present at the top of the wall and in the footing. The foundation bears on undisturbed native soil or compacted fill. Key components include plywood baffle, aluminum flashing, wood sill plate, concrete foundation, and rebar.",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 3,
+      "relative_path": "page_010/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Section",
+      "location": "Short Building Section 1 - Wall Section 1",
+      "level": "Multiple",
+      "orientation": "Vertical section through wall",
+      "grid_references": [],
+      "section_callouts": [
+        "3/A500"
+      ],
+      "element_type": "Wall Section",
+      "element_callouts": [
+        "R-1",
+        "EWB2",
+        "FC1",
+        "FW1"
+      ],
+      "key_components": [
+        "Truss",
+        "Aluminum Flashing",
+        "Wood Sill Plate",
+        "Concrete Foundation",
+        "Rebar"
+      ],
+      "text_verbatim": "SHORTER TRUSS WITH LADDER FRAME BUILT OUT ATTACHED TO BACK TRUSS\nPREFINISHED ALUMINUM FLASHING (TYP.)\nCONTINUOUS VENTED SOFFIT (TYP.)\nCONTINUE SHEATHING AND INSULATION UP TO U/S OF ROOF (TYP.)\nT/O TOP PLATE 8' - 1\"\nPREFINISHED ALUMINUM FLASHING (TYP.)\n2x6\" WOOD SILL PLATE c/w MIN. 3\" BEARING ANCHORED TO CONCRETE FOUNDATION w/ 1/2\" DIA. ANCHOR BOLTS AT 48\" o/c (TYP.)\nPREFIN. THRU-WALL BLACK POLY FLASHING & WEEP VENTS @ 32\" o/c (TYP.)\nT/O SLAB 0' - 0\"\n2-15m CONT. REBAR @ TOP OF WALL\nWATERPROOF MEMBRANE AND DRAINAGE BOARD ON ALL EXTERIOR CONCRETE WALLS (TYP.)\nTYP. 4\" DIA. WEEPING TILE W/ MIN. 6\" CLEAR STONE COVER AND GEO TEXTILE FABRIC AS PER OBC 9.14\n2-15m CONT. REBAR IN FOOTING\nALL FOUNDATIONS TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER\nSHORT BLDG. SECTION 1 - WALL SECTION 1\nBLOCK A\n4 A400\n3/8\" = 1'-0\"",
+      "summary": "This section view, 'Short Building Section 1 - Wall Section 1', illustrates a vertical cut through a wall assembly with a shorter truss and ladder frame attached to the back truss. Prefinished aluminum flashing and continuous vented soffit are typical. The sheathing and insulation extend up to the underside of the roof. The top plate is at 8'-1\", and the slab is at 0'-0\". The wall is anchored with a 2x6\" wood sill plate to a concrete foundation using 1/2\" diameter anchor bolts at 48\" on center. Thru-wall black poly flashing and weep vents are spaced at 32\" on center. A waterproof membrane and drainage board are applied to all exterior concrete walls. A 4\" diameter weeping tile with a 6\" clear stone cover and geo textile fabric is used as per OBC 9.14. Continuous 15m rebar is present at the top of the wall and in the footing. The foundation bears on undisturbed native soil or compacted fill. Key components include truss, aluminum flashing, wood sill plate, concrete foundation, and rebar. Section callout '3/A500' indicates a related view.",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 4,
+      "relative_path": "page_010/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Section",
+      "location": "Short Building Section 1",
+      "level": "Multiple",
+      "orientation": "Transverse section through building",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A400",
+        "4/A400"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "R-1",
+        "EWB1",
+        "WS1",
+        "FC1"
+      ],
+      "key_components": [
+        "Truss",
+        "Aluminum Flashing",
+        "Wood Sill Plate",
+        "Concrete Foundation",
+        "Rebar"
+      ],
+      "text_verbatim": "T/O TOP PLATE 8' - 1\"\nT/O SLAB 0' - 0\"\nSHORT BUILDING SECTION 1\nBLOCK A\n2 A400\n3/16\" = 1'-0\"",
+      "summary": "This section view, 'Short Building Section 1', provides a transverse cut through the building, showing the structural layout. The top plate is at 8'-1\", and the slab is at 0'-0\". The section features trusses, prefinished aluminum flashing, and continuous vented soffit. The wall is anchored with a wood sill plate to a concrete foundation. Continuous rebar is present in the footing. Key components include truss, aluminum flashing, wood sill plate, concrete foundation, and rebar. Section callouts '1/A400' and '4/A400' indicate related views.",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 5,
+      "relative_path": "page_010/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Section",
+      "location": "Short Building Section 2",
+      "level": "Multiple",
+      "orientation": "Transverse section through building",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A400",
+        "7/A400"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "R-1",
+        "EWB1",
+        "FC1",
+        "FW1"
+      ],
+      "key_components": [
+        "Truss",
+        "Aluminum Flashing",
+        "Wood Sill Plate",
+        "Concrete Foundation",
+        "Rebar"
+      ],
+      "text_verbatim": "T/O TOP PLATE 8' - 1\"\nT/O SLAB 0' - 0\"\nSHORT BUILDING SECTION 2\nBLOCK A\n3 A400\n3/16\" = 1'-0\"",
+      "summary": "This section view, 'Short Building Section 2', provides a transverse cut through the building, showing the structural layout. The top plate is at 8'-1\", and the slab is at 0'-0\". The section features trusses, prefinished aluminum flashing, and continuous vented soffit. The wall is anchored with a wood sill plate to a concrete foundation. Continuous rebar is present in the footing. Key components include truss, aluminum flashing, wood sill plate, concrete foundation, and rebar. Section callouts '1/A400' and '7/A400' indicate related views.",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 6,
+      "relative_path": "page_010/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Section",
+      "location": "Longitudinal section through Block A",
+      "level": "Multiple",
+      "orientation": "Longitudinal section",
+      "grid_references": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "section_callouts": [
+        "5/A400",
+        "3/A400",
+        "2/A400",
+        "6/A400"
+      ],
+      "element_type": "Long Building Section",
+      "element_callouts": [
+        "EWB1",
+        "WSF2",
+        "FC1",
+        "FW1",
+        "R-1"
+      ],
+      "key_components": [
+        "Trusses",
+        "Foundation Walls",
+        "Slab"
+      ],
+      "text_verbatim": "LONG BUILDING SECTION\nBLOCK A\n1 A400\n3/16\" = 1'-0\"\nT/O TOP PLATE 8'-1\"\nT/O SLAB 0'-0\"\nEWB1\nWSF2\nFC1\nFW1\nR-1\n5 A400\nSim\n3 A400\n2 A400\n6 A400",
+      "summary": "This image shows a longitudinal section of Block A, labeled as 'LONG BUILDING SECTION'. The section includes multiple grid references (A, B, C, D, E) and section callouts (5/A400, 3/A400, 2/A400, 6/A400). Key elements include trusses, foundation walls, and a slab. The top of the top plate is at 8'-1\" and the top of the slab is at 0'-0\". Element callouts such as EWB1, WSF2, FC1, FW1, and R-1 indicate specific structural components. The drawing scale is 3/16\" = 1'-0\".",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 7,
+      "relative_path": "page_010/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "THE GENERAL CONTRACTOR SHALL VERIFY ALL DIMENSIONS AND REPORT ANY DISCREPENCIES TO THE CONSULTANTS PRIOR TO PROCEEDING WITH THE WORK.\nTHIS DRAWING SHALL NOT BE SCALED.\nTHIS DRAWING SHALL BE READ IN CONJUNCTION WITH ALL OTHER RELATED DOCUMENTS AND SPECIFICATIONS.\nTHIS DRAWING IS AN INSTRUMENT OF SERVICE & IS THE PROPERTY OF EDGEWOOD SOLUTIONS INC. & CANNOT BE MODIFIED AND/OR REPRODUCED WITHOUT THE PERMISSION OF EDGEWOOD SOLUTIONS INC.",
+      "summary": "This image contains general notes for the construction project. It emphasizes that the general contractor must verify all dimensions and report discrepancies to the consultants before proceeding. The drawing should not be scaled and must be read in conjunction with all related documents and specifications. It is an instrument of service owned by Edgewood Solutions Inc. and cannot be modified or reproduced without permission.",
+      "project_id": "25-01-068",
+      "page_number": 10,
+      "region_number": 8,
+      "relative_path": "page_010/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Fire separation at rated truss",
+      "level": "Multiple",
+      "orientation": "Vertical section",
+      "grid_references": [
+        "H"
+      ],
+      "section_callouts": [],
+      "element_type": "Fire Separation Detail",
+      "element_callouts": [
+        "WSF2"
+      ],
+      "key_components": [
+        "Gypsum Board",
+        "Girder Truss",
+        "Vapour Barrier"
+      ],
+      "text_verbatim": "FIRE SEPARATION AT RATED TRUSS\n4 A500\n1 1/2\" = 1'-0\"\n1HR RATED ASSEMBLY AS PER SB-2:\n- 5/8\" TYPE 'X' GYPSUM BOARD\n- GIRDER TRUSS\n- 5/8\" TYPE 'X' GYPSUM BOARD\n- GIRDER TRUSS\n- 5/8\" TYPE 'X' GYPSUM BOARD\n1HR FIRE RATED CAULKING AT JOINTS\nT/O TOP PLATE 8'-1\"\nLAP AND SEAL VAPOUR BARRIER OVER TOP OF WALL\nCONTRACTOR TO PROVIDE SEMI-RIGID MINERAL FIBRE FIREBLOCKING AS REQUIRED TYP.\nVAPOUR BARRIER ON ONE SIDE (TYP.)\n5/8\"\n3 1/2\"\n3 1/2\"\n5/8\"\n9 1/4\"",
+      "summary": "This detail illustrates a fire separation at a rated truss, labeled as 'FIRE SEPARATION AT RATED TRUSS'. It includes a 1-hour rated assembly as per SB-2, consisting of layers of 5/8\" Type 'X' gypsum board and girder trusses. The top of the top plate is at 8'-1\". The detail specifies the use of vapour barriers and semi-rigid mineral fibre fireblocking. The drawing scale is 1 1/2\" = 1'-0\". The element callout WSF2 is visible, indicating a specific wall section.",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 1,
+      "relative_path": "page_011/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Fire blocks in roof soffit",
+      "level": "Multiple",
+      "orientation": "Plan view",
+      "grid_references": [
+        "X"
+      ],
+      "section_callouts": [],
+      "element_type": "Fire Blocking Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Gypsum Board",
+        "Gable Truss",
+        "Fascia Board"
+      ],
+      "text_verbatim": "FIRE BLOCKS IN ROOF SOFFIT - DETAIL - TYPICAL\n5 A500\n1 1/2\" = 1'-0\"\n1ST DWELLING UNIT ATTIC SPACE\nNOT MORE THAN 300m² AND NO DIMENSION MORE THAN 20m (O.B.C. 9.10.16.1)\n2ND DWELLING UNIT ATTIC SPACE\nNOT MORE THAN 300m² AND NO DIMENSION MORE THAN 20m (O.B.C. 9.10.16.1)\nLINE OF LOADBEARING EXTERIOR WALL BELOW\nBIRD BLOCKING\nLINE OF EXTERIOR WALL FINISH BELOW\n1HR RATED ASSEMBLY AS PER SB-2:\n- 5/8\" TYPE 'X' GYPSUM BOARD\n- GABLE TRUSS\n- 5/8\" TYPE 'X' GYPSUM BOARD\n- GABLE TRUSS\n- 5/8\" TYPE 'X' GYPSUM BOARD TO EXTEND TO FASCIA BOARD ACTING AS FIRE BLOCKING IN SOFFIT\nFASCIA BOARD\nOVERHANG",
+      "summary": "This detail shows fire blocks in a roof soffit, labeled as 'FIRE BLOCKS IN ROOF SOFFIT - DETAIL - TYPICAL'. It includes a 1-hour rated assembly as per SB-2, with layers of 5/8\" Type 'X' gypsum board and gable trusses. The detail specifies the attic space dimensions and compliance with O.B.C. 9.10.16.1. Key components include gypsum board, gable truss, and fascia board. The drawing scale is 1 1/2\" = 1'-0\". The plan view orientation is indicated by grid reference X.",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 2,
+      "relative_path": "page_011/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation to brick wall",
+      "level": "Multiple",
+      "orientation": "Vertical section",
+      "grid_references": [
+        "X"
+      ],
+      "section_callouts": [],
+      "element_type": "Foundation to Brick Wall Detail",
+      "element_callouts": [
+        "EWB2",
+        "FC1",
+        "FW1"
+      ],
+      "key_components": [
+        "Vapour Barrier",
+        "Concrete Foundation",
+        "Wood Sill Plate"
+      ],
+      "text_verbatim": "FOUNDATION TO BRICK WALL DETAIL\n3 A500\n1 1/2\" = 1'-0\"\nVAPOUR BARRIER\n2x6\" WOOD SILL PLATE c/w MIN. 3\" BEARING ANCHORED TO CONCRETE FOUNDATION w/ 1/2\"DIA. ANCHOR BOLTS AT 48\" o/c\nSILL GASKET TO BE INSTALLED AT ALL WOOD SILL PLATE TO CONCRETE WALL INTERFACES\n6\" x 6\" x 6/6 WWM\nLAP AND SEAL AIR/WATER BARRIER OVER THRU-WALL FLASHING\nWEEP VENTS @ 32\" o/c\nPREFIN. THRU-WALL BLACK POLY FLASHING\n2-15m CONT. REBAR @ TOP OF WALL\nT/O SLAB 0'-0\"\nCONC. SIDEWALK TO SLOPE GRADE AWAY FROM BUILDING\nWATERPROOF MEMBRANE AND DRAINAGE BOARD ON ALL EXTERIOR CONCRETE WALLS (TYP.)\nSPRAY WATERPROOF MEMBRANE CONTINUOUS AROUND FOOTING (TYP.)",
+      "summary": "This detail illustrates the connection between a foundation and a brick wall, labeled as 'FOUNDATION TO BRICK WALL DETAIL'. It includes a vapour barrier, a 2x6\" wood sill plate with a minimum 3\" bearing anchored to a concrete foundation using 1/2\" diameter anchor bolts at 48\" on center. The detail specifies the installation of a sill gasket, 6\" x 6\" x 6/6 welded wire mesh, and continuous rebar at the top of the wall. Additional components include a lap and seal air/water barrier, weep vents, and a prefinished thru-wall black poly flashing. The top of the slab is at 0'-0\". The drawing scale is 1 1/2\" = 1'-0\".",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 3,
+      "relative_path": "page_011/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Roof section detail",
+      "level": "Roof",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "X"
+      ],
+      "element_type": "Roof Assembly Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Roof Sheathing",
+        "Exterior Finish",
+        "Fire Blocking",
+        "Attic Space"
+      ],
+      "text_verbatim": "SECTION VIEW\n1HR RATED ASSEMBLY AS PER SB-2:\nTO EXTEND TO FASCIA BOARD ACTING AS FIRE BLOCKING IN SOFFIT\nDWELLING UNIT ATTIC SPACE\nNOT MORE THAN 300m² AND NO DIMENSION MORE THAN 20m (O.B.C. 9.10.16.1)\n1HR RATED ASSEMBLY AS PER SB-2:\nREQUIRED\nROOF SHEATHING AND EXTERIOR FINISH\nOVER HANG\nSHEATHING AND EXTERIOR FINISH",
+      "summary": "This detail shows a section view of a roof assembly with a focus on fire-rated components. The roof sheathing and exterior finish are highlighted, with a 1-hour rated assembly as per SB-2 extending to the fascia board, acting as fire blocking in the soffit. The dwelling unit attic space is specified to be not more than 300 square meters, with no dimension exceeding 20 meters, according to O.B.C. 9.10.16.1. The section callout 'X' indicates the location of this detail within the larger drawing set.",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 4,
+      "relative_path": "page_011/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Interior wall section",
+      "level": "Multiple",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Non-Fire Rated Wall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Top Plate",
+        "Fire Blocking",
+        "Concealed Space",
+        "Non-Load Bearing Wall"
+      ],
+      "text_verbatim": "NON-FIRE RATED OPTION 2\n2 STOREY DWELLING UNIT\nNON- FIRE RATED FLOOR ASSEMBLY\nTOP PLATE\nCONCEALED SPACE\nFIRE BLOCKING REQUIRED TO BE 38mm THICK LUMBER MIN.\nNON LOAD BEARING NON RATED INTERIOR WALL",
+      "summary": "This detail illustrates a non-fire rated option for a two-storey dwelling unit. It features a non-fire rated floor assembly and a concealed space. The top plate and fire blocking are shown, with the fire blocking required to be a minimum of 38mm thick lumber. The interior wall is non-load bearing and non-rated, indicating it does not contribute to the structural integrity or fire resistance of the building.",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 5,
+      "relative_path": "page_011/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Plan detail of fire separations",
+      "level": "Multiple",
+      "orientation": "Plan view",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A500"
+      ],
+      "element_type": "Fire Separation Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Noncombustible Piping",
+        "Electrical Wiring",
+        "Combustible Outlet Boxes",
+        "Firestop System"
+      ],
+      "text_verbatim": "PENETRATIONS IN FIRE SEPARATIONS - PLAN DETAIL - TYPICAL\n1ST DWELLING UNIT\n2ND DWELLING UNIT\nNONCOMBUSTIBLE PIPING TIGHTLY FITTED\nELECTRICAL WIRING WITH COMBUSTIBLE INSULATION PERMITTED NOT MORE THAN 25mm IN DIAMETER\nCOMBUSTIBLE ELECTRICAL OUTLET BOXES PERMITTED IF NOT MORE THAN 160cm²\nCOMBUSTIBLE VACUUM & DRAINAGE PIPING TIGHTLY FITTED WITH LISTED FIRESTOP SYSTEM AS PER ULC-S115\nCOMBUSTIBLE WATER PIPING PERMITTED IF NOT MORE THAN 30mm IN DIAMETER\nFIRE SEPARATION (FLOOR OR WALL ASSEMBLY)\nO.B.C. 9.10.9.6",
+      "summary": "This plan detail shows typical penetrations in fire separations between dwelling units. It includes noncombustible piping tightly fitted, electrical wiring with combustible insulation permitted up to 25mm in diameter, and combustible electrical outlet boxes allowed if not more than 160cm². Combustible vacuum and drainage piping must be tightly fitted with a listed firestop system as per ULC-S115. Combustible water piping is permitted if not more than 30mm in diameter. The section callout '1/A500' references this detail in the drawing set.",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 6,
+      "relative_path": "page_011/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Fire Blocking Notes",
+      "element_callouts": [],
+      "key_components": [
+        "Sheet Steel",
+        "Gypsum Board",
+        "Plywood",
+        "Lumber"
+      ],
+      "text_verbatim": "FIRE BLOCKING NOTES\nPERMITTED FIRE BLOCKING MATERIALS (O.B.C. - 9.10.16.3 (2))\n• 0.38mm SHEET STEEL\n• 12.7mm GYPSUM BOARD\n• 12.5mm PLYWOOD, OSB OR WAFERBOARD, WITH JOINTS HAVING CONTINUOUS SUPPORTS\n• 2 LAYERS OF 19mm LUMBER WITH JOINTS STAGGERED\n• 38mm LUMBER\nFIRE BLOCKING EXEMPTION FOR WALLS (O.B.C. - 9.10.16.2 (2))\n• NO BLOCKING IS REQUIRED IN WALLS WHERE THE WALL IS INSULATED AND INSULATION IS SUPPORTED FROM MOVING IN THE CAVITY\nPENETRATIONS (O.B.C. - 9.10.16.4)\n• PENETRATIONS FOR WIRES AND PIPING BETWEEN HORIZONTAL AND VERTICAL SPACES ARE REQUIRED TO BE FIRE AND SMOKE SEALED",
+      "summary": "These notes provide specifications for fire blocking materials and exemptions. Permitted materials include 0.38mm sheet steel, 12.7mm gypsum board, 12.5mm plywood, OSB or waferboard with continuous support joints, and 38mm lumber. Fire blocking is exempt in walls where insulation is supported from moving. Penetrations for wires and piping must be fire and smoke sealed, according to O.B.C. 9.10.16.4.",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 7,
+      "relative_path": "page_011/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Detail",
+      "location": "Section detail of bulkheads",
+      "level": "Multiple",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "2/A500"
+      ],
+      "element_type": "Fire Blocks in Bulkheads",
+      "element_callouts": [],
+      "key_components": [
+        "Fire Rated Floor Assembly",
+        "Non-Fire Rated Floor Assembly",
+        "Top Plate",
+        "Gypsum Board"
+      ],
+      "text_verbatim": "FIRE BLOCKS IN BULKHEADS - SECTION DETAIL - TYPICAL\n2ND DWELLING UNIT\n1ST DWELLING UNIT\nCONTINUOUS FIRE RATED FLOOR ASSEMBLY\nCONCEALED SPACE\nTOP PLATE FIRE BLOCKING REQUIRED TO BE 38mm THICK LUMBER MIN.\nNON LOAD BEARING NON RATED INTERIOR WALL\nMIN 12.7mm GYPSUM BOARD INSTALLED PRIOR TO BULKHEAD\nNON-FIRE RATED OPTION 1\nFIRE RATED FLOOR ASSEMBLY\n2 STOREY DWELLING UNIT\n1 1/2\" = 1'-0\"\n2 A500",
+      "summary": "This section detail illustrates fire blocks in bulkheads, showing both fire-rated and non-fire-rated floor assemblies. The fire-rated floor assembly is continuous, while the non-fire-rated option includes a concealed space. The top plate requires fire blocking with a minimum of 38mm thick lumber. A minimum of 12.7mm gypsum board must be installed prior to the bulkhead. The section callout '2/A500' references this detail in the drawing set.",
+      "project_id": "25-01-068",
+      "page_number": 11,
+      "region_number": 8,
+      "relative_path": "page_011/region_08_red_box.png"
+    }
+  ]
+}

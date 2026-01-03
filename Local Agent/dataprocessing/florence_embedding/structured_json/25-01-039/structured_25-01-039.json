@@ -1,0 +1,543 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Construction Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "All doors shall comply with resistance to forced entry O.B.C. 9.6.6.\nAll exterior walls to be insulated & weatherstripped.\nAll windows in dwellings unit shall be exterior type, weatherstripped and caulked. Basement openings shall be non-openable. Wall separating house and garage to be insulated & weatherstripped.\nAll concrete to be reinforced as per O.B.C. 9.30.6.\nAll bedrooms shall have at least one window with unobstructed glass area of 3.8 sq. ft., with no dimension less than 15\" and a sill height not above finished floor.\nGrab bars up to 16\" above bath tubs.\nABC CO. INC. shall not be liable for damages resulting from these drawings.\nRoof snow load = 0.4 kPa; not less than 1 kPa (20.9 psf),\nBuilding width > 4.3m\nBuilding width <= 4.3m\nMinimum snow load in kPa\nS = 0.29 (6 psf) (roof rafters/joists or truss top chords)\nS = 1.92 (40 psf),\nS = 1.44 (30 psf)\nS = 0.58 (12 psf)\nRoof systems, as per OBC 9.4.2.3:\nS = 1.92 kPa (40 psf) or snow load\nOBC 2012 4.1.5.14 (1)",
+      "summary": "This image contains general construction notes for a building project. Key points include compliance with O.B.C. 9.6.6 for door resistance to forced entry, insulation and weatherstripping requirements for exterior walls, and specifications for windows in dwelling units. All concrete must be reinforced as per O.B.C. 9.30.6. Bedrooms require at least one window with specific dimensions, and grab bars are to be installed up to 16 inches above bathtubs. The company ABC CO. INC. disclaims liability for damages resulting from these drawings. Roof snow load specifications are provided, with different values based on building width and roof system type, as per OBC 9.4.2.3. These notes set the stage for detailed plans and specifications that follow.",
+      "project_id": "25-01-039",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Site",
+      "level": "Site",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Site Plan Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "SITE PLAN NOTES:\n1. DIMENSIONS TO PROPERTY LINES ARE APPROXIMATE. THIS IS NOT A SURVEY.\n2. PROVIDE MINIMUM 2% OF SLOPE FOR ADEQUATE DRAINAGE AWAY FROM THE NEW BUILDING.\n3. PROVIDE EAVESTROUGH CONNECTED TO DOWN PIPES TO STORM SEWERS OR FIELD TILES.\nDIMENSIONS SHOWN ARE IN METRIC AND CAN BE CONVERTED TO IMPERIAL BY MULTIPLYING BY 3.281.",
+      "summary": "This image contains site plan notes for a building project. The notes emphasize that dimensions to property lines are approximate and not a survey. A minimum 2% slope is required for adequate drainage away from the new building. Eavestroughs must be connected to downpipes leading to storm sewers or field tiles. Dimensions are provided in metric and can be converted to imperial by multiplying by 3.281. These notes are crucial for site-level considerations and ensure proper drainage and utility connections.",
+      "project_id": "25-01-039",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Site",
+      "level": "Site",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Site Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Proposed Dwelling",
+        "Proposed Septic Tank",
+        "Proposed Leaching Bed"
+      ],
+      "text_verbatim": "PAPINEAU LAKE\n(36m) NORTH PROPERTY LINE\n(87m) WEST PROPERTY LINE\n(89.5m) EAST PROPERTY LINE\n(87m) SOUTH PROPERTY LINE\nPROPOSED NEW DWELLING\nPROPOSED SEPTIC TANK\nPROPOSED LEACHING BED\n12.5m\n35m\n23m\n28.6m\n14.5m\n10.8m\n3m\n5.5m\n25.6m",
+      "summary": "This site plan provides an overview of the property layout, including the proposed new dwelling, septic tank, and leaching bed. The property is bounded by the North, West, East, and South property lines with respective dimensions of 36m, 87m, 89.5m, and 87m. Key dimensions include 12.5m, 35m, 23m, 28.6m, 14.5m, 10.8m, 3m, and 5.5m, indicating distances between various elements on the site. The plan emphasizes the importance of proper layout and spacing for the new building and its associated systems.",
+      "project_id": "25-01-039",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Schedule",
+      "location": "Foundation",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/D1",
+        "2/D1",
+        "4/D1",
+        "1/D1",
+        "6/D1",
+        "5/D1"
+      ],
+      "element_type": "Foundation Plan Notes and Schedules",
+      "element_callouts": [
+        "CL1",
+        "CL2",
+        "C1",
+        "C1a",
+        "C2",
+        "P1",
+        "P2",
+        "FL1",
+        "FL3",
+        "ICF1",
+        "PF1",
+        "PF2",
+        "PF3",
+        "BW1",
+        "IW1",
+        "B1",
+        "B2",
+        "LDGR1"
+      ],
+      "key_components": [
+        "Concrete Lintels",
+        "Columns",
+        "Footings",
+        "ICF Wall Assemblies",
+        "Floor Assemblies"
+      ],
+      "text_verbatim": "LEGEND\nINTERIOR FLOOR DRAIN\nSMOKE & C.O. DETECTOR\nEXHAUST FAN\nBASEMENT PLAN NOTES\n1. ALL FASTENERS IN TO TREATED WOOD SHALL BE ACQ RATED.\n2. PROVIDE LINTEL REINFORCEMENT AS PER DETAILS AND LINTEL SCHEDULE.\n3. ICF OPENING REINFORCEMENT: PROVIDE (2) - 10M REBAR TO BE PLACED AROUND PERIMETER OF ALL OPENINGS AND EXTEND A MIN. OF 24\" BEYOND OPENINGS OR TO TOP OF WALL. SEE DETAIL 3/D1\n4. EXTERIOR FOOTING TILE TO BE DRAINED AWAY FROM BUILDING.\n5. ROOF DOWN PIPES SHALL NOT DRAIN INTO AN INTERIOR SUMP PIT.\n6. ENSURE ADEQUATE FROST PROTECTION TO FTG. IF BEDROCK INTERFERES WITH FTG. DEPTH PIN FTG. TO BEDROCK c/w 15M REBAR @ 4'-0\" o.c. MIN. 6\" EMBED. FTG. STEPS NOT TO EXCEED 24\" RISE IN 4'-0\" LENGTH. INSULATE WALKOUT FDN. FTG. (SEE DETAIL 1/D1)\n7. INTERIOR WALLS \"IW1\" UNLESS NOTED OTHERWISE.\n8. ADJUST DECK JOIST SPACING TO 12\" o.c. IF USING COMPOSITE DECKING MATERIAL.\nFLOOR ASSEMBLIES\nID NOTE\nFL1 CONCRETE BASEMENT FLOOR:\nPOWER TROWEL FINISH\n4\" POURED CONCRETE (20 MPA)\n2\" RIGID INSULATION - R10 (IF HEATED)\nS10mil POLY VAPOUR BARRIER w/ ALL EDGES, PENETRATIONS & JOINTS CAULKED FOR SEALING AGAINST RADON GAS\n6\" CLEAR DRAINAGE STONE\nMAIN FLOOR SYSTEM :\nFINISH FLOOR ON UNDERLAY AS REQ'D.\n3/4\" T&G SHEATHING SCREWED & GLUED\nFLOOR SYSTEM AS PER SUPPLIER\nFL3 P.T. DECK SYSTEM :\n5/4 P.T. DECKING SCREWED TO P.T. DECK JOISTS PER PLAN\nICF WALL ASSEMBLIES\nID NOTE ICFMA\nICF1 ICF BELOW GRADE FOUNDATION WALL: TABLE B.1.2.\n- 8\" TIE SPACING\n- 9'-4\" WALL HEIGHT / 8'-0\" MAX. BACKFILL HEIGHT\n- BACKFILL EQUIVALENT FLUID DENSITY 480kg/m3 (REINFORCEMENT TO BE INSIDE FACE OF WALL)\n15M DOWELS @ 4'-0\" o.c.\n10M HORIZ. REBAR INTO STRIP FTG @ 18\" o.c. AND 15M VERT. REBAR @ 16\" o.c.\n(PROVIDE AT LEAST ONE 10M HORIZ. REBAR TO BE PLACED AT THE BOTTOM COURSE AND TOP COURSE.)\nEXTERIOR STRIP FOOTINGS:\n20\" WIDE x 6\" THICK CONCRETE r/w (2) 15M REBAR CONTINUOUS\nUNDISTURBED SOIL (SEE DETAIL 1/D1)\nFOOTING SCHEDULE\nID NOTE P. ENG. (*)\nPF1 CONCRETE PAD FOOTING:\n9'-6\" x 30\" x 10\" THICK c/w 15M REBAR @ 12\" o.c. EACH WAY\nUNDISTURBED SOIL (SEE DETAIL 2/D1)\nPF2 CONCRETE PAD FOOTING:\n26\" x 26\" x 12\" THICK\nUNDISTURBED SOIL (SEE DETAIL 2/D1)\nPF3 CONCRETE PAD FOOTING:\n31\" x 31\" x 12\" THICK\nUNDISTURBED SOIL (SEE DETAIL 2/D1)\nCONCRETE LINTEL SCHEDULE\nID NOTE ICFMA\nCL1 6\" THICK x 16\" DEEP LINTEL\nUNIFORMLY DISTRIBUTED LOAD 500 lb/ft (END WALL) STIRRUPS NOT REQ'D\n1-10M BOTTOM BAR\nPROVIDE SIDE REINFORCEMENT (SEE DETAIL 3/D1)\nCL2 6\" THICK x 16\" DEEP LINTEL\nUNIFORMLY DISTRIBUTED LOAD 2500 lb/ft (20 lf/2) x (55 psf) = 150 lb/ft (MAIN FLOOR)\n(44 lf/2) x (80 psf) = 1870 lb/ft (ROOF)\nSTIRRUPS @ 0\" o.c. END DISTANCE 16\"\n1-10M BOTTOM BAR\nPROVIDE SIDE REINFORCEMENT (SEE DETAIL 3/D1)\nCOLUMN SCHEDULE\nID NOTE P. ENG. (*)\nC1 3\" DIA. STEEL JACKPOST SECURED AT TOP AND BOTTOM RATED FOR MIN. 5,000 LBS (SEE DETAIL 2/D1)\nC1a 3\" DIA. STEEL JACKPOST SECURED AT TOP AND BOTTOM RATED FOR MIN. 8,500 LBS (SEE DETAIL 2/D1)\nC2 (4) PLY 2x4 STUD POST\n6x6 P.T. No.2 OR BETTER POST c/w SIMPSON ABU66Z POST BASE FASTENED TO PIER AND SIMPSON BCS2-3/6 FASTENED TO BEAM ABOVE (SEE DETAILS 4/D1)\nCONCRETE PIER SCHEDULE\nID NOTE P. ENG. (*)\nP1 8\" DIA. CONCRETE FOOTING TUBE c/w 24\" DIA. BASE\nPROVIDE SADDLE ANCHOR AT TOP ( OR HELICAL SCREW PILES BY MFR) (SEE DETAIL 4/D1)\nP2 8\" DIA. CONCRETE FOOTING TUBE c/w 36\" DIA. BASE\nPROVIDE SADDLE ANCHOR AT TOP ( OR HELICAL SCREW PILES BY MFR) (SEE DETAIL 4/D1)\nFRAMED WALL ASSEMBLIES\nID NOTE\nBW1 2x4 BEARING WALL:\n1/2\" DRYWALL TAPED & SANDED\n2x4 STUDS @ 16\" o.c.\n1/2\" DRYWALL TAPED & SANDED\n12\" WIDE x 6\" THICKENED CONC. FLOOR BELOW (SEE DETAIL 6/D1)\nIW1 2x4 PARTITION WALL:\n1/2\" DRYWALL TAPED & SANDED\n2x4 STUDS @ 16\" o.c.\n1/2\" DRYWALL TAPED & SANDED\nBEAM SCHEDULE\nID NOTE\nB1 3 PLY 2x12 P.T. DECK BEAM\nB2 4 PLY 2x10 P.T. JOIST (FLUSH)\nLEDGER SCHEDULE\nID NOTE\nLDGR1 2x10 P.T. LEDGER C/W (2) GRK RSS 5/16\" x 4\" SCREWS @ 16\" o.c. (DETAIL 5/D1)",
+      "summary": "This image provides detailed notes and schedules for the foundation plan, including concrete lintels, columns, footings, and ICF wall assemblies. Key components include concrete lintels (CL1, CL2), columns (C1, C1a, C2), footings (PF1, PF2, PF3), and floor assemblies (FL1, FL3). The notes specify requirements for fasteners, lintel reinforcement, ICF opening reinforcement, and frost protection for footings. The floor assemblies detail concrete basement floors and deck systems. The ICF wall assemblies outline tie spacing, wall height, and rebar placement. The footing schedule provides dimensions and reinforcement details for concrete pad footings. The concrete lintel schedule specifies load capacities and reinforcement requirements. The column schedule details steel jackposts and stud posts. The concrete pier schedule includes footing tube dimensions and anchor requirements. The framed wall assemblies describe bearing and partition walls with drywall and stud specifications. The beam and ledger schedules provide details for deck beams and ledgers. Section callouts reference specific details for further information.",
+      "project_id": "25-01-039",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "section_callouts": [
+        "1/D1",
+        "2/D1",
+        "3/D1",
+        "4/D1",
+        "5/D1",
+        "6/D1"
+      ],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "ICF1",
+        "P1",
+        "P2",
+        "C1",
+        "C1a",
+        "C2",
+        "B1",
+        "B2",
+        "FL1",
+        "FL3"
+      ],
+      "key_components": [
+        "ICF Walls",
+        "Concrete Footings",
+        "Steel Jackposts",
+        "Deck Joists"
+      ],
+      "text_verbatim": "52'-0\"\n4'-0\"\n9'-0\"\n14'-0\"\n40'-0\"\n9'-0\"\n8'-0\"\n52'-0\"\n19'-0\"\n15'-6 1/2\"\n6'-4 1/2\"\n12'-0\"\n18'-11 1/2\"\n18'-9 1/2\"\n9'-2\"\n6'-3\"\n48'-0\"\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.\n2x10 P.T. DECK JOIST @ 16\" o.c. BLOCKING MIDSPAN, SEE NOTE E.",
+      "summary": "This foundation plan details the layout and specifications for the building's foundation. It includes grid references A, B, C, and D, and section callouts 1/D1, 2/D1, 3/D1, 4/D1, 5/D1, and 6/D1 for further detail. Key components include ICF walls, concrete footings, steel jackposts, and deck joists. The plan specifies dimensions such as 52'-0\", 4'-0\", 9'-0\", 14'-0\", 40'-0\", and others, indicating the layout of the foundation elements. The deck joists are specified as 2x10 P.T. at 16\" o.c. with blocking at midspan, as noted in the plan. This sheet is crucial for ensuring the structural integrity of the building's base.",
+      "project_id": "25-01-039",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Rear elevation of the building",
+      "level": "Unknown",
+      "orientation": "Rear elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Rear Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Wood Siding"
+      ],
+      "text_verbatim": "REAR ELEVATION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O WALL\nU/S OF PORCH BEAM\nT/O SUBFLR\nT/O DK BEAM\nT/O FDN\nT/O BSMT SLB\nT/O FTG\nGRADE\n11'-11 15/16\"\n9'-11 1/4\"\n1'-3\"\n6'-9 1/4\"\n1'-3\"\n10'-6\"\n1'-6\"\nMETAL ROOFING\nWOOD SIDING",
+      "summary": "This rear elevation view shows the building's exterior with metal roofing and wood siding. Key dimensions include the top of the roof at 11'-11 15/16\", top of the wall at 9'-11 1/4\", and foundation details such as the top of footing at 1'-6\". The elevation provides a clear view of the building's rear facade, highlighting the porch beam and subfloor levels.",
+      "project_id": "25-01-039",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation of the building",
+      "level": "Unknown",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Front Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Wood Siding"
+      ],
+      "text_verbatim": "FRONT ELEVATION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O WALL\nU/S OF PORCH BEAM\nT/O SUBFLR\nT/O DK BEAM\nT/O FDN\nT/O BSMT SLB\nT/O FTG\nGRADE\n11'-11 15/16\"\n9'-11 1/4\"\n1'-3\"\n6'-9 1/4\"\n1'-3\"\n10'-6\"\n1'-6\"\nMETAL ROOFING\nWOOD SIDING\n6'-0\"\n4'-0\"\n4'-4\"",
+      "summary": "This front elevation view displays the building's facade with metal roofing and wood siding. Notable dimensions include the top of the roof at 11'-11 15/16\" and the top of the wall at 9'-11 1/4\". The elevation highlights architectural features such as windows and porch beams, with specific dimensions for window placements at 6'-0\" and 4'-0\".",
+      "project_id": "25-01-039",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Right elevation of the building",
+      "level": "Unknown",
+      "orientation": "Right elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Right Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Wood Siding"
+      ],
+      "text_verbatim": "RIGHT ELEVATION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O WALL\nU/S OF COVERED PORCH BEAM\nT/O SUBFLR\nT/O DK BEAM\nT/O FDN\nT/O BSMT SLB\nT/O FTG\nGRADE\n11'-11 15/16\"\n9'-11 1/4\"\n1'-3\"\n6'-9 1/4\"\n1'-3\"\n10'-6\"\n1'-6\"\nMETAL ROOFING\nWOOD SIDING",
+      "summary": "This right elevation view illustrates the building's side profile with metal roofing and wood siding. Key dimensions include the top of the roof at 11'-11 15/16\" and the top of the wall at 9'-11 1/4\". The elevation shows the covered porch beam and subfloor levels, providing a detailed view of the building's right side.",
+      "project_id": "25-01-039",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Left elevation of the building",
+      "level": "Unknown",
+      "orientation": "Left elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Left Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Wood Siding"
+      ],
+      "text_verbatim": "LEFT ELEVATION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O WALL\nT/O SUBFLR\nT/O DK BEAM\nT/O FDN\nT/O CON SLB\nT/O FTG\nGRADE\n11'-11 15/16\"\n9'-11 1/4\"\n1'-3\"\n6'-9 1/4\"\n1'-3\"\n10'-6\"\n1'-6\"\nMETAL ROOFING\nWOOD SIDING\nENSURE MIN. 4'-0\" FROST COVER TO PIER FTGS.",
+      "summary": "This left elevation view shows the building's side with metal roofing and wood siding. Important dimensions include the top of the roof at 11'-11 15/16\" and the top of the wall at 9'-11 1/4\". The elevation emphasizes the concrete slab and footing details, with a note to ensure a minimum 4'-0\" frost cover to pier footings.",
+      "project_id": "25-01-039",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Longitudinal section through the building",
+      "level": "Unknown",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A6"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "B1",
+        "FL1",
+        "FL2",
+        "FL3",
+        "CLG1",
+        "CLG2",
+        "CLG3",
+        "CLG4",
+        "IW2",
+        "IW1",
+        "EW1",
+        "P1",
+        "ICF1",
+        "R1",
+        "R2",
+        "R3"
+      ],
+      "key_components": [
+        "Girder Truss",
+        "Ridge Beam",
+        "Vented Soffit",
+        "Steel Beam",
+        "Column",
+        "Insulated Concrete Form"
+      ],
+      "text_verbatim": "*1/A6 BUILDING SECTION\nSCALE: 1/4\" = 1'-0\"\nT/O ROOF\nT/O WALL\nU/S OF PORCH BEAM\nT/O SUBFLR\nT/O DK BEAM\nT/O FDN WALL\nT/O FTG\nGRADE\n11'-11 15/16\"\n9'-11 1/4\"\n1'-3\"\n6'-9 1/4\"\n1'-3\"\n10'-6\"\n1'-6\"\nGIRDER TRUSS\nRIDGE BEAM\nVENTED SOFFIT\nATTIC VENTING 1/300 AS PER OBC\nSHALLOW FTG INSULATED AS PER DETAIL 1/D7\nFOYER\nLIVING\nKITCHEN\nUTILITY\nBATH\nHALL\nREC ROOM",
+      "summary": "This building section provides a longitudinal view of the structure, detailing wall, floor, and ceiling assemblies. The section includes a girder truss and ridge beam, with vented soffits for attic ventilation. Key dimensions are the top of the roof at 11'-11 15/16\" and the top of the wall at 9'-11 1/4\". The section highlights various rooms such as the foyer, living room, kitchen, utility, bath, hall, and rec room. Structural elements include a steel beam and column, with insulated concrete forms for foundation walls. The section callout '1/A6' references this view.",
+      "project_id": "25-01-039",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Steel beam and column connection detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/A6"
+      ],
+      "element_type": "Steel Beam & Column Detail",
+      "element_callouts": [
+        "FL2"
+      ],
+      "key_components": [
+        "Steel Beam",
+        "HSS Steel Post",
+        "End Plate",
+        "Top Plate",
+        "GRK Screws",
+        "Galvanized Base Plate"
+      ],
+      "text_verbatim": "STEEL BEAM AS PER PLAN\n3/8\" END PLATE\n1/4\" TYP.\n1/2\" x 5 1/2\" x 8\" TOP PLATE C/W 2 - 3/4\" A325 BOLTS THRU PLATE INTO BEAM FLANGE\n(3) 1/2\" DIA. THROUGH BOLTS @ 2'-0\" o.c. TO SECURE BEAM PACKING\nHSS STEEL POST PER PLAN\nSTUD POST AS PER PLAN\nMAIN FLOOR SYSTEM PER PLAN\nFL2\n(4)- 5/16\" x 6\" GRK SCREWS (OR EQUIV.)\n3/4\" THICK GALV. BASE PLATE\nLVL AS PER PLAN\n*2/A6 STEEL BEAM & COLUMN DETAIL\nSCALE: 1\" = 1'-0\"",
+      "summary": "This detail shows a steel beam and column connection. The steel beam is supported by HSS steel posts, with a 3/8\" end plate and a 1/2\" x 5 1/2\" x 8\" top plate secured by 3/4\" A325 bolts into the beam flange. The connection includes (3) 1/2\" diameter through bolts spaced at 2'-0\" on center for securing beam packing. The detail also specifies the use of 5/16\" x 6\" GRK screws and a 3/4\" thick galvanized base plate. The main floor system is indicated as per plan, with the element callout FL2 marking the location. The section callout 2/A6 references this detail on sheet A6.",
+      "project_id": "25-01-039",
+      "page_number": 8,
+      "region_number": 2,
+      "relative_path": "page_008/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Assemblies Schedule",
+      "element_callouts": [],
+      "key_components": [
+        "Wall Assemblies",
+        "Floor Assemblies",
+        "Ceiling Assemblies",
+        "Roof Assemblies",
+        "ICF Wall Assemblies"
+      ],
+      "text_verbatim": "WALL ASSEMBLIES\nID NOTE P.ENG. (*)\nEW1 2x6 SIDING EXTERIOR WALL: SIDING PER CLIENT 1\" RIGID INSULATION (JOINTS TAPED) 7/16\" OSB SHEATHING 2x6 STUDS @ 16\" o.c. R20 BATT INSULATION S6 MIL POLY VAPOR BARRIER 1/2\" DRYWALL TAPED & SANDED\nEW2 2x6 SIDING EXTERIOR WALL: (SUPPORTING 22'-0\" ROOF SPAN) SIDING PER CLIENT 1\" RIGID INSULATION (JOINTS TAPED) 7/16\" OSB SHEATHING 2x6 STUDS @ 16\" o.c. R20 BATT INSULATION S6 MIL POLY VAPOR BARRIER 1/2\" DRYWALL TAPED & SANDED *\nEW3 2x6 SIDING EXTERIOR WALL: (GABLE END WALL) SIDING PER CLIENT 1\" RIGID INSULATION (JOINTS TAPED) 7/16\" OSB SHEATHING ONE SIDE FASTENED WITH 2 3/8\" NAILGUN NAILS @ 4\" o.c. PANEL EDGES AND 12\" o.c. IN FIELD PROVIDE BLOCKING @ 4'-0\" o.c. AND @ ALL PANEL EDGES 2x6 STUDS @ 16\" o.c. R20 BATT INSULATION S6 MIL POLY VAPOR BARRIER 1/2\" DRYWALL TAPED & SANDED\nIW1 2x4 PARTITION WALL: 1/2\" DRYWALL TAPED & SANDED 2x4 STUDS @ 16\" o.c. 1/2\" DRYWALL TAPED & SANDED\nIW2 2x6 PARTITION WALL: 1/2\" DRYWALL TAPED & SANDED 2x6 STUDS @ 16\" o.c. 1/2\" DRYWALL TAPED & SANDED\nFLOOR ASSEMBLIES\nID NOTE\nFL1 CONCRETE BASEMENT FLOOR: POWER TROWEL FINISH 4\" POURED CONCRETE (20 MPA) 2\" RIGID INSULATION - R10 (IF HEATED) 10mil POLY VAPOUR BARRIER w/ ALL EDGES, PENETRATIONS & JOINTS CAULKED FOR SEALING AGAINST RADON GAS 6\" CLEAR DRAINAGE STONE\nFL2 MAIN FLOOR SYSTEM : FINISH FLOOR ON UNDERLAY AS REQ'D. 3/4\" T&G SHEATHING SCREWED & GLUED FLOOR SYSTEM AS PER SUPPLIER\nFL3 P.T. DECK SYSTEM : 5/4 P.T. DECKING SCREWED TO P.T. DECK JOISTS PER PLAN\nCEILING ASSEMBLIES\nID NOTE\nCLG1 VAULTED CEILING ASSEMBLY: R32 BATT INSULATION S-6 mil POLY VAPOUR BARRIER 1/2\" DRYWALL TAPED AND SANDED.\nCLG2 CEILING ASSEMBLY: R60 CELLULOSE 1x4 STRAPPING @ 16\" o/c S-6 mil POLY VAPOUR BARRIER 1/2\" DRYWALL TAPED AND SANDED\nCLG3 VAULTED PORCH CEILING ASSEMBLY: 3/4\" PINE V-MATCH CEILING BOARD.\nCLG4 PORCH CEILING ASSEMBLY: 1x4 STRAPPING @ 16\" o/c VENTED ALUMINUM SOFFIT\nROOF ASSEMBLIES\nID NOTE\nR1 PRE ENGINEERED WOOD TRUSS ROOF: 30 YEAR ASPHALT SHINGLES OR PRE-FINISHED METAL WATERPROOFING MEMBRANE 1/2\" ROOFING PLYWOOD c/w 'H' CLIPS (ALTERNATE: 5/8\" T&G OSB SHEATHING) PRE-ENGINEERED SLOPING FLAT TRUSSES @ 24\" o/c 2x4 TRUSS BRACING AS REQ'D\nR2 PRE ENGINEERED WOOD TRUSS ROOF: 30 YEAR ASPHALT SHINGLES OR PRE-FINISHED METAL WATERPROOFING MEMBRANE 1/2\" ROOFING PLYWOOD c/w 'H' CLIPS (ALTERNATE: 5/8\" T&G OSB SHEATHING) PRE-ENGINEERED TRUSSES @ 24\" o/c 2x4 TRUSS BRACING AS REQ'D\nR3 PRE ENGINEERED WOOD TRUSS ROOF: 30 YEAR ASPHALT SHINGLES OR PRE-FINISHED METAL WATERPROOFING MEMBRANE 1/2\" ROOFING PLYWOOD c/w 'H' CLIPS (ALTERNATE: 5/8\" T&G OSB SHEATHING) PRE-ENGINEERED SCISSOR TRUSSES @ 24\" o/c 2x4 TRUSS BRACING AS REQ'D\nR4 OVERLAY FRAMING c/w 2x8 VALLEY BOARDS 2x8 RIDGE BOARD & 2x6 RAFTERS @ 24\" o.c.\nICF WALL ASSEMBLIES\nID NOTE ICFMA\nICF1 ICF BELOW GRADE FOUNDATION WALL: - 8\" TIE SPACING - 9'-4\" WALL HEIGHT / 8'-0\" MAX. BACKFILL HEIGHT - BACKFILL EQUIVALENT FLUID DENSITY 480kg/m3 (REINFORCEMENT TO BE INSIDE FACE OF WALL) 15M DOWELS @ 4'-0\" o.c. 10M HORIZ. REBAR @ 18\" o.c. AND 15M VERT. REBAR @ 16\" o.c. (PROVIDE AT LEAST ONE 10M HORIZ. REBAR TO BE PLACED AT THE BOTTOM COURSE AND TOP COURSE.) EXTERIOR STRIP FOOTINGS: 20\" WIDE x 6\" THICK CONCRETE w/ (2) 15M REBAR CONTINUOUS UNDISTURBED SOIL (SEE DETAIL 1/D1)\nTABLE B.1.2.",
+      "summary": "This schedule provides detailed specifications for various assemblies within the building. Wall assemblies include exterior and partition walls with specific insulation, sheathing, and drywall requirements. Floor assemblies detail concrete basement floors and main floor systems, including vapor barriers and drainage stone. Ceiling assemblies specify insulation and finishing materials for vaulted and porch ceilings. Roof assemblies describe pre-engineered wood truss roofs with options for asphalt shingles or metal finishes, including truss spacing and bracing. The ICF wall assemblies outline reinforcement and backfill requirements for below-grade foundation walls, with references to specific details for construction. The schedule ensures all structural components are constructed to precise specifications.",
+      "project_id": "25-01-039",
+      "page_number": 8,
+      "region_number": 3,
+      "relative_path": "page_008/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Concrete pier detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "4/D1"
+      ],
+      "element_type": "Concrete Pier Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Pier",
+        "Footing",
+        "Simpson Bracket",
+        "Lag Screws",
+        "Hilti Kwik Anchors"
+      ],
+      "text_verbatim": "GUARDS PER OBC\nCOLUMNS FASTENED TO BEAM WITH SIMPSON BRACKET\nNOTE: ALL FASTENERS INTO TREATED LUMBER SHALL BE ACQ RATED.\n2 - 1/2\" DIA. x 3 1/2\" A307 LAG SCREWS (4 TOTAL)\nGRADE\nCONCRETE PIER ON FTG. PER PLAN\n2 - 15M INTO FOOTING\nPROVIDE 2\" CONC. COVER TO ALL REINFORCING\nFOOTING PER PLAN\nCOLUMN PER PLAN\nSIMPSON BASE SADDLE C/W 2 - 1/2\" x 4\" HILTI KWIK ANCHORS INTO PIER (OR EQUIVALENT)\n4/D1 CONC. PIER DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail illustrates a concrete pier used in foundation construction. The pier is reinforced with 15M rebar extending into the footing, with a 2\" concrete cover for all reinforcing. The column is fastened to the beam using a Simpson bracket, and the base saddle is secured with 1/2\" x 4\" Hilti Kwik anchors into the pier. The detail specifies the use of A307 lag screws for fastening, with all fasteners into treated lumber being ACQ rated. The section callout 4/D1 references this detail on sheet D1, providing precise construction guidance for the pier and associated components.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 1,
+      "relative_path": "page_009/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "ICF opening detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/D1"
+      ],
+      "element_type": "ICF Opening Detail",
+      "element_callouts": [],
+      "key_components": [
+        "ICF Wall",
+        "Rebar",
+        "Window/Door Opening"
+      ],
+      "text_verbatim": "1 - 10M TOP REBAR\n2 - 10M VERTICAL REBAR NEAR SIDE / FAR SIDE FULL HEIGHT OF WALL AS INDICATED ON PLAN\nBOTTOM REBAR AS PER LINTEL SCHEDULE\nWINDOW / DOOR OPENING\n2 - 10M HORIZONTAL REBAR NEAR SIDE / FAR SIDE\nEXTEND REBAR 24\" MIN. BEYOND EDGE OF OPENING\n3/D1 ICF OPENING DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail shows the reinforcement layout for an ICF wall opening, such as a window or door. It includes 10M top rebar and vertical rebar on both near and far sides, extending the full height of the wall. Horizontal rebar is also placed near and far sides, with a minimum extension of 24\" beyond the opening edge. The bottom rebar is specified as per the lintel schedule. The section callout 3/D1 references this detail on sheet D1, ensuring proper reinforcement and structural integrity for openings in ICF walls.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 2,
+      "relative_path": "page_009/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Bathroom grab bar installation",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "8/D1"
+      ],
+      "element_type": "Bath Blocking Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Water Closet",
+        "Grab Bar"
+      ],
+      "text_verbatim": "2'-6\" (760mm)\n6\" (150mm)\n2'-6\" (760mm)\n2'-5 1/2\" (750mm)\nWATERCLOSET GRAB BAR DETAIL\n1'-6\"\n2'-0\"\n6\"\n1'-4\"\n{[O 1'-6\"]}\nWATERCLOSET GRAB BAR (BACK WALL)\n8/D1 BATH BLOCKING DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail provides dimensions and specifications for installing a grab bar in a bathroom, specifically around a water closet. The grab bar is positioned at 2'-6\" (760mm) height, with additional dimensions provided for precise placement. The detail includes both side and back wall views, ensuring proper installation for accessibility. The section callout 8/D1 references this detail on sheet D1, guiding the installation of grab bars in compliance with accessibility standards.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 3,
+      "relative_path": "page_009/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Insulated Concrete Footing",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/D1"
+      ],
+      "element_type": "Insulated Concrete Footing Detail",
+      "element_callouts": [
+        "ICF1"
+      ],
+      "key_components": [
+        "Concrete Footing",
+        "Rebar",
+        "Rigid Insulation",
+        "ICF Panel",
+        "Weeping Tile"
+      ],
+      "text_verbatim": "INSULATION NOTES:\n1. COMPATIBLE SUB-GRADE INSULATION INCLUDES:\nA) 4\" THICK (R20-30PSI) DOW SM EXTRUDED POLYSTYRENE INSULATION\nB) 4\" THICK (R20-20PSI) DOW CLADMATE CM20 EXTRUDED POLYSTYRENE INSULATION\nC) 4\" THICK (R24-60PSI) CLOSED CELL SPRAY POLYURETHANE FOAM INSULATION\n2. INSULATION OF FOOTINGS REQUIRED WHEREVER 4'-0\" GROUND COVER NOT POSSIBLE.\nBACKFILL\nICF PANEL\nMEMBRANE & PARGING AS PER MANUFACTURER\n6\" CONCRETE CORE C/W REINFORCEMENT AS PER PLAN\nRIGID INSULATION AS PER NOTES\nGRADE\n4'-0\" (MIN.)\n15M REBAR DOWELS @ 4'-0\" o/c AS PER PLAN\n4\" DIA. WEEPING TILE W/ SAND SCREEN\n6\" CRUSHED STONE (CLEAR) DIRECTED AWAY FROM DWELLING\nCONCRETE FOOTING REINFORCED AS PER PLAN ON UNDISTURBED SOIL OR BEDROCK\nCONCRETE FOUNDATION WALL REINFORCED AS PER PLAN\nCONC. FLOOR\nGRANULAR \"A\" FILL\n1/D1 INSUL. CONC. FTG. DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail illustrates an insulated concrete footing with specific insulation and reinforcement requirements. The insulation notes specify compatible sub-grade insulation types, including 4\" thick DOW SM extruded polystyrene and closed cell spray polyurethane foam. The footing detail includes a 6\" concrete core with reinforcement, rigid insulation, and a 4'-0\" minimum ground cover requirement. The drawing shows a concrete footing reinforced as per plan, with 15M rebar dowels spaced at 4'-0\" on center. Additional components include a 4\" diameter weeping tile with sand screen and 6\" crushed stone directed away from the dwelling. The section callout '1/D1' references this detail on sheet D1.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 4,
+      "relative_path": "page_009/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Steel Column Footing",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/D1"
+      ],
+      "element_type": "Steel Column Footing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Column",
+        "Steel Base Plate",
+        "Footing",
+        "Granular Fill"
+      ],
+      "text_verbatim": "BEAM PER PLAN\nSTEEL PLATE PER PLAN\nSTEEL COLUMN PER PLAN\nSTEEL BASE PLATE ANCHORED TO FTG\nCAULK V.B. AROUND COLUMN STOP INSUL. AROUND COLUMN FOR SOLID BEARING\nFOOTING SIZE PER PLAN\nNO INSULATION UNDER FOOTING\nMIN. 6\" COMPACTED GRANULAR FILL\n2/D1 STEEL COLUMN DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail shows a steel column footing with a steel base plate anchored to the footing. The column is supported by a footing sized as per plan, with no insulation under the footing. A minimum of 6\" compacted granular fill is specified. The detail includes caulking around the column and insulation stopping around the column for solid bearing. The section callout '2/D1' references this detail on sheet D1.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 5,
+      "relative_path": "page_009/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Main Floor – Deck Ledger Connection",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "5/D1"
+      ],
+      "element_type": "Deck Ledger Detail",
+      "element_callouts": [
+        "FL2",
+        "FL3",
+        "LDGR 1",
+        "ICF1"
+      ],
+      "key_components": [
+        "Deck",
+        "Main Floor System",
+        "ICF",
+        "Ledger"
+      ],
+      "text_verbatim": "FL2\nMAIN FLOOR SYSTEM PER PLAN\nDECK\nFL3\nLDGR 1\nICF1\n5/D1 DECK LEDGER DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail illustrates the connection between the main floor system and a deck ledger. The main floor system is labeled 'FL2', and the deck is labeled 'FL3'. The ledger is identified as 'LDGR 1', and the ICF wall is labeled 'ICF1'. The section callout '5/D1' references this detail on sheet D1. The drawing shows how the deck ledger connects to the main floor system, ensuring structural integrity.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 6,
+      "relative_path": "page_009/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – ICF Corner",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "7/D1"
+      ],
+      "element_type": "ICF Corner Detail",
+      "element_callouts": [],
+      "key_components": [
+        "ICF Corner Form",
+        "Rebar",
+        "Wall Reinforcement"
+      ],
+      "text_verbatim": "90° BEND REBAR\n#3 (10M) BARS - 16\" (400mm)\n#4 (15M) - 24\" (610mm)\nICF CORNER FORM\nWALL REINFORCEMENT AS PER PLAN\n7/D1 ICF CORNER DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail shows an ICF corner with specific rebar reinforcement. The rebar includes #3 (10M) bars with a 16\" lap length and #4 (15M) bars with a 24\" lap length. The ICF corner form is reinforced as per plan, with a 90° bend in the rebar. The section callout '7/D1' references this detail on sheet D1, indicating its location within the drawing set.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 7,
+      "relative_path": "page_009/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Detail",
+      "location": "Basement – Interior Footing",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "6/D1"
+      ],
+      "element_type": "Interior Footing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Thickened Floor",
+        "P.T. Sill Plate",
+        "Granular Fill"
+      ],
+      "text_verbatim": "BASEMENT\nTHICKENED FLOOR PER PLAN\nWALL SUPPORTING 1 FLOOR STUDS PER PLAN C/W 1/2\" DRYWALL EACH SIDE\nP.T. SILL PLATE FASTENED TO FLOOR W/ 1/4\" x 3\" TAPCONS 24\"o.c.\nMIN. 6\" COMPACTED GRANULAR\n6/D1 INT. FTG. DETAIL\nSCALE 3/4\" = 1'-0\"",
+      "summary": "This detail illustrates an interior footing in the basement with a thickened floor as per plan. The wall supports one floor with studs and 1/2\" drywall on each side. A pressure-treated sill plate is fastened to the floor with 1/4\" x 3\" Tapcons spaced 24\" on center. The footing rests on a minimum of 6\" compacted granular fill. The section callout '6/D1' references this detail on sheet D1.",
+      "project_id": "25-01-039",
+      "page_number": 9,
+      "region_number": 8,
+      "relative_path": "page_009/region_08_red_box.png"
+    }
+  ]
+}

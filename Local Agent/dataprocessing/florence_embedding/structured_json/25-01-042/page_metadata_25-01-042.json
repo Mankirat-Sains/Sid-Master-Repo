@@ -1,0 +1,38 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "E1",
+      "drawing_title": "CRANE BASKET MODIFICATION - ISOMETRIC VIEW",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Steel Frame Components",
+        "Part Numbers",
+        "General Notes"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD, UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-6769\nN1R 7J8\nFax: 519-886-6059\nEmail: info@waddelleng.com\nENGINEER'S STAMP\nB. WADDELL\nLICENSED PROFESSIONAL ENGINEER\nPROVINCE OF ONTARIO\nCLIENT:\nInchor Industrial Inc.\nDRAWING TITLE:\nIso. View, General Notes & Part Numbers\nPROJECT:\nNelson Steel Crane Basket Modification\n400 Grover Road, Stoney Creek, ON.\nL8E 5X1\nDRAWN BY: DF DATE: 2025-01-14\nSCALE: N.T.S.\nSHEET NO:\nE1\nPROJECT NO:\n25-01-042",
+      "general_notes_verbatim": "STEEL NOTES:\n1. ALL DIMENSIONS ARE IN INCHES UNLESS NOTED OTHERWISE.\n2. ALL HOLE SIZES ARE 7/16\" DIAMETER UNLESS OTHERWISE NOTED.\n3. ALL BOLTS SHALL BE 3/8\" DIAMETER A325 STRUCTURAL BOLTS UNLESS OTHERWISE NOTED.\n4. ALL HARDWARE TO BE TORQUED VIA TURN-OF-NUT METHOD AS PER CSA S6-16 3.27.8 AND TABLE 3.\n5. WHERE NO WELD SYMBOL IS SHOWN, ASSUME FILLET ALL AROUND, WITH SIZE EQUAL TO THE LESSER OF 1/4\" OR THE MINIMUM THICKNESS OF ABUTTING FACES, UNLESS NOTED.\n6. STRUCTURAL STEEL PLATES, ANGLES, AND CHANNELS SHALL CONFORM TO CSA G40.21-300W, G40.21-350W CLASS C FOR HSS AND W SECTIONS.\n7. WELDING SHALL CONFORM TO THE REQUIREMENTS OF CSA STANDARDS W59 AND SHALL BE UNDERTAKEN BY A FABRICATOR AND ERECTOR FULLY APPROVED BY THE CANADIAN WELDING BUREAU TO THE REQUIREMENTS OF CSA STANDARDS W47, DIVISION 1 OR DIVISION 2.\n8. MINIMUM E49XX ELECTRODES TO BE USED FOR ALL WELDING.\n9. FIELD VERIFY ALL DIMENSIONS PRIOR TO MANUFACTURING.\n10. ALL STRUCTURAL STEEL TO BE FINISHED AS APPROVED BY THE CONTRACTOR/OWNER.\n\nDESIGN LOADS:\nDESIGN LOADS ARE UNFACTORED UNLESS NOTED OTHERWISE:\nDEAD LOAD: SELF-WEIGHT\nLIVE (OCCUPANCY) LOAD: 4.8 kPa\nHANDRAIL LOADING: AS PER OBC 2012 3.4.6.5 (12)\n\nSHEET LIST:\nE1 - ISOMETRIC VIEW, GENERAL NOTES & PART NUMBERS\nE2 - ASSEMBLY VIEWS & DETAILS",
+      "page_overview_summary": "This sheet provides an isometric view of the crane basket modification, highlighting the steel frame components and their part numbers. It includes general notes on steel specifications, welding requirements, and design loads. The sheet serves as a reference for the overall assembly and material specifications, ensuring compliance with CSA standards."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "E2",
+      "drawing_title": "CRANE BASKET MODIFICATION - ASSEMBLY VIEWS & DETAILS",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Top View",
+        "Front View",
+        "Side View",
+        "Section A-A",
+        "Component Details"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n119 PINEBUSH RD, UNIT C\nCAMBRIDGE, ON\nPhone: 519-267-6769\nN1R 7J8\nFax: 519-886-6059\nEmail: info@waddelleng.com\nENGINEER'S STAMP\nB. WADDELL\nLICENSED PROFESSIONAL ENGINEER\nPROVINCE OF ONTARIO\nCLIENT:\nInchor Industrial Inc.\nDRAWING TITLE:\nAssembly Views & Details\nPROJECT:\nNelson Steel Crane Basket Modification\n400 Grover Road, Stoney Creek, ON.\nL8E 5X1\nDRAWN BY: DF DATE: 2025-01-14\nSCALE: N.T.S.\nSHEET NO:\nE2\nPROJECT NO:\n25-01-042",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed assembly views of the crane basket modification, including top, front, and side views, as well as a section view (A-A). It details the dimensions and specifications of various components, ensuring accurate assembly and compliance with design requirements. The sheet is essential for understanding the spatial arrangement and connections of the crane basket components."
+    }
+  ]
+}

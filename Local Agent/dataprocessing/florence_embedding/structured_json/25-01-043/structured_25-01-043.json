@@ -1,0 +1,316 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "West elevation of the residence",
+      "level": "Multiple",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S02"
+      ],
+      "element_type": "Exterior Elevation",
+      "element_callouts": [
+        "FL1"
+      ],
+      "key_components": [
+        "Wood Railings",
+        "Concrete Pier",
+        "Simpson Post Base"
+      ],
+      "text_verbatim": "WEST ELEVATION\n1/4\" = 1'-0\"\n3\nT.O EX. ROOF\n6.17\nT.O. EX. LOWER ROOF\n5.20\nU/S EX. SECOND FLOOR CEILING\n4.95\nU/S EX. UPPER FIRST FLOOR CEILING\n3.48\nEX. SECOND FLOOR\n2.67\nU/S EX. LOWER FIRST FLOOR CEILING\n2.44\nEX. UPPER FIRST FLOOR\n1.04\nU/S BASEMENT CEILING\n0.79\nEX. LOWER FIRST FLOOR\n0.00\nU/S BASEMENT CRAWL SPACE\n-0.20\nGRADE\n-0.41\nEX. BASEMENT\n-1.47\nPROPOSE WOOD RAILINGS TO COMPLY TO SB10. - SEE TACBOC DETAILS 3/S02\nPROP. 4\"x4\" POST FASTENED TO 10\" CONC. PIER ON 18\" Ø x 8\" (OR BF24) W/ APPROVED SIMPSON POST BASE. MIN 4'-0\" BELOW GRADE (TYP.)\nSIMPSON POST BASE: ABA44Z ANCHORED W/ 1/2\" DIA x 5 1/2\" STB2-50512MG OR APPROVED EQUIVALENT",
+      "summary": "This image shows the west elevation of the residence, detailing the exterior view with proposed changes. The elevation includes multiple levels, with the top of the existing roof at 6.17 meters and the basement at -1.47 meters. Proposed wood railings are to comply with SB10, as referenced in TACBOC details 3/S02. The structure includes a 4\"x4\" post fastened to a 10\" concrete pier, with specifications for a Simpson post base. The elevation also shows window and door placements, and the overall building height is clearly depicted.",
+      "project_id": "25-01-043",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "North elevation of the residence",
+      "level": "Multiple",
+      "orientation": "North elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S02"
+      ],
+      "element_type": "Exterior Elevation",
+      "element_callouts": [
+        "FL1"
+      ],
+      "key_components": [
+        "Wood Railings",
+        "Concrete Pier",
+        "Simpson Post Base"
+      ],
+      "text_verbatim": "NORTH ELEVATION\n1/4\" = 1'-0\"\n2\nT.O EX. ROOF\n6.17\nT.O. EX. LOWER ROOF\n5.20\nU/S EX. SECOND FLOOR CEILING\n4.95\nU/S EX. UPPER FIRST FLOOR CEILING\n3.48\nEX. SECOND FLOOR\n2.67\nU/S EX. LOWER FIRST FLOOR CEILING\n2.44\nEX. UPPER FIRST FLOOR\n1.04\nU/S BASEMENT CEILING\n0.79\nEX. LOWER FIRST FLOOR\n0.00\nU/S BASEMENT CRAWL SPACE\n-0.20\nGRADE\n-0.41\nEX. BASEMENT\n-1.47\nPROPOSE WOOD RAILINGS TO COMPLY TO SB10. - SEE TACBOC DETAILS 3/S02\nPROP. 4\"x4\" POST FASTENED TO 10\" CONC. PIER ON 18\" Ø x 8\" (OR BF24) W/ APPROVED SIMPSON POST BASE. MIN 4'-0\" BELOW GRADE (TYP.)\nSIMPSON POST BASE: ABA44Z ANCHORED W/ 1/2\" DIA x 5 1/2\" STB2-50512MG OR APPROVED EQUIVALENT\nP.T. WOOD DECK. SEE SHEET S01 FOR STRUCTURAL PLANS",
+      "summary": "This image shows the north elevation of the residence, detailing the exterior view with proposed changes. The elevation includes multiple levels, with the top of the existing roof at 6.17 meters and the basement at -1.47 meters. Proposed wood railings are to comply with SB10, as referenced in TACBOC details 3/S02. The structure includes a 4\"x4\" post fastened to a 10\" concrete pier, with specifications for a Simpson post base. A pressure-treated wood deck is also noted, with further details on sheet S01. The elevation shows window and door placements, and the overall building height is clearly depicted.",
+      "project_id": "25-01-043",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "East elevation of the residence",
+      "level": "Multiple",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S02"
+      ],
+      "element_type": "Exterior Elevation",
+      "element_callouts": [
+        "FL1"
+      ],
+      "key_components": [
+        "Wood Railings",
+        "Concrete Pier",
+        "Simpson Post Base"
+      ],
+      "text_verbatim": "EAST ELEVATION\n1/4\" = 1'-0\"\n1\nT.O EX. ROOF\n6.17\nT.O. EX. LOWER ROOF\n5.20\nU/S EX. SECOND FLOOR CEILING\n4.95\nU/S EX. UPPER FIRST FLOOR CEILING\n3.48\nEX. SECOND FLOOR\n2.67\nU/S EX. LOWER FIRST FLOOR CEILING\n2.44\nEX. UPPER FIRST FLOOR\n1.04\nU/S BASEMENT CEILING\n0.79\nEX. LOWER FIRST FLOOR\n0.00\nU/S BASEMENT CRAWL SPACE\n-0.20\nGRADE\n-0.41\nEX. BASEMENT\n-1.47\nPROPOSE WOOD RAILINGS TO COMPLY TO SB10. - SEE TACBOC DETAILS 3/S02\nPROP. 4\"x4\" POST FASTENED TO 10\" CONC. PIER ON 18\" Ø x 8\" (OR BF24) W/ APPROVED SIMPSON POST BASE. MIN 4'-0\" BELOW GRADE (TYP.)\nSIMPSON POST BASE: ABA44Z ANCHORED W/ 1/2\" DIA x 5 1/2\" STB2-50512MG OR APPROVED EQUIVALENT\nP.T. WOOD DECK. SEE SHEET S01 FOR STRUCTURAL PLANS",
+      "summary": "This image shows the east elevation of the residence, detailing the exterior view with proposed changes. The elevation includes multiple levels, with the top of the existing roof at 6.17 meters and the basement at -1.47 meters. Proposed wood railings are to comply with SB10, as referenced in TACBOC details 3/S02. The structure includes a 4\"x4\" post fastened to a 10\" concrete pier, with specifications for a Simpson post base. A pressure-treated wood deck is also noted, with further details on sheet S01. The elevation shows window and door placements, and the overall building height is clearly depicted.",
+      "project_id": "25-01-043",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": "page_004/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Basement – Sonotube detail",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Sonotube Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Timber Column",
+        "Concrete Pier",
+        "Concrete Column Footing"
+      ],
+      "text_verbatim": "SONOTUBE DETAIL\n1 1/2\" = 1'-0\"\n3\nAPPROVED SIMPSON POST BASE PER PLAN. (TYP.)\nTIMBER COLUMN, SEE PLAN FOR SIZE. (TYP.)\nCONCRETE PIER, SEE PLAN FOR SIZE & REINFORCING. (TYP.)\nCONCRETE COLUMN FOOTING, PER PLAN. (TYP.)\nFOUNDATIONS ARE TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER. (TYP.)\nGRADE\n4'-0\"",
+      "summary": "This detail shows a sonotube foundation system for the basement level. The detail includes a timber column supported by a concrete pier, with a concrete column footing. The Simpson post base is specified as per plan. The foundation is designed to bear on undisturbed native soil or compacted fill, as approved by a geotechnical engineer. The grade level is marked at 4'-0\". This detail provides specifications for the size and reinforcing of the concrete pier and column footing, which are to be referenced from the plan.",
+      "project_id": "25-01-043",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Basement – Proposed structural layout",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/A04",
+        "3/A04"
+      ],
+      "element_type": "Basement Structural Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Unexcavated Area",
+        "Crawl Space",
+        "Mechanical/Laundry Room"
+      ],
+      "text_verbatim": "PROP. BASEMENT STRUCTURAL PLAN\n1/4\" = 1'-0\"\n1\nHATCHED AREA TO REMAIN - NO CHANGE\nUNEXCAVATED\nCRAWL SPACE\nMECH./LAUNDRY ROOM\nNO CHANGE EXST. TO REMAIN\nCOMMENCING CONSTRUCTION & REPORT ANY DISCREPANCIES TO DESIGNER BEFORE PROCEEDING.\n21'-4\"\n11.99\n6.50\n39'-4\"\n11.99\n13'-1\"\n3.99\n2'-10\"\n0.86\n15'-11\"\n4.86\n39'-11\"\n12.17\n24'-7\"\n7.49\n9'-4\"\n2.84\n5'-5\"\n1.65\n11'-8\"\n3.56\n26'-2\"\n7.98\n39'-4\"\n11.99",
+      "summary": "This plan outlines the proposed structural layout for the basement, including areas designated as unexcavated and a crawl space. The mechanical/laundry room is also shown. The plan includes various dimensions, such as 21'-4\" and 39'-4\", indicating the layout's size. The hatched area is marked to remain unchanged. Construction notes emphasize reporting discrepancies to the designer before proceeding. Section callouts 2/A04 and 3/A04 are included for further reference. The plan provides a comprehensive view of the basement's structural elements and layout.",
+      "project_id": "25-01-043",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Basement – rear wood deck",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Rear Wood Deck Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Precast Concrete",
+        "PT Stringer",
+        "PT Deck Joists",
+        "Simpson Post Base",
+        "LVL Beam"
+      ],
+      "text_verbatim": "PROP. REAR WOOD DECK - CALLOUT\n1/2\" = 1'-0\"\nPROP. 4\"x4\" POST FASTENED TO 10\" CONC. PIER ON 18\" Ø x 8\" (OR BF24) W/ APPROVED SIMPSON POST BASE. MIN 4'-0\" BELOW GRADE (TYP.)\nSIMPSON POST BASE: ABA44Z ANCHORED W/ 1/2\" DIA. x 5 1/2\" STB2-50512MG OR APPROVED EQUIVALENT\nOUTLINE OF PRECAST CONC. ANCHOR STRINGERS TO PRECAST CONC. W/ 2-3/8\" DIA. THRU BOLTS C/W 1 1/4\" OD WASHERS (TYP.)\nFASTEN BEAM TO POST W/ EPC42 (TYP.)\nPROP. 2\"x12\" PT STRINGER\nPROP. 2\"x8\" PT DECK JOISTS @ 16\" O.C.\nPROP. 2\"x8\" PT LEDGER FASTENED TO EXISTING CONCRETE WALL WITH 1/2\" DIA WEDGE ANCHORS @ 16\" O.C. MIN 4\" EMBED (STAGGERED)\nPROP. DJ FASTEN DOUBLE JOIST TO WALL SIMILAR TO LEDGER\n(2) 1.75\" x 11.875\" LVL 2.0E 3100fb\n13'-1\"\n3.99\n2'-10\"\n0.86\n15'-11\"\n4.86\n10'-1 1/2\"\n3.09",
+      "summary": "This plan view shows the proposed rear wood deck layout for the basement level. The deck is supported by 4\"x4\" posts fastened to 10\" concrete piers with Simpson post bases, specifically ABA44Z anchored with 1/2\" diameter bolts. The outline of precast concrete anchor stringers is shown, secured with 2-3/8\" diameter thru bolts and washers. The deck structure includes 2\"x12\" PT stringers and 2\"x8\" PT deck joists spaced at 16 inches on center. A 2\"x8\" PT ledger is fastened to the existing concrete wall with 1/2\" diameter wedge anchors, staggered at 16 inches on center with a minimum embedment of 4 inches. The plan specifies the use of (2) 1.75\" x 11.875\" LVL beams. Dimensions provided include a deck length of 13'-1\" and a width of 15'-11\". The plan emphasizes the need for fastening beams to posts with EPC42 connectors.",
+      "project_id": "25-01-043",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": "page_005/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "P.T. RATING:\nDECKING - UC3.2B\nLEDGER BOARDS, JOISTS, BEAMS, STAIR STRINGERS - UC3.2C\nPOSTS - UC4.1D\nALL EXTERIOR LVL BEAMS WRAPPED AGAINST MOISTURE\nNUMBER OF RISERS TO BE CONFIRMED ON SITE PRIOR TO COMMENCE OF WORK.\nEXISTING GRADE TO REMAIN. NO CHANGE\nNOTE:\nCONTRACTOR TO VERIFY ON SITE ALL ASSUMED JOIST DIRECTIONS, LOCATION OF ALL BEAMS AND COLUMNS BEFORE COMMENCING CONSTRUCTION & REPORT ANY DISCREPANCIES TO DESIGNER BEFORE PROCEEDING.",
+      "summary": "This image contains general notes related to the proposed basement structural plan. The notes specify the pressure-treated (P.T.) ratings for various components: decking is rated UC3.2B, ledger boards, joists, beams, and stair stringers are rated UC3.2C, and posts are rated UC4.1D. All exterior LVL beams must be wrapped against moisture. The number of risers is to be confirmed on-site before work begins, and the existing grade is to remain unchanged. A note emphasizes that the contractor must verify all assumed joist directions and the location of all beams and columns on-site, reporting any discrepancies to the designer before proceeding.",
+      "project_id": "25-01-043",
+      "page_number": 5,
+      "region_number": 4,
+      "relative_path": "page_005/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – entire layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/A04",
+        "3/A04",
+        "1/A04"
+      ],
+      "element_type": "First Floor Structural Plan",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "DJ"
+      ],
+      "key_components": [
+        "Existing Floor Joists",
+        "Girder Truss",
+        "Roof Trusses",
+        "Wood Deck"
+      ],
+      "text_verbatim": "PROP. FIRST FLOOR STRUCTURAL PLAN\n1/4\" = 1'-0\"\nEXIST. FLOOR JOISTS TO REMAIN\nEXIST. BEAMS TO REMAIN\nPROP. WOOD DECK\nPROP. WOOD RAILINGS TO COMPLY TO SB-10 - SEE TABCQ DETAILS 3/S2\nREMOVE EXISTING WINDOW AND INFILL WITH EXISTING LIKE MATERIALS\nEXIST. GIRDER TRUSS\nATTACH 2\"x9 1/2\" LVL TO GIRDER TRUSS BOTTOM FLUSH SEE BEAM DETAIL 4 BUILT-UP STUD EACH END\nEXIST. ROOF TRUSSES TO REMAIN\nW1\nW2\nDJ\n2/A04\n3/A04\n1/A04\n39'-4\"\n11.99\n21'-4\"\n6.51\n16'-6\"\n5.03\n9'-1\"\n2.77\n3'-11\"\n1.20\n1'-6\"\n0.46\n11'-8\"\n3.56\n12'-11\"\n3.93\n9'-4\"\n2.84\n3'-11 1/2\"\n1.20\n2'-10\"\n0.86\n7 1/2\"\n0.19",
+      "summary": "This plan illustrates the structural layout for the first floor, including the family room, kitchen, living room, and garage. Existing floor joists and beams are to remain, as well as existing roof trusses. The proposed wood deck is detailed, with wood railings required to comply with SB-10 standards, referencing detail 3/S2. The plan includes section callouts 2/A04, 3/A04, and 1/A04, indicating connections to other sheets. Element callouts include W1, W2, and DJ, identifying specific wall and joist types. Dimensions are provided for various sections, such as a total width of 39'-4\" and specific room dimensions. The plan specifies the attachment of a 2\"x9 1/2\" LVL to the girder truss bottom, with details for built-up studs at each end.",
+      "project_id": "25-01-043",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "P.T. RATING:\nDECKING - UC3.2B\nLEDGER BOARDS, JOISTS, BEAMS, STAIR STRINGERS - UC3.2C\nPOSTS - UC4.1D\nALL EXTERIOR LVL BEAMS WRAPPED AGAINST MOISTURE\nNUMBER OF RISERS TO BE CONFIRMED ON SITE PRIOR TO COMMENCE OF WORK.\nEXISTING GRADE TO REMAIN. NO CHANGE\nNOTE:\nCONTRACTOR TO VERIFY ON SITE ALL ASSUMED JOIST DIRECTIONS, LOCATION OF ALL BEAMS AND COLUMNS BEFORE COMMENCING CONSTRUCTION & REPORT ANY DISCREPANCIES TO DESIGNER BEFORE PROCEEDING.",
+      "summary": "This image contains general notes for the first floor structural plan. The notes specify pressure-treated (P.T.) ratings: decking is UC3.2B, ledger boards, joists, beams, and stair stringers are UC3.2C, and posts are UC4.1D. All exterior LVL beams must be wrapped against moisture. The number of risers must be confirmed on-site before work begins, and the existing grade is to remain unchanged. A note emphasizes that the contractor must verify all assumed joist directions and the location of all beams and columns on-site, reporting any discrepancies to the designer before proceeding.",
+      "project_id": "25-01-043",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – deck connection",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Deck Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Wood Decking",
+        "Joist Hangers",
+        "Wood Beam",
+        "Concrete Pier",
+        "Wood Post"
+      ],
+      "text_verbatim": "DECK DETAIL\n1\" = 1'-0\"\nCONTINUOUS 38x140 TOP RAIL\n38x38 PICKETS SECURED W/ 2 - 76mm SCREWS OR OTHER APPROVED GUARD SYSTEM\nLESS THAN 100mm OPENING BETWEEN PICKETS & NO MEMBER OR ATTACHMENT BETWEEN 140mm & 900mm SHALL FACILITATE CLIMBING\nNEW POURED CONCRETE DOOR SILL W/ 0.5mm POLY FLASHING UP BEHIND\n4 - #4 x 76mm SCREWS BOTH SIDES OR 2 - 9.5mm THRU BOLTS C/W 32mm O.D. WASHERS\nWOOD DECKING W/ 6mm GAPS PERPENDICULAR TO DECK JOIST FRAMING\nJOIST HANGERS\nWOOD BEAM W/ PLYWOOD FILLER & 38x84 GUSSETS ON BOTH SIDES OF POST 16mm SCREWS OR 16x115 METAL POST BEAM CONNECTOR\nJOIST SPAN\nWOOD POST ANCHORED TO CONC. PIER AS PER STRUCTURAL DRAWINGS\nPOURED CONCRETE PIER MIN. 1200mm BELOW GRADE ON UNDISTURBED SOIL, FOR SIZES SEE SHEET D01\nMAX. 400mm FOR 38x184 JOIST\nMAX. 600mm FOR 38x235 JOIST\nMAX. 1/6 OF JOIST SPAN\nEXISTING FLOOR STRUCTURE\nEXISTING RIM JOIST & SILL PLATE\nDOUBLE 38x184 LEDGER LAG BOLTED TO FDN. WALL W/ 12.7mm DIA. BOLTS @ 800mm O.C. MIN. INTO SOLID MASONRY OR CONCRETE",
+      "summary": "This detail illustrates the connection of a wood deck to the existing structure. The deck features a continuous 38x140 top rail with 38x38 pickets secured by 76mm screws or an approved guard system. Openings between pickets are less than 100mm to prevent climbing. The deck includes wood decking with 6mm gaps perpendicular to the joist framing. Joist hangers support the structure, and a wood beam with plywood filler and gussets is connected using 16mm screws or metal post beam connectors. The wood post is anchored to a concrete pier, which is poured a minimum of 1200mm below grade on undisturbed soil. The detail specifies maximum joist spans and connections to the existing floor structure, including a double ledger lag bolted to the foundation wall with 12.7mm diameter bolts spaced at 800mm on center.",
+      "project_id": "25-01-043",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": "page_006/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – Deck Detail",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Deck Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Support Posts",
+        "Stringers",
+        "Handrail",
+        "Guard",
+        "Nails",
+        "Bolts"
+      ],
+      "text_verbatim": "3\nDECK DETAIL 2\n1\" = 1'-0\"\n2 - #7x63 SCREWS @ EACH PICKET\n89x89 SUPPORT POSTS @ 1200mm O.C.\n2 - #7x76 CORROSION RESISTANT SPIRAL NAILS OR SCREWS TYPICAL\nDROPPED FRAMING MEMBER INTO WHICH EACH STRINGER IS END NAILED USING 16mm NAILS MAX. 300mm BETWEEN STRINGERS\n285mm MINIMUM STRINGER DEPTH\n2 - 9.5mm DIAMETER THRU BOLTS C/W 32mm O.D. WASHERS\n38x89 WOOD BLOCKING @ 1200mm O.C. MIN. BETWEEN STRINGERS\nSTRINGERS ANCHORED TO PRECAST CONCRETE 2 - 9.5mm DIAMETER THRU BOLTS C/W 32mm O.D. WASHERS\nLESS THAN 100mm OPENING BETWEEN PICKETS & NO MEMBER OR ATTACHMENT BETWEEN 140mm & 900mm SHALL FACILITATE CLIMBING\nCONTINUOUS 50x100 GUARD\n1200mm O.C. MAX.\n900mm HIGH HANDRAIL REQUIRED ON STAIRS IF MORE THAN 3 RISERS\nGRADE",
+      "summary": "This detail shows a deck structure with specific emphasis on the stringer and guard assembly. The deck detail, labeled as 'DECK DETAIL 2', is drawn at a scale of 1\" = 1'-0\". It specifies the use of 89x89 support posts spaced at 1200mm on center. Stringers are anchored to precast concrete using 9.5mm diameter thru bolts with 32mm O.D. washers. The minimum stringer depth is 285mm. The detail includes a continuous 50x100 guard and requires a 900mm high handrail if there are more than three risers. Openings between pickets must be less than 100mm, and no member or attachment should facilitate climbing between 140mm and 900mm. The use of #7x63 screws at each picket and corrosion-resistant spiral nails or screws is specified. Wood blocking is required at 1200mm on center minimum between stringers.",
+      "project_id": "25-01-043",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": "page_006/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – Beam Detail",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Girder Truss",
+        "LVL",
+        "Nails"
+      ],
+      "text_verbatim": "4\nBEAM DETAIL\n1\" = 1'-0\"\nEXISTING GIRDER TRUSS TO REMAIN\nNAIL (2) 9 1/2\" LVL TO EXISTING GIRDER TRUSS\n(3) 3 1/4\" COMMON NAILS @ 8\" O.C.",
+      "summary": "This beam detail illustrates the connection between a new LVL and an existing girder truss. The detail, labeled 'BEAM DETAIL', is drawn at a scale of 1\" = 1'-0\". It specifies that the existing girder truss is to remain in place. Two 9 1/2\" LVLs are to be nailed to the existing girder truss using three 3 1/4\" common nails spaced at 8 inches on center. This detail focuses on the reinforcement and connection method for integrating new structural elements with existing components.",
+      "project_id": "25-01-043",
+      "page_number": 6,
+      "region_number": 5,
+      "relative_path": "page_006/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – Deck Detail",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Deck Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Support Posts",
+        "Stringers",
+        "Handrail",
+        "Guard",
+        "Nails",
+        "Bolts"
+      ],
+      "text_verbatim": "3\nDECK DETAIL 2\n1\" = 1'-0\"\n2 - #7x63 SCREWS @ EACH PICKET\n89x89 SUPPORT POSTS @ 1200mm O.C.\n2 - #7x76 CORROSION RESISTANT SPIRAL NAILS OR SCREWS TYPICAL\nDROPPED FRAMING MEMBER INTO WHICH EACH STRINGER IS END NAILED USING 16mm NAILS MAX. 300mm BETWEEN STRINGERS\n285mm MINIMUM STRINGER DEPTH\n2 - 9.5mm DIAMETER THRU BOLTS C/W 32mm O.D. WASHERS\n38x89 WOOD BLOCKING @ 1200mm O.C. MIN. BETWEEN STRINGERS\nSTRINGERS ANCHORED TO PRECAST CONCRETE 2 - 9.5mm DIAMETER THRU BOLTS C/W 32mm O.D. WASHERS\nLESS THAN 100mm OPENING BETWEEN PICKETS & NO MEMBER OR ATTACHMENT BETWEEN 140mm & 900mm SHALL FACILITATE CLIMBING\nCONTINUOUS 50x100 GUARD\n1200mm O.C. MAX.\n900mm HIGH HANDRAIL REQUIRED ON STAIRS IF MORE THAN 3 RISERS\nGRADE",
+      "summary": "This detail shows a deck structure with specific emphasis on the stringer and guard assembly. The deck detail, labeled as 'DECK DETAIL 2', is drawn at a scale of 1\" = 1'-0\". It specifies the use of 89x89 support posts spaced at 1200mm on center. Stringers are anchored to precast concrete using 9.5mm diameter thru bolts with 32mm O.D. washers. The minimum stringer depth is 285mm. The detail includes a continuous 50x100 guard and requires a 900mm high handrail if there are more than three risers. Openings between pickets must be less than 100mm, and no member or attachment should facilitate climbing between 140mm and 900mm. The use of #7x63 screws at each picket and corrosion-resistant spiral nails or screws is specified. Wood blocking is required at 1200mm on center minimum between stringers.",
+      "project_id": "25-01-043",
+      "page_number": 6,
+      "region_number": 6,
+      "relative_path": "page_006/region_06_red_box.png"
+    }
+  ]
+}

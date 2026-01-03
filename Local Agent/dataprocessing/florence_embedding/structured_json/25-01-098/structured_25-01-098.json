@@ -1,0 +1,26 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Mechanical assembly involving idler wheel and chain slings",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Mechanical Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Idler Wheel",
+        "Load Bar",
+        "2 Legged Chain Slings"
+      ],
+      "text_verbatim": "Idle Wheel\n150.??\nLoad Bar\n2 Legged Chain Slings",
+      "summary": "This mechanical detail illustrates a system involving an idler wheel, a load bar, and 2 legged chain slings. The drawing focuses on the configuration and connections of these components. The idler wheel is shown with a dimension marked as '150.??', indicating a measurement that is partially unclear. The load bar and chain slings are annotated to show their positions and connections within the assembly. The purpose of this detail is to provide a clear understanding of how these mechanical parts are assembled and interact with each other.",
+      "project_id": "25-01-098",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    }
+  ]
+}

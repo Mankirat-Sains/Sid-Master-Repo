@@ -1,0 +1,268 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Roof – PFI Boiler Room",
+      "level": "Roof",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "1"
+      ],
+      "element_type": "Roof Framing Section",
+      "element_callouts": [],
+      "key_components": [
+        "W10x33 Columns",
+        "W14x30 Beam",
+        "HSS4x4x1/4 Bracing",
+        "Grout"
+      ],
+      "text_verbatim": "8”\n4’-6”\n12’-9 1/2”\n7 1/2”\nTYP\nHIGH POINT\nU/S DECK\nT/O STEEL\n12’-0”\nCONFIRM DIM.\nT/O EX. FLOOR\n2’-6”\n1 1/2” GROUT\nW10x33\nW14x30\nHSS4x4x1/4\nCf=Tf=2.5k\n1\n1\nSECTION 1",
+      "summary": "This section view illustrates the roof framing for the PFI Boiler Room. The section shows W10x33 columns supporting a W14x30 beam with HSS4x4x1/4 bracing. The dimensions include a span of 12'-9 1/2\" and a typical spacing of 4'-6\". The section is labeled as Section 1. The top of steel and existing floor levels are noted, with a 1 1/2\" grout layer specified. The section highlights the structural connections and load paths from the roof deck to the columns.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Roof – PFI Boiler Room",
+      "level": "Roof",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "2"
+      ],
+      "element_type": "Roof Framing Section",
+      "element_callouts": [],
+      "key_components": [
+        "W10x33 Columns",
+        "W14x30 Beam",
+        "HSS4x4x1/4 Bracing",
+        "Grout"
+      ],
+      "text_verbatim": "8”\n4’-6”\n12’-9 1/2”\n7 1/2”\nTYP\nT/O HIGH POINT\nT/O STEEL\n12’-0”\nCONFIRM DIM.\nT/O EX. FLOOR\n2’-6”\n1 1/2” GROUT\nW10x33\nW14x30\nHSS4x4x1/4\nCf=Tf=2.5k\n1\n1\nSECTION 2",
+      "summary": "This section view shows the roof framing for the PFI Boiler Room, similar to Section 1. It features W10x33 columns and a W14x30 beam with HSS4x4x1/4 bracing. The section is labeled as Section 2, with dimensions including a span of 12'-9 1/2\" and a typical spacing of 4'-6\". The top of steel and existing floor levels are indicated, with a 1 1/2\" grout layer. This section highlights the structural connections and load paths from the roof deck to the columns.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – PFI Boiler Room",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Plate to Beam Connection Detail",
+      "element_callouts": [
+        "WP1"
+      ],
+      "key_components": [
+        "W14x22 Beam",
+        "Nelson Studs",
+        "Poured Concrete",
+        "Plate",
+        "Bolts"
+      ],
+      "text_verbatim": "4-3/4”Ø NELSON STUDS\nWP1\nW14x22\n8” POURED CONC.\n1/4” TYP.\nPL3/8x3 x 8 1/2 c/w 3-3/4Ø BOLTS ASSY.\nT/O STEEL\nTYPICAL WALL PLATE TO BEAM CONN.",
+      "summary": "This detail illustrates a typical wall plate to beam connection for the roof framing plan. It features a W14x22 beam connected to a wall plate labeled WP1. The connection includes 4-3/4” diameter Nelson studs embedded in 8” poured concrete. A plate measuring PL3/8x3 x 8 1/2 is used with 3-3/4” diameter bolts for assembly. The detail specifies typical dimensions and materials for the connection, ensuring structural integrity at the roof level.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – PFI Boiler Room",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Anchor Bolt Detail #AL1",
+      "element_callouts": [],
+      "key_components": [
+        "W10x33 Column",
+        "Anchor Bolts",
+        "Concrete Pier",
+        "Grout"
+      ],
+      "text_verbatim": "1’-0”\n4 7/8”\n2 3/8”\n3/4” PLATE\nW10x33 COLUMN\n4-3/4”Ø ANCHOR 2’-0” LONG w/ DBL. NUT\nT/O PIER\n2’-6”\n1 1/2” GROUT\nSITE VERIFY\nCONC. PIER.\nANCHOR BOLT DETAIL #AL1\n(2 LOCATION)",
+      "summary": "This detail shows the anchor bolt configuration for a W10x33 column, labeled as Anchor Bolt Detail #AL1. The detail specifies a 3/4” plate and 4-3/4” diameter anchor bolts, 2’-0” long with double nuts. The column is set on a concrete pier with a 1 1/2” grout layer. The detail is applicable at two locations and includes precise dimensions for installation and verification on site.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": "page_001/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – PFI Boiler Room",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Anchor Bolt Detail #AL2",
+      "element_callouts": [],
+      "key_components": [
+        "W10x33 Column",
+        "Anchor Bolts",
+        "Concrete Pier",
+        "Grout"
+      ],
+      "text_verbatim": "1’-0”\n7 1/8”\n2 3/8”\n3/4” PLATE\nW10x33 COLUMN\n4-3/4”Ø ANCHOR 2’-0” LONG w/ DBL. NUT\nT/O PIER\n2’-6”\n1 1/2” GROUT\nSITE VERIFY\nCONC. PIER.\nANCHOR BOLT DETAIL #AL2\n(2 LOCATION)",
+      "summary": "This detail illustrates the anchor bolt setup for a W10x33 column, labeled as Anchor Bolt Detail #AL2. It includes a 3/4” plate and 4-3/4” diameter anchor bolts, 2’-0” long with double nuts. The column is mounted on a concrete pier with a 1 1/2” grout layer. The detail is relevant for two locations and provides exact dimensions for site verification and installation.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 5,
+      "relative_path": "page_001/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – typical beam to bearing plate connection",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam to Bearing Plate Connection",
+      "element_callouts": [
+        "BP1"
+      ],
+      "key_components": [
+        "W14x22 Beam",
+        "Stiffener Plate",
+        "Concrete Block"
+      ],
+      "text_verbatim": "W14x22\n7 1/2\"\n7\"\n3 3/4\"\nBP1\nSTIFFENER\nPL. 3/8 THK. (B/S)\n1/4\"\n1/4\"\n3 SIDES\n8\" CONC. BLOCK\nTYPICAL BEAM TO BEARING PLATE CONN.",
+      "summary": "This detail illustrates a typical beam to bearing plate connection at the roof level. The W14x22 beam is connected to an 8-inch concrete block using a bearing plate labeled BP1. The connection includes a stiffener plate with a thickness of 3/8 inches, as indicated by 'PL. 3/8 THK. (B/S)'. The dimensions show a 7 1/2-inch and 7-inch spacing, with a 3 3/4-inch offset. Weld symbols indicate a 1/4-inch weld on three sides. This connection detail is crucial for understanding the load transfer from the beam to the supporting structure.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 6,
+      "relative_path": "page_001/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Section",
+      "location": "Roof – section through existing office wall",
+      "level": "Roof",
+      "orientation": "Section 3",
+      "grid_references": [],
+      "section_callouts": [
+        "3"
+      ],
+      "element_type": "Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "W14x22 Beam",
+        "L6x6x3/8 Angle",
+        "Brick Veneer"
+      ],
+      "text_verbatim": "1/4\n1/4\n2-12\n2-12\n6\"\n3 1/2\"\nT/O EX. OFFICE WALL\nT/O NEW CONC.\nT/O STEEL\nCAPACITY\nW14x22\nEX. BRICK VENEER. REPAIR AS REQ'D\nL6x6x3/8\nSECTION 3\nREF: -",
+      "summary": "This section view, labeled 'Section 3', shows a cross-section through an existing office wall at the roof level. The W14x22 beam supports the structure, with a 6-inch and 3 1/2-inch spacing indicated. The section includes an L6x6x3/8 angle and existing brick veneer, which requires repair as needed. The top of existing office wall, new concrete, and steel are marked as T/O EX. OFFICE WALL, T/O NEW CONC., and T/O STEEL, respectively. This section provides insight into the structural integration of new and existing elements.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 7,
+      "relative_path": "page_001/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – typical column to beam connection",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Column to Beam Connection",
+      "element_callouts": [],
+      "key_components": [
+        "W14x30 Beam",
+        "W10x33 Column",
+        "Bolts Assembly"
+      ],
+      "text_verbatim": "1 3/4\"\nT/O EX. OFFICE WALL\nT/O NEW CONC.\nT/O STEEL\nCONNECTION CAPACITY\nVr = 255 KN\nW14x30\n2-L3x3x3/8 x 8 1/2 LG.\nc/w 3-3/4Ø BOLTS ASSY.\n1/4\"\nLONG LEG + 1/2\" RETURN AT TOP\nTYPICAL COLUMN TO BEAM CONN.",
+      "summary": "This detail shows a typical column to beam connection at the roof level. The connection involves a W14x30 beam and a W10x33 column. The assembly includes 2-L3x3x3/8 angles, each 8 1/2 inches long, with a bolt assembly of 3-3/4 inch diameter bolts. The connection capacity is specified as Vr = 255 KN. The detail also notes a 1/4-inch weld with a long leg and 1/2-inch return at the top. This connection is essential for transferring loads between the column and beam.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 8,
+      "relative_path": "page_001/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_09_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – PFI Boiler Room",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3",
+        "A"
+      ],
+      "element_type": "Roof Framing Plan",
+      "element_callouts": [
+        "BP1",
+        "WP1"
+      ],
+      "key_components": [
+        "W14x22 Beams",
+        "W14x30 Beams",
+        "Concrete Deck"
+      ],
+      "text_verbatim": "14'-1\"\n11'-11 3/4\"\n3 1/2\"\n6\"\nW14x22\nW14x30\nL6x6x3/8\nHIGH POINT\nSLOPE\nCONCRETE ON 1 1/2\"x0.030\" HI-BOND METAL DECK\n10M @ 12\" O.C. E.W. (6\" TOTAL THICKNESS)\nROOF FRAMING PLAN",
+      "summary": "This roof framing plan for the PFI Boiler Room illustrates the layout and dimensions of the roof structure. The plan includes W14x22 and W14x30 beams, with a concrete deck on a 1 1/2\"x0.030\" hi-bond metal deck. The concrete is reinforced with 10M bars at 12 inches on center each way, resulting in a total thickness of 6 inches. The plan indicates high points and slopes, with section callouts '3' and 'A' for further details. Element callouts 'BP1' and 'WP1' identify specific beam and wall plate locations.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 9,
+      "relative_path": "page_001/region_09_red_box.png"
+    },
+    {
+      "image_id": "region_10_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Steel Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "STEEL NOTES:\n1) ALL DIMENSIONS ARE IN INCHES UNLESS NOTED OTHERWISE.\n2) ALL HOLE SIZES ARE 13/16\" DIAMETER UNLESS OTHERWISE NOTED.\n3) ALL BOLTS SHALL BE 3/4\" DIAMETER A325 STRUCTURAL BOLTS UNLESS OTHERWISE NOTED.\n4) WHERE NO WELD SYMBOL IS SHOWN, ASSUME FILLET ALL AROUND, WITH SIZE EQUAL TO THE LESSER OF 1/4\" OR THE MINIMUM THICKNESS OF ADJOINING FACES, UNLESS NOTED.\n5) STRUCTURAL STEEL PLATES, ANGLES, AND CHANNELS SHALL CONFORM TO CSA G40.21-300W, G40.21-.350W CLASS C FOR HSS AND W SECTIONS.\n6) WELDING SHALL CONFORM TO THE REQUIREMENTS OF CSA STANDARDS W59 AND SHALL BE UNDERTAKEN BY A FABRICATOR AND ERECTOR FULLY APPROVED BY THE CANADIAN WELDING BUREAU TO THE REQUIREMENTS OF CSA STANDARDS W47, DIVISION 1 OR DIVISION 2.1.\n7) FIELD VERIFY ALL DIMENSIONS PRIOR TO MANUFACTURING.\n8) ALL STRUCTURAL STEEL TO BE SHOP PRIM PAINTED.\n9) ALL HARDWARE TO BE TORQUED BY TURN OF THE NUT METHOD AS PER S16-19 23.7.2 & TABLE 7\n10) ALL CONNECTION TO FOUNDATIONS, CONCRETE & MASONRY WALLS TO BE VERIFIED BY PROJECT ENGINEER.\n11) ALL CONNECTIONS TO BE BEARING TYPE UNLESS OTHERWISE NOTED.\n12) ALL CONNECTION SHEAR (Vr) AND MOMENT (Mr) RESISTANCE VALUES TO BE CONFIRMED BY THE PROJECT ENGINEER",
+      "summary": "These steel notes provide essential guidelines for the construction and verification of structural steel components. Dimensions are in inches unless stated otherwise, with hole sizes typically 13/16 inches in diameter. Bolts are specified as 3/4 inch diameter A325 structural bolts. Welding should conform to CSA standards, and all structural steel must be shop primed. Connections to foundations and walls require verification by the project engineer. The notes emphasize the importance of field verification of dimensions and the use of bearing type connections unless noted otherwise. These guidelines ensure compliance with structural standards and safety requirements.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 10,
+      "relative_path": "page_001/region_10_red_box.png"
+    },
+    {
+      "image_id": "region_11_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – PFI Boiler Room",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [
+        "Grid 3",
+        "Grid A"
+      ],
+      "section_callouts": [],
+      "element_type": "Anchor Plan",
+      "element_callouts": [
+        "AL1",
+        "AL2"
+      ],
+      "key_components": [
+        "W10x33 Column"
+      ],
+      "text_verbatim": "N\nE\nS\nW\n3\nA\n4'-9\"\n22'-0\"\n11'-11 3/4\"\n1'-9 3/8\"\nAL1\nW10x33\nCOLUMN\nAL2\nW10x33\nCOLUMN\nANCHOR PLAN",
+      "summary": "This image shows an anchor plan for the roof level of the PFI Boiler Room, specifically detailing the layout of columns and anchor points. The plan includes grid references '3' and 'A', indicating the location within the building. The dimensions provided are 4'-9\" and 22'-0\" for the overall layout, with specific spacing of 11'-11 3/4\" and 1'-9 3/8\" between columns. The columns are labeled as 'AL1' and 'AL2', both specified as W10x33 sections. The compass rose indicates the orientation of the plan with North at the top. This plan is part of a larger roof framing plan, as indicated by the page-level context.",
+      "project_id": "25-01-067",
+      "page_number": 1,
+      "region_number": 11,
+      "relative_path": "page_001/region_11_red_box.png"
+    }
+  ]
+}

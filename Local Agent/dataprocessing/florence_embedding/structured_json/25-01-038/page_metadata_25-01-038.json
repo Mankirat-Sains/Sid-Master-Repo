@@ -1,0 +1,138 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "A01",
+      "drawing_title": "COVER",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Construction Notes",
+        "Foundation Notes",
+        "Framing Notes",
+        "Area Calculations",
+        "Index of Drawings"
+      ],
+      "text_verbatim_title_block": "ROY WHITTAKER HOUSE RENOVATION\nEnergy Efficiency Design Summary: Prescriptive Method\nBENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 1/8\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: A01\nCOVER",
+      "general_notes_verbatim": "GENERAL CONSTRUCTION NOTES:\n1. All construction shall conform to the Ontario Building Code, latest edition.\n2. Contractor shall verify all dimensions before construction.\n3. Any discrepancies shall be reported immediately.\n4. All construction to be in accordance with OBC.\nFOUNDATION NOTES:\n1. Concrete foundation walls to be poured on undisturbed ground.\n2. Provide drainage tile at perimeter of foundation.\nFRAMING NOTES:\n1. All framing lumber to be SPF No. 2 or better.\n2. All connections to be made with approved fasteners.",
+      "page_overview_summary": "This cover sheet provides an overview of the Roy Whittaker House Renovation project. It includes general construction, foundation, and framing notes, as well as area calculations and an index of drawings. The sheet serves as a reference for the project's compliance with the Ontario Building Code and outlines key construction requirements."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "A1",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "ICF Wall Assemblies",
+        "Concrete Pier Schedule",
+        "Ledger Schedule",
+        "Floor Assemblies",
+        "Beam Schedule"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 3/16\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: A1\nFOUNDATION PLAN",
+      "general_notes_verbatim": "BASEMENT PLAN NOTES:\n1. All fasteners to be treated wood.\n2. Provide lintel reinforcement as per details.\n3. Exterior openings to be drained away from building.",
+      "page_overview_summary": "The foundation plan details the layout and specifications for the foundation of the renovation project. It includes ICF wall assemblies, concrete pier schedules, and ledger schedules. The plan ensures proper drainage and structural support for the building's foundation, adhering to the Ontario Building Code."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "A2",
+      "drawing_title": "MAIN FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Floor Assemblies",
+        "Wall Assemblies",
+        "Column Schedule",
+        "Beam Schedule"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 3/16\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: A2\nMAIN FLOOR PLAN",
+      "general_notes_verbatim": "MAIN FLOOR PLAN NOTES:\n1. All fasteners to be treated wood.\n2. All interior walls are 2x4 unless noted otherwise.\n3. Ensure solid connection of new exterior walls to existing walls.",
+      "page_overview_summary": "The main floor plan outlines the layout and structural components for the ground floor of the renovation. It includes detailed notes on floor and wall assemblies, as well as column and beam schedules. The plan emphasizes the integration of new and existing structures, ensuring compliance with building standards."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "A3",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Assemblies",
+        "Ceiling Assemblies",
+        "Truss Layout"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 3/16\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: A3\nROOF PLAN",
+      "general_notes_verbatim": "ROOF PLAN NOTES:\n1. Maintain truss clear for insulation and roof venting.\n2. Provide vented soffits and 1/10 venting.\n3. Provide for 24\" gable finished overhangs unless noted otherwise.",
+      "page_overview_summary": "The roof plan provides a detailed layout of the roof structure, including truss configurations and ceiling assemblies. It outlines the requirements for insulation, venting, and overhangs, ensuring the roof's structural integrity and compliance with design specifications."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "A4",
+      "drawing_title": "FRONT & REAR ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Front and Rear",
+      "key_components": [
+        "Front Elevation",
+        "Rear Elevation",
+        "Vinyl Siding",
+        "Metal Roofing"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 3/16\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: A4\nF&R ELEVATIONS",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the front and rear elevations of the renovation project, highlighting the exterior finishes such as vinyl siding and metal roofing. The elevations provide a visual representation of the building's appearance and structural elements, ensuring aesthetic and functional design alignment."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "A5",
+      "drawing_title": "LEFT & RIGHT ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Left and Right",
+      "key_components": [
+        "Left Elevation",
+        "Right Elevation",
+        "Vinyl Siding",
+        "Metal Roofing"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 3/16\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: A5\nL&R ELEVATIONS",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet illustrates the left and right elevations of the building, focusing on the exterior design elements such as vinyl siding and metal roofing. These elevations ensure that the side views of the structure meet the design and structural requirements, maintaining consistency with the overall architectural vision."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "A6",
+      "drawing_title": "BUILDING SECTION",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Assemblies",
+        "Ceiling Assemblies",
+        "Crawl Space"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 3/16\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: A6\nBUILDING SECTION",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The building section provides a cross-sectional view of the structure, detailing the roof and ceiling assemblies, as well as the existing crawl space. This section is crucial for understanding the vertical relationships and structural components within the building, ensuring compliance with design and safety standards."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "D1",
+      "drawing_title": "DETAILS",
+      "overall_classification": "Detail",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Concrete Pier Detail",
+        "Deck Ledger Detail"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 127775 & 108080\nPROJECT: 25-01-038\nDRAWN BY: PD\nSCALE: 3/4\" = 1'-0\"\nDATE: January 14, 2023\nPAGE: D1\nDETAILS",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This details sheet includes specific construction details for the concrete pier and deck ledger. These details are essential for the accurate construction and installation of these components, providing precise measurements and specifications to ensure structural integrity and compliance with the overall design."
+    }
+  ]
+}

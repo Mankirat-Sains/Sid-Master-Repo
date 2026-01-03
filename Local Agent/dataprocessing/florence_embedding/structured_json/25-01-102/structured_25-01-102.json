@@ -1,0 +1,932 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Isometric View of Climbing Wall and ECO Frames",
+      "element_callouts": [],
+      "key_components": [
+        "Modular Panel Climbing Wall",
+        "ECO Frames",
+        "Obstacle Course",
+        "Solid Block Wall",
+        "Concrete Slab"
+      ],
+      "text_verbatim": "EXISTING 75% SOLID BLOCK WALL TYP.\nMODULAR PANEL CLIMBING WALL\nECO FRAMES / OBSTACLE COURSE\nEXISTING 2\" REINFORCED CONCRETE SLAB ON GRADE\nISOMETRIC VIEW",
+      "summary": "This isometric view illustrates the integration of a modular panel climbing wall and ECO frames within an existing structure. Key components include an existing 75% solid block wall, a modular panel climbing wall, and ECO frames designed for an obstacle course. The structure is built on an existing 2-inch reinforced concrete slab on grade. The view provides a three-dimensional perspective, highlighting the spatial arrangement and connections between these elements.",
+      "project_id": "25-01-102",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Annotated Eco Frame Iso View",
+      "element_callouts": [],
+      "key_components": [
+        "Monkey Bars",
+        "Cargo Mesh",
+        "High Floating Bridge",
+        "Low Floating Bridge",
+        "Cheese Doors"
+      ],
+      "text_verbatim": "CHEESE DOORS\nCARGO MESH\nHIGH FLOATING BRIDGE\nMONKEY BARS\nLOW FLOATING BRIDGE\nISOMETRIC VIEW - ECO FRAME WITH CLIMBING ELEMENTS (FOR REFERENCE ONLY)",
+      "summary": "This annotated isometric view showcases the ECO frame with various climbing elements, including cheese doors, cargo mesh, high and low floating bridges, and monkey bars. The view serves as a detailed visual reference for the layout and design of the climbing structure, emphasizing the arrangement and integration of these components.",
+      "project_id": "25-01-102",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Annotated Eco Frame Iso View",
+      "element_callouts": [],
+      "key_components": [
+        "Monkey Bars",
+        "Cargo Mesh",
+        "High Floating Bridge",
+        "High Hanging Rings",
+        "Cargo Tube Net",
+        "Sea of Rings",
+        "Hanging Rope"
+      ],
+      "text_verbatim": "CARGO MESH\nHIGH FLOATING BRIDGE\nHIGH HANGING RINGS\nCARGO TUBE NET WITH DODGE BALLS\nSEA OF RINGS TYP.\nHANGING ROPE\nISOMETRIC VIEW - ECO FRAME WITH CLIMBING ELEMENTS (FOR REFERENCE ONLY)",
+      "summary": "This annotated isometric view provides a detailed look at the ECO frame with climbing elements, including cargo mesh, high floating bridge, high hanging rings, cargo tube net with dodge balls, sea of rings, and hanging rope. The view offers a comprehensive visual reference for the design and layout of the climbing structure, highlighting the integration of these components.",
+      "project_id": "25-01-102",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S3",
+        "1/S3",
+        "3/S4",
+        "2/S4"
+      ],
+      "element_type": "Plan View of Climbing Wall and ECO Frame",
+      "element_callouts": [],
+      "key_components": [
+        "Modular Climbing Wall Panels",
+        "ECO Frame Angled Monkey Bars",
+        "ECO Frames"
+      ],
+      "text_verbatim": "MODULAR CLIMBING WALL PANELS\nECO FRAME ANGLED MONKEY BARS\nECO FRAMES\nPLAN VIEW\n2/S3\n1/S3\n3/S4\n2/S4",
+      "summary": "This plan view illustrates the layout of the modular climbing wall panels and ECO frame angled monkey bars. It provides a top-down perspective, detailing the spatial arrangement and connections between different elements of the climbing structure. Section callouts such as '2/S3', '1/S3', '3/S4', and '2/S4' indicate specific sections for further detail.",
+      "project_id": "25-01-102",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Elevation View of Climbing Wall and ECO Frame",
+      "element_callouts": [],
+      "key_components": [
+        "Climbing Wall",
+        "ECO Frame"
+      ],
+      "text_verbatim": "CLIMBING WALL BEYOND\nFRONT VIEW",
+      "summary": "This elevation view shows the climbing wall and ECO frame, highlighting the vertical dimensions and relationships between different components. The view helps in understanding the height and structural integration of the climbing elements within the overall design, with the climbing wall positioned beyond the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Side view of climbing wall and ECO frame",
+      "level": "Unknown",
+      "orientation": "Side view",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S9"
+      ],
+      "element_type": "Climbing Wall Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Climbing Wall",
+        "ECO Frame"
+      ],
+      "text_verbatim": "EXISTING WALL BEYOND\nECO FRAME\n1/S9\nSIDE VIEW",
+      "summary": "This elevation view shows the side of a climbing wall and ECO frame. The text 'EXISTING WALL BEYOND' indicates the presence of an existing structure behind the wall. The 'ECO FRAME' is labeled, suggesting its integration into the climbing wall system. The section callout '1/S9' provides a reference to another drawing for further details. The view is labeled as 'SIDE VIEW', emphasizing its orientation. The drawing helps in understanding the vertical alignment and structural relationship between the climbing wall and the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Climbing wall section view",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S3-1/S3",
+        "2/S3-2/S3"
+      ],
+      "element_type": "Climbing Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "Plywood Panels",
+        "Anchors"
+      ],
+      "text_verbatim": "3/4\" THK. PLYWOOD PANELS TYP.\nSECTION 1/S3-1/S3\nSECTION 2/S3-2/S3",
+      "summary": "This section view details the construction of a climbing wall, focusing on the arrangement of plywood panels. The text '3/4\" THK. PLYWOOD PANELS TYP.' specifies the typical thickness of the plywood used. Two section callouts, '1/S3-1/S3' and '2/S3-2/S3', indicate additional sectional views for further details. The drawing highlights the structural composition and anchorage of the climbing wall elements, providing insights into its assembly.",
+      "project_id": "25-01-102",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Climbing wall section view",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S3-1/S3",
+        "2/S3-2/S3"
+      ],
+      "element_type": "Climbing Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "Plywood Panels",
+        "Anchors"
+      ],
+      "text_verbatim": "3/4\" THK. PLYWOOD PANELS TYP.\nSECTION 1/S3-1/S3\nSECTION 2/S3-2/S3",
+      "summary": "This section view details the construction of a climbing wall, focusing on the arrangement of plywood panels. The text '3/4\" THK. PLYWOOD PANELS TYP.' specifies the typical thickness of the plywood used. Two section callouts, '1/S3-1/S3' and '2/S3-2/S3', indicate additional sectional views for further details. The drawing highlights the structural composition and anchorage of the climbing wall elements, providing insights into its assembly.",
+      "project_id": "25-01-102",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Climbing wall section view",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S4-2/S4"
+      ],
+      "element_type": "Climbing Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "Plywood Panels",
+        "Anchors"
+      ],
+      "text_verbatim": "(6) Ø 3/8\" FOR 3/8\"-2-7/8\"\nHILTI HLC-FPH SLEEVE ANCHORS\nC/W MIN. 1.5\" EMBEDMENT.\n3/4\" THK. PLYWOOD PANELS TYP.\nSECTION 2/S4-2/S4",
+      "summary": "This section view provides details on the climbing wall's construction, emphasizing the layout and structural details of the plywood panels. The text '(6) Ø 3/8\" FOR 3/8\"-2-7/8\" HILTI HLC-FPH SLEEVE ANCHORS C/W MIN. 1.5\" EMBEDMENT.' specifies the type and installation requirements for the anchors used. The plywood panels are noted as '3/4\" THK. PLYWOOD PANELS TYP.', indicating their typical thickness. The section callout '2/S4-2/S4' references another drawing for further details. This view aids in understanding the assembly and structural integrity of the climbing wall.",
+      "project_id": "25-01-102",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Climbing wall section view",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S4-2/S4"
+      ],
+      "element_type": "Climbing Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "Plywood Panels",
+        "Anchors"
+      ],
+      "text_verbatim": "(2) Ø 3/8\" FOR 3/8\"-2-7/8\"\nHILTI HLC-FPH SLEEVE ANCHORS\nC/W MIN. 1.5\" EMBEDMENT.\n3/4\" THK. PLYWOOD PANELS TYP.\nSECTION 2/S4-2/S4",
+      "summary": "This section view provides details on the climbing wall's construction, emphasizing the layout and structural details of the plywood panels. The text '(2) Ø 3/8\" FOR 3/8\"-2-7/8\" HILTI HLC-FPH SLEEVE ANCHORS C/W MIN. 1.5\" EMBEDMENT.' specifies the type and installation requirements for the anchors used. The plywood panels are noted as '3/4\" THK. PLYWOOD PANELS TYP.', indicating their typical thickness. The section callout '2/S4-2/S4' references another drawing for further details. This view aids in understanding the assembly and structural integrity of the climbing wall.",
+      "project_id": "25-01-102",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Climbing Wall Section",
+      "level": "Unknown",
+      "orientation": "Vertical section through climbing wall",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S4-1/S4"
+      ],
+      "element_type": "Climbing Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "Plywood Panels",
+        "Sleeve Anchors"
+      ],
+      "text_verbatim": "SECTION 1/S4-1/S4\n(6) Ø 3/8\" FOR 3/8\"-2-7/8\" HILTI HLC-FPH SLEEVE ANCHORS C/W MIN. 1.5\" EMBEDMENT\n(2) Ø 3/8\" FOR 3/8\"-2-7/8\" HILTI HLC-FPH SLEEVE ANCHORS C/W MIN. 1.5\" EMBEDMENT\n3/4\" THK. PLYWOOD PANELS TYP.\n1'-2\" GAP\n3'-11 5/8\"\n1'-5 13/16\"\n1'-5 13/16\"\n6\"\n3'-1 1/2\"\n3'-3/4\"\n8'-3/4\"\n3'-1 1/2\"\n2'-3 13/16\"\n7'-11 1/4\"\n2'-3 13/16\"\n(12) Ø 3/8\" FOR 3/8\"-2-7/8\" HILTI HLC-FPH SLEEVE ANCHORS C/W MIN. 1.5\" EMBEDMENT\n(4) Ø 3/8\" FOR 3/8\"-2-7/8\" HILTI HLC-FPH SLEEVE ANCHORS C/W MIN. 1.5\" EMBEDMENT",
+      "summary": "This section view illustrates a climbing wall detail, focusing on the layout and structural components. The wall is constructed using 3/4\" thick plywood panels, as indicated by the note '3/4\" THK. PLYWOOD PANELS TYP.' The section is reinforced with HILTI HLC-FPH sleeve anchors, specified as Ø 3/8\" for 3/8\"-2-7/8\" with a minimum embedment of 1.5 inches. The section callout '1/S4-1/S4' indicates the specific section view. Dimensions such as '3'-11 5/8\"', '1'-5 13/16\"', and '7'-11 1/4\"' provide precise measurements for construction. The section emphasizes the use of sleeve anchors for structural stability, with multiple anchor specifications detailed throughout the image.",
+      "project_id": "25-01-102",
+      "page_number": 7,
+      "region_number": 3,
+      "relative_path": "page_007/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "ECO Frame Side View",
+      "level": "Unknown",
+      "orientation": "Side elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "ECO Frame Side Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Frame Structure"
+      ],
+      "text_verbatim": "ECO FRAME - SIDE VIEW\n13'-2\"\n10'-5\"",
+      "summary": "This elevation view shows the side of an ECO frame structure. The frame spans 13'-2\" in width and reaches a height of 10'-5\". The side view provides a clear depiction of the frame's vertical supports and horizontal beams, essential for understanding the structural layout and assembly. The image focuses on the frame's dimensions and alignment, crucial for construction and integration with other components.",
+      "project_id": "25-01-102",
+      "page_number": 8,
+      "region_number": 1,
+      "relative_path": "page_008/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "ECO Frame Front View",
+      "level": "Unknown",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S8"
+      ],
+      "element_type": "ECO Frame Front Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Frame Structure"
+      ],
+      "text_verbatim": "ECO FRAME - FRONT VIEW\n20'-10\"\n10'-5\"\n10'-2 3/4\"\n3/S8\n2/S8",
+      "summary": "This front elevation view of the ECO frame structure highlights its overall dimensions and structural components. The frame is 20'-10\" wide and 10'-5\" tall, with a secondary height of 10'-2 3/4\". Section callouts '3/S8' and '2/S8' provide references to additional views or details. The image emphasizes the frame's horizontal and vertical elements, crucial for understanding the assembly and integration of the structure.",
+      "project_id": "25-01-102",
+      "page_number": 8,
+      "region_number": 2,
+      "relative_path": "page_008/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "ECO Frame Plan View",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S6",
+        "2/S6",
+        "1/S7",
+        "2/S7",
+        "3/S7",
+        "1/S8"
+      ],
+      "element_type": "ECO Frame Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Frame Structure"
+      ],
+      "text_verbatim": "ECO FRAME - PLAN VIEW\n21'-4 11/16\"\n20'-10\"\n13'-2\"\n12'-5\"\n1/S6\n2/S6\n1/S7\n2/S7\n3/S7\n1/S8",
+      "summary": "This plan view of the ECO frame provides a top-down perspective of the structure, detailing its layout and dimensions. The frame measures 21'-4 11/16\" by 20'-10\". Section callouts '1/S6', '2/S6', '1/S7', '2/S7', '3/S7', and '1/S8' indicate connections to other views or details. The plan view is essential for understanding the spatial arrangement and integration of the frame's components, including its beams and supports.",
+      "project_id": "25-01-102",
+      "page_number": 8,
+      "region_number": 3,
+      "relative_path": "page_008/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "ECO Frame Isometric View",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "ECO Frame Isometric",
+      "element_callouts": [],
+      "key_components": [
+        "Frame Structure"
+      ],
+      "text_verbatim": "ECO FRAME - ISOMETRIC VIEW",
+      "summary": "This isometric view of the ECO frame provides a three-dimensional perspective, illustrating the spatial relationships and connections between the frame's components. The view is crucial for visualizing the assembly and integration of the structure, offering insights into the alignment and interaction of beams, supports, and other elements. The isometric perspective aids in understanding the overall design and construction of the frame.",
+      "project_id": "25-01-102",
+      "page_number": 8,
+      "region_number": 4,
+      "relative_path": "page_008/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S6-2/S6",
+        "1A/S10"
+      ],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS3x2x0.1875",
+        "HSS2x2x0.1875"
+      ],
+      "text_verbatim": "10'-1 1/2\"\n20'-1\"\nSECTION 2/S6-2/S6\nHSS3x2x0.1875\nHSS2x2x0.1875\nHSS3x3x0.1875\n1A/S10\n10'-3 3/4\"\n8'-1 1/4\"",
+      "summary": "This section view, labeled as SECTION 2/S6-2/S6, shows a transverse section of the ECO frame. The frame consists of structural components such as HSS3x2x0.1875 and HSS2x2x0.1875. The section includes dimensions of 10'-1 1/2\" and 20'-1\" for the horizontal spans, with vertical dimensions of 10'-3 3/4\" and 8'-1 1/4\". A detail callout 1A/S10 is present, indicating a specific connection detail. The section provides insights into the structural design and assembly of the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 9,
+      "region_number": 1,
+      "relative_path": "page_009/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S6-1/S6"
+      ],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS3x2x0.1875",
+        "HSS2x2x0.1875"
+      ],
+      "text_verbatim": "10'-1 1/2\"\n20'-1\"\nSECTION 1/S6-1/S6\nHSS3x2x0.1875\nHSS2x2x0.1875\nHSS3x3x0.1875\n10'-3 3/4\"\n8'-1 1/4\"\n2'-5 1/4\"\n7'-7 1/2\"",
+      "summary": "This section view, labeled as SECTION 1/S6-1/S6, shows a transverse section of the ECO frame. The frame includes structural components such as HSS3x2x0.1875 and HSS2x2x0.1875. The section provides horizontal dimensions of 10'-1 1/2\" and 20'-1\", with vertical dimensions of 10'-3 3/4\", 8'-1 1/4\", 2'-5 1/4\", and 7'-7 1/2\". This section aids in understanding the structural design and assembly of the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 9,
+      "region_number": 2,
+      "relative_path": "page_009/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S7-2/S7"
+      ],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS3x2x0.1875",
+        "HSS2x2x0.1875"
+      ],
+      "text_verbatim": "6'-2 1/2\"\n12'-5\"\nSECTION 2/S7-2/S7\nHSS3x2x0.1875\nHSS2x2x0.1875\nHSS3x3x0.1875\n10'-1 1/4\"",
+      "summary": "This section view, labeled as SECTION 2/S7-2/S7, shows a transverse section of the ECO frame. The frame consists of structural components such as HSS3x2x0.1875 and HSS2x2x0.1875. The section includes horizontal dimensions of 6'-2 1/2\" and 12'-5\", with a vertical dimension of 10'-1 1/4\". This section provides insights into the structural design and assembly of the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 10,
+      "region_number": 1,
+      "relative_path": "page_010/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S7-3/S7"
+      ],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS3x2x0.1875",
+        "HSS2x2x0.1875"
+      ],
+      "text_verbatim": "6'-2 1/2\"\n12'-5\"\nSECTION 3/S7-3/S7\nHSS3x2x0.1875\nHSS2x2x0.1875\nHSS3x3x0.1875\n10'-1 1/4\"",
+      "summary": "This section view, labeled as SECTION 3/S7-3/S7, shows a transverse section of the ECO frame. The frame includes structural components such as HSS3x2x0.1875 and HSS2x2x0.1875. The section provides horizontal dimensions of 6'-2 1/2\" and 12'-5\", with a vertical dimension of 10'-1 1/4\". This section aids in understanding the structural design and assembly of the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 10,
+      "region_number": 2,
+      "relative_path": "page_010/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S7-1/S7"
+      ],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS3x2x0.1875",
+        "HSS2x2x0.1875"
+      ],
+      "text_verbatim": "10'-2\"\n20'-1\"\nSECTION 1/S7-1/S7\nHSS3x2x0.1875\nHSS2x2x0.1875\nHSS3x3x0.1875\n10'-1 1/4\"\n8'-1 1/4\"\n2'-0\"",
+      "summary": "This section view, labeled as SECTION 1/S7-1/S7, shows a transverse section of the ECO frame. The frame consists of structural components such as HSS3x2x0.1875 and HSS2x2x0.1875. The section includes horizontal dimensions of 10'-2\" and 20'-1\", with vertical dimensions of 10'-1 1/4\", 8'-1 1/4\", and 2'-0\". This section provides insights into the structural design and assembly of the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 10,
+      "region_number": 3,
+      "relative_path": "page_010/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S10"
+      ],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Monkey Bar Beams",
+        "HSS Cross Beams",
+        "Trussing Clamps"
+      ],
+      "text_verbatim": "SECTION 2/S8-2/S8\nHSS1.9\" DIA. x0.1875\"\nHSS2x2x0.1875\n1.25\" SCH40 PIPE\nHSS MONKEY BAR BEAMS CONNECTED TO ROUND HSS CROSS BEAMS EACH SIDE W/ KAD KB-1 TRUSSING CLAMPS RATED FOR 500 KG CAPACITY TYP. CLAMPS TO BE INSTALLED AS PER MANUFACTURER SPECIFICATIONS\n7'-0\"\n6'-2 1/2\"\n4'-0\"\n3'-9 5/8\"\n1'-2 7/8\"",
+      "summary": "This section view, labeled as SECTION 2/S8-2/S8, illustrates the ECO frame structure focusing on the monkey bar beams and cross beams. The beams are constructed using HSS1.9\" DIA. x0.1875\" and HSS2x2x0.1875 materials. The section includes 1.25\" SCH40 PIPE as part of the frame. The monkey bar beams are connected to round HSS cross beams on each side using KAD KB-1 trussing clamps, which are rated for a 500 kg capacity. The clamps must be installed according to manufacturer specifications. The dimensions provided include a total width of 7'-0\", with specific sections measuring 6'-2 1/2\", 4'-0\", 3'-9 5/8\", and 1'-2 7/8\".",
+      "project_id": "25-01-102",
+      "page_number": 11,
+      "region_number": 1,
+      "relative_path": "page_011/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Cross Beams",
+        "HSS Columns",
+        "Trussing Clamps"
+      ],
+      "text_verbatim": "SECTION 1/S8-1/S8\nHSS3x2x0.1875\nHSS1.9\" DIA. x0.1875\"\nHSS3x3x0.1875\nROUND HSS CROSS BEAMS CONNECTED TO HSS COLUMNS EACH SIDE W/ KAD KB-1 TRUSSING CLAMPS RATED FOR 500 KG CAPACITY TYP. CLAMPS TO BE INSTALLED AS PER MANUFACTURER SPECIFICATIONS\n10'-1 1/4\"\n7'-7 1/2\"\n6'-2 1/2\"\n2'-5 3/8\"",
+      "summary": "This section view, labeled as SECTION 1/S8-1/S8, depicts the ECO frame structure with a focus on the connection between HSS cross beams and columns. The beams are made from HSS3x2x0.1875 and HSS1.9\" DIA. x0.1875 materials, while the columns use HSS3x3x0.1875. The cross beams are connected to the columns using KAD KB-1 trussing clamps, rated for a 500 kg capacity, and must be installed as per manufacturer specifications. The section provides dimensions including a total height of 10'-1 1/4\", with other measurements of 7'-7 1/2\", 6'-2 1/2\", and 2'-5 3/8\".",
+      "project_id": "25-01-102",
+      "page_number": 11,
+      "region_number": 2,
+      "relative_path": "page_011/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Plan section",
+      "grid_references": [],
+      "section_callouts": [
+        "3A/S10",
+        "4A/S10",
+        "5A/S10",
+        "6/S10"
+      ],
+      "element_type": "ECO Frame Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Beams",
+        "Trussing Clamps"
+      ],
+      "text_verbatim": "SECTION 3/S8-3/S8\nHSS3x2x0.1875\nHSS1.9\" DIA. x0.1875\"\nHSS2x2x0.1875\nECO FRAME ELEMENTS ON PAGE S1.2 CONNECTED TO THESE ROUND HSS BEAMS W/ KAD KB-1 TRUSSING CLAMPS RATED FOR 500 KG CAPACITY TYP. CLAMPS TO BE INSTALLED AS PER MANUFACTURER SPECIFICATIONS\n3'-5/8\"\n2'-11 1/4\"\n1'-0\"\n2'-0\"\n1'-5/8\"\n2'-5/8\"\n8'-0\"\n12'-5\"\n6'-2 1/2\"\n20'-1 1/8\"",
+      "summary": "This section view, labeled as SECTION 3/S8-3/S8, shows the ECO frame structure with a focus on the HSS beams and their connections. The beams are constructed from HSS3x2x0.1875, HSS1.9\" DIA. x0.1875, and HSS2x2x0.1875 materials. The ECO frame elements from page S1.2 are connected to these round HSS beams using KAD KB-1 trussing clamps, rated for a 500 kg capacity. The clamps must be installed according to manufacturer specifications. The section includes dimensions such as 3'-5/8\", 2'-11 1/4\", 1'-0\", 2'-0\", 1'-5/8\", 2'-5/8\", 8'-0\", 12'-5\", 6'-2 1/2\", and 20'-1 1/8\". Section callouts 3A/S10, 4A/S10, 5A/S10, and 6/S10 are present.",
+      "project_id": "25-01-102",
+      "page_number": 11,
+      "region_number": 3,
+      "relative_path": "page_011/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Baseplate",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Baseplate Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Baseplate",
+        "Anchors"
+      ],
+      "text_verbatim": "DETAIL 2/S9\nSCALE 1 : 10\n(4) Ø 5/8\" HOLES FOR 1/2\" Ø DEWALT POWER-STUD+ SD2 ANCHORS C/W 3.25\" EMBEDMENT\n9\"\n6\"\n1\"",
+      "summary": "This detail, labeled as DETAIL 2/S9, provides a close-up view of a baseplate used in the ECO frame structure. The detail is drawn at a scale of 1:10. It specifies four 5/8\" diameter holes for 1/2\" diameter Dewalt Power-Stud+ SD2 anchors, which have a 3.25\" embedment. The baseplate dimensions include a 9\" length and a 6\" width, with 1\" spacing for the holes. This detail is crucial for understanding the anchorage and support of the ECO frame.",
+      "project_id": "25-01-102",
+      "page_number": 12,
+      "region_number": 1,
+      "relative_path": "page_012/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Schedule",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Reaction Table",
+      "element_callouts": [],
+      "key_components": [
+        "Loads",
+        "Moments"
+      ],
+      "text_verbatim": "REACTION TABLE NOTES:\n- REACTION FORCES CORRESPOND TO LABELS ON PAGE S3\n- ALL REACTION FORCES ARE OPPOSITE TO THE COORDINATE SYSTEM SHOWN. FOR E.G. NEGATIVE Z FORCES ARE UPLIFT FORCES.\n- DL = DEAD LOAD\n- LL = LIVE LOAD\n- ELX = SEISMIC (EARTHQUAKE) LOADS IN THE POSITIVE X-DIRECTION (SEE COORDINATE SYSTEM).\n- ELY = SEISMIC (EARTHQUAKE) LOADS IN THE POSITIVE Y-DIRECTION (SEE COORDINATE SYSTEM)\n- X / Y / Z - CORRESPONDS TO FORCES IN KIPS IN THE X, Y AND Z DIRECTIONS RESPECTIVELY (SEE COORDINATE SYSTEM)\n- MX / MY / MZ - CORRESPONDS TO MOMENTS IN KIP-FT ABOUT THE X, Y AND Z AXIS RESPECTIVELY (SEE COORDINATE SYSTEM)\nDANIELS MVP ECO FRAME REACTIONS (UNFACTORED)\nLOADS (kips) & Moments (kip-ft)\nLABEL\nDEAD\nLIVE\nELX\nX\nY\nZ\nMX\nMY\nMZ\nX\nY\nZ\nMX\nMY\nMZ\nX\nY\nZ\n1\n0.0\n0.0\n0.2\n0.0\n0.0\n0.0\n0.0\n0.1\n0.6\n-0.6\n0.8\n-0.1\n-0.1\n0.0\n0.1\n2\n0.0\n0.0\n0.2\n0.0\n0.0\n0.0\n0.1\n0.2\n0.4\n-0.8\n0.7\n0.0\n-0.1\n0.0\n0.1\n3\n0.0\n0.0\n0.2\n0.0\n0.0\n0.0\n0.2\n0.1\n-0.1\n-0.7\n0.7\n0.1\n-0.1\n0.0\n0.1\n4\n0.0\n0.0\n0.3\n0.0\n0.0\n0.0\n0.3\n0.2\n1.5\n-0.8\n0.6\n0.0\n-0.1\n0.0\n0.0\n5\n0.0\n0.0\n0.3\n0.0\n0.0\n0.0\n0.1\n0.2\n1.7\n-0.7\n0.0\n0.0\n-0.1\n0.0\n-0.1\n6\n0.0\n0.0\n0.2\n0.0\n0.0\n0.0\n0.2\n0.1\n0.8\n-0.6\n0.7\n0.0\n-0.1\n0.0\n-0.1\n7\n0.0\n0.0\n0.2\n0.0\n0.0\n0.0\n0.3\n0.2\n1.1\n-0.8\n0.3\n0.1\n-0.1\n0.0\n-0.1\n8\n0.0\n0.0\n0.2\n0.0\n0.0\n0.0\n0.0\n0.1\n0.9\n-0.8\n0.6\n0.0\n-0.1\n0.0\n-0.1\n9\n0.0\n0.0\n0.1\n0.0\n0.0\n0.0\n0.1\n0.2\n0.7\n-0.7\n0.0\n0.0\n-0.1\n0.0\n0.0",
+      "summary": "This schedule, titled 'DANIELS MVP ECO FRAME REACTIONS (UNFACTORED)', provides a detailed reaction table for the ECO frame. It includes loads in kips and moments in kip-ft for dead, live, and seismic (ELX) conditions. The table specifies forces in the X, Y, and Z directions and moments about the X, Y, and Z axes. Reaction forces are opposite to the coordinate system, with negative Z forces indicating uplift. The table includes labels 1 through 9, with corresponding values for each load condition. Reaction table notes explain the meaning of each load type and direction.",
+      "project_id": "25-01-102",
+      "page_number": 12,
+      "region_number": 2,
+      "relative_path": "page_012/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Baseplate Plan for ECO Frame",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S9",
+        "1/S9-1/S9"
+      ],
+      "element_type": "Base Plate Plan",
+      "element_callouts": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "key_components": [
+        "Structural Slab on Grade",
+        "Base Plates",
+        "Anchors"
+      ],
+      "text_verbatim": "EX. 27.6\" (700 mm)\nSTRUCTURAL SLAB ON GRADE\nREACTION LABELS CORRESPONDING TO TABLE ON THIS PAGE TYP.\n(4) Ø 5/8\" HOLES FOR 1/2\" Ø DEWALT POWER-STUD+ SD2 ANCHOR CW 3.25\" EMBEDMENT\nECO FRAME - BASE PLATE PLAN\nSECTION 1/S9-1/S9",
+      "summary": "This plan view shows the ECO frame baseplate layout on a structural slab on grade. The slab is noted as 'EX. 27.6\" (700 mm)'. Reaction labels correspond to a table on the page, marked as typical. The plan includes section callouts '2/S9' and '1/S9-1/S9', indicating connections to other sections. Base plates are anchored with '(4) Ø 5/8\" holes for 1/2\" Ø DeWalt Power-Stud+ SD2 anchor with 3.25\" embedment'. Element callouts '1' through '9' label specific base plate locations.",
+      "project_id": "25-01-102",
+      "page_number": 12,
+      "region_number": 3,
+      "relative_path": "page_012/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Connection Detail for ECO Frame",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "4B/S10-4B/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Columns",
+        "Stub Beams"
+      ],
+      "text_verbatim": "SECTION 4B/S10-4B/S10\nSCALE 1 : 10",
+      "summary": "This detail illustrates a connection for the ECO frame, focusing on HSS columns and stub beams. The section is labeled '4B/S10-4B/S10' and is drawn at a scale of 1:10. The detail provides a close-up view of the connection, essential for ensuring structural integrity.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 1,
+      "relative_path": "page_013/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Connection Detail for ECO Frame",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1B/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Columns",
+        "Stub Beams",
+        "Horizontal Brace"
+      ],
+      "text_verbatim": "1B/S10\nHSS3x3x3/16\" COLUMN\nHSS2.5x2.5x3/16\" STUB BEAM\n(2) Ø 9/16\" FOR 1/2\" Ø A325 BOLTS\nHSS2x2x3/16\" HORIZONTAL BRACE\nDETAIL 1A/S10\nSCALE 1 : 10",
+      "summary": "This detail shows a connection for the ECO frame, focusing on HSS columns, stub beams, and horizontal braces. The section callout '1B/S10' indicates the specific connection detail. The HSS3x3x3/16\" column connects to an HSS2.5x2.5x3/16\" stub beam using '(2) Ø 9/16\" for 1/2\" Ø A325 bolts'. The detail is drawn at a scale of 1:10.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 2,
+      "relative_path": "page_013/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Connection Detail for ECO Frame",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3B/S10",
+        "3C/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Columns",
+        "Stub Columns",
+        "Beams",
+        "Sleeve"
+      ],
+      "text_verbatim": "3B/S10\n3C/S10\nHSS3x3x3/16\" COLUMN\nHSS2.5x2.5x3/16\" STUB COLUMN\nHSS3x2x3/16\" BEAM\nHSS3.5x2.5x3/16\" SLEEVE BELOW PLATE\nDETAIL 3A/S10\nSCALE 1 : 10",
+      "summary": "This detail illustrates a connection for the ECO frame, focusing on HSS columns, stub columns, beams, and sleeves. The section callouts '3B/S10' and '3C/S10' indicate the specific connection details. The HSS3x3x3/16\" column connects to an HSS2.5x2.5x3/16\" stub column and an HSS3x2x3/16\" beam. The detail is drawn at a scale of 1:10.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 3,
+      "relative_path": "page_013/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Connection Detail for ECO Frame",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "5B/S10",
+        "5C/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Columns",
+        "Beams"
+      ],
+      "text_verbatim": "5B/S10\n5C/S10\nNOTE: DIMENSIONS, MEMBER SIZES AND WELDS FROM SECTIONS 3A - 3C APPLY TO THIS DETAIL\nDETAIL 5A/S10\nSCALE 1 : 10",
+      "summary": "This detail shows a connection for the ECO frame, focusing on HSS columns and beams. The section callouts '5B/S10' and '5C/S10' indicate the specific connection details. The note specifies that dimensions, member sizes, and welds from sections 3A to 3C apply to this detail. The detail is drawn at a scale of 1:10.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 4,
+      "relative_path": "page_013/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Unknown",
+      "grid_references": [],
+      "section_callouts": [
+        "1B/S10-1B/S10"
+      ],
+      "element_type": "Stub Beam Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Stub Beam",
+        "HSS Column",
+        "A325 Bolts",
+        "Horizontal Brace"
+      ],
+      "text_verbatim": "6x3/16\" STUB BEAM\nFOR 1/2\" Ø A325 BOLTS\n6x3/16\" HORIZONTAL BRACE\n3/16\"\n3\"\n1 1/2\"\n1 1/2\"\n1\"\n1\"\n5 1/2\"\n8 1/2\"\n(2) Ø 9/16\" FOR 1/2\" Ø A325 BOLTS THRU HSS COLUMN\nSECTION 1B/S10-1B/S10\nSCALE 1 : 10",
+      "summary": "This section view, labeled as Section 1B/S10-1B/S10, provides a detailed connection of a stub beam to an HSS column. The stub beam is 6x3/16\" and is connected using 1/2\" Ø A325 bolts. The section also includes a 6x3/16\" horizontal brace. The dimensions provided are 3\" for the stub beam width, with additional dimensions of 1 1/2\", 1\", 5 1/2\", and 8 1/2\" indicating various component sizes. The bolts are specified as Ø 9/16\" for 1/2\" Ø A325 bolts through the HSS column. The scale of the drawing is 1:10.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 5,
+      "relative_path": "page_013/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Unknown",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S10"
+      ],
+      "element_type": "Monkey Bar Beam Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Monkey Bar Beam",
+        "Cap Plate",
+        "SCH40 Pipe Monkey Bars"
+      ],
+      "text_verbatim": "3/16\"\nHSS2x2x3/16\" MONKEY BAR BEAM\n3/16\" CAP PLATE\n1.25\" SCH40 PIPE MONKEY BARS\nDETAIL 2/S10\nSCALE 1 : 5",
+      "summary": "Detail 2/S10 illustrates the connection of a monkey bar beam, specifically an HSS2x2x3/16\" beam, with a 3/16\" cap plate and 1.25\" SCH40 pipe monkey bars. The drawing is scaled at 1:5, providing a close-up view of the connection details. The cap plate and monkey bars are integral components of the connection, ensuring stability and structural integrity.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 6,
+      "relative_path": "page_013/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Unknown",
+      "grid_references": [],
+      "section_callouts": [
+        "4A/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [
+        "4B/S10",
+        "4C/S10"
+      ],
+      "key_components": [
+        "Member Sizes",
+        "Welds"
+      ],
+      "text_verbatim": "2 1/2\"\n4B/S10\n4C/S10\nNOTE: DIMENSIONS, MEMBER SIZES AND WELDS FROM SECTIONS 3A - 3C APPLY TO THIS DETAIL\nDETAIL 4A/S10\nSCALE 1 : 10",
+      "summary": "Detail 4A/S10 shows a connection detail with references to member sizes and welds from sections 3A to 3C. The drawing includes callouts 4B/S10 and 4C/S10, indicating specific components within the connection. The dimensions provided are 2 1/2\", and the scale is 1:10. The note specifies that dimensions, member sizes, and welds from other sections apply to this detail.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 7,
+      "relative_path": "page_013/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Unknown",
+      "grid_references": [],
+      "section_callouts": [
+        "3B/S10-3B/S10"
+      ],
+      "element_type": "Stub Column Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Stub Column",
+        "A325 Bolts",
+        "Beam"
+      ],
+      "text_verbatim": "5x3/16\" SLEEVE\n3/16\" BEAM\n1 1/4\"\n1 1/2\"\n2\"\nHSS2.5x2.5x3/16\" STUB COLUMN\n(2) Ø 9/16\" FOR 1/2\" Ø A325 BOLTS THROUGH SLEEVE AND BEAM\nNOTE: LOCATION OF BOLTS IN COLUMN TYP.\nSECTION 3B/S10-3B/S10\nSCALE 1 : 10",
+      "summary": "Section 3B/S10-3B/S10 details the connection of an HSS2.5x2.5x3/16\" stub column with a 5x3/16\" sleeve and a 3/16\" beam. The connection uses (2) Ø 9/16\" for 1/2\" Ø A325 bolts through the sleeve and beam. Dimensions include 1 1/4\", 1 1/2\", and 2\". The note specifies the typical location of bolts in the column. The scale is 1:10.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 8,
+      "relative_path": "page_013/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_09_red_box.png",
+      "classification": "Section",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": "Unknown",
+      "grid_references": [],
+      "section_callouts": [
+        "5C/S10-5C/S10"
+      ],
+      "element_type": "Connection Section",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Column",
+        "Bolts"
+      ],
+      "text_verbatim": "SECTION 5C/S10-5C/S10\nSCALE 1 : 10",
+      "summary": "Section 5C/S10-5C/S10 provides a view of a connection involving an HSS column and bolts. The drawing is scaled at 1:10, offering a detailed look at the structural connection. Specific dimensions and component details are not provided in the text but are likely depicted in the linework.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 9,
+      "relative_path": "page_013/region_09_red_box.png"
+    },
+    {
+      "image_id": "region_10_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "6/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Cap Plate",
+        "HSS Column"
+      ],
+      "text_verbatim": "CAP PLATE\n3/16\"\nHSS1.9 Ø x3/16\"\nDETAIL 6/S10\nSCALE 1 : 5",
+      "summary": "This detail shows a connection involving a cap plate and an HSS column. The cap plate is specified with a thickness of 3/16 inches. The HSS column is labeled as HSS1.9 Ø x3/16\", indicating a hollow structural section with a diameter of 1.9 inches and a wall thickness of 3/16 inches. The detail is referenced as 6/S10 and is drawn at a scale of 1:5.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 10,
+      "relative_path": "page_013/region_10_red_box.png"
+    },
+    {
+      "image_id": "region_11_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "4C/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Column",
+        "Stub Beam"
+      ],
+      "text_verbatim": "SECTION 4C/S10-4C/S10\nSCALE 1 : 10",
+      "summary": "This section detail illustrates a connection between an HSS column and a stub beam. The section is labeled as 4C/S10 and is drawn at a scale of 1:10. The drawing focuses on the arrangement and connection of these structural components, ensuring stability and integrity.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 11,
+      "relative_path": "page_013/region_11_red_box.png"
+    },
+    {
+      "image_id": "region_12_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3C/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Sleeve",
+        "Stub Column",
+        "Top Plate"
+      ],
+      "text_verbatim": "SLEEVE TO STUB COLUMN TYP.\n3/16\"\nSLEEVE TO TOP PLATE TYP.\nNOTE: SAME DIMENSIONS AS SECTION 3B/S10\nSECTION 3C/S10-3C/S10\nSCALE 1 : 10",
+      "summary": "This section detail shows a connection involving sleeves to a stub column and a top plate, with a typical sleeve thickness of 3/16 inches. The note indicates that the dimensions are the same as Section 3B/S10. The section is labeled as 3C/S10 and is drawn at a scale of 1:10. This detail is crucial for understanding the connection and alignment of these structural elements.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 12,
+      "relative_path": "page_013/region_12_red_box.png"
+    },
+    {
+      "image_id": "region_13_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "5B/S10"
+      ],
+      "element_type": "Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Sleeve",
+        "Stub Column"
+      ],
+      "text_verbatim": "1/4\"\nSLEEVE TO STUB COLUMN TYP.\nSECTION 5B/S10-5B/S10\nSCALE 1 : 10",
+      "summary": "This section detail illustrates a connection involving a sleeve to a stub column, with a sleeve thickness of 1/4 inch. The section is labeled as 5B/S10 and is drawn at a scale of 1:10. This detail is essential for understanding the structural connection and alignment of these components.",
+      "project_id": "25-01-102",
+      "page_number": 13,
+      "region_number": 13,
+      "relative_path": "page_013/region_13_red_box.png"
+    }
+  ]
+}
