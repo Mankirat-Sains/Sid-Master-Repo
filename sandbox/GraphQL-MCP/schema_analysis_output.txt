@@ -1,0 +1,181 @@
+# GraphQL Schema Summary
+
+## Available Queries:
+
+### _
+  Returns: String
+
+### streamAccessRequest
+  Arguments:
+    - streamId: String (required)
+  Returns: StreamAccessRequest @deprecated(reason: "Part of the old API surface and will be removed in the future. Use User.projectAccessRequest instead.")
+
+### app
+  Arguments:
+    - id: String (required)
+  Returns: ServerApp
+
+### apps
+  Returns: [ServerAppListItem] @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+### automateFunction
+  Arguments:
+    - id: ID (required)
+  Returns: AutomateFunction
+
+### automateValidateAuthCode
+  Arguments:
+    - payload: AutomateAuthCodePayloadTest (required)
+    - resources: AutomateAuthCodeResources (optional)
+  Returns: Boolean
+
+### comment
+  Arguments:
+    - id: String (required)
+    - streamId: String (required)
+  Returns: Comment @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.comment instead.")
+
+### ways
+  Returns: - get all the comments for a stream: **do not pass in any resource identifiers**.
+
+### comments
+  Arguments:
+    - streamId: String (required)
+    - resources: [ResourceIdentifierInput] (optional)
+    - limit: Int (optional)
+    - cursor: String (optional)
+    - archived: Boolean (required)
+  Returns: CommentCollection @deprecated(reason: "Use Project/Version/Model 'commentThreads' fields instead")
+
+### admin
+  Returns: AdminQueries
+
+### authenticatedAsApp
+  Returns: ServerAppListItem
+
+### project
+  Arguments:
+    - id: String (required)
+  Returns: Project
+
+### serverInfo
+  Returns: ServerInfo
+
+### stream
+  Arguments:
+    - id: String (required)
+  Returns: Stream @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Query.project instead.")
+
+### streams
+  Arguments:
+    - query: String (optional)
+    - limit: Int (optional)
+    - cursor: String (optional)
+  Returns: UserStreamCollection @deprecated(reason: "Part of the old API surface and will be removed in the future. Use User.projects instead.")
+
+### adminStreams
+  Arguments:
+    - offset: Int (optional)
+    - query: String (optional)
+    - orderBy: String (optional)
+    - visibility: String (optional)
+    - limit: Int (optional)
+  Returns: StreamCollection @deprecated(reason: "use admin.projectList instead")
+
+### discoverableStreams
+  Arguments:
+    - limit: Int (required)
+    - cursor: String (optional)
+    - sort: DiscoverableStreamsSortingInput (optional)
+  Returns: StreamCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+### activeUser
+  Returns: User
+
+### otherUser
+  Arguments:
+    - id: String (required)
+  Returns: LimitedUser
+
+### user
+  Arguments:
+    - id: String (optional)
+  Returns: User @deprecated(reason: "To be removed in the near future! Use 'activeUser' to get info about the active user or 'otherUser' to get info about another user.")
+
+## Example Queries:
+
+```graphql
+{ _ { id name } }
+```
+
+```graphql
+{ streamAccessRequest(streamId: "STREAMID_VALUE") { id name description } }
+```
+
+```graphql
+{ app(id: "ID_VALUE") { id name } }
+```
+
+```graphql
+{ apps { id name } }
+```
+
+```graphql
+{ automateFunction(id: "ID_VALUE") { id name } }
+```
+
+```graphql
+{ automateValidateAuthCode(payload: "PAYLOAD_VALUE") { id name } }
+```
+
+```graphql
+{ comment(id: "ID_VALUE", streamId: "STREAMID_VALUE") { id name description } }
+```
+
+```graphql
+{ ways { id name } }
+```
+
+```graphql
+{ comments(streamId: "STREAMID_VALUE", archived: "ARCHIVED_VALUE") { id name description } }
+```
+
+```graphql
+{ admin { id name } }
+```
+
+
+## IFC Element Query Patterns:
+
+
+To find IFC elements (beams, columns, etc.) in a project:
+
+**Path:** Project → Version → referencedObject → Object.children → objects[].data
+
+**Key Fields:**
+- `Object.data: JSONObject` - Contains IFC element data (ifcType, properties, etc.)
+- `Object.children: ObjectCollection` - Traverses the IFC element tree
+- `Version.referencedObject: String` - Root object ID for a version
+
+**Example Query Structure:**
+```graphql
+query FindIFCElements($projectId: String!, $objectId: String!) {
+  project(id: $projectId) {
+    object(id: $objectId) {
+      children(limit: 1000, depth: 5) {
+        objects {
+          id
+          data  # <-- Parse this JSON to check ifcType, properties
+        }
+      }
+    }
+  }
+}
+```
+
+**Important Notes:**
+1. The `data` field returns a JSONObject (string) - you must parse it client-side
+2. IFC elements have: `data.ifcType` (e.g., "IfcBeam", "IfcColumn")
+3. Material info is in: `data.properties.Attributes.Material` or `data.properties.PropertySets`
+4. GraphQL cannot filter jsonb content - fetch data, then filter programmatically
+5. For "steel beams": filter where `ifcType === "IfcBeam"` AND material contains "steel"
