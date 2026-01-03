@@ -88,3 +88,7 @@ coverage/
 
 __pycache__/
 *.pyc
+
+# secrets
+Backend/.env
+.env
