@@ -1,0 +1,848 @@
+{
+  "_metadata": {
+    "version": "2.0",
+    "enhanced_with_building_codes": false,
+    "generation_timestamp": "1766008099.0149612",
+    "description": "Semantic knowledge base enhanced with building code understanding"
+  },
+  "Glulam Column.xlsx": {
+    "file_name": "Glulam Column.xlsx",
+    "file_path": "/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Sidian/SidOS/Glulam Column.xlsx",
+    "total_sheets": 2,
+    "sheet_names": [
+      "Axial",
+      "Guidance Tables"
+    ],
+    "workbook_legend": {
+      "legend_found": true,
+      "legend_cells": [
+        {
+          "cell": "S8",
+          "text": "Input",
+          "fill_color": "FFF2F2F2",
+          "text_color": "FFC63527",
+          "semantic_category": "user_input",
+          "description": "Cells users should modify"
+        },
+        {
+          "cell": "S9",
+          "text": "Output",
+          "fill_color": "FFF2F2F2",
+          "text_color": "FF3F3F3F",
+          "semantic_category": "output_result",
+          "description": "Calculated output values"
+        },
+        {
+          "cell": "S11",
+          "text": "Override",
+          "fill_color": "FFF2C1BC",
+          "text_color": "FFC63527",
+          "semantic_category": "override",
+          "description": "Values that have been manually overridden"
+        }
+      ],
+      "color_mappings": {
+        "FILL_FFF2F2F2_TEXT_FFC63527": {
+          "category": "user_input",
+          "description": "Light gray background with red text - editable input cells",
+          "confidence": 0.85
+        },
+        "FILL_FFF2F2F2_TEXT_FF3F3F3F": {
+          "category": "output_result",
+          "description": "Light gray background with dark gray text - calculated output values",
+          "confidence": 0.85
+        },
+        "FILL_FFF2C1BC_TEXT_FFC63527": {
+          "category": "override",
+          "description": "Light red background with red text - overridden values",
+          "confidence": 0.9
+        },
+        "TEXT_FFC63527": {
+          "category": "attention",
+          "description": "Red text indicating a value that may need attention",
+          "confidence": 0.8
+        }
+      },
+      "legend_sheet": "Axial",
+      "applies_to_all_sheets": true
+    },
+    "sheets": {
+      "Axial": {
+        "sheet_name": "Axial",
+        "dimensions": "128 rows x 38 columns",
+        "labeled_cells": {
+          "Axial Load": "D24",
+          "Factored Axial Load": "D25",
+          "Load Duration Factor,": "D32",
+          "Effective Length Factor Strong Axis,": "D34",
+          "Effective Length Factor Weak Axis,": "D35",
+          "Column Length": "E46",
+          "Unbraced length, strong-axis,": "E47",
+          "Unbraced length, weak-axis,": "E48",
+          "Beam width,": "E49",
+          "Comp. strength parallel to grain,": "E61",
+          "Strength in tension parallel to grain at net section, ": "E62",
+          "Strength in tension parallel to grain at gross section, ": "E63",
+          "Strength in bending": "E65",
+          "Compressive strength parallel to grain,": "E83",
+          "Strength in tension parallel to grain at gross section,": "E84",
+          "Strength in tension parallel to grain at net section,": "E85",
+          "Strength in compression parallel combined with bending,": "E86",
+          "Strength in Bending.": "E87",
+          "Effective Length, Strong Axis,": "E92",
+          "Effective Length, Weak Axis,": "E93"
+        },
+        "color_legend": {
+          "legend_found": true,
+          "legend_cells": [
+            {
+              "cell": "S8",
+              "text": "Input",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "semantic_category": "user_input",
+              "description": "Cells users should modify"
+            },
+            {
+              "cell": "S9",
+              "text": "Output",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FF3F3F3F",
+              "semantic_category": "output_result",
+              "description": "Calculated output values"
+            },
+            {
+              "cell": "S11",
+              "text": "Override",
+              "fill_color": "FFF2C1BC",
+              "text_color": "FFC63527",
+              "semantic_category": "override",
+              "description": "Values that have been manually overridden"
+            }
+          ],
+          "color_mappings": {
+            "FILL_FFF2F2F2_TEXT_FFC63527": {
+              "category": "user_input",
+              "description": "Light gray background with red text - editable input cells",
+              "confidence": 0.85
+            },
+            "FILL_FFF2F2F2_TEXT_FF3F3F3F": {
+              "category": "output_result",
+              "description": "Light gray background with dark gray text - calculated output values",
+              "confidence": 0.85
+            },
+            "FILL_FFF2C1BC_TEXT_FFC63527": {
+              "category": "override",
+              "description": "Light red background with red text - overridden values",
+              "confidence": 0.9
+            },
+            "TEXT_FFC63527": {
+              "category": "attention",
+              "description": "Red text indicating a value that may need attention",
+              "confidence": 0.8
+            }
+          },
+          "applied_from_sheet": "Axial",
+          "applied_to_sheet": "Axial"
+        },
+        "classified_cells": {
+          "inputs": [
+            {
+              "cell": "E8",
+              "value": "Template",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Project Name",
+              "has_formula": false,
+              "parameter_name": "project_name",
+              "unit": null,
+              "context_confidence": 0.8
+            },
+            {
+              "cell": "S8",
+              "value": "Input",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Input value for engineering parameter",
+              "has_formula": false,
+              "parameter_name": "unknown",
+              "unit": "unknown",
+              "context_confidence": 0.1
+            },
+            {
+              "cell": "F18",
+              "value": "2",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Live load in kPa",
+              "has_formula": false,
+              "parameter_name": "live_load",
+              "unit": "kPa",
+              "context_confidence": 0.95
+            },
+            {
+              "cell": "F19",
+              "value": "3.25",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Live load in kPa",
+              "has_formula": false,
+              "parameter_name": "live_load",
+              "unit": "kPa",
+              "context_confidence": 0.95
+            },
+            {
+              "cell": "F21",
+              "value": "9",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Axial Load in kPa",
+              "has_formula": false,
+              "parameter_name": "axial_load",
+              "unit": "kPa",
+              "context_confidence": 0.95
+            },
+            {
+              "cell": "F22",
+              "value": "9",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Axial Load in kPa",
+              "has_formula": false,
+              "parameter_name": "axial_load",
+              "unit": "kPa",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "F27",
+              "value": "D.F.L",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Factored Axial Load",
+              "has_formula": false,
+              "parameter_name": "factored_axial_load",
+              "unit": "N",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F28",
+              "value": "20f-E",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Factored Axial Load in kN",
+              "has_formula": false,
+              "parameter_name": "factored_axial_load",
+              "unit": "kN",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "F30",
+              "value": "Wet",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Load Duration Factor",
+              "has_formula": false,
+              "parameter_name": "load_duration_factor",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F32",
+              "value": "1",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Wet condition",
+              "has_formula": false,
+              "parameter_name": "wet_condition",
+              "unit": null,
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "F33",
+              "value": "1.15",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Load Duration Factor",
+              "has_formula": false,
+              "parameter_name": "load_duration_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F37",
+              "value": "50",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Factored Moment",
+              "has_formula": false,
+              "parameter_name": "factored_moment",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G46",
+              "value": "9000",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Unbraced length in mm",
+              "has_formula": false,
+              "parameter_name": "unbraced_length",
+              "unit": "mm",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "G47",
+              "value": "9000",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Unbraced length, strong-axis",
+              "has_formula": false,
+              "parameter_name": "unbraced_length_strong_axis",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G48",
+              "value": "4000",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Unbraced length in strong-axis direction",
+              "has_formula": false,
+              "parameter_name": "unbraced_length_strong_axis",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G49",
+              "value": "175",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Unbraced length in weak-axis direction",
+              "has_formula": false,
+              "parameter_name": "unbraced_length_weak_axis",
+              "unit": "Lb",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G50",
+              "value": "380",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "color": "FILL_FFF2F2F2_TEXT_FFC63527",
+              "category": "user_input",
+              "description": "Beam width",
+              "has_formula": false,
+              "parameter_name": "beam_width",
+              "unit": "",
+              "context_confidence": 0.7
+            }
+          ],
+          "outputs": [],
+          "calculations": [
+            {
+              "cell": "N18",
+              "value": "=IF(F16=\"Compression\",F25/MIN(G97:G97),\"N/A\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "N20",
+              "value": "=IF(F16=\"Tension\",F25/G105,\"N/A\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "N22",
+              "value": "=IF(F16=\"Axial-Bending\",IF(F39=\"Compression\",G125,G127),\"N/A\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "F24",
+              "value": "=F21*F22*(F18+F19)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "M24",
+              "value": "=IF(F16=\"Compression\",IF(G94=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "F25",
+              "value": "=MAX(1.4*F18,1.25*F18+1.5*F19)*(F21*F22)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "M25",
+              "value": "=IF(F16=\"Compression\",IF(G95=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "M26",
+              "value": "=IF(F16=\"Axial-Bending\",IF(G115>50,\"Too slender, increase member size\",\"\"),\"\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "H27",
+              "value": "=IF(F16=\"Compression\",\"DFL: 24f-E, 24F-EX, 20f-E ,20f-EX\",IF(F16=\"Tension\",\"DFL: 24f-E, 20f-E\",\"DFL:",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "H28",
+              "value": "=IF(F16=\"Compression\", \"SPF: 20f-E ,20f-EX\",IF(F16=\"Tension\",\"SPF: 20f-E\",\"SPF: 20f-E\"))",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G51",
+              "value": "=G49*G50",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G53",
+              "value": "=(G49/1000)*(G50/1000)*(G46/1000)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G54",
+              "value": "=IF(F38=\"Strong-Axis\", G49*(G50^3)/12,G50*(G49^3)/12)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G55",
+              "value": "=IF(F38=\"Strong-Axis\",G50/2,G49/2)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G56",
+              "value": "=G54/G55",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G61",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,5,0),IF($F$27='Guidance ",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G62",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,7,0),IF($F$27='Guidance ",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G63",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,8,0),IF($F$27='Guidance ",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G64",
+              "value": "=G61",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G65",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,3,0),IF($F$27='Guidance ",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G67",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,9,0),IF($F$27='Guidance ",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G68",
+              "value": "=0.87*G67",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G72",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E72,'Guidance Tables'!$F$",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G74",
+              "value": "=MIN(0.68*G53^(-0.13),1)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G75",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E75,'Guidance Tables'!$F$",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G76",
+              "value": "=(1+(G83*G74*MAX(G94:G95)^3)/(35*G68*G75*G73))^-1",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G77",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E77,'Guidance Tables'!$F$",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G78",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E78,'Guidance Tables'!$F$",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G80",
+              "value": "=IF(G115>50,\"ERROR\",IF(G115<10,1,IF(G115<G116,(1-(1/3)*((G115/G116)^4)),IF(G116<G115,0.65*G67*G75*G7",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G81",
+              "value": "=MIN(((130/G47)^(1/10))*((610/G50)^(1/10))*((9100/G49)^(1/10)),1.3)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G83",
+              "value": "=G61*F32*F33*G72*G73",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G84",
+              "value": "=G63*F32*F33*G72*G73",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G85",
+              "value": "=G62*F32*F33*G72*G73",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G86",
+              "value": "=G64*F32*F33*G72*G73",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G87",
+              "value": "=G65*F32*F33*G78*G73",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G92",
+              "value": "=G47*F34",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G93",
+              "value": "=G48*F35",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G94",
+              "value": "=IF(G92/G50>50,\"Error\",G92/G50)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G95",
+              "value": "=IF(G93/G49>50,\"Error\",G93/G49)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G97",
+              "value": "=G69*G83*G51*G74*G76/1000",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G102",
+              "value": "=G70*G84*G51/1000",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G103",
+              "value": "=G70*G85*G52/1000",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G105",
+              "value": "=IF(G103=0,G102,MIN(G102,G103))",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G110",
+              "value": "=G69*G86*G51*G74*G76/1000",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G112",
+              "value": "=G105",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G114",
+              "value": "=IF(F40=\"Yes\",0,1.92*F41)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G115",
+              "value": "=SQRT(G114*G50/(G49^2))",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G116",
+              "value": "=SQRT((0.97*G67*G75*G73)/(G87))",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G118",
+              "value": "=G70*G87*G56*G79*G81/(1000^2)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G119",
+              "value": "=G70*G87*G56*G79*G80/(1000^2)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G124",
+              "value": "=IF(F38=\"Strong-Axis\",(PI()^2)*G68*G75*G73*G54/(1000*G92^2),(PI()^2)*G68*G75*G73*G54/(1000*G93^2))",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G125",
+              "value": "=((F25/G97)^2) + ((F37/MIN(G118:G119))*(1/(1-(F25/G124))))",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "G127",
+              "value": "=(F25/G112)+(F37/MIN(G118:G119))",
+              "formula": true,
+              "category": "formula_detected"
+            }
+          ],
+          "capacity_ratios": [],
+          "member_sizes": []
+        },
+        "semantics": {
+          "purpose": "Engineering calculations for Axial",
+          "domain": "Structural Engineering",
+          "input_parameters": [],
+          "output_results": [],
+          "workflow": [
+            "Input parameters",
+            "Calculate results",
+            "Review outputs"
+          ],
+          "dependencies": []
+        }
+      },
+      "Guidance Tables": {
+        "sheet_name": "Guidance Tables",
+        "dimensions": "73 rows x 24 columns",
+        "labeled_cells": {},
+        "color_legend": {
+          "legend_found": true,
+          "legend_cells": [
+            {
+              "cell": "S8",
+              "text": "Input",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FFC63527",
+              "semantic_category": "user_input",
+              "description": "Cells users should modify"
+            },
+            {
+              "cell": "S9",
+              "text": "Output",
+              "fill_color": "FFF2F2F2",
+              "text_color": "FF3F3F3F",
+              "semantic_category": "output_result",
+              "description": "Calculated output values"
+            },
+            {
+              "cell": "S11",
+              "text": "Override",
+              "fill_color": "FFF2C1BC",
+              "text_color": "FFC63527",
+              "semantic_category": "override",
+              "description": "Values that have been manually overridden"
+            }
+          ],
+          "color_mappings": {
+            "FILL_FFF2F2F2_TEXT_FFC63527": {
+              "category": "user_input",
+              "description": "Light gray background with red text - editable input cells",
+              "confidence": 0.85
+            },
+            "FILL_FFF2F2F2_TEXT_FF3F3F3F": {
+              "category": "output_result",
+              "description": "Light gray background with dark gray text - calculated output values",
+              "confidence": 0.85
+            },
+            "FILL_FFF2C1BC_TEXT_FFC63527": {
+              "category": "override",
+              "description": "Light red background with red text - overridden values",
+              "confidence": 0.9
+            },
+            "TEXT_FFC63527": {
+              "category": "attention",
+              "description": "Red text indicating a value that may need attention",
+              "confidence": 0.8
+            }
+          },
+          "applied_from_sheet": "Axial",
+          "applied_to_sheet": "Guidance Tables"
+        },
+        "classified_cells": {
+          "inputs": [],
+          "outputs": [],
+          "calculations": [],
+          "capacity_ratios": [],
+          "member_sizes": []
+        },
+        "semantics": {
+          "purpose": "Engineering calculations for Guidance Tables",
+          "domain": "Structural Engineering",
+          "input_parameters": [],
+          "output_results": [],
+          "workflow": [
+            "Input parameters",
+            "Calculate results",
+            "Review outputs"
+          ],
+          "dependencies": []
+        }
+      }
+    },
+    "workflow_analysis": {
+      "overall_purpose": "The workbook is designed to assist structural engineers in performing calculations related to glulam columns, specifically focusing on axial loads and providing guidance tables for design and verification.",
+      "primary_use_case": "The workbook helps engineers determine the axial load capacities of glulam columns and provides guidance tables to ensure compliance with structural design standards.",
+      "user_workflow": [
+        {
+          "step": 1,
+          "action": "Open the workbook",
+          "sheet": "Axial",
+          "description": "The user opens the workbook to access the Axial sheet for performing calculations related to axial loads on glulam columns."
+        },
+        {
+          "step": 2,
+          "action": "Review guidance",
+          "sheet": "Guidance Tables",
+          "description": "The user reviews the guidance tables to understand the parameters and standards applicable to the design of glulam columns."
+        },
+        {
+          "step": 3,
+          "action": "Perform calculations",
+          "sheet": "Axial",
+          "description": "The user performs calculations by inputting necessary parameters, if applicable, to determine the axial load capacity of the glulam columns."
+        },
+        {
+          "step": 4,
+          "action": "Verify results",
+          "sheet": "Guidance Tables",
+          "description": "The user verifies the calculated results against the guidance tables to ensure compliance with design standards."
+        }
+      ],
+      "action_templates": [
+        {
+          "action": "calculate_axial_load",
+          "description": "Calculate the axial load capacity of a glulam column.",
+          "steps": [
+            "open_axial_sheet",
+            "input_parameters",
+            "run_calculation",
+            "review_results"
+          ],
+          "required_inputs": [
+            "column_dimensions",
+            "material_properties",
+            "load_conditions"
+          ]
+        },
+        {
+          "action": "review_guidance",
+          "description": "Review guidance tables for design compliance.",
+          "steps": [
+            "open_guidance_tables",
+            "compare_results",
+            "note_compliance"
+          ],
+          "required_inputs": [
+            "calculated_values",
+            "standard_values"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "inputs": {
+    "project_metadata": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "project_name": "C8",
+        "job_number": "C9",
+        "date": "C10",
+        "designer": "C11"
+      },
+      "description": "Administrative project tracking data."
+    },
+    "column_geometry_and_material": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "species": "C15",
+        "grade": "C16",
+        "width_b": "C17",
+        "depth_d": "C18",
+        "total_length_L": "C19",
+        "unbraced_length_x": "C20",
+        "unbraced_length_y": "C21",
+        "effective_length_factor_kx": "C22",
+        "effective_length_factor_ky": "C23"
+      },
+      "description": "Physical properties and buckling parameters for the column."
+    },
+    "service_loads": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "dead_load": "C27",
+        "live_load": "C28",
+        "snow_load": "C29"
+      },
+      "description": "Unfactored axial loads used for design combinations."
+    }
+  },
+  "outputs": {
+    "factored_results": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "factored_axial_load_pf": "C44",
+        "factored_compressive_resistance_cr": "C53"
+      },
+      "description": "Primary calculated design load vs. member capacity."
+    },
+    "utilization_summary": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "utilization_ratio": "C58",
+        "design_status": "D58"
+      },
+      "description": "Final PASS/FAIL status and capacity consumption ratio."
+    }
+  },
+  "lookups": {
+    "glulam_properties": {
+      "type": "table",
+      "sheet": "Guidance Tables",
+      "range": "A4:E17",
+      "description": "Reference values for species types and material stress grades."
+    }
+  }
+}

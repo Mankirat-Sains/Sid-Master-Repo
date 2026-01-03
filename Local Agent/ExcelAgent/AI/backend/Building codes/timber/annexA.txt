@@ -1,0 +1,1205 @@
+Annex A(informative)
+Additional information and alternative procedures
+Notes:
+1) This informative (non-mandatory) Annex has been written in normative (mandatory) language to facilitate
+adoption where users ofthe Standard orregulatory authorities wish to adopt itformally as additional
+requirements to this Standard.
+2) The clause-numbering scheme in this Annex has been devised tofacilitate reference to related clauses in the
+main body ofthis Standard.
+--------------------------------------------------
+
+Clause 1: A.5.3.5 
+--------------------------------------------------
+A.5.3.5 System factor, KH
+Itis well known that the behaviour of asingle member does not represent that of asystem such as a
+floor or aflat roof with several joists orrafters. System behaviour can be accounted for in single-member
+design by implementing system factors: KH for strength and K for serviceability. In this
+Standard, only KH has been quantified.
+The system factor, KH, is afunction ofthe parameters that define the mechanical state and physical
+layout ofthe system. These parameters are the mean live load and its coefficient of variation, mean
+modulus ofrupture (MOR) and its coefficient of variation, mean modulus ofelasticity (MOE) and its
+coefficient ofvariation, MOE-MOR correlation, sheathing thickness, and connection stiffness.
+--------------------------------------------------
+
+Clause 2: A.5.4.2 
+--------------------------------------------------
+A.5.4.2 Elastic deflection of wood light-frame systems under static loads
+--------------------------------------------------
+
+Clause 3: A.5.4.2.1 
+--------------------------------------------------
+A.5.4.2.1 Wood frame deflection calculations
+Wood frame systems connected with sheathing or cladding on one or both sides deflect less than the
+joists, rafters, orstuds carrying the same loads independently. Traditionally, however, deflection
+calculations have ignored this interaction and assumed that each framing member in these systems is
+loaded individually on its tributary area. The deflection criteria that evolved from this approach have
+provided satisfactory system performance based on calculated single-member deflections.
+Itis possible to estimate system performance by calculating system factors greater than 1.0 as aratio of
+system deflection to single-member deflection. Caution should be taken when implementing system
+factors in traditional design procedures. Where design procedures incorporate asystem factor for
+deflection, there is aneed to consider, before adjusting design procedure criteria, whether the system
+effects add to enhancements that are already present in traditional wood frame performance.
+--------------------------------------------------
+
+Clause 4: A.5.4.2.2 
+--------------------------------------------------
+A.5.4.2.2 Elastic deflection of wood light-frame wall systems under wind load
+Typical wood light-frame wall systems designed for asingle-member deflection of 1/360 ofthe span can
+satisfy the intent of masonry design specifications intended to limit the deflection of steel studs in high-rise
+buildings to 1/720 ofthe span.
+For example, the actual deflection would be approximately half ofthe deflection calculated on asingle
+member basis under the following conditions:
+a) lumber modulus of elasticity (see Table 6.4) derived from visually stress-graded lumber data;
+b) lumber used in astud wall system (i.e., 38 ×89 mm or 38 ×140 mm) meeting minimum
+requirements for the Case 2system factor (see Clause 6.4.4.2);
+c) gypsum wallboard orstructural sheathing attached to the inside face ofthe studs in accordance
+with minimum building code requirements; and
+d) cladding and secondary member wind loading based on the tributary area of astud in alow-rise
+building.
+--------------------------------------------------
+
+Clause 5: A.5.4.5 
+--------------------------------------------------
+A.5.4.5 Vibration performance of wood joisted floors
+--------------------------------------------------
+
+Clause 6: A.5.4.5.1 
+--------------------------------------------------
+A.5.4.5.1 Vibration-controlled span —General method
+For single-span floor, except as permitted in Clause A.5.4.5.2 where the floor systems are constructed
+with prefabricated wood I-joists, the maximum span for controlling vibration on wood joisted floor
+systems that include floor joists and wood structural panel subfloor may be calculated using the
+following equation:
+ℓ_v = 0.122 * (E_leff)^0.284 / (K_tss^0.14 * m_L^0.15)
+
+Where:
+  ℓ_v     = vibration-controlled span, m
+  E_leff  = effective composite bending stiffness of the floor system in the joist span direction, N·m²
+            (see Clause A.5.4.5.1.1)
+  K_tss   = factor to account for the transverse system stiffness contribution in reducing floor deflection
+            (see Clause A.5.4.5.1.3)
+  m_L     = linear mass of the composite cross section of the floor that accounts for the joist, subfloor,
+            and topping, kg/m (see Clause A.5.4.5.1.2)
+Notes:
+1) The above equation applies to single-span floor simply supported at all supports and may be used for
+multiple-span systems, in which case the longest span is used in the calculation and EIeff may beincreased by
+20% to account for end-fixity effect. This increase does not apply to floors with acementitious topping.
+2) Where lateral bracing elements are present that are structurally fastened to the joists, the calculated span
+may beincreased by 5%, provided the spacing between adjacent lateral bracing elements orthe distance
+between lateral bracing element and the nearest support is not more than 2 m. This span increase is not
+permitted ifthe floor is topped with acementitious layer.
+3) Where gypsum board is fastened to the underside ofthe joists directly, the calculated span may be increased
+by 5%. This span increase is not permitted if the fastening ofthe gypsum board to the joists isthrough
+acoustic fittings or atopping is accounted for in the calculation.
+4) The span calculated using this Clause is expected to lead to wood joisted floor systems with performance that
+is consistently acceptable to alarge majority ofthe occupants. Manufacturers of engineered joist products
+may use other mechanics-based or empirical methods in the development ofspan charts to provide a
+different level of user acceptance iftheir use has been supported by testing, engineering analysis, or
+performance history, and the development ofthe alternative method was approved by an appropriate
+certification body. These manufacturers may also provide further guidance beyond the scope ofthe method
+presented in this Annex clause. (See CWC Commentary on CSA O86.)
+--------------------------------------------------
+
+Clause 7: A.5.4.5.1.1 
+--------------------------------------------------
+A.5.4.5.1.1 Effective composite bending stiffness offloor system in joist span
+direction
+The calculation of effective composite bending stiffness ofthe floor system in the span direction in
+N•m2, EIeff, considers the contribution ofthe joist, subfloor, and topping. The following equation can be
+used to estimate the effective bending stiffness of the floor system if composite section approach is
+used. Figure A.1 provides the definitions ofthe symbols.
+E_leff = E_Iu + Ē_A1 h̄_1^2 - Ā γ̄^2
+
+Where:
+
+E_Iu = E_Ijoist + b₁(E_ISL + E_Ic), N·m²
+
+  where:
+    E_Ijoist = apparent bending stiffness of joist, N·m²
+    E_ISL    = bending stiffness of 1 m wide subfloor panel in span direction, N·m (see Table A.1)
+    E_Ic     = bending stiffness of 1 m wide topping, N·m
+            = E_c t_c³ / 12
+              where:
+                E_c = modulus of elasticity of topping, N/m² (see Table A.2)
+                t_c = topping thickness, m
+
+Ē_A1 = (b₁ E_A1) / (1 + b₁ S₁ / L₁), N
+
+  where:
+    E_A1 = E_ASL + E_Ac
+      where:
+        E_ASL = axial stiffness of 1 m wide subfloor panel in span direction, N/m (see Table A.1)
+        E_Ac  = axial stiffness of 1 m wide topping, N/m (see Table A.2)
+
+    b₁ = spacing of joist, m
+    S₁ = load-slip modulus per unit spacing for subfloor-to-joist connection
+       = 5 x 10⁶ N/m/m for mechanical joint or when topping is present
+       = 1 x 10⁸ N/m/m for glued joint
+    L₁ = width of subfloor panels in the span direction for floor without topping, m
+         (or span for floor with topping), m
+
+Ā = E_Ajoist + Ē_A1, N
+
+  where:
+    E_Ajoist = axial stiffness of joist, N
+
+γ̄ = h₁ Ē_A1 / Ā, m
+
+  where:
+    h₁ = (d + E_A1 t_s / L₁ + E_Ac(t_c + t_s / 2)) / (E_A1 + E_Ac), m
+
+t_s = thickness of subfloor, m
+
+Notes:
+1) Apparent bending stiffness ofjoist, EIjoist, accounts for influence ofshear and slips at mechanical joints on
+stiffness properties ofthe floor system. See CWC Commentary for guidance on calculation ofEIjoist.
+2) Mechanical properties and density of subfloor panels and topping materials are provided in Tables A.1
+and A.2.=axial stiffness ofjoist, N= modulus of elasticity oftopping, N/m2 (see Table A.2)
+
+--------------------------------------------------
+
+Clause 8: A.5.4.5.1.2 
+--------------------------------------------------
+A.5.4.5.1.2 Linear mass offloor injoist span direction
+The linear mass ofthe floor in the joist span direction, mL,in kg/m is the summation of all components
+and shall be calculated asfollows:
+mL=mJ+ρstsb1 +ρctcb1
+where
+mJ = mass per unit length ofjoist, kg/m
+ρs= density ofsubfloor, kg/m3 (see Table A.1)
+ρc= density oftopping, if present, kg/m3 (see Table A.2)
+Note: The mass of gypsum board is not required in the calculation ofmL.
+--------------------------------------------------
+
+Clause 9: A.5.4.5.1.3 
+--------------------------------------------------
+A.5.4.5.1.3 A.5.4.5.1.3 Transverse system stiffness factor
+The transverse system stiffness factor, Ktss, accounts for the contribution ofthe subfloor and topping in
+reducing static deflection ofthe floor under apoint load and is calculated using the following equation:
+K_tss = 0.0294 + 0.536 * K₁^0.25 + 0.516 * K₁^0.5 - 0.31 * K₁^0.75
+
+Where:
+  K₁ = K_j / (K_j + K_ℓ)
+
+    Where:
+      K_j = E_Ieff / t³
+  K_L = 0.585 * ℓ * E_IS‖ / b₁³     (N/m for floor with subfloor only)
+
+    = 0.585 * ℓ * (E_IS‖ + E_Ic + (E_Ac * E_AS‖ / (E_Ac + E_AS‖)) * h₃²) / b₁³
+      (N/m for floor with subfloor and topping)
+
+  ℓ     = floor span, m
+  E_IS‖ = unit bending stiffness of subfloor in across-span direction, N·m²/m
+  E_AS‖ = unit axial stiffness of subfloor in across-span direction, N/m
+  h₃    = (t_s + t_c) / 2, m
+
+--------------------------------------------------
+
+Clause 10: A.5.4.5.2 
+--------------------------------------------------
+A.5.4.5.2 Vibration-controlled span —Prefabricated wood I-joist floors
+The vibration-controlled span for an engineered floor system constructed with prefabricated wood
+I-joists and a wood-based structural sheathing subfloor may be determined using
+a) Clause A.5.4.5.1; or
+b) good engineering practice such asthat provided in CWC Concluding Report on Development of
+Design Procedures for Vibration Controlled Spans Using Engineered Wood Members, with the
+following conditions:
+i) subfloor thickness shall not be greater than 28.5 mm;
+ii) the modification factor applied to the effective composite bending stiffness ofthe joist for
+multiple-span system shall be 1.2; and
+iii) when concrete topping is used, its stiffness contribution shall not be applied.
+--------------------------------------------------
+
+Clause 11: A.5.4.6 
+--------------------------------------------------
+A.5.4.6 Building movements due to moisture content change
+Most buildings can accommodate small amounts of movement due to moisture content change in wood
+members. However, if not considered during design and construction, differential movements can
+become visible or even cause structural orserviceability problems. The considerations for differential
+movements become more critical for higher buildings due to the cumulative effect of movement.
+Shrinkage can contribute to overall lateral drift but can be mitigated using shrinkage compensators and
+materials subject to less dimensional change.
+Attention should be paid to the following areas to avoid potential shrinkage and swelling-related
+problems in the design, where:
+a) non-uniform movements could occur;
+b) metal connectors are used to support large sawn and glulam timber components;
+c) differential movements could cause distress in the finish materials or building envelope; and
+d) differential movements could cause distress in plumbing, electrical, and mechanical systems.
+
+Compatibility with other materials should be considered in the design detailing. Assuming similar
+members are exposed to the same environmental conditions, itis reasonable to assume the same
+degree ofshrinkage or swelling will occur along each load path. Where wood members are exposed to
+different environmental conditions (e.g., some members are in aconditioned space while others are in
+an unconditioned space), a more detailed analysis is warranted. Similarly, expected movement in non-wood
+members, such as contraction or expansion due to temperature changes should be considered.
+The shrinkage or swelling of a wood member between the initial and final moisture content may be
+estimated using the following equation:
+
+S=D×(Mi –Mf) ×c
+where
+S =shrinkage orswelling inthe dimension being considered (thickness, width, orlength), mm
+D =actual dimension (thickness, width, orlength), mm
+Mi =the lesser ofthe initial moisture content orthe fibre saturation point (28%)
+Mf =the final moisture content
+c =shrinkage coefficient*
+For lumber
+=0.002 for shrinkage orswelling perpendicular tothe grain
+=0.00005 for shrinkage orswelling parallel tothe grain
+* More information on shrinkage coefficients for individual wood species can befound in the CWC Wood Design
+Manual. For other wood products, refer to published literature.
+--------------------------------------------------
+
+Clause 12: A.6.2.1.2 
+--------------------------------------------------
+A.6.2.1.2 Availability oflumber
+The availability oflarge-size and long-length timbers (Beams and Stringers and Posts and Timbers
+Grades) should always be confirmed with suppliers prior to specifying. Sizes up to 394 ×394 mm are
+generally available in the Douglas Fir-Larch and Hem-Fir species combinations; however, S-P-F and
+Northern Species timbers are available only in smaller sizes.
+Machine stress-rated lumber and machine evaluated lumber are commonly produced for specialty
+applications such aslight-frame trusses and I-joists. Some designers specify machine graded lumber to
+take advantage ofthe higher stiffness and strength properties.
+The most commonly available grades of machine stress-rated lumber are 1650f-1.5E, 1800f-1.6E,
+2100f-1.8E, and 2400f-2.0E; the most common sizes are 38 ×89 mm and 38 ×140 mm. The availability
+of other grades and sizes should be confirmed with suppliers prior to specifying.
+--------------------------------------------------
+
+Clause 13: A.6.5.2 
+--------------------------------------------------
+A.6.5.2 Sizes
+Refer to table A.3
+--------------------------------------------------
+
+Clause 14: A.6.5.5.1 
+--------------------------------------------------
+A.6.5.5.1 Effective-length factor, Ke
+Refer to Table A.4
+--------------------------------------------------
+
+Clause 15: A.6.5.5.2.4 
+--------------------------------------------------
+A.6.5.5.2.4 Factored compressive resistance parallel to grain
+Except for members designed in accordance with Clause 6.5.12, the following procedure may be used to
+determine the factored compressive resistance parallel to grain of members subject to acompressive
+stress that is not uniform along its length, either due to concentrated loads or distributed loads:
+a) Divide the member into two sections with lengths L1and L2asfollows:
+L1=length of member with amaximum factored compressive force Pf1, mm
+L2=length of member with amaximum factored compressive force Pf2, mm
+such that Pf1 <Pf2
+b) Determine the factored compressive resistance parallel to grain, Pr1, ofsection L1in accordance
+with Clause 6.5.5.2.4 using L=L1+L2inthe calculation ofKZc.
+c) Determine the factored compressive resistance parallel to grain, Pr2, ofsection L2in accordance
+with Clause 6.5.5.2.4 using the following formula:
+KZc =6.3 (d L’)-0.13<1.3
+where
+d=dimension in direction ofbuckling (depth or width), mm
+L’=L1(Pf1/Pf2)7.9 +L2, mm
+d) Verify that Pr1 Pf1, and Pr2 Pf2. For combined bending and compression, separately check Pf1 and
+Pf2 using Pr1 and Pr2in Clause 6.5.9.
+
+--------------------------------------------------
+
+Clause 16: A.6.5.5.3.1 
+--------------------------------------------------
+A.6.5.5.3.1 General
+Spaced compression members shall consist oftwo or more individual members joined with connectors
+and having spacer and end blocks as specified in Clauses A.6.5.5.3.2 to A.6.5.5.3.4.
+--------------------------------------------------
+
+Clause 17: A.6.5.5.3.2 
+--------------------------------------------------
+A.6.5.5.3.2 Spacer and end blocks
+Spacer and end blocks shall meet the following requirements:
+a) End blocks shall be placed so that end and edge distances and spacing, as required by Clause 12 for
+the size and number of connectors, are maintained in end blocks and in individual members.
+Connectors shall be placed so that the limits specified in Clause A.6.5.5.3.3, depending on the fixity
+factor assumed, are met. In compression members oftrusses, apanel point that is braced laterally
+may be considered asthe end ofthe spaced member.
+b) Asingle spacer block shall belocated within the middle 10% ofthe length ofthe compression
+members; when so located, connectors shall not be necessary for this block. When more than one
+spacer block is used, the distance between any two blocks shall not exceed one-half the distance
+between centres ofconnectors in the end blocks. When two or more spacer blocks are used,
+connectors shall meet the requirements ofItem a).
+c) The thickness of spacer and end blocks shall not be less than that ofthe individual members ofthe
+spaced compression member, except that spacer and end blocks of athickness between that ofthe
+individual members and one-half that thickness may be used, provided that the length ofthe
+blocks is made inversely proportional to the thickness in relation to the required length offull-thickness
+block. Spacer and end block sizes shall be adequate to develop the strength required by
+Clause 12.
+--------------------------------------------------
+
+Clause 18: A.6.5.5.3.3 
+--------------------------------------------------
+A.6.5.5.3.3 Fixity classes
+The end-fixity of spaced compression members shall be classified as one ofthe following in accordance
+with Figure A.2:
+a) Condition A:the centroid of connectors or ofthe connector group in the end block shall be within
+1/20 ofthe length, L,from the end ofthe member.
+b) Condition B:the centroid ofconnectors or ofthe connector group in the end block shall be
+between 1/20 and 1/10 ofthe length, L,from the end ofthe member.
+--------------------------------------------------
+
+Clause 19: A.6.5.5.3.4 
+--------------------------------------------------
+A.6.5.5.3.4 Connectors in end blocks
+The connectors in each pair of contacting surfaces of end blocks and individual members at each end of
+aspaced compression member shall be atleast of asize and number to provide afactored strength
+resistance, in newtons, equal to the required cross-sectional area in square millimetres of one ofthe
+individual members multiplied by the appropriate end block constant specified in Table A.5.
+--------------------------------------------------
+
+Clause 20: A.6.5.5.3.5 
+--------------------------------------------------
+A.6.5.5.3.5 Factored compressive resistance parallel to grain
+--------------------------------------------------
+
+Clause 21: A.6.5.5.3.5.1 
+--------------------------------------------------
+A.6.5.5.3.5.1 General
+The factored compressive resistance, Pr, parallel to grain ofaspaced member shall bethe smaller value
+calculated in Clauses A.6.5.5.3.5.2 and A.6.5.5.3.5.5.
+--------------------------------------------------
+
+Clause 22: A.6.5.5.3.5.2 
+--------------------------------------------------
+A.6.5.5.3.5.2 Resistance ofspaced compression member
+The factored compressive resistance, Pr, parallel to grain ofaspaced compression member shall be
+calculated as follows:
+
+Pr= φFc AKcKZc
+where
+φ=resistance factor
+    = 0.80 for sawn lumber
+    =0.90 for glued-laminated timber
+Fc=fc(KD KSc KT)
+where
+fc =specified strength incompression parallel tograin, MPa (see Tables 6.4to6.9forsawn
+lumber and Table 7.2 for glulam)
+A =total cross-sectional area of members, mm2
+KC =slenderness factor (see Clause A.6.5.5.3.5.4)
+KZc =size factor
+    =6.3(dL)–0.13 <1.3 for sawn lumber
+    =1.0 for glued-laminated timber
+where
+d = member dimension in direction ofbuckling (depth or width), mm
+L =length of member, mm
+--------------------------------------------------
+
+Clause 23: A.6.5.5.3.5.3 
+--------------------------------------------------
+A.6.5.5.3.5.3 Slenderness ratio, CC
+The slenderness ratio, CC, ofspaced compression members of uniform rectangular section shall not
+exceed 80 and shall be calculated as follows:
+
+Cc = (actual length between points of a lateral support)/(least dimension of the individual member)
+--------------------------------------------------
+
+Clause 24: A.6.5.5.3.5.4 
+--------------------------------------------------
+A.6.5.5.3.5.4 Slenderness factor, KC
+The slenderness factor, KC, depending on CC(Clause A.6.5.5.3.5.3), shall becalculated asfollows:
+a) When C_C does not exceed 10:
+   K_C = 1.00
+
+b) When C_C is greater than 10 but does not exceed C_K:
+   K_C = 1 - (1/3) * (C_C / C_K)^4
+
+   Where:
+     C_K = (0.76 * E_05 * K_SE * K_E * K_T) / F_C
+
+     Where:
+       E_05 = applicable value from Tables 6.4 to 6.7 for visually graded sawn lumber
+           = 0.82E for machine stress-rated lumber
+           = 0.87E for glued-laminated timber
+
+       K_E = end-fixity factor (see Clause A.6.5.5.3.3)
+           = 2.50 for Condition A
+           = 3.00 for Condition B
+
+c) When C_C is greater than C_K but does not exceed 80:
+   [Further conditions not shown in image snippet]
+K_c = (E_05 * K_SE * K_E * K_T) / (K_C * C_C² * F_C)
+where
+k = 1.8 for sawn lumber
+    =2.0 for glued-laminated timber
+--------------------------------------------------
+
+Clause 25: A.6.5.5.3.5.5 
+--------------------------------------------------
+A.6.5.5.3.5.5 Total resistance ofindividual members
+The factored resistance ofspaced compression members shall be checked against the sum offactored
+resistances ofindividual members taken assimple compression members where CCshall betaken as
+follows:
+Cc = (actual length between points of lateral support)/(larger dimension of an individual member)
+--------------------------------------------------
+
+Clause 26: A.6.5.5.3.6 
+--------------------------------------------------
+A.6.5.5.3.6 Combined bending and axial load
+When axial compression in spaced compression members is combined with bending stresses,
+Clause 6.5.9 shall be used only ifthe bending isin adirection parallel to the larger dimension ofthe
+individual member.
+
+--------------------------------------------------
+
+Clause 27: A.6.5.6 
+--------------------------------------------------
+A.6.5.6 Compression perpendicular to grain
+A relationship between mean compressive strength perpendicular to grain and mean oven-dry wood
+density was introduced to establish aconsistent basis for bearing strengths for various products in the
+1994 edition ofthis Standard. Itis asfollows:
+fcp =0.9L(2243.8G –473.8)/M
+where
+fcp =specified strength incompression perpendicular to grain, MPa
+0.9 =factor applied to obtain alower tolerance limit
+L =conversion factor to limit states desing and standard term load duration
+    =1.8125
+G = mean oven-dry relative density
+M = conversion factor for metric units
+    = 145.038
+Tables 6.8 and 6.9 assign increased compression perpendicular to grain design values to specific grades
+of Spruce-Pine-Fir or Hem-Fir machine-graded lumber, which have higher mean density than visually
+stress-graded lumber of the same species (see Table A.11).
+
+The NLGA Standard Grading Rules for Canadian Lumber also includes provisions for mills producing any
+grade of machine-graded lumber to qualify for other density values based on tests, daily quality control,
+and marking the qualified density value on the lumber. In these cases the rules provide for compression
+perpendicular values to be based on the marked density value and the formula specified in this Clause,
+without the 0.9 tolerance limit.
+--------------------------------------------------
+
+Clause 28: A.6.5.9 
+--------------------------------------------------
+A.6.5.9 A.6.5.9 Combined bending and compressive loads
+Members subject to combined bending and compressive loads may be designed using the alternative
+interaction equation:
+(Pf / Pr)² + (Mf + Pf * ΔL) / Mr * [1 / (1 - Pf / PE)] ≤ 1
+Where:
+Pf = factored compressive axial load, N
+
+Pr = factored compressive load resistance parallel to grain, N (per Clause 6.5.5)
+
+Mf = factored bending moment, N·mm
+
+ΔL = lateral deflection calculated using serviceability load combinations
+
+PE = Euler buckling load in the plane of the applied moment
+  = (π² * E₀₅ * K_SE * K_f * I) / Le²
+
+  Where:
+  - E₀₅ = modulus of elasticity for design of compression members, MPa
+  - I = moment of inertia in the plane of the applied moment, mm⁴
+  - Le = effective length in the plane of the applied moment
+    = K_e * L
+      Where:
+      - K_e = effective-length factor (Table A.4)
+Mr = factored bending moment resistance (Clause 6.5.3), N·mm
+--------------------------------------------------
+
+Clause 29: A.6.5.11.1 
+--------------------------------------------------
+A.6.5.11.1 General Permanent wood foundations
+Studs for permanent wood foundations may be designed in accordance with recognized engineering
+methods. When assumed to be laterally supported and when no surcharge exists, the formulas specified
+in Clauses A.6.5.11.1.5 to A.6.5.11.1.10 give conservative approximations for practical construction. The
+dimensions used in the formulas are identified in Figure A.3.
+--------------------------------------------------
+
+Clause 30: A.6.5.11.1.1 
+--------------------------------------------------
+A.6.5.11.1.1 Studs
+Studs for exterior foundation walls may be designed as members subjected to combined bending and
+axial compressive loading. Deflection due to lateral and axial loads should not exceed 1/300 ofthe
+unsupported height ofthe stud.
+--------------------------------------------------
+
+Clause 31: A.6.5.11.1.2 
+--------------------------------------------------
+A.6.5.11.1.2 Sheathing
+Sheathing for exterior foundation walls may be designed assimple bending members. The calculated
+maximum deflection at apoint 300 mm above the bottom ofthe sheathing should not exceed 1/180 of
+the span ofsheathing between studs. The nominal thickness of sheathing should not be less than
+12.5 mm.
+--------------------------------------------------
+
+Clause 32: A.6.5.11.1.3 
+--------------------------------------------------
+A.6.5.11.1.3 Floors and connections
+Floors and connections between floors and walls shall be designed to withstand loads imposed on them
+by lateral soil pressure as well as floor loads appropriate for the occupancy.
+--------------------------------------------------
+
+Clause 33: A.6.5.11.1.4 
+--------------------------------------------------
+A.6.5.11.1.4 Unequal pressure distribution
+Unequal pressure distribution can result from differing backfill heights on opposite sides ofabuilding,
+openings in foundation walls, openings in floors at the top offoundation walls, or other causes. Framing
+members and sheathing shall be designed as diaphragms or other systems to resist loads resulting from
+unequal pressure distribution.
+--------------------------------------------------
+
+Clause 34: A.6.5.11.1.5 
+--------------------------------------------------
+A.6.5.11.1.5 Combined bending and compressive load effects
+Combined bending and compressive load effects may be evaluated using the following formula:
+
+(Pf / Pr)^2 + (Mf / Mr) * [1 / (1 - Pf / PE)] ≤ 1
+
+Where:
+  Pf = factored compressive load on stud, N
+  Pr = factored compressive resistance (Clause 6.5.5.2.4), N
+  Mf = maximum factored bending moment on stud (Clause A.6.5.11.1.6), N·mm
+  Mr = factored bending moment resistance (Clause 6.5.3.1), N·mm
+     = (π² * E05 * K_SE * K_I * I) / Le²
+
+  PE = Euler buckling load in the plane of the applied moment
+
+Where (for PE and Mr):
+  E05 = modulus of elasticity for compression design, MPa
+  I   = moment of inertia in the plane of the applied moment, mm⁴
+  Le  = effective length in the plane of the applied moment
+      = K_e * L
+        where K_e = effective-length factor (Table A.4)
+
+Note:
+A KD factor of 0.65 applies to the calculation of Mr,
+and a KD factor of 1.0 applies to the calculation of Pr.
+
+--------------------------------------------------
+
+Clause 35: A.6.5.11.1.6 
+--------------------------------------------------
+A.6.5.11.1.6 Factored bending moment on astud
+--------------------------------------------------
+
+Clause 36: A.6.5.11.1.6.1 
+--------------------------------------------------
+A.6.5.11.1.6.1 General
+The following formula, which is derived from recognized engineering formulas, may be used to calculate
+the maximum bending moment on astud, Mf, due tofactored lateral load (see Clause A.6.5.11.1.6.2).
+Atany point, x,above the floor, the factored bending moment due tofactored lateral load, Mfx, in
+N•mm, is calculated as follows:
+M_fk = (w_f * H² / 6L) * [ (H - 3a) * (L - x)/H - L * ((H - Ax)/H)^3 ]
+
+Where:
+  w_f = maximum factored lateral load per stud, N/mm
+      = maximum factored lateral soil pressure, N/mm², times stud spacing, mm
+  H, L, a, and x = variables shown in Figure A.3, mm
+--------------------------------------------------
+
+Clause 37: A.6.5.11.1.6.2 
+--------------------------------------------------
+A.6.5.11.1.6.2 Maximum factored bending moment on astud, Mf
+The following formulas may be used to determine the maximum factored bending moment, M_f, and its location, x:
+
+a) For wood sleeper and slab floors:
+  M_f = (w_f * H² / 6L) * [L - H + (2/3) * (H³ / 3L)^(1/2)]
+  x = H - (H³ / 3L)^(1/2)
+
+b) For suspended floors:
+  M_f = (w_f * H² / 6L) * K_m
+
+Where:
+  K_m = (H - 3a) * [K_1 + (L + a - H)/H - L * K_1³]
+
+Where K₁ is determined as follows:
+
+  i) Between supports:
+     K₁ = (H - 3a / 3L)^(1/2)
+     x = H - a - H * (H - 3a / 3L)^(1/2)
+
+  ii) At the support:
+     K₁ = (H - a) / H and x = 0
+
+Note: Values of K_m for a range of backfill heights and typical wall dimensions are specified in Table A.6.
+--------------------------------------------------
+
+Clause 38: A.6.5.11.1.7 
+--------------------------------------------------
+A.6.5.11.1.7 Deflection ofstuds,
+The deflection ofstuds, ,can be calculated atany point, x,above the basement floor (see Figure A.3),
+using the following formula:
+Δ = (w_f * (L - x) * K_Δ) / (360 * E * I * L * H)
+
+Where:
+  w_f = variable shown in Figure A.3, N/mm
+
+  K_Δ = [10 * H² * (H - 3a) * (2L - x) * x - 3 * (H - a)^5 + K₂]
+
+    Where:
+      K₂ = (3L / (L - x)) * (H - a - x)^5   when x ≤ H - a
+         = 0                                when x > H - a
+
+  E = modulus of elasticity of stud, MPa
+
+
+I = moment ofinertia ofstud in the plane ofthe applied moment, mm4
+--------------------------------------------------
+
+Clause 39: A.6.5.11.1.8 
+--------------------------------------------------
+A.6.5.11.1.8 Maximum deflection ofstuds
+Maximum deflection may be calculated from Clause A.6.5.11.1.7 with x=0.45L and using specified
+rather than factored loads to give agood approximation ofthe theoretical maximum deflection.
+--------------------------------------------------
+
+Clause 40: A.6.5.11.1.9 
+--------------------------------------------------
+A.6.5.11.1.9 Maximum factored shear force, Vf, per stud
+The maximum factored shear force, Vf,in N,per stud may betaken asthe greatest value calculated
+from the following formulas, which are derived from recognized engineering formulas:
+a) For wood sleeper and slab floors at the bottom of the foundation wall:
+   Vf = (w_f * H / 2) * [H / (3L) - ((H - d) / H)^2]
+
+b) For suspended floors:
+   i) Just above the suspended floor:
+      Vf = (w_f * H / 2) * [(H - 3a) / (3L) - ((H - a - c) / H)^2]
+
+   ii) Just below the suspended floor:
+      Vf = (w_f * H / 2) * [1 - ((H - a + c) / H)^2]
+
+Where:
+  w_f = variable shown in Figure A.3, N/mm
+  d   = depth of stud, mm
+  c   = depth of stud + 1/2 of the joist depth, mm
+  H, L, a = variables shown in Figure A.3, mm
+--------------------------------------------------
+
+Clause 41: A.6.5.11.1.10.1 
+--------------------------------------------------
+A.6.5.11.1.10.1 A.6.5.11.1.10.1 Lateral restraint attop
+The lateral restraint required atthe top ofthe foundation wall may be calculated from the following
+formulas:
+a) for wood sleeper and slab floors:
+RT = (wfH^2)/6L
+b) for suspended floors:
+Rt = (wf H /(2L))*(H/3-a)
+
+where
+RT=inward reaction atthe top ofthe stud, N
+wf= variable shown in Figure A.3, N/mm
+H,L,a=variables shown in Figure A.3, mm
+--------------------------------------------------
+
+Clause 42: A.6.5.11.1.10.2 
+--------------------------------------------------
+A.6.5.11.1.10.2 Lateral restraint at bottom
+The lateral restraint required atthe bottom ofthe foundation wall may be calculated from the following
+formulas:
+a) for wood sleeper and slab floors:
+RB = wfH/2L * (L-H/3)
+b) for suspended floors:
+RB=wfH/2L * (L+a-H/3)
+
+where
+RB=inward reaction atthe bottom ofthe stud, N
+wf= variable shown in Figure A.3, N/mm
+H,L,a=variables shown in Figure A.3, mm
+--------------------------------------------------
+
+Clause 43: A.6.5.12.1 
+--------------------------------------------------
+A.6.5.12.1 Scope Specific truss applications
+Fully triangulated —The modified design procedures of Clause 6.5.12* apply only to sawn lumber used
+in trusses where all the members form aside of atriangle. In such asystem, abending failure at apanel
+point of acompression member would not normally result in collapse ofthe triangle. An attic truss is
+not afully triangulated system. Also, the ends oftop chords in top-chord-bearing trusses, and top-chord
+overhangs (i.e., outward extensions oftruss chords beyond the panel points) do not fall within the
+scope of Clause A.6.5.12 and therefore are not considered part ofthe overall truss length.
+*The modified design procedures ofClause 6.5.12 are based onresearch reported in C.Lum, E.Jones, and B. Hintz
+(1996).
+Clear span limitation —The 12.2 mclear span limitation is consistent with that for snow loading for
+National Building Code of Canada Part 9structures (see Subsection 9.4.2). When the 12.2 mspan limit
+is exceeded or when other conditions are in effect, an 80% snow load factor shall be used (i.e., the truss
+is designed as aPart 4truss). When the 610 mm spacing limit is exceeded, the 80% snow load factor
+shall be used and the KHfactor isreduced from 1.1 to 1.0.
+Truss configuration —Clause A.6.5.12 limits the applicability of Clause 6.5.12 to roof trusses with
+slopes that are similar to those trusses tested. Compared to the standard pitched chord trusses
+evaluated in the testing program, very low pitch (less than 2in 12) roof and flat trusses have ahigher
+axial force to bending moment ratio and are excluded from coverage in this Standard.
+The overall length is alimit that the truss industry has traditionally used to place additional limits on
+design. The two limits, 12.2 mclear span and the 18.0 moverall length, provide aboundary between
+traditional residential spans and long span roof trusses. Below the 18.0 moverall truss length limit, the
+truss may consist ofcantilevers or multiple clear spans, or both, provided that no single span exceeds
+12.2 m.
+Girder, bowstring, semi-circular, attic, flat, and floor trusses are outside the scope of Clause A.6.5.12.
+--------------------------------------------------
+
+Clause 44: A.6.5.12.3 
+--------------------------------------------------
+A.6.5.12.3 Compressive resistance parallel to grain
+Effective length —Recommended effective-length factors are specified in Table A.4. TPIC also provides
+recommendations on the effective length oftruss compression members. Factor selection depends on
+the load distribution and the type ofstructure.
+Compression-chord splices —For strength and deflection calculations, acompression-chord splice may
+be considered continuous ifitislocated at aninflection point for the load case being considered. To
+allow for changes in lumber length, the splice need only be within ±10% ofthe panel length from the
+inflection point. This allowance also recognizes that the location ofthe inflection point will depend on
+the loading condition.
+Size effects incompression —In most cases, the member length for computing KZcisthe panel length;
+between panel points, the axial force changes little compared with changes at the panel points. In cases
+where the axial stresses are high relative to the bending stresses, resulting in relatively short panel
+lengths, and where the axial forces are relatively constant between adjacent panels, the member length
+for computing KZc should include several panels. One-half the chord length between pitch breaks has
+been judged to cover these cases.
+Note: Apitch break is apoint along the chord analogue line where the slope ofthe chord changes.
+--------------------------------------------------
+
+Clause 45: A.6.5.12.4 
+--------------------------------------------------
+A.6.5.12.4 Compressive resistance perpendicular to grain
+Bearing reinforcement —Bearing reinforcement consists ofapplying truss plates to both sides of a
+member that can be subjected to compression perpendicular to grain stresses through the depth ofthe
+member. Designs also need to meet the basic bearing requirement of Clause 6.5.6.1.
+Note: Testing to support this method ofimproving the bearing resistance is described in Bulmanis, N.S., Latos,
+H. A., and Keenan F.J.(1983).
+--------------------------------------------------
+
+Clause 46: A.6.5.12.5 
+--------------------------------------------------
+A.6.5.12.5 Resistance to combined bending and axial load
+Amplified moments —The proposed design procedures have been written to cover the general case
+where amplified moments are used. Although moment amplification should not be ignored, some
+structures can be accurately analyzed without having to use analysis methods that include moment
+amplification. An analysis of moment amplification in trusses indicated that mid-panel moments were
+more susceptible to P-delta effects, while panel point moments were less susceptible. Furthermore, the
+amount of moment amplification calculated is sensitive to the type ofstructure and the analogue
+assumptions.
+Results from the testing program suggest that the design procedure used by TPIC results in trusses that
+exhibit satisfactory levels of performance. The TPIC design approach does not include moment
+amplification; however, the procedure does require that the mid-panel deflection be limited. This, in
+effect, limits the length oftruss panels, even though the chord member can possess the required
+strength. Ifthe deflection limitations in TPIC are not used tolimit panel length, itis possible that the
+bending capacity modification factor, KM, from Table 6.19 will not be appropriate.
+Bending capacity modification factor, KM —In addition to being afunction ofthe member’s span-to-depth
+ratio, the KM factor, calculated from Table 6.19,* also depends on the shape ofthe moment
+diagram.
+AKMfactor greater than 1generally indicates abending moment distribution with one or more
+inflection points in the member between panel points, and apanel point moment that is higher than
+the mid-panel moment.
+
+For cases where the mid-panel moment is higher than the panel point moments or where the loading is
+such that there are noinflection points inthe panel, the KMfactor isgenerally less than 1.
+For other cases where the structural analysis indicates zero moment atthe panel points (i.e., M2 =0),
+the bending capacity increase will simply be afunction ofthe span-to-depth ratio. This generally occurs
+at pitch breaks or panel point splices, where, although the bending moments are not necessarily zero,
+designers traditionally assume apin connection. However, afictitious analogue member, such as that
+used to model aheel joint in apitched chord truss, is considered to introduce apanel point moment in
+the heel. Therefore, the top chord of aking post truss can be assumed to be continuous over apanel
+point atthe heel, but not atthe peak.
+The test trusses and trusses analyzed in the impact study, which are considered typical designs, result in
+values of KM up to 1.3. The upper limit on KM at 1.3 has been introduced to prevent extrapolation to
+higher values.
+*The KM factors calculated from Table 6.19 are based on Lau, W., Barrett, J. D., and Lam, F.(1995).
+Interaction equation —The modification to the axial ratio term was introduced to recognize the
+increase in bending capacity when abrittle material is subjected to axial compression in addition to
+bending. The KM factor is used to adjust the bending capacity for various moment configurations in the
+top chords.
+These two changes to the design of compression chords help to explain the satisfactory levels of safety
+observed in the test trusses.
+No increase is permitted for combined tension and bending members, asthe testing program was not
+designed to evaluate the performance of tension chord members.
+--------------------------------------------------
+
+Clause 47: A.7.5.5 
+--------------------------------------------------
+A.7.5.5 Standard sizes for glued-laminated timber-GLM
+The standard dimensions for glued-laminated timber are asfollows:
+a) widths of 80, 130, 175, 215, 265, 315, and 365 mm; and
+b) depths, as calculated for
+i)straight or cambered members, in multiples of38 mm; and
+ii) members curved to aradius of curvature less than 10 800 mm, in multiples ofthe required
+lamination thickness (see Table A.7).
+Notes:
+1) Commercially available widths can vary.
+2)For widths greater than 365 mm, designers should check availability before specifying.
+
+
+--------------------------------------------------
+
+Clause 48: A.8.5.2 
+--------------------------------------------------
+A.8.5.2 Deflection of CLT panels -Cross laminated Timber (CLT)
+The maximum deflection ofaCLT panel, max, may be calculated as the sum of deflections under short-and
+long-term loads asfollows:
+Δ_max = Δ_ST + Δ_LT * K_creep
+
+Where:
+  Δ_ST    = elastic deflection due to short-term and/or standard-term loads, without dead loads in combination
+  Δ_LT    = instantaneous elastic deflection due to long-term loads
+  K_creep = creep adjustment factor
+          = 2.0 for dry-service condition
+
+Deflection under a specified uniformly distributed load, ω, acting perpendicular to the face of a single-span panel
+may be calculated as the sum of the deflections due to moment and shear effects using:
+
+- Effective flatwise bending stiffness, (EI)_eff,f
+- Effective shear stiffness in flatwise bending, (GA)_eff,f
+
+Formula:
+Δ = (5 / 384) * (ω * L⁴ / (EI)_eff,f) + (1 / 8) * (ω * L² / (GA)_eff,f)
+
+For aconcentrated line load, P,located inthe middle ofasingle span CLT panel acting perpendicular to
+the panel, the deflection may be calculated as follows:
+Δ = (1/48) * (P * L³) / (EI)_eff,f + (1/4) * (P * L) / (GA)_eff,f
+
+Note: Where the shear deformation component ofthe total deformation of CLT panel under out-of-plane standard-term
+loading such assnow and live loads issignificant (i.e., in short spans, short span cantilever, etc.) as
+determined by the designer, the shear deformation under these loads should be increased by 30% to account for
+time-dependent effect associated with rolling shear.
+--------------------------------------------------
+
+Clause 49: A.8.5.3 
+--------------------------------------------------
+A.8.5.3 A.8.5.3 Vibration performance ofCLT floors
+The allowable span for the control offloor motions caused by walking on aCLT floor may be calculated
+using the following equation:
+
+ℓ_v ≤ 0.11 * [(EI)_eff,f / 10⁶]^0.29 / m^0.12
+
+Where:
+  ℓ_v        = vibration-controlled span limit, m
+  (EI)_eff,f = effective flatwise bending stiffness for a 1 m wide panel, N·mm² (see Clause 8.4.3.2)
+  m          = linear mass of CLT for a 1 m wide panel, kg/m
+
+Note: The above equation assumes the floor:
+  a) has a single span with both ends simply supported; and
+  b) is bare with no topping material.
+
+For multiple-span floors with anon-structural element that is considered to provide enhanced vibration
+effect, the calculated vibration-controlled span may beincreased by up to 20%, provided itis not
+greater than 8 m.
+Notes:
+1) The calculation procedure given in this Clause for single-span systems may be applied to individual spans in a
+multiple-span system, with adjustment if appropriate.
+2) For floors with concrete topping, where the concrete is applied directly tothe CLT panel, this equation may be
+used assuming bare floor construction for calculation purposes, i.e., weight ofconcrete isignored in
+calculating the mass, m,provided the area density ofthe topping is not greater than twice the bare CLT floor
+area density.
+3) The current vibration criteria might not address all occupant performance expectations. CLT manufacturer
+literature may provide additional span adjustments.
+--------------------------------------------------
+
+Clause 50: A.9.2.2 
+--------------------------------------------------
+A.9.2.2 Construction sheathing OSB-Structural Panels
+As noted inits preface, CSA O325 does not recommend engineering design values, nor does itsuggest
+methods ofcalculating such values.
+The design values in Table 9.3 for construction sheathing OSB that complies with CSA O325 are
+consistent with values developed through in-grade testing and supported by various organizations.
+Certification organizations shall ensure that reference values for bending strength and bending stiffness
+of construction sheathing OSB that complies with CSA O325 are also consistent with the design values
+ofthis Standard.
+
+Panel marks consist of an end-use mark followed by aspan mark (see Table A.8), e.g., 2F24 or W16.
+Multiple panel marks may be shown on panels qualified for more than one end use, e.g., 1R24/2F16
+and 2R48/2F24/1F24.
+Note: See Table A.9.
+
+--------------------------------------------------
+
+Clause 51: A.10.6.3.4 
+--------------------------------------------------
+A.10.6.3.4 Buckling of plywood compression flange - Composite building components
+For stressed skin panels with aplywood compression flange, the factored buckling resistance, expressed
+asthe maximum factored load applied perpendicular to the compression flange, shall be calculated as
+follows:
+
+B_r = φ * X_B * [(2h_w + h_t + h_c)(10^9)] / [2 * (s * ℓ_p)^2]
+
+Where:
+  B_r = factored buckling resistance, kN/m²
+  φ   = 0.95
+  X_B = buckling coefficient (see Table A.10)
+  s   = clear spacing between longitudinals, mm
+  ℓ_p = span of stressed skin panel, mm
+
+Note:
+This Clause is not applicable to OSB compression flanges. Buckling coefficients have not been developed for OSB.
+
+--------------------------------------------------
+
+Clause 52: A.11.7 
+--------------------------------------------------
+A.11.7 A.11.7 Sheathing-to-framing connection deformation, en, for shearwall and
+diaphragm deflection calculations
+For nails used in wood-based sheathing with dry lumber, en may be calculated asfollows:
+e_n = [0.013 * v * s / d_f²]²
+
+Where:
+  v  = maximum specified shear force per unit length along the diaphragm boundary or top of shearwall, N/mm
+  s  = nail spacing along panel edges, mm
+
+- For nails used in wood-based sheathing with green lumber, multiply the dry lumber e_n values by 2.
+- For fasteners used in gypsum wallboard with dry lumber, e_n may be taken as 0.76 mm.
+--------------------------------------------------
+
+Clause 53: A.11.7.1 
+--------------------------------------------------
+A.11.7.1 Deflection of shearwalls in multi-storey buidlings
+a) Deflection of blocked shearwall segments:
+  The interstorey drift, Δ_i^storey, at the i-th level, mm, may be calculated as follows:
+Δ_i^storey = Δ_b,i^storey + Δ_s,i^storey + Δ_n,i^storey + Δ_a,i^storey
+
+Where:
+  Δ_b,i^storey = drift at i-th level due to bending
+  Δ_s,i^storey = drift at i-th level due to panel shear
+  Δ_n,i^storey = drift at i-th level due to nail slip
+  Δ_a,i^storey = drift at i-th level due to wall anchorage system elongation
+
+The total deflection Δ_i^total at the i-th level is:
+
+Δ_i^total = Σ_{j=1}^{i} Δ_j^storey
+
+i) Deflection due to bending:
+   Δ_b,i^storey = Δ_θ,i + (H_i² / 2) * (θ_i - θ_i-1)
+
+Where:
+  θ_i (or θ_j) = change in slope over the i-th storey height:
+               = M_i * H_i / (EI)_i
+
+Δ_θ,i = H_i² * q_i / (3 * E_i * I)
+
+Δ_a,i = horizontal distance from top of i-th storey to tangent at the bottom:
+       = M_i * H_i² / (2 * E_i * I) + V_i * H_i³ / (3 * E_i * I)
+
+Where:
+  H_i = interstorey height of the i-th storey, mm
+  V_i = shear force in the i-th storey:
+      = Σ_j=1^i F_j = F_1 + F_2 + ... + F_n
+
+  M_i = overturning moment at level i:
+      = Σ_j=i+1^n V_j * H_j
+
+  n = total number of stories
+  F_j = lateral force at j-th level
+  H_j = interstorey height at j-th level
+
+(EI)_i = bending stiffness at the i-th storey:
+       = (E * A)_i * (L_s / 2)² * θ² = (EA)_i * t² / 2
+
+Where:
+  E = modulus of elasticity at shearwall segment boundary, N/mm²
+  A = cross-sectional area of the vertical member, mm²
+
+Ls =length ofshearwall segment, mm
+Note: For acontinuous rod system anchored ateach floor level, the effective bending stiffness ofthe
+shearwall should be used.
+
+ii) Deflection due to panel shear:
+Δ_s,i^storey = Δ_s,i
+
+Where:
+  Δ_s,i = v_f,i * H_i / B_v,i
+
+  Where:
+    v_f,i = V_i / L_i = maximum shear flow due to specified loads at the top of the wall at the i-th storey, N/mm
+    B_v,i = shear-through-thickness rigidity of the sheathing at the i-th storey, N/mm
+            (see Tables 9.1 to 9.3 for wood structural panel sheathing)
+            For gypsum wallboard, B_v may be taken as 7000 N/mm
+
+iii) Deflection due to sheathing-to-framing connection deformation:
+Δ_n,i^storey = Δ_n,i
+
+Where:
+  Δ_n,i = 0.0025 * H_i * e_n,i
+
+  Where:
+    e_n,i = sheathing-to-framing connection deformation at the i-th storey, mm
+            (see Clause A.11.7.1)
+
+iv) Deflection due to elongation in wall anchorage system:
+Δ_a,i^storey = H_i * (Σ_{j=i+1}^{n} α_j) = H_i * α_i + H_i * (Σ_{j=1}^{i-1} α_j)
+
+Where:
+  α_i = (d_a,i) / L_a
+
+  Where:
+    d_a,i = total vertical elongation of the wall anchorage system at the i-th storey
+b) Deflection of unblocked shearwall segments:
+
+The interstorey drift of an unblocked shearwall segment with wood structural panels at the i-th storey may be calculated as:
+
+Δ_ub,i^storey = Δ_b,i^storey / J_us,i
+
+Where:
+  Δ_ub,i^storey = interstorey drift of a blocked shearwall segment at the i-th level
+  J_us,i        = adjustment factor for unblocked shearwall segment at the i-th level
+
+Note: This Clause is appropriate for a typical light-frame wood shearwall cantilevered from its base assuming
+the shearwall is stacked for the full height of the building. This is purely a mechanics-based approach to
+determine the deflection for a cantilevered single wall acting as a component of the building. There could be
+other factors that affect the behaviour of a wall, which should be accounted for by the designer.
+
+--------------------------------------------------
+
+Clause 54: A.12.1 
+--------------------------------------------------
+A.12.1 Scope- Connections 
+Refer to table A.11
+
+Notes:
+1) Relative density values specified in this Table are based on a mean oven-dry mass and oven-dry volume. In
+the connection equations, these values are modified to relate connection resistances to fifth percentile density
+values on a15% moisture content volume basis.
+2) Where resistance of aconnection with bolts, dowels, drift pins, lag screws, nails, or wood screws in wood of a
+given relative density isnot available, use the resistance in alower relative density wood orcalculate
+resistance using the equations specified in this Standard.
+--------------------------------------------------
+
+Clause 55: A.12.6.5.4 
+--------------------------------------------------
+A.12.6.5.4 Lateral deformation oflag screw connections
+For aspecified load, P,the lateral deformation ofalag screw connection may becalculated as follows:
+Δ = P / (k * d_f * t_2 * n_f)
+
+Where:
+  Δ   = lateral deformation, mm
+  P   = specified load on the connection, N
+  k   = lateral slip resistance of a lag screw, MPa
+
+      For θ = 0° (parallel-to-grain):
+        k_p = (5.04 * G - 0.29) * J_y * J_G * K_SF
+
+      For θ = 90° (perpendicular-to-grain):
+        k_Q = (5.04 * G - 0.29) * J_Q * J_G * K_SF
+
+      For 0° < θ < 90° (angle-to-grain loading):
+        k = (k_p * k_Q) / (k_p * sin²θ + k_Q * cos²θ)
+
+Where:
+  G    = mean relative density (Table A.11)
+  J_y  = side plate factor (1.5 for steel side plates)
+  J_G  = group-action factor (Tables 12.2 and 12.3)
+  J_Q  = perpendicular-to-grain load factor (Table A.12)
+  K_SF = service-condition factor (Table 12.1)
+  d_f  = nominal diameter of lag screw, mm
+  t_2  = length of penetration into main member, mm (Clause 12.6.3)
+  n_f  = number of fasteners in the connection
+
+Note:
+Lag screws loaded laterally tend to reach permanent deformation at around 0.8–1.0 mm. This should be avoided.
+--------------------------------------------------
+
+Clause 56: A.12.7.3.3 
+--------------------------------------------------
+A.12.7.3.3 Analysis oftimber rivet joints —General method for Douglas Fir-Larch
+glulam
+Note: The design formulas in this Clause are derived from tests ontimber rivet (also referred to as “glulam rivet”)
+connections in Douglas Fir-Larch glulam. For connections in other species of glulam orin sawn timber, reduce the
+resulting strength resistance by the factor Hspecified in Clause 12.7.3.2.=perpendicular-to-grain load factor (see Table A.12)
+--------------------------------------------------
+
+Clause 57: A.12.7.3.3.1 
+--------------------------------------------------
+A.12.7.3.3.1 Parallel-to-grain loading
+The specified unit lateral strength resistance for wood capacity, pw, kN, per joint-loaded parallel to grain
+is equal to the least value ofthe tensile strength ofthe timber, Pt, and the shear strength ofthe timber,
+Pv,calculated asfollows:
+a) Pt = (X_t * f_tn * S_Q * (n_R - 1)) / (K_T * β_t * E_t)
+
+Where:
+  X_t = adjustment factor for tension parallel to grain (1.41)
+  f_tn = specified strength in tension parallel to grain at net section, MPa (see Table 7.2)
+  S_Q = rivet spacing perpendicular to grain, mm (Figure 12.13)
+  n_R = number of rows of rivets
+  K_T = constant depending on n_R and n_C (Table A.13)
+    where:
+      n_C = number of rivets per row
+      β_t = constant based on S_P, S_Q, and n_R (Table A.14)
+  S_P = rivet spacing parallel to grain, mm (Figure 12.13)
+  E_t = constant based on b and L_p (Table A.15)
+    where:
+      b = member dimension (single plate: 2× width, double plates: width)
+      L_p = length of penetration (Figure 12.12)
+
+b) Pv = (X_v * F_v * [S_p(n_c - 1) + 50]) / (K_v * β_f)
+
+Where:
+  X_v = adjustment factor for shear (1.48)
+  F_v = f_v (0.15 + 4.35 * C_v), MPa
+    where:
+      f_v = specified longitudinal shear strength, MPa (Table 7.2)
+      C_v = (β_1 * β_2 * β_3)^-0.2
+
+Where:
+  β_1 = (1 / 1300) * L_p * (n_C - 1) * [1 + 500 * exp^(-0.52 * (S_p - 12.5))]
+  β_2 = 0.5 * 10^-16 * L_p * [(n_C - 1) * S_p]^3 * [(n_R - 1) * S_Q]^4.5 * exp^((a - 50) / 100)
+  β_3 = [(3μ / 2 + 1 - μ / 50) * (1 - exp^((1.9 - 0.95 * b) / L_p))]^5
+
+Where:
+  a = end distance (Figure 12.13), mm
+  μ = 43.9 * [(n_C - 1) * S_p]^-0.4 * [(n_R - 1) * S_Q]^-0.2
+  L_p = length of penetration (Figure 12.12)
+    K_v  = constant depending on n_R and n_C (Table A.16)
+    β_v  = constant depending on S_P and S_Q (Table A.17)
+    γ    = 90.5 + 5.4 * L_p
+
+Note: For cases where b ≥ 175 mm, S_P = 40 mm, S_Q = 25 mm, and L_p ≥ 55 mm, P_v will be greater than P_t.
+
+
+--------------------------------------------------
+
+Clause 58: A.12.7.3.3.2 
+--------------------------------------------------
+A.12.7.3.3.2 Perpendicular-to-grain loading
+In Clause 12.7.3.3.4, the lateral strength resistance for wood capacity, q_w kN per joint loaded perpendicular to grain and the value of C_t may be calculated as follows:
+
+a) q_w = (23.3 * X_tp * f_tp * (n_C - 1) * S_Q * L_p^0.5) / (K_tp * β_tp * 10^6 * [(n_C - 1) * S_Q]^0.2)
+
+Where:
+  X_tp = adjustment factor for tension perpendicular to grain (1.45)
+  f_tp = specified strength in tension perpendicular to grain, MPa (Table 7.2)
+  K_tp = constant depending on n_R and n_C (Table A.18)
+  β_tp = constant depending on S_P and S_Q (Table A.19)
+
+b) C_t = [1 / (β_D * (n_C - 1) * S_Q)]^0.2
+
+Where:
+  β_D = constant depending on e_p / [(n_C - 1) * S_Q] (Table A.20)
+  e_p = unloaded edge distance, mm (Figure 12.13)
+
+
+--------------------------------------------------
+
+Clause 59: A.12.9.3.3 
+--------------------------------------------------
+A.12.9.3.3 Lateral deformation of wood-to-wood connections with nails, spikes, or
+wood screws
+For specified loads, P,not greater than nu/3, the lateral deformation of wood-to-wood connections with
+nails, spikes, or wood screws, including structural panel-to-lumber connections, may be estimated as
+follows:
+Δ = 0.5dfKm(P/nu)^1.7
+where
+Δ=lateral deformation, mm
+dF= nominal diameter offastener, mm
+Km=service-creep factor (see Table A.23)
+P=specified load per fastener per shear plane, N
+nu=unit lateral strength resistance per shear plane, N(see Clause 12.9.3.2)
+--------------------------------------------------
+
+Clause 60: A.16 
+--------------------------------------------------
+A.16 Proprietary structural products —Materials and evaluation
+--------------------------------------------------
+
+Clause 61: A.16.2.3.1 
+--------------------------------------------------
+A.16.2.3.1 Length-adjustment factor, KLN
+The length-adjustment factor, KLN, isused by manufacturers to develop proprietary I-joist moment
+resistance values and is not intended asanadjustment factor for specific applications. The value ofKLN
+is taken from Section 6.4.1.5 of ASTM D5055 and is the lesser of 1.0 or the value calculated as follows:
+KLN = KSD (L1/L)^z < 1.0
+where
+KSD =stress distribution adjustment factor
+    =the adjustment ofspecified axial strength, fa,from full-length constant stress (such asatension
+    test) to the reference stress condition (simple span and uniform load)
+    = 1.15
+L1 =gauge length (distance between grips) used in tension tests, parallel to grain, for I-joist flange
+    material
+L=I-joist span
+    =18times the joist depth
+Z=coefficient that accounts for the variation intensile strength ofthe flange material (see
+Table A.24)
+--------------------------------------------------
+

@@ -1,0 +1,261 @@
+{
+  "workbook_path": "/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Sidian/SidOS/Glulam Column.xlsx",
+  "workbook_name": "Glulam Column.xlsx",
+  "semantic_interface": {
+    "inputs": {
+      "project_name": {
+        "sheet": "Axial",
+        "address": "E8"
+      },
+      "dfl": {
+        "sheet": "Axial",
+        "address": "F28"
+      },
+      "strong-axis": {
+        "sheet": "Axial",
+        "address": "F39"
+      },
+      "compression": {
+        "sheet": "Axial",
+        "address": "F40"
+      },
+      "yes": {
+        "sheet": "Axial",
+        "address": "F41"
+      }
+    },
+    "outputs": {
+      "compression_utilization": {
+        "sheet": "Axial",
+        "address": "M18"
+      },
+      "tension_utilization": {
+        "sheet": "Axial",
+        "address": "M20"
+      },
+      "axialbending_utilization": {
+        "sheet": "Axial",
+        "address": "M22"
+      },
+      "stress_grades_not_recommended": {
+        "sheet": "Axial",
+        "address": "H27"
+      },
+      "dfl_24f-e_20f-e": {
+        "sheet": "Axial",
+        "address": "H28"
+      },
+      "ked": {
+        "sheet": "Axial",
+        "address": "E34"
+      },
+      "keb": {
+        "sheet": "Axial",
+        "address": "E35"
+      },
+      "ftn": {
+        "sheet": "Axial",
+        "address": "F85"
+      },
+      "ftg": {
+        "sheet": "Axial",
+        "address": "F84"
+      },
+      "fcb": {
+        "sheet": "Axial",
+        "address": "F87"
+      },
+      "e05": {
+        "sheet": "Axial",
+        "address": "F69"
+      },
+      "ksc": {
+        "sheet": "Axial",
+        "address": "F73"
+      },
+      "kzcg": {
+        "sheet": "Axial",
+        "address": "F74"
+      },
+      "kse": {
+        "sheet": "Axial",
+        "address": "F76"
+      },
+      "kst": {
+        "sheet": "Axial",
+        "address": "F77"
+      },
+      "ksb": {
+        "sheet": "Axial",
+        "address": "F79"
+      },
+      "kzbg": {
+        "sheet": "Axial",
+        "address": "F81"
+      },
+      "led": {
+        "sheet": "Axial",
+        "address": "F92"
+      },
+      "leb": {
+        "sheet": "Axial",
+        "address": "F93"
+      },
+      "ccs": {
+        "sheet": "Axial",
+        "address": "F94"
+      },
+      "ccw": {
+        "sheet": "Axial",
+        "address": "F95"
+      },
+      "mr_1": {
+        "sheet": "Axial",
+        "address": "F118"
+      },
+      "mr_2": {
+        "sheet": "Axial",
+        "address": "F119"
+      }
+    },
+    "lookups": {}
+  },
+  "tool_descriptions": {
+    "get_excel_input": {
+      "description": "Read an input parameter value from Excel",
+      "parameters": {
+        "name": "Semantic name of the input parameter (e.g., 'project_name', 'column_width')"
+      },
+      "returns": "The current value of the input parameter",
+      "available_inputs": [
+        "project_name",
+        "dfl",
+        "strong-axis",
+        "compression",
+        "yes"
+      ]
+    },
+    "set_excel_input": {
+      "description": "Write a value to an input parameter in Excel. After writing, Excel must be recalculated.",
+      "parameters": {
+        "name": "Semantic name of the input parameter",
+        "value": "The value to write (must match the parameter's data type)"
+      },
+      "returns": "Confirmation that the value was written",
+      "available_inputs": [
+        "project_name",
+        "dfl",
+        "strong-axis",
+        "compression",
+        "yes"
+      ]
+    },
+    "get_design_summary": {
+      "description": "Get key design results and outputs from Excel calculations",
+      "parameters": {
+        "output_group": "Optional: specific output group to retrieve (e.g., 'utilization_ratios', 'member_resistances')"
+      },
+      "returns": "Dictionary of output parameter names and their current values",
+      "available_outputs": [
+        "compression_utilization",
+        "tension_utilization",
+        "axialbending_utilization",
+        "stress_grades_not_recommended",
+        "dfl_24f-e_20f-e",
+        "ked",
+        "keb",
+        "ftn",
+        "ftg",
+        "fcb",
+        "e05",
+        "ksc",
+        "kzcg",
+        "kse",
+        "kst",
+        "ksb",
+        "kzbg",
+        "led",
+        "leb",
+        "ccs",
+        "ccw",
+        "mr_1",
+        "mr_2"
+      ]
+    },
+    "lookup_location": {
+      "description": "Look up location-specific data from lookup tables",
+      "parameters": {
+        "key": "Location name or key to look up"
+      },
+      "returns": "Location data (snow loads, wind loads, etc.)",
+      "available_lookups": []
+    },
+    "recalculate": {
+      "description": "Trigger Excel to recalculate all formulas. MUST be called after set_excel_input operations.",
+      "parameters": {},
+      "returns": "Confirmation that recalculation completed"
+    }
+  },
+  "input_groups": {
+    "project_administration": {
+      "description": "General project tracking and administrative context.",
+      "parameters": [
+        "project_name"
+      ]
+    },
+    "column_geometry": {
+      "description": "Section dimensions and stability/buckling parameters.",
+      "parameters": [
+        "dfl"
+      ]
+    },
+    "input_parameters": {
+      "description": "User-editable input parameters.",
+      "parameters": [
+        "strong-axis",
+        "compression",
+        "yes"
+      ]
+    }
+  },
+  "output_groups": {
+    "utilization_ratios": {
+      "description": "Efficiency ratios (Demand/Capacity). Values > 1.0 indicate failure.",
+      "parameters": [
+        "compression_utilization",
+        "tension_utilization",
+        "axialbending_utilization"
+      ]
+    },
+    "member_resistances": {
+      "description": "The ultimate capacity of the member as calculated by the engine.",
+      "parameters": [
+        "stress_grades_not_recommended"
+      ]
+    },
+    "calculated_results": {
+      "description": "Calculated output results.",
+      "parameters": [
+        "dfl_24f-e_20f-e",
+        "ked",
+        "keb",
+        "ftn",
+        "ftg",
+        "fcb",
+        "e05",
+        "ksc",
+        "kzcg",
+        "kse",
+        "kst",
+        "ksb",
+        "kzbg",
+        "led",
+        "leb",
+        "ccs",
+        "ccw",
+        "mr_1",
+        "mr_2"
+      ]
+    }
+  }
+}

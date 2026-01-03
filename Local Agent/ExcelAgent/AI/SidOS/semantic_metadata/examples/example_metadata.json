@@ -1,0 +1,56 @@
+{
+  "inputs": {
+    "span": {
+      "sheet": "INFO",
+      "address": "B3",
+      "description": "Beam span in meters"
+    },
+    "load": {
+      "sheet": "INFO",
+      "address": "B4",
+      "description": "Uniformly distributed load in kN/m"
+    },
+    "concrete_strength": {
+      "sheet": "INFO",
+      "address": "B5",
+      "description": "Concrete compressive strength in MPa"
+    }
+  },
+  "outputs": {
+    "moment": {
+      "sheet": "Full Building",
+      "address": "G12",
+      "description": "Maximum moment in kN⋅m"
+    },
+    "shear": {
+      "sheet": "Full Building",
+      "address": "G13",
+      "description": "Maximum shear in kN"
+    },
+    "deflection": {
+      "sheet": "Full Building",
+      "address": "G14",
+      "description": "Maximum deflection in mm"
+    },
+    "utilization": {
+      "sheet": "Full Building",
+      "address": "G15",
+      "description": "Capacity utilization ratio"
+    }
+  },
+  "lookups": {
+    "location_snow_load": {
+      "type": "vlookup",
+      "sheet": "Tables",
+      "range": "A1:D100",
+      "description": "Lookup snow load by location name"
+    },
+    "material_properties": {
+      "type": "vlookup",
+      "sheet": "Tables",
+      "range": "F1:J100",
+      "description": "Lookup material properties by grade"
+    }
+  }
+}
+

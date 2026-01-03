@@ -1,0 +1,409 @@
+Annex B(informative)
+Fire resistance oflarge-cross-section wood elements
+Notes:
+1) This informative (non-mandatory) Annex has been written in normative (mandatory) language to facilitate
+adoption where users ofthe Standard orregulatory authorities wish to adopt itformally as additional
+requirements tothis Standard.
+2) When this informational (non-mandatory) Annex is not otherwise adopted formally by building regulatory
+authorities as additional requirements to this Standard, the methodology presented provides information that
+may be useful to users ofthe Standard in the development of aproposal for an alternative solution to meet
+the objectives ofthe National Building Code of Canada (NBC).
+--------------------------------------------------
+Clause 1: B.1.1 
+--------------------------------------------------
+B.1.1
+The design tables, data, and methods specified in Annex Bprovide adesign methodology to develop
+fire-resistance ratings oflarge-cross-section wood elements based on structural criteria.
+--------------------------------------------------
+
+Clause 2: B.1.2 
+--------------------------------------------------
+B.1.2
+The design methodology is intended to be used as an alternative approach for determining
+fire-resistance ratings for establishing compliance to the National Building Code of Canada, as
+determined by testing in conformance with CAN/ULC-S101.
+Note: The fire performance criteria for evaluating the separating function of building elements related to the
+passage offlames or hot gases and transmission of heat through the assembly, as defined in CAN/ULC-S101, are
+outside the scope of Annex B, except as otherwise noted.
+--------------------------------------------------
+
+Clause 3: B.1.3 
+--------------------------------------------------
+B.1.3
+The structural resistance of a wood element reduces as afunction of time when exposed to fire. A
+structural element is deemed to possess afire-resistance rating for aduration offire exposure provided
+the reduced structural resistance ofthe element, after the specified exposure time, is greater than the
+specified load effects.
+--------------------------------------------------
+
+Clause 4: B.1.4 
+--------------------------------------------------
+B.1.4
+The methodology in Annex Bis an engineering approach, intended to predict the structural fire
+resistance oflarge-cross-section wood elements exposed to the standard fire-resistance test,
+CAN/ULC-S101. The standard test method requires load-bearing elements to be tested with a
+superimposed load that represents afull specified load condition or arestricted load use condition.
+When calculating the fire-resistance rating using the methodology in Annex B,the specified gravity
+loads are used (i.e., D+L).
+Note: When aperformance-based fire safety design approach is used in which the specific fire scenario(s) has a
+design fire(s) having time-temperature relationships other than that specified inthe CAN/ULC-S101 fire-resistance
+test, additional analysis may berequired. For example, aheat transfer analysis may be needed to determine an
+appropriate charring rate and zero-strength layer depth. In this case, it may also be appropriate to use the load
+factors suggested in Paragraph 25 ofthe most recent edition ofStructural Commentary Aofthe National Building
+Code of Canada. Such fire scenarios can be evaluated as an alternative solution to meet the objectives ofthe
+National Building Code of Canada.
+--------------------------------------------------
+
+Clause 5: B.1.5 
+--------------------------------------------------
+B.1.5
+Itis possible that built-up beams as described in Clause 6.4.4.3 and built-up compression members as
+described in Clause 6.5.5.4 will not exhibit similar fire performance as similar-sized solid members and
+therefore are beyond the scope of Annex B.
+Note: Connections between built-up elements are critical for ensuring performance as asingle solid member and,
+in some cases, have been shown to be unable to keep the individual elements from separating during fire exposure
+thus significantly increasing the charring rate.
+--------------------------------------------------
+
+Clause 6: B.2.1 
+--------------------------------------------------
+B.2.1 General Materials
+Annex Bapplies to the materials specified in Clause 6for timbers and decking, Clause 7for glued-laminated
+timber, Clause 8for cross-laminated timber, and Clause 15.3 for structural composite lumber.
+--------------------------------------------------
+
+Clause 7: B.2.2 
+--------------------------------------------------
+B.2.2 Glued-laminated timber
+To calculate the fire resistance of glulam beams using the specified strength values given in Table 7.2,
+the following manufacturing requirements shall be fulfilled:
+a) Beams targeting a1-hour fire-resistance rating when protected from fire exposure on the top shall
+be manufactured to the specified layups, except that one core lamination shall be removed and
+one 38-mm-thick outer tension lamination added on the bottom [see Figure B.1 b)].
+b) Beams targeting a1-hour fire-resistance rating when not protected from fire exposure on the top
+and subjected to positive and negative bending moments shall be manufactured to the specified
+layups, except that two core laminations shall be removed and one 38-mm-thick outer tension
+lamination added on the top and on the bottom [see Figure B.2 b)].
+c) Beams targeting a1.5-or 2-hour fire-resistance rating when protected from fire exposure on the
+top shall be manufactured to the specified layups, except that two core laminations shall be
+removed and two 38-mm-thick outer tension laminations added on the bottom [see Figure B.1 c)].
+d) Beams targeting a1.5-or 2-hour fire-resistance rating when not protected from fire exposure on
+the top and subjected to positive and negative bending moments shall be manufactured to the
+specified layups, except that four core laminations shall be removed and two 38-mm-thick outer
+tension laminations added on the top and on the bottom [see Figure B.2 c)].
+Ifthe additional tension laminations are not substituted for core laminations, the specified strength
+values ofthe individual laminations shall be used to calculate the fire resistance of glulam beams.
+--------------------------------------------------
+
+Clause 8: B.2.3 
+--------------------------------------------------
+B.2.3 CLT
+When determining the axial orflatwise-bending moment resistance of CLT panels exposed to fire, only
+the layers parallel to the direction of the applied stress shall be considered in determination of the fire
+resistance ofthe panels.
+Note: When high shear stress governs design, such as apoint load from acolumn on afloor element, shear
+resistance should be determined. In the case ofshear resistance, alllayers contributing tothe resistance should be
+considered.
+
+--------------------------------------------------
+
+Clause 9: B.3.1 
+--------------------------------------------------
+B.3.1 General Factors affecting resistance
+The specified strengths of materials and connections used in calculating the resistance shall be
+multiplied bythe modification factors specified in Clause B.3 and in the applicable clauses ofthis
+Standard.
+--------------------------------------------------
+
+Clause 10: B.3.2 
+--------------------------------------------------
+B.3.2 Resistance factor,
+The resistance factor, ,shall be taken as 1.0.
+--------------------------------------------------
+
+Clause 11: B.3.3 
+--------------------------------------------------
+B.3.3 Load-duration factor, KD
+The load-duration factor, KD, shall betaken in accordance with Clause 5.3.2 for short-term load
+duration.
+--------------------------------------------------
+
+Clause 12: B.3.4 
+--------------------------------------------------
+B.3.4 System factor, KH
+The system factor, KH, shall betaken as 1.0.
+--------------------------------------------------
+
+Clause 13: B.3.5 
+--------------------------------------------------
+B.3.5 Size factor, KZ
+The size factor, KZ, shall be determined in accordance with applicable Clauses inthis Standard using the
+original cross-sectional dimensions.Fire-resistance rating
+--------------------------------------------------
+
+Clause 14: B.3.6 
+--------------------------------------------------
+B.3.6 Lateral-stability factor, KL
+The lateral-stability factor, KL, shall be determined in accordance with Clause 6.5.3.2 for sawn lumber or
+Clause 7.5.6.4 for glued-laminated timber using the effective cross-section ofthe beam (see
+Clause B.6.2). To be considered in the calculations, the members providing the intermediate lateral
+support shall have atleast the same fire-resistance rating as that sought for the beam.
+--------------------------------------------------
+
+Clause 15: B.3.7 
+--------------------------------------------------
+B.3.7 Slenderness ratio, CC
+The slenderness ratio, CC, shall be determined using the effective cross-section (see Clause B.6.2). To be
+considered in the calculations, the members providing the intermediate lateral support shall have at
+least the same fire-resistance rating asthat sought for the column.
+--------------------------------------------------
+
+Clause 16: B.3.8 
+--------------------------------------------------
+B.3.8 Slenderness factor, KC
+The slenderness factor, KC, shall be determined using the effective cross-section (see Clause B.6.2) and
+the specified mean modulus of elasticity (see Clause B.6.4).
+--------------------------------------------------
+
+Clause 17: B.3.9 
+--------------------------------------------------
+B.3.9 Adjustment factor for fire resistance, Kfi
+The adjustment factor for fire resistance, Kfi, shall be determined asgiven in Table B.1.
+
+--------------------------------------------------
+
+Clause 18: B.4.1 
+--------------------------------------------------
+B.4.1 General Char layer depth 
+The charring rates in Table B.2 apply when members are exposed to the standard fire exposure in
+accordance with CAN/ULC-S101. Clause B.4.3 shall be used to determine the char layer depth for one-dimensional
+heat transfer, such asin solid wood walls and floors or when corner rounding is explicitly
+considered for rectangular cross-sections following Clause B.4.5. For CLT, the char layer depth shall be
+determined in accordance with Clause B.4.6. For all other cases, the char layer depth shall be
+determined in accordance with Clause B.4.4.
+Note: Use ofthe notional charring rate in Clause B.4.4 isrecommended when considering rectangular cross-section
+members because the method implicitly accounts for the effect ofcracking, formation offissures, and corner
+rounding.
+--------------------------------------------------
+
+Clause 19: B.4.2 
+--------------------------------------------------
+B.4.2 Charring rates
+The one-dimensional and notational charring rates, o and n, are given in Table B.2.
+
+Note: When the smallest dimension ofthe effective cross-section ofa member subjected to heating on parallel
+sides isreduced toless than 70 mm, the charring rate will increase asthe temperature rise beyond the char front
+meets in the middle ofthe cross-section. In this case, aheat transfer analysis may be required to determine the
+proper effective cross-section to use.
+--------------------------------------------------
+
+Clause 20: B.4.3 
+--------------------------------------------------
+B.4.3 One-dimensional char layer depth
+The char layer depth for one-dimensional charring, xc,o (mm), shall be calculated asfollows:
+xc,o =βot
+where
+βo= one-dimensional charring rate, mm/min
+t=fire exposure duration, min
+--------------------------------------------------
+
+Clause 21: B.4.4 
+--------------------------------------------------
+B.4.4 Notional char layer depth
+The char layer depth for notional charring, xc,n (mm), shall becalculated asfollows:
+xc,n =βnt
+where
+βn= notional charring rate, mm/min
+t=fire exposure duration, min
+--------------------------------------------------
+
+Clause 22: B.4.5 
+--------------------------------------------------
+B.4.5 Corner rounding
+The corners ofrectangular cross-sections exposed to fire are subjected to two-dimensional heat transfer
+resulting in acorner-rounding effect. When explicitly considering the effect of corner rounding, the
+radius ofthe corner shall be taken asthe depth ofthe charred layer using the one-dimensional charring
+rate, in accordance with Clause B.4.3, and the section properties shall be determined accordingly.
+Note: The effect of corner rounding is not required to be considered explicitly when the char layer depth is
+determined in accordance with Clause B.4.4.
+--------------------------------------------------
+
+Clause 23: B.4.6 
+--------------------------------------------------
+B.4.6 Char layer depth for CLT
+The one-dimensional charring rate, o, specified in Table B.2 and Clause B.4.3 shall be used when the
+char layer depth will not reach the first bond line between the exposed layer and the subsequent layer
+for the duration ofthe fire resistance required. Ifthe char layer depth surpasses the first bond line
+during the fire-resistance period sought, the notional charring rate, n, specified in Table B.2 and
+Clause B.4.4 shall be used.
+--------------------------------------------------
+
+Clause 24: B.5 
+--------------------------------------------------
+B.5 Zero-strength layer depth
+To account for areduction in strength ofthe heated wood beyond the char front, azero-strength layer
+shall be subtracted to further reduce the cross-section beyond the char layer depth determined in
+Clause B.4.3 orB.4.4. The zero-strength layer depth, xt(mm), shall be calculated asfollows:
+xt=(t/20) x 7 (for t<20)
+xt=7(for t>=20)
+where
+t =fire exposure duration, min
+--------------------------------------------------
+
+Clause 25: B.6 
+--------------------------------------------------
+B.6 Resistance of effective cross-section
+--------------------------------------------------
+
+Clause 26: B.6.1 
+--------------------------------------------------
+B.6.1 General
+Charring ofall surfaces ofawood element directly exposed to fire shall be taken into account including,
+where relevant, any surfaces initially protected from fire exposure where wood charring could occur at
+some point during the standard fire exposure for fire-resistance rating required. The effective cross-section
+shall be assumed to have properties as specified in Clauses B.6.3 and B.6.4, while the char layer
+and zero-strength layer shall be assumed to provide no strength or stiffness.
+Note: Only surfaces protected from fire exposure for the duration ofthe exposure, such asthe top surface of a
+beam protected by afire-resistance-rated floor orroof assembly, may be considered to be protected from the fire
+for the duration ofthe exposure.
+--------------------------------------------------
+
+Clause 27: B.6.2 
+--------------------------------------------------
+B.6.2 Effective cross-section
+The effective cross-section shall be the initial cross-section reduced by the char layer depth (see
+Clause B.4) and the zero-strength layer depth (see Clause B.5) on each exposed surface (see Figure B.2).
+Section properties shall be calculated using standard equations for area, section modulus, and moment
+ofinertia using the dimensions ofthe effective cross-section.
+Note: In some instances, such asthe effective cross-section of CLT, the location ofthe neutral axis must be
+determined prior to calculating the moment ofinertia and section modulus. In addition, for calculating the section
+modulus ofCLT, the height divided by 2(h/2) must bereplaced with c,the distance from the extreme (bottom)
+tension fibre to the neutral axis, thus replacing 2/h with 1/c in the section modulus equation.
+
+--------------------------------------------------
+
+Clause 28: B.6.3 
+--------------------------------------------------
+B.6.3 Resistance ofthe effective cross-section
+The resistances ofthe members exposed to fire shall be calculated in accordance with the applicable
+equations in Clauses 6, 7, 8and 15.3 using the strength properties modified in accordance with
+Clause B.3 and the effective cross-section in accordance to Clause B.6.2.
+--------------------------------------------------
+
+Clause 29: B.6.4 
+--------------------------------------------------
+B.6.4 Modulus of elasticity
+The modulus of elasticity used in calculating the resistance of the member shall be taken as the
+specified mean value.
+Note: The modulus ofelasticity is used in calculations ofthe lateral-stability factor for bending members, KL, and
+the slenderness factor for compression members, Kc.
+--------------------------------------------------
+
+Clause 30: B.7 
+--------------------------------------------------
+B.7 Fire-resistance rating
+Astructural element shall be assigned afire-resistance rating of aduration offire exposure ifthe
+effective structural resistance ofthe element for that fire exposure is greater than the specified gravity
+load effects.
+--------------------------------------------------
+
+Clause 31: B.8 
+--------------------------------------------------
+B.8 Surfaces protected by gypsum board
+--------------------------------------------------
+
+Clause 32: B.8.1 
+--------------------------------------------------
+B.8.1 Gypsum board
+Provided that surfaces are protected from fire exposure by fire-rated Type Xgypsum board, the
+assigned fire-resistance duration calculated in accordance with Clause B.7 can be increased by the
+following times:
+a) 15 min when one layer of 12.7 mm Type Xgypsum board is used;
+
+b) 30 min when one layer of 15.9 mm Type Xgypsum board is used;
+c) 60 min when two layers of 15.9 mm Type Xgypsum boards are used; or
+d) 60 min when two layers of 12.7 mm Type Xgypsum boards are applied to CLT.
+--------------------------------------------------
+
+Clause 33: B.8.2 
+--------------------------------------------------
+B.8.2 Gypsum board fasteners
+The values in Clause B.8.1 shall only apply where the fasteners used to attach the gypsum board
+penetrate the wood element a minimum of 25 mm and are spaced a maximum of 300 mm on centre
+and each length of gypsum board is attached by a minimum oftwo rows offasteners that are offset by
+half the fastener spacing ifrow spacing isless than 300 mm.
+Note: Steel or wood furring providing agap between the gypsum board and wood member will not reduce the
+additional fire resistance attributed to the gypsum board, provided the gypsum board fastener spacing
+requirements in Clause B.8.2 are met and the fasteners used to attach the furring penetrate the wood structural
+elements aminimum of 25 mm.
+--------------------------------------------------
+
+Clause 34: B.8.3 
+--------------------------------------------------
+B.8.3 Joints
+The values in Clause B.8.1 shall only apply where the exposed joints ofthe gypsum board are taped and
+finished. When multiple layers of 15.9 mm Type Xgypsum board described in Clause B.8.1 are used, the
+joints shall be offset between the base layer and face layer.
+--------------------------------------------------
+
+Clause 35: B.9 
+--------------------------------------------------
+B.9 Connections
+Connections that are critical to support the gravity loads acting on the structure shall be designed to
+have atleast the same fire-resistance rating as the elements they support. Connections in which the
+steel islocated within the effective cross-section ofthe wood element shall be considered properly
+protected.
+Note: Additional information can be found in the American Wood Council’s Technical Report 10 and in
+EN 1995-1-2.
+--------------------------------------------------
+
+Clause 36: B.10.1 
+--------------------------------------------------
+B.10.1 Double tongue-and-groove
+Double tongued-and-grooved decking shall be designed as an assembly of wood beams fully exposed on
+one face.
+--------------------------------------------------
+
+Clause 37: B.10.2 
+--------------------------------------------------
+B.10.2 Single tongue-and-groove orinternal spline
+Single tongued-and-grooved orsingle internal splined decking shall be designed as an assembly of wood
+beams fully exposed on one face, provided the loss in depth ofthe effective cross-section has not yet
+reached the tongue-and-groove orinternal spline.
+--------------------------------------------------
+
+Clause 38: B.10.3 
+--------------------------------------------------
+B.10.3 Butt-jointed
+Butt joints shall be designed as an assembly of wood beams partially exposed on the sides and fully
+exposed on one face. To compute the effects of partial exposure ofthe decking elements on their sides,
+the char rate for this partial exposure shall be reduced to 1/3 ofthe char rate ofthat used on the
+exposed face.
+--------------------------------------------------
+
+Clause 39: B.10.4 
+--------------------------------------------------
+B.10.4 Unexposed surface protection
+The methodology in Clauses B.10.1 to B.10.3 shall apply only to solid wood decks that have the
+unexposed (top) surface ofthe decking protected by:
+a) tongued-and-grooved wood flooring not less than 19 mm thick laid crosswise or diagonally;
+
+b) tongued-and-grooved plywood or OSB not less than 12.5 mm thick;
+c) concrete topping of minimum 38 mm thickness; or
+d) gypsum-concrete topping of minimum 25 mm thickness.
+Note: These prescriptive requirements are intended to address the fire performance criteria for evaluating the
+separating function ofbuilding assemblies related to the passage offlames or hot gases and transmission of heat
+through the assembly as defined in CAN/ULC-S101. Additional information can befound in Section 3.1.4.7 and
+Appendix D-2.4 ofthe National Building Code of Canada for solid wood floors and roofs.
+--------------------------------------------------
+
+Clause 40: B.11 
+--------------------------------------------------
+B.11 Fire performance criteria for evaluating separating function of
+building assemblies
+The fire performance criteria for evaluating the separating function of building assemblies related to the
+passage offlames or hot gases and transmission of heat through the assembly, as defined in
+CAN/ULC-S101, shall be considered when required by the applicable building code.
+--------------------------------------------------
+
+
