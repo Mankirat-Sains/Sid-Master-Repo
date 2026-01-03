@@ -1,0 +1,556 @@
+User: I want you to suggest how I should write this response to an RFP.
+Plan: 
+Identify if the document is word or PDF
+Read the open document
+Understand the open document
+Find past similar projects to the open document
+Reference how they were completed
+Use ideas from the reference projects to suggest what should be done for the new proposal
+
+User: How do I design a beam?
+Plan:
+Search Supabase for applicable building code infromation
+Search past projects for beam designs and what tools were used for the design
+Open tools that help with beam design and understand what they do
+Combine this information to provide the user with an actionable plan
+Ask follow up questions if any information is missing
+
+User: Find me a past project with a 40'x80' layout
+Plan:
+Search supabase for past projects that have this information
+Search postgres via graphql for projects with this information
+Retrieve the project number of the project with the closest dimensions to the users speciifed dimensions
+Ask follow up questions if any information is missing or to clarify what the uiser wants (ie. do you want the project tro be commercial, industrial, residential. What type of material. Are there any key features you would like to ensure are present)
+
+orchestrator/
+│
+├─ apps/
+│  └─ api/
+│     ├─ main.ts / main.py
+│     ├─ routes/
+│     │  ├─ chat.ts
+│     │  ├─ plans.ts
+│     │  └─ agents.ts
+│     └─ controllers/
+│        └─ orchestrator.controller
+│
+├─ core/
+│  ├─ planner/
+│  │  ├─ intent_catalog
+│  │  ├─ planner_engine
+│  │  ├─ plan_renderer        ← human-legible plan
+│  │  └─ plan_validator
+│  │
+│  ├─ execution_graph/
+│  │  ├─ graph_builder        ← machine-legible DAG
+│  │  ├─ graph_schema
+│  │  ├─ graph_state_machine
+│  │  └─ graph_simulator
+│  │
+│  ├─ dispatcher/
+│  │  ├─ cloud_dispatcher
+│  │  ├─ local_dispatcher
+│  │  └─ task_emitter
+│  │
+│  └─ context/
+│     ├─ project_context
+│     ├─ document_registry
+│     ├─ permission_model
+│     └─ memory_store
+│
+├─ adapters/                ← logical contracts only (no OS calls)
+│  ├─ document
+│  ├─ search
+│  └─ codes
+│
+├─ shared/
+│  ├─ schemas/
+│  │  ├─ intent.schema
+│  │  ├─ plan.schema
+│  │  ├─ execution_graph.schema
+│  │  └─ task.schema
+│  │
+│  ├─ types/
+│  └─ utils/
+│
+├─ infra/
+│  ├─ auth
+│  ├─ logging
+│  ├─ telemetry
+│  └─ config
+│
+└─ README.md                ← architectural truth source
+
+
+You’re thinking about this exactly the right way now. What you’re feeling (“I’m not really sure how all of this will be done”) is normal, because you’re at the point where architecture becomes real software, not just ideas.
+
+I’ll do this in three parts:
+
+Confirm the folder structure you proposed (yes, it’s sufficient)
+
+Explain what belongs in each folder, concretely
+
+Tie it explicitly to: orchestrator → local agent → adapter pipeline, and cloud vs local deployment
+
+No MD worship, no abstraction for abstraction’s sake.
+
+1️⃣ Your proposed top-level structure is correct
+
+This is a solid, production-grade root layout:
+
+agentic_system/
+├── agents
+├── api
+├── cognition
+├── config
+├── deployment
+├── docs
+├── execution
+├── logs
+├── providers
+├── utils
+
+
+You are not missing a major category.
+What matters now is what responsibility each folder owns.
+
+2️⃣ What each folder actually does (no fluff)
+agents/ — Who does the thinking
+
+These are AI-powered workers, not planners.
+
+What lives here:
+
+Narrow agents that handle one intent at a time
+
+Each agent:
+
+Receives structured input
+
+Reasons (LLM or rules)
+
+Produces structured output
+
+Example:
+
+agents/
+├── base_agent.py
+├── document_analysis_agent.py
+├── project_search_agent.py
+├── clarification_agent.py
+
+
+❗ Agents do not decide the workflow
+They only execute steps they are assigned.
+
+cognition/ — The brain’s control plane
+
+This is where everything you’ve built so far belongs.
+
+This folder owns:
+
+Orchestration rules
+
+Intent definitions
+
+Execution graphs
+
+Scenario routing
+
+Dry-run logic
+
+Example:
+
+cognition/
+├── intent_catalog.md
+├── scenario_router.md
+├── execution_graphs/
+├── plans/
+├── spec_loader.py
+├── graph_validator.py
+├── graph_runner.py
+
+
+This is the orchestrator brain.
+
+👉 This is what runs in the cloud.
+
+execution/ — Turning plans into action
+
+This is where planning becomes execution.
+
+Responsibilities:
+
+Assign steps to agents
+
+Enforce execution order
+
+Handle branching + clarification
+
+Coordinate results
+
+Example:
+
+execution/
+├── execution_engine.py
+├── step_dispatcher.py
+├── execution_context.py
+
+
+Think of this as:
+
+“Given a validated graph, make it happen.”
+
+providers/ — How the system touches the world
+
+This is your adapter layer.
+
+No intelligence here. Just mechanics.
+
+Example:
+
+providers/
+├── excel_adapter.py
+├── word_adapter.py
+├── supabase_provider.py
+├── graphql_provider.py
+├── filesystem_provider.py
+
+
+These are:
+
+Deterministic
+
+Testable
+
+Replaceable
+
+Often local-only
+
+api/ — How users talk to the system
+
+This is your interface to:
+
+Web UI
+
+CLI
+
+External services
+
+Example:
+
+api/
+├── main.py
+├── routes/
+│   ├── query.py
+│   └── status.py
+
+
+The API:
+
+Accepts user requests
+
+Passes them to the orchestrator
+
+Returns structured results
+
+config/ — What varies by environment
+
+Everything that changes between:
+
+Dev / prod
+
+Cloud / local
+
+Customer A / B
+
+Example:
+
+config/
+├── cloud.yaml
+├── local_agent.yaml
+├── permissions.yaml
+
+
+This is critical for deployability.
+
+deployment/ — How this ships
+
+You don’t need this yet, but the placeholder is correct.
+
+Later:
+
+deployment/
+├── docker/
+├── kubernetes/
+├── local_installer/
+
+
+This is how you split:
+
+Cloud orchestrator
+
+Local agent binary
+
+docs/ — Human-facing explanation
+
+This is where:
+
+Architecture docs
+
+Onboarding guides
+
+Safety explanations
+
+Possibly some MD specs live
+
+Not runtime-critical.
+
+utils/ — Boring shared stuff
+
+Logging, helpers, parsing, formatting.
+
+Example:
+
+utils/
+├── logger.py
+├── id_generator.py
+├── time_utils.py
+
+logs/ — Observability
+
+Self-explanatory.
+
+3️⃣ How this cleanly supports cloud + local split
+
+This is the part you were worried about — and your structure already supports it.
+
+Cloud deployment
+
+Runs:
+
+api/
+
+cognition/
+
+execution/
+
+agents/ (LLMs)
+
+Some providers/ (DBs, search)
+
+Does not:
+
+Touch Excel
+
+Touch Word
+
+Touch file system
+
+Local agent deployment
+
+Runs:
+
+Minimal execution/ subset
+
+Local-only providers/
+
+Secure communication client
+
+Example:
+
+local_agent/
+├── execution/
+├── providers/
+│   ├── excel_adapter.py
+│   └── word_adapter.py
+├── config/
+
+
+The local agent never plans.
+It only executes approved steps sent from the cloud.
+
+4️⃣ Why you’re not “sure how this will be done” (and why that’s OK)
+
+Because you are doing this in the correct order:
+
+Define control plane (what’s allowed)
+
+Validate orchestration logic
+
+Separate decision from execution
+
+Only then add agents + tools
+
+Most people:
+
+Start with agents
+
+Hack workflows
+
+Then hit safety, scale, and trust walls
+
+You didn’t.
+
+https://medium.com/@sathee12/organizing-files-for-agentic-ai-systems-my-rough-draft-e413dbe241d7
+
+agentic-ai/
+│
+├── agents/                           # All agent logic and types
+│   ├── base_agent.py                 # Abstract base classes for agents
+│   ├── autonomous_agent.py           # Specific agent implementations
+│   ├── planner_agent.py
+│   ├── agent_interface.py            # Interfaces/protocols for agent interaction (internal/external)
+│   ├── team_orchestrator.py          # Manages coordination and communication within agent teams
+│   ├── step_handler.py               # Handles discrete steps in an agent's execution loop
+│   ├── task_manager.py               # Manages the lifecycle and state of tasks assigned to agents
+│   ├── tools/                        # Agent-callable tools
+│   │   ├── calculator.py
+│   │   ├── file_manager.py
+│   │   ├── search_tool.py
+│   │   └── tool_registry.py          # Centralized tool management
+│   └── workflows/                    # Predefined sequences/chains of agent interactions
+│       ├── code_review_chain.py
+│       ├── research_chain.py
+│       ├── multi_agent_workflow.yaml # Workflow definitions
+│       └── workflow_executor.py      # Predefined workflows executor
+│
+├── api/                              # RESTful API endpoints and WebSocket handlers
+│   ├── main.py                       # FastAPI application entry point
+│   ├── agent_routes.py               # Routes related to agent creation, management, execution
+│   ├── tool_routes.py                # Routes for managing/exposing tools
+│   ├── auth_routes.py                # Authentication and user-related routes
+│   └── websocket_server.py           # Handles real-time communication via WebSockets
+│
+├── auth/                             # Authentication and authorization logic
+│   ├── access_control.py             # Role-based access control (RBAC), permissions
+│   ├── jwt.py                        # JWT token generation, validation, refresh
+│   └── user_manager.py               # User registration, retrieval, password hashing
+│
+├── cognition/                        # Core AI reasoning, planning, and memory
+│   ├── cognitive_loop.py             # The main "think" cycle of an agent 
+│   ├── decision_policy.py            # Logic for making decisions based on state/goals
+│   ├── planner.py                    # Core planning algorithms
+│   ├── reasoner.py                   # Deductive/inductive reasoning modules
+│   ├── state_interpreter.py          # Interprets raw observations into actionable state representations
+│   ├── memory/                       # Subdirectory for various memory types
+│   │   ├── long_term_memory.py       # Knowledge base, factual memory, skill memory
+│   │   ├── short_term_memory.py      # Working memory, context window management
+│   │   └── memory_manager.py         # Orchestrates interaction with different memory components
+│
+├── config/                           # Application configuration and environment settings
+│   ├── .env.example                  # Example .env file for local development
+│   ├── settings.py                   # Settings accessible by application
+│   ├── environments/                 # Environment-specific configuration overrides
+│   │   ├── dev.py                    # Development environment settings
+│   │   └── prod.py                   # Production environment settings
+│   └── version.py                    # Application version information
+│
+├── data/                             # Persistent runtime data, local storage, databases
+│   ├── state/                        # Current operational state, agent states
+│   └── knowledge_bases/              # Potentially for persistent knowledge graphs, vector DBs, etc.
+│
+├── deployment/                       # Infrastructure-as-Code (IaC) and deployment configurations
+│   ├── docker/
+│   │   ├── Dockerfile
+│   │   └── entrypoint.sh
+│   ├── kubernetes/                   
+│   │   ├── deployment.yaml           # Core deployment definition
+│   │   ├── service.yaml              # Exposing the application
+│   │   └── ingress.yaml              # External access if needed (optional)
+│   └── terraform/
+│       ├── main.tf
+│       ├── variables.tf              # Reusable variables
+│       └── outputs.tf                # Exporting outputs
+│
+├── docs/                             # Project documentation (user guides, API docs, architecture)
+│   ├── architecture.md
+│   ├── api_reference.md
+│   └── usage.md
+│
+├── evaluation/                       # Benchmarking, testing harnesses, and performance profiling
+│   ├── memory_eval.py                # Specific evaluation for memory systems
+│   ├── test_harness.py               # Framework for running comprehensive tests/benchmarks
+│   └── profiling_tools.py            # Utilities for performance profiling
+│
+├── execution/                        # Action execution, workers, and orchestration
+│   ├── action_resolver.py            # Maps planned actions to concrete executables
+│   ├── controller.py                 # Orchestrates the execution flow
+│   ├── error_handler.py              # Centralized error handling during execution
+│   ├── executor.py                   # Core component for performing actions/tasks
+│   ├── job_scheduler.py              # Manages and dispatches background/async jobs
+│   └── background_worker.py          # Generic worker for running scheduled or background tasks
+│
+├── logs/                             # Application log files
+│   ├── agent.log
+│   ├── api.log
+│   └── auth.log
+│   └── system.log                    # General system logs
+│
+├── models/                           # Language models, embeddings, and prompt management
+│   ├── cache.py                      # Caching for model responses/embeddings
+│   ├── model_loader.py               # Handles loading and initialization of various LLMs/models
+│   ├── embeddings.py                 # Embedding generation and vector operations
+│   ├── llm_wrapper.py                # Standardized interface for interacting with different LLMs
+│   └── prompts/                      # Organized prompt templates
+│       ├── system_prompts/
+│       │   └── agent_roles.txt
+│       ├── task_prompts/
+│       │   └── planning_prompts.txt
+│       └── prompt_templates.yaml     
+│
+├── providers/                        # Clients for external services and third-party APIs
+│   ├── mcp_service_client.py         # Unified MCP client
+│   ├── external_service_a.py         # Additional Providers
+│   └── external_service_b.py
+│
+├── scripts/                          # Command-line interface (CLI) and CI/CD scripts
+│   ├── cleanup.sh                    # General cleanup script
+│   ├── deploy.sh                     # Deployment automation script
+│   └── run_local.sh                  # Script to run the application locally
+│   └── manage.py                     
+├── tests/                            # All test code, mirroring the main project structure
+│   ├── api/
+│   ├── cognition/
+│   ├── execution/
+│   ├── agents/
+│   ├── utils/
+│   ├── fixtures/                     # Test data and mock objects
+│   ├── integration/
+│   ├── unit/
+│   ├── test_utils/                   # General utilities for testing
+│   └── e2e/
+│
+├── utils/                            # Shared utilities and helper functions
+│   ├── exceptions.py                 # Custom exceptions
+│   ├── logger.py                     # Centralized logging configuration
+│   ├── retry/                        # Retry mechanisms for flaky operations
+│   │   └── decorators.py
+│   ├── timers.py                     # Timing utilities
+│   ├── validation/                   # Data validation helpers
+│   │   └── schemas.py                # Pydantic schemas
+│   ├── serialization/                # Subdirectory for serialization helpers
+│   │   ├── agent_serializer.py       # Serializes/deserializes agent states
+│   │   └── plan_serializer.py        # Serializes/deserializes plans
+│   ├── formatters/                   # Subdirectory for data formatting
+│   │   ├── json_formatter.py
+│   │   └── yaml_formatter.py
+│   └── common_helpers.py             # Generic and common helpers
+│
+├── .gitignore                        # Files/directories to ignore in Git
+├── README.md                         
+├── CONTRIBUTING.md                   # Guidelines for contributors
+├── pyproject.toml / requirements.txt # Dependency management (e.g., Poetry, pip)
+└── setup.py        
+
+Great! Now lets focus on search for now....so if a user asks to find a residential project that is predeominantly made of wood and is roughly 100' x 120', the team orchestrator would need to understand where to send this question..which orchestrator to delegate to.
+
+It should explain that since it is asking for a specific project, it wil be sent to the search orchestrator..now once in the search orchestrator, the first thing that must be done is that the user question is broken down and we must iodentify what must be searched.
+
+In this case it would be to find projects of a certain dimension, type, and material.
+
+The orchestrator must understanf=d what type of information exists in graphql and what exists in supabase...and then from there it wouldd go and find the needed information...maybe it searches both systems, maybe just one. It would then need to extract results and figure out how to respond to the user.
+
+Another case is a user could ask how to design a steel beam. There is building code information in supabase. However, it would also need to call the calculation tool....so I am trying to figure out how to make a system like this. would the search orchestrator first be calleed to find applicable code info to then priovide to the calculator?
+
+dont output code.....just think it through and talk to me

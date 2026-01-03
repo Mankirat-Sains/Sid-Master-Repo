@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../speckle"
+		},
+		{
+			"path": "../rag-GHD-Demo"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../v0-employee-tracking"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

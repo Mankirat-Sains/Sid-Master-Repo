@@ -1,0 +1,13 @@
+Key Structural Components & Considerations for the Cooper Master Campus Plan RFP
+
+The Cooper Master Campus Plan represents a highly complex, multi-phase healthcare development in an active urban environment. From a structural engineering standpoint, several critical components require early, deliberate consideration to reduce risk and preserve long-term flexibility.
+
+First, deep foundations and below-grade construction are a primary driver of structural complexity. Tower A, and future Towers B and C, include basements extending below the anticipated groundwater table, requiring careful coordination with geotechnical engineering to address hydrostatic uplift, waterproofing, shoring, and underpinning of adjacent existing facilities. Structural solutions must minimize settlement and vibration impacts to the operational hospital campus.
+
+Second, integration with existing structures is a major consideration. Tower A must physically connect to the Kelemen and Roberts Pavilion buildings and support a multi-story pedestrian bridge over Haddon Avenue. Structural design must account for differential movement, seismic and wind compatibility, phased construction tolerances, and the modification or strengthening of existing structural systems.
+
+Third, lateral system selection and future expandability are essential. Tower A establishes structural precedents for the campus and must be designed with an understanding of future Towers B and C, shared podiums, and potential vertical or lateral expansion. Early decisions regarding column grids, shear walls, cores, and transfer systems will significantly influence future constructability and cost.
+
+Fourth, structural support of major MEP and energy infrastructure is critical. The RFP anticipates geothermal wells beneath Tower A, rooftop mechanical screening structures, and potential vertical expansion of the existing Boiler House—none of which were originally designed for additional load. Structural engineers must coordinate closely with MEP to ensure load paths, vibration control, and constructability are fully resolved.
+
+Finally, phasing, early bid packages, and constructability are central to meeting the aggressive schedule. Early foundation and steel packages, coordination with target value design (TVD), and constructability reviews during design are required to enable construction to proceed while maintaining uninterrupted healthcare operations.
