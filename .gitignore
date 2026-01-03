@@ -3,16 +3,12 @@
 **/.git/
 
 # Ignore only specific problematic files/directories with corrupted files
-localagent-JH/excelagent/speckleexcel/localagent/speckle-excel/.gitignore
-localagent-JH/excelagent/speckleexcel/localagent/speckle-excel/.prettierrc
-localagent-JH/excelagent/speckleexcel/localagent/speckle-excel/LICENSE
-localagent-JH/excelagent/speckleexcel/localagent/speckle-excel/README.md
-localagent-JH/excelagent/speckleexcel/localagent/speckle-excel/apollo.config.js
-localagent-JH/excelagent/speckleexcel/sandbox/my-speckle-project/analyze_brace.py
-localagent-JH/excelagent/speckleexcel/sandbox/my-speckle-project/authenticate.py
-localagent-JH/excelagent/speckleexcel/sandbox/LICENSE
-localagent-JH/excelagent/trainexcel/GAMEPLAN_VERIFICATION.md
-sandbox-JH/Agenttracker/src/Core/MachineInfo.cs
+localagent-JH/excelagent/speckleexcel/localagent/speckle-excel/
+sandbox-JH/supabaseQLquery/.env copy
+sandbox-JH/supabaseQLquery/README.md
+sandbox-JH/supabaseQLquery/authenticate.py
+sandbox-JH/supabaseQLquery/requirements.txt
+sandbox-JH/supabaseQLquery/speckle_client.py
 # Explicitly ignore known nested git repos
 localagent-JH/excelagent/speckleexcel/.git/
 superceded_JH/JSON PIPELINE/.git/
