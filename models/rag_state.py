@@ -1,0 +1,65 @@
+"""
+RAG State Definition
+The typed state object passed between all LangGraph nodes
+"""
+from dataclasses import dataclass, field
+from typing import List, Dict, Optional, Literal, Any
+from langchain_core.documents import Document
+
+
+@dataclass
+class RAGState:
+    """
+    Typed state object that flows through the LangGraph pipeline.
+    Each node receives this state and returns a dict to update it.
+    """
+    # Session & Query
+    session_id: str = ""
+    user_query: str = ""
+    
+    # Planning / Routing
+    query_plan: Optional[Dict] = None
+    data_sources: Dict[str, bool] = field(
+        default_factory=lambda: {
+            "project_db": True,
+            "code_db": False,
+            "coop_manual": False
+        }
+    )
+    data_route: Optional[Literal["smart", "large"]] = None
+    project_filter: Optional[str] = None
+    active_filters: Optional[Dict[str, Any]] = None  # Store extracted filters for synthesis
+    
+    # Retrieval Artifacts
+    expanded_queries: List[str] = field(default_factory=list)
+    retrieved_docs: List[Document] = field(default_factory=list)
+    retrieved_code_docs: List[Document] = field(default_factory=list)  # Code docs (separate pipeline)
+    retrieved_coop_docs: List[Document] = field(default_factory=list)  # Coop docs (separate pipeline)
+    graded_docs: List[Document] = field(default_factory=list)
+    graded_code_docs: List[Document] = field(default_factory=list)  # Graded code docs
+    graded_coop_docs: List[Document] = field(default_factory=list)  # Graded coop docs
+    db_result: Optional[str] = None
+    
+    # Synthesis
+    final_answer: Optional[str] = None
+    answer_citations: List[Dict] = field(default_factory=list)
+    code_answer: Optional[str] = None  # Separate answer for code database
+    code_citations: List[Dict] = field(default_factory=list)
+    coop_answer: Optional[str] = None  # Separate answer for coop manual
+    coop_citations: List[Dict] = field(default_factory=list)
+    answer_support_score: float = 0.0
+    
+    # Control Flags
+    corrective_attempted: bool = False
+    needs_fix: bool = False
+    
+    # Project Tracking
+    selected_projects: List[str] = field(default_factory=list)  # Projects from retrieval
+    
+    # Image Similarity Search (optional - doesn't affect existing pipeline)
+    images_base64: Optional[List[str]] = None  # Base64 encoded images from frontend
+    image_embeddings: Optional[List[List[float]]] = None  # ViT-H14 embeddings (one per image)
+    image_similarity_results: List[Dict] = field(default_factory=list)  # Similar images found
+    use_image_similarity: bool = False  # Flag to enable/disable image search
+    query_intent: Optional[Literal["image_similarity", "content_detail", "hybrid"]] = None
+

@@ -1,0 +1,4 @@
+# This file ensures the references folder is tracked in git
+# Client-specific files (planner_playbook.md, project_categories.md) can be added here
+# Consider adding these files to .gitignore if they contain client-specific information
+

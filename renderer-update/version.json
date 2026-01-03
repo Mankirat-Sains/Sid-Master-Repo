@@ -1,0 +1,10 @@
+{
+  "version": "1.0.4",
+  "files": [
+    "index.html",
+    "renderer.js",
+    "style.css",
+    "PURPLE LIGHT.png"
+  ],
+  "notes": "Added multiple image upload support"
+}
