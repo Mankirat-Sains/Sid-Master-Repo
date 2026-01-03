@@ -1,0 +1,174 @@
+
+
+
+
+
+RESPONSE TO REQUEST FOR PROPOSAL: STRUCTURAL ENGINEERING SERVICES
+MASTER CAMPUS PLAN 
+Prepared For: Cooper University Health Care c/o Hammes Company Attn: Selection Committee / John Delli Carpini 1 Cooper Plaza Camden, NJ 08103
+Submitted By: [Your Firm Name] [Your Firm Address] [NJ Professional Engineering License No.]
+Date: December 15, 2025
+ 
+1. COVER LETTER	
+To the Selection Committee,
+We are pleased to submit this response to the Request for Proposals for Structural Engineering Services for the Master Campus Plan at Cooper University Health Care.
+Our firm specializes in the planning, design, and construction support of complex structural systems within active institutional and healthcare environments. We understand that the Master Campus Plan - specifically Phase A (Tower A) and the future planning for Towers B and C - represents a unique intersection of critical infrastructure, clinical operations, and long-term asset stewardship.
+These facilities must function continuously as a Level I Trauma Center, withstand environmental exposure, and adapt to evolving demands without compromising patient safety or performance. We approach this project with a clear understanding that Tower A, the pedestrian bridge connection, and the Boiler Plant expansion are not isolated construction efforts, but critical operational extensions of the Camden campus.
+Structural decisions made early in the design phase, particularly regarding the foundation systems near Kelemen/Roberts Pavilions and the vertical expansion of the Boiler House, will directly influence durability, lifecycle cost, construction phasing, and the ability of the facility to evolve over time.
+Our team is prepared to provide comprehensive structural engineering services from pre-design validation through construction administration. We will work collaboratively with Cooper, Hammes Company, the Architect, and specialty consultants to deliver a structure that is efficient, resilient, and aligned with the long-term objectives of the campus.
+We appreciate the opportunity to be considered and look forward to contributing our expertise to the success of this project.
+Respectfully submitted,
+[Firm Name]
+Structural Engineering Team
+
+ 
+
+2. EXECUTIVE SUMMARY
+The proposed Cooper Master Campus Plan will serve as a high-capacity facility supporting patients, staff, and visitors within an active academic medical center environment. Unlike typical commercial structures, the proposed Tower A and subsequent phases experience continuous daily use, strict operational reliability requirements, and heightened expectations for durability and safety.
+Our structural engineering approach is grounded in three guiding principles:
+•	Operational Reliability: The structure, particularly the Central Energy Plant (CEP) expansion and connections to existing pavilions, must perform consistently with minimal maintenance interruption to the active hospital.
+•	Durability & Lifecycle Performance: Structural systems must be designed to withstand environmental exposure and repetitive loading over decades of service, particularly regarding the pedestrian bridge over Haddon Avenue.
+•	Adaptability: The structure should accommodate future changes, potential vertical expansion, or alternate uses, specifically addressing the "shell space" flexibility required for Towers B and C.
+We recognize that structural system selection and coordination are among the most critical determinants of long-term success. Throughout the project, we will maintain a proactive role in Target Value Design (TVD), constructability review, and construction administration to ensure that the final structure aligns with Cooper’s performance expectations and budgetary goals.
+
+3. UNDERSTANDING OF THE PROJECT
+3.1 Role of the Structure within the Campus
+The proposed structure functions as essential campus infrastructure rather than a standalone building. From a structural perspective, this creates several important implications:
+	The structure must integrate seamlessly with the existing Kelemen and Roberts Pavilions, requiring precise load path analysis for corridors and connections.
+	Construction must occur adjacent to active Level I Trauma facilities with limited tolerance for vibration, noise, or disruption.
+	The infrastructure improvements, specifically the Boiler House expansion, must support continuous use immediately upon occupancy.
+3.2 Anticipated Structural Challenges
+Based on the RFP and our experience with similar urban healthcare projects, we anticipate the following structural challenges to be central to the project’s success: 
+	[Challenge 1]: Boiler House Vertical Expansion. The existing Boiler House was not originally designed for vertical expansion. This requires complex analysis of existing capacity and creative reinforcement or independent spanning strategies to support the new two-story addition (approx. 8,000 SF).
+	[Challenge 2]: Haddon Avenue Pedestrian Bridge. Design and erection sequencing for the multi-story bridge connecting Tower A to the MD Anderson facility must account for long spans, urban utility constraints, and overhead safety during construction.
+	[Challenge 3]: Deep Foundations & Groundwater. Coordinating the Tower A basement foundations with the unknown groundwater table (anticipated hydrostatic uplift) and the adjacent, sensitive foundations of Kelemen and Roberts Pavilions.
+	[Challenge 4]: Phased Demolition (Dorrance Building). Developing a structural strategy for Phase B that allows for the safe, phased demolition of the Dorrance Building while maintaining structural integrity for portions that may temporarily remain.
+3.3 Structural System Objectives
+The primary objectives of the structural design are to:
+	Provide a safe, code-compliant structural system that meets Target Value Design (TVD) goals.
+	Minimize long-term maintenance requirements.
+	Support efficient construction sequencing, specifically for Early Foundation and Steel Packages.
+	Allow flexibility for future adaptation, including fit-out of shell spaces in Towers B and C.
+	Integrate cleanly with architectural and MEP systems, particularly for the Central Energy Plant distribution.
+Our team will document these objectives early in the Basis-of-Design and use them to guide decision-making throughout the project.
+
+4. MANAGEMENT OF THE WORK
+The success of this project depends on disciplined management of the structural scope from the earliest stages. Our firm approaches structural engineering as an active participant in project delivery, not a passive design consultant.
+4.1 Pre-Design Services Approach
+The pre-design phase establishes the foundation for all downstream decisions. Our objective during this phase is to eliminate unknowns, validate the HKS/Array Conceptual Design Package, and establish a clear structural Basis-of-Design before schematic concepts become fixed.
+During pre-design, our team will:
+	Review all available project documentation, including the 2020 Facility Condition Assessment.
+	Validate the proposed grid and lateral support systems for Tower A.
+	Meet with the Owner and Architect to understand operational priorities.
+	Identify potential phasing and constructability constraints regarding the Boiler House and Bridge.
+4.2 Existing Conditions Investigation
+Assumptions regarding existing conditions represent one of the greatest sources of downstream risk if not addressed early. Our approach includes:
+	Review of existing as-built drawings for Kelemen, Roberts, and the Boiler House.
+	Coordination with Langan (Civil/Geotech) to understand subsurface conditions and groundwater impacts on Tower A.
+	Identification of adjacent structures that may be sensitive to movement or vibration during underpinning or pile driving.
+	Review of existing utility locations along Haddon Avenue impacting the bridge foundations.
+4.3 Design Coordination & Team Integration
+We view coordination as a continuous process rather than a periodic check. Our coordination strategy includes:
+	Participation in regular design coordination meetings and TVD cluster meetings.
+	Active review of architectural layouts to align column grids with efficiency.
+	Coordination with MEP engineers regarding penetrations, particularly for the heavy MEP distribution required from the CEP.
+	Utilization of BIM coordination tools to visually identify conflicts early.
+4.4 Structural Systems Evaluation
+During early design, we will evaluate multiple framing systems. Each option will be evaluated based on span capability, construction sequencing implications, durability, and lifecycle maintenance considerations. We will document the evaluation process and clearly communicate the rationale behind the recommended system.
+4.5 Foundation System Considerations
+Our foundation evaluation will consider shallow versus deep foundation options, the impact of groundwater levels (hydrostatic slabs), adjacent building foundations, and geothermal well coordination if required.
+4.6 Diversity & Local Participation
+We understand Cooper’s commitment to the Camden community. Our management plan includes affirmative steps to structure our work packages to maximize participation from MBE, WBE, Veteran-owned, and Camden-based firms. We will track and report on these diversity goals throughout the project lifecycle.
+
+5. CONSTRUCTABILITY REVIEW & RISK MITIGATION
+Constructability is not a final-stage review; it is integrated throughout the design process.
+5.1 Structural Constructability Review Process
+At each design milestone, our team will perform formal constructability reviews focused on structural framing complexity, repetition opportunities, tolerance management, and erection sequencing - critical for the Haddon Avenue bridge.
+5.2 Risk Identification & Management
+Our risk management approach focuses on early identification and mitigation of issues such as corrosion, drainage failures, differential settlement between new and existing towers, and sequencing conflicts.
+
+6. VALUE ENGINEERING (STRUCTURAL-LED)
+We define Value Engineering (VE) as improving project value, not simply reducing initial cost. We are fully prepared to participate in the Target Value Design (TVD) process led by the Construction Manager.
+6.1 Structural Value Engineering Philosophy
+Effective VE begins early. The greatest opportunities for meaningful value improvement occur during conceptual and schematic design. Our VE approach evaluates structural system selection, span optimization, material efficiency, and lifecycle cost impacts.
+6.2 VE Implementation by Design Phase
+	Conceptual/Schematic: Evaluate alternate framing systems and optimize column spacing for Tower A.
+	Design Development: Refine member sizing and optimize reinforcement layouts; prepare Early Steel Packages.
+	Construction Documents: Final detailing efficiencies and packaging strategies.
+
+7. PHASING & SEQUENCING (STRUCTURAL PERSPECTIVE)
+7.1 Phasing Considerations
+Structural phasing considerations include foundation sequencing adjacent to active facilities, partial occupancy requirements, and load path continuity during the phased demolition of the Dorrance Building.
+7.2 Sequencing Support
+We provide structural input to support early work packages, including the Early Foundation and Early Steel bid packages requested in the RFP, ensuring the December 2026 completion date is achievable.
+
+8. QUALITY CONTROL & QA/QC PROCEDURES
+8.1 Internal QA/QC Process
+Our QA/QC process includes independent senior-level design review, constructability-focused checks, coordination review across disciplines, and documentation consistency checks.
+8.2 Field Quality Support
+During construction, we support quality through site observations, response to field conditions, and review of non-conforming conditions.
+
+9. CONSTRUCTION ADMINISTRATION SERVICES
+9.1 Submittals & RFIs
+We provide timely review of structural shop drawings, product submittals, and RFIs related to the structural scope. We commit to the RFP requirement of 5-day turnaround for RFIs and 10-day turnaround for submittals.
+9.2 Site Observations
+We conduct site observations (minimum weekly visits as anticipated) to verify that structural systems are installed per design intent and that field conditions align with assumptions.
+
+10. COMMUNICATION PROTOCOLS & PROJECT CONTROLS
+10.1 Structural Communication Framework
+We designate a single Structural Project Manager as the primary point of contact responsible for coordination with Cooper and Hammes Company.
+10.2 Meeting Participation & Documentation
+We actively participate in Owner/Architect coordination meetings, design team meetings, and construction progress meetings.
+10.3 Issue Tracking & Resolution
+Structural issues are tracked through design coordination logs and RFI logs. We prioritize early resolution to avoid cascading impacts.
+
+11. COORDINATION WITH AUTHORITIES HAVING JURISDICTION (AHJ)
+11.1 Code Compliance Strategy
+Our team establishes code compliance early, documenting governing building codes (NJ DCA), structural design criteria, and seismic/wind design parameters.
+11.2 Permitting Support
+We support permitting by responding to plan review comments and clarifying design intent to secure AHJ entitlements timely.
+
+12. HEALTH, SAFETY, & STRUCTURAL RESPONSIBILITY
+12.1 Design for Construction Safety
+We incorporate construction safety considerations by minimizing temporary conditions where possible and clearly identifying required shoring or bracing, especially relevant for the Dorrance demolition.
+12.2 Structural Responsibility During Construction
+We remain engaged during construction to address unforeseen field conditions and temporary condition questions.
+
+13. SUSTAINABILITY & LIFECYCLE PERFORMANCE
+13.1 Durability-Driven Sustainability
+Our structural sustainability strategy focuses on corrosion-resistant detailing, proper drainage coordination, and designing for extended service life.
+13.2 Adaptability & Future Use
+We evaluate opportunities to accommodate future vertical expansion, support rooftop systems (screen walls), and allow potential adaptive reuse scenarios, including the shell space planning for Towers B and C.
+
+14. RELEVANT PROJECT EXPERIENCE
+14.1 Regional Medical Center – Critical Care Tower Expansion 
+	Description: A $210M, 12-story vertical expansion and new patient tower adjacent to an active Level I Trauma Center. The project included 240 new patient beds, a new surgical suite, and a rooftop helipad.
+	Structural Scope: 
+o	Design of a composite steel moment frame system optimized for vibration control in operating theaters.
+o	Complex foundation underpinning to protect the adjacent active Emergency Department.
+o	Integrated design of a lateral load resisting system to accommodate future vertical expansion of two additional floors.
+	Key Challenges: Vibration mitigation for sensitive imaging equipment; seamless physical connection to the existing hospital at six different floor elevations.
+14.2 University Avenue Pedestrian Skybridge Description
+	Description: Design of a 180-foot clear-span pedestrian bridge connecting a new medical research facility to the main hospital campus over a 4-lane urban arterial road.
+	Structural Scope: 
+o	Prefabricated steel truss design allowing for single-weekend erection to minimize traffic disruption.
+o	Implementation of tuned mass dampers (TMDs) to mitigate pedestrian-induced vibrations.
+o	Pile foundation design avoiding dense urban utility networks (gas, fiber, water) running beneath the sidewalks.
+	Key Outcomes: Zero safety incidents during erection; accelerated schedule allowed the bridge to open 3 weeks early.
+
+15. TEAM ORGANIZATION & ROLES
+15.1 Project Team Structure
+	Principal-in-Charge: Executive oversight and quality assurance.
+	Structural Project Manager: Day-to-day coordination and delivery.
+	Senior Structural Engineer: System design and technical leadership.
+	Structural Engineers/Designers: Analysis, modeling, documentation.
+15.2 Continuity of Staffing
+We commit to maintaining core team continuity throughout the project to preserve institutional knowledge and decision consistency.
+
+16. KEY PERSONNEL QUALIFICATIONS
+Detailed resumes for key personnel are included in this proposal. Each individual brings experience specific to Academic Medical Centers and complex institutional projects.
+
+17. COMMITMENT TO PROJECT SUCCESS
+We approach the Cooper Master Campus Plan with a commitment to technical excellence, collaboration, and accountability. Our goal is not simply to design a compliant structure, but to deliver a facility that performs reliably, efficiently, and sustainably throughout its service life.
+We view this engagement as a partnership and are prepared to support Cooper University Health Care throughout the full lifecycle of the project.
+

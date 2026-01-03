@@ -1,0 +1,95 @@
+/* SidOS Main Styles */
+/* Foundation colors - using Speckle theme variables */
+
+:root {
+  /* Foundation colors */
+  --foundation-page: #0a0a0a;
+  --foundation: #111111;
+  --foundation-2: #1a1a1a;
+  --foundation-line: #2a2a2a;
+  
+  /* Foreground colors */
+  --foreground: #ffffff;
+  --foreground-muted: #999999;
+  
+  /* Primary colors */
+  --primary: #0070f3;
+  --primary-hover: #0051cc;
+  --primary-content: #ffffff;
+  
+  /* Danger/Error */
+  --danger: #ff4444;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  background: var(--foundation-page);
+  color: var(--foreground);
+}
+
+.bg-foundation-page {
+  background-color: var(--foundation-page);
+}
+
+.bg-foundation {
+  background-color: var(--foundation);
+}
+
+.bg-foundation-2 {
+  background-color: var(--foundation-2);
+}
+
+.border-foundation-line {
+  border-color: var(--foundation-line);
+}
+
+.text-foreground {
+  color: var(--foreground);
+}
+
+.text-foreground-muted {
+  color: var(--foreground-muted);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-primary-hover:hover {
+  background-color: var(--primary-hover);
+}
+
+.text-primary-content {
+  color: var(--primary-content);
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--foundation);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--foundation-line);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
