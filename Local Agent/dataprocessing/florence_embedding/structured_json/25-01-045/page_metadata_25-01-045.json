@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "KIE_M_TM_RAIL_C_page_001",
+      "drawing_title": "MONORAIL IN MECH ROOM 2",
+      "overall_classification": "Mixed",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Monorail Layout",
+        "Section Views",
+        "Structural Details"
+      ],
+      "text_verbatim_title_block": "UNION STATION\nGO EXPANSION USEP\nMECHANICAL\nMONORAIL IN MECHANICAL ROOM 2\nMETROLINX PROJECT NO.: 0001\nCONTRACT NO.: 100053\nISSUED FOR INFORMATION ONLY\nNOT FOR CONSTRUCTION\nKiewit\nONTrack ALLIANCE\nSEAL\nSEAL\n06/10/2022 Designer 09/10/22\n06/10/22 Drafter 09/10/22\n06/10/22 Checker 09/10/22\n06/10/22 Approver 09/10/22",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides a mixed set of drawings for the monorail installation in the mechanical room. It includes a plan view of the monorail layout and several section views detailing structural components. The sections illustrate various levels, including the concourse and lower concourse levels. The sheet is issued for information only and is not for construction."
+    }
+  ]
+}

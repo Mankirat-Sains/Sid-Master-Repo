@@ -1,0 +1,27 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Basement wall section",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Footing Insulation Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Rigid Foam Insulation",
+        "Interior Slab",
+        "Footing",
+        "Basement Wall"
+      ],
+      "text_verbatim": "Addition\nElmira, Ontario, N3B2Z1\nBASEMENT WALL AS PER PLANS BY OTHERS\nINTERIOR SLAB TO BE 5\" ABOVE TOP OF FOOTING C/W 2\" RIGID FOAM INSULATION BETWEEN FOOTING AND SLAB\nGRADE\n2 LAYER 2\" T POLYSTYRENE (S.M.) 4' WIDE BELOW GRADE APPLICATION TO PROVIDE FROST PROTECTION AT FOOTINGS.",
+      "summary": "This detail illustrates the footing insulation for the David Bauman House Addition. The drawing specifies that the interior slab is to be 5 inches above the top of the footing, with 2 inches of rigid foam insulation between the footing and the slab. The basement wall is constructed according to plans by others. The section view shows the grade line and indicates the use of a 2-layer, 2-inch thick polystyrene (S.M.) that is 4 feet wide below grade to provide frost protection at the footings. This detail ensures proper thermal insulation and structural support at the foundation level.",
+      "project_id": "25-01-037",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    }
+  ]
+}

@@ -1,0 +1,472 @@
+Explanation form a talk with a Very smart man:
+
+Hi Paul...been meaning to talk to you, but have been waiting to see you again in office...will you be in either this week or next? If not, I'd love to set up a call to chat if you have the time...
+I am building the Junior Engineer and would love to chat on fine-tuning and knowledge graphs among other things. I hear you are THE GUY.
+Paul Saucier (Nexrisx)
+  11:03 AM
+Hi James - lol not sure about being the guy but I'm very happy to chat and share.
+I'm in today and tomorrow morning and then next week I'm back Wednesday Thursday Friday .
+James Hinsperger (Sidian)
+  11:05 AM
+Sweet... I will come by your desk today to chat. Is there anytime that works best?
+James Hinsperger (Sidian)
+  2:52 PM
+Hi Paul....Just some additional info for you based on our chat.
+Gameplan:
+Knowledge Digestion...extract most up to date drawings and models and digest into system to create inventory. ****Need best way to ID these files (thinking excel currently)
+Parsing drawings (see google drive for reference) - first page(s) OCR/Llama parse (heavily text based)....use trained Yolo model for bounding boxes...will be done training today See attached image
+-Then will embed these images as well as create clear context and engineering understanding of what is happening (currently using APIs)
+Adding models to our agnostic data system (Revit) (Pulled many ideas from open source speckle) See Links ***Apache 2.0 License
+This is the data we are starting with, but also have analysis software (Etabs, SAP2000, Safe, RISA) and excel sheets
+As well as many building codes and company manual/typical details/standards which are applicable to all projects.
+Goal: Create a system that brings engineering data to life. That can answer engineering questions and conduct technical work on an engineers behalf.
+Things you mentioned:
+-Have a system with prepend and slight fine-tuning in flower dev.
+-Have projects in bins and connect bins.
+-Simplicity is they Key...we are planning on having one chat (Language user interface instead of graphical user interface)
+-Simple onboarding
+Just wanted to thank you a lot Paul...speaking with you today and yesterday has been very helpful and really meant a lot in terms of boosting confidence...safe travels and chat soon!
+Helpful links
+https://speckle.guide/dev/architecture.html
+https://github.com/specklesystems/speckle-server
+https://github.com/smartaec/ifcmcp
+Google Drive:
+https://drive.google.com/drive/folders/1oZeSGBSvtGLvFCH6fat8buz4ajQPhzhK?usp=sharing
+Demos:
+https://youtu.be/0UCnvcDARBE
+https://youtu.be/ANa51O7xhi4 (edited) 
+image.png
+ 
+image.png
+
+
+
+YouTube | Sidian
+Bluebeam To Revit Automation
+
+
+YouTube | Sidian
+Sid Long Form End-End Completion
+
+Paul Saucier (Nexrisx)
+  10:01 PM
+James - you're crazy good at this.  LOVE it so much .
+James Hinsperger (Sidian)
+  3:58 PM
+:pray: appreciate you man. Crazy college game on last night....bet your son loved it. More defence than offence though
+Paul Saucier (Nexrisx)
+  6:46 PM
+I know it was unreal !!!!!
+Paul Saucier (Nexrisx)
+  6:53 PM
+And they actually use Spencer on D (DB) in the 4th because of his hands and he loves it too.
+James Hinsperger (Sidian)
+  8:23 AM
+Makes sense. Put him all over the place and let him do his thing. Is he gonna play spring ball or just prep for American Camp?
+Soon enough you will be going to the college camps May-July. Never ran my 40 so many times :joy:
+Paul Saucier (Nexrisx)
+  8:29 AM
+Hahaha he needs to work on all that.  I’m debating for spring ball right now.   Did you do a league before American camp ?
+James Hinsperger (Sidian)
+  8:47 AM
+The Spring season would go into August I believe right? There are a couple options...one is to do spring ball, the other is to do like flag and just train.
+I would be leaning towards the latter. I think focusing on speed and size would be most beneficial since that is a huge thing. Learning the techniques of how to run a 5-10-5. The process of running a 40, and doing broad jump, etc is huge. Learning technique alone can really cut time and improve performance and coaches put a lot of weight on that type of thing (I know, it is BS).
+Youd think all they care about is what you do on Saturdays, but a lot of the time they wont look at you if your numbers are not good. Your numbers are the resume and your play is the interview.
+Ive learned a lot about this lifestyle and have a bunch of friends in NFL/CFL. Would love to chat with Spencer or put him in contact with some people!
+Paul Saucier (Nexrisx)
+  10:14 AM
+That's great insight James.  Thanks so much for sharing.   Can't wait for you to meet Spencer and discuss more.  
+Paul Saucier (Nexrisx)
+  2:43 PM
+So my brain needs to understand the whole flow, structure etc before I can really give hopefully helpful feedback.  I do this by creating a similar project to yours so that my mind puts the building blocks together.
+Paul Saucier (Nexrisx)
+  2:53 PM
+when you get a chance - just take a quick peek at this>
+2:55
+https://v0.app/chat/civil-engineering-dashboard-ec8gjF7vj80?ref=UKELOI
+v0.app
+Civil engineering dashboard - v0 by Vercel
+I want to create a dashboard application that integrates multiple civil and structural engineering tools. Specifically, it should pull data from Revit...
+https://v0.app/chat/civil-engineering-dashboard-ec8gjF7vj80?ref=UKELOI
+
+2:56
+Don't look at the design please.  Just the functionality.
+2:57
+There's no backend wired.  It's just to make sure I understand the flow and function, and add what's missing.
+James Hinsperger (Sidian)
+  4:11 PM
+Hi Paul, Yes. This looks good. Our current system connects with PDFs and Revit...but the aim is to get to all company files like you have (rvt, PDF, excel, CAD, word, etc). Just havent found a good way to get all that tied in with agents...Additionally, how do you recommend getting all of the data into this system quickly? Does the company we work with have to be cloud based?
+The current workflow creates a database with revit data in Postgres (query over it with Graph QL) - This is using Speckle as the foundation and then adjusting for our needs...speckle translates data from engineering modelling software into a common, agnostic structure.
+We also have a supabase database for all PDF info and we get this by using a Yolo model to put bounding boxes around elements (as seen in the image I sent earlier), embed the images themselves, and then also embed the description of images....we are trying to figure out a way to get an agent to really get an "engineering understanding" of these PDfs, and I believe you mentioned that wouldn't be too bad.
+Currently our UI is just a chat, but I do like the idea of a dashboard...I like the idea of where you are going with this. This way we could track project progress...Are you thinking thsat the files would be made in this system (ie. if i need to make a new revit, would it be added here and auto linked to the local server/cloud server)?
+We are struggling with orchestrating the system that can quickly query over supabase and GraphQL very quickly. We are also unsure exactly how to train the system to be able to interact with engineering tools (like revit), to conduct work on an engineers behalf...all changes are tracked in the postgres db, but unsure how to use that for training.
+ I really cant thank you enough for the help. Please let me know if you would like to hop on a call to see more!! Also let me know if anything is unclear whatsoever or if you need more information.
+Paul Saucier (Nexrisx)
+  4:19 PM
+Alright let me play with this
+James Hinsperger (Sidian)
+  4:20 PM
+Appreciate you!
+Paul Saucier (Nexrisx)
+  4:20 PM
+Same here James
+Paul Saucier (Nexrisx)
+  12:22 PM
+Ok - I've been playing with this, it's a lot of fun.
+Paul Saucier (Nexrisx)
+  1:19 PM
+No, the companies you work with do not have to be on cloud.
+Your current stack is actually pretty bang on.  Speckle is your stack's hero here.
+I took everything you’re building today (Speckle, Postgres/GraphQL, Supabase, YOLO, etc.) and mapped it out n my head to better understand. As mentioned I think your core stack is already exactly what I’d choose. I would think of adding sort of a thin brain layer on top to unify search, versioning, and agent workflows (if your looking for agentic stuff down the road).
+Your current foundation if I understand right.
+Speckle + Postgres/GraphQL is the single source of truth for all model data.
+Supabase stores PDFs, YOLO bounding boxes, embeddings, and text.
+all great building blocks for RAG and agentic workflows.
+I would think of adding a lightweight connector for file shares / DMS
+Speckle handles all the model-authoring tools it integrates with (Revit, AutoCAD, Civil3D, etc.).
+For everything outside Speckle’s scope, we'd add a small connector service.
+This connector would:
+Run on-prem or within the customer’s network
+Crawl existing project folders (Excel, Word, PDFs, CAD, specs, reports, etc.)
+Extract metadata + text from each file
+Generate embeddings (when applicable)
+Push the results into Supabase and the unified search index
+This ensures you can index all project knowledge without requiring the customer to be cloud-based or to re-organize their existing file structure.
+3. Maybe create a simple Postgres/pgvector-backed index that aggregates:
+Model elements from Speckle (via GraphQL)
+PDF elements from Supabase (YOLO detections + embeddings)
+File metadata + text embeddings from the connector (Excel, Word, extra PDFs, CAD)
+This would give the AI a single, consistent place to query, rather than stitching together multiple backends manually.
+ It would simplify RAG, speed up agent workflows, and keep the system extensible as new data sources are added.
+4. I would also add a thin Orchestrator API layer.
+This sits between the dashboard/LLM agents and the underlying data sources.
+ The UI and agents call only the Orchestrator, never Speckle GraphQL or Supabase directly.
+Its responsibilities:
+Unified search across models, PDFs, and files
+Version comparisons (models, drawings, sets)
+Fetching project context, e.g.:
+model details from Speckle
+PDF elements and file metadata from Supabase
+Running agent tasks (multi-step workflows, tool-calling)
+Writing audit logs for every operation (traceability)
+It exposes a small, simple set of endpoints/tools, example:
+GET /project/:id/context
+POST /search
+POST /compare-versions
+GET /changes-since
+POST /run-agent-task
+Internally, the Orchestrator can use LangGraph or LangChain/Haystack to handle:
+tool routing (Speckle, Supabase, search index)
+multi-step workflows
+retries
+stateful agent operations
+1:24
+Let me know if any of this makes or doesn't make sense.  I swear it's all very organized in my head.
+James Hinsperger (Sidian)
+  2:03 PM
+You have hit the nail on the head! This is exactly what we are building and i love the suggestions that you have. The plugin is a great suggestion and something we are trying to figure out now...would it be an executable? You picked this up pretty damn fast.
+Additionally...we have forked speckle and made some adjustments (its currently running as a local server)...so we are planning to use docker for the server...would you use docker? and what are your suggestions on hosting? Would you recommend using a desktop app or a web based system?
+In terms of the orchestration, do you think we bring in a knowledge graph to simplify queries (ie. if a user asks to find a project that has a retaining wall, that info will be in the PDF info, and more specifically the embeddings)...occasionally info may have to be routed to different data sources so trying to figure out this architecture.
+How do you recommend making systems that can do GraphQL and SQL searches? Create custom LLMs that understand your specific table structure?
+How would you train the models that are to interact with the engineers tools (like learning from the changes that are made over time which are tracked within speckle and then being able to actually conduct work in revit, for example)
+Have you ever done work with systems deeply understanding excel? And once again, being able to interact? I added a sample excel file which, as you can see is complex....
+Lastly, how would you train the system for understanding the PDFs...currently we are crating JSONs...but up to this point we have mostly been using API wrappers just to get the MVP out...we need to make this thing very smart.
+Now just trying to figure out the best way to bring this all together...
+Really appreciate your help and definitely do not want to overstep myself, so by all means, you can tell me to fuck off. You have done more than enough for me. Cant thank you enough man
+Excel Spreadsheet
+ 
+
+Mantle Demo - Stud barn Design.xlsx
+Excel Spreadsheet
+Paul Saucier (Nexrisx)
+  2:16 PM
+lol I will definitely not fuck off - I live this.  And I think you're amazing so if I can help in any small way I'm up for it 100%
+James Hinsperger (Sidian)
+  2:21 PM
+My guy:handshake:... you coming in at all this week? Are you gonna be wrapping up with the accelerator soon?
+Paul Saucier (Nexrisx)
+  2:34 PM
+I'm happy to help James.  Let me put my thoughts together and send shortly.
+2:35
+I'll be in Thursday and Friday this week.   It's my last week in the program!!!!  but I'll be back at least every other week.  I'm already back next week Tuesday to Thursday.
+James Hinsperger (Sidian)
+  2:44 PM
+Okay sweet! Theyre not getting rid of you yet...thats great for the rest of us.
+Paul Saucier (Nexrisx)
+  2:47 PM
+btw - love the spreadsheet, this is exactly where deep understanding becomes a structured semantic layer/tools problem, not an LLM reads the whole thing raw problem.
+I'll break down what’s inside the Excel file later after gym and I'll try to explain how an AI system should interact with it (according to me lol), because ths is a great example of why naive RAG fails and why you need a metadata layer/tool interfaces.
+James Hinsperger (Sidian)
+  4:06 PM
+Yesss. Sounds good! Excited to learn. What are you hitting today at the gym? Where do you lift?
+Paul Saucier (Nexrisx)
+  4:57 PM
+I'm more plyo, agility, high intensity with heavy weights. 
+Paul Saucier (Nexrisx)
+  4:57 PM
+The closest gym to my house lol fit4less is literally 2 minutes away.
+4:58
+And we learn together.  Looking at other’s works also helps me a great deal.
+James Hinsperger (Sidian)
+  5:57 PM
+Nice. I got to Crunch nowadays. Used to go fit4less. Proximity and cost
+5:58
+I'm glad you are learning something! I know you are a busy guy and taking your time like this for us is incredible
+Paul Saucier (Nexrisx)
+  9:08 PM
+I saw Crunch.  Haven't been yet.   I do a lot outside, like running my 10k in the morning and do my body weight stuff.   The gym is a great addition and more relaxing during winter lol
+9:09
+James I'm getting as much out of this as you are, I promise.   And I will be wrong on certain things, I like to push for new things.
+9:11
+I started working with UWaterloo ML lab, you'll probably have better access to than I do to it.  The woman in charge there is Sirisha.   I’ve rarely met someone as impressive as her.   They do stuff now that we will be doing in years from now. 
+9:12
+Anyway.  I'm working on our stuff but I'll report in the morning. Going through the excel rn.
+James Hinsperger (Sidian)
+  9:37 PM
+Youre a beast. Are you one of those Sickos that is out running in the winter as well...David Goggins style....Ive gotten soft since finishing up football
+9:39
+I will try to get in contact with her once we have our whole system fully architected...mid Q1 maybe...thanks for sharing her name!
+9:39
+Cant wait to see what you come up with ... learning more now than I ever have before.
+Paul Saucier (Nexrisx)
+  9:10 AM
+You and I 's heavy weights are different weights lol
+9:13
+Ok, the excel.  I love it.  And it's what you can build for this that makes it a co-pilot and not just a toy.
+9:17
+I’d treat the Excel as mini design engines with a semantic layer on top and not as blobs of text for RAG.
+At onboarding, you parse the workbook structure (sheets like INFO, Full Building, Locations, Tables, etc.) and extract named ranges as the API for inputs and outputs. INFO holds global project & load inputs, Full Building is the core calculation engine, Locations and Tables are code/lookup tables, and Notes/Change Log are narrative context and audit (I think).
+In the orchestrator, we then expose a small set of tools such as get_excel_input, set_excel_input, get_design_summary, and lookup_location. When the user asks something like “Change the location to Big Trout Lake and show me how loads and governing members change”, the agent doesn’t read the whole Excel and instead it uses tools to 1, look up the new location data, 2, write those values into the INFO sheet, 3, trigger a recalculation, and then 4, read key outputs from Full Building and summarize the impact.
+That’s how you can make the system excel aware in an engineering sense where it stays the source of truth for calculations, and the AI becomes the planner, operator, and explainer on top of it, instead of trying to understand the workbook purely via embeddings.
+9:18
+Eventually you'd want to transition users to a saas based tool on your platform.    But that takes time.  It would be a great vision story to talk about with investors and clients etc.
+9:23
+Phase 1 is to integrate with excel and treat it as the source of truth.
+Phase 2 is to observe how engineers actually use the workbook and capture the semantics.
+Phase 3 is to build a validated, serverside calculation engine that mirrors the Excel logic.  You run parallel for 6 months or whatever.
+Phase 4 is to migrate clients naturally once the platform can compute everything more reliably, more transparently, and more safely than Excel.
+9:23
+Ok back to the questions.  Sorry I digress very easily.
+Paul Saucier (Nexrisx)
+  9:59 AM
+Plugin / local integration, I’d treat this as a lightweight agent that runs inside the customer’s environment. Revit gets its own add-in for deep API access, but everything outside Speckle’s scope (Excel, Word, PDFs, CAD, file shares etc) goes through a small Windows service or Dockerized agent. It extracts metadata/text, generates embeddings, and pushes everything to Supabase and the unified index. Speckle remains the source for models andthe connector would handle the rest.
+10:02
+Containerizing your forked Speckle server and Orchestrator is the right move for me as well. I'd use Docker Compose for local/dev, and move to AWS managed K8s for SaaS deployments. For clients that need local (regulated or whatever), ship an on-prem bundle via Docker compose or a Helm chart. but web based UI should remain the primary interface for the platform, with optional desktop wrappers only if you need to.
+Paul Saucier (Nexrisx)
+  10:08 AM
+For the graph piece, I’d start with Neo4j. You need rich relationships and impact analysis, not web-scale social graphs, so Neo4j’s ecosystem is great and will get you to mvp fast. I would keep graph access behind an Orchestrator tool like graph_trace_impact and graph_find_related_elements. If (when :-)) you hit big scale or infra constraints, you can swap to a distributed system without changing the UI or agent logic.  Again, just my take here.
+Paul Saucier (Nexrisx)
+  10:13 AM
+You may not need a custom LLM just yet, not sure.  It does help you story telling for the business though so could be worth it for that.  But for the platform, it's probably not needed for V1.
+The Orchestrator will expose clean tools (search_elements, get_model_details, get_pdf_elements, compare_versions) and internally route GraphQL to Speckle, SQL to Supabase, and semantics to pgvector. The LLM's main job here is to pick tools / parameters and never write raw queries. Later, once you have real logs of tool usage (unless you have them now), you can fine tune a small model to understand our domain and tool semantics more deeply, but without ever letting it build SQL/GraphQL directly.  Again this all makes sense in my head, I can expand.
+10:16
+Your YOLO / JSON / embedding pipeline is great I think. PDFs become structured elements that you embed at multiple levels (text, labels, bounding boxes, relations). Retrieval happens through the unified index, and the LLM reasons over the structured JSON rather than raw PDFs. As users correct the system, those corrections become training data for a fine-tuned vision-language model that understands engineering drawings more naturally over time.  I like this.
+10:19
+I took notes last night, over a glass of wine or two lol.   But reviewed a bit this morning.  Let me know if all this makes sense.  Also, when I write notes, I still think 50% in French so I puzzle everything together but that leaves room for mistakes.  Please call me on them :slightly_smiling_face:
+James Hinsperger (Sidian)
+  12:05 PM
+Hi Paul! Thanks so much for getting this over. I have another meeting at noon and then I will have time to follow up on all of this and make sense of it all....thank you so much for this help!! Exactly what we need and glad we are on the right track. Chat soon!
+James Hinsperger (Sidian)
+  1:53 PM
+You are right with the excel structure...so you are basically suggesting a desktop plugin that can intercact with a company's excel? Could this also be connected to our main Web app by calling the agent locally and having them coordinates? I guess this is the general question I have for all desktop apps...
+Like we have the web app where the UI is, but then we have an executable that brings in a local agent for constant parsing (the plugin you mentioned earlier)...then plugins in software (excel, revit, etabs, etc), and have the ochestrator connected to the UI call these agents to conduct work locally? Is this something you have done before...this is why we were debating between a desktop and a web app...but we are leaning to the web as we are moving to deploy in AWS.
+The plugin and local ingestion makes sense to me...and this would be done with an executable of sorts...would you make it headless so users cant see what is going on?
+For graph, would you reccomend using Neo4j, or replicating a graph in a SQL database? Do you think it is paramount for V1....and what are the pros and cons? Would the graph essentially be just another tool for the rag aspect of things...or would it be the main way that the agent gets to the tools that it needs?
+For the system that uses graphql (speckle) and SQL (supabase), would it require a custom model for converting language to structured queries....do you have any insight into this? Or would you just use prompting with a general LLM? So like the general orchestrator (doesnt have to be cusomt) calls the SQL tool...then how would you recommend converting the user query into a SQL query?
+For the JSON Yolo system...how would you recommend making it so that humans can correct the system? How would we get the metrics to do the fine tuning?
+This was all very helpful!! Crushed it Paul. What type of wine do you like?
+Paul Saucier (Nexrisx)
+  4:32 PM
+The plug in would do exactly that.  Connects to your platform so your SaaS has access to it at all time.
+4:33
+It all works in the background. 
+4:34
+I can show you a structure for that if you want.
+4:36
+You should be building a Saas for sure, and if needed you provide a lightweight desktop application.  But the idea would be to move everything to saas at some point. 
+4:36
+Again just my view here :-)
+Paul Saucier (Nexrisx)
+  4:44 PM
+I would see it like this:
+
+	•	Web app (in AWS): main UI + Orchestrator + agents.
+	•	Local Agent / Service (executable, mostly headless):
+	•	Runs on the client’s machine or server
+	•	Knows how to talk to:
+	•	Excel (via COM / Office JS / add-in)
+	•	Revit / ETABS (via their plugins)
+	•	Maintains a secure channel to your cloud Orchestrator (HTTPS / WebSocket / gRPC).
+	•	Tool plugins (Revit add-in, Excel bridge, etc.):
+	•	Talk to the local agent, not directly to the cloud.
+
+So the flow is:
+User clicks something in the web app (or the AI decides to do work).
+Orchestrator sends a task to the local agent (like, “update these cells” or “change these Revit parameters”).
+Local agent calls the right plugin/tool and reports results back.
+This gives you the best of combination for Saas and local tools.
+4:46
+I’d make the local agent mostly headless but with a tiny status UI:
+	•	System tray icon
+	•	Small panel for:
+	•	“Connected / Not connected”
+	•	Logs / last few tasks if needed
+	•	Settings (server URL, project mapping, etc.)
+
+So end users aren’t constantly poking it, but IT and somepower users can see what’s going on.
+James Hinsperger (Sidian)
+  5:04 PM
+Love this...makes sense to me...would love to see the plugin you have mentioned...
+Man I cant believe you put this all together so quickly!! Brilliant.
+You never told me your go-to wine though?! I look forward to seeing you tomorrow.
+Paul Saucier (Nexrisx)
+  6:21 PM
+Neo4j - Short version:
+	•	For v1: not strictly required.
+	•	For impact analysis / load path style features then a real graph helps.
+If you do bring in a graph DB, I’d start with Neo4j:
+	•	Good ecosystem: Cypher, GDS (Graph Data Science), Bloom, and managed Aura.
+	•	Great fit for questions like:
+	•	“What’s impacted if I change this element?”
+	•	“Trace connections from this wall to the foundation.”
+You can model some graph-like stuff in SQL (adjacency tables + recursive CTEs), but it gets messy fast for multi-hop queries.
+Neo4j is much nicer for reasoning about relationships and paths.
+How it fits your architecture:
+The graph is another tool, not the whole brain. Orchestrator decides:
+	•	Use pgvector for “find relevant elements/projects”.
+	•	Use Neo4j for what is connected to what / what is impacted.
+So.
+V1 can ship without it.
+If you already know you want impact analysis, I’d add Neo4j in a focused way and hide it behind tools like graph_trace_impact and graph_find_related_elements.
+I'm not 100% on this but it makes sense in my head.  
+I've done all this or most of it prior.  I've been building all this the past 2 years.
+6:22
+I'll have more - just putting everything down and I'll send it to you
+6:23
+I still have to research some of the specific stuff for structural engineering lol.
+6:23
+But the business was stuff, the stack structure etc I've been doing for a while.   And I’ve tested so many different ways to go.
+Paul Saucier (Nexrisx)
+  6:30 PM
+I'm working on our. Own, next level ML funnel.  I’m trying to do something that hasn't been done just yet.   I present it to Sirisha (the woman I mentioned) and she's like, yeah that's super cool and I can help you there,  I did that 4 years ago.
+6:30
+So now I'm learning what she's working on now instead lmao :joy:
+6:31
+It's non stop learning, trying, testing etc.  That's the fun part.
+Paul Saucier (Nexrisx)
+  6:50 PM
+https://www.linkedin.com/posts/uwaterloo_uwaterloonews-activity-7404219807979655168-0LW3?utm_medium=ios_app&rcm=ACoAAAs1BjMBenUJxxXIILqLqco9lvYsyjUo9Yk&utm_source=social_share_send&utm_campaign=copy_link
+linkedin.com
+#uwaterloonews | University of Waterloo
+A much faster, more efficient training method developed at the University of Waterloo could help put powerful artificial intelligence (AI) tools in the hands of many more people by reducing the cost and environmental impact of building them.
+Teaching them to do that now requires months of work and huge quantities of computational power, specialized hardware and electricity, making the costs of development prohibitive to all but large corporations and organizations.
+Researchers at Waterloo set out over a year to make the technology cheaper, greener and therefore more accessible — a goal they refer to as ‘democratization’ — by combining and building on previous efforts to improve training.
+More:… Show more
+https://www.linkedin.com/posts/uwaterloo_uwaterloonews-activity-7404219807979655168-0LW3?utm_medium=ios_app&rcm=ACoAAAs1BjMBenUJxxXIILqLqco9lvYsyjUo9Yk&utm_source=social_share_send&utm_campaign=copy_link
+
+6:50
+That's Sirisha (standing). Crazy crazy crazy smart.
+James Hinsperger (Sidian)
+  6:58 PM
+Okay! Great...we have done some Neo4j in the past, so I will use this. Graph as another tool also is understood.
+This slack chain that is building will be worth millions one day... a side not, how do you typically go about acquiring information (people, web search, LLMs, deep thinking, podcasts)? Is there an organized approach you take, or is it heavily dependent on what lays in front of you?
+Fascinating to me what you have done...heard big things through the grapevine, and theyve been surpassed. There is something you are doing that i gotta learn and thought process, continued learning, and problem solving are things Im deeply interested in as well. Books, podcasts, websites, people...always looking for ways to learn.
+P.S. Heres the podcast I mentioned to you Last week (Founders - David Senra)
+James Hinsperger (Sidian)
+  7:04 PM
+If this lands, everyone will have their own Basil:joy:
+Mathew McConaughey talked about having his own LLM he could talk to and when you were telling me about Basil last Friday that was immediately what popped into mind. That is another massive business for you.
+image.png
+ 
+image.png
+Paul Saucier (Nexrisx)
+  8:40 PM
+Basil is my queen.  She knows everything about me lol
+James Hinsperger (Sidian)
+  8:10 AM
+Safe fly in/drive over today Paul...chat soon
+Paul Saucier (Nexrisx)
+  8:58 AM
+See you soon
+Paul Saucier (Nexrisx)
+  11:59 AM
+Thanks for sharing the podcast - very good actually!
+And no wine needed my friend.  I'm happy to help or provide insight anytime.  Pay it forward to another founder one day when you get an opportunity :-)
+Paul Saucier (Nexrisx)
+  12:07 PM
+For the human correction question.  From what I know about your industry, I'd approach it this way.
+Its the show, correct, save, train, improve - rinse and repeat
+Paul Saucier (Nexrisx)
+  12:17 PM
+The idea is there's more involvement in the beginning, and it could look like this:
+You show the engineer what the system detected in the PDF (YOLO boxes, labels, element types, etc.)
+Engineers fix the mistakes directly in the web app
+ Like :
+“This isn’t a column, it’s a door.”
+“This wall should be 3m, not 2.5m.”
+“Delete this box, false positive”
+“Add a missing element over here”
+Every correction gets saved as a training example.  For each detected element you would store:
+what YOLO predicted
+what the human corrected it to
+the PDF/context it came from
+timestamp + user ID
+whether it was a mislabel, bad box, missing element, whateveryour gauging.
+Over time you'll collect hundreds of these before/after pairs.  These become the labeled dataset we didn't have before.
+You then fine tune the model using those corrections.  The training loop would see patterns like:
+“Our model often confuses braces with beams.”
+“Walls on gridline tags are often misread.”
+“Boxes drift too low on S-series sheets.”
+And it updates the model so next time it predicts the corrected version automatically.
+You track accuracy with simple metrics that are more universal like
+How many detections needed correction last week?
+Which labels are most commonly wrong?
+Is the model improving after each batch of corrections?
+BTW you could do the initial Show, Correct, Save with your own engineers as well to start and collect more data.
+12:19
+I write my notes in Notion, I'm impressed at how well it keeps formatting when dropped in here.  Some adjustments but actually pretty good.
+James Hinsperger (Sidian)
+  1:56 PM
+Thank you for the training explanation! Is there a way you also track like user interaction without directly dealing with the training data...ie. if your systems make a suggestion and the user continues asking questions, then clearly the question was not answered correctly.
+We can also just chat more once you are here....
+Paul Saucier (Nexrisx)
+  1:58 PM
+Yes there is.  That's what I've been developing more in depth.  Well I'm more on the , we proposed something and they took it or not.   But I like your idea. 
+1:58
+I call it passive user input lol
+James Hinsperger (Sidian)
+  2:34 PM
+Im gonna start using that...gotta come up with a lot of these terms:joy: make your own lingo
+Paul Saucier (Nexrisx)
+  3:37 PM
+Maybe it exists Idk
+Paul Saucier (Nexrisx)
+  6:15 PM
+FYI I ran a small example or the agent on my home server.  It's more manual for the first few ones,   GPT is telling me that in structural engineering there should be 7 or 8 different spreadsheets to calculate everything they would need.
+Is that the case?
+Because if so,  they would have similar logic in them from one client to another, even if the layout is different. 
+That's where after doing a few we could feed a dedicated model to handle them gradually moving forward.
+6:15
+Ok that's it
+James Hinsperger (Sidian)
+  10:55 AM
+Hi Paul...thanks for running some tests. 7 or 8 spreadsheets that are used quite frequently and then there can be a few more.
+They all have similar logic as they are based on Building codes (Ontario Building code, steel handbook, concrete handbook, wood design manual).
+When you are in next week I'd love to sit down and break this down...fully understanding the local agent that coordinates with the web hosted UI to actually conduct work.
+What type of information and logic are you extracting from the spreadsheets to feed to the model?
+If you tell me when you are coming in, I can make sure I revisit what I have done in the past with spreadsheets and see how this approach differs. The solution I had was not very strong.
+Paul Saucier (Nexrisx)
+  12:26 PM
+Ok amazing.  We can have it running before I leave kw.  I'm in Tuesday to Friday morning.   Thursday is wide open.
+James Hinsperger (Sidian)
+  12:42 PM
+Sweet! Ill be there everyday
+
+
+
+
+
+
+
+
+

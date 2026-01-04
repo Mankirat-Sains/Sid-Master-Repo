@@ -1,0 +1,117 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "S1",
+      "drawing_title": "COVER PAGE GENERAL NOTES",
+      "overall_classification": "Notes",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "General Construction Notes",
+        "Structural Steel Notes",
+        "Framing Notes",
+        "Design Loads"
+      ],
+      "text_verbatim_title_block": "RICHARD TOZER\nProject Title: 45'-0\" x 100'-0\" FARM BUILDING\n9157 Side Rd. 17, Erin ON N0B 1Z0\nDrawing: COVER PAGE GENERAL NOTES\nSheet: 1 of 7\nDEC. 10, 2024\nD. BAIMAN\n3 3 1 9",
+      "general_notes_verbatim": "EGRESS FARM NOTES:\n1. MAXIMUM TRAVEL DISTANCE TO AN EXIT SHALL NOT EXCEED 45M (147 ft.)\n2. WINDOWS USED AS EXITS REQUIRE A MINIMUM OPENING OF 22\" x 36\"\n3. EXITS MUST BE ACCESSIBLE AT ALL TIMES AND BE CLEARLY VISIBLE\n\nGENERAL CONSTRUCTION NOTES:\n1. DIMENSIONS SHALL TAKE PRECEDENCE OVER SCALE DRAWINGS (DO NOT SCALE DRAWINGS)\n2. ALL DIMENSIONS MUST BE JOB SITE CHECKED BY CONTRACTOR AND VERIFIED, DISCREPANCIES MUST BE REPORTED BEFORE COMMENCING WORK.\n3. THE DESIGNER HAS NOT BEEN ENGAGED FOR CONSTRUCTION SUPERVISION AND ASSUMES NO RESPONSIBILITY FOR CONSTRUCTION COORDINATING WITH THESE PLANS. NOT RESPONSIBILITY FOR CONSTRUCTION MEANS, METHODS, TECHNIQUES, SEQUENCES, OR PROCEDURES, OR FOR SAFETY PRECAUTIONS AND PROGRAMS IN CONNECTION WITH THE WORK.\n4. INTERIOR DIMENSIONS TO BE CALCULATED FROM STUD TO STUD.\n5. EXTERIOR DIMENSIONS TO BE CALCULATED FROM OUTSIDE OF STRAPPING.\n6. WINDOW SUPPLIERS TO SUPPLY R.S.O. FOR ALL WINDOWS AND DOORS.\n7. ALL LIGHTING AND ELECTRICAL WORK IS TO COMPLY WITH OBC 9.34.\n\nFOUNDATION NOTES:\n1. See foundation plan on S2\n2. Drawings have been made for soil conditions of no less than 1,500 PSF. Should unusual soils be encountered at time of excavation Star Blueprints Inc. shall be contacted immediately.\n3. Footings shall be kept free of standing water at time of excavation.\n\nFIRE SEPARATION (N.F.B.C. 3.1.1.2 - 1 STOREY BLDG.):\n1. PROPOSED ONE STOREY BUILDING 4500 sq. ft.\nALLOWABLE 4500 sq. ft.\n(NO FIRE SEPARATIONS REQUIRED)\n\nSTRUCTURAL STEEL:\n1. ALL STEEL SHALL BE DESIGNED, FABRICATED AND ERECTED IN CONFORMANCE TO CAN/CSA-S16-09 AND THE 2012 ONTARIO BUILDING CODE.\n2. ALL STEEL MEMBERS TO BE NEW MEMBERS.\n3. ALL ROLLED STRUCTURAL STEEL MEMBERS SHALL CONFORM TO CSA - G40.21 - 13 M300W\n4. WELDING SHALL CONFIRM TO CSA - W59 - 03 LATEST EDITION. ELECTRODES SHALL BE E70XX OR BETTER.\n5. CONNECTION BOLTS SHALL BE ASTM-A325 HIGH STRENGTH BOLTS UNLESS NOTED.\n6. ALL BOLTED CONNECTIONS SHALL BE BEARING TYPE UNLESS NOTED OTHERWISE.\n7. ALL CONNECTIONS SHALL BE INS...",
+      "page_overview_summary": "This cover sheet provides general notes and specifications for the construction of a 45'-0\" x 100'-0\" farm building. It includes egress, construction, foundation, and structural steel notes, as well as framing and design load information. The notes emphasize the importance of verifying dimensions on-site and outline the structural requirements for steel and wood components. The sheet serves as a comprehensive guide for ensuring compliance with relevant building codes and standards."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "S2",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Floating Slab Plan",
+        "Slab Edge Details",
+        "Foundation General Notes"
+      ],
+      "text_verbatim_title_block": "RICHARD TOZER\nProject Title: 45'-0\" x 100'-0\" FARM BUILDING\n9157 Side Rd. 17, Erin ON N0B 1Z0\nDrawing: FOUNDATION PLAN\nSheet: 2 of 7\nDEC. 10, 2024\nD. BAIMAN\n3 3 1 9",
+      "general_notes_verbatim": "GENERAL NOTES:\nFOUNDATIONS:\n1. PREPARE THE AREA FOR THE PROPOSED STRUCTURE BY REMOVING ALL TOPSOIL, ORGANIC MATERIAL FROM THE AREA OF THE BUILDING.\n2. SUBGRADE SHALL BE STRIPPED TO 1500 PSF (75 kPa) SAFE BEARING CAPACITY OR BETTER.\n3. UNDER NO CIRCUMSTANCES SHALL CONCRETE BE PLACED ON FROZEN GROUND.\n4. PROVIDE INSULATION FOR CONCRETE SLAB ON GRADE (SEE CONSTRUCTION MANUAL FOR DETAILS).\n5. ACCEPTABLE FILL MATERIAL SHALL BE COMPACTED GRANULAR 'A' OR 'B' OR APPROVED EQUAL. COMPACT TO 98% STANDARD PROCTOR DENSITY.\n6. INSULATION UNDER SLAB IS OPTIONAL.",
+      "page_overview_summary": "The foundation plan sheet details the layout and specifications for the floating slab foundation of the farm building. It includes a detailed plan view of the slab with reinforcement specifications and slab edge details. General notes provide guidance on site preparation, subgrade requirements, and insulation options. The plan ensures the foundation is constructed to support the building's structural loads and environmental conditions."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "S3",
+      "drawing_title": "MAIN FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Main Floor Layout",
+        "Interior Floor Beam Detail",
+        "Drain in Floating Slab"
+      ],
+      "text_verbatim_title_block": "RICHARD TOZER\nProject Title: 45'-0\" x 100'-0\" FARM BUILDING\n9157 Side Rd. 17, Erin ON N0B 1Z0\nDrawing: MAIN FLOOR PLAN\nSheet: 3 of 7\nDEC. 10, 2024\nD. BAIMAN\n3 3 1 9",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the main floor plan for the farm building, showing the layout of storage and work areas, as well as the location of doors and mezzanine. It includes details for interior floor beams and drainage within the floating slab. The plan is essential for understanding the spatial organization and structural support of the ground floor, ensuring functionality and compliance with design specifications."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "S4",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Pre-Engineered Truss Layout",
+        "Roof Bracing Details",
+        "Floor Ledger Detail"
+      ],
+      "text_verbatim_title_block": "RICHARD TOZER\nProject Title: 45'-0\" x 100'-0\" FARM BUILDING\n9157 Side Rd. 17, Erin ON N0B 1Z0\nDrawing: ROOF PLAN\nSheet: 4 of 7\nDEC. 10, 2024\nD. BAIMAN\n3 3 1 9",
+      "general_notes_verbatim": "ROOF PLAN NOTES:\nLATERAL 'X' BRACE AS PER TRUSS SHOP DRAWINGS\nSEE DETAIL 2955",
+      "page_overview_summary": "The roof plan sheet outlines the arrangement of pre-engineered trusses and roof bracing for the farm building. It includes a detailed layout of trusses and specifies the lateral bracing required for structural stability. The sheet also provides a floor ledger detail, ensuring proper connection between the roof and supporting walls. This plan is crucial for the safe and effective construction of the roof structure."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "S5",
+      "drawing_title": "BUILDING SECTION",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Longitudinal building section",
+      "key_components": [
+        "Building Section View",
+        "Lateral 'X' Brace Detail",
+        "Truss Bracing Notes"
+      ],
+      "text_verbatim_title_block": "RICHARD TOZER\nProject Title: 45'-0\" x 100'-0\" FARM BUILDING\n9157 Side Rd. 17, Erin ON N0B 1Z0\nDrawing: BUILDING SECTION\nSheet: 5 of 7\nDEC. 10, 2024\nD. BAIMAN\n3 3 1 9",
+      "general_notes_verbatim": "NOTES FOR BRACING OF ROOF TRUSS(ES):\n1. CONTRACTOR AND OR OWNER TO NOTIFY MANUFACTURER OF ANY TIMBER MEMBERS OR BRACES DAMAGED DURING HANDLING OF TRUSSES AND BRACES, AND MISSING OR DISPLACED TRUSS BRACES.\n2. BRACING: DIAGONAL BRACING TO ALL WALLS.\n3. PERMANENT LATERAL BRACING TO BE INSTALLED IN ACCORDANCE WITH THE ROOF PLAN AND MANUFACTURER'S INSTRUCTIONS.\n4. INDICATE THE ROOF PLAN AND MANUFACTURER'S INSTRUCTIONS.\n5. NOTE: BRACING DETAILS WILL NOT BE MODIFIED UNLESS SPECIFIED BY THE BUILDING DESIGNER.",
+      "page_overview_summary": "This sheet provides a longitudinal section view of the farm building, illustrating the relationship between the roof, walls, and foundation. It includes details on lateral 'X' bracing and notes for truss bracing, ensuring structural integrity and compliance with design standards. The section view is essential for understanding the vertical alignment and load distribution within the building."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "S6",
+      "drawing_title": "SOUTH & EAST ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "South and East elevations",
+      "key_components": [
+        "Front Elevation",
+        "Right Elevation",
+        "Shearwall Details"
+      ],
+      "text_verbatim_title_block": "RICHARD TOZER\nProject Title: 45'-0\" x 100'-0\" FARM BUILDING\n9157 Side Rd. 17, Erin ON N0B 1Z0\nDrawing: SOUTH & EAST ELEVATIONS\nSheet: 6 of 7\nDEC. 10, 2024\nD. BAIMAN\n3 3 1 9",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The elevation sheet shows the south and east views of the farm building, highlighting the exterior finishes and structural elements such as shearwalls. It provides a visual representation of the building's appearance and structural components, ensuring that the design meets aesthetic and functional requirements. The elevations are crucial for understanding the building's integration with its surroundings."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "S7",
+      "drawing_title": "REAR & RIGHT ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Rear and Right elevations",
+      "key_components": [
+        "Rear Elevation",
+        "Left Elevation",
+        "Steel Beam Over Door"
+      ],
+      "text_verbatim_title_block": "RICHARD TOZER\nProject Title: 45'-0\" x 100'-0\" FARM BUILDING\n9157 Side Rd. 17, Erin ON N0B 1Z0\nDrawing: REAR & RIGHT ELEVATIONS\nSheet: 7 of 7\nDEC. 10, 2024\nD. BAIMAN\n3 3 1 9",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the rear and right elevations of the farm building, detailing the exterior cladding and structural elements such as the steel beam over the door. The elevations provide a comprehensive view of the building's design, ensuring that all structural and aesthetic elements are accurately represented. These views are essential for construction and compliance with design specifications."
+    }
+  ]
+}

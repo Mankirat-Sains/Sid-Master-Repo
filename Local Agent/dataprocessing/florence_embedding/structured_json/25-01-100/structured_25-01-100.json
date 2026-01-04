@@ -1,0 +1,129 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – central warehouse area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "Grid 3-10",
+        "Grids C-G"
+      ],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Warehouse",
+        "Office Rooms",
+        "Utility Rooms"
+      ],
+      "text_verbatim": "WAREHOUSE\n10 9 8 7 6 5 4 3 2 1\n1' 3 11/16\"\n2\" x c\n370 AR 01 01\nSaputo\nGEORGETOWN PLANT\nMAIN FLOOR",
+      "summary": "This plan shows the main floor layout of the Georgetown Plant, focusing on the central warehouse area. The grid references include Grids 3-10 and C-G, which help define the structural framework. Key components visible in this section include the warehouse, office rooms, and utility rooms. The text 'WAREHOUSE' indicates the primary function of the space, while the numbers '10 9 8 7 6 5 4 3 2 1' likely reference racking or storage positions. The dimension '1' 3 11/16\"' specifies a particular measurement within the plan. The drawing is part of sheet 370 AR 01 01, titled 'MAIN FLOOR' for the Saputo Georgetown Plant.",
+      "project_id": "25-01-100",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – west side office and utility area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "Grid 1-8",
+        "Grids C-H"
+      ],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Office Rooms",
+        "Utility Rooms",
+        "Warehouse"
+      ],
+      "text_verbatim": "10 9 8 7 6 5 4 3 2 1\nWAREHOUSE\n60'-0\"\n60'-0\"\nOFFICE\n370 AR 01 01\nSaputo\nGEORGETOWN PLANT\nMAIN FLOOR",
+      "summary": "This plan section focuses on the west side of the main floor, highlighting office and utility areas. The grid references include Grids 1-8 and C-H, providing a structural framework for the layout. Key components visible include office rooms, utility rooms, and part of the warehouse. The text 'OFFICE' and 'WAREHOUSE' indicate the primary functions of these spaces. The dimensions '60'-0\"' specify the width of certain areas. The drawing is part of sheet 370 AR 01 01, titled 'MAIN FLOOR' for the Saputo Georgetown Plant.",
+      "project_id": "25-01-100",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – central and east warehouse area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "Grid 3-11",
+        "Grids C-G"
+      ],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Warehouse",
+        "Office Rooms",
+        "Utility Rooms"
+      ],
+      "text_verbatim": "WAREHOUSE\n10 9 8 7 6 5 4 3 2 1\n1' 3 11/16\"\n370 AR 01 01\nSaputo\nGEORGETOWN PLANT\nMAIN FLOOR",
+      "summary": "This plan section shows the central and east parts of the main floor, focusing on the warehouse area. The grid references include Grids 3-11 and C-G, which define the structural layout. Key components visible are the warehouse, office rooms, and utility rooms. The text 'WAREHOUSE' indicates the primary function of the space, and the numbers '10 9 8 7 6 5 4 3 2 1' likely reference racking or storage positions. The dimension '1' 3 11/16\"' specifies a particular measurement within the plan. The drawing is part of sheet 370 AR 01 01, titled 'MAIN FLOOR' for the Saputo Georgetown Plant.",
+      "project_id": "25-01-100",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – west and central office and warehouse area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "Grid 1-7",
+        "Grids C-F"
+      ],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Office Rooms",
+        "Warehouse",
+        "Utility Rooms"
+      ],
+      "text_verbatim": "10 9 8 7 6 5 4 3 2 1\nWAREHOUSE\n60'-0\"\nOFFICE\n370 AR 01 01\nSaputo\nGEORGETOWN PLANT\nMAIN FLOOR",
+      "summary": "This plan section highlights the west and central parts of the main floor, focusing on office and warehouse areas. The grid references include Grids 1-7 and C-F, providing a structural framework. Key components visible are office rooms, the warehouse, and utility rooms. The text 'OFFICE' and 'WAREHOUSE' indicate the primary functions of these spaces. The dimensions '60'-0\"' specify the width of certain areas. The drawing is part of sheet 370 AR 01 01, titled 'MAIN FLOOR' for the Saputo Georgetown Plant.",
+      "project_id": "25-01-100",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": "page_001/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – east side utility and office area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "Grid 9-11",
+        "Grids D-F"
+      ],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Utility Rooms",
+        "Office Rooms",
+        "Pump"
+      ],
+      "text_verbatim": "PUMP\nOFFICE\nSaputo\nGEORGETOWN PLANT\nMAIN FLOOR\n370 AR 01 01\nM.CARON\n01-01-17\n1/32\"=1'-0\"",
+      "summary": "This plan section focuses on the east side of the main floor, highlighting utility and office areas. The grid references include Grids 9-11 and D-F, defining the structural layout. Key components visible are utility rooms, office rooms, and a pump. The text 'OFFICE' and 'PUMP' indicate the primary functions of these spaces. The drawing is part of sheet 370 AR 01 01, titled 'MAIN FLOOR' for the Saputo Georgetown Plant. The scale is noted as 1/32\"=1'-0\", and the drawing was created by M.CARON on 01-01-17.",
+      "project_id": "25-01-100",
+      "page_number": 1,
+      "region_number": 5,
+      "relative_path": "page_001/region_05_red_box.png"
+    }
+  ]
+}

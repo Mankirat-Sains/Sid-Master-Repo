@@ -1,0 +1,27 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – Vent installation area",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Vent Mount Curb Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Vent Mount Curb",
+        "Existing Roof Plate",
+        "New Roof Vent",
+        "SS Bolt Assembly"
+      ],
+      "text_verbatim": "CONFIRM VENT DIMENSIONS PRIOR TO MANUFACTURING\n824\n659 TO FIT INSIDE VENT\nL5x3.5x1/4\n3/8x1 1/4\" Lg SS BOLT ASSY 2 PER SIDE (SUPPLIED W/ VENT)\n30\n5 TYP\nNEW ROOF VENT\nVENT MOUNT CURB TO BE WELDED TO EXISTING ROOF PLATE\nEXISTING ROOF PLATE MIN 1/4\" REQUIRED FOR WELDING\n1 REQ'D – VENT MOUNT CURB",
+      "summary": "This detail drawing shows the installation of a vent mount curb on a roof. The plan view indicates a square opening with dimensions of 824 mm, with a note to confirm vent dimensions prior to manufacturing. The curb is constructed from L5x3.5x1/4 angle sections. The section view details the connection of the vent mount curb to the existing roof plate, which requires a minimum of 1/4 inch for welding. The curb is secured with 3/8x1 1/4 inch long stainless steel bolt assemblies, with two bolts per side supplied with the vent. The drawing specifies that the vent mount curb must be welded to the existing roof plate, and a new roof vent will be installed. The typical spacing for certain components is noted as 5 mm. The drawing emphasizes the importance of confirming vent dimensions before manufacturing to ensure proper fit and installation.",
+      "project_id": "25-01-080",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    }
+  ]
+}

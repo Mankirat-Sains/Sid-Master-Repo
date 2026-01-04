@@ -1,0 +1,21 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "G0",
+      "drawing_title": "RACKING LAYOUT",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Racking Layout",
+        "Storage Areas",
+        "Sorting Area",
+        "Morgens Area"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n1 YARMOUTH RD., UNIT C\nWATERLOO, ON\nN2J 2H6, CAN\nTel: 519-267-4769\nFax: 519-267-4769\nwww.waddelleng.com\nPROJECT:\nSCHNEKER TJX RACKINGS PSR\nCLIENT:\nSCHNEKER TJX\nDRAWING TITLE:\nRACKING LAYOUT\nDRAWN BY: RS DATE: 2025-01-30\nDESIGN BY: TB SCALE: NTS\nPROJECT NO:\n25-01-079\nSHEET NO:\nG0",
+      "general_notes_verbatim": "This drawing is an instrument of service and is the property of Waddell Engineering Ltd. and cannot be modified and/or reproduced without the permission of Waddell Engineering Ltd.",
+      "page_overview_summary": "This sheet provides a detailed plan of the racking layout for the Schenker TJX project. It includes the arrangement of storage racks, sorting areas, and designated zones such as the Morgens Area. The layout is designed for the ground floor level, optimizing space for storage and operations. The drawing is part of the project documentation by Waddell Engineering Ltd., dated January 30, 2025."
+    }
+  ]
+}

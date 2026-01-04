@@ -1,0 +1,53 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Floating Slab",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Floating Slab Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Floating Slab"
+      ],
+      "text_verbatim": "33'-0\"\n25'-0\"\n1\nS1\nPLAN\nFLOATING SLAB\n1/8\"=1'-0\"",
+      "summary": "This plan view shows a floating slab foundation with dimensions of 33'-0\" by 25'-0\". The drawing includes a section callout '2/S1' indicating where a section cut is made through the slab. The plan is labeled as 'PLAN FLOATING SLAB' with a scale of 1/8\"=1'-0\". The layout of the slab is depicted with dashed lines representing the slab edges. This plan is essential for understanding the overall footprint and layout of the floating slab foundation.",
+      "project_id": "25-01-064",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Thickened Edge",
+      "level": "Foundation",
+      "orientation": "Section looking through thickened edge",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Thickened Edge Section",
+      "element_callouts": [],
+      "key_components": [
+        "Sill Plate",
+        "Anchor Bolts",
+        "Rebar",
+        "Vapour Barrier",
+        "Compacted Granular 'A'",
+        "Welded Wire Mesh"
+      ],
+      "text_verbatim": "SLOPE GRADE AWAY 2%, & INSULATION (IF PRESENT)\nSILL PLATE\nc/w 1/2\"Ø ANCHOR BOLTS @ 48\" o.c. (LEAVE OPENINGS IN SILL PLATE @ DOOR LOCATIONS)\n(4) 15M CONTINUOUS REBAR (SEE NOTES FOR COVER)\n6x6x6 WWM OR 16\" x 16\" 10M GRID OR FIBRE MESH\n6 mil POLY. VAPOUR BARRIER (OPTIONAL)\nCOMPACTED GRANULAR 'A'\n1'-0\"\n2\nS1\nSECTION\nTHICKENED EDGE\n1/2\"=1'-0\"",
+      "summary": "This section view details the thickened edge of a floating slab foundation. The section is labeled 'SECTION THICKENED EDGE' with a scale of 1/2\"=1'-0\". Key components include a sill plate with 1/2\" diameter anchor bolts spaced at 48 inches on center, continuous 15M rebar, and a 6 mil poly vapour barrier. The section also specifies the use of 6x6x6 welded wire mesh or a 16\" x 16\" 10M grid or fibre mesh for reinforcement. The foundation is built on compacted granular 'A' material, and the grade is sloped away at 2% with optional insulation. The section callout '2/S1' connects this view to the plan, providing a detailed understanding of the foundation's edge design.",
+      "project_id": "25-01-064",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    }
+  ]
+}

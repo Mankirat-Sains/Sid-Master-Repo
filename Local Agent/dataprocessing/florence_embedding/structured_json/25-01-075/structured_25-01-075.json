@@ -1,0 +1,270 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "GENERAL NOTES:\n1. DO NOT SCALE DRAWINGS.\n2. THE CONTRACTOR SHALL SITE CHECK AND VERIFY ALL DIMENSIONS AND REPORT ANY ERRORS OR OMISSIONS ON THE DRAWINGS PRIOR TO CONSTRUCTION.\n3. ALL CONSTRUCTION TO COMPLY WITH THE 2012 ONTARIO BUILDING CODE AND LOCAL MUNICIPAL BYLAWS. H.VARIO DESIGN AND DRAFTING DOES NOT ASSUME RESPONSIBILITY FOR CONSTRUCTION DONE BY OTHERS THAT DOES NOT MEET ALL NECESSARY REQUIREMENTS, FOR ANY ERRORS IN CONSTRUCTION OR CONSEQUENCES FROM THE CONSTRUCTION.",
+      "summary": "This image contains general notes related to construction practices. Key points include: drawings should not be scaled, contractors must verify all dimensions and report discrepancies before construction, and all construction must comply with the 2012 Ontario Building Code and local bylaws. H.Vario Design and Drafting disclaims responsibility for construction errors by others. These notes provide essential guidelines for ensuring compliance and accuracy in construction projects.",
+      "project_id": "25-01-075",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Typical Anchor Bolt Detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Anchor Bolt Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Threaded End",
+        "Hex Nut",
+        "Standard Washer",
+        "Column Base Plate",
+        "Anchor Bolt",
+        "Concrete Pedestal",
+        "Grout"
+      ],
+      "text_verbatim": "THREADED END\n(3/4\" LONG MIN)\n(TYP BOTH ENDS)\nPROJ.\nDIM. 'A'\n1\" GROUT\nSTANDARD WASHER\nHEX NUT\nSTANDARD WASHER\nCOLUMN BASE PLATE\nANCHOR BOLT EMBEDDED IN CONCRETE PEDESTAL\nHEX NUT\nTypical Anchor Bolt Detail",
+      "summary": "This detail illustrates a typical anchor bolt setup. The anchor bolt is embedded in a concrete pedestal and includes components such as a threaded end (3/4\" long minimum, typical both ends), hex nuts, standard washers, and a column base plate. The detail specifies a 1\" grout layer and a projection dimension labeled as 'DIM. 'A''. This setup is crucial for securing structural columns to foundations, ensuring stability and load transfer.",
+      "project_id": "25-01-075",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation Plan",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [
+        "Grids 1-11",
+        "Grids A-E"
+      ],
+      "section_callouts": [
+        "A/A",
+        "B/B"
+      ],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "F3",
+        "F4"
+      ],
+      "key_components": [
+        "Anchor Bolts",
+        "Concrete Slab",
+        "Foundation Walls"
+      ],
+      "text_verbatim": "NOTE:\nALL ANCHOR BOLTS TO BE F1554 GRADE 36 U.N.O.\nWITH HEAVY HEX HEADS.\nNOTE:\nCONTRACTOR SHALL USE THE\nPRE-ENGINEERED BUILDING MANUFACTURES\nDRAWINGS TO LAYOUT ANCHOR BOLTS.\nNOTE:\nALL FOUNDATIONS TO BE VERIFIED WITH\nUP-TO-DATE REACTIONS FROM PRE-ENG\nBUILDING DESIGNER PRIOR TO CONSTRUCTION.\nDROP FOR WALL\n8\" MAIN DOORS\n(TYP)\nDROP FOR WALL\n12\" O/H DOORS\n(TYP)\nF3 1' 1\"\nF4 1' 1\"\n1\nFoundation Plan\nSCALE: 1/8\" = 1'-0\"",
+      "summary": "This foundation plan shows the layout of anchor bolts and foundation walls across grids 1-11 and A-E. Notes specify that all anchor bolts must be F1554 Grade 36 with heavy hex heads, and contractors should use pre-engineered building manufacturer drawings for layout. The plan includes typical drops for walls at 8\" for main doors and 12\" for overhead doors. Foundation types F3 and F4 are indicated with dimensions of 1' 1\". Section callouts A/A and B/B reference other views for further detail. This plan is essential for establishing the foundation's structural integrity.",
+      "project_id": "25-01-075",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation Plan",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [
+        "Grids 1-9",
+        "Grids A-E"
+      ],
+      "section_callouts": [
+        "A/A",
+        "B/B"
+      ],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "F2 B1"
+      ],
+      "key_components": [
+        "Concrete Slab",
+        "Foundation Walls",
+        "Anchor Bolts"
+      ],
+      "text_verbatim": "NOTE:\nALL ANCHOR BOLTS TO BE F1554 GRADE 36 U.N.O.\nWITH HEAVY HEX HEADS.\nNOTE:\nCONTRACTOR SHALL USE THE\nPRE-ENGINEERED BUILDING MANUFACTURES\nDRAWINGS TO LAYOUT ANCHOR BOLTS.\nDROP FOR WALL\n8\" MAIN DOORS\n(TYP)\nDROP FOR WALL\n12\" O/H DOORS\n(TYP)\nF2 B1\n1\nFoundation Plan\nSCALE: 1/8\" = 1'-0\"",
+      "summary": "This foundation plan details the placement of foundation walls and anchor bolts across grids 1-9 and A-E. Anchor bolts are specified as F1554 Grade 36 with heavy hex heads, and contractors are instructed to use pre-engineered building manufacturer drawings for layout. The plan includes typical drops for walls at 8\" for main doors and 12\" for overhead doors. Foundation type F2 B1 is noted. Section callouts A/A and B/B provide references to additional views. This plan is critical for ensuring the correct installation of foundational elements.",
+      "project_id": "25-01-075",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Typical Foundation Wall Section",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "ICF Foundation Wall",
+        "Concrete Slab",
+        "Rebar",
+        "Granular Fill",
+        "Expansion Joint"
+      ],
+      "text_verbatim": "PRE-ENG BLDG. WALL\n(2) 15M BARS CONT.\nT.O. FIN FL. +0'-0\"\n6\" GRANULAR 'A'\nGRANULAR B TYPE II COMPACTED TO 100% S.P.M.D.D IN MAX 12\" LIFTS\nUNDISTURBED SOIL\n1/2\" EXPANSION JOINT w/ SEALANT AND BACKER ROD\n8\" CONC. SLAB c/w 2 LAYERS 10 BARS @ 12\" o.c. ON 6 MIL VAPOR BARRIER ON 2\" RIGID INSULATION (FUTURE)\n8\" ICF FOUNDATION WALL\n15M DOWELS @ 48\" o.c.\n(2) 15 M BARS CONT.\n4'-6\"\n8\"\n8\"\n8\"\n2'-0\"\n24\"\n9\"\n1\nTypical Foundation Wall Section\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a typical foundation wall section. The wall is constructed using an 8-inch ICF foundation wall, reinforced with two continuous 15M bars. The top of the finished floor is at elevation +0'-0\". Above the foundation wall, an 8-inch concrete slab is reinforced with two layers of 10 bars at 12 inches on center, placed on a 6 mil vapor barrier and 2-inch rigid insulation. A 1/2-inch expansion joint with sealant and backer rod is included. The foundation is supported by compacted granular B type II fill, with 6 inches of granular 'A' above undisturbed soil. The section includes 15M dowels spaced at 48 inches on center. Dimensions include a 4'-6\" height for the wall, with an 8-inch thickness and a 2-foot width at the base.",
+      "project_id": "25-01-075",
+      "page_number": 3,
+      "region_number": 5,
+      "relative_path": "page_003/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Section at Overhead Door",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Wall Section",
+      "element_callouts": [],
+      "key_components": [
+        "Poured Foundation Wall",
+        "Rebar",
+        "Bent Dowels"
+      ],
+      "text_verbatim": "15M BARS @ 12\" o.c.\n15M BENT DOWELS (24\" x 24\") @ 12\" o.c. INTO FLOOR SLAB AT O/H DOOR LOCATIONS\nT.O. FIN FL. +0'-0\"\n3-15M BARS CONT.\nPOURED FOUNDATION WALL\nSEE PLANS\n8\"\n12\n12\n5\nSection @ O/H Door\nSCALE: 1\" = 1'-0\"",
+      "summary": "This section detail illustrates the foundation wall at an overhead door location. The poured foundation wall is reinforced with 15M bars spaced at 12 inches on center. Additionally, 15M bent dowels measuring 24 inches by 24 inches are placed at 12 inches on center into the floor slab at overhead door locations. The top of the finished floor is at elevation +0'-0\". The section includes continuous 3-15M bars. The wall thickness is 8 inches, with additional dimensions of 12 inches noted for specific components. The drawing references plans for further details.",
+      "project_id": "25-01-075",
+      "page_number": 3,
+      "region_number": 6,
+      "relative_path": "page_003/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – Breezeway",
+      "level": "Ground Floor",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Thickened Slab Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Thickened Slab",
+        "Rebar",
+        "Poly Vapour Barrier",
+        "Extruded Polystyrene",
+        "Compacted Granular"
+      ],
+      "text_verbatim": "SLOPE GRADE AWAY 2%, & INSULATION (IF PRESENT)\n(4) 15M REBAR (SEE NOTES FOR COVER)\n6x6x6/6 WWM OR 16\" x 16\" 10M GRID OR FIBRE MESH\n6mil POLY VAPOUR BARRIER (OPTIONAL)\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE MIN. COMPRESSIVE STRENGTH OF 30 psi\nCOMPACTED GRANULAR 'A'\nTYP. ALL 4 SIDES OF BREEZEWAY\n4'-0\"\n2\"\n1'-0\"\n3\nThickened Slab Detail @ Breezeway\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a thickened slab at the breezeway. The slab is reinforced with four 15M rebar, with cover details noted separately. The slab includes a 6x6x6/6 welded wire mesh or a 16-inch by 16-inch 10M grid, or fiber mesh for reinforcement. A 6-mil poly vapour barrier is optional. The slab is insulated with a minimum of 2 inches of extruded polystyrene with a compressive strength of 30 psi. The base consists of compacted granular 'A'. The slab is sloped away at 2% grade, with insulation if present. Dimensions include a 4-foot length, 2-inch thickness, and 1-foot width. This detail applies to all four sides of the breezeway.",
+      "project_id": "25-01-075",
+      "page_number": 3,
+      "region_number": 7,
+      "relative_path": "page_003/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Pier Type C",
+      "level": "Foundation",
+      "orientation": "Plan view",
+      "grid_references": [],
+      "section_callouts": [
+        "A.1",
+        "D.9"
+      ],
+      "element_type": "Pier Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Pier",
+        "Rebar",
+        "Anchor Bolts"
+      ],
+      "text_verbatim": "COL\nREFER TO PRE-ENG DRAWINGS FOR ANCHOR BOLT SPACING\n2\" COVER (TYP.)\n15M TIES @ 12\" o.c. PROVIDE TRIPLE TIE @ TOP (2\" SPACING)\n26-25M VERTS\nEQ. (TYP)\nA.1\nD.9\n8'-8 1/2\"\n8'-0 1/2\"\n9\nPIER TYPE C\nSCALE: 1\" = 1'-0\"",
+      "summary": "This detail illustrates Pier Type C. The pier includes 26-25M vertical rebar and 15M ties spaced at 12 inches on center, with a triple tie at the top spaced at 2 inches. A 2-inch cover is typical for the pier. Anchor bolt spacing is to be referenced from pre-engineered drawings. The pier dimensions are 8'-8 1/2\" by 8'-0 1/2\". Section callouts A.1 and D.9 are included for further reference.",
+      "project_id": "25-01-075",
+      "page_number": 3,
+      "region_number": 8,
+      "relative_path": "page_003/region_08_red_box.png"
+    },
+    {
+      "image_id": "region_09_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Pier Type B",
+      "level": "Foundation",
+      "orientation": "Plan view",
+      "grid_references": [],
+      "section_callouts": [
+        "A",
+        "E"
+      ],
+      "element_type": "Pier Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Pier",
+        "Rebar",
+        "Anchor Bolts"
+      ],
+      "text_verbatim": "COL\nREFER TO PRE-ENG DRAWINGS FOR ANCHOR BOLT SPACING\n2\" COVER (TYP.)\n15M TIES @ 12\" o.c. PROVIDE TRIPLE TIE @ TOP (2\" SPACING)\n20-25M VERTS\nEQ. (TYP)\nA\nE\n5'-10\"\n5'-2\"\n2'-0\"\n8\nPIER TYPE B\nSCALE: 1\" = 1'-0\"",
+      "summary": "This detail shows Pier Type B. The pier is reinforced with 20-25M vertical rebar and 15M ties at 12 inches on center, with a triple tie at the top at 2-inch spacing. A 2-inch cover is typical. Anchor bolt spacing should be referenced from pre-engineered drawings. The pier dimensions are 5'-10\" by 5'-2\" with a 2'-0\" width. Section callouts A and E are included for further reference.",
+      "project_id": "25-01-075",
+      "page_number": 3,
+      "region_number": 9,
+      "relative_path": "page_003/region_09_red_box.png"
+    },
+    {
+      "image_id": "region_10_red_box.png",
+      "classification": "Detail",
+      "location": "Typical Floor Slab Control Joint",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Floor Slab Control Joint Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Sealant",
+        "Reinforcing",
+        "Concrete",
+        "Sawcut"
+      ],
+      "text_verbatim": "FILL JOINT WITH SEALANT\nSAWCUT DEPTH \"T\"/5\nREINFORCING CONTINUOUS THRU JOINT\nPAINT FACE WITH OIL PRIOR TO SECOND POUR\nDISCONTINUE REINFORCING 3\" EACH SIDE OF JOINT\nFIRST POUR\nSECOND POUR\n1 1/2\"\n3\"\n3\"\n10\nTypical Floor Slab Control Joint Detail\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates a typical floor slab control joint. The joint is filled with sealant, and the sawcut depth is specified as \"T\"/5. Reinforcement is continuous through the joint, but it is discontinued 3 inches on each side of the joint. The face is to be painted with oil prior to the second pour. The detail shows two pours: the first pour and the second pour, with a dimension of 1 1/2 inches between them. The scale of the drawing is 1/2 inch equals 1 foot. Key components include sealant, reinforcing, concrete, and sawcut.",
+      "project_id": "25-01-075",
+      "page_number": 3,
+      "region_number": 10,
+      "relative_path": "page_003/region_10_red_box.png"
+    },
+    {
+      "image_id": "region_11_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "GENERAL NOTES:\n1. DO NOT SCALE DRAWINGS.\n2. THE CONTRACTOR SHALL SITE CHECK AND VERIFY ALL DIMENSIONS AND REPORT ANY ERRORS OR OMISSIONS ON THE DRAWINGS PRIOR TO CONSTRUCTION.\n3. ALL CONSTRUCTION TO COMPLY WITH THE 2012 ONTARIO BUILDING CODE AND LOCAL MUNICIPAL BYLAWS. H.VARIO DESIGN AND DRAFTING DOES NOT ASSUME RESPONSIBILITY FOR CONSTRUCTION DONE BY OTHERS THAT DOES NOT MEET ALL NECESSARY REQUIREMENTS, FOR ANY ERRORS IN CONSTRUCTION OR CONSEQUENCES FROM THE CONSTRUCTION.",
+      "summary": "The general notes provide critical instructions for construction. Key points include: drawings should not be scaled, contractors must verify all dimensions and report any discrepancies before construction, and all construction must comply with the 2012 Ontario Building Code and local municipal bylaws. H.Vario Design and Drafting disclaims responsibility for construction errors or omissions by others that do not meet necessary requirements.",
+      "project_id": "25-01-075",
+      "page_number": 3,
+      "region_number": 11,
+      "relative_path": "page_003/region_11_red_box.png"
+    }
+  ]
+}

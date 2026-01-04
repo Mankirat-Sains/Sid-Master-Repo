@@ -1,0 +1,125 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "A1.1",
+      "drawing_title": "COVER PAGE",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Energy Efficiency Design Summary",
+        "General Construction Notes",
+        "Framing Notes",
+        "Foundation Notes",
+        "Area Schedule",
+        "Drawing Schedule"
+      ],
+      "text_verbatim_title_block": "CHRIS WARREN\nNEW HOUSE\n8183 WELLINGTON RD 22\nROCKWOOD, ON,\nN0B 2K0\nA1.1\nCOVER PAGE\n",
+      "general_notes_verbatim": "GENERAL CONSTRUCTION NOTES:\n1. All drawings, including engineering notes, shall be confirmed before construction.\n2. Dimensions shown are for construction purposes only.\n3. All work shall conform to the Ontario Building Code.\n\nFOUNDATION NOTES:\n1. Footings shall be on undisturbed soil, rock, or compacted granular fill.\n2. Dowels from the base for conditions other than 5.9 kPa P.F.\n\nFRAMING NOTES:\n1. All dimensions, including opening sizes, shall be confirmed before construction.\n2. Steel beams shall be W150 x 22.\n3. Wood beams shall be 2-2x8 minimum.\n\nTIMBER FRAME CONSTRUCTION:\n1. All timber columns shall be pressure treated.\n\nAREA SCHEDULE:\nMAIN FLOOR LIVING: 1531 SQ. FT.\nCOVERED PORCHES: 640 SQ. FT.\nSHOP: 1345 SQ. FT.\nBUILDING FOOTPRINT: 3566 SQ. FT.\n\nDRAWING SCHEDULE:\nCOVER PAGE: A1.1\nFOUNDATION PLAN: A2.1\nMAIN FLOOR: A2.2\nROOF PLAN: A2.3\nS. & N. ELEVATIONS: A3.1\nE. & W. ELEVATIONS: A3.2\nBUILDING SECTION: A4.1\n",
+      "page_overview_summary": "This cover page provides an overview of the project, including the energy efficiency design summary, general construction notes, and specific notes on framing and foundation. It includes an area schedule detailing the square footage of different sections of the house and a drawing schedule listing all the sheets included in the set. The notes emphasize compliance with the Ontario Building Code and provide specific instructions for construction practices."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "A2.1",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Foundation Walls",
+        "Strip Footings",
+        "Concrete Slab",
+        "Cold Room"
+      ],
+      "text_verbatim_title_block": "CHRIS WARREN\nNEW HOUSE\n8183 WELLINGTON RD 22\nROCKWOOD, ON,\nN0B 2K0\nA2.1\nFOUNDATION PLAN\n",
+      "general_notes_verbatim": "FOUNDATION PLAN NOTES:\n1. All footings to be on undisturbed soil or compacted granular fill.\n2. Foundation walls to be 8\" concrete with 2 layers of 10M rebar.\n3. All concrete to be 25 MPa at 28 days.\n",
+      "page_overview_summary": "The foundation plan details the layout of the foundation walls, strip footings, and concrete slab for the building. It includes specific notes on the construction of the foundation, emphasizing the use of undisturbed soil or compacted fill for footings and the reinforcement of concrete walls. The plan also indicates the location of a cold room and provides dimensions for various foundation elements."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "A2.2",
+      "drawing_title": "MAIN FLOOR",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Room Layout",
+        "Interior Walls",
+        "Plumbing Fixtures",
+        "Electrical Outlets"
+      ],
+      "text_verbatim_title_block": "CHRIS WARREN\nNEW HOUSE\n8183 WELLINGTON RD 22\nROCKWOOD, ON,\nN0B 2K0\nA2.2\nMAIN FLOOR\n",
+      "general_notes_verbatim": "MAIN FLOOR NOTES:\n1. All interior walls to be 2x4 wood studs.\n2. Ceiling height to be 9'-0\" unless noted otherwise.\n3. All plumbing fixtures to be roughed in as per plan.\n",
+      "page_overview_summary": "The main floor plan outlines the layout of rooms, interior walls, and key fixtures such as plumbing and electrical outlets. It specifies construction details for interior walls and ceiling heights, providing a comprehensive view of the ground floor layout. The plan includes dimensions for each room and notes on the installation of plumbing fixtures."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "A2.3",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Trusses",
+        "Ceiling Joists",
+        "Fire Separation",
+        "Storage Area"
+      ],
+      "text_verbatim_title_block": "CHRIS WARREN\nNEW HOUSE\n8183 WELLINGTON RD 22\nROCKWOOD, ON,\nN0B 2K0\nA2.3\nROOF PLAN\n",
+      "general_notes_verbatim": "ROOF PLAN NOTES:\n1. Roof trusses to be engineered and installed as per manufacturer's specifications.\n2. Fire separation to be provided between units.\n3. Storage area to be unconditioned.\n",
+      "page_overview_summary": "The roof plan illustrates the layout of roof trusses and ceiling joists, along with details on fire separation and storage areas. It includes notes on the engineering and installation of roof components, emphasizing compliance with manufacturer specifications. The plan also highlights the unconditioned nature of the storage area and provides dimensions for roof elements."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "A3.1",
+      "drawing_title": "S. & N. ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "South and North Elevations",
+      "key_components": [
+        "Exterior Walls",
+        "Window Openings",
+        "Roof Profile",
+        "Foundation Footings"
+      ],
+      "text_verbatim_title_block": "CHRIS WARREN\nNEW HOUSE\n8183 WELLINGTON RD 22\nROCKWOOD, ON,\nN0B 2K0\nA3.1\nS. & N. ELEVATIONS\n",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the south and north elevations of the building, showing the exterior wall finishes, window openings, and roof profile. It provides dimensions for key elements and indicates the location of foundation footings. The elevations offer a visual representation of the building's exterior appearance from the south and north perspectives."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "A3.2",
+      "drawing_title": "E. & W. ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "East and West Elevations",
+      "key_components": [
+        "Exterior Walls",
+        "Window Openings",
+        "Roof Profile",
+        "Foundation Details"
+      ],
+      "text_verbatim_title_block": "CHRIS WARREN\nNEW HOUSE\n8183 WELLINGTON RD 22\nROCKWOOD, ON,\nN0B 2K0\nA3.2\nE. & W. ELEVATIONS\n",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The east and west elevations provide a detailed view of the building's exterior from these perspectives, highlighting the exterior wall finishes, window openings, and roof profile. The sheet includes foundation details and dimensions for various elements, offering a comprehensive look at the building's design from the east and west sides."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "A4.1",
+      "drawing_title": "BUILDING SECTION",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Longitudinal Section",
+      "key_components": [
+        "Building Section",
+        "Foundation Details",
+        "Floor Assemblies",
+        "Roof Assemblies"
+      ],
+      "text_verbatim_title_block": "CHRIS WARREN\nNEW HOUSE\n8183 WELLINGTON RD 22\nROCKWOOD, ON,\nN0B 2K0\nA4.1\nBUILDING SECTION\n",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The building section sheet provides a longitudinal view of the structure, detailing the foundation, floor, and roof assemblies. It includes specific construction details for each assembly and offers a cross-sectional perspective of the building's design. The section highlights the relationship between different building components and provides dimensions for key elements."
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Thickened edge at porch",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S1"
+      ],
+      "element_type": "Thickened Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Rebar",
+        "Concrete",
+        "Post Bracket",
+        "Vapour Barrier",
+        "Granular Fill",
+        "Insulation"
+      ],
+      "text_verbatim": "SECTION\n3\nS1\nTHICKENED EDGE @ PORCH\n1/2\"=1'-0\"\nSLOPE GRADE AWAY 2%, & INSULATION (IF PRESENT)\nCBQGT66-SDS2 POST BRACKET\n(4) 15M REBAR (SEE NOTES FOR COVER)\n6x6x6/6 WWM OR 16\" x 16\" 10M GRID OR FIBRE MESH\n6mil POLY VAPOUR BARRIER (OPTIONAL)\nCOMPACTED GRANULAR 'A'\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE\nMIN. COMPRESSIVE STRENGTH OF 30 psi\n4'-0\"\n2'\n1'-0\"",
+      "summary": "This section view, labeled '3/S1', illustrates a thickened edge detail at the porch foundation. The section shows a slope grade away from the structure at 2% with optional insulation. The concrete section includes (4) 15M rebar for reinforcement, as noted. A CBQGT66-SDS2 post bracket is specified for structural support. The section also details the use of 6x6x6/6 welded wire mesh (WWM) or a 16\" x 16\" 10M grid or fiber mesh for additional reinforcement. A 6mil poly vapour barrier is optional, and the base consists of compacted granular 'A'. The section specifies a minimum of 2 inches (R10) of extruded polystyrene for insulation and a minimum compressive strength of 30 psi for the concrete. Dimensions include a 4-foot slab extension, a 2-foot thickened edge, and a 1-foot depth.",
+      "project_id": "25-01-084",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Floating slab layout",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S1",
+        "2/S1",
+        "3/S1",
+        "4/S1"
+      ],
+      "element_type": "Floating Slab Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Floating Slab",
+        "Thickened Edges"
+      ],
+      "text_verbatim": "PLAN\n1\nS1\nFLOATING SLAB\n1/8\"=1'-0\"\n29'-0\"\n25'-0\"\n31'-0\"\n6'-0\"\n11'-6\"\n17'-6\"",
+      "summary": "This plan view, labeled '1/S1', shows the layout of a floating slab foundation. The plan includes dimensions of 29 feet by 25 feet for the main slab area, with an additional section measuring 11 feet 6 inches by 17 feet 6 inches. The plan indicates thickened edges around the perimeter, which are detailed in corresponding sections. Section callouts '2/S1', '3/S1', and '4/S1' are present, indicating where sections cut through the slab for further detail. The drawing scale is 1/8 inch equals 1 foot.",
+      "project_id": "25-01-084",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Thermal break at porch",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "4/S1"
+      ],
+      "element_type": "Thermal Break Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Rebar Dowels",
+        "Concrete",
+        "Rigid Insulation",
+        "Granular Fill"
+      ],
+      "text_verbatim": "SECTION\n4\nS1\nTHERMAL BREAK @ PORCH\n1/2\"=1'-0\"\n12\" LONG 15M REBAR DOWELS @ 16\" o.c c/w MIN. 4\" EMBEDMENT\n18\" THICKENED SLAB EDGE AS PER DETAIL 2/S1\n2\" RIGID INSULATION\nCOMPACTED GRANULAR 'A'",
+      "summary": "This section view, labeled '4/S1', illustrates a thermal break detail at the porch foundation. The section specifies 12-inch long 15M rebar dowels spaced at 16 inches on center with a minimum 4-inch embedment. An 18-inch thickened slab edge is detailed, referencing '2/S1' for further specifications. The section includes 2 inches of rigid insulation above compacted granular 'A'. The drawing scale is 1/2 inch equals 1 foot.",
+      "project_id": "25-01-084",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Thickened edge",
+      "level": "Foundation",
+      "orientation": "Section view",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Thickened Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Rebar",
+        "Concrete",
+        "Sill Plate",
+        "Vapour Barrier",
+        "Granular Fill",
+        "Insulation"
+      ],
+      "text_verbatim": "SECTION\n2\nS1\nTHICKENED EDGE\n1/2\"=1'-0\"\nSLOPE GRADE AWAY 2%, & INSULATION (IF PRESENT)\nSILL PLATE c/w 1/2\"Ø ANCHOR BOLTS @ 48\" o.c. (LEAVE OPENINGS IN SILL PLATE @ DOOR LOCATIONS)\n(4) 15M REBAR (SEE NOTES FOR COVER)\n6x6x6/6 WWM OR 16\" x 16\" 10M GRID OR FIBRE MESH\n6mil POLY VAPOUR BARRIER (OPTIONAL)\nCOMPACTED GRANULAR 'A'\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE\nMIN. COMPRESSIVE STRENGTH OF 30 psi\n4'-0\"\n2'\n1'-0\"",
+      "summary": "This section view, labeled '2/S1', shows a thickened edge detail for the foundation. The section includes a slope grade away from the structure at 2% with optional insulation. A sill plate with 1/2-inch diameter anchor bolts is specified at 48 inches on center, with openings left at door locations. The concrete section includes (4) 15M rebar for reinforcement, as noted. Additional reinforcement options include 6x6x6/6 welded wire mesh (WWM) or a 16\" x 16\" 10M grid or fiber mesh. A 6mil poly vapour barrier is optional, and the base consists of compacted granular 'A'. The section specifies a minimum of 2 inches (R10) of extruded polystyrene for insulation and a minimum compressive strength of 30 psi for the concrete. Dimensions include a 4-foot slab extension, a 2-foot thickened edge, and a 1-foot depth.",
+      "project_id": "25-01-084",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": "page_001/region_04_red_box.png"
+    }
+  ]
+}

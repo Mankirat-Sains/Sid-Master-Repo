@@ -1,0 +1,117 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "A0.01",
+      "drawing_title": "Cover Sheet",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Project Overview",
+        "Sheet List"
+      ],
+      "text_verbatim_title_block": "7516 Wellington Rd 10\nAlma, ON\nN0B 1A0\nDarcy & Dana Martin\nJanuary 6, 2025\nCover Sheet\n12\" = 1'-0\"\nA0.01",
+      "general_notes_verbatim": "THESE DRAWINGS ARE THE PROPERTY OF TRUE BUILDING LTD. NO ALTERATIONS OR REUSING OF THESE DRAWINGS IS PERMITTED UNLESS CONSENT IS GIVEN BY TRUE BUILDING LTD.\nDESIGN AND BUILD BY: TRUE BUILDING\nDRAWN BY: Darcy Martin\nI, Darcy Martin, REVIEW & TAKE RESPONSIBILITY FOR THE DESIGN ACTIVITIES IN THIS SET OF DRAWINGS. I AM QUALIFIED IN THE FIELD STATED BELOW, AS REQUIRED BY DIVISION C, SECTION 3.2.5.1. OF THE OBC.",
+      "page_overview_summary": "This cover sheet provides an overview of the project, including the project name, location, and date. It includes a sheet list detailing the various plans and sections included in the set. The title block contains important project information and notes regarding the ownership and use of the drawings."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "A1.00",
+      "drawing_title": "Site Plan",
+      "overall_classification": "Plan",
+      "level": "Site",
+      "primary_orientation": null,
+      "key_components": [
+        "Existing Church",
+        "Proposed Sewage Tank",
+        "Parking Layout",
+        "Setback Distances"
+      ],
+      "text_verbatim_title_block": "7516 Wellington Rd 10\nAlma, ON\nN0B 1A0\nDarcy & Dana Martin\nJanuary 6, 2025\nSite Plan\n1\" = 20'-0\"\nA1.00",
+      "general_notes_verbatim": "THESE DRAWINGS ARE THE PROPERTY OF TRUE BUILDING LTD. NO ALTERATIONS OR REUSING OF THESE DRAWINGS IS PERMITTED UNLESS CONSENT IS GIVEN BY TRUE BUILDING LTD.\nDESIGN AND BUILD BY: TRUE BUILDING\nDRAWN BY: Darcy Martin\nI, Darcy Martin, REVIEW & TAKE RESPONSIBILITY FOR THE DESIGN ACTIVITIES IN THIS SET OF DRAWINGS. I AM QUALIFIED IN THE FIELD STATED BELOW, AS REQUIRED BY DIVISION C, SECTION 3.2.5.1. OF THE OBC.",
+      "page_overview_summary": "The site plan illustrates the layout of the existing church and proposed changes, including the location of a new sewage tank and parking area. It shows setback distances from various site features and includes notes on compliance with local guidelines. The plan is drawn at a scale of 1\" = 20'-0\"."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "A2.01",
+      "drawing_title": "Basement Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Mechanical Room",
+        "Master Bedroom",
+        "Sewage Tank",
+        "Weight Bearing Walls"
+      ],
+      "text_verbatim_title_block": "7516 Wellington Rd 10\nAlma, ON\nN0B 1A0\nDarcy & Dana Martin\nJanuary 6, 2025\nBasement Floor Plan\n1/8\" = 1'-0\"\nA2.01",
+      "general_notes_verbatim": "THESE DRAWINGS ARE THE PROPERTY OF TRUE BUILDING LTD. NO ALTERATIONS OR REUSING OF THESE DRAWINGS IS PERMITTED UNLESS CONSENT IS GIVEN BY TRUE BUILDING LTD.\nDESIGN AND BUILD BY: TRUE BUILDING\nDRAWN BY: Darcy Martin\nI, Darcy Martin, REVIEW & TAKE RESPONSIBILITY FOR THE DESIGN ACTIVITIES IN THIS SET OF DRAWINGS. I AM QUALIFIED IN THE FIELD STATED BELOW, AS REQUIRED BY DIVISION C, SECTION 3.2.5.1. OF THE OBC.",
+      "page_overview_summary": "The basement floor plan details the layout of the basement, including the mechanical room, master bedroom, and sewage tank location. It highlights weight-bearing walls and provides notes on existing and proposed structural elements. The plan is drawn at a scale of 1/8\" = 1'-0\"."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "A2.02",
+      "drawing_title": "Main Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Kitchen/Dining/Living Area",
+        "Bedrooms",
+        "Load Bearing Walls"
+      ],
+      "text_verbatim_title_block": "7516 Wellington Rd 10\nAlma, ON\nN0B 1A0\nDarcy & Dana Martin\nJanuary 6, 2025\nMain Floor Plan\n3/16\" = 1'-0\"\nA2.02",
+      "general_notes_verbatim": "THESE DRAWINGS ARE THE PROPERTY OF TRUE BUILDING LTD. NO ALTERATIONS OR REUSING OF THESE DRAWINGS IS PERMITTED UNLESS CONSENT IS GIVEN BY TRUE BUILDING LTD.\nDESIGN AND BUILD BY: TRUE BUILDING\nDRAWN BY: Darcy Martin\nI, Darcy Martin, REVIEW & TAKE RESPONSIBILITY FOR THE DESIGN ACTIVITIES IN THIS SET OF DRAWINGS. I AM QUALIFIED IN THE FIELD STATED BELOW, AS REQUIRED BY DIVISION C, SECTION 3.2.5.1. OF THE OBC.",
+      "page_overview_summary": "The main floor plan shows the layout of the ground floor, including the kitchen, dining, and living areas, as well as bedrooms. It identifies load-bearing walls and notes on the structural integrity of existing walls. The plan is drawn at a scale of 3/16\" = 1'-0\"."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "A2.03",
+      "drawing_title": "Second Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Second Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Rec Room",
+        "Bedroom 3",
+        "Decor Platform"
+      ],
+      "text_verbatim_title_block": "7516 Wellington Rd 10\nAlma, ON\nN0B 1A0\nDarcy & Dana Martin\nJanuary 6, 2025\nSecond Floor Plan\n3/16\" = 1'-0\"\nA2.03",
+      "general_notes_verbatim": "THESE DRAWINGS ARE THE PROPERTY OF TRUE BUILDING LTD. NO ALTERATIONS OR REUSING OF THESE DRAWINGS IS PERMITTED UNLESS CONSENT IS GIVEN BY TRUE BUILDING LTD.\nDESIGN AND BUILD BY: TRUE BUILDING\nDRAWN BY: Darcy Martin\nI, Darcy Martin, REVIEW & TAKE RESPONSIBILITY FOR THE DESIGN ACTIVITIES IN THIS SET OF DRAWINGS. I AM QUALIFIED IN THE FIELD STATED BELOW, AS REQUIRED BY DIVISION C, SECTION 3.2.5.1. OF THE OBC.",
+      "page_overview_summary": "The second floor plan outlines the layout of the upper floor, featuring a rec room, bedroom 3, and a decor platform. It provides dimensions and notes on structural elements. The plan is drawn at a scale of 3/16\" = 1'-0\"."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "A3.01",
+      "drawing_title": "Sections",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Longitudinal building sections",
+      "key_components": [
+        "Roof Trusses",
+        "Insulation Details",
+        "Wall Sections"
+      ],
+      "text_verbatim_title_block": "7516 Wellington Rd 10\nAlma, ON\nN0B 1A0\nDarcy & Dana Martin\nJanuary 6, 2025\nSections\n3/16\" = 1'-0\"\nA3.01",
+      "general_notes_verbatim": "THESE DRAWINGS ARE THE PROPERTY OF TRUE BUILDING LTD. NO ALTERATIONS OR REUSING OF THESE DRAWINGS IS PERMITTED UNLESS CONSENT IS GIVEN BY TRUE BUILDING LTD.\nDESIGN AND BUILD BY: TRUE BUILDING\nDRAWN BY: Darcy Martin\nI, Darcy Martin, REVIEW & TAKE RESPONSIBILITY FOR THE DESIGN ACTIVITIES IN THIS SET OF DRAWINGS. I AM QUALIFIED IN THE FIELD STATED BELOW, AS REQUIRED BY DIVISION C, SECTION 3.2.5.1. OF THE OBC.",
+      "page_overview_summary": "This section sheet provides longitudinal sections of the building, detailing roof trusses, insulation, and wall sections. It highlights structural conditions and proposed changes to existing elements. The sections are drawn at a scale of 3/16\" = 1'-0\"."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "A3.02",
+      "drawing_title": "Sections",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Transverse building sections",
+      "key_components": [
+        "Floor Joists",
+        "Attic Insulation",
+        "Wall Construction"
+      ],
+      "text_verbatim_title_block": "7516 Wellington Rd 10\nAlma, ON\nN0B 1A0\nDarcy & Dana Martin\nJanuary 6, 2025\nSections\n3/16\" = 1'-0\"\nA3.02",
+      "general_notes_verbatim": "THESE DRAWINGS ARE THE PROPERTY OF TRUE BUILDING LTD. NO ALTERATIONS OR REUSING OF THESE DRAWINGS IS PERMITTED UNLESS CONSENT IS GIVEN BY TRUE BUILDING LTD.\nDESIGN AND BUILD BY: TRUE BUILDING\nDRAWN BY: Darcy Martin\nI, Darcy Martin, REVIEW & TAKE RESPONSIBILITY FOR THE DESIGN ACTIVITIES IN THIS SET OF DRAWINGS. I AM QUALIFIED IN THE FIELD STATED BELOW, AS REQUIRED BY DIVISION C, SECTION 3.2.5.1. OF THE OBC.",
+      "page_overview_summary": "This section sheet provides transverse sections of the building, focusing on floor joists, attic insulation, and wall construction. It includes details on new and existing structural elements and compliance with building codes. The sections are drawn at a scale of 3/16\" = 1'-0\"."
+    }
+  ]
+}

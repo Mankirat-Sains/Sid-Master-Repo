@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": null,
+      "drawing_title": "Mechanical Detail",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Idler Wheel",
+        "2 Legged Chain Slings",
+        "Load Bar"
+      ],
+      "text_verbatim_title_block": "",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides a detailed mechanical drawing of a system involving an idler wheel, a load bar, and 2 legged chain slings. The drawing includes annotations for dimensions and components, focusing on the mechanical assembly and its parts. The purpose is likely to illustrate the configuration and connections of these components."
+    }
+  ]
+}

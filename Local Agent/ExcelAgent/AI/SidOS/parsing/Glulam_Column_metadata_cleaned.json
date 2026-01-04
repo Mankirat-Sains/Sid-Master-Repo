@@ -1,0 +1,86 @@
+{
+  "inputs": {},
+  "outputs": {
+    "intermediate_calculations": {
+      "type": "group",
+      "sheet": "Guidance Tables",
+      "cells": {
+        "param_c5": "C5",
+        "10": "D5",
+        "20": "E5",
+        "30": "F5",
+        "40": "G5",
+        "50": "H5",
+        "60": "I5",
+        "70": "J5",
+        "80": "K5",
+        "param_g23": "G23",
+        "dry": "H23",
+        "param_c36": "C36",
+        "lu": "C37",
+        "": "E37",
+        "a": "D37"
+      },
+      "description": "Intermediate calculation cells"
+    },
+    "capacity_ratios": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "param_l18": "L18",
+        "compression_utilization": "M18",
+        "param_l20": "L20",
+        "tension_utilization": "M20",
+        "param_l22": "L22",
+        "axialbending_utilization": "M22",
+        "param_c32": "C32",
+        "load_duration_factor": "C33",
+        "effective_length_weak_axis": "D94",
+        "slenderness_ratio_strong_axis": "D95",
+        "slenderness_ratio_weak_axis": "E95",
+        "effective_length": "D115",
+        "slenderness_ratio": "E116"
+      },
+      "description": "Capacity utilization ratios (Mf/Mr, Vf/Vr, etc.)"
+    },
+    "force_results": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "param_h26": "H26",
+        "stress_grades_not_recommended": "H27",
+        "wood_species": "C28",
+        "param_c37": "C37",
+        "factored_moment": "C38",
+        "beam_volume": "D54",
+        "moment_of_inertia": "D55",
+        "param_d118": "D118",
+        "moment_resistance_1": "D119",
+        "moment_resistance_2": "E119"
+      },
+      "description": "Force and moment calculation results"
+    },
+    "calculated_results": {
+      "type": "group",
+      "sheet": "Guidance Tables",
+      "cells": {
+        "param_b4": "B4",
+        "param_b21": "B21",
+        "param_b56": "B56",
+        "1000": "C65"
+      },
+      "description": "Calculated output results"
+    },
+    "member_selection": {
+      "type": "group",
+      "sheet": "Guidance Tables",
+      "cells": {
+        "param_n4": "N4",
+        "param_b34": "B34",
+        "param_b68": "B68"
+      },
+      "description": "Selected member sizes and sections"
+    }
+  },
+  "lookups": {}
+}

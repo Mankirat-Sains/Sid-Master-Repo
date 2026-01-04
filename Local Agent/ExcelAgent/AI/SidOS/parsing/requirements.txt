@@ -1,0 +1,15 @@
+# Intelligent Excel Parser Requirements
+
+# Excel file reading
+openpyxl>=3.1.0
+xlwings>=0.30.0
+
+# AI-driven understanding
+openai>=1.0.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Standard library (no external deps needed for core functionality)
+# json, logging, pathlib, typing are all built-in
+

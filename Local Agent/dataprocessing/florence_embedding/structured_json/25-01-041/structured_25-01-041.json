@@ -1,0 +1,286 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Basement – existing layout",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/15"
+      ],
+      "element_type": "Existing Basement Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Viessmann Gas Boiler",
+        "Electro-Mechanical Boiler Control",
+        "Stairs"
+      ],
+      "text_verbatim": "EXISTING BASEMENT\nSCALE: 3/16\" = 1'-0\"\n28'-1 1/2\"\n36'-10 3/4\"\n18'-3 1/2\"\n12'-11 1/2\"\n13'-9 3/4\"\n8'-4\"\n12'-11 1/2\"\n2'-0\"\n4'-2\"\n3'-2 1/2\"\n2'-6 1/4\" x 6'-8\"\nUP 10 R\nEXISTING FLOOR JOIST DIRECTION\nVIESSMANN GAS BOILER\n9509896 ATOLA WITH\nELECTRO-MECHANICAL\nBOILER CONTROL E/KR",
+      "summary": "This plan shows the existing basement layout with dimensions and key components. The basement includes a Viessmann gas boiler with electro-mechanical control. The floor joist direction is indicated, and the plan provides detailed dimensions such as 28'-1 1/2\", 36'-10 3/4\", and 18'-3 1/2\". The section callout 'A/15' suggests a related section view. The scale is 3/16\" = 1'-0\", allowing for precise spatial analysis.",
+      "project_id": "25-01-041",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – existing layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/15"
+      ],
+      "element_type": "Existing Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Radiators",
+        "Plumbing Chase",
+        "Structural Walls"
+      ],
+      "text_verbatim": "EXISTING MAIN FLOOR\nSCALE: 3/16\" = 1'-0\"\nST. ANDREW STREET\n1'-0\" x 5'-1\"\n6'-10\" x 7'-0\"\n3'-0\" x 5'-4\"\n10'-1\"\n11'-12\"\n13'-5 1/2\"\n4'-7 1/2\"\n5'-0\" x 3'-0\"\nEXISTING GROUP E OCCUPANCY\nGROUP D OCCUPANCY\n(MEDICAL CLINIC)\nFORMERLY GROUP F OCCUPANCY\n(FORMERLY WINE MAKING ESTABLISHMENT)\nRADIATOR\nPLUMBING CHASE FROM ABOVE\n12'-1\" CLG HT\n8'-1 1/2\" CLG HT",
+      "summary": "This plan illustrates the existing main floor layout, including dimensions and key components like radiators and plumbing chases. The floor plan is marked for Group D occupancy (medical clinic), previously a Group F occupancy (wine making establishment). Dimensions such as 11'-12\" and 13'-5 1/2\" are noted. The section callout 'A/15' indicates a related section view. The scale is 3/16\" = 1'-0\", providing detailed spatial analysis.",
+      "project_id": "25-01-041",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Second Floor – existing layout",
+      "level": "Second Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/15"
+      ],
+      "element_type": "Existing Second Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Living Room",
+        "Dining Area",
+        "Kitchen",
+        "Bedrooms"
+      ],
+      "text_verbatim": "EXISTING SECOND FLOOR\nSCALE: 3/16\" = 1'-0\"\nLIVING\nDINING\nKITCHEN\nBATH\nBEDROOM #1\nBEDROOM #2\nROOF FRAMING\n2'-11 1/2\"\n45 MIN F.R.R. DOOR\nUP 19 R",
+      "summary": "This plan presents the existing second floor layout, detailing living spaces such as the living room, dining area, kitchen, and bedrooms. The plan includes a 45-minute fire-rated door and roof framing directions. The section callout 'A/15' suggests a related section view. The scale is 3/16\" = 1'-0\", allowing for detailed examination of spatial relationships.",
+      "project_id": "25-01-041",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – proposed layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/15"
+      ],
+      "element_type": "Proposed Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Examining Rooms",
+        "Reception",
+        "Radiators",
+        "Columns"
+      ],
+      "text_verbatim": "PROPOSED MAIN FLOOR\nSCALE: 3/16\" = 1'-0\"\nST. ANDREW STREET\n1'-0\" x 5'-1\"\n6'-10\" x 7'-0\"\n3'-0\" x 5'-4\"\n11'-6\"\n14'-1 1/4\"\n12'-5 1/2\"\n9'-0\" +/- CLG HT\nEXISTING GROUP E OCCUPANCY\nGROUP D OCCUPANCY\n(MEDICAL CLINIC)\nFORMERLY GROUP F OCCUPANCY\n(FORMERLY WINE MAKING ESTABLISHMENT)\nRADIATOR\nMOLE MAPPING ROOM\nEXAMINING ROOM 1\nEXAMINING ROOM 2\nHSS STEEL 4x8x3/8\" COLUMN\nFASTENED W/ 3/4\" HILTI BOLT @ 24\" o.c.\nEPOXIED INTO EXISTING STONE WALL MIN. EMBED 5\"\nSHEAR WALL:\nONE SIDE TO HAVE 5/8\" PLYWOOD FASTENED\nW/ 2 3/8\" NAILS @ 8\" o.c. PANEL EDGES\n1 1/2\" o.c. IN FIELD UNDER THE DRYWALL\n1/2\" EPOXY ANCHORS MIN 4\" EMBED INTO\nSTONE WALL BELOW",
+      "summary": "This plan details the proposed main floor layout, including examining rooms, a reception area, and structural elements like radiators and HSS steel columns. The plan specifies Group D occupancy (medical clinic) and includes shear wall details. Dimensions such as 11'-6\" and 14'-1 1/4\" are noted. The section callout 'A/15' indicates a related section view. The scale is 3/16\" = 1'-0\", providing a comprehensive view of intended modifications.",
+      "project_id": "25-01-041",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Building – cross-sectional view",
+      "level": "Multiple",
+      "orientation": "Cross Section A",
+      "grid_references": [],
+      "section_callouts": [
+        "A/15"
+      ],
+      "element_type": "Cross Section",
+      "element_callouts": [],
+      "key_components": [
+        "Structural Framing",
+        "Ventilation Systems",
+        "Fire Separations"
+      ],
+      "text_verbatim": "CROSS SECTION A\nSCALE: 3/16\" = 1'-0\"\nEXISTING SECOND FLOOR:\n1 HR F.R. RATED\nTOTAL PROVIDED AS PER SB-2 (TOTAL 85 MINUTES)\nEXISTING FINISH FLOORING\nEXISTING FLOOR JOISTS @ 16\" o.c. (6 MINUTES)\nROCKWOOL 3 1/2\" MINERAL WOOL INSULATION\nFOR SOUND PROTECTION ONLY\n2 LAYERS 5/8\" TYPE 'X' DRYWALL (2 x 40 MINUTES)\nPROPOSED DROP CEILING\n1 HR F.R. REQUIRED\n60 MINUTES PROVIDED (SB-2)\n2x4 CEILING JOISTS @ 16\" o.c.\nROCKWOOL 3 1/2\" INSULATION FOR SOUND\n2 LAYERS 5/8\" TYPE 'X' DRYWALL (2 x 40 MINUTES)\n(ALL PIPE PENETRATION TO HAVE 60 MINUTE\nRATED FIRE DONUTS AS WELL)\nVENTILATION DUCTWORK TO BE PLACED IN BULKHEAD\nBELOW FIRE SEPARATIONS\nSTEEL BEAMS AS PER MOMENT FRAMES\nSTRAP WALL WITH 2x4 S REQUIRED\n2 LAYERS 5/8 TYPE 'X' DRYWALL (60 MINUTES)\nTYP. INT. WALL:\n5/8\" TYPE 'X' DRYWALL\n2x4 STUDS @ 16\" o.c.\nROCKWOOL INSULATION\n5/8\" TYPE 'X' DRYWALL",
+      "summary": "This cross-sectional view illustrates the building's structural framing, ventilation systems, and fire separations. It details the existing second floor with 1-hour fire rating and proposed drop ceiling with 60-minute fire rating. The section includes specifications for existing floor joists, rockwool insulation, and drywall layers. Ventilation ductwork placement and steel beams as per moment frames are noted. The section callout 'A/15' connects to related views. The scale is 3/16\" = 1'-0\", crucial for understanding vertical integration.",
+      "project_id": "25-01-041",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Universal Washroom Requirements",
+      "element_callouts": [],
+      "key_components": [
+        "Water Closets",
+        "Washroom Accessories",
+        "Lavatory Clearances",
+        "Pipe Protection"
+      ],
+      "text_verbatim": "A-3.8.3.9. Water Closets.\nArticle 7.2.2.5. applies to water closets referenced in Articles 3.8.3.8., 3.8.3.9. and 3.8.3.12. A shelf or projection should not be located behind a water closet such that it could present a hazard.\nA-3.8.3.9.(1)(c) Back Support at Water Closets.\nThe purpose of the back support is to reduce the chance of imbalance or injury caused by a user leaning against exposed flush valves or pipes. A toilet seat lid, where provided, may be a suitable back support.\nA-3.8.3.9.(1) Water Closets.\nWall-mounted water closets or floor models with receding bases are preferable because they provide the least amount of obstruction.\nA-3.8.3.11. Washroom Accessories.\nWashroom accessories for barrier-free water closets and lavatories must be located within arm's reach of a person in a seated position. Placement of towel dispensers and hand dryers should not require that a person seated in a wheelchair must travel beyond the reach range of the lavatory to dry his or her hands.\n\n[Diagram with dimensions]\n610 mm max\n1200 mm max\n840 mm max\n1120 mm max\n\nA-3.8.3.11.(1)(c) Clearances Beneath a Lavatory.\nBarrier-free lavatories require sufficient knee and toe clearance below to permit a person in a wheelchair to move close enough to the faucet to easily access the water stream.\nIn order to meet the clearances contained in this Clause, and depending on the lavatory to be installed, it may be necessary to install an offset P.O. lavatory drain.\n\n[Diagram with dimensions]\n840 mm max\n735 mm min\n205 mm\n350 mm min\n300 mm Front edge to wall\n\nA-3.8.3.11.(1)(d) Pipe Protection.\nThe pipes referred to in Clause 3.8.3.11.(1)(d) include both supply and waste pipes. The hazard can be prevented by insulating the pipes, by locating the pipes in enclosures, or avoided by limiting the temperature of the hot water to a maximum of 43°C.",
+      "summary": "This image contains notes on universal washroom requirements, focusing on water closets and washroom accessories. It specifies that water closets should not have shelves or projections behind them to avoid hazards. Back support is recommended to prevent imbalance, and wall-mounted or receding base models are preferred for minimal obstruction. Washroom accessories must be within arm's reach for seated users. Diagrams illustrate required clearances beneath lavatories, with dimensions such as 610 mm max and 1200 mm max. Pipe protection is necessary to prevent hazards, with recommendations to insulate or enclose pipes and limit hot water temperature to 43°C.",
+      "project_id": "25-01-041",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Universal Washroom Requirements",
+      "element_callouts": [],
+      "key_components": [
+        "Clear Space",
+        "Transfer Space",
+        "Emergency Call System",
+        "Motion Sensors"
+      ],
+      "text_verbatim": "A-3.8.3.11.(1)(f) Clear Space at Lavatory.\nThe clear space required for the wheelchair user to pull into the fountain may overlap with an adjacent barrier-free path of travel but should not prevent other building users from passing when the barrier-free lavatory is in use.\n\n[Diagram with dimensions]\n460 mm\nMax 500 mm deep clear space permitted below lavatory\n\nA-3.8.3.12.(1)(d) Transfer Space.\nThe transfer space beside a water closet or the approach space at a lavatory must be a clear space with no obstruction or potential obstruction of the space from adjacent elements such as a fold-down change table, or other fixture. The exception to this would be a fold-down grab bar where provided. If a fold down change table is not returned to the folded up position after use, the next user of the space should not be inconvenienced from using the water closet or lavatory due to the transfer or approach spaces being blocked.\n\nA-3.8.3.12.(1) and (3) Universal Washroom.\nUnobstructed areas in front of the lavatory, in front of the water closet and on one side of the water closet are necessary for manoeuvrability of a wheelchair. The door swing may overlap the turning circle within the universal washroom as long as there is sufficient space for a wheelchair user to manoeuver to clear the door and close the door from a front approach position.\n\nA-3.8.3.12.(2) Emergency Call System.\nThe purpose of the emergency call system is to notify other building occupants that a person using the universal washroom requires assistance. The visual signal and alarm should be different from the building fire and smoke alarms and visual signals, where installed, as this call system is for personal, not building, emergencies.\n\n12.2.4.1. Motion Sensors\n(1) Lighting installed to provide the minimum illumination levels required by this Code may be controlled by motion sensors except where the lighting,\n(a) is installed in an exit,\n(b) is installed in a corridor serving patients or residents in a Group B, Division 2 or Division 3 occupancy, or\n(c) is installed in a service space referred to in Sentence 3.2.7.1.(6).\n(2) Where motion sensors are used to control minimum lighting in a public corridor or corridor providing access to exit for the public, the motion sensors shall be installed with switch controls.",
+      "summary": "This image provides notes on clear space and transfer space requirements in universal washrooms. It emphasizes the need for unobstructed areas for wheelchair maneuverability, with diagrams showing dimensions like 460 mm and a maximum 500 mm deep clear space below lavatories. Transfer spaces must remain clear of obstructions like fold-down tables. The emergency call system is designed to alert others when assistance is needed, distinct from building alarms. Motion sensors can control lighting except in specific areas like exits and corridors serving patients. These notes guide the implementation of inclusive design features in washrooms.",
+      "project_id": "25-01-041",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Grab Bar Specifications",
+      "element_callouts": [],
+      "key_components": [
+        "Additional Grab Bars",
+        "L-Shaped Grab Bar"
+      ],
+      "text_verbatim": "Appendix A\nA-3.8.3.8.(3) Additional Grab Bars.\nDesigners may exceed the minimum requirements found in the Building Code and specify the installation of additional grab bars in other locations. These additional grab bars may be of different configurations and can be installed in other orientations.\n\nA-3.8.3.8.(5) L-Shaped Grab Bar.\nL-shaped grab bars provide greater support for people who rely on grab bars to assist them in transferring to and from a standing or seated position. Diagonally mounted grab bars may not be suitable for the downward force necessary for support or for pulling upward. Hands can slip along the bar if it is set in a diagonal position. The use of two straight grab bars located at a 90° angle to one another is not permitted.\n\n[Diagrams]\nPermitted Continuous L-Shaped Grab Bar\nNot Permitted Discontinuous L-Shaped Grab Bar",
+      "summary": "This image contains notes on the installation of additional grab bars and L-shaped grab bars in washrooms. Designers are encouraged to exceed minimum Building Code requirements by installing additional grab bars in various configurations and orientations. L-shaped grab bars offer better support for transfers between standing and seated positions. Diagonally mounted grab bars are not recommended due to potential slipping hazards. The use of two straight grab bars at a 90° angle is not allowed. Diagrams illustrate permitted and not permitted configurations of L-shaped grab bars, guiding proper installation for safety and accessibility.",
+      "project_id": "25-01-041",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": "page_006/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Grab Bar Specifications",
+      "element_callouts": [],
+      "key_components": [
+        "Additional Grab Bars",
+        "L-Shaped Grab Bar"
+      ],
+      "text_verbatim": "Appendix A\nA-3.8.3.8.(3) Additional Grab Bars.\nDesigners may exceed the minimum requirements found in the Building Code and specify the installation of additional grab bars in other locations. These additional grab bars may be of different configurations and can be installed in other orientations.\n\nA-3.8.3.8.(5) L-Shaped Grab Bar.\nL-shaped grab bars provide greater support for people who rely on grab bars to assist them in transferring to and from a standing or seated position. Diagonally mounted grab bars may not be suitable for the downward force necessary for support or for pulling upward. Hands can slip along the bar if it is set in a diagonal position. The use of two straight grab bars located at a 90° angle to one another is not permitted.",
+      "summary": "This image provides notes on additional grab bars and L-shaped grab bars. Designers are encouraged to install additional grab bars beyond the minimum Building Code requirements, allowing for various configurations and orientations. L-shaped grab bars are recommended for better support during transfers between standing and seated positions. Diagonally mounted grab bars are not suitable due to slipping risks. The use of two straight grab bars at a 90° angle is prohibited. These guidelines ensure the safe and effective installation of grab bars in accessible washrooms.",
+      "project_id": "25-01-041",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": "page_006/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Lavatories and Water Closets Specifications",
+      "element_callouts": [],
+      "key_components": [
+        "Lavatories",
+        "Water Closets",
+        "Water Closet Stalls"
+      ],
+      "text_verbatim": "3.8.3.11. Lavatories (See Appendix A.)\n(1) located to be accessible to persons in wheelchairs,\n(ii) located so that the dispensing height is not more than 1 200 mm above the finished floor,\n(iii) located not more than 610 mm, measured horizontally, from the edge of the lavatory.\n(iv) operable with one hand, and\n(v) have a towel dispenser or other hand drying equipment that is.\n(1) located to be accessible to persons in wheelchairs,\n(ii) located so that the dispensing height is not more than 1 200 mm above the finished floor,\n(iii) operable with one hand, and\n(iv) located not more than 610 mm, measured horizontally, from the edge of the lavatory.\n(3) If dispensing or hand-operated washroom accessories, except those located in water closet stalls or described in Clause (1)(g), are provided, they shall be mounted so that,\n(a) the dispensing height is not less than 900 mm and not more than 1 200 mm above the finished floor,\n(b) the controls or operating mechanisms are mounted not less than 900 mm and not more than 1 200 mm above the finished floor, and\n(c) a minimum 1 370 mm deep floor space is provided in front of the controls or operating mechanisms to allow for a front approach.\n(4) Where a shelf is installed above a lavatory required by Sentence (1), it shall,\n(a) be located not more than 200 mm above the top of the lavatory and not more than 1 100 mm above the finished floor, and\n(b) project not more than 100 mm from the wall.\n\n3.8.3.9. Water Closets (See Appendix A.)\n(1) A water closet described in Clause 3.8.3.12.(1)(d) shall,\n(a) be equipped with a seat located at not less than 430 mm and not more than 485 mm above the finished floor,\n(b) be equipped with hand-operated flushing controls that are easily accessible to a wheelchair user or be automatically operable,\n(c) be equipped with a back support where there is no seat lid or tank, and (See Appendix A.)\n(d) not have a spring-activated seat. (See Appendix A.)\n(2) Hand-operated flushing controls required by Clause (1)(b) shall be operable using a closed fist and with a force of not more than 22.2 N.\n\n3.8.3.8. Water Closet Stalls\n(1) Every barrier-free water closet stall in a washroom described in Sentence 3.8.2.3.(3) or (4) shall,\n(a) be equipped with a coat hook mounted not more than 1 200 mm above the finished floor on a side wall and projecting not more than 50 mm from the wall,\n(2) A water closet described in Clause (1)(c) shall be,\n(a) located so that,\n(i) the centre line of the water closet is not less than 460 mm and not more than 480 mm from one side wall, and\n(ii) a clear transfer space at least 900 mm wide and 1 500 mm deep is provided on the other side of the water closet, or\n(b) located so that a clear transfer space at least 900 mm wide and 1 500 mm deep is provided on each side of the water closet. (See Appendix A.)\n(3) Where a water closet is located in accordance with Clause 3.8.3.8.(2)(a),\n(a) a grab bar conforming to Sentences (5) and (7) shall be provided on the side wall referred to in Subclause (2)(a)(i),\n(b) a grab bar conforming to Sentences (6) and (7) shall be provided on the wall behind the water closet, and\n(c) a grab bar conforming to Sentences (6) and (7) shall be provided on each side of the water closet. (See Appendix A.)\n(4) Where a water closet is located in accordance with Clause (2)(b),\n(a) a grab bar conforming to Sentence (8) shall be provided on the wall behind the water closet, and\n(b) a grab bar conforming to Sentence (8) shall be provided on each side of the water closet. (See Appendix A.)",
+      "summary": "This image provides detailed specifications for lavatories and water closets in accessible washrooms. Lavatories must be accessible to wheelchair users, with dispensing heights not exceeding 1,200 mm and operable with one hand. Washroom accessories must be mounted between 900 mm and 1,200 mm above the floor, with sufficient floor space for a front approach. Water closets must have seats between 430 mm and 485 mm above the floor, with accessible hand-operated or automatic flushing controls. Water closet stalls require clear transfer spaces and appropriate grab bars. These specifications ensure compliance with barrier-free design standards.",
+      "project_id": "25-01-041",
+      "page_number": 6,
+      "region_number": 5,
+      "relative_path": "page_006/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Top view of beam connection to stone wall",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Steel Beam Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "W8 x 48 Steel Beam",
+        "3/8\" Thick Steel End Plate",
+        "HSS Steel 4x8 Column",
+        "Hilti Bolt",
+        "Non Shrink Grout",
+        "Stone Wall"
+      ],
+      "text_verbatim": "3/8\" THICK STEEL END PLATE WELDED TO BEAM w/ 1/4\" FILLET WELD ALL AROUND\nW8 x 48 STEEL BEAM\nNON SHRINK GROUT ABOVE BEAM\nFASTENED W/ 3/4\" ø HILTI BOLT @ 48\" o.c.\nEPOXIED INTO EXISTING STONE WALL MIN. EMBED 4\"\nHSS STEEL 4x8 COLUMN X3/8\" HSS\nFASTENED W/ 3/4\" ø HILTI BOLT @ 32\" o.c.\nEPOXIED INTO EXISTING STONE WALL MIN. EMBED 5\"\nTOP VIEW",
+      "summary": "This detail shows a top view of a steel beam connection to a stone wall. The W8 x 48 steel beam is fastened with 3/4\" diameter Hilti bolts spaced at 48 inches on center and is epoxied into the existing stone wall with a minimum embedment of 4 inches. The beam is supported by HSS steel 4x8 columns with 3/8\" thickness, fastened with 3/4\" diameter Hilti bolts at 32 inches on center, also epoxied into the stone wall with a minimum embedment of 5 inches. A 3/8\" thick steel end plate is welded to the beam with a 1/4\" fillet weld all around. Non-shrink grout is placed above the beam.",
+      "project_id": "25-01-041",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Elevation view of moment frame",
+      "level": "Unknown",
+      "orientation": "Elevation view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Moment Frame Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "W8 x 48 Steel Beam",
+        "3/8\" Thick Steel End Plate",
+        "HSS Steel 4x8 Column",
+        "Hilti Bolt",
+        "Shear Wall",
+        "Stone Wall"
+      ],
+      "text_verbatim": "3/8\" THICK STEEL END PLATE WELDED TO BEAM w/ 1/4\" FILLET WELD\nW8 x 48 STEEL BEAM\nNON SHRINK GROUT ABOVE BEAM\nFASTENED W/ 3/4\" ø HILTI BOLT @ 48\" o.c.\nEPOXIED INTO EXISTING STONE WALL MIN. EMBED 4\"\nHSS STEEL 4x8 COLUMN X3/8\" HSS\nFASTENED W/ 3/4\" ø HILTI BOLT @ 24\" o.c.\nEPOXIED INTO EXISTING STONE WALL MIN. EMBED 5\"\nSHEAR WALL BEHIND:\nONE SIDE TO HAVE 1/2\" PLYWOOD FASTENED\nW/ 2 3/8\" NAILS @ 4\" o.c. PANEL EDGES\n& 12\" o.c. IN FIELD UNDER THE DRYWALL\nANCHOR BOTTOM PLATE THROUGH FLOOR w/\n1/2\" EPOXY ANCHORS @ 24\" o.c.\nMIN 4\" EMBED INTO STONE WALL BELOW\nCONTRACTOR TO CONFIRM STONE WALL IN SOLID\nBEARING CONDITION, OR POUR 25MPA CONCRETE CAP\nMIX TO FILL/ROUGHEN AND REMOVE ANY LOOSE\nMATERIAL AND APPLY BONDING AGENT BEFORE POURING\nPROFESSIONAL ENGINEER CERTIFICATION OF NOTED STRUCTURAL ITEMS\nSCALE: 1/2\" = 1'-0\"\nFebruary 2023",
+      "summary": "This elevation view shows a moment frame with a W8 x 48 steel beam fastened with 3/4\" diameter Hilti bolts at 48 inches on center, epoxied into an existing stone wall with a minimum embedment of 4 inches. The beam is supported by HSS steel 4x8 columns with 3/8\" thickness, fastened with 3/4\" diameter Hilti bolts at 24 inches on center, also epoxied into the stone wall with a minimum embedment of 5 inches. A 3/8\" thick steel end plate is welded to the beam with a 1/4\" fillet weld. Behind the frame, a shear wall is specified to have 1/2\" plywood fastened with 2 3/8\" nails at 4 inches on center along panel edges and 12 inches in the field under drywall. The bottom plate is anchored through the floor with 1/2\" epoxy anchors at 24 inches on center, with a minimum 4-inch embedment into the stone wall below. The contractor is instructed to confirm the stone wall's solid bearing condition or pour a 25MPa concrete cap mix to fill and roughen, removing any loose material and applying a bonding agent before pouring. The drawing is certified by a professional engineer.",
+      "project_id": "25-01-041",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    }
+  ]
+}

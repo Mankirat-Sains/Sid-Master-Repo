@@ -1,0 +1,183 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Site – existing church and proposed changes",
+      "level": "Site",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Site Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Existing Church",
+        "Proposed Sewage Tank",
+        "Parking Area",
+        "Setback Distances"
+      ],
+      "text_verbatim": "Site Plan\n1\" = 20'-0\"\nEXISTING CHURCH PROPOSED TO CHANGE TO RESIDENTIAL USE APPROX. 1822 SF 169.2 sq.m\nPROPOSED LOCATION OF SEWAGE TANK\nNEW 2 CAR REQUIRED PARKING AS PER BYLAW\n30m SETBACK FROM LEACHING PIPES TO NEIGHBOUR'S WELL\n15' - 0\" 4.57 m\n15' SETBACK FROM NEAREST GRAVE AS PER BAO GUIDELINES\n100' - 0\" 30.48 m\nAPPROX. WEEPING BED SIZE BASED OFF SOIL TYPE. REFER TO SEPTIC SYSTEM APPLICATION FOR DETAILS.\nTREES (TYP.)\n7516 WELLINGTON RD 8, ALMA",
+      "summary": "This site plan illustrates the layout of the existing church and proposed changes, including the location of a new sewage tank and a parking area. The plan shows setback distances from various site features, such as a 30m setback from leaching pipes to the neighbor's well and a 15' setback from the nearest grave as per BAO guidelines. The existing church is proposed to change to residential use, approximately 1822 SF (169.2 sq.m). The plan is drawn at a scale of 1\" = 20'-0\" and includes notes on compliance with local guidelines.",
+      "project_id": "25-01-024",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Basement – mechanical room and bedrooms",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.02",
+        "1/A3.01"
+      ],
+      "element_type": "Basement Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Mechanical Room",
+        "Master Bedroom",
+        "Sewage Tank",
+        "Weight Bearing Walls"
+      ],
+      "text_verbatim": "T/O Basement Floor\n1/8\" = 1'-0\"\nALL MECHANICAL EQUIPMENT TO BE NEW\nEXISTING MECHANICAL ROOM 179.22 SF\nMASTER BEDROOM 135.00 SF\nWALK-IN CLOSET 23.06 SF\nWASHROOM / LAUNDRY 68.35 SF\nPANTRY / STORAGE 44.75 SF\nKITCHEN/DINING/LIVING 692.03 SF\nFOYER 150.27 SF\nBEDROOM 84.36 SF\nEXISTING SINGLE EXIT FROM BOTH DWELLING UNITS PERMISSABLE AS PER COMPLIANCE ALTERNATIVE C136 189 (1)\nNEW 2 CAR REQUIRED PARKING AS PER BYLAW",
+      "summary": "The basement floor plan details the layout of the basement, including the mechanical room (179.22 SF), master bedroom (135.00 SF), and sewage tank location. It highlights weight-bearing walls and provides notes on existing and proposed structural elements. The plan is drawn at a scale of 1/8\" = 1'-0\". Section callouts '1/A3.02' and '1/A3.01' indicate connections to other views. The plan includes compliance notes for existing single exits and new parking requirements.",
+      "project_id": "25-01-024",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – kitchen, dining, and living areas",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.02",
+        "1/A3.01"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Kitchen",
+        "Dining Area",
+        "Living Area",
+        "Bedrooms",
+        "Load-Bearing Walls"
+      ],
+      "text_verbatim": "T/O Main Floor\n3/16\" = 1'-0\"\nBEDROOM 1 120.75 SF\nWASHROOM / LAUNDRY 72.71 SF\nMASTER BEDROOM 148.81 SF\nKITCHEN/DINING/LIVING 900.31 SF\nMUDROOM 44.63 SF\nALL WALLS TO BE 2x4 WALLS UNLESS NOTED OTHERWISE\nEXTERIOR WINDOWS TO BE REPLACED AS NEEDED",
+      "summary": "The main floor plan shows the layout of the ground floor, including the kitchen, dining, and living areas (900.31 SF), as well as bedrooms. It identifies load-bearing walls and notes on the structural integrity of existing walls. The plan is drawn at a scale of 3/16\" = 1'-0\". Section callouts '1/A3.02' and '1/A3.01' provide connections to other views. Notes indicate that all walls are to be 2x4 unless otherwise noted, and exterior windows are to be replaced as needed.",
+      "project_id": "25-01-024",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Second Floor – rec room and bedroom",
+      "level": "Second Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.02",
+        "1/A3.01"
+      ],
+      "element_type": "Second Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Rec Room",
+        "Bedroom 3",
+        "Decor Platform"
+      ],
+      "text_verbatim": "T/O Second Floor\n3/16\" = 1'-0\"\nREC ROOM 119.48 SF\nBEDROOM 3 156.22 SF\nNEW WINDOW TO CONFORM TO EGRESS STANDARDS",
+      "summary": "The second floor plan outlines the layout of the upper floor, featuring a rec room (119.48 SF) and bedroom 3 (156.22 SF), along with a decor platform. It provides dimensions and notes on structural elements. The plan is drawn at a scale of 3/16\" = 1'-0\". Section callouts '1/A3.02' and '1/A3.01' indicate connections to other views. A note specifies that new windows must conform to egress standards.",
+      "project_id": "25-01-024",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Longitudinal section through building",
+      "level": "Multiple",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.01"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Roof Trusses",
+        "Insulation",
+        "Wall Sections"
+      ],
+      "text_verbatim": "Section 1\n3/16\" = 1'-0\"\nEXISTING ROOF IN STRUCTURALLY SOUND CONDITION\nSTEEL SHEET ROOFING\nWOOD SHINGLES\n2x4 WOOD VESTIBULE SCISSOR TRUSSES\nINSTALL NEW BLOWN-IN INSULATION MIN. R75\nEXISTING WALLS IN STRUCTURALLY SOUND CONDITION\nEXISTING 24\" THICK LATERALLY UNSUPPORTED RUBBLE FOUNDATION IN GOOD CONDITION",
+      "summary": "This section sheet provides longitudinal sections of the building, detailing roof trusses, insulation, and wall sections. The existing roof is in structurally sound condition with steel sheet roofing and wood shingles. The section highlights the installation of new blown-in insulation with a minimum R-value of 75. Existing walls are noted to be in structurally sound condition, and the existing 24\" thick laterally unsupported rubble foundation is in good condition. The sections are drawn at a scale of 3/16\" = 1'-0\". Section callout '1/A3.01' references this view.",
+      "project_id": "25-01-024",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Transverse section through building showing multiple levels",
+      "level": "Multiple",
+      "orientation": "Transverse section looking East",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.01"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Floor Joists",
+        "Attic Insulation",
+        "Wall Construction",
+        "Railing",
+        "Rim Board",
+        "Concrete Lags"
+      ],
+      "text_verbatim": "1\nA3.01\nEXISTING UNINSULATED ATTIC TO HAVE R75 BLOWN-IN INSULATION INSTALLED\nHALF WALL TO BE MIN 36\" TALL AS PER OBC\nNEW FLOOR JOISTS TO EXTEND PAST WALL TO ALLOW FOR DECORATIVE BUMP-OUT\nKITCHEN/DINING/LIVING 960.31 SF\nREC ROOM 1194.88 SF\nBEDROOM 1 120.75 SF\nNEW FLOOR:\n5/8\" T&G FLOOR PLYWOOD (GLUED & SCREWED)\n2x8 FLOOR JOISTS @ 16\" o.c. c/w BLOCKING @ MIDSPAN\n2x10 RIM BOARD FASTENED TO EXISTING 16\" BRICK WITH 1/2\" DIA. TURN-IN CONCRETE LAGS (MIN. 6\" EMBED.) @ 24\" o.c. STAGGERED\nEXISTING 2\"x12\" WOOD FLOOR JOISTS AT 16\" o.c.\nEXISTING BEAM\nNEW FLOOR TO BE FRAMED ABOVE EXISTING ANGLED FLOOR:\n5/8\" T&G FLOOR PLYWOOD (GLUED & SCREWED)\n2x8 FLOOR JOISTS @ 16\" o.c. c/w BLOCKING @ MIDSPAN\nEXISTING LATH AND PLASTER ON UNDERSIDE OF FLOOR\nNEW 4\" DRAINAGE TILE AROUND PERIMETER OF EXISTING BUILDING, DRAINED INTO NEW SUMP PIT (TYP.)\nRailing AS PER OBC\n21'-8 1/2\"\n15'-12\"\n10'-6 1/2\"\n12'-8\"\n10'-0\"\n5 1/2\"\nMAX 2'-0\" OFFSET\nU/S of Ceiling\nT/O Brick Walls\nT/O Second Floor\nT/O Main Floor Walls\nT/O Main Floor\nT/O Basement Wall\nT/O Entrance Level\nT/O Basement Floor",
+      "summary": "This section view provides a detailed transverse cut through the building, highlighting multiple levels including the attic, main floor, and basement. The attic is specified to have R75 blown-in insulation. The main floor features a kitchen/dining/living area of 960.31 square feet and a rec room of 1194.88 square feet. Bedroom 1 is 120.75 square feet. New floor construction includes 5/8\" tongue and groove floor plywood, glued and screwed, with 2x8 floor joists spaced at 16 inches on center, complete with blocking at midspan. A 2x10 rim board is fastened to existing 16-inch brick using 1/2-inch diameter turn-in concrete lags, embedded a minimum of 6 inches and staggered at 24 inches on center. Existing 2x12 wood floor joists are spaced at 16 inches on center. The section also details a new 4-inch drainage tile around the perimeter of the existing building, draining into a new sump pit. The section callout '1/A3.01' indicates a reference to another drawing. Dimensions such as 21'-8 1/2\", 15'-12\", and 10'-6 1/2\" are provided for various elements. The section is oriented looking east and includes compliance with building codes, such as railing specifications per OBC (Ontario Building Code).",
+      "project_id": "25-01-024",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Transverse section through building showing multiple levels",
+      "level": "Multiple",
+      "orientation": "Transverse section looking East",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.01"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Floor Joists",
+        "Attic Insulation",
+        "Wall Construction",
+        "Railing",
+        "Rim Board",
+        "Concrete Lags"
+      ],
+      "text_verbatim": "1\nA3.01\nEXISTING UNINSULATED ATTIC TO HAVE R75 BLOWN-IN INSULATION INSTALLED\nHALF WALL TO BE MIN 36\" TALL AS PER OBC\nNEW FLOOR JOISTS TO EXTEND PAST WALL TO ALLOW FOR DECORATIVE BUMP-OUT\nKITCHEN/DINING/LIVING 900.31 SF\nREC ROOM 1194.88 SF\nBEDROOM 1 120.75 SF\nNEW FLOOR:\n5/8\" T&G FLOOR PLYWOOD (GLUED & SCREWED)\n2x8 FLOOR JOISTS @ 16\" o.c. c/w BLOCKING @ MIDSPAN\n2x10 RIM BOARD FASTENED TO EXISTING 16\" BRICK WITH 1/2\" DIA. TURN-IN CONCRETE LAGS (MIN. 6\" EMBED.) @ 24\" o.c. STAGGERED\nEXISTING 2\"x12\" WOOD FLOOR JOISTS AT 16\" o.c.\nEXISTING BEAM\nNEW FLOOR TO BE FRAMED ABOVE EXISTING ANGLED FLOOR:\n5/8\" T&G FLOOR PLYWOOD (GLUED & SCREWED)\n2x8 FLOOR JOISTS @ 16\" o.c. c/w BLOCKING @ MIDSPAN\nEXISTING LATH AND PLASTER ON UNDERSIDE OF FLOOR\nNEW 4\" DRAINAGE TILE AROUND PERIMETER OF EXISTING BUILDING, DRAINED INTO NEW SUMP PIT (TYP.)\nRailing AS PER OBC\n21'-8 1/2\"\n5 1/2\"\n10'-6 1/2\"\n12'-8\"\n10'-0\"\n9'-10\"\nFoyer 150.27 SF\nKitchen/Dining/Living 692.03 SF\nMaster Bedroom 135.00 SF\nExisting Mechanical Room 179.22 SF\nU/S of Ceiling\nT/O Brick Walls\nT/O Second Floor\nT/O Main Floor Walls\nT/O Main Floor\nT/O Basement Wall\nT/O Entrance Level\nT/O Basement Floor",
+      "summary": "This section view provides a detailed transverse cut through the building, highlighting multiple levels including the attic, main floor, and basement. The attic is specified to have R75 blown-in insulation. The main floor features a kitchen/dining/living area of 900.31 square feet and a rec room of 1194.88 square feet. Bedroom 1 is 120.75 square feet. New floor construction includes 5/8\" tongue and groove floor plywood, glued and screwed, with 2x8 floor joists spaced at 16 inches on center, complete with blocking at midspan. A 2x10 rim board is fastened to existing 16-inch brick using 1/2-inch diameter turn-in concrete lags, embedded a minimum of 6 inches and staggered at 24 inches on center. Existing 2x12 wood floor joists are spaced at 16 inches on center. The section also details a new 4-inch drainage tile around the perimeter of the existing building, draining into a new sump pit. The section callout '1/A3.01' indicates a reference to another drawing. Dimensions such as 21'-8 1/2\", 5 1/2\", and 10'-6 1/2\" are provided for various elements. The section is oriented looking east and includes compliance with building codes, such as railing specifications per OBC (Ontario Building Code). Additional spaces include a foyer of 150.27 square feet, a kitchen/dining/living area of 692.03 square feet, a master bedroom of 135.00 square feet, and an existing mechanical room of 179.22 square feet.",
+      "project_id": "25-01-024",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Basement – main area showing beam location",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Basement Beam Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Basement Beam",
+        "Beam Pocket",
+        "Radon Mitigation",
+        "Basement Floor Slab"
+      ],
+      "text_verbatim": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nWednesday, January 15, 2025\nFigure 3 – Basement Beam That Requires Support\nOVERALL\nEXTERIOR\nOPENING &\nINTERIOR\n38'-3\"\n30'-7\"\n36'-11\"\n7'-8\"\nINTERIOR\nOPENING &\nEXTERIOR\nOVERALL\n16'-7 1/4\"\n11'-3\"\n10'-8 1/4\"\n12'-8\"\n15'-9\"\n10'-7 1/4\"\n10'-9 3/4\"\n6'-0\"\n5'-1\"\n20'-0\"\n41'-0 1/4\"\n5'-1\"\nNOTE: DOUBLE RIM JOIST OVER BASEMENT WINDOW\nNOTE: DOORS GASPED/PROTECTED WITH CLOSER AND WEATHER STRIPPING.\nNOTE: SEAL GAS TIGHT ENTIRE DIVISION AREA OF WALL AND ATTIC.\nGARAGE FLOOR SLAB = 468 SQ.FT.\nWALKOUT FLOOR SLAB = 586 SQ.FT.\nBEAM POCKET\nBEAM POCKET\nROUGH-IN\nFURNACE\nH.R.V.\nELEC. PANEL\n100 AMP\nRadon Mitigation\n2x10\" #1/2 SPRUCE AT 16\" O.C.\n2x10\" #1/2 SPRUCE AT 16\" O.C.\n2x10\" #1/2 SPRUCE AT 16\" O.C.\n2x10\" #1/2 SPRUCE AT 16\" O.C.\n4\" CONCRETE FLOOR SLAB\nBASEMENT FLOOR SLAB = 4\" CONC.\n",
+      "summary": "This plan view highlights the basement beam that requires support, as indicated in Figure 3. The drawing shows the layout of the basement, including dimensions such as 38'-3\" and 30'-7\" for overall exterior openings. Key components include the basement beam, beam pockets, radon mitigation measures, and the basement floor slab. Notes specify the use of double rim joists over basement windows and the need for gas-tight sealing of division areas. The plan also includes dimensions for various sections of the basement, such as 16'-7 1/4\" and 11'-3\". The beam is highlighted as needing support, and the plan provides a visual reference for its location within the basement.",
+      "project_id": "25-01-083",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Basement – proposed footing and telepost installation",
+      "level": "Basement",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Proposed Footing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Telepost",
+        "Strip Footing",
+        "Concrete Floor Slab",
+        "Granular Fill"
+      ],
+      "text_verbatim": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nWednesday, January 15, 2025\nProposed Repair:\nThe temporary wood post that was installed at each end of the beam shall be replaced with a telepost rated for a min factored load of 6,000 lbs. This post shall be installed as per the manufacturers recommendations and fastened to the bottom flange of the beam. The 2x4 stud wall that will be installed next to the foundation wall shall have a stud installed tight to against each side of the steel beam.\nThe strip footing shall be widened with a 36” x 18” x 10” thick footing installed below the post and doweled into the existing strip footing as shown in Figure 4.\nFigure 4 – Proposed Footing\nEXISTING FOUNDATION WALL\nNEW FOOTING FOR TELEPOST POURED WITH THE REST OF THE CONCRETE FLOOR\n2:1 SLOPE\n(2) 15M CONT\n(3) 15M EPOXIED DOWELS 4” EMBED IN EXISTING STRIP FOOTING\n6” COMPACTED GRANULAR FILL BELOW FOOTING\n1/2\" ANCHOR BOLTS @ 16\" O.C. MA\nDRAINAGE LAYER\nEXT. DAMPPROOF BELOW GRADE\n8\" POURED CONCRETE\nINT. DAMPPROOF TO WITHIN 8\" OF R5 CONTINUOUS INSULATION\nTAPCON TO CONC.\n2x4\" #2 SPRUCE STUDS AT 24\" O.C.\nR12 ROXUL INSULATION OK\nVAPOUR BARRIER\nOPTIONAL R5 EXTERIOR INSULATION\nBATT CONTINUOUS INSULATION\n1'-0\" CONCRETE POUR\n18\"x6\" MIN. CONCRETE FTG.\n4\" DRAINAGE TILE WITH MIN. 6\" COVERAGE COARSE GRANULAR FILL\n3\" BOTTOM COVER\n2\" SIDE COVER\n4\" CONCRETE FLOOR SLAB\n6\" COARSE GRANULAR FILL\nComments:\nIt is the opinion of Waddell Engineering Ltd. that the design is structurally adequate and agrees with the Ontario Building Code.",
+      "summary": "This detail page outlines the proposed repair for the basement beam support. The temporary wood posts are to be replaced with teleposts rated for a minimum factored load of 6,000 lbs. The teleposts will be installed according to manufacturer recommendations and fastened to the beam's bottom flange. The strip footing will be widened to 36” x 18” x 10” and doweled into the existing footing. The diagram shows the footing detail, including 6” compacted granular fill below the footing, 3” bottom cover, and 2” side cover. Additional components include 1/2\" anchor bolts at 16\" O.C., a drainage layer, and continuous insulation. The design is deemed structurally adequate by Waddell Engineering Ltd. and complies with the Ontario Building Code.",
+      "project_id": "25-01-083",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    }
+  ]
+}

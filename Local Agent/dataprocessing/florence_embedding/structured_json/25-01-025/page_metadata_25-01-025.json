@@ -1,0 +1,164 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "P4A061",
+      "drawing_title": "COVER",
+      "overall_classification": "Notes",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Project Overview",
+        "Drawing Schedule",
+        "Area Schedule"
+      ],
+      "text_verbatim_title_block": "DEAN & ERIN SAYLES- HOUSE RENO & ADDITION\nP4A061\n1/10",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This cover sheet provides an overview of the project, including a visual rendering of the house renovation and addition. It includes an area schedule detailing existing areas and a drawing schedule listing the contents of the drawing set. This sheet serves as an introduction to the project documentation."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "P4A061",
+      "drawing_title": "SECOND FLOOR",
+      "overall_classification": "Plan",
+      "level": "Second Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Floor Plan",
+        "Room Layouts",
+        "Dimensions"
+      ],
+      "text_verbatim_title_block": "P4A061\n4/10",
+      "general_notes_verbatim": "CONTRACTOR TO CONTACT PROJECT ENGINEER DURING CONSTRUCTION TO CONFIRM THAT ALL WALLS TO BE REMOVED ARE NON-LOAD BEARING.",
+      "page_overview_summary": "This sheet presents the second floor plan, showing the layout of rooms such as bedrooms and bathrooms. It includes dimensions and notes regarding non-load bearing walls. The plan is essential for understanding the spatial arrangement and structural considerations of the second floor."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "P4A061",
+      "drawing_title": "BASEMENT",
+      "overall_classification": "Plan",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Basement Layout",
+        "Structural Details",
+        "Existing Conditions"
+      ],
+      "text_verbatim_title_block": "P4A061\n2/10",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The basement plan details the existing conditions and structural layout, including columns and beams. It includes specific structural details and notes on existing elements, providing guidance for any modifications or reinforcements needed in the basement area."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "P4A061",
+      "drawing_title": "MAIN FLOOR",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Main Floor Layout",
+        "Room Functions",
+        "Structural Elements"
+      ],
+      "text_verbatim_title_block": "P4A061\n3/10",
+      "general_notes_verbatim": "NEW HEADERS TO BE 2-2X10 LINTELS BEARING EACH END UNO.",
+      "page_overview_summary": "This sheet illustrates the main floor plan, highlighting the layout of key areas such as the kitchen, family room, and office. It includes structural notes on headers and joists, providing essential information for construction and renovation on the main floor."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "P4A061",
+      "drawing_title": "CROSS SECTIONS",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Building Sections",
+        "Structural Details",
+        "Vertical Dimensions"
+      ],
+      "text_verbatim_title_block": "P4A061\n7/10",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet contains cross-sectional views of the building, providing detailed insights into the structural components and vertical dimensions. It is crucial for understanding the internal structure and load distribution across different levels of the building."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "P4A061",
+      "drawing_title": "ELEVATIONS 1",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "North and South Elevations",
+      "key_components": [
+        "Exterior Views",
+        "Vertical Dimensions",
+        "Architectural Features"
+      ],
+      "text_verbatim_title_block": "P4A061\n6/10",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The sheet shows the north and south elevations of the building, detailing the exterior appearance and architectural features. It includes vertical dimensions and is essential for visualizing the building's facade and ensuring compliance with design specifications."
+    },
+    {
+      "page_number": 10,
+      "sheet_id": "P4A061",
+      "drawing_title": "NOTES",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Notes",
+        "Material Specifications",
+        "Construction Guidelines"
+      ],
+      "text_verbatim_title_block": "P4A061\n10/10",
+      "general_notes_verbatim": "GENERAL\n1. DESIGN & CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO THE LATEST EDITION OF THE FOLLOWING: NATIONAL BUILDING CODE, ONTARIO BUILDING CODE, CSA REGULATIONS...\nMATERIALS\n1. CONCRETE - OBC 9.31...\nFOOTINGS AND FOUNDATIONS\n1. ALL FOOTINGS AND FOUNDATIONS SHALL CONFORM TO OBC 9.15...",
+      "page_overview_summary": "This sheet provides comprehensive general notes, material specifications, and construction guidelines. It includes references to building codes and standards, ensuring that all construction work adheres to regulatory requirements and best practices."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "P4A061",
+      "drawing_title": "CROSS SECTIONS",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Building Sections",
+        "Structural Details",
+        "Vertical Dimensions"
+      ],
+      "text_verbatim_title_block": "P4A061\n8/10",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet includes cross-sectional views of the building, focusing on structural details and vertical dimensions. It is crucial for understanding the internal structure and load distribution, providing insights into the building's integrity and design."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "P4A061",
+      "drawing_title": "ELEVATIONS 2",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "East and West Elevations",
+      "key_components": [
+        "Exterior Views",
+        "Vertical Dimensions",
+        "Architectural Features"
+      ],
+      "text_verbatim_title_block": "P4A061\n5/10",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The sheet presents the east and west elevations, detailing the exterior appearance and architectural features. It includes vertical dimensions and is essential for visualizing the building's facade and ensuring compliance with design specifications."
+    },
+    {
+      "page_number": 9,
+      "sheet_id": "P4A061",
+      "drawing_title": "ROOF",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Plan",
+        "Structural Layout",
+        "Roofing Materials"
+      ],
+      "text_verbatim_title_block": "P4A061\n9/10",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet illustrates the roof plan, showing the structural layout and roofing materials. It provides essential information for the construction and installation of the roof, ensuring proper load distribution and weatherproofing."
+    }
+  ]
+}

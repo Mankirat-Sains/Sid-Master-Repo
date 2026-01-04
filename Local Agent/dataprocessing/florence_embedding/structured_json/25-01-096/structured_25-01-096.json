@@ -1,0 +1,56 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Porch Design",
+      "element_callouts": [],
+      "key_components": [
+        "8x8 D. FIR #2 King Post",
+        "8x10 D. FIR #1 Ridge Beam",
+        "8x12 D. FIR #2 Gable Rafter",
+        "6x6 D. FIR #2 Webs",
+        "Tie Beam",
+        "6x6 D. FIR #2 Brace",
+        "8x8 D. FIR #2 Column",
+        "2\" Thick Pine Shiplap Sheathing"
+      ],
+      "text_verbatim": "8X8 D. FIR #2 KING POST\n8X10 D. FIR #1 RIDGE BEAM\n8X12 D. FIR #2 GABLE RAFTER\n2\" THICK PINE SHIPLAP SHEATHING\nTIE BEAM PER PLAN\n6X6 D. FIR #2 WEBS (OPTIONAL)\n6X6 D. FIR #2 BRACE (TYP.)\n8X8 D. FIR #2 COLUMN (TYP.)\n1'-0\"\n3'-0\"\nFigures 2 and 3 - Timber Porch Design and Existing Lintel Size",
+      "summary": "This detail shows the timber porch design, featuring an 8x8 D. FIR #2 king post and an 8x10 D. FIR #1 ridge beam. The gable rafter is specified as 8x12 D. FIR #2, with optional 6x6 D. FIR #2 webs. The structure includes a tie beam per plan and 6x6 D. FIR #2 braces, noted as typical. The columns are 8x8 D. FIR #2, also marked as typical. The sheathing is 2 inches thick pine shiplap. Dimensions include a 1-foot overhang and a 3-foot height from the base to the tie beam. This design is part of the timber porch and existing lintel size specifications.",
+      "project_id": "25-01-096",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Porch Design",
+      "element_callouts": [],
+      "key_components": [
+        "4x8 Rafters",
+        "8x10 Ridge Beam",
+        "3-Ply 2x10",
+        "Column",
+        "8x10 Beam",
+        "Continuous Vertical Blocking"
+      ],
+      "text_verbatim": "ALL TIMBER FRAMING IS D. FIR\n4X8 RAFTERS @ 32\" O.C.\n8X10 RIDGE BEAM\nCONT. VERT. BLOCKING\nMATCH BEAM WIDTH\nFRAMING PER PLAN\n3-PLY 2X10\nCOLUMN PER PLAN\n8X10 BEAM BUILD UP AS REQ'D OR USE LARGER BEAM\n1 KING 2 JACK\nT.O. RIDGE BEAM\nT.O. HEEL\nT.O. BEAM\n1'-0\"\n3'-4\"\nPIER PER PLAN\nT.O. FLOOR / GRADE\nT.O. FTG.\nJanuary 19 2025\nS. DESROCHES 100222482\nLICENSED PROFESSIONAL ENGINEER\nPROVINCE OF ONTARIO",
+      "summary": "This detail illustrates the timber porch design, emphasizing that all timber framing is D. FIR. The rafters are 4x8, spaced at 32 inches on center, supporting an 8x10 ridge beam. Continuous vertical blocking matches the beam width, and the framing follows the plan. A 3-ply 2x10 beam is specified, with columns per plan. The 8x10 beam can be built up as required or replaced with a larger beam. The design includes one king and two jack studs. Elevation markers indicate the top of the ridge beam, heel, and beam, with a 1-foot overhang and a 3-foot 4-inch height to the top of the floor/grade. The drawing is certified by S. Desroches, a licensed professional engineer in Ontario, dated January 19, 2025.",
+      "project_id": "25-01-096",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    }
+  ]
+}

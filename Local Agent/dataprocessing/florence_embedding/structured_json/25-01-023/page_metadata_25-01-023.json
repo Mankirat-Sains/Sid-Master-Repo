@@ -1,0 +1,82 @@
+{
+  "pages": [
+    {
+      "page_number": 3,
+      "sheet_id": "a02",
+      "drawing_title": "BEAM SIZING",
+      "overall_classification": "Elevation",
+      "level": "Unknown",
+      "primary_orientation": "Front and Side Elevations",
+      "key_components": [
+        "Beam Sizing",
+        "Timber Frame",
+        "Concrete Footing"
+      ],
+      "text_verbatim_title_block": "Caledon TIMBERFRAMES\nClient: Europro Developments\nProject: 319 Stone Zack Lane,\nClarksburg, ON\nIssue: 01.21.2023\nProject #: 25-01-023\nDrawing #: a02\nContact: 519-942-6787",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides front and side elevation views for beam sizing in a timber frame structure. It details the dimensions and specifications of beams, including Eastern White Pine and Douglas Fir beams. The sheet also notes the concrete footings to be provided by others, indicating the structural support system for the building."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "a03",
+      "drawing_title": "CONNECTION CALLOUTS",
+      "overall_classification": "Elevation",
+      "level": "Unknown",
+      "primary_orientation": "Front and Side Elevations",
+      "key_components": [
+        "Connection Callouts",
+        "Timber Frame",
+        "Concrete Footing"
+      ],
+      "text_verbatim_title_block": "Caledon TIMBERFRAMES\nClient: Europro Developments\nProject: 319 Stone Zack Lane,\nClarksburg, ON\nIssue: 01.21.2023\nProject #: 25-01-023\nDrawing #: a03\nContact: 519-942-6787",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet shows front and side elevation views with detailed connection callouts for a timber frame structure. It highlights specific connection points for beams and posts, ensuring proper assembly and structural integrity. The concrete footings are again noted as provided by others, emphasizing the importance of foundational support."
+    },
+    {
+      "page_number": 1,
+      "sheet_id": "a01",
+      "drawing_title": "GENERAL NOTES",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Structural Notes",
+        "Design Loads",
+        "Materials Specifications"
+      ],
+      "text_verbatim_title_block": "Caledon TIMBERFRAMES\nClient: Europro Developments\nProject: 319 Stone Zack Lane,\nClarksburg, ON\nIssue: 01.21.2023\nProject #: 25-01-023\nDrawing #: a01\nContact: 519-942-6787",
+      "general_notes_verbatim": "GENERAL\n1. DESIGN & CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO THE LATEST EDITION OF THE FOLLOWING:\n   - NATIONAL BUILDING CODE\n   - ONTARIO BUILDING CODE\n   - LOCAL BUILDING BYLAWS\n   - OSHA REGULATIONS\n...\nTIMBER FRAME CONSTRUCTION\n1. ALL WOOD SHALL CONFORM TO OBC 9.23. U.N.O. ON THE STAMPED DRAWINGS.\n...",
+      "page_overview_summary": "This sheet contains general structural notes, design loads, and material specifications for the project. It outlines compliance with building codes and regulations, including the National and Ontario Building Codes. The notes specify design loads, materials like concrete and steel, and timber frame construction requirements, providing a comprehensive overview of the structural guidelines for the project."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "a01",
+      "drawing_title": "3D VIEW",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "3D Timber Frame Model",
+        "Overall Dimensions"
+      ],
+      "text_verbatim_title_block": "Caledon TIMBERFRAMES\nClient: Europro Developments\nProject: 319 Stone Zack Lane,\nClarksburg, ON\nIssue: 01.21.2023\nProject #: 25-01-023\nDrawing #: a01\nContact: 519-942-6787",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents a 3D view of the timber frame structure, highlighting the overall dimensions of 20' x 29'-10 1/2\". It specifies the wood species as Eastern White Pine, providing a visual representation of the structural design. This view aids in understanding the spatial arrangement and aesthetic of the building."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "a04",
+      "drawing_title": "CONNECTIONS",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Connection Details",
+        "Timber Joinery"
+      ],
+      "text_verbatim_title_block": "Caledon TIMBERFRAMES\nClient: Europro Developments\nProject: 319 Stone Zack Lane,\nClarksburg, ON\nIssue: 01.21.2023\nProject #: 25-01-023\nDrawing #: a04\nContact: 519-942-6787",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed drawings of various timber connections, including tenons and dowels. It specifies dimensions and fastening methods for each connection type, ensuring precise assembly of the timber frame. These details are crucial for maintaining structural integrity and aesthetic quality in the construction."
+    }
+  ]
+}

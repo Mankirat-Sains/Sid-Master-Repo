@@ -1,0 +1,257 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Werkema Barn Addition",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/A3"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "W8x21 Steel Beam",
+        "HSS 4\"x4\"x1/4\" Knee Braces",
+        "Continuous 2x6 Brace"
+      ],
+      "text_verbatim": "W8x21 STEEL BEAM\n20'-0\"\nHSS 4\"x4\"x1/4\" KNEE BRACES (TYP.)\nADJUST POST AND BEAM (BOTH ROWS) HEIGHT TO ENSURE NEW ROOF TRUSS JOIN EXISTING BUILDING BELOW EXISTING EAVE\nNO CEILING IS INTENDED FOR ADDITION\nPROPOSED AGRICULTURAL ADDITION (EQUIPMENT STORAGE)\nCONT. 2x6 \"X\" BRACE FASTENED TO TOP (OR BOTTOM) OF BOTTOM CHORD\n3\"x3\"x1/4\" HSS (TYP. ALL LOCATIONS)\nA/A3",
+      "summary": "This plan view shows the main floor layout of the Werkema Barn Addition. It includes structural elements such as W8x21 steel beams spaced at 20'-0\" intervals and HSS 4\"x4\"x1/4\" knee braces, which are typical at all locations. The plan indicates that no ceiling is intended for the addition, which is proposed for agricultural equipment storage. A continuous 2x6 \"X\" brace is fastened to the top or bottom of the bottom chord. The section callout A/A3 indicates a related section view. The text 'ADJUST POST AND BEAM (BOTH ROWS) HEIGHT TO ENSURE NEW ROOF TRUSS JOIN EXISTING BUILDING BELOW EXISTING EAVE' suggests modifications to align new structures with existing ones.",
+      "project_id": "25-01-074",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Werkema Barn Addition",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/A3"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "W8x21 Steel Beam",
+        "HSS 4\"x4\"x1/4\" Knee Braces",
+        "Continuous 2x6 Brace"
+      ],
+      "text_verbatim": "W8x21 STEEL BEAM\n20'-0\"\nHSS 4\"x4\"x1/4\" KNEE BRACES (TYP.)\nADJUST POST AND BEAM (BOTH ROWS) HEIGHT TO ENSURE NEW ROOF TRUSS JOIN EXISTING BUILDING BELOW EXISTING EAVE\nNO CEILING IS INTENDED FOR ADDITION\nPROPOSED AGRICULTURAL ADDITION (EQUIPMENT STORAGE)\nCONT. 2x6 \"X\" BRACE FASTENED TO TOP (OR BOTTOM) OF BOTTOM CHORD\n3\"x3\"x1/4\" HSS (TYP. ALL LOCATIONS)\nA/A3",
+      "summary": "This image provides a detailed view of the main floor plan for the Werkema Barn Addition. It features W8x21 steel beams and HSS 4\"x4\"x1/4\" knee braces, typical at all locations. The plan specifies that no ceiling is intended for the addition, which is designated for equipment storage. A continuous 2x6 \"X\" brace is attached to the top or bottom of the bottom chord. The section callout A/A3 directs to a related section view. The note 'ADJUST POST AND BEAM (BOTH ROWS) HEIGHT TO ENSURE NEW ROOF TRUSS JOIN EXISTING BUILDING BELOW EXISTING EAVE' indicates necessary adjustments for structural alignment.",
+      "project_id": "25-01-074",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Elevation – Werkema Barn Addition",
+      "level": "Multiple",
+      "orientation": "Side elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Elevation View",
+      "element_callouts": [],
+      "key_components": [
+        "Structural Columns",
+        "Roof Line",
+        "Snow Shadow"
+      ],
+      "text_verbatim": "SNOW SHADOW\n4.29 kPa\n1.53 kPa\n22'-0\"",
+      "summary": "This elevation view illustrates the side of the Werkema Barn Addition, highlighting the structural columns and roof line. The image includes a snow shadow diagram indicating loads of 4.29 kPa and 1.53 kPa over a span of 22'-0\". This provides insight into the snow load considerations for the roof design.",
+      "project_id": "25-01-074",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Elevation – Werkema Barn Addition",
+      "level": "Multiple",
+      "orientation": "Side elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Elevation View",
+      "element_callouts": [],
+      "key_components": [
+        "Structural Columns",
+        "Roof Line",
+        "Snow Shadow"
+      ],
+      "text_verbatim": "SNOW SHADOW\n4.29 kPa\n1.53 kPa\n22'-0\"",
+      "summary": "This elevation view shows the side of the Werkema Barn Addition, featuring structural columns and the roof line. A snow shadow diagram is present, indicating snow loads of 4.29 kPa and 1.53 kPa over a distance of 22'-0\". This information is crucial for understanding the roof's load-bearing requirements.",
+      "project_id": "25-01-074",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Elevation – Werkema Barn Addition",
+      "level": "Multiple",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Elevation View",
+      "element_callouts": [],
+      "key_components": [
+        "Structural Columns",
+        "Roof Line",
+        "Snow Shadow Area"
+      ],
+      "text_verbatim": "ADJUST POST AND BEAM (BOTH ROWS) HEIGHT TO ENSURE NEW ROOF TRUSS JOIN EXISTING BUILDING BELOW EXISTING EAVE\nSNOW SHADOW AREA",
+      "summary": "This front elevation view of the Werkema Barn Addition displays the structural columns and roof line. The text 'ADJUST POST AND BEAM (BOTH ROWS) HEIGHT TO ENSURE NEW ROOF TRUSS JOIN EXISTING BUILDING BELOW EXISTING EAVE' suggests modifications for structural integration. The snow shadow area is also indicated, emphasizing the design considerations for snow load management.",
+      "project_id": "25-01-074",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Multiple levels – beam line detail",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Beam Line Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Roof Cladding",
+        "2x4 Strapping",
+        "Plywood",
+        "Steel Siding",
+        "Concrete Pier",
+        "Footing",
+        "Knee Brace",
+        "Base Plate"
+      ],
+      "text_verbatim": "STEEL ROOF CLADDING\n2x4 STRAPPING @ 24\" O.C.\nPRE-ENG. AGRICULTURAL TRUSSES (BY OTHERS)\nSTEEL SIDING\n1/2\" PLYWOOD\n2x4 STRAPPING\nSAME SHEAR TAB AS PER DETAIL\nFULL HEIGHT COLUMN AT BEAM INTERSECTION (SEE DETAIL)\nDOUBLE 2x6 CONTINUOUS TOP PLATE\nPOST AND BEAM AS PER PLAN\nBASE PLATE AS PER PLAN\nGRADE\nCONCRETE PIER AND FOOTING AS PER PLAN\nMIN. 6\" COMPACTED GRANULAR 'A' FILL UNDISTURBED SOIL\nPROVIDE (2) 18\" EPOXIED DOWELS 24\" LONG WITH 6\" INTO EXISTING FOOTING & PROVIDE 18\" EPOXIED DOWELS 24\" LONG @ 16\" O.C. VERTICALLY WITH 6\" EMBED INTO EXISTING FOUNDATION WALL (TYP.)\n2x4 LATERAL BRACING AS PER TRUSS DRAWINGS\nDOUBLE 2x6 CONTINUOUS TOP PLATE\n1\" x 4\" COPE @ TOP\nSAME SHEAR TAB AS PER DETAIL\nPOST AND BEAM AS PER PLAN\n2x M20 ASTM A325 (3/4\" DIA., TYP.)\nTRUSS TIE DOWN (EACH SIDE) OR AS PER TRUSS MANUFACTURER (REVIEWED BY PROJECT ENGINEER)\nKNEE BRACE AS PER PLAN\n1\" x 4\" COPE @ BOTTOM\nFULL HEIGHT COLUMN AT BEAM INTERSECTION (SEE DETAIL)\nPROVIDE STAMPED STEEL SHOP DRAWINGS FOR PROJECT ENGINEER TO REVIEW. CONNECTION DETAILS ARE PROVIDED AS A GUIDE.",
+      "summary": "This section view illustrates a beam line detail for the Werkema Barn Addition. It includes various structural components such as steel roof cladding, 2x4 strapping, plywood, and steel siding. The detail specifies a full-height column at the beam intersection, with a double 2x6 continuous top plate. Concrete piers and footings are shown, with a minimum of 6 inches of compacted granular 'A' fill on undisturbed soil. The drawing notes the provision of 18-inch epoxied dowels embedded into existing footings and foundation walls. Knee braces and base plates are detailed, with truss tie-downs specified per truss manufacturer guidelines. The section emphasizes the need for stamped steel shop drawings for review by the project engineer, indicating the importance of these connection details for structural integrity.",
+      "project_id": "25-01-074",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Multiple levels – knee brace detail",
+      "level": "Unknown",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Knee Brace Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Angle",
+        "Column",
+        "Knee Brace",
+        "W10x22 Beam"
+      ],
+      "text_verbatim": "(2) 2x6 (OR 2x8 TO MATCH BEAM FLANGE WIDTH) PLATES SECURED TO BEAM w/ 1/2\" BOLTS @ 24\" o.c. (STAGGER SIDES OF FLANGE)\n2 x M20 ASTM A325 (3/4\" DIA., TYP.)\nL 4\" x 3\" x 3/8\" x 6\" LONG STEEL ANGLE\nW10x22\n1-1/2\"\n3\"\n1-1/2\"\n2-1/2\"\n45°\nCOLUMN AS PER PLAN\nKNEE BRACE",
+      "summary": "This section detail focuses on the knee brace connection for the Werkema Barn Addition. It specifies the use of (2) 2x6 or 2x8 plates secured to the beam with 1/2-inch bolts at 24 inches on center, with staggered sides of the flange. The detail includes a W10x22 beam and a steel angle measuring L 4\" x 3\" x 3/8\" x 6\" long. The knee brace is shown at a 45-degree angle, connecting to the column as per plan. The drawing also specifies the use of 2 x M20 ASTM A325 bolts, emphasizing the structural requirements for this connection.",
+      "project_id": "25-01-074",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Werkema Barn Addition",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Footings",
+        "Concrete Piers",
+        "Granular Fill"
+      ],
+      "text_verbatim": "DO NOT UNDERMINE EXISTING FOOTINGS (TYP)\nPROVIDE (2) 18\" EPOXIED DOWELS 24\" LONG WITH 6\" INTO EXISTING FOOTING & PROVIDE 18\" EPOXIED DOWELS 24\" LONG @ 16\" O.C. VERTICALLY WITH 6\" EMBED INTO EXISTING FOUNDATION WALL (TYP)\nMIN. 6\" COMPACTED GRANULAR 'A' FILL UNDISTURBED SOIL\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n16\"x16\"x48\" CONC. PIER RUB (4) #4 VERTICALS 1 TIE PER TIER @ 6\" O.C. DOUBLE TOP TIE ON 48\"x48\"x24\" CONC. PAD FOOTING RUB (5) #4 IN EACH WAY (SEE DETAIL) (TYP)",
+      "summary": "This foundation plan for the Werkema Barn Addition outlines the layout of footings and structural supports. It specifies not to undermine existing footings and details the provision of (2) 18-inch epoxied dowels, 24 inches long, embedded into existing footings and foundation walls. The plan includes dimensions for concrete piers and footings, such as 16\"x16\"x48\" concrete piers with (4) #4 verticals and ties, and 48\"x48\"x24\" concrete pad footings with reinforcement. The drawing emphasizes a minimum of 6 inches of compacted granular 'A' fill on undisturbed soil, crucial for load distribution at the foundation level.",
+      "project_id": "25-01-074",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Werkema Barn Addition",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Footings",
+        "Concrete Piers",
+        "Granular Fill"
+      ],
+      "text_verbatim": "DO NOT UNDERMINE EXISTING FOOTINGS (TYP)\nPROVIDE (2) 18\" EPOXIED DOWELS 24\" LONG WITH 6\" INTO EXISTING FOOTING & PROVIDE 18\" EPOXIED DOWELS 24\" LONG @ 16\" O.C. VERTICALLY WITH 6\" EMBED INTO EXISTING FOUNDATION WALL (TYP)\nMIN. 6\" COMPACTED GRANULAR 'A' FILL UNDISTURBED SOIL\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n20'-0\"\n16\"x16\"x48\" CONC. PIER RUB (4) #4 VERTICALS 1 TIE PER TIER @ 6\" O.C. DOUBLE TOP TIE ON 48\"x48\"x24\" CONC. PAD FOOTING RUB (5) #4 IN EACH WAY (SEE DETAIL) (TYP)",
+      "summary": "This foundation plan for the Werkema Barn Addition outlines the layout of footings and structural supports. It specifies not to undermine existing footings and details the provision of (2) 18-inch epoxied dowels, 24 inches long, embedded into existing footings and foundation walls. The plan includes dimensions for concrete piers and footings, such as 16\"x16\"x48\" concrete piers with (4) #4 verticals and ties, and 48\"x48\"x24\" concrete pad footings with reinforcement. The drawing emphasizes a minimum of 6 inches of compacted granular 'A' fill on undisturbed soil, crucial for load distribution at the foundation level.",
+      "project_id": "25-01-074",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – Werkema Barn Addition",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Framing Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Structural Trusses"
+      ],
+      "text_verbatim": "",
+      "summary": "This roof framing plan for the Werkema Barn Addition illustrates the layout of structural trusses. It provides a detailed view of the roof structure, essential for understanding the load distribution and support system. The plan is crucial for coordinating the installation of trusses and ensuring the structural integrity of the roof.",
+      "project_id": "25-01-074",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Bracing Notes",
+      "element_callouts": [],
+      "key_components": [
+        "Truss Top Chord",
+        "Truss Bottom Chord",
+        "Truss Web Member",
+        "Diagonal Bracing",
+        "2x4 Strut",
+        "2x4 Lateral"
+      ],
+      "text_verbatim": "NOTES FOR BRACING OF ROOF\n1 -- >> CONTRACTOR AND OR OWNER TO NOTIFY ENGINEER OF TRUSS DEFICIENCIES SUCH AS DAMAGED OR BROKEN TRUSS MEMBERS, AND MISSING OR OFFSET TRUSS PLATES.\n2 -- >> DIAGONAL BRACING MUST BE PROVIDED ON ALL WEB MEMBERS REQUIRING BRACING. DIAGONAL BRACING SHALL BE SPACED AS REQUIRED BY THE BRACING DESIGNER. LATERAL & X-BRACING SHALL BE PROVIDED @ ENDWALLS @ INTERVALS INDICATED BY ENGINEER.\n3 -- >> PERMANENT LATERAL BRACING TO BE INSTALLED ON WEB MEMBERS AS INDICATED BY ENGINEER.\n4 -- >> PROVIDE DIAGONAL BRACING @ ALL DISCONTINUITIES IN BRACING SUCH AS WHERE TRUSS TYPE CHANGES\n5 -->> THE TRUSS SUPPLIER SHALL DESIGN THE TRUSSES FOR THE LOADING NOTED. BRACING DETAILS WILL NOT BE MODIFIED UNLESS APPROVED BY THE ENGINEER.\nSTRAPPING OR SHEATHING ON ROOF DECK SPACED AS SPECIFIED BY TRUSS ENGINEER (2x4 Lumber)\nSPACING AS SPECIFIED BY BRACE DESIGNER 48'-0\" MAXIMUM\n2x4 STRUT x 5'-0\" LONG @ TOP & BOTTOM WITH TWO OF 3 1/2\" NAILS @ EACH TRUSS WEB MEMBER\nANCHOR 2x4 DIAGONAL BRACE TO LATERAL WITH FOUR OF 3 1/2\" NAILS @ INTERSECTION OF TRUSS WEB & TRUSS LATERAL\n2x4 DIAGONAL \"X\" BRACE ON OPPOSITE SIDE OF TRUSS AT ENDWALLS & WHERE SPECIFIED ELSEWHERE\nANCHOR 2x4 DIAGONAL \"X\" ON OPPOSITE SIDE OF WEB WITH TWO OF 3 1/2\" NAILS @ EACH TRUSS\n2x4 DIAGONAL BRACING SPACED AS REQUIRED BY THE BRACING DESIGNER\nTRUSS TOP CHORD\nTRUSS BOTTOM CHORD\nTRUSS WEB MEMBER\nLAP 2x4 DIAGONAL (Min. 2 TRUSSES) TO ENSURE DIAGONAL BRACE EXTENDS COMPLETELY FROM TOP CHORD TO BOTTOM CHORD OF TRUSS. (AS REQUIRED)\nBUTT 2x4 LATERALS @ ALL SPLICE LOCATIONS. ENSURE BUTT JOINT IS TIGHT & CENTERED ON TRUSS WEB.",
+      "summary": "This image contains notes and a diagram related to the bracing of roof trusses. The notes specify that contractors or owners must notify engineers of any truss deficiencies, such as damaged or broken members and missing or offset plates. Diagonal bracing is required on all web members needing bracing, with spacing determined by the bracing designer. Lateral and X-bracing should be provided at endwalls as indicated by the engineer. Permanent lateral bracing is to be installed on web members as specified. Diagonal bracing must be provided at all discontinuities, such as changes in truss type. The truss supplier is responsible for designing the trusses for the specified loading, and any modifications to bracing details require engineer approval. The diagram illustrates the use of 2x4 struts and diagonals, with specific nailing requirements. Strapping or sheathing on the roof deck is to be spaced as specified by the truss engineer, with a maximum spacing of 48'-0\". The diagram shows the truss top chord, bottom chord, and web members, with instructions for anchoring diagonal braces and ensuring proper lap and butt joint connections. Key components include truss top and bottom chords, truss web members, diagonal bracing, 2x4 struts, and laterals.",
+      "project_id": "25-01-074",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    }
+  ]
+}

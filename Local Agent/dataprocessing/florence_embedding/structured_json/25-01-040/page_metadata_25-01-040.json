@@ -1,0 +1,157 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "A01",
+      "drawing_title": "COVER SHEET/EFFICIENCY SUMMARY",
+      "overall_classification": "Notes",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "General Construction Notes",
+        "Foundation Notes",
+        "Framing Notes",
+        "Area Calculations",
+        "Index of Drawings"
+      ],
+      "text_verbatim_title_block": "NEW RESIDENTIAL ACCESSORY BUILDING FOR DAVE & CORY MATTHEWS\nAREA CALCULATIONS\nAREA SQ.FT.\nFOUNDATION FOOTPRINT 720\nMAIN FLOOR 720\nLOFT FLOOR 570\nINDEX OF DRAWINGS\nDRAWING PAGE No.\nCOVER SHEET/EFFICIENCY SUMMARY A01\nCONCRETE SLAB PLAN A1\nCMU WALL PLAN A2\nMAIN FLOOR PLAN A3\nLOFT PLAN A4\nROOF PLAN A5\nFRONT & REAR ELEVATIONS A6\nLEFT & RIGHT ELEVATIONS A7\nBUILDING SECTION A8\nBENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/8\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA.01\nCOVER",
+      "general_notes_verbatim": "GENERAL CONSTRUCTION NOTES:\n1. All work shall conform to the latest edition of the Ontario Building Code.\n2. Contractor to verify all dimensions before construction.\n3. Contractor shall ensure all work is in compliance with local bylaws.\n4. All fasteners in contact with treated wood shall be ACQ rated.\n5. All construction to be in accordance with the Ontario Building Code latest edition.\n6. Contractor to ensure all work is carried out in accordance with the latest edition of the Ontario Building Code and local bylaws.\nFOUNDATION NOTES:\n1. Foundation to be constructed as per structural drawings.\n2. All footings to be placed on undisturbed soil or compacted granular fill.\n3. Foundation walls to be reinforced as per structural drawings.\nFRAMING NOTES:\n1. All framing to be carried out in accordance with structural drawings.\n2. All framing members to be installed as per manufacturer's specifications.\n3. All framing to be inspected by local building department prior to covering.",
+      "page_overview_summary": "This cover sheet provides an overview of the new residential accessory building project for Dave & Cory Matthews. It includes general construction, foundation, and framing notes, as well as area calculations and an index of drawings. The sheet outlines the project's compliance with the Ontario Building Code and local bylaws. Key components include general construction notes, foundation notes, and framing notes, which guide the overall construction process."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "A1",
+      "drawing_title": "SLAB PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "Floating Slab Plan",
+        "General Notes",
+        "Concrete Specifications",
+        "Slab Edge Detail"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/4\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA1\nSLAB PLAN",
+      "general_notes_verbatim": "GENERAL NOTES:\nFOUNDATIONS:\n1. Remove all topsoil and organic material from the building area.\n2. Slab to be placed on 6\" compacted granular fill.\n3. All concrete work shall be carried out in accordance with the latest edition of the Ontario Building Code.\n4. Slab edge to be thickened as per detail D1.\n5. Slab is not to be poured on frozen ground.",
+      "page_overview_summary": "This sheet presents the floating slab plan for the foundation level of the residential accessory building. It includes detailed notes on foundation preparation, concrete specifications, and slab edge detailing. The plan specifies the removal of topsoil, the use of compacted granular fill, and adherence to the Ontario Building Code. The slab edge is to be thickened as shown in detail D1, ensuring structural stability."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "A2",
+      "drawing_title": "CMU WALL PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "primary_orientation": null,
+      "key_components": [
+        "CMU Wall Plan",
+        "Floor Assemblies",
+        "Wall Assemblies"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/4\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA2\nCMU WALL PLAN",
+      "general_notes_verbatim": "CMU PLAN NOTES:\n1. All fasteners in contact with treated wood shall be ACQ rated.",
+      "page_overview_summary": "This sheet details the CMU (Concrete Masonry Unit) wall plan for the foundation level. It includes specifications for floor and wall assemblies, emphasizing the use of ACQ-rated fasteners for treated wood. The plan outlines the layout and construction of CMU walls, ensuring compliance with structural requirements and providing a stable foundation for the building."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "A3",
+      "drawing_title": "MAIN FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Main Floor Layout",
+        "Floor Assemblies",
+        "Wall Assemblies",
+        "Lintel and Column Schedules"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/4\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA3\nMAIN FLOOR PLAN",
+      "general_notes_verbatim": "MAIN FLOOR PLAN NOTES:\n1. All fasteners into treated wood shall be ACQ rated.\n2. All interior walls are 1/2\" unless otherwise noted.",
+      "page_overview_summary": "This sheet provides the main floor plan for the residential accessory building, detailing the layout and structural components. It includes floor and wall assemblies, as well as lintel and column schedules. The plan specifies the use of ACQ-rated fasteners for treated wood and outlines the dimensions and materials for interior walls. This ensures a robust and compliant ground floor structure."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "A4",
+      "drawing_title": "LOFT PLAN",
+      "overall_classification": "Plan",
+      "level": "Loft",
+      "primary_orientation": null,
+      "key_components": [
+        "Loft Layout",
+        "Floor Assemblies",
+        "Wall Assemblies",
+        "Lintel Schedule"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/4\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA4\nLOFT PLAN",
+      "general_notes_verbatim": "MAIN FLOOR PLAN NOTES:\n1. All fasteners into treated wood shall be ACQ rated.\n2. All interior walls are 1/2\" unless otherwise noted.",
+      "page_overview_summary": "This sheet illustrates the loft plan, showing the layout and structural details for the loft level of the building. It includes floor and wall assemblies, as well as a lintel schedule. The plan emphasizes the use of ACQ-rated fasteners and specifies materials for interior walls, ensuring structural integrity and compliance with building codes."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "A5",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "primary_orientation": null,
+      "key_components": [
+        "Roof Layout",
+        "Roof Assemblies",
+        "Ceiling Assemblies"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/4\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA5\nROOF PLAN",
+      "general_notes_verbatim": "ROOF PLAN NOTES:\n1. Maintain 10\" truss heel for insulation and roof venting.\n2. Provide vented soffits and 1 1/2\" venting between sheathing and insulation.\n3. Provide 24\" eave, 24\" gable finished overhangs unless noted otherwise.",
+      "page_overview_summary": "This sheet presents the roof plan, detailing the layout and structural components of the roof. It includes roof and ceiling assemblies, specifying truss heels, venting, and overhangs. The plan ensures proper insulation and ventilation, contributing to the building's energy efficiency and structural integrity."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "A6",
+      "drawing_title": "F&R ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Front and Rear Elevations",
+      "key_components": [
+        "Front Elevation",
+        "Rear Elevation",
+        "Wood Siding",
+        "Window and Door Placement"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/4\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA6\nF&R ELEVATIONS",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet shows the front and rear elevations of the residential accessory building. It details the placement of wood siding, windows, and doors, providing a visual representation of the building's exterior. The elevations ensure aesthetic consistency and compliance with design specifications."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "A7",
+      "drawing_title": "L&R ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Left and Right Elevations",
+      "key_components": [
+        "Left Elevation",
+        "Right Elevation",
+        "Wood Siding",
+        "Metal Roofing"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 1/4\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA7\nL&R ELEVATIONS",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the left and right elevations of the building, showing the arrangement of wood siding and metal roofing. It highlights the exterior design elements and ensures that the building's side views meet the architectural and structural requirements."
+    },
+    {
+      "page_number": 9,
+      "sheet_id": "A8",
+      "drawing_title": "BUILDING SECTION",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Longitudinal Section",
+      "key_components": [
+        "Building Section",
+        "Floor Assemblies",
+        "Wall Assemblies",
+        "Roof Assemblies",
+        "Ceiling Assemblies"
+      ],
+      "text_verbatim_title_block": "BENCHMARK\nBCRN: 129775 & 103800\nProject: 25-01-040\nPrepared: 2023-01-11\nBarrie, Ontario\nRES ACC BLDG\nDRAWING BY: PO\nSCALE: 3/8\" = 1'-0\"\nDATE: January 11, 2023\nPHASE\nA8\nBUILDING SECTION",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet illustrates a longitudinal building section, detailing the structural components from foundation to roof. It includes floor, wall, roof, and ceiling assemblies, providing a comprehensive view of the building's internal structure. The section ensures that all components are aligned and integrated according to design specifications, contributing to the building's overall stability and functionality."
+    }
+  ]
+}

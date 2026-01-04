@@ -1,0 +1,97 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "S1",
+      "drawing_title": "COVER PAGE ALL ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "Multiple elevations",
+      "key_components": [
+        "East Elevation",
+        "West Elevation",
+        "North Elevation",
+        "South Elevation"
+      ],
+      "text_verbatim_title_block": "ARWYND FARMS\n125'-4\" X 291'-8\" DAIRY BARN\n5479 PERTH LINE 72\nATWOOD, ON\nCOVER PAGE\nALL ELEVATIONS\nS1",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the elevation views for the dairy barn project at Arwynd Farms. It includes the east, west, north, and south elevations, showing the overall dimensions and layout of the building. The sheet serves as a visual reference for the exterior appearance and architectural features of the barn."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "S2",
+      "drawing_title": "FOUNDATION PLAN",
+      "overall_classification": "Plan",
+      "level": "Foundation",
+      "key_components": [
+        "Concrete Floor",
+        "Foundation Walls",
+        "Footings"
+      ],
+      "text_verbatim_title_block": "ARWYND FARMS\n125'-4\" X 291'-8\" DAIRY BARN\n5479 PERTH LINE 72\nATWOOD, ON\nFOUNDATION PLAN\nS2",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet details the foundation plan for the dairy barn, indicating the layout of concrete floors, foundation walls, and footings. It provides essential information for constructing the base of the barn, ensuring stability and support for the structure above."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "S4",
+      "drawing_title": "ROOF PLAN",
+      "overall_classification": "Plan",
+      "level": "Roof",
+      "key_components": [
+        "Roof Trusses",
+        "Lateral Bracing",
+        "Purlins"
+      ],
+      "text_verbatim_title_block": "ARWYND FARMS\n125'-4\" X 291'-8\" DAIRY BARN\n5479 PERTH LINE 72\nATWOOD, ON\nROOF PLAN\nS4",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The roof plan sheet outlines the layout and design of the roof structure, including trusses, lateral bracing, and purlins. It provides guidance for the installation of the roof system, ensuring proper load distribution and structural integrity."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "S5",
+      "drawing_title": "BUILDING SECTIONS",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Building Sections",
+        "Steel Beam Details",
+        "Footing Details"
+      ],
+      "text_verbatim_title_block": "ARWYND FARMS\n125'-4\" X 291'-8\" DAIRY BARN\n5479 PERTH LINE 72\nATWOOD, ON\nBUILDING SECTIONS\nS5",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed building sections, illustrating the vertical relationships and construction details of the barn. It includes information on steel beams, columns, and footings, offering a comprehensive view of the structural framework."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "S3",
+      "drawing_title": "MAIN FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "key_components": [
+        "Stalls",
+        "Utility Room",
+        "Calf Pens"
+      ],
+      "text_verbatim_title_block": "ARWYND FARMS\n125'-4\" X 291'-8\" DAIRY BARN\n5479 PERTH LINE 72\nATWOOD, ON\nMAIN FLOOR PLAN\nS3",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "The main floor plan sheet outlines the layout of the ground floor, including stalls, utility rooms, and calf pens. It provides a detailed arrangement of spaces and functional areas, facilitating efficient use of the barn's interior."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "S6",
+      "drawing_title": "GENERAL NOTES",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "key_components": [
+        "General Construction Notes",
+        "Framing Notes",
+        "Concrete Foundation Notes"
+      ],
+      "text_verbatim_title_block": "ARWYND FARMS\n125'-4\" X 291'-8\" DAIRY BARN\n5479 PERTH LINE 72\nATWOOD, ON\nGENERAL NOTES\nS6",
+      "general_notes_verbatim": "GENERAL CONSTRUCTION NOTES\n...\nFRAMING NOTES\n...\nCONCRETE FOUNDATION NOTES\n...",
+      "page_overview_summary": "This sheet contains general notes applicable to the entire project, including construction, framing, and foundation specifications. These notes provide essential guidelines and standards for the construction process, ensuring compliance with design requirements."
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "pages": [
+    {
+      "page_number": 3,
+      "sheet_id": "3 of 9",
+      "drawing_title": "Existing Second Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Second Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Living Area",
+        "Dining Area",
+        "Kitchen",
+        "Bedrooms",
+        "Bathroom"
+      ],
+      "text_verbatim_title_block": "CUSTOMER: Wellington Skin Clinic 184 St Andrew Street, West Fergus, On\nPROJECT: Main Floor Reno\nDRAWING TITLE: Existing Second Floor Plan\nDRAWING #: 24-180\nPAGE #: 3 of 9\nSCALE: 3/16\" = 1'-0\"\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 26111\nCONTRACTOR:\nSTARTING DATE: Nov 15, 2024\nLAST REVISION DATE: Feb 27, 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the existing layout of the second floor, detailing the arrangement of living spaces such as the living room, dining area, kitchen, and bedrooms. It provides a clear overview of the current floor plan, which is essential for renovation planning. The scale is 3/16\" = 1'-0\", allowing for detailed examination of spatial relationships."
+    },
+    {
+      "page_number": 1,
+      "sheet_id": "1 of 9",
+      "drawing_title": "Existing Basement Plan",
+      "overall_classification": "Plan",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Basement Layout",
+        "Boiler Location",
+        "Utility Areas"
+      ],
+      "text_verbatim_title_block": "CUSTOMER: Wellington Skin Clinic 184 St Andrew Street, West Fergus, On\nPROJECT: Main Floor Reno\nDRAWING TITLE: Existing Basement Plan\nDRAWING #: 24-180\nPAGE #: 1 of 9\nSCALE: 3/16\" = 1'-0\"\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 26111\nCONTRACTOR:\nSTARTING DATE: Nov 15, 2024\nLAST REVISION DATE: Feb 27, 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet illustrates the existing basement layout, highlighting the location of the boiler and utility areas. It serves as a foundational reference for any modifications or renovations planned for the basement. The scale is 3/16\" = 1'-0\", providing a detailed view of the basement's spatial configuration."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "4 of 9",
+      "drawing_title": "Proposed Main Floor",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Radiators",
+        "Examining Rooms",
+        "Waiting Room",
+        "Structural Columns"
+      ],
+      "text_verbatim_title_block": "CUSTOMER: Wellington Skin Clinic 184 St Andrew Street, West Fergus, On\nPROJECT: Main Floor Reno\nDRAWING TITLE: Proposed Main Floor\nDRAWING #: 24-180\nPAGE #: 4 of 9\nSCALE: 3/16\" = 1'-0\"\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 26111\nCONTRACTOR:\nSTARTING DATE: Nov 15, 2024\nLAST REVISION DATE: Feb 27, 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet details the proposed layout for the main floor, including the arrangement of examining rooms, waiting area, and structural elements like radiators and columns. It provides a comprehensive view of the intended modifications, essential for guiding construction efforts. The scale is 3/16\" = 1'-0\"."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "2 of 9",
+      "drawing_title": "Existing Main Floor Plan",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Radiators",
+        "Plumbing Chases",
+        "Existing Walls"
+      ],
+      "text_verbatim_title_block": "CUSTOMER: Wellington Skin Clinic 184 St Andrew Street, West Fergus, On\nPROJECT: Main Floor Reno\nDRAWING TITLE: Existing Main Floor Plan\nDRAWING #: 24-180\nPAGE #: 2 of 9\nSCALE: 3/16\" = 1'-0\"\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 26111\nCONTRACTOR:\nSTARTING DATE: Nov 15, 2024\nLAST REVISION DATE: Feb 27, 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet shows the existing main floor plan, focusing on the layout of radiators, plumbing chases, and existing structural walls. It serves as a baseline for understanding the current state before renovations. The scale is 3/16\" = 1'-0\", allowing for precise analysis of the existing conditions."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "5 of 9",
+      "drawing_title": "Cross Section",
+      "overall_classification": "Section",
+      "level": "Multiple",
+      "primary_orientation": "Longitudinal building section",
+      "key_components": [
+        "Floor Levels",
+        "Structural Framing",
+        "Ventilation Ductwork"
+      ],
+      "text_verbatim_title_block": "CUSTOMER: Wellington Skin Clinic 184 St Andrew Street, West Fergus, On\nPROJECT: Main Floor Reno\nDRAWING TITLE: Cross Section\nDRAWING #: 24-180\nPAGE #: 5 of 9\nSCALE: 3/16\" = 1'-0\"\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 26111\nCONTRACTOR:\nSTARTING DATE: Nov 15, 2024\nLAST REVISION DATE: Feb 27, 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides a cross-sectional view of the building, illustrating the relationships between different floor levels, structural framing, and ventilation systems. It is crucial for understanding the vertical integration of building systems and for planning structural modifications. The scale is 3/16\" = 1'-0\"."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "6 of 9",
+      "drawing_title": "Barrier Free Details",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Universal Washroom Notes",
+        "Accessibility Features"
+      ],
+      "text_verbatim_title_block": "CUSTOMER: Wellington Skin Clinic 184 St Andrew Street, West Fergus, On\nPROJECT: Main Floor Reno\nDRAWING TITLE: Barrier Free Details\nDRAWING #: 24-180\nPAGE #: 6 of 9\nSCALE: NOT TO SCALE\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 26111\nCONTRACTOR:\nSTARTING DATE: Nov 15, 2024\nLAST REVISION DATE: Feb 27, 2025",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet contains detailed notes on universal washroom requirements and accessibility features, essential for ensuring compliance with barrier-free design standards. It provides specifications for lavatories, water closets, and other accessibility elements, guiding the implementation of inclusive design features."
+    },
+    {
+      "page_number": 8,
+      "sheet_id": "8 of 9",
+      "drawing_title": "Commercial Notes",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "General Notes",
+        "Design Loads",
+        "Climatic Data"
+      ],
+      "text_verbatim_title_block": "CUSTOMER: Wellington Skin Clinic 184 St Andrew Street, West Fergus, On\nPROJECT: Main Floor Reno\nDRAWING TITLE: Commercial Notes\nDRAWING #: 24-180\nPAGE #: 8 of 9\nSCALE: NOT TO SCALE\nDRAWN BY: JOHN VANDERWOERD, M.A.A.T.O. BCIN: 26111\nCONTRACTOR:\nSTARTING DATE: Nov 15, 2024\nLAST REVISION DATE: Feb 27, 2025",
+      "general_notes_verbatim": "GENERAL NOTES\n1. DESIGN AND CONSTRUCTION FOR ALL WORK ON THIS PROJECT SHALL CONFORM TO THE REQUIREMENTS OF THE LATEST EDITION OF THE OBC AND THE FOLLOWING:\n...\nDESIGN LOADS\n1. DESIGN LOADS UNFACTORED (U.N.O.) AS NOTED OTHERWISE.\n...\nCLIMATIC DATA\n1. CLIMATIC DATA PRESCRIBED BY OBC\n...",
+      "page_overview_summary": "This sheet provides comprehensive commercial notes, including general construction requirements, design loads, and climatic data. These notes are critical for ensuring that all construction activities comply with the Ontario Building Code and other relevant standards. The sheet serves as a reference for structural and environmental considerations."
+    }
+  ]
+}

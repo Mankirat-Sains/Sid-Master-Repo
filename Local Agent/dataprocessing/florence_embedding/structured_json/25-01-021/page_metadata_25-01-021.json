@@ -1,0 +1,36 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "S1",
+      "drawing_title": "NOTES & ELEVATION",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Fall Arrest Track",
+        "General Notes",
+        "Steel Specifications"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n21 RANDRIDGE DR., UNIT C\nKITCHENER, ON\nN2M 1R4\nTel: 519-367-6769\nFax: 519-367-6769\nwww.waddelleng.com\nPROJECT:\nFALL ARREST SYSTEM\nCLIENT: COLUMBIA FOREST PRODUCTS\nDRAWING TITLE:\nNOTES & ELEVATION\nNCC 1X5\nDRAWN BY: CC DATE: 2025-06-10\nDESIGNED BY: BW SHEET NO.: S1\nPROJECT NO.: 25-01-021",
+      "general_notes_verbatim": "GENERAL NOTES\n1. DESIGN AND CONSTRUCTION OF ALL WORK ON THIS PROJECT SHALL CONFORM TO LATEST EDITION OF THE FOLLOWING:\n- NATIONAL BUILDING CODE\n- ONTARIO BUILDING CODE\n- OSHA REGULATIONS\n2. DRAWINGS ARE NOT TO BE SCALED.\n3. THE FALL ARREST IS DESIGNED AS PER CSA Z259.16-15 (2020)\n4. THE CONTRACTOR IS TO SITE MEASURE AND VERIFY THE DIMENSIONS, ACCESS TO THE SUPPORT LOCATIONS TO CONFORM WITH SHOP/DRAFT THE EXACT LOCATIONS OF THE FALL ARREST.\n5. THE EXISTING OWJ IS STRUCTURALLY ADEQUATE TO SUPPORT THE FALL ARREST LOAD IF ARREST SYSTEM IS INSTALLED AS PER THIS DRAWING.\n6. WORKERS REQUIRE PROPER FALL ARREST LOCATION.\n7. Z259.16-15-08 DESIGN CERTIFICATES ONCE THE FALL ARREST SYSTEMS ARE INSTALLED AT 226-8-19435 OR 519-267-6769.\n\nSTEEL:\n1. ALL STEEL SHALL BE DESIGNED, FABRICATED AND ERECTED IN CONFORMANCE TO CAN/CSA-S16-09 AND THE ONTARIO BUILDING CODE.\n2. ALL STRUCTURAL STEEL MEMBERS SHALL CONFORM TO CSA-G40.20/G40.21-04-H400W OR CSA-G40.20/G40.21-04-350W, WHICHEVER SHALL CONFORM TO CSA-G40.20/G40.21-04-350W.\n3. WELDING SHALL CONFORM TO CSA-W59-03 LATEST EDITION. ELECTRODES SHALL BE E70XX OR BETTER.\n4. ELECTRODES SHALL BE 1/8\" ALL AROUND FILLET WELDS, UNLESS NOTED OTHERWISE (U.N.O.).\n5. CONNECTION TO SHALL BE ASTM A325 HIGH STRENGTH BOLTS, U.N.O.\n7. ALL BOLTED CONNECTIONS SHALL BE BEARING TYPE, U.N.O.\n8. ALL CONNECTIONS SHALL BE INSPECTED AS PER CAN/CSA-S16-09.",
+      "page_overview_summary": "This sheet provides general notes and an elevation view of the fall arrest track system. It includes detailed specifications for steel design and construction, conforming to relevant codes and standards. The elevation drawing illustrates the layout and dimensions of the fall arrest track, highlighting key components such as support brackets and existing open web joists (OWJ). The sheet emphasizes the importance of site measurements and adherence to safety regulations."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "S2",
+      "drawing_title": "DETAILS",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Fabrication Details",
+        "Section Views",
+        "Fall Arrest System Components"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\n21 RANDRIDGE DR., UNIT C\nKITCHENER, ON\nN2M 1R4\nTel: 519-367-6769\nFax: 519-367-6769\nwww.waddelleng.com\nPROJECT:\nFALL ARREST SYSTEM\nCLIENT: COLUMBIA FOREST PRODUCTS\nDRAWING TITLE:\nDETAILS\nNCC 1X5\nDRAWN BY: CC DATE: 2025-06-10\nDESIGNED BY: BW SHEET NO.: S2\nPROJECT NO.: 25-01-021",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet focuses on detailed fabrication and section views of the fall arrest system. It includes specific dimensions and assembly instructions for components such as the back-to-back connection and plate to flat bar connection. The detailed views provide precise measurements and specifications for the installation and support of the fall arrest track, ensuring compliance with design requirements. The sections highlight critical connections and support structures necessary for the system's integrity."
+    }
+  ]
+}

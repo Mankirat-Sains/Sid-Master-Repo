@@ -1,0 +1,161 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall and Door Schedule",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W3",
+        "W4",
+        "SD",
+        "BS"
+      ],
+      "key_components": [
+        "Type X Drywall",
+        "Wood Studs",
+        "Rockwool Insulation",
+        "Vapour Barrier",
+        "Drywall",
+        "Exterior Sheathing",
+        "Face Brick",
+        "Stucco Plywood Siding",
+        "Batten Boards"
+      ],
+      "text_verbatim": "SD 48\" Barn Slider 1\nBS 36\" Barn Slider 2\n\nWALL SCHEDULE\n\nW1\nNew Wall\n5/8\" Type X Drywall\n2x4 Wood Studs @16\" o.c.\nR-20 Rockwool insulation\n6mil Vapour barrier\n\nW2\nExisting Interior Partition Walls\n2\" X 4\" Wood studs @ 16\"o.c.\nR-20 insulation\n1/2\" Dry Wall\n\nW3\nExisting Wall\n1/2\" Drywall\n2x6 Wood Studs @16\" o.c.\nR-20 insulation\nExterior Sheating\n1\" Air Space\n4\" Face Brick\n\nW4\nExisting Wall\n1/2\" Type X Drywall\n2x6 Wood Studs @16\" o.c.\nR-20 insulation\n5/8\" Stucco Plywood Siding with 6\" Batten Boards",
+      "summary": "This image shows a wall and door schedule for the ground floor. The wall schedule includes four types of walls: W1 is a new wall with 5/8\" Type X Drywall, 2x4 wood studs at 16\" on center, R-20 Rockwool insulation, and a 6mil vapour barrier. W2 refers to existing interior partition walls with 2x4 wood studs at 16\" on center, R-20 insulation, and 1/2\" drywall. W3 describes an existing wall with 1/2\" drywall, 2x6 wood studs at 16\" on center, R-20 insulation, exterior sheathing, 1\" air space, and 4\" face brick. W4 is an existing wall with 1/2\" Type X Drywall, 2x6 wood studs at 16\" on center, R-20 insulation, and 5/8\" stucco plywood siding with 6\" batten boards. The door schedule lists SD as a 48\" barn slider with one unit and BS as a 36\" barn slider with two units.",
+      "project_id": "25-01-081",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Proposed Ground Floor Plan",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W3",
+        "W4"
+      ],
+      "key_components": [
+        "Steel Beams",
+        "Garage",
+        "Dining Room",
+        "Living Room",
+        "Porch",
+        "Laundry",
+        "Hall",
+        "Informal Living"
+      ],
+      "text_verbatim": "PROPOSED GROUND FLOOR PLAN\n\nDimensions and specifications for new layout\n\nSteel Beam\nGarage\nDining Room\nLiving Room\nPorch\nLaundry\nHall\nInformal Living\n\nW1\nW2\nW3\nW4",
+      "summary": "This plan illustrates the proposed ground floor layout, highlighting modifications such as new walls and steel beams. Key areas include the garage, dining room, living room, porch, laundry, hall, and informal living space. Wall types W1, W2, W3, and W4 are indicated throughout the plan, corresponding to the wall schedule. The plan provides detailed dimensions and specifications, enhancing the functionality and aesthetics of the ground floor.",
+      "project_id": "25-01-081",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Second Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall and Door Schedule",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W4",
+        "D",
+        "D3",
+        "BS"
+      ],
+      "key_components": [
+        "Type X Drywall",
+        "Wood Studs",
+        "Rockwool Insulation",
+        "Vapour Barrier",
+        "Drywall",
+        "Stucco Plywood Siding",
+        "Batten Boards"
+      ],
+      "text_verbatim": "WALL SCHEDULE\n\nW1\nNew Wall\n1/2\" Drywall\n2x4 Wood Studs @16\" o.c.\nR-20 Rockwool insulation\n6mil Vapour barrier\n\nW2\nExisting Interior Partition Walls\n2\" X 4\" Wood studs @ 16\"o.c.\nR-20 insulation\n1/2\" Dry Wall\n\nW4\nExisting Wall\n1/2\" Type X Drywall\n2x6 Wood Studs @16\" o.c.\nR-20 insulation\n5/8\" Stucco Plywood Siding with 6\" Batten Boards\n\nDOOR SCHEDULE\n\nD\nExisting Door\n3\n\nD3\n30\" Wide Door\n1\n\nBS\n36\" Barn Slider\n1\n\nArea: 266 Sq. Ft\nSan Marino- Natural",
+      "summary": "This image presents a wall and door schedule for the second floor. The wall schedule includes W1 as a new wall with 1/2\" drywall, 2x4 wood studs at 16\" on center, R-20 Rockwool insulation, and a 6mil vapour barrier. W2 refers to existing interior partition walls with 2x4 wood studs at 16\" on center, R-20 insulation, and 1/2\" drywall. W4 is an existing wall with 1/2\" Type X Drywall, 2x6 wood studs at 16\" on center, R-20 insulation, and 5/8\" stucco plywood siding with 6\" batten boards. The door schedule lists D as an existing door with three units, D3 as a 30\" wide door with one unit, and BS as a 36\" barn slider with one unit. The area is noted as 266 square feet with a San Marino natural finish.",
+      "project_id": "25-01-081",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Second Floor – main layout",
+      "level": "Second Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Proposed Second Floor Plan",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W4"
+      ],
+      "key_components": [
+        "Upper Loft TV Room",
+        "Kids Play Area",
+        "Sun Deck",
+        "Bar",
+        "Existing Fireplace",
+        "Hall",
+        "Master Bedroom",
+        "Bedroom #3"
+      ],
+      "text_verbatim": "PROPOSED SECOND FLOOR\n\nDimensions and specifications for new layout\n\nUpper Loft TV Room\nKids Play Area\nSun Deck\nBar\nExisting Fireplace\nHall\nMaster Bedroom\nBedroom #3\n\nW1\nW2\nW4",
+      "summary": "This plan illustrates the proposed second floor layout, featuring new walls and spaces such as an upper loft TV room, kids play area, sun deck, bar, existing fireplace, hall, master bedroom, and bedroom #3. Wall types W1, W2, and W4 are indicated throughout the plan, corresponding to the wall schedule. The plan provides detailed dimensions and specifications, enhancing the living space and functionality of the second floor.",
+      "project_id": "25-01-081",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Brick Veneer",
+        "Air Barrier",
+        "Membrane Transition Strip",
+        "Lag Bolts",
+        "Weep Holes",
+        "Metal Drip Edge",
+        "Steel Angle"
+      ],
+      "text_verbatim": "BRICK VENEER\nLAP AIR BARRIER OVER AND SEAL TO TRANSITION MEMBRANE AS SHOWN.\nPEEL & STICK MEMBRANE TRANSITION STRIP OVER ANGLE. (TYP.)\n1/2\" dia. LAG BOLTS w/ 3\" EMBED. INTO WOOD LINTEL @ 30\" o.c. (FIRST BOLT 6\" FROM EACH END). PROVIDE 1-1/2\" VERTICALLY SLOTTED HOLE THROUGH ANGLE.\nWEEP HOLES w/ MESH SCREEN @ 32\" o.c.\nPREFIN. METAL DRIP EDGE\nSTEEL ANGLE, PER PLAN. (TYP.)\n\nLINTEL INSTALLATION NOTES:\n1. SHORE LINTEL DURING BRICK INSTALLATION PLUS 7 DAYS AFTER COMPLETION.\n2. 3-1/2\" CLAY BRICK ONLY. HORIZONTAL LADDER IN FIRST 5 COURSES ABOVE\n3. SOLID COURSE EXTEND 12\" PAST DOOR JAMB. USE TYPE S MORTAR.",
+      "summary": "This detail shows a wall section with brick veneer and various components. The brick veneer is supported by a steel angle, with a peel & stick membrane transition strip over the angle. Lag bolts with a 3\" embedment into the wood lintel are spaced at 30\" on center, with the first bolt 6\" from each end. Weep holes with mesh screens are spaced at 32\" on center. A prefinished metal drip edge is included. Lintel installation notes specify shoring during brick installation and 7 days after, use of 3-1/2\" clay brick with horizontal ladder in the first 5 courses above, and a solid course extending 12\" past the door jamb using Type S mortar. The detail provides essential information for the installation of the wall system.",
+      "project_id": "25-01-081",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    }
+  ]
+}

@@ -1,0 +1,615 @@
+{
+  "images": [
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main layout",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/A2.2"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "L1",
+        "L2",
+        "C5",
+        "L5",
+        "L6"
+      ],
+      "key_components": [
+        "Interior Walls",
+        "Plumbing Fixtures",
+        "Electrical Outlets",
+        "Stairs"
+      ],
+      "text_verbatim": "MAIN FLOOR\nSCALE: 3/16\" = 1'-0\"\n1 HR F.R.R. INTERIOR FLOOR / CEILING:\n0.6 PCF 2-5/8\" T&G 2.5A-B (Time Assumed = 60 minutes)\n2x10 PLYWOOD SCREWED & GLUED\n1/2\" GYPSUM BD\n2 ROW BRIDGING\n2 MIL POLY VAPOUR BARRIER\n2 LAYERS 5/8\" TYPE X GYPSUM BOARD (JOINTS OFF-SET)\nBOTTOM LAYER IS TAPED & SANDED (60 minutes)\nFASTENED W/ COURSE THREAD DRYWALL SCREWS @ 12\" o.c.\nPERIMETER & STRAPPING RUNS\nMIN. 1\" PENETRATION INTO WOOD\nNO DUCTING IS PROPOSED TO GO THROUGH THE FIRE SEPARATION. ALL ELECTRICAL OR OTHER PENETRATIONS SHALL BE PROPERLY FIRE CAULKED OR OTHERWISE PROTECTED PER NFPA 80\nINSTALL HRV IN THIS AREA ABOVE STAIRS\nCOVERED PORCH\nSLOPED CEILING 5:12\n10'-0\" x 9'-0\" OVERHEAD DOOR\nL1\nL2\nC5\nL5\nL6",
+      "summary": "This image shows the main floor plan of a building, detailing the layout of rooms such as the master bedroom, laundry, and utility areas. The plan includes dimensions for each room and notes on the installation of plumbing fixtures. Key structural elements include interior walls, plumbing fixtures, and electrical outlets. The plan specifies a 1-hour fire-resistance rating for the interior floor/ceiling assembly, with detailed construction notes on materials and installation. Section callout '1/A2.2' indicates a related section view. Element callouts 'L1', 'L2', 'C5', 'L5', and 'L6' identify specific components within the plan. The covered porch features a sloped ceiling with a 5:12 pitch, and the shop area includes overhead doors measuring 10'-0\" x 9'-0\".",
+      "project_id": "25-01-026",
+      "page_number": 3,
+      "region_number": 4,
+      "relative_path": "page_003/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – general layout",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "C1",
+        "C3",
+        "W14",
+        "W15"
+      ],
+      "key_components": [
+        "Roof Trusses",
+        "Ceiling Joists",
+        "Fire Separation",
+        "Storage Areas"
+      ],
+      "text_verbatim": "ROOF PLAN NOTES:\n1. PROVIDE VENTED SOFFIT AND 1 1/2\" VENTING BETWEEN SHEATHING AND INSULATION (INSTALL MOREVENTS).\n2. PROVIDE RIDGE VENTING OR ROOF VENTS 1/300 OF INSULATED CEILING AREA\n3. WALLS SHOWN ARE BEARING.\n4. PROVIDE PRE-ENGINEERED TRUSS DRAWINGS TO BUILDING DEPARTMENT PRIOR TO SITE INSPECTION.\n5. VERIFY DIMENSIONS AND SUITABILITY BEFORE MANUFACTURE OF TRUSSES.\n6. PROVIDE ATTIC HATCH INSULATED AND WEATHERSTRIPPED FROM CEILING BELOW INTO ATTIC.\n7. ALL ROOF RAFTERS/JOISTS AND CEILING JOISTS SHALL CONFORM TO THE SPANS SHOWN IN OBC PART 9 TABLES A-3 TO A-7.\nROOF ASSEMBLIES:\nR1 PRE-ENGINEERED SCISSOR TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF VENTS W/ UNOBSTRUCTED FREE AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. SCISSOR TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nR2 PRE-ENGINEERED ATTIC TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF VENTS W/ UNOBSTRUCTED FREE AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. ATTIC TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nR3 PRE-ENGINEERED COMMON TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF INSULATION CEILING AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. COMMON TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nR4 STICK FRAMED OVERLAY ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n5/8\" OSB SHEATHING\nRAFTERS PER PLAN\nCEILING ASSEMBLIES:\nC1 INTERIOR CEILING ASSEMBLY:\nR50 CELLULOSE\n1x3 STRAPPING @ 16\" o.c.\n1/2\" POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nC3 PORCH CEILING ASSEMBLY:\n1x3 STRAPPING @ 16\" o.c.\n1 LAYER 5/8\" TYPE 'X' GYPSUM BOARD (TAPED & SANDED)\nLINER PER CEILING\nC4 CEILING ASSEMBLY BELOW STORAGE:\nBATT INSULATION (MIN. R50 TOTAL)\n1 LAYER R22 & 1 LAYER R31\n1x3 STRAPPING @ 16\" o.c.\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nWALL ASSEMBLIES:\nW14 2 HR F.R.R. INTERIOR STUD WALL (STC 36)\nOBC 2012 SB-3 RATED ASSEMBLY W2d\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD (TAPED AND SANDED)\n2x6 STUDS @ 16\" o.c.\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD (TAPED AND SANDED)\nFIRE SEPARATION EXTENDS TO U/S ROOF SHEATHING\nSEE DETAIL 6/A3.2\nW15 2x6 INSULATED RISER WALL:\n1\" RIGID INSULATION (JOINTS TAPED)\n2x6 STUDS @ 24\" o.c.\nR22 BATT INSULATION\nS6MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED",
+      "summary": "This roof plan details the layout of roof trusses and ceiling joists, emphasizing fire separation and storage areas. The plan includes notes on the engineering and installation of roof components, highlighting compliance with manufacturer specifications. Key components include pre-engineered scissor trusses, attic trusses, and common trusses, each with specific assembly instructions. Ceiling assemblies are detailed with insulation and vapor barrier specifications. Wall assemblies W14 and W15 provide fire-resistance ratings and construction details. The plan notes the unconditioned nature of the storage area and provides dimensions for roof elements. Element callouts 'R1', 'R2', 'R3', 'R4', 'C1', 'C3', 'W14', and 'W15' identify specific components within the plan.",
+      "project_id": "25-01-026",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – general layout",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "C1",
+        "C3",
+        "W14",
+        "W15"
+      ],
+      "key_components": [
+        "Roof Trusses",
+        "Ceiling Joists",
+        "Fire Separation",
+        "Storage Areas"
+      ],
+      "text_verbatim": "PRE-ENGINEERED SCISSOR TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF VENTS W/ UNOBSTRUCTED FREE AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. SCISSOR TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nPRE-ENGINEERED ATTIC TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF VENTS W/ UNOBSTRUCTED FREE AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. ATTIC TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nPRE-ENGINEERED COMMON TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF INSULATION CEILING AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. COMMON TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nSTICK FRAMED OVERLAY ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n5/8\" OSB SHEATHING\nRAFTERS PER PLAN\nINTERIOR CEILING ASSEMBLY:\nR50 CELLULOSE\n1x3 STRAPPING @ 16\" o.c.\n1/2\" POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nPORCH CEILING ASSEMBLY:\n1x3 STRAPPING @ 16\" o.c.\n1 LAYER 5/8\" TYPE 'X' GYPSUM BOARD (TAPED & SANDED)\nLINER PER CEILING\nCEILING ASSEMBLY BELOW STORAGE:\nBATT INSULATION (MIN. R50 TOTAL)\n1 LAYER R22 & 1 LAYER R31\n1x3 STRAPPING @ 16\" o.c.\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\n2 HR F.R.R. INTERIOR STUD WALL (STC 36)\nOBC 2012 SB-3 RATED ASSEMBLY W2d\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD (TAPED AND SANDED)\n2x6 STUDS @ 16\" o.c.\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD (TAPED AND SANDED)\nFIRE SEPARATION EXTENDS TO U/S ROOF SHEATHING\nSEE DETAIL 6/A3.2\n2x6 INSULATED RISER WALL:\n1\" RIGID INSULATION (JOINTS TAPED)\n2x6 STUDS @ 24\" o.c.\nR22 BATT INSULATION\nS6MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED",
+      "summary": "This roof plan illustrates the layout of roof trusses and ceiling joists, focusing on fire separation and storage areas. The plan includes detailed notes on the engineering and installation of roof components, emphasizing compliance with manufacturer specifications. Key components include pre-engineered scissor trusses, attic trusses, and common trusses, each with specific assembly instructions. Ceiling assemblies are detailed with insulation and vapor barrier specifications. Wall assemblies W14 and W15 provide fire-resistance ratings and construction details. The plan notes the unconditioned nature of the storage area and provides dimensions for roof elements. Element callouts 'R1', 'R2', 'R3', 'R4', 'C1', 'C3', 'W14', and 'W15' identify specific components within the plan.",
+      "project_id": "25-01-026",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – general layout",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Plan",
+      "element_callouts": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "C1",
+        "C3",
+        "W14",
+        "W15"
+      ],
+      "key_components": [
+        "Roof Trusses",
+        "Ceiling Joists",
+        "Fire Separation",
+        "Storage Areas"
+      ],
+      "text_verbatim": "PRE-ENGINEERED SCISSOR TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF VENTS W/ UNOBSTRUCTED FREE AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. SCISSOR TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nPRE-ENGINEERED ATTIC TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF VENTS W/ UNOBSTRUCTED FREE AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. ATTIC TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nPRE-ENGINEERED COMMON TRUSS ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n1/300 OF INSULATION CEILING AREA\nINSULATION BAFFLES TO ENSURE ADEQUATE VENTILATION\n5/8\" OSB SHEATHING\nPRE-ENG. COMMON TRUSSES @ 24\" o.c.\nc/w BRACING AS REQ'D.\nSTICK FRAMED OVERLAY ROOF:\nSTEEL ROOFING\n1x4 STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n5/8\" OSB SHEATHING\nRAFTERS PER PLAN\nINTERIOR CEILING ASSEMBLY:\nR50 CELLULOSE\n1x3 STRAPPING @ 16\" o.c.\n1/2\" POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nPORCH CEILING ASSEMBLY:\n1x3 STRAPPING @ 16\" o.c.\n1 LAYER 5/8\" TYPE 'X' GYPSUM BOARD (TAPED & SANDED)\nLINER PER CEILING\nCEILING ASSEMBLY BELOW STORAGE:\nBATT INSULATION (MIN. R50 TOTAL)\n1 LAYER R22 & 1 LAYER R31\n1x3 STRAPPING @ 16\" o.c.\nS-6 mil POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\n2 HR F.R.R. INTERIOR STUD WALL (STC 36)\nOBC 2012 SB-3 RATED ASSEMBLY W2d\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD (TAPED AND SANDED)\n2x6 STUDS @ 16\" o.c.\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD (TAPED AND SANDED)\nFIRE SEPARATION EXTENDS TO U/S ROOF SHEATHING\nSEE DETAIL 6/A3.2\n2x6 INSULATED RISER WALL:\n1\" RIGID INSULATION (JOINTS TAPED)\n2x6 STUDS @ 24\" o.c.\nR22 BATT INSULATION\nS6MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED",
+      "summary": "This roof plan illustrates the layout of roof trusses and ceiling joists, focusing on fire separation and storage areas. The plan includes detailed notes on the engineering and installation of roof components, emphasizing compliance with manufacturer specifications. Key components include pre-engineered scissor trusses, attic trusses, and common trusses, each with specific assembly instructions. Ceiling assemblies are detailed with insulation and vapor barrier specifications. Wall assemblies W14 and W15 provide fire-resistance ratings and construction details. The plan notes the unconditioned nature of the storage area and provides dimensions for roof elements. Element callouts 'R1', 'R2', 'R3', 'R4', 'C1', 'C3', 'W14', and 'W15' identify specific components within the plan.",
+      "project_id": "25-01-026",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": "page_004/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "South elevation",
+      "level": "Unknown",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "2/A3.1"
+      ],
+      "element_type": "South Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Vinyl Siding",
+        "Windows",
+        "Doors"
+      ],
+      "text_verbatim": "SOUTH ELEVATION\nSCALE: 3/16\" = 1'-0\"\nT/O WALL\n11'-7\"\nT/O FDN\n4'-6\"\nGRADE\n4'-8\"\nT/O FTG\n8\"\n4'-0\" x 3'-0\"\n3'-0\"\n2'-6\" x 4'-6\"\n2'-6\" x 4'-6\"\n2'-6\" x 4'-6\"\n5'-0\" x 4'-6\"\n7'-6\" x 4'-6\"\nMETAL ROOFING\nVINYL SIDING",
+      "summary": "This elevation view shows the south side of the building, highlighting the exterior finishes and dimensions. The elevation includes metal roofing and vinyl siding, with window and door openings specified by size. The top of the wall is at 11'-7\", the top of the foundation is at 4'-6\", and the top of the footing is at 8\". Window dimensions include 4'-0\" x 3'-0\", 2'-6\" x 4'-6\", 5'-0\" x 4'-6\", and 7'-6\" x 4'-6\". The section callout '2/A3.1' indicates a related section view. This elevation provides a visual representation of the building's exterior appearance from the south perspective.",
+      "project_id": "25-01-026",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "North Elevation",
+      "level": "Unknown",
+      "orientation": "North elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.1"
+      ],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Vinyl Siding",
+        "Concrete",
+        "Scissor Truss"
+      ],
+      "text_verbatim": "METAL ROOFING\nVINYL SIDING\nCONCRETE\nBOTTOM OF SCISSOR TRUSS BEYOND\nSOFFIT AND PORCH CEILING PROTECTION PER ROOF PLAN\nT/O WALL\n9'-1\"\nT/O FDN\n3'-6\"\nGRADE\n4'-2\"\nT/O FTG\nFOUNDATION FOOTING STEPS:\n2'-0\" MAX. STEP HEIGHT; 4'-0\" MIN. RUN\nUNDISTURBED SOIL UNDER STEP\nENSURE MIN. 4'-0\" COVER TO ALL FOOTINGS\n25'-9¾\"\n7'-6\" x 3'-6\"\n4'-6\" x 4'-6\"\n2'-0\" x 3'-6\"\n5'-0\"\n3'-0\"\n10'-0\" x 9'-0\" OVERHEAD DOOR\n1\nA3.1\nNORTH ELEVATION\nSCALE: 3/16\" = 1'-0\"",
+      "summary": "This image shows the north elevation of a building, featuring metal roofing and vinyl siding. The elevation includes dimensions for various elements such as windows (7'-6\" x 3'-6\", 4'-6\" x 4'-6\", 2'-0\" x 3'-6\"), a door (3'-0\"), and an overhead door (10'-0\" x 9'-0\"). The text 'BOTTOM OF SCISSOR TRUSS BEYOND' indicates the presence of a scissor truss. Foundation footing steps are detailed with a maximum step height of 2'-0\" and a minimum run of 4'-0\", ensuring a minimum cover of 4'-0\" to all footings. The elevation is marked as '1/A3.1' and is drawn to a scale of 3/16\" = 1'-0\".",
+      "project_id": "25-01-026",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "South Elevation",
+      "level": "Unknown",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.1"
+      ],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Vinyl Siding",
+        "Concrete",
+        "Scissor Truss"
+      ],
+      "text_verbatim": "METAL ROOFING\nVINYL SIDING\nCONCRETE\nBOTTOM OF SCISSOR TRUSS BEYOND\nSOFFIT AND PORCH CEILING PROTECTION PER ROOF PLAN\nT/O WALL\n11'-7\"\nT/O FDN\n4'-6\"\nGRADE\n4'-6\"\nT/O FTG\nFOUNDATION FOOTING STEPS:\n2'-0\" MAX. STEP HEIGHT; 4'-0\" MIN. RUN\nUNDISTURBED SOIL UNDER STEP\nENSURE MIN. 4'-0\" COVER TO ALL FOOTINGS\n22'-8¾\"\n7'-6\" x 3'-6\"\n4'-6\" x 4'-6\"\n2'-0\" x 3'-6\"\n5'-0\"\n3'-0\"\n10'-0\" x 9'-0\" OVERHEAD DOOR\n1\nA3.1\nSOUTH ELEVATION\nSCALE: 3/16\" = 1'-0\"",
+      "summary": "This image depicts the south elevation of a building, showcasing metal roofing and vinyl siding. The elevation provides dimensions for windows (7'-6\" x 3'-6\", 4'-6\" x 4'-6\", 2'-0\" x 3'-6\"), a door (3'-0\"), and an overhead door (10'-0\" x 9'-0\"). The text 'BOTTOM OF SCISSOR TRUSS BEYOND' suggests the presence of a scissor truss. Foundation footing steps are specified with a maximum step height of 2'-0\" and a minimum run of 4'-0\", with a minimum cover of 4'-0\" to all footings. The elevation is labeled as '1/A3.1' and is drawn to a scale of 3/16\" = 1'-0\".",
+      "project_id": "25-01-026",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": "page_005/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "East Elevation",
+      "level": "Unknown",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Vinyl Siding"
+      ],
+      "text_verbatim": "METAL ROOFING\nVINYL SIDING\n3'-0\"\n2'-0\" x 4'-6\"\n2'-6\" x 4'-6\"\n2'-6\" x 4'-6\"\n5'-0\" x 4'-6\"\n7'-6\" x 4'-6\"\nT/O BEAM\n9'-1\"\nT/O FDN\n4'-2\"\nGRADE\n4'-0\"\nT/O FTG",
+      "summary": "This image shows the east elevation of a building, featuring metal roofing and vinyl siding. The elevation includes dimensions for various windows (2'-0\" x 4'-6\", 2'-6\" x 4'-6\", 5'-0\" x 4'-6\", 7'-6\" x 4'-6\") and a door (3'-0\"). The top of the beam is at 9'-1\", while the top of the foundation is at 4'-2\". The grade is marked at 4'-0\", and the top of the footing is indicated.",
+      "project_id": "25-01-026",
+      "page_number": 5,
+      "region_number": 4,
+      "relative_path": "page_005/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Shop Wall Detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Detail",
+      "element_callouts": [
+        "W11",
+        "W3",
+        "FL2"
+      ],
+      "key_components": [
+        "Concrete",
+        "Rebar",
+        "Sill Plate",
+        "Backfill",
+        "Weeping Tile"
+      ],
+      "text_verbatim": "EXTERIOR\nSHOP\n2x6 SILL PLATE ON SILL GASKET FASTENED TO FOUNDATION WALL W/ 1/2\" DIAMETER ANCHOR BOLTS AT 48\"o.c.\nENSURE 2\" CONC COVER TO ANCHOR\nCONCRETE REINFORCEMENT:\n1 - 15M HORIZ. AT TOP\nFL2\n25 MPA POURED CONCRETE\n15M X 18\" DOWEL @ 48\" o.c. w/ 4\" EMBEDMENT INTO FOOTING\nFOOTING SIZE PER PLAN\n20 MPA CONCRETE\n2 RUN 15M REBAR\nUNDISTURBED SOIL\n4\" DIA. WEEPING TILE w/ SAND SCREEN\n6\" CRUSHED STONE (CLEAR)\nDRAIN AWAY FROM DWELLING\n5\nA3.2\nSHOP WALL DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a shop wall section with a 2x6 sill plate on a sill gasket fastened to the foundation wall using 1/2\" diameter anchor bolts at 48\" on center. Concrete reinforcement includes 1 - 15M horizontal bar at the top. The wall is labeled with 'W11' and 'W3', and the floor level is marked as 'FL2'. The concrete is specified as 25 MPA poured concrete, with 15M x 18\" dowels at 48\" on center with 4\" embedment into the footing. Footing size is per plan, using 20 MPA concrete and 2 runs of 15M rebar. The detail includes a 4\" diameter weeping tile with sand screen and 6\" crushed stone for drainage.",
+      "project_id": "25-01-026",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Stairwell Wall Detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Detail",
+      "element_callouts": [
+        "W13",
+        "W10",
+        "FL1",
+        "FL2",
+        "W6",
+        "W7"
+      ],
+      "key_components": [
+        "Concrete",
+        "Rebar",
+        "Sill Plate",
+        "Stairs",
+        "Handrail"
+      ],
+      "text_verbatim": "MAIN FLOOR\nSHOP\nCAULK B/W SILL PLATE AND SUBFLOOR\nREINFORCING PER PLAN\nSTAIRS & HANDRAIL PER OBC\nFL1\nFL2\nW6\nW7\nW10\nW13\n4\nA3.2\nSTAIRWELL WALL DETAILS\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates a stairwell wall section with caulking between the sill plate and subfloor. Reinforcing is specified per plan, and stairs and handrail are to be constructed per OBC. The wall is labeled with 'W13', 'W10', 'W6', and 'W7', and floor levels are marked as 'FL1' and 'FL2'. The detail is labeled as '4/A3.2' and drawn to a scale of 1/2\" = 1'-0\".",
+      "project_id": "25-01-026",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation Wall Detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/A3.2"
+      ],
+      "element_type": "Foundation Wall Detail",
+      "element_callouts": [
+        "W8",
+        "W1",
+        "FL1"
+      ],
+      "key_components": [
+        "2x6 Sill Plate",
+        "Rigid Insulation",
+        "Poured Concrete",
+        "Rebar",
+        "Weeping Tile"
+      ],
+      "text_verbatim": "EXTERIOR\nMAIN FLOOR\n2x6 SILL PLATE ON SILL GASKET FASTENED TO FOUNDATION WALL W/ 1/2\" DIAMETER ANCHOR BOLTS AT 48\"o.c. ENSURE 2\" CONC COVER TO ANCHOR\n2\" x 6\" RIGID INSULATION ON INSIDE OF FORM\nTOP OF FND., TYP.\nGRADE\nBACKFILL w/ PARENT MATERIAL\n4\" DIA. WEEPING TILE w/ SAND SCREEN 6\" CRUSHED STONE (CLEAR) DRAIN AWAY FROM DWELLING\n2\" RIGID INSULATION ON INSIDE OF FDN TO 24\" BELOW GRADE\n25 MPA POURED CONCRETE\n15M X 18\" DOWEL @ 48\" o.c. w/ 4\" EMBEDMENT INTO FOOTING\nFOOTING SIZE PER PLAN 20 MPA CONCRETE 2 RUN 15M REBAR UNDISTURBED SOIL\n3\nA3.2\nFOUNDATION WALL DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a foundation wall with various components and specifications. The wall includes a 2x6 sill plate on a sill gasket, fastened to the foundation wall with 1/2\" diameter anchor bolts spaced at 48 inches on center, ensuring a 2-inch concrete cover to the anchor. The interior of the form has 2\" x 6\" rigid insulation. The foundation wall is constructed with 25 MPA poured concrete, reinforced with 15M x 18\" dowels spaced at 48 inches on center, with a 4-inch embedment into the footing. The footing size is per plan, with 20 MPA concrete and two runs of 15M rebar on undisturbed soil. A 4-inch diameter weeping tile with sand screen and 6-inch crushed stone drains away from the dwelling. The section callout '3/A3.2' references this detail on the sheet.",
+      "project_id": "25-01-026",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": "page_006/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "East Elevation",
+      "level": "Multiple",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "2/A3.2"
+      ],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Vinyl Siding",
+        "Metal Roofing",
+        "Windows",
+        "Doors"
+      ],
+      "text_verbatim": "EAST ELEVATION\nSCALE: 3/16\" = 1'-0\"\nVINYL SIDING\nMETAL ROOFING\n6'-0\" x 4'-4\"\n6'-0\" x 4'-6\"\n6'-0\" x 6'-7½\"\nT/O BEAM\n9'-1\"\nT/O FDN\n4'-0\"\nGRADE\n4'-2\"\nT/O FTG\n8'-0\"\n2\nA3.2",
+      "summary": "The east elevation provides a detailed view of the building's exterior, showcasing vinyl siding and metal roofing. The elevation includes dimensions for windows and doors, such as 6'-0\" x 4'-4\" and 6'-0\" x 6'-7½\". The top of the beam is at 9'-1\", while the top of the foundation is at 4'-0\" above grade, with the footing at 8'-0\" below. The section callout '2/A3.2' references this elevation on the sheet.",
+      "project_id": "25-01-026",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": "page_006/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Elevation",
+      "location": "West Elevation",
+      "level": "Multiple",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "1/A3.2"
+      ],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Vinyl Siding",
+        "Metal Roofing",
+        "Windows"
+      ],
+      "text_verbatim": "WEST ELEVATION\nSCALE: 3/16\" = 1'-0\"\nVINYL SIDING\nMETAL ROOFING\n4'-0\" x 3'-0\"\nT/O BEAM\n9'-7\"\nT/O FDN\n4'-6\"\nGRADE\n4'-8\"\nT/O FTG\n8'-0\"\n1\nA3.2",
+      "summary": "The west elevation illustrates the building's exterior with vinyl siding and metal roofing. It includes window dimensions of 4'-0\" x 3'-0\". The top of the beam is at 9'-7\", and the top of the foundation is at 4'-6\" above grade, with the footing at 8'-0\" below. The section callout '1/A3.2' references this elevation on the sheet.",
+      "project_id": "25-01-026",
+      "page_number": 6,
+      "region_number": 5,
+      "relative_path": "page_006/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Main Floor to Shop Firewall Detail",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "6/A3.2"
+      ],
+      "element_type": "Firewall Detail",
+      "element_callouts": [
+        "R3",
+        "R2",
+        "W14",
+        "C1",
+        "C4",
+        "W10",
+        "FL1",
+        "FL2",
+        "W2"
+      ],
+      "key_components": [
+        "Gypsum Board",
+        "Fire Caulk",
+        "Rigid Insulation",
+        "Poured Concrete",
+        "Rebar"
+      ],
+      "text_verbatim": "MAIN FLOOR TO SHOP FIREWALL DETAIL\nSCALE: 1/2\" = 1'-0\"\nFIRE CAULK GYPSUM BOARD TO ROOF SHEATHING\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD TAPED AND SANDED (EACH SIDE)\nOVERLAP DRYWALL TO ENSURE 5/8\" 'TYPE X' CONTINUOUS AT WALL THICKNESS TRANSITION\nNOTE: 5/8\" 'TYPE X' MUST BE CONTINUOUS BEHIND ALL STAIRS, FIXTURES, PARTITIONS AND BULKHEADS EACH SIDE OF PARTY WALL\nELECTRICAL BOXES TIGHTLY FIT OUTLET BOXES TO BE OFF-SET FROM OPPOSITE SIDE STUD CAVITY ACOUSTICAL SEALANT AROUND BOX AND AT FLOOR / WALL JUNCTION\n2x6 SILL PLATE ON SILL GASKET FASTENED TO FOUNDATION WALL W/ 1/2\" DIAMETER ANCHOR BOLTS AT 48\" o.c. ENSURE 2\" CONC COVER TO ANCHOR\n2\" RIGID INSULATION ON INSIDE OF CONCRETE FORM\n25 MPA POURED CONCRETE\n15M X 18\" DOWEL @ 48\" o.c. w/ 4\" EMBEDMENT INTO FOOTING\nFOOTING SIZE PER PLAN 20 MPA CONCRETE 2 RUN 15M REBAR UNDISTURBED SOIL\n6\nA3.2",
+      "summary": "This detail illustrates the firewall between the main floor and shop, featuring two layers of 5/8\" type 'X' gypsum board taped and sanded on each side. Fire caulk is used at the roof sheathing, and drywall overlaps ensure continuity at wall thickness transitions. Electrical boxes are tightly fitted with acoustical sealant at junctions. The foundation includes a 2x6 sill plate on a sill gasket, fastened with 1/2\" diameter anchor bolts at 48 inches on center, with a 2-inch concrete cover. The wall is insulated with 2\" rigid insulation inside the concrete form. The foundation is made of 25 MPA poured concrete, reinforced with 15M x 18\" dowels at 48 inches on center, embedded 4 inches into the footing. The section callout '6/A3.2' references this detail on the sheet.",
+      "project_id": "25-01-026",
+      "page_number": 6,
+      "region_number": 6,
+      "relative_path": "page_006/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Timber Column Detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/A4.1"
+      ],
+      "element_type": "Timber Column Detail",
+      "element_callouts": [
+        "W3a"
+      ],
+      "key_components": [
+        "Timber Screws",
+        "Simpson Base",
+        "Poured Concrete",
+        "Rebar"
+      ],
+      "text_verbatim": "TIMBER COLUMN DETAIL\nSCALE: 1/2\" = 1'-0\"\nBEAM PER PLAN\n(4) 5/16\" TIMBER SCREWS INSTALLED AT SLIGHT ANGLE MIN. 8\" EMBED INTO POST\nPOST PER PLAN\nSIMSPON BASE ABU1010RZ C/W (2) 5/8\" x 6\" HILTI KWIK ANCHOR INTO FOUNDATION (OR EQUIVALENT)\nNOTE: ALL FASTENERS INTO TREATED LUMBER SHALL BE ACQ RATED.\n(11) 16d NAILS EACH SIDE. (22) TOTAL\n15M X 18\" DOWEL @ 48\" o.c. w/ 4\" EMBEDMENT INTO FOOTING\nFOOTING SIZE PER PLAN 20 MPA CONCRETE 2 RUN 15M REBAR UNDISTURBED SOIL\n2\nA4.1",
+      "summary": "This detail shows a timber column with specific fastening and foundation requirements. The column is secured with four 5/16\" timber screws installed at a slight angle, embedded a minimum of 8 inches into the post. A Simpson base ABU1010RZ with two 5/8\" x 6\" Hilti Kwik anchors is used for attachment to the foundation. All fasteners into treated lumber are ACQ rated. The column is further secured with 11 16d nails on each side, totaling 22 nails. The foundation includes 15M x 18\" dowels at 48 inches on center, with a 4-inch embedment into the footing. The footing size is per plan, using 20 MPA concrete with two runs of 15M rebar on undisturbed soil. The section callout '2/A4.1' references this detail on the sheet.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Main Floor – Porch connection",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Reinforced Concrete Slab Detail",
+      "element_callouts": [
+        "FL1",
+        "FL3",
+        "W5",
+        "W8"
+      ],
+      "key_components": [
+        "Reinforced Concrete",
+        "Flashing",
+        "Sill Plate",
+        "Subfloor"
+      ],
+      "text_verbatim": "MAIN FLOOR\nPORCH\nCAULK B/W SILL PLATE AND SUBFLOOR\nFL1\nFL3\nW5\nW8\nFLASHING\nSLOPE TO OUTSIDE\nTOP OF FDN\nTOP OF SLAB\nTOP OF FDN\nREINFORCING PER PLAN\nMIN. 3\" BEARING\nCOLD ROOM\n4 1/2\"\n6 1/2\"\n10\"\nREINFORCED CONC. SLAB DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a reinforced concrete slab connection between the main floor and porch. The slab is reinforced as per plan and includes a minimum 3-inch bearing. Key elements include flashing and caulking between the sill plate and subfloor. The slab detail indicates the top of the foundation and slab levels. Element callouts FL1, FL3, W5, and W8 identify specific components in the detail.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Porch – Column to Slab connection",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Porch Column to Slab Detail",
+      "element_callouts": [
+        "FL3",
+        "W4"
+      ],
+      "key_components": [
+        "Simpson Base",
+        "Hilti Kwik Anchor",
+        "Rebar"
+      ],
+      "text_verbatim": "PORCH\nCOLUMN PER PLAN\nSIMSPON BASE ABU88RZ C/W (2) 5/8\" x 6\" HILTI KWIK ANCHOR INTO SLAB (OR EQUIVALENT)\n(9) 16d NAILS EACH SIDE. (18) TOTAL\nFL3\nW4\nGRADE\nANCHOR SLAB TO WALL W/ 10M REBAR @ 24\" o.c. (24\" x 24\" BENT BAR)\nMIN. 3\" SLAB EDGE BEARING\nCOLD ROOM\nPORCH COLUMN TO SLAB DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates the connection between a porch column and slab. The column is anchored using a Simpson Base ABU88RZ with Hilti Kwik anchors. The slab is anchored to the wall with 10M rebar at 24 inches on center, ensuring a minimum 3-inch slab edge bearing. Element callouts FL3 and W4 identify specific components in the detail.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 3,
+      "relative_path": "page_007/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Shear Wall",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Shear Wall Detail",
+      "element_callouts": [
+        "FL1",
+        "W1",
+        "W9"
+      ],
+      "key_components": [
+        "OSB Sheathing",
+        "Simpson Holdown Anchor",
+        "Rebar"
+      ],
+      "text_verbatim": "2x6 POST PER PLAN EACH END OF SHEARWALL\n7/16\" OSB SHEATHING ON 1 SIDE FASTENED W/ 2 3/8\" NAIL-GUN NAILS @ 6\" o.c. PANEL EDGES & 10\" o.c. IN FIELD. PROVIDE BLOCKING @ 24\" o.c. & ALL PANEL EDGES.\nFDN CONNECTION\nSIDE VIEW\n1/2\" DIA. A.B. @ 48\" o.c. (TYP.)\nFND. WALL PER PLAN\nSECTION VIEW\nSIMSPON HUBD-SDS2.5 HOLDDOWN ANCHOR C/W 7/8\" DIA. HAS ROD, HILTI HIT HY 200 MAX. EPOXY, MIN. 12\" EMBEDMENT (EACH END OF SHEARWALL)\n15M TOP PERIMETER\nCENTER HOLD DOWN ANCHORS FDN. WALL\nSHEAR WALL DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a shear wall with OSB sheathing fastened with nails. The wall includes Simpson HUBD-SDS2.5 holdown anchors with a 7/8-inch diameter rod and epoxy, embedded a minimum of 12 inches. Rebar is placed at the top perimeter. Element callouts FL1, W1, and W9 identify specific components in the detail.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 4,
+      "relative_path": "page_007/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Timber Post to Beam Connection",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Timber Post to Beam Details",
+      "element_callouts": [],
+      "key_components": [
+        "Timber Screws",
+        "Lap Tenon"
+      ],
+      "text_verbatim": "ISO VIEW\nBEAM\nTIE BEAM\n1\" MIN. BEARING, TYP.\nTOP VIEW-CORNER\nTIE BEAM PER PLAN\n1\" MIN. BEARING, TYP.\nBEAM PER PLAN\nSIDE VIEW-CORNER\nBEAM PER PLAN\n4\" THK x 4\" LONG HALF LAP TENON\n(2) 5/16\" TIMBER SCREWS INTO ROOF BEAM ENSURE 4\" THREAD EMBED.\nPOST PER PLAN\nTIMBER POST TO BEAM DETAILS\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates the connection between a timber post and beam. The connection uses a 4-inch thick by 4-inch long half lap tenon and two 5/16-inch timber screws into the roof beam, ensuring a 4-inch thread embedment. The detail specifies a minimum 1-inch bearing for the beams.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 5,
+      "relative_path": "page_007/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Porch Venting",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Porch Venting Detail",
+      "element_callouts": [
+        "FL3",
+        "W4"
+      ],
+      "key_components": [
+        "Venting",
+        "Screen"
+      ],
+      "text_verbatim": "PORCH\nFL3\nW4\n4\" VENTING ABOVE GRADE\nSCREEN\nSLOPE AWAY\nCOLD ROOM\nPORCH VENTING DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows the porch venting system, which includes a 4-inch vent above grade and a screen. The venting is designed to slope away from the structure. Element callouts FL3 and W4 identify specific components in the detail.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 6,
+      "relative_path": "page_007/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Assembly Schedule",
+      "element_callouts": [],
+      "key_components": [
+        "Foundation Wall Assemblies",
+        "Main Floor Assemblies",
+        "Roof Assemblies",
+        "Floor Assemblies",
+        "Ceiling Assemblies"
+      ],
+      "text_verbatim": "FOUNDATION WALL ASSEMBLIES:\nID DEFINITION\nW1 8\" LIVING AREA FOUNDATION WALL:\n8\" POURED CONCRETE\n2\" x 6\" RIGID INSULATION\nSET INSIDE OF FORM\nCONT. WITH 2\" RIGID INSULATION\nINSIDE OF CONCRETE WALL\n(EXTEND MIN. 24\" BELOW GRADE)\n1/2\" ANCHOR BOLTS @ 48\" o.c.\nSEE DETAIL 3/A3.2\nW2 8\" LIVING AREA / GARAGE WALL:\n8\" POURED CONCRETE\n2\" x 12\" RIGID INSULATION\nSET INSIDE OF FORM\nCONT. WITH 2\" RIGID INSULATION\nINSIDE OF CONCRETE WALL\n(EXTEND MIN. 24\" BELOW GRADE)\n1/2\" ANCHOR BOLTS @ 48\" o.c.\nSEE DETAIL 6/A3.2\nW3 9\" GARAGE FOUNDATION WALL:\n9\" POURED CONCRETE\n1/2\" ANCHOR BOLTS @ 48\" o.c.\nSEE DETAIL 5/A3.2\nW3a 8\" PORCH FOUNDATION WALL:\n8\" POURED CONCRETE\nSEE DETAIL 6/A3.2\nW4 10\" COLD ROOM EXTERIOR WALL:\n10\" POURED CONCRETE\nASPHALT DAMPPROOFING\nPLASTIC DRAINAGE MAT\nSEE DETAIL 5/A1.4\nW5 10\" COLD ROOM / MAIN FLR WALL:\n10\" POURED CONCRETE\n2\" x 6\" RIGID INSULATION\nSET INSIDE OF FORM\nCONT. WITH 2\" RIGID INSULATION\nINSIDE OF CONCRETE WALL\n(EXTEND MIN. 24\" BELOW GRADE)\n1/2\" ANCHOR BOLTS @ 48\" o.c.\nSEE DETAIL 4/A1.4\nW6 10\" STAIRWELL / MAIN FLR WALL:\n10\" POURED CONCRETE\n2\" RIGID INSULATION\nSET INSIDE OF FORM\nCONT. WITH 2\" RIGID INSULATION\nINSIDE OF CONCRETE WALL\n(EXTEND MIN. 24\" BELOW GRADE)\n1/2\" ANCHOR BOLTS @ 48\" o.c.\nSEE DETAIL 4/A3.2\nW7 10\" STAIRWELL / SHOP WALL:\n10\" POURED CONCRETE\n1/2\" ANCHOR BOLTS @ 48\" o.c.\nAND REBAR TO FLOOR PER PLAN\n3\" RIGID INSULATION\n13 RISERS UP TO MAIN FLR @ 16\" o.c.\nW/ TACKWELD PLATES\n3/8\" DRYWALL TAPED & SANDED\nSEE DETAIL 4/A3.2\n\nMAIN FLOOR ASSEMBLIES:\nID DEFINITION\nW8 2x6 SIDING EXTERIOR WALL:\nVERTICAL VINYL SIDING\nTYPAR HOUSEWRAP\n1\" RIGID INSULATION\n7/16\" OSB SHEATHING\n2\" x 3\" NAILING NAILS @ 6\" o.c.\nON PANEL EDGES & 10\" o.c. IN FIELD\n2x6 STUDS @ 16\" o.c.\n1/2\" DIA. ANCHOR BOLTS 48\" o.c.\nR22 BATT INSULATION\n6 MIL POLY VAPOUR BARRIER\n1/2\" PRIMALLY TAPED & SANDED\nW9 2x6 SIDING EXTERIOR TALL WALL:\nWALL DESIGNED AS PER\nOBC 9.23.10.(2) & TABLE A-3\nVERTICAL VINYL SIDING\nTYPAR HOUSEWRAP\n1\" RIGID INSULATION\n7/16\" OSB SHEATHING\n2\" x 3\" NAILING NAILS @ 6\" o.c.\nON PANEL EDGES & 10\" o.c. IN FIELD\n2x6 STUDS @ 16\" o.c.\n1/2\" DIA. ANCHOR BOLTS 48\" o.c.\nR22 BATT INSULATION\n6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nW9a 2x6 SIDING EXTERIOR SHEAR WALL:\nVERTICAL VINYL SIDING\nTYPAR HOUSEWRAP\n1\" RIGID INSULATION\n7/16\" OSB SHEATHING\n2\" x 3\" NAILING NAILS @ 6\" o.c.\nON PANEL EDGES & 10\" o.c. IN FIELD\nPROVIDE BLOCKING @ 2nd\nAND ALL PANEL EDGES.\n2x6 STUDS @ 16\" o.c.\n1/2\" DIA. ANCHOR BOLTS 48\" o.c.\nR22 BATT INSULATION\n6 MIL POLY VAPOUR BARRIER\nPROVIDE STUD POST PER PLAN\nAT EACH END OF SHEARWALL.\nSEE DETAIL 6/A1.4\nW10 2 HR F.R.R. INTERIOR STUD WALL (STC 55)\nOBC 2012 9.3- RATED ASSEMBLY W16a\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD\n(TAPED AND SANDED)\n1\" RIGID INSULATION\n2x6 STUDS @ 16\" o.c.\nR22 ROXUL BATT INSULATION\n7/16\" OSB SHEATHING\nRESILIENT METAL CHANNEL @ 16\" o.c.\n(SPACE CHANNEL @ 24\" o.c. FOR STC 58)\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD\n(TAPED AND SANDED)\nFIRE SEPARATION EXTENDS TO\nUS ROOF SHEATHING\nSEE DETAIL 6/A3.2\nW11 2x6 SIDING EXTERIOR TALL WALL:\nWALL DESIGNED AS PER\nOBC 9.23.10.(2) & TABLE A-3\nVERTICAL VINYL SIDING\nTYPAR HOUSEWRAP\n1\" RIGID INSULATION\n7/16\" OSB SHEATHING\n2\" x 3\" NAILING NAILS @ 6\" o.c.\nON PANEL EDGES & 10\" o.c. IN FIELD\n2x6 STUDS @ 16\" o.c.\n1/2\" DIA. ANCHOR BOLTS 48\" o.c.\nR22 BATT INSULATION\n6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nW12 1 HR F.R.R. INTERIOR STUD WALL (STC 36)\nOBC 2012 9.3- RATED ASSEMBLY W16a\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD\n(TAPED AND SANDED)\n2x4 STUDS @ 16\" o.c.\nR22 ROXUL BATT INSULATION\n7/16\" OSB SHEATHING\nRESILIENT METAL CHANNEL @ 16\" o.c.\n(SPACE CHANNEL @ 24\" o.c. FOR STC 58)\n2 LAYERS 5/8\" TYPE 'X' GYPSUM BOARD\n(TAPED AND SANDED)\nFIRE SEPARATION EXTENDS TO\nUS ROOF SHEATHING\nSEE DETAIL 6/A3.2\nW15 2x6 INSULATED RISER WALL:\n1\" RIGID INSULATION (JOINTS TAPED)\n2x6 STUDS @ 16\" o.c.\nR22 BATT INSULATION\n6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\n\nROOF ASSEMBLIES:\nID DEFINITION\nR1 PRE-ENGINEERED SCISSOR TRUSS ROOF:\nSEE TRUSS PLAN\nROOF STRAPPING @ 24\" o.c.\nR2 IF 1/300 OF INSULATION CEILING AREA\nINSULATION BAFFLES TO ENSURE\nADEQUATE VENTILATION\n7/16\" OSB SHEATHING\nPRE-ENG. ATTIC TRUSSES @ 24\" o.c.\nBRACING AS REQ'D.\nR3 PRE-ENGINEERED COMMON TRUSS ROOF:\nSEE TRUSS PLAN\nROOF STRAPPING @ 24\" o.c.\nR4 IF 1/300 OF INSULATION CEILING AREA\nINSULATION BAFFLES TO ENSURE\nADEQUATE VENTILATION\n7/16\" OSB SHEATHING\nPRE-ENG. COMMON TRUSSES @ 24\" o.c.\nBRACING AS REQ'D.\nR5 STEEL FRAMING OVERLAY ROOF:\nSTEEL ROOFING\nROOF STRAPPING @ 24\" o.c.\nROOFING MEMBRANE (PER MFG)\n7/16\" OSB SHEATHING\nRAFTERS PER PLAN\n\nCEILING ASSEMBLIES:\nID DEFINITION\nC1 INTERIOR CEILING ASSEMBLY:\n1/2\" DRYWALL\n1x3 STRAPPING @ 16\" o.c.\nR22 BATT INSULATION\n6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nC2 INTERIOR SLOPED CEILING ASSEMBLY:\n1 LAYER R22 BATT INSULATION\n1 LAYER R24 BATT INSULATION\n6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED\nC3 PORCH CEILING ASSEMBLY\n1x3 STRAPPING @ 16\" o.c.\nLINER PER CLIENT\nC4 CEILING ASSEMBLY BELOW STORAGE:\nBATT INSULATION (MIN. R50 TOTAL)\n1 LAYER R22 & 1 LAYER R31\n1x3 STRAPPING @ 16\" o.c.\n6 MIL POLY VAPOUR BARRIER\n1/2\" DRYWALL TAPED & SANDED",
+      "summary": "This image presents a comprehensive schedule of various building assemblies, including foundation wall assemblies, main floor assemblies, roof assemblies, floor assemblies, and ceiling assemblies. Each assembly type is detailed with specific construction methods and materials. For example, foundation wall assemblies like W1 and W2 consist of 8\" poured concrete with rigid insulation and anchor bolts, referencing specific details such as 3/A3.2. Main floor assemblies include exterior walls with vinyl siding, Typar housewrap, and batt insulation, with specific wall types like W8 and W9 designed per building codes. Roof assemblies, such as R1 and R3, describe pre-engineered truss roofs with specific strapping and sheathing requirements. Ceiling assemblies detail interior and sloped ceiling constructions with batt insulation and drywall. The schedule provides a detailed overview of the construction specifications for each assembly, ensuring compliance with building standards and providing guidance for construction.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 7,
+      "relative_path": "page_007/region_07_red_box.png"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Section",
+      "location": "Longitudinal section through building",
+      "level": "Multiple",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "R2",
+        "R3",
+        "R4",
+        "C1",
+        "C3",
+        "C4",
+        "W8",
+        "W13",
+        "FL1",
+        "FL3",
+        "FL5"
+      ],
+      "key_components": [
+        "Covered Porch",
+        "Stairwell",
+        "Entry",
+        "Laundry",
+        "Cold Room",
+        "Roof Venting",
+        "Vented Soffit",
+        "Compacted Granular 'A'"
+      ],
+      "text_verbatim": "RIDGE VENTING 1/300\nCEILING SLOPE OF\nGREAT ROOM BEYOND\nSTORAGE\n(Unconditioned)\n48\" x 42\"\n16'-0\"\n1/4\" T&G SCREWED & GLUED\nTO TRUSS BOTTOM CHORD\nCOVERED\nPORCH\nSTAIRWELL\nENTRY\nLAUNDRY\nMINIMUM 4\"\nPOLYURETHANE\nSTAIRS AND HANDRAIL PER OBC\nCOMPACTED GRANULAR 'A'\nBACKFILL\nw/ PARENT\nMATERIAL\nT/O BEAM\nT/O FDN\nT/O FTG\nGRADE\n4'-2\"\n9'-1\"\n6'-9 11/32\"\n8'-0 1/2\"\n12'-7 1/2\"\nMORVENTS\nVENTED\nSOFFIT\nHRV",
+      "summary": "This section view provides a longitudinal cut through the building, illustrating various components such as the covered porch, stairwell, entry, laundry, and cold room. The roof features ridge venting at a ratio of 1/300, with a ceiling slope extending into the great room. The storage area is unconditioned, with dimensions of 48\" x 42\" and a span of 16'-0\". The section details the use of 1/4\" T&G screwed and glued to the truss bottom chord. The foundation includes compacted granular 'A' and backfill with parent material. Key dimensions include a grade of 4'-2\", a total height of 9'-1\", and specific room heights such as 6'-9 11/32\" and 8'-0 1/2\". The section also highlights the use of minimum 4\" polyurethane and compliance with OBC for stairs and handrails. Vented soffits and morvents are part of the roof assembly, ensuring proper ventilation. The section provides a detailed view of the building's structural and architectural elements, emphasizing the relationship between different components and their dimensions.",
+      "project_id": "25-01-026",
+      "page_number": 7,
+      "region_number": 8,
+      "relative_path": "page_007/region_08_red_box.png"
+    }
+  ]
+}

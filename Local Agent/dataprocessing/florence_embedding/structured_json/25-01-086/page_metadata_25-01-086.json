@@ -1,0 +1,110 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": "FAC88744",
+      "drawing_title": "NC Tooling Cabinet",
+      "overall_classification": "Mixed",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Tool Cabinet Layout",
+        "Load Table",
+        "ISO View"
+      ],
+      "text_verbatim_title_block": "PART No. FAC88744\nHAMMOND MANUFACTURING CO. LTD\nEnclosure Group\nTHIS DRAWING IS PROPRIETARY INFORMATION OF\nHAMMOND MFG. CO. LTD. NOT TO BE USED WITHOUT EXPRESSED\nWRITTEN PERMISSION OF HAMMOND MFG. CO. LTD.\nTITLE: NC Tooling Cabinet\nSCALE: 1:13 DWG: FAC88744 SHEET: 1 OF 29\nDWN vmcclary SHEET SIZE B\nDATE 27-NOV-24\nCHK. mamaral\nAUTH.\nMAT'L 12 GA STEEL / STRUCTURAL STEEL\nCAD DATA ONLY:\nDO NOT MANUALLY\nUPDATE",
+      "general_notes_verbatim": "NOTES - UNLESS OTHERWISE SPECIFIED:\n1. REMOVE ALL BURRS AND SHARP EDGES.",
+      "page_overview_summary": "This sheet provides an overview of the NC Tooling Cabinet, including a detailed layout and an ISO view. It includes a load table specifying maximum uniformly distributed loads for each level. The sheet also contains general notes about removing burrs and sharp edges."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": "FAC88744",
+      "drawing_title": "Bubble Drawing",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Tool Cabinet Components",
+        "Bubble BOM"
+      ],
+      "text_verbatim_title_block": "PART No. FAC88744\nHAMMOND MANUFACTURING CO. LTD\nEnclosure Group\nTHIS DRAWING IS PROPRIETARY INFORMATION OF\nHAMMOND MFG. CO. LTD. NOT TO BE USED WITHOUT EXPRESSED\nWRITTEN PERMISSION OF HAMMOND MFG. CO. LTD.\nTITLE: NC Tooling Cabinet\nSCALE: DWG: FAC88744 SHEET: 2 OF 29\nDWN vmcclary SHEET SIZE B\nDATE 27-NOV-24\nCHK. mamaral\nCAD DATA ONLY:\nDO NOT MANUALLY\nUPDATE",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet details the components of the NC Tooling Cabinet with a bubble drawing. It includes a Bill of Materials (BOM) listing each part number, description, and quantity required for assembly."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "FAC88744",
+      "drawing_title": "Weldment Drawing",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Weldment Details",
+        "ISO Partial Views"
+      ],
+      "text_verbatim_title_block": "PART No. FAC88744\nHAMMOND MANUFACTURING CO. LTD\nEnclosure Group\nTHIS DRAWING IS PROPRIETARY INFORMATION OF\nHAMMOND MFG. CO. LTD. NOT TO BE USED WITHOUT EXPRESSED\nWRITTEN PERMISSION OF HAMMOND MFG. CO. LTD.\nTITLE: NC Tooling Cabinet\nSCALE: DWG: FAC88744 SHEET: 3 OF 29\nDWN vmcclary SHEET SIZE B\nDATE 27-NOV-24\nCHK. mamaral\nCAD DATA ONLY:\nDO NOT MANUALLY\nUPDATE",
+      "general_notes_verbatim": "STEEL NOTES\n1) ALL DIMENSIONS ARE IN INCHES UNLESS NOTED OTHERWISE.\n2) WHERE WELD SYMBOL IS SHOWN, ASSUME FILLET ALL\nAROUND, WITH SIZE EQUAL TO THE LESSER OF 1/4\" OR THE\nMINIMUM THICKNESS OF ADJOINING FACES, UNLESS NOTED.\n3) STRUCTURAL STEEL PLATES, ANGLES, AND CHANNELS SHALL\nCONFORM TO CSA G40.21-2004, G40.21-350W CLASS C FOR HSS\nAND W SECTIONS.\n4) WELDING SHALL CONFORM TO THE REQUIREMENTS OF CSA\nSTANDARDS W59 AND SHALL BE UNDERTAKEN BY A FABRICATOR\nAND ERECTOR FULLY APPROVED BY THE CANADIAN WELDING\nBUREAU TO THE REQUIREMENTS OF CSA STANDARDS W47,\nDIVISION 1 OR DIVISION 2.1.\n5) FIELD VERIFY ALL DIMENSIONS PRIOR TO MANUFACTURING.\n6) ALL STRUCTURAL STEEL TO BE FINISHED AS APPROVED BY\nTHE CONTRACTOR/OWNER.\n7) ALL HARDWARE TO BE TORQUED BY TURN-OF-NUT METHOD\nAS PER 5619.3.7.2, AND TABLE 7.\n\nDESIGN LOADS\n1) DESIGN LOADS ARE UNFACTORED UNLESS NOTED OTHERWISE:\nA) DEAD LOADS: SELF-WEIGHT OF STEEL\nB) LIVE LOAD (MAX.CAPACITY): AS PER LOAD TABLE ON THE\nFIRST PAGE OF THIS DRAWING PACKAGE",
+      "page_overview_summary": "This sheet provides detailed weldment drawings for the NC Tooling Cabinet, including ISO partial views. It includes comprehensive steel notes and design load specifications, ensuring compliance with CSA standards. The sheet emphasizes the importance of field verification and proper welding practices."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "FAC88744",
+      "drawing_title": "Back Plate",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Back Plate",
+        "12 GA Steel"
+      ],
+      "text_verbatim_title_block": "PART No. FAC88744\nHAMMOND MANUFACTURING CO. LTD\nEnclosure Group\nTHIS DRAWING IS PROPRIETARY INFORMATION OF\nHAMMOND MFG. CO. LTD. NOT TO BE USED WITHOUT EXPRESSED\nWRITTEN PERMISSION OF HAMMOND MFG. CO. LTD.\nTITLE: NC Tooling Cabinet\nSCALE: DWG: FAC88744 SHEET: 4 OF 29\nDWN vmcclary SHEET SIZE B\nDATE 27-NOV-24\nCHK. mamaral\nCAD DATA ONLY:\nDO NOT MANUALLY\nUPDATE",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed views of the Back Plate for the NC Tooling Cabinet, made from 12 GA steel. It includes side and front views with precise dimensions, ensuring accurate fabrication and assembly."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "FAC88744",
+      "drawing_title": "Side Plate",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Side Plate",
+        "12 GA Steel"
+      ],
+      "text_verbatim_title_block": "PART No. FAC88744\nHAMMOND MANUFACTURING CO. LTD\nEnclosure Group\nTHIS DRAWING IS PROPRIETARY INFORMATION OF\nHAMMOND MFG. CO. LTD. NOT TO BE USED WITHOUT EXPRESSED\nWRITTEN PERMISSION OF HAMMOND MFG. CO. LTD.\nTITLE: NC Tooling Cabinet\nSCALE: DWG: FAC88744 SHEET: 5 OF 29\nDWN vmcclary SHEET SIZE B\nDATE 27-NOV-24\nCHK. mamaral\nCAD DATA ONLY:\nDO NOT MANUALLY\nUPDATE",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed views of the Side Plate for the NC Tooling Cabinet, made from 12 GA steel. It includes side and front views with precise dimensions, ensuring accurate fabrication and assembly."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "FAC88744",
+      "drawing_title": "Bottom Plate",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Bottom Plate",
+        "12 GA Steel"
+      ],
+      "text_verbatim_title_block": "PART No. FAC88744\nHAMMOND MANUFACTURING CO. LTD\nEnclosure Group\nTHIS DRAWING IS PROPRIETARY INFORMATION OF\nHAMMOND MFG. CO. LTD. NOT TO BE USED WITHOUT EXPRESSED\nWRITTEN PERMISSION OF HAMMOND MFG. CO. LTD.\nTITLE: NC Tooling Cabinet\nSCALE: DWG: FAC88744 SHEET: 6 OF 29\nDWN vmcclary SHEET SIZE B\nDATE 27-NOV-24\nCHK. mamaral\nCAD DATA ONLY:\nDO NOT MANUALLY\nUPDATE",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides detailed views of the Bottom Plate for the NC Tooling Cabinet, made from 12 GA steel. It includes top and front views with precise dimensions, ensuring accurate fabrication and assembly."
+    },
+    {
+      "page_number": 7,
+      "sheet_id": "FAC88744",
+      "drawing_title": "Bottom Plate Flat Pattern",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Bottom Plate Flat Pattern",
+        "12 GA Steel"
+      ],
+      "text_verbatim_title_block": "PART No. FAC88744\nHAMMOND MANUFACTURING CO. LTD\nEnclosure Group\nTHIS DRAWING IS PROPRIETARY INFORMATION OF\nHAMMOND MFG. CO. LTD. NOT TO BE USED WITHOUT EXPRESSED\nWRITTEN PERMISSION OF HAMMOND MFG. CO. LTD.\nTITLE: NC Tooling Cabinet\nSCALE: DWG: FAC88744 SHEET: 7 OF 29\nDWN vmcclary SHEET SIZE B\nDATE 27-NOV-24\nCHK. mamaral\nCAD DATA ONLY:\nDO NOT MANUALLY\nUPDATE",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides a flat pattern view of the Bottom Plate for the NC Tooling Cabinet, made from 12 GA steel. It includes precise dimensions for accurate fabrication and assembly."
+    }
+  ]
+}

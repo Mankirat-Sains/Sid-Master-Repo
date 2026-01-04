@@ -1,0 +1,15 @@
+Great! How do i know what type of functions to add to my system?
+
+Hereare some questions pople may ask:
+
+what is the size of the building (dimensions)
+
+What is the volume of steel? (calculated from length of material and member type),
+
+What is the Spans of members.....
+
+Spacing between parallel members on same level (claculated for trib width)
+
+Dimesnison, elevations, how members connect, tracking loads... (Ie..this column is taking loads from thesebeams)
+
+With all of this info, hypothetically we will be able to track loads in a system

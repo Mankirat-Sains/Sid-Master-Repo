@@ -1,0 +1,55 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Floating Slab",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Floating Slab Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Floating Slab",
+        "Pad Footings",
+        "Rebar"
+      ],
+      "text_verbatim": "PLAN\nS1\nFLOATING SLAB\n1/8\"=1'-0\"\n32'-0\"\n28'-0\"\n25'-6\"\n28'-6¼\"\n10'-6¾\"\n2'-6\"\n16'-5¼\"\n2'-6\"\n12'-0\"\n20'-0\"\n3'-5¼\"\n(2) 15M REBAR x 2'-0\" LONG\n30\" x 30\" x 18\" THK PAD FOOTING (TYP.)",
+      "summary": "This plan view shows a floating slab foundation with dimensions of 32'-0\" by 28'-0\". The slab includes typical 30\" x 30\" x 18\" thick pad footings, as indicated. Rebar reinforcement consists of (2) 15M rebar, each 2'-0\" long. The plan includes section callouts '2/S1' for further detail on the thickened edge construction. Dimensions such as 10'-6¾\", 2'-6\", and 16'-5¼\" specify the layout of the slab and footings. The drawing is scaled at 1/8\"=1'-0\".",
+      "project_id": "25-01-073",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – Thickened Edge",
+      "level": "Foundation",
+      "orientation": "Section looking at thickened edge",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Thickened Edge Section",
+      "element_callouts": [],
+      "key_components": [
+        "Thickened Edge",
+        "Sill Plate",
+        "Anchor Bolts",
+        "Rebar",
+        "Vapour Barrier",
+        "Insulation"
+      ],
+      "text_verbatim": "SECTION\n2\nS1\nTHICKENED EDGE\n1/2\"=1'-0\"\nSLOPE GRADE AWAY 2%, & INSULATION (IF PRESENT)\nSILL PLATE\nc/w ½\"Ø ANCHOR BOLTS @ 48\" o.c. (LEAVE OPENINGS IN SILL PLATE @ DOOR LOCATIONS)\n(4) 15M REBAR (SEE NOTES FOR COVER)\n6x6x½ WWM OR 16\" x 16\" 10M GRID OR FIBRE MESH\n6mil POLY VAPOUR BARRIER (OPTIONAL)\nCOMPACTED GRANULAR 'A'\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE\nMIN. COMPRESSIVE STRENGTH OF 30 psi\n4'-0\"\n2\"\n1'-0\"",
+      "summary": "This section view details the construction of a thickened edge for a floating slab foundation. The section, labeled '2/S1', shows a sill plate with ½\"Ø anchor bolts spaced at 48\" on center, with openings left at door locations. The slab is reinforced with (4) 15M rebar, and options for reinforcement include 6x6x½ WWM or a 16\" x 16\" 10M grid or fiber mesh. A 6mil poly vapor barrier is optional, and the foundation includes compacted granular 'A' and a minimum of 2\" (R10) extruded polystyrene insulation. The slope grade is away from the structure at 2%. The section is scaled at 1/2\"=1'-0\".",
+      "project_id": "25-01-073",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    }
+  ]
+}

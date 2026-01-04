@@ -1,0 +1,46 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Step Bracket Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Square Holes",
+        "Fillets",
+        "Bracket"
+      ],
+      "text_verbatim": "1/8\"\n5\"\n11\"\n11 5/16\"\n1\"\n5 5/16\"\n1/2\" SQUARE HOLE.\nR1/8\" FILLETS ALL AROUND\nUSE .DXF OR .DWG FILE FOR EXACT PATTERN\n9/16\" SQUARE HOLE.\nR1/8\" FILLETS ALL AROUND\nDOWN 90° R 1/8\"\nFLATTENED VIEW (FROM REAR)",
+      "summary": "This detail drawing shows a flattened view of a step bracket from the rear. The bracket includes several dimensions: 1/8\", 5\", 11\", and 11 5/16\". It features 1/2\" and 9/16\" square holes with R1/8\" fillets all around. The note 'USE .DXF OR .DWG FILE FOR EXACT PATTERN' indicates that precise digital files should be used for manufacturing. The text 'DOWN 90° R 1/8\"' suggests a bending detail. The drawing is intended for precise fabrication of the bracket, which is part of a project for D.C. Racking.",
+      "project_id": "25-01-095",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Unknown",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Step Bracket 3D View",
+      "element_callouts": [],
+      "key_components": [
+        "Bracket"
+      ],
+      "text_verbatim": "FRONT RIGHT VIEW",
+      "summary": "This image provides a 3D front right view of a step bracket. The view highlights the bracket's shape and hole placements, which are critical for its assembly and function. The bracket is part of a project for D.C. Racking and is intended for precise manufacturing. The drawing complements the flattened view by providing a spatial understanding of the bracket's geometry.",
+      "project_id": "25-01-095",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    }
+  ]
+}

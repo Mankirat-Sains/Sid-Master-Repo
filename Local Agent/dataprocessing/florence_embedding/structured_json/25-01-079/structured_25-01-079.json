@@ -1,0 +1,28 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Row X",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "Row X"
+      ],
+      "section_callouts": [],
+      "element_type": "Racking Layout",
+      "element_callouts": [],
+      "key_components": [
+        "Storage Racks",
+        "Sorting Area",
+        "Hangers Area"
+      ],
+      "text_verbatim": "ROW X\nHangers Area\nSorting Area\n15'-3\"\n310 Pallet Locations\n123'-9\"",
+      "summary": "This plan view shows the racking layout for the Schenker TJX project on the ground floor, specifically focusing on Row X. The layout includes storage racks, a hangers area, and a sorting area. The dimension '15'-3\"' indicates the spacing between certain elements, while '123'-9\"' represents an overall dimension. The plan is designed to accommodate 310 pallet locations, optimizing storage and operational efficiency. The drawing is part of the project documentation by Waddell Engineering Ltd., dated January 30, 2025.",
+      "project_id": "25-01-079",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    }
+  ]
+}

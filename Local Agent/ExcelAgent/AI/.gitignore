@@ -1,0 +1,54 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.npm
+
+# Build output
+dist/
+build/
+*.bundle.js
+*.bundle.js.map
+
+# TypeScript
+*.tsbuildinfo
+*.d.ts.map
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# SSL Certificates
+*.pfx
+*.pem
+certs/
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
+
+# Temporary files
+.cache/
+tmp/
+temp/
+*.tmp
+

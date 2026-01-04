@@ -1,0 +1,544 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – slab edge",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S2"
+      ],
+      "element_type": "Slab Edge Detail",
+      "element_callouts": [
+        "W1"
+      ],
+      "key_components": [
+        "6\" Poured Concrete",
+        "6x6x6/6 W.W.M.",
+        "2\" Rigid Insulation",
+        "6 Mil Poly Vapour Barrier",
+        "Compacted Granular 'A'",
+        "Anchor Bolts"
+      ],
+      "text_verbatim": "1/2\" ANCHOR BOLTS @ 48\" o.c. PT 2x6 SILL PLATE\n6\" POURED CONC.\n6'x6'x6/6 W.W.M. CENTRED IN SLAB\nSINGLE STOREY WOOD FRAMED STRUCTURE ABOVE (W1)\n2\" MIN. COVER\nSLOPE AWAY\n4-15M CONTINUOUS\n6 MIL POLY VAPOUR BARRIER\n2\" RIGID INSULATION MIN. 30 PSI\nCOMPACTED GRAN. 'A' OR 3/4\" STONE BASE, 6\" MIN.\n3/S2\nSLAB EDGE DETAIL, TYPICAL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows a typical slab edge for a foundation with a single-storey wood-framed structure above, identified as W1. The slab consists of 6\" poured concrete with 6x6x6/6 welded wire mesh (W.W.M.) centered in the slab. The edge is reinforced with 4-15M continuous rebar. A 6 mil poly vapour barrier and 2\" rigid insulation with a minimum of 30 PSI are included for moisture and thermal protection. The base consists of compacted granular 'A' or 3/4\" stone, with a minimum thickness of 6\". Anchor bolts are specified at 48\" on center for securing the PT 2x6 sill plate. The detail is referenced as 3/S2 and is drawn at a scale of 1/2\" = 1'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – slab edge at doors",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S2"
+      ],
+      "element_type": "Slab Edge Detail at Doors",
+      "element_callouts": [],
+      "key_components": [
+        "6\" Poured Concrete",
+        "6x6x6/6 W.W.M.",
+        "2\" Rigid Insulation",
+        "6 Mil Poly Vapour Barrier",
+        "Undisturbed Soil",
+        "Rebar"
+      ],
+      "text_verbatim": "6\" POURED CONC.\n6'x6'x6/6 W.W.M. CENTRED IN SLAB\n(4) 15M CONTINUOUS\n6 MIL POLY VAPOUR BARRIER\n2\" RIGID INSULATION MIN. 30 PSI\nUNDISTURBED SOIL\nWALL BEYOND\n2\" MIN. COVER\nSLOPE AWAY\n2\" RIGID INSULATION AT DOORS\n2/S2\nSLAB EDGE DETAIL AT DOORS\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates the slab edge at door locations within the foundation. The slab is composed of 6\" poured concrete with 6x6x6/6 W.W.M. centered in the slab. It includes (4) 15M continuous rebar for reinforcement. A 6 mil poly vapour barrier and 2\" rigid insulation with a minimum of 30 PSI are specified for moisture and thermal protection. The detail also shows undisturbed soil beneath the slab and additional 2\" rigid insulation at door locations. The section is referenced as 2/S2 and is drawn at a scale of 1/2\" = 1'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": "page_002/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – floating slab layout",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S2",
+        "2/S3"
+      ],
+      "element_type": "Floating Slab Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Floating Slab",
+        "Rebar",
+        "Concrete Floor",
+        "Floor Drain"
+      ],
+      "text_verbatim": "12'-6\"\n28'-6\"\n100'-0\"\n46'-6\"\n45'-0\"\n3/S2\n2/S3\nFLOATING SLAB PLAN\nSCALE: 1\" = 10'-0\"\n(2) 15M CONTINUOUS REBAR BOTTOM OF THICKENED FLOOR BEAM\nSLOPE TO DRAIN (1% IN 10'-0\")\nFLOOR DRAIN SEE DETAIL 3/S3\n(KEEP OUT OF THICKENED SLAB AREAS) CONNECT TO WATER / OIL SEPARATOR AS NEEDED\n6\" CONCRETE FLOOR 32MPa R/W\n6'x6'x6 W.W.M. (AT MID-DEPTH OF SLAB) COMPACTED GRANULAR FILL, 6\" MIN.\nNOTE: INSULATION UNDER SLAB IS OPTIONAL.",
+      "summary": "This plan shows the layout of the floating slab foundation for the farm building. The slab dimensions are 100'-0\" by 46'-6\" with additional sections measuring 12'-6\" and 28'-6\". The slab includes (2) 15M continuous rebar at the bottom of thickened floor beams and is designed to slope to drain at 1% over 10'-0\". Floor drains are detailed in 3/S3 and are to be connected to a water/oil separator as needed. The concrete floor is specified as 6\" thick with a compressive strength of 32 MPa, reinforced with 6x6x6 W.W.M. at mid-depth. The base consists of compacted granular fill with a minimum thickness of 6\". Insulation under the slab is optional. The plan is referenced as 3/S2 and 2/S3, drawn at a scale of 1\" = 10'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "GENERAL NOTES:\nFOUNDATIONS:\n1. PREPARE THE AREA FOR THE PROPOSED STRUCTURE BY REMOVING ALL TOPSOIL & ORGANIC MATERIAL FROM THE AREA OF THE BUILDING.\n2. SUBGRADE SHALL BE SUITABLE FOR 1500 P.S.F (75 kPA) SAFE BEARING AND NOT HIGHLY FROST SUSCEPTIBLE.\n3. PROVIDE INSULATION PER CANADIAN FOUNDATION ENGINEERING MANUAL. UNDER SLAB INSULATION: IF NOT INSTALLED, CLIENT / CONTRACTOR ACCEPTS THE POTENTIAL OF CRACKING / HEAVING OVER TIME (IF BUILDING IS NOT HEATED) OR HEAT LOSS (IF BUILDING IS HEATED) PERIMETER INSULATION: IF NOT INSTALLED, CLIENT / CONTRACTOR ACCEPTS THE POTENTIAL OF CRACKING / HEAVING OVER TIME.\nCONCRETE:\n1. ALL CONCRETE SHALL HAVE A MINIMUM OF 28 DAYS OF COMPRESSIVE STRENGTH OF 32 MPa C/W 6% AIR ENTRAINMENT AND WATER / CEMENT RATIO OF 0.45 MAX.\n2. ALL REINFORCEMENT IS TO BE GRADE 400 MPa.\n3. REBAR SPLICE LENGTH: 15M BARS, 18\" LAP; WELDED WIRE MESH (WWM), 9\" LAP\n4. ALL CONCRETE WORK SHALL BE CARRIED OUT IN ACCORDANCE WITH THE LATEST EDITION OF THE NATIONAL BUILDING CODE, CAN/CSA-A23.1/A23.2-M90 AND LOCAL BY-LAWS.\n5. CONCRETE COVER SHALL BE AS FOLLOWS:\na) 3\" WHERE CONCRETE IS IN CONTACT WITH EARTH (I.E. FOOTINGS)\nb) 2\" WHERE IN FORMS OF WEATHER OR EARTH (SIDE OF FLOATING SLABS)\n6. BEAR SLAB ON MIN. 6\" OF GRANULAR 'A' FILL (COMPACTED TO 98% SPPD) IN 6\" LIFTS AT A TIME.\n7. SLOPE SLAB TO A DEPTH OF 1/4 SLOPE DRAINS (1 1/2\").",
+      "summary": "The general notes provide essential guidelines for the foundation and concrete work of the farm building. Foundation preparation requires the removal of all topsoil and organic material, with a subgrade suitable for 1500 P.S.F (75 kPA) safe bearing. Insulation is recommended per the Canadian Foundation Engineering Manual, with potential risks of cracking or heat loss if not installed. Concrete specifications include a minimum compressive strength of 32 MPa with 6% air entrainment and a maximum water/cement ratio of 0.45. Reinforcement must be Grade 400 MPa, with specific rebar splice lengths for 15M bars and welded wire mesh. Concrete work must comply with the National Building Code and local by-laws. Concrete cover requirements are detailed for different conditions, and the slab must bear on a minimum of 6\" of compacted granular 'A' fill. The slab should be sloped to a depth of 1/4 slope drains (1 1/2\").",
+      "project_id": "25-01-044",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": "page_002/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – interior floor beam",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S3"
+      ],
+      "element_type": "Interior Floor Beam Detail",
+      "element_callouts": [],
+      "key_components": [
+        "6\" Poured Concrete",
+        "6x6x6/6 W.W.M.",
+        "2\" Rigid Insulation",
+        "6 Mil Poly Vapour Barrier",
+        "Steel Post",
+        "Baseplate"
+      ],
+      "text_verbatim": "6\" POURED CONC.\n6'x6'x6/6 W.W.M. CENTRED IN SLAB\n(2) 15M CONTINUOUS\n6 MIL POLY VAPOUR BARRIER\n2\" RIGID INSULATION MIN. 30 PSI\nUNDISTURBED SOIL\nSTEEL POST SUPPORT TO MEZZANINE\nBASEPLATE C/W ANCHORS TO FLOOR AS PER PLAN\n2/S3\nINTERIOR FLOOR BEAM DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows the interior floor beam within the ground floor plan. The beam is constructed with 6\" poured concrete and reinforced with 6x6x6/6 W.W.M. centered in the slab. It includes (2) 15M continuous rebar for additional support. A 6 mil poly vapour barrier and 2\" rigid insulation with a minimum of 30 PSI are specified. The detail also includes a steel post supporting the mezzanine, with a baseplate complete with anchors to the floor as per the plan. The section is referenced as 2/S3 and is drawn at a scale of 1/2\" = 1'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Ground Floor – Drain in Floating Slab",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S3"
+      ],
+      "element_type": "Drain in Floating Slab Detail",
+      "element_callouts": [],
+      "key_components": [
+        "6\" Poured Concrete",
+        "6x6x6/6 W.W.M.",
+        "6 Mil Poly Vapour Barrier",
+        "2\" Rigid Insulation",
+        "15M Rebar",
+        "Compacted Granular 'A'"
+      ],
+      "text_verbatim": "6\" POURED CONC. PER PLAN\n6x6x6/6 W.W.M. CENTRED IN SLAB\n6 MIL POLY VAPOUR BARRIER\n2\" RIGID INSULATION MIN. 30 PSI\nUNDISTURBED SOIL\n1'-0\"\n2\"\n2\"\n1'-0\"\nTO SUIT\n(1) 15M CONTINUOUS EACH SIDE OF PIT\n15M BENT AROUND PIT @ 16\" o.c.\nMIN. 6\" COMPACTED GRANULAR 'A'\nUNDISTURBED SOIL\n3\nS3\nDRAIN IN FLOATING SLAB\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates a drain in a floating slab on the ground floor. The slab consists of 6 inches of poured concrete with 6x6x6/6 welded wire mesh (W.W.M.) centered within it. A 6 mil poly vapour barrier is placed below the concrete, followed by 2 inches of rigid insulation with a minimum compressive strength of 30 PSI. The slab is supported by undisturbed soil and compacted granular 'A'. Reinforcement includes 15M rebar, continuous on each side of the pit, and bent around the pit at 16 inches on center. The detail is referenced as 3/S3, indicating its location in the drawing set.",
+      "project_id": "25-01-044",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Main Floor Plan",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "1",
+        "S5"
+      ],
+      "section_callouts": [
+        "1/S5",
+        "3/S3"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5",
+        "L6"
+      ],
+      "key_components": [
+        "Farm Storage",
+        "Work Area",
+        "Mezzanine",
+        "Overhead Doors",
+        "Floor Drain"
+      ],
+      "text_verbatim": "20'-0\"\n3'-0\"\n44'-0\"\n100'-0\"\n12'-0\" x 14'-0\" OVERHEAD DOOR\nFLOOR DRAIN SEE DETAIL 3/S3\nFARM STORAGE 16'-6\" CEILING\nWORK AREA 8'-6\" CEILING\nSTUDS SET @ 16\" o.c. FOR ADDITIONAL NAILING FOR SHEARWALLS\nL1\nL2\nL3\nL4\nL5\nL6\n1\nS5\nMAIN FLOOR PLAN\nSCALE: 1\" = 10'-0\"",
+      "summary": "This main floor plan for the ground floor of the farm building shows the layout of storage and work areas, including farm storage with a 16'-6\" ceiling and a work area with an 8'-6\" ceiling. The plan includes overhead doors, such as a 12'-0\" x 14'-0\" door, and a floor drain with a reference to detail 3/S3. Structural elements include studs set at 16 inches on center for shear walls. Element callouts L1 through L6 identify specific components within the plan. The plan is scaled at 1 inch equals 10 feet and includes section callouts 1/S5 and 3/S3 for further detail.",
+      "project_id": "25-01-044",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": "page_003/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – Post to Beam Connections",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "4/S4"
+      ],
+      "element_type": "Post to Beam Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS Steel Column",
+        "Steel Beam",
+        "3/8\" Thick Endplates",
+        "Top Plate",
+        "3/4\" A325 Bolts"
+      ],
+      "text_verbatim": "(2) 3/4\" A325 BOLTS TO CONNECT BEAMS 2 EACH SIDE OF WEB\nTYP.\n1/4\"\nPROVIDE HOLES PER 2/S4\n1/2\" x 6\" x 10\" TOP PLATE C/W 3/4\" A325 BOLTS (4 TOTAL) THROUGH FLANGE, TYP.\n3/8\" THICK ENDPLATES\nSTEEL BEAM PER PLAN\nHSS STEEL COLUMN PER PLAN\nTOP PLATE BOLTED TO STEEL BEAM w/ 1/2\" DIA. BOLTS @ 24\" o.c. (STAGGERED)\n4\nS4\nPOST TO BEAM CONNECTIONS\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows the post to beam connection on the roof level. It features an HSS steel column supporting a steel beam, with 3/8-inch thick endplates. The connection uses a top plate bolted to the steel beam with 1/2-inch diameter bolts spaced at 24 inches on center, staggered. Two 3/4-inch A325 bolts connect the beams on each side of the web. The top plate measures 1/2\" x 6\" x 10\" and is secured with four 3/4-inch A325 bolts through the flange. The detail is referenced as 4/S4, indicating its location in the drawing set.",
+      "project_id": "25-01-044",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Roof – Floor Ledger Detail",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S4"
+      ],
+      "element_type": "Floor Ledger Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Studs",
+        "Ledger",
+        "Joist",
+        "Joist Hanger"
+      ],
+      "text_verbatim": "STUDS ARE CONTINUOUS FOUNDATION TO ROOF\nLEDGER PER PLAN SECURED TO EACH STUD PER PLAN\nJOIST PER PLAN\nJOIST HANGER AS REQUIRED\n3\nS4\nFLOOR LEDGER DETAIL\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail illustrates the floor ledger connection on the roof level. Continuous studs run from the foundation to the roof, with a ledger secured to each stud as per the plan. Joists are attached to the ledger, supported by joist hangers as required. The detail is referenced as 3/S4, indicating its location in the drawing set. The scale is 1/2 inch equals 1 foot.",
+      "project_id": "25-01-044",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – Roof Plan",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [
+        "1",
+        "S5"
+      ],
+      "section_callouts": [
+        "1/S5"
+      ],
+      "element_type": "Roof Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Pre-engineered Farm Trusses",
+        "Lateral Bracing",
+        "Continuous 2x6 Brace"
+      ],
+      "text_verbatim": "OVERHANGS AS SHOWN\nPRE-ENGINEERED FARM TRUSSES @ 4'-8\" O.C. SET DIRECTLY ABOVE STUD, TYP.\nCONTINUOUS 2X6 \"X\" BRACE FASTENED TO TOP OF BOTTOM CHORD\nFASTEN BOTTOM CHORDS OF GABLE TRUSS TO TOP WALL PLATE W/ (3) 10d NAILS @ 19\" O.C. (TYPICAL BOTH ENDS)\nROOF PLAN\nSCALE: 1\" = 10'-0\"\n1\nS4",
+      "summary": "This roof plan outlines the arrangement of pre-engineered farm trusses set at 4'-8\" on center, directly above the studs. The plan includes lateral bracing with continuous 2x6 \"X\" braces fastened to the top of the bottom chord. The bottom chords of the gable truss are fastened to the top wall plate with three 10d nails at 19 inches on center, typical at both ends. The plan is referenced as 1/S4 and is scaled at 1 inch equals 10 feet. The plan ensures proper structural stability and connection between the roof and supporting walls.",
+      "project_id": "25-01-044",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": "page_004/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Lateral 'X' brace detail for truss system",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S5"
+      ],
+      "element_type": "Lateral 'X' Brace Detail",
+      "element_callouts": [],
+      "key_components": [
+        "2x4 Strut",
+        "Diagonal Brace",
+        "Truss Top Chord",
+        "Truss Bottom Chord",
+        "Truss Web Member"
+      ],
+      "text_verbatim": "LATERAL 'X' BRACE DETAIL\nSCALE: 1/8\" = 1'-0\"\nSTRAPPING OR SHEATHING ON ROOF DECK SPACED AS SPECIFIED BY TRUSS ENGINEER (2x4 Lumber)\n2x4 STRUT x 5'-0\" LONG @ TOP & BOTTOM WITH TWO OF 3 1/2\" NAILS @ EACH TRUSS WEB MEMBER\nSPACING AS SPECIFIED BY BRACE DESIGNER 48'-0\" MAXIMUM\nANCHOR 2x4 DIAGONAL 'X' ON OPPOSITE SIDE OF WEB WITHIN TWO OF 3 1/2\" NAILS @ EACH TRUSS\nANCHOR 2x4 DIAGONAL BRACE TO LATERAL WITH FOUR OF 3 1/2\" NAILS @ INTERSECTION OF TRUSS WEB & TRUSS LATERAL\nBUTT 2x4 LATERALS @ ALL SPLICE LOCATIONS. ENSURE BUTT JOINT IS TIGHT & CENTERED ON TRUSS WEB.\nLAP 2x4 DIAGONAL (Min. 2 TRUSSES) TO ENSURE DIAGONAL BRACE EXTENDS COMPLETELY FROM TOP CHORD OF TRUSS TO BOTTOM CHORD OF TRUSS. (AS REQUIRED)\nANCHOR DIAGONAL BRACE TO STRUT @ BOTH ENDS WITH FOUR 3 1/2\" NAILS\n2x4 DIAGONAL BRACING SPACED AS REQUIRED BY THE BRACING DESIGNER.\nTRUSS TOP CHORD\nTRUSS BOTTOM CHORD\nTRUSS WEB MEMBER",
+      "summary": "This detail illustrates the lateral 'X' brace system for trusses, providing structural stability. The drawing specifies the use of 2x4 struts, each 5'-0\" long, secured with 3 1/2\" nails at each truss web member. The spacing is determined by the brace designer, with a maximum of 48'-0\". Diagonal braces are anchored to the lateral with four 3 1/2\" nails at the intersection of the truss web and lateral. The diagram emphasizes the importance of tight butt joints centered on the truss web. The diagonal braces must extend from the top chord to the bottom chord of the truss, ensuring comprehensive support. This detail is referenced as 2/S5.",
+      "project_id": "25-01-044",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": "page_005/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Longitudinal section of farm building",
+      "level": "Multiple",
+      "orientation": "Longitudinal section",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S5"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Truss Roof",
+        "Floating Slab",
+        "Foundation",
+        "Sill Assembly",
+        "Truss Uplift Clips"
+      ],
+      "text_verbatim": "BUILDING SECTION\nSCALE: 3/16\" = 1'-0\"\n4/12 PITCH TRUSS ROOF:\n-METAL ROOF CLADDING\n-2x4 STRAPPING @ 24\" o.c.\n-PRE-ENGINEERED TRUSSES @ 48\" o.c.\n(TRUSS DIRECTLY TO STUD)\n-TRUSS BRACING AS REQUIRED\nRIDGE VENTING\nPROVIDE 'X' BRACING OF TRUSS LATERALS AS PER MFG SHOP DRAWINGS (SEE DETAIL 2/S5)\nTRUSS UPLIFT CLIPS AS PER TRUSS MFG DRAWINGS (TYP. BOTH SIDES)\nVENT\nEXTERIOR WALL AS PER PLAN\nNOTE:\nTOP & BOTTOM PLATE SECURED TO EXTERIOR WALL AS PER PLAN\nT.O. WALL\n16'-4 1/2\"\n1'-4\"\n6'-0\"\nT.O. FDN\nFLOATING SLAB AS PER PLAN\nFLOOR DRAIN PER PLAN SEE DETAIL 3/S3\nTYPICAL SILL ASSEMBLY:\n1/2\" DIA. ANCHOR BOLT @ 48\" o.c.\nSILL PLATE PER PLAN (not AQC)\n1/4\" SILL GASKET\nCOMPACTED GRANULAR 'A' FILL AS PER PLAN\nGRADE",
+      "summary": "This section view provides a longitudinal cut through the farm building, highlighting the structural relationship between the roof, walls, and foundation. The roof features a 4/12 pitch with metal cladding, 2x4 strapping at 24\" o.c., and pre-engineered trusses at 48\" o.c. Truss uplift clips are installed as per manufacturer drawings. The section specifies a floating slab foundation with a typical sill assembly using 1/2\" diameter anchor bolts at 48\" o.c. The drawing references detail 2/S5 for 'X' bracing of truss laterals. The section is identified as 1/S5.",
+      "project_id": "25-01-044",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": "page_005/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Bracing Notes",
+      "element_callouts": [],
+      "key_components": [],
+      "text_verbatim": "NOTES FOR BRACING OF ROOF TRUSS(ES):\n1 -- >> CONTRACTOR AND OR OWNER TO NOTIFY MANUFACTURER OF ANY TRUSS DEFICIENCIES SUCH AS DAMAGED OR BROKEN TRUSSES, WARPING OF TRUSS MEMBERS, AND MISSING OR OFFSET TRUSS PLATES.\n2 -- >> DIAGONAL BRACING MUST BE PROVIDED ON ALL WEB MEMBERS THAT REQUIRE LATERAL BRACING. DIAGONAL BRACING SHALL BE SPACED AS NOTED ON THE ATTACHED DRAWING(S). & X-BRACING SHALL BE PROVIDED @ ENDWALLS @ INTERVALS NOTED ON THE ROOF PLAN.\n3 -- >> PERMANENT LATERAL BRACING TO BE INSTALLED ON WEB MEMBERS AS INDICATED ON THE ROOF PLAN AND MANUFACTURERS DRAWINGS.\n4 -- >> PROVIDE DIAGONAL BRACING @ ALL DISCONTINUITIES IN LATERAL BRACING SUCH AS WHERE TRUSS TYPE CHANGES\n5 -- >> THE TRUSS SUPPLIER SHALL DESIGN THE TRUSSES FOR THE BRACING NOTED. BRACING DETAILS WILL NOT BE MODIFIED UNLESS SPECIFIED BY THE BUILDING DESIGNER.",
+      "summary": "These notes provide guidelines for the bracing of roof trusses. Contractors or owners must notify manufacturers of any truss deficiencies, including damage or warping. Diagonal bracing is required on all web members needing lateral support, with spacing as specified in the drawings. X-bracing is to be installed at endwalls at intervals noted on the roof plan. Permanent lateral bracing must be installed as indicated in the roof plan and manufacturer drawings. Diagonal bracing should be provided at all discontinuities in lateral bracing. The truss supplier is responsible for designing the trusses for the specified bracing.",
+      "project_id": "25-01-044",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": "page_005/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Right elevation of farm building",
+      "level": "Multiple",
+      "orientation": "Right elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S6"
+      ],
+      "element_type": "Right Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Wall Cladding",
+        "Concrete Slab",
+        "Windows",
+        "Shearwall"
+      ],
+      "text_verbatim": "RIGHT ELEVATION\nSCALE: 1\" = 10'-0\"\n7/16\" OSB ON ONE SIDE FASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE BLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(3) PLY STUD POST EACH END OF SHEARWALL SEE DETAIL 3/S6\nMETAL WALL CLADDING\nCONCRETE\n9'-0\"\n9'-0\"\nTop of Plate\n7'-0 1/2\"\nMEZZANINE FLOOR\n8'-6\"\n16'-4 1/2\"\nTop of Slab\n9'-4\"",
+      "summary": "This right elevation view of the farm building shows the exterior finishes and structural elements. The building features metal wall cladding and a concrete slab foundation. The elevation includes dimensions for the mezzanine floor and top of the slab. The wall construction involves 7/16\" OSB sheathing fastened with 2 3/8\" nails at 4\" o.c., with blocking at 24\" o.c. and panel edges. A 3-ply stud post is used at each end of the shearwall, as detailed in 3/S6. The elevation is identified as 2/S6.",
+      "project_id": "25-01-044",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": "page_006/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Shearwall detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S6"
+      ],
+      "element_type": "Shearwall Details",
+      "element_callouts": [],
+      "key_components": [
+        "3 Ply Stud Post",
+        "Sheathing",
+        "Concrete Foundation Wall",
+        "Anchor Bolt",
+        "Angle Fastener"
+      ],
+      "text_verbatim": "SHEARWALL DETAILS\nSCALE: 3/4\" = 1'-0\"\nSECTION VIEW\n3 PLY STUD POST\nSHEATHING SECURED PER PLAN\nANGLE FASTENED TO STUDS w/ (6) 5/16\" x 3\" WOOD LAGS\n8\" CONC. FND. WALL\nREINFORCE PER PLAN\nSIDE VIEW\n7/16\" OSB ON ONE SIDE FASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE BLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(TOP OF WALL SECURED TO TRUSS AS PER ROOF PLAN)\n3 - PLY STUD POST EACH END OF WALL SECTION\n5\" x 3\" x 1/4\" ANGLE C/W 5/8\" ANCHOR BOLT OR EQUIV. EPOXY ANCHOR (8\" EMBED. INTO CONC.) AT EACH END OF SHEARWALL\n1/2\" DIA. A.B. @ 48\" o.c. (TYP.)\nCONC. FND. WALL AS PER PLAN",
+      "summary": "This detail provides a comprehensive view of the shearwall construction. It includes a section and side view, highlighting the use of a 3-ply stud post and 7/16\" OSB sheathing fastened with 2 3/8\" nails at 4\" o.c. The sheathing is secured per plan, with blocking at 24\" o.c. The detail specifies an 8\" concrete foundation wall, reinforced per plan, and an angle fastened to studs with 5/16\" x 3\" wood lags. Anchor bolts are placed at 48\" o.c., with a 5\" x 3\" x 1/4\" angle and 5/8\" anchor bolt or equivalent epoxy anchor embedded 8\" into concrete at each end of the shearwall. The detail is referenced as 3/S6.",
+      "project_id": "25-01-044",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": "page_006/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Front elevation of the building",
+      "level": "Unknown",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S6"
+      ],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roof Cladding",
+        "Metal Wall Cladding",
+        "Overhead Doors",
+        "Concrete"
+      ],
+      "text_verbatim": "METAL ROOF CLADDING\nMETAL WALL CLADDING\n14'-0\" X 14'-0\" OVERHEAD DOOR\n12'-0\" X 14'-0\" OVERHEAD DOOR\nCONCRETE\n6'-0\"\n5'-7\"\n10'-0 1/2\"\n5'-0 1/2\"\n7'-0 1/2\"\n16'-4 1/2\"\n9'-4\"\n8'-6\"\n6\"\n20'-10 3/4\" (6.37 METERS MEAN HEIGHT)\n25'-11\"\nTop of Plate\nMEZZ. FLR\nTop of Slab\n1\nS6\nFRONT ELEVATION\nSCALE: 1\" = 10'-0\"",
+      "summary": "This front elevation shows the exterior view of the building, featuring metal roof and wall cladding. Two overhead doors are present, measuring 14'-0\" x 14'-0\" and 12'-0\" x 14'-0\". The elevation includes dimensions such as 6'-0\", 5'-7\", and 10'-0 1/2\" for various structural elements. The top of the plate is at 25'-11\", and the mezzanine floor is at 16'-4 1/2\". The section callout '1/S6' indicates a connection to another drawing sheet. The scale is 1\" = 10'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": "page_006/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Shearwall detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S6"
+      ],
+      "element_type": "Shearwall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "OSB",
+        "Stud Post",
+        "Angle",
+        "Anchor Bolt",
+        "Concrete Foundation Wall"
+      ],
+      "text_verbatim": "7/16\" OSB ON ONE SIDE FASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c. PANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE BLOCKING @ 24\" o.c. AND ALL PANEL EDGES. (TOP OF WALL SECURED TO TRUSS AS PER ROOF PLAN)\n3 - PLY STUD POST EACH END OF WALL SECTION\n5\" x 3\" x 1/4\" ANGLE C/W 5/8\" ANCHOR BOLT OR EQUIV. EPOXY ANCHOR (8\" EMBED. INTO CONC.) AT EACH END OF SHEARWALL\n1/2\" DIA. A.B. @ 48\" o.c. (TYP.)\nCONC. FND. WALL AS PER PLAN\n3\nS6\nSHEARWALL DETAILS\nSCALE: 3/4\" = 1'-0\"",
+      "summary": "This detail illustrates the shearwall construction, featuring 7/16\" OSB fastened with 2 3/8\" nail-gun nails at 4\" on center along panel edges and 8\" on center in the field. Blocking is provided at 24\" on center. The wall is secured to the truss as per the roof plan. A 3-ply stud post is located at each end of the wall section. A 5\" x 3\" x 1/4\" angle with a 5/8\" anchor bolt or equivalent epoxy anchor is embedded 8\" into concrete at each end of the shearwall. The detail includes a 1/2\" diameter anchor bolt at 48\" on center, typical. The concrete foundation wall is constructed as per the plan. The section callout '3/S6' connects this detail to another drawing sheet. The scale is 3/4\" = 1'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": "page_006/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Steel beam over door",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S7"
+      ],
+      "element_type": "Steel Beam Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Beam",
+        "Pre-Engineered Truss",
+        "Plywood Sheathing",
+        "Anchor Bolt",
+        "Lag Screws"
+      ],
+      "text_verbatim": "(2) PLATES SECURED TO BEAM w/1/2\" BOLTS @ 24\" c/c (STAGGER SIDES OF FLANGE) MATCH WALL TOP PLATE or BEAM WIDTH or TRUSS MFG REQ'MENTS\nPRE ENGINEERED TRUSS\nTRUSS CLIPS PER PLAN\nDBLE TOP PLATE SECURED TO STUDS W/ 1/2\" PLYWOOD SHEATHING\n3/8\" ENDPLATE C/W 4- 1/2\" DIA A325 BOLTS THRU STUDS\nSTUDS PER PLAN\n1/2\" PLYWOOD SHEATHING\nFRAME DOWN TO SUIT\nBEARING STUDS PER PLAN\nFULL LENGTH STUDS PER PLAN\nCONC. FLOATING SLAB AS PER PLAN\n1/2\" X 5\" X 5\" ANGLE FASTEN W (1) 1/2\" DIA. ANCHOR BOLT & (2) 1/2\" DIA. LAG SCREWS\n3\nS7\nSTEEL BEAM OVER DOOR\nSCALE: 1/2\" = 1'-0\"",
+      "summary": "This detail shows the construction of a steel beam over a door. Two plates are secured to the beam with 1/2\" bolts at 24\" center-to-center, staggered on the sides of the flange. The beam matches the wall top plate, beam width, or truss manufacturer's requirements. A pre-engineered truss and truss clips are used as per the plan. The double top plate is secured to studs with 1/2\" plywood sheathing. A 3/8\" endplate with four 1/2\" diameter A325 bolts is installed through the studs. The frame is adjusted to suit, with bearing and full-length studs per plan. A concrete floating slab is constructed as per the plan. A 1/2\" x 5\" x 5\" angle is fastened with one 1/2\" diameter anchor bolt and two 1/2\" diameter lag screws. The section callout '3/S7' links this detail to another drawing sheet. The scale is 1/2\" = 1'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": "page_007/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Left elevation of the building",
+      "level": "Unknown",
+      "orientation": "Left elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S7"
+      ],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Wall Cladding",
+        "Overhead Door",
+        "Concrete"
+      ],
+      "text_verbatim": "METAL WALL CLADDING\n14'-0\" X 14'-0\" OVERHEAD DOOR\nCONCRETE\n5'-0\"\n5'-0\"\n9'-10\"\n16'-4 1/2\"\nTop of Plate\nTop of Slab\n2\nS7\nLEFT ELEVATION\nSCALE: 1\" = 10'-0\"",
+      "summary": "This left elevation shows the exterior view of the building, featuring metal wall cladding and a 14'-0\" x 14'-0\" overhead door. Dimensions include 5'-0\" and 9'-10\" for various structural elements. The top of the plate is at 16'-4 1/2\". The section callout '2/S7' indicates a connection to another drawing sheet. The scale is 1\" = 10'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 7,
+      "region_number": 2,
+      "relative_path": "page_007/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Rear elevation of the building",
+      "level": "Unknown",
+      "orientation": "Rear elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S7"
+      ],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roof Cladding",
+        "Metal Wall Cladding",
+        "Overhead Door",
+        "Concrete"
+      ],
+      "text_verbatim": "METAL ROOF CLADDING\nMETAL WALL CLADDING\n12'-0\" X 14'-0\" OVERHEAD DOOR\nCONCRETE\nTop of Plate\nMEZZANINE FLOOR\nTop of Slab\n1\nS7\nREAR ELEVATION\nSCALE: 1\" = 10'-0\"",
+      "summary": "This rear elevation shows the exterior view of the building, featuring metal roof and wall cladding. A 12'-0\" x 14'-0\" overhead door is present. The top of the plate and mezzanine floor are indicated, with the section callout '1/S7' connecting this elevation to another drawing sheet. The scale is 1\" = 10'-0\".",
+      "project_id": "25-01-044",
+      "page_number": 7,
+      "region_number": 3,
+      "relative_path": "page_007/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S6"
+      ],
+      "element_type": "Shearwall Note",
+      "element_callouts": [],
+      "key_components": [
+        "OSB",
+        "Nail-Gun Nails",
+        "Stud Post"
+      ],
+      "text_verbatim": "SHEARWALL\n7/16\" OSB ON ONE SIDE FASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c. PANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE BLOCKING @ 24\" o.c. AND ALL PANEL EDGES. (3) PLY STUD POST EACH END OF SHEARWALL SEE DETAIL 3/S6",
+      "summary": "This note specifies the construction details for a shearwall. The shearwall is constructed with 7/16\" OSB on one side, fastened using 2 3/8\" nail-gun nails. The nails are spaced at 4 inches on center (o.c.) along the panel edges and 8 inches o.c. in the field. Blocking is required at 24 inches o.c. and along all panel edges. Each end of the shearwall includes a three-ply stud post. The note references detail 3/S6 for further information. These specifications ensure the shearwall's structural integrity and compliance with design standards.",
+      "project_id": "25-01-044",
+      "page_number": 7,
+      "region_number": 4,
+      "relative_path": "page_007/region_04_red_box.png"
+    }
+  ]
+}

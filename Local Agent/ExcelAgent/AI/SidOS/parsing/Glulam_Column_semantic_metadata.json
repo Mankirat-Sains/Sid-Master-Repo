@@ -1,0 +1,77 @@
+{
+  "inputs": {
+    "project_administration": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "project_name": "E8"
+      },
+      "description": "General project tracking and administrative context."
+    },
+    "column_geometry": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "dfl": "F28"
+      },
+      "description": "Section dimensions and stability/buckling parameters."
+    },
+    "input_parameters": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "strong-axis": "F39",
+        "compression": "F40",
+        "yes": "F41"
+      },
+      "description": "User-editable input parameters."
+    }
+  },
+  "outputs": {
+    "utilization_ratios": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "compression_utilization": "M18",
+        "tension_utilization": "M20",
+        "axialbending_utilization": "M22"
+      },
+      "description": "Efficiency ratios (Demand/Capacity). Values > 1.0 indicate failure."
+    },
+    "member_resistances": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "stress_grades_not_recommended": "H27"
+      },
+      "description": "The ultimate capacity of the member as calculated by the engine."
+    },
+    "calculated_results": {
+      "type": "group",
+      "sheet": "Axial",
+      "cells": {
+        "dfl_24f-e_20f-e": "H28",
+        "ked": "E34",
+        "keb": "E35",
+        "ftn": "F85",
+        "ftg": "F84",
+        "fcb": "F87",
+        "e05": "F69",
+        "ksc": "F73",
+        "kzcg": "F74",
+        "kse": "F76",
+        "kst": "F77",
+        "ksb": "F79",
+        "kzbg": "F81",
+        "led": "F92",
+        "leb": "F93",
+        "ccs": "F94",
+        "ccw": "F95",
+        "mr_1": "F118",
+        "mr_2": "F119"
+      },
+      "description": "Calculated output results."
+    }
+  },
+  "lookups": {}
+}

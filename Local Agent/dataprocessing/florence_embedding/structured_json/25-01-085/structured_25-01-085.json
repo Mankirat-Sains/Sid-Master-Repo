@@ -1,0 +1,429 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Site – overall property layout",
+      "level": "Site",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Site Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Property Line",
+        "Existing Bush",
+        "Existing Field",
+        "Existing Barn",
+        "Proposed Storage Shed",
+        "Existing Dwelling",
+        "Existing Riding Arena"
+      ],
+      "text_verbatim": "PROPERTY LINE\nEXISTING BUSH\nEXISTING FIELD\nEXISTING BUSH\nEXISTING FIELD\nEXISTING FIELD\nEXISTING BUSH\nEXISTING FIELD\nEXISTING FIELD\nEXISTING BUSH\nEXISTING FIELD\nEXISTING BARN (TO REMAIN)\nEXISTING BARN (TO REMAIN)\n165'-0\"\nPROPOSED 50'-0\" x 90'-0\" STORAGE SHED\n721'-6 7/8\"\nEXISTING DWELLING (TO REMAIN)\n130'-0\"\n300'-0\"\nEXISTING RIDING ARENA (TO REMAIN)\nPROPERTY LINE\nPERTH OXFORD ROAD\nSITE PLAN\n1\" = 400'-0\"",
+      "summary": "This site plan shows the overall layout of the property, including existing and proposed structures. The property is bordered by a 'PROPERTY LINE' and includes areas labeled as 'EXISTING BUSH' and 'EXISTING FIELD'. Key structures include an 'EXISTING BARN (TO REMAIN)', a 'PROPOSED 50'-0\" x 90'-0\" STORAGE SHED', an 'EXISTING DWELLING (TO REMAIN)', and an 'EXISTING RIDING ARENA (TO REMAIN)'. Dimensions such as '165'-0\"', '721'-6 7/8\"', '130'-0\"', and '300'-0\"' indicate distances between structures and property boundaries. The plan is drawn at a scale of '1\" = 400'-0\"'.",
+      "project_id": "25-01-085",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": "Site – roof truss bracing details",
+      "level": "Site",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Truss Bracing Notes",
+      "element_callouts": [],
+      "key_components": [
+        "Pre-engineered Trusses",
+        "Wood Stud Wall",
+        "Uplift Clips",
+        "Toe Nail Trusses",
+        "2x4 Strut",
+        "2x4 Diagonal Brace"
+      ],
+      "text_verbatim": "PRE-ENGINEERED TRUSSES @ SPACING PER PLAN (DESIGNED BY OTHERS) SUBMIT P.ENG. STAMPED SHOP DRAWINGS FOR REVIEW. (TYP. U.N.O.)\nALIGN TRUSSES w/ STUD BELOW (TYP. U.N.O.)\nWOOD STUD WALL. SEE PLAN.\nUPLIFT CLIPS TO BE PROVIDED PER TRUSS MANUFACTURER / ENGINEER DESIGN.\nTOE NAIL TRUSSES TO TOP PLATE w/ (4) 3\" NAILS PER TRUSS IN ADDITION TO UPLIFT CLIPS (TYP. U.N.O.)\n2x4 STRUT x 5'-0\" LONG @ TOP & BOTTOM WITH (2) 3-1/2\" NAILS @ EACH TRUSS WEB MEMBER\n2x4 DIAGONAL \"X\" BRACE ON OPPOSITE SIDE OF TRUSS AT ENDWALLS & WHERE SPECIFIED ELSEWHERE\nANCHOR 2x4 DIAGONAL \"X\" ON OPPOSITE SIDE OF WEB WITH (4) 3-1/2\" NAILS @ EACH TRUSS\nROOF TRUSS BRACING NOTES\n1. CONTRACTOR AND/OR OWNER TO NOTIFY MANUFACTURER OF ANY TRUSS DEFICIENCIES SUCH AS DAMAGED OR BROKEN TRUSSES, WARPING OF TRUSS MEMBERS, AND MISSING OR OFFSET TRUSS PLATES.\n2. DIAGONAL BRACING MUST BE PROVIDED ON ALL WEB MEMBERS THAT REQUIRE LATERAL BRACING. DIAGONAL BRACING SHALL BE SPACED AS NOTED ON THE ATTACHED DRAWING(S). X-BRACING SHALL BE PROVIDED AT ENDWALL AND AT INTERVALS NOTED ON THE ROOF PLAN.\n3. PERMANENT LATERAL BRACING TO BE INSTALLED ON WEB MEMBERS AS INDICATED ON THE ROOF PLAN AND MANUFACTURER'S DRAWINGS.\n4. PROVIDE DIAGONAL BRACING AT ALL DISCONTINUITIES IN LATERAL BRACING SUCH AS WHERE TRUSS TYPE CHANGES THE TRUSS SUPPLIER SHALL DESIGN THE TRUSSES FOR THE BRACING NOTED. BRACING DETAILS WILL NOT BE MODIFIED UNLESS SPECIFIED BY THE BUILDING DESIGNER.\n5. TRUSS SUPPLIER WILL DESIGN TRUSSES FOR BRACING NOTED. BRACING DETAILS WILL NOT BE MODIFIED UNLESS SPECIFIED BY THE BUILDING DESIGNER.",
+      "summary": "This image contains notes and details related to roof truss bracing for the Vleuten 50' x 90' Shed project. Key components include 'PRE-ENGINEERED TRUSSES', 'WOOD STUD WALL', 'UPLIFT CLIPS', and '2x4 DIAGONAL \"X\" BRACE'. The notes specify that trusses should be aligned with studs below and uplift clips provided per manufacturer/engineer design. Trusses are to be toe-nailed to the top plate with specified nails. The 'ROOF TRUSS BRACING NOTES' outline requirements for notifying manufacturers of truss deficiencies, providing diagonal bracing on web members, and ensuring permanent lateral bracing as indicated on plans. The contractor and truss supplier have specific responsibilities for designing and implementing bracing details.",
+      "project_id": "25-01-085",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – wall bracing connection",
+      "level": "Foundation",
+      "orientation": "Section view showing bracing connections",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1.0"
+      ],
+      "element_type": "Bracing Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "2x6 Diagonal Brace",
+        "3-Ply Solid Blocking",
+        "Common Spiral Nails",
+        "Wedge Anchor"
+      ],
+      "text_verbatim": "NOTES:\n1. 2x6 BRACE IS TO BE CONTINUOUS AND END @ STUD CONNECTION TO PLATE.\n2. DO NOT NOTCH BRACES INTO STUDS.\n3. INSTALL BRACES AT APPROXIMATELY 45 deg. ANGLES.\n4. MINIMUM NAIL SPACING OF 1-1/4\".\n(3)-PLY SOLID BLOCKING BETWEEN STUDS FASTEN w/ (6) 3-1/2\" NAILS THROUGH FACE & (3) NAILS THROUGH STUD INTO EACH END OF EACH BLOCK.\n(2) 3-1/2\" COMMON SPIRAL NAILS INTO EACH STUD. (TYP.)\n(12) 3-1/2\" COMMON SPIRAL NAILS EACH BRACE. (TOP & BOTTOM OF WALL).\n(2) 1/2\"dia. x6\" lg. WEDGE ANCHOR @ EACH BRACE LOCATION. (TYP.)\nSECTION\n2\nS1.0\n(2)-2x6 BRACING CONNECTION\n1/2\" = 1'-0\"",
+      "summary": "This section view illustrates the bracing connection details for the foundation wall of the Vleuten 50' x 90' Shed. The detail includes '2x6 DIAGONAL BRACE', '3-PLY SOLID BLOCKING', and 'COMMON SPIRAL NAILS'. The notes specify that the '2x6 BRACE IS TO BE CONTINUOUS AND END @ STUD CONNECTION TO PLATE', with braces installed at approximately 45-degree angles. The bracing is secured with '3-1/2\" COMMON SPIRAL NAILS' and '1/2\"dia. x6\" lg. WEDGE ANCHOR' at each brace location. The section callout '2/S1.0' indicates the reference to this detail on sheet S1.0. The drawing scale is '1/2\" = 1'-0\"'.",
+      "project_id": "25-01-085",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Foundation – wall detail",
+      "level": "Foundation",
+      "orientation": "Section view showing foundation wall",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S1.0"
+      ],
+      "element_type": "Foundation Wall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "P.T. Sill Plate",
+        "Concrete Foundation Wall",
+        "15M Verticals",
+        "15M Horizontals",
+        "Slab",
+        "Continuous Strip Footing"
+      ],
+      "text_verbatim": "EXTERIOR WALL, PER PLAN. (TYP.)\nP.T. SILL PLATE c/w SILL GASKET c/w 1/2\"dia. ANCHOR BOLTS @ 48\" o.c. (LEAVE OPENINGS IN SILL PLATE AT DOOR LOCATIONS) (TYP.)\n8\" CONCRETE FOUNDATION WALL (TYP. U.N.O.) c/w\n• 15M VERTICALS @ 48\" o.c.\n• (2) 15M HORIZ. @ TOP OF WALL\n• (1) 15M HORIZ. @ GRADE\nSLAB, PER PLAN (TYP.)\n15M DOWELS x24\" lg. w/ 6\" EMBED. (@ SPACING TO SUIT VERT'S)\n24\" x8\" CONT. CONCRETE STRIP FOOTING c/w (2) 15M CONT. BARS (TYP. U.N.O.)\nFOUNDATIONS ARE TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER. (TYP.)\nGRADE (SLOPE AWAY FROM BLDG)\nBACKFILL w/ PARENT MATERIAL\nSECTION\n1\nS1.0\nCW8 - FOUNDATION WALL DETAIL\n1/2\" = 1'-0\"",
+      "summary": "This section view details the foundation wall construction for the Vleuten 50' x 90' Shed. Key components include a 'P.T. SILL PLATE', '8\" CONCRETE FOUNDATION WALL', '15M VERTICALS', '15M HORIZONTALS', and a '24\" x8\" CONT. CONCRETE STRIP FOOTING'. The foundation wall is reinforced with '15M VERTICALS @ 48\" o.c.' and horizontal bars at the top and grade. The 'P.T. SILL PLATE' is anchored with '1/2\"dia. ANCHOR BOLTS @ 48\" o.c.'. The foundation is designed to bear on undisturbed native soil or compacted fill as approved by a geotechnical engineer. The section callout '1/S1.0' references this detail on sheet S1.0, with a drawing scale of '1/2\" = 1'-0\"'.",
+      "project_id": "25-01-085",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": "page_002/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Assembly Schedule",
+      "element_callouts": [
+        "F1",
+        "F2",
+        "WE1",
+        "WE2",
+        "R1",
+        "R2",
+        "P1"
+      ],
+      "key_components": [
+        "Shearwall",
+        "Slab on Grade",
+        "Exterior Wall",
+        "Roof Construction",
+        "Interior Partition"
+      ],
+      "text_verbatim": "SHEARWALL (AS INDICATED):\n• 1/2\" PLYWOOD ON ONE SIDE FASTENED w/ 2-3/8\" NAIL-GUN NAILS @ 4\" o.c. PANEL EDGES & 12\" o.c. IN FIELD. PROVIDE BLOCKING AT 24\" o.c. AND ALL PANEL EDGES. PROVIDE (3)-PLY STUD POST EACH END OF SHEARWALL. (TYP. U.N.O.) SEE TYPICAL DETAIL.\nASSEMBLY SCHEDULE\nF1 SLAB ON GRADE CONSTRUCTION:\n• FLOOR FINISH (PER OWNER)\n• 6\" CONCRETE FLOOR SLAB\n• 6\" COMPACTED GRANULAR 'A' FILL\nF2 SLAB ON GRADE CONSTRUCTION:\n• FLOOR FINISH (BY OWNER)\n• 6\" CONCRETE FLOOR SLAB\n• 6 mil POLY VAPOUR BARRIER\n• 2\" EXTRUDED POLYSTYRENE INSULATION (R10 MIN.)\n• 6\" COMPACTED GRANULAR 'A' FILL\nWE1 EXTERIOR WALL CONSTRUCTION:\n• 29 Ga. PREFIN. METAL CLADDING\n• TYPAR AIR BARRIER, JOINTS TAPED\n• 2x4 STRAPPING @ 24\" o.c.\n• 2x6 WOOD STUDS @ 24\" o.c.\nWE2 EXTERIOR WALL CONSTRUCTION:\n• 29 Ga. PREFIN. METAL CLADDING\n• TYPAR AIR BARRIER, JOINTS TAPED\n• 2x4 STRAPPING @ 24\" o.c.\n• 2x6 WOOD STUDS @ 24\" o.c.\n• w/ ROCKWOOL BATT INSULATION (R22 MIN.)\n• 6mil POLY VAPOUR BARRIER\n• 1/2\" PLYWOOD SHEATHING\nR1 ROOF CONSTRUCTION:\n• 29 Ga. STEEL ROOFING\n• 2x4 STRAPPING @ 24\" o.c.\n• ROOF FRAMING AS PER PLANS\nR2 ROOF CONSTRUCTION:\n• 29 Ga. STEEL ROOFING\n• 2x4 STRAPPING @ 24\" o.c.\n• ROOF FRAMING AS PER PLANS w/ BLOWN-IN-PLACE INSULATION (R40, COORD. w/ OWNER)\n• 6 mil POLY VAPOUR BARRIER (IF INSUL.)\n• 1x4 WOOD STRAPPING @ 24\" o.c.\n• INT'R LINER (PER OWNER)\nP1 INTERIOR PARTITION:\n• 1/2\" PLYWOOD\n• 2x6 STUDS @ 16\" o.c.\n• w/ ROCKWOOL BATT INSULATION (R22 MIN.)\n• 1/2\" PLYWOOD\nNOTE:\nPROVIDE SOLID BLOCKING @ 48\" o.c. IN ALL WALLS TALLER THAN 9'-6\".",
+      "summary": "This image presents an assembly schedule detailing various construction components for the Vleuten 50' x 90' Shed. The schedule includes specifications for shearwalls, slab on grade construction, exterior wall construction, roof construction, and interior partitions. Shearwalls are specified with 1/2\" plywood fastened with nails and require blocking and stud posts. Slab on grade construction is detailed for two types (F1 and F2), with concrete floor slabs and granular fill, and F2 includes additional insulation and vapor barriers. Exterior walls (WE1 and WE2) feature metal cladding, air barriers, and wood studs, with WE2 including insulation and sheathing. Roof construction (R1 and R2) involves steel roofing, strapping, and framing, with R2 having additional insulation and vapor barriers. Interior partitions (P1) are constructed with plywood and insulated wood studs. The note specifies solid blocking for taller walls.",
+      "project_id": "25-01-085",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": "page_002/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Vleuten Shed",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S2.0"
+      ],
+      "element_type": "Ground Floor Plan",
+      "element_callouts": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "WE1",
+        "WE2",
+        "P1"
+      ],
+      "key_components": [
+        "Lintels",
+        "Walls",
+        "Doors"
+      ],
+      "text_verbatim": "GROUND FLOOR PLAN\n1/8\" = 1'-0\"\n5'-0\" 5'-0\" 16'-0\" 6'-0\" 10'-0\" 12'-0\" 4'-0\" 16'-0\" 5'-0\" 6'-0\" 5'-0\"\n48\" x 36\"H\n16'-0\" x 14'-0\" H\n12'-0\" x 14'-0\" H\n48\" x 36\"H\n36\" x 80\"H\nH. 6'x 2'x 2'-4\"\nL1\nL2\nL3\nL4\nWE1\nWE2\nP1",
+      "summary": "This ground floor plan for the Vleuten 50' x 90' Shed shows the layout of walls, doors, and lintels. The plan includes dimensions for various sections, such as 5'-0\", 16'-0\", and 12'-0\", indicating the spacing and size of structural elements. Lintel marks L1, L2, L3, and L4 are shown, along with wall types WE1 and WE2, and partition P1. Door dimensions are specified as 48\" x 36\"H and 36\" x 80\"H. The plan is drawn at a scale of 1/8\" = 1'-0\". A section callout 2/S2.0 indicates a related section view on another sheet.",
+      "project_id": "25-01-085",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": "page_002/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation – Vleuten Shed",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S1.0"
+      ],
+      "element_type": "Foundation Plan",
+      "element_callouts": [
+        "F1",
+        "F2",
+        "CWB"
+      ],
+      "key_components": [
+        "Concrete Walls",
+        "Footings",
+        "Rebar"
+      ],
+      "text_verbatim": "FOUNDATION PLAN\n1/8\" = 1'-0\"\n9'-10 1/2\" 16'-3\" 4'-3\" 3'-3\" 8'-3\" 12'-3\" 3'-9\" 16'-3\"\n39'-0\" 49'-0\"\n(4) 15M VERTICALS BETWEEN OPGS. (TYP.)\nDROP WALL AT DOOR LOCATIONS TO 6\" BELOW FINISHED FLOOR. POUR FLOOR OVER. (TYP OF ALL OPENINGS)\nF1\nF2\nCWB\n1/S1.0",
+      "summary": "This foundation plan for the Vleuten 50' x 90' Shed illustrates the layout of concrete walls and footings. Dimensions such as 9'-10 1/2\", 16'-3\", and 39'-0\" provide detailed measurements for the foundation layout. Rebar is specified as (4) 15M verticals between openings, typical for all sections. The plan includes element callouts F1 and F2 for slab types, and CWB for concrete wall blocks. A note indicates drop walls at door locations to 6\" below the finished floor. A section callout 1/S1.0 refers to a related section view.",
+      "project_id": "25-01-085",
+      "page_number": 2,
+      "region_number": 5,
+      "relative_path": "page_002/region_05_red_box.png"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Lintel Schedule",
+      "element_callouts": [
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "key_components": [
+        "Lintels"
+      ],
+      "text_verbatim": "LINTEL SCHEDULE\nMARK SIZE BEARING\nL1 (2)-2x6 (1) JACK + (1) KING\nL2 (2)-2x10 (1) JACK + (1) KING\nL3 (2)-1.75\" x 14\" LVL 2.0E 3100fb (2) JACK + (2) KING\nL4 (3) 1.75\" x 14\" 2.0E 3100fb OR W10x22 (3) JACK + (2) KING",
+      "summary": "This lintel schedule provides specifications for lintels used in the Vleuten 50' x 90' Shed. It lists four lintel types: L1, L2, L3, and L4. L1 consists of (2)-2x6 with (1) jack and (1) king stud. L2 uses (2)-2x10 with the same bearing configuration. L3 is made of (2)-1.75\" x 14\" LVL 2.0E 3100fb with (2) jack and (2) king studs. L4 offers two options: (3) 1.75\" x 14\" 2.0E 3100fb or W10x22, with (3) jack and (2) king studs. These specifications ensure proper support and load distribution across openings.",
+      "project_id": "25-01-085",
+      "page_number": 2,
+      "region_number": 6,
+      "relative_path": "page_002/region_06_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Building Section – Vleuten Shed",
+      "level": "Roof",
+      "orientation": "Transverse section looking East",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S2.0"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "WE2",
+        "F2"
+      ],
+      "key_components": [
+        "Trusses",
+        "Concrete Foundations",
+        "Wall Assemblies"
+      ],
+      "text_verbatim": "SECTION\n2\nS2.0\nBUILDING SECTION - INSULATED\n1/8\" = 1'-0\"\nCONTINUOUS 2x6 X-BRACING FASTENED TO TOP SIDE OF BOTTOM CHORD. INSTALL X-BRACING ON ALL TRUSSES, LATERAL BRACING AS PER TRUSS MANUF. ENGINEER (TO BE SHOWN ON PRE-ENG. TRUSS SHOP DRAWINGS)\nCONTINUOUS RIDGE VENTING PER OBC. INSTALL AS PER MANUF. SPECIFICATIONS. (TYP.)\nTRUSS (NOT AS SHOWN). SUBMIT P.ENG. STAMPED SHOP DRAWINGS FOR REVIEW.\nTRUSS UPLIFT CLIPS AS PER TRUSS MANUF. DRAWINGS. (TYP. EACH END)\nDOUBLE TOP PLATE, CONT.\nP.T. SILL PLATE c/w SILL GASKET c/w 1/2\"dia. ANCHOR BOLTS @ 48\" o.c. (LEAVE OPENINGS IN SILL PLATE AT DOOR LOCATIONS) (TYP.)\nCONCRETE FOUNDATIONS. SEE FOUNDATION PLANS. (TYP.)\nFOUNDATIONS ARE TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER. (TYP.)\nFOAM EAVE VENT BETWEEN EACH TRUSS\nPREFIN. METAL DRIP EDGE & FOAM CLOSURE STRIP\nPREFIN. METAL FASCIA, EAVESTROUGH & VENTED SOFFIT. (PER OWNER).\nT/O FDN. 2'-0\"\nT/O FLOOR 0\"\n16'-4 1/2\"\n14'-4 1/2\"\n8\"\nWE2\nF2",
+      "summary": "This section view of the Vleuten 50' x 90' Shed illustrates the structural relationship between the roof and walls. The section is identified as 2/S2.0 and shows insulated building components. Continuous 2x6 X-bracing is specified for trusses, with lateral bracing as per manufacturer’s specifications. Ridge venting and truss uplift clips are detailed, along with a double top plate. The section includes a P.T. sill plate with anchor bolts at 48\" o.c. Concrete foundations are shown, bearing on undisturbed soil or compacted fill. Wall assemblies include WE2 and F2, with foam eave vents and metal fascia. The section provides a comprehensive view of the construction details, ensuring structural integrity and compliance with design specifications.",
+      "project_id": "25-01-085",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": "page_003/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Section",
+      "location": "Roof – building section",
+      "level": "Roof",
+      "orientation": "Transverse section",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S2.0"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "WE1",
+        "F1",
+        "R1"
+      ],
+      "key_components": [
+        "Concrete Foundations",
+        "Trusses",
+        "P.T. Sill Plate",
+        "Metal Fascia",
+        "Eavestrough",
+        "Vented Soffit"
+      ],
+      "text_verbatim": "CONTINUOUS 2x6 X-BRACING FASTENED TO TOP SIDE OF BOTTOM CHORD. INSTALL X-BRACING ON ALL TRUSSES, LATERAL BRACING AS PER TRUSS MANUF. ENGINEER (TO BE SHOWN ON PRE-ENG. TRUSS SHOP DRAWINGS)\nPREFIN. METAL FASCIA, EAVESTROUGH & VENTED SOFFIT. (PER OWNER).\nU/S TRUSS 16'-4 1/2\"\nT/O FDN. 2'-0\"\nT/O FLOOR 0'\nSECTION 1 S2.0 BUILDING SECTION - NOT INSULATED\n1/8\" = 1'-0\"\nCONTINUOUS RIDGE VENTING PER OBC. INSTALL AS PER MANUF. SPECIFICATIONS. (TYP.)\nTRUSS (NOT AS SHOWN). SUBMIT P.ENG. STAMPED SHOP DRAWINGS FOR REVIEW.\nTRUSS UPLIFT CLIPS AS PER TRUSS MANUF. DRAWINGS. (TYP. EACH END)\nDOUBLE TOP PLATE, CONT.\n2x6 TOP STRAPPING c/w (4) 3-1/2\" lg. COMMON SPIRAL NAILS EACH INTO TOP PLATE & STUD. (TYP. WHERE THERE IS NO SHEATHING)\n2x6 BOTTOM STRAPPING c/w (4) 3-1/2\" lg. COMMON SPIRAL NAILS EACH INTO BOTTOM PLATE & STUD. (TYP. WHERE THERE IS NO SHEATHING)\nP.T. SILL PLATE c/w SILL GASKET c/w 1/2\"dia. ANCHOR BOLTS @ 48\" o.c. (LEAVE OPENINGS IN SILL PLATE AT DOOR LOCATIONS) (TYP.)\nCONCRETE FOUNDATIONS. SEE FOUNDATION PLANS. (TYP.) FOUNDATIONS ARE TO BEAR ON UNDISTURBED NATIVE SOIL OR COMPACTED FILL APPROVED BY GEOTECHNICAL ENGINEER. (TYP.)",
+      "summary": "This section view illustrates a building section of the roof, showing the relationship between the roof trusses and the walls. The section is labeled as '1/S2.0' and is a transverse section through the building. Key components include continuous 2x6 X-bracing fastened to the top side of the bottom chord of the trusses, prefinished metal fascia, eavestrough, and vented soffit. The trusses are not shown in detail, and stamped shop drawings are required for review. The section specifies the use of truss uplift clips and double top plates. The concrete foundations are to bear on undisturbed native soil or compacted fill, as approved by a geotechnical engineer. The section also details the use of P.T. sill plates with sill gaskets and anchor bolts. The section is not insulated, as noted in the drawing.",
+      "project_id": "25-01-085",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": "page_003/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – shearwall detail",
+      "level": "Foundation",
+      "orientation": "Elevation and Section",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S2.0"
+      ],
+      "element_type": "Shearwall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Plywood",
+        "Concrete Foundation Wall",
+        "3-Ply Stud Post",
+        "L5x3x1/4\" Angle",
+        "Wood Lag Screws"
+      ],
+      "text_verbatim": "PLYWOOD PER WALL SCHEDULE. FASTENED w/ 2-3/8\" NAILGUN NAILS @ 4\" o.c. PANEL EDGES AND 12\" o.c. IN FIELD. PROVIDE SOLID BLOCKING @ 24\" o.c. AND AT ALL PANEL EDGES. (TOP OF WALL SECURED TO TRUSS AS PER ROOF PLAN)\n(3)-PLY STUD POST (AT EACH END OF SHEARWALL)\nL5x3x1/4\" ANGLE LLV c/w (1) 5/8\"dia. x8\"lg. + 3\" HOOKED ANCHOR INTO CONCRETE BELOW. (AT EACH END OF SHEARWALL)\nCONCRETE FDN. WALL\nSECTION\nELEVATION\n1\" (TYP.)\n1 1/4\"\n1 1/4\" (TYP.)\nSECURE (3)-PLY POST TO ANGLE w/ (8) 5/16\"dia. x3\" lg. WOOD LAG SCREWS. (TYP.)",
+      "summary": "This detail provides an elevation and section view of a shearwall, labeled as '3/S2.0'. The shearwall is constructed with plywood fastened per the wall schedule using 2-3/8\" nailgun nails at specified intervals. Solid blocking is provided at 24\" on center and at all panel edges. The detail includes a 3-ply stud post at each end of the shearwall, secured with L5x3x1/4\" angle and a 5/8\" diameter hooked anchor into the concrete foundation wall. The 3-ply post is further secured to the angle with wood lag screws. This detail highlights the connection between the shearwall and the foundation, emphasizing the structural integrity required for lateral loads.",
+      "project_id": "25-01-085",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": "page_003/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Roof – truss layout",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Truss Framing Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Pre-Eng. Wood Roof Trusses",
+        "Continuous 2x6 Bracing",
+        "Gable End Truss"
+      ],
+      "text_verbatim": "ROOF TRUSS FRAMING PLAN\n1\" = 10'-0\"\nPRE-ENG. WOOD ROOF TRUSSES (ALIGN DIRECTLY ABOVE STUDS). INSTALL BRACING ON ALL TRUSSES AS PER DESIGN BY ENGINEER. LATERAL BRACING TO BE SHOWN ON TRUSS SHOP DRAWINGS.\nCONTINUOUS 2x6 BRACING FASTENED DIRECTLY TO TOP SIDE OF TRUSS BOTTOM CHORD. (TYP.)\nFASTEN GABLE END TRUSS TO TOP PLATE w/ 3-1/2\" NAILS @ 10\" o.c. OR FASTEN GABLE END TRUSS TO EACH THROUGH STUD w/ (3) 3-1/2\" NAILS. (TYP. BOTH GABLE ENDS)",
+      "summary": "This plan view shows the roof truss framing layout for the Vleuten 50' x 90' Shed. It details the arrangement of pre-engineered wood roof trusses, which are aligned directly above the studs. Continuous 2x6 bracing is fastened directly to the top side of the truss bottom chord. The plan specifies fastening methods for the gable end truss, either to the top plate with nails at 10 inches on center or through each stud with three 3-1/2 inch nails. This framing plan ensures the structural stability of the roof system and provides guidance for the installation of trusses and bracing.",
+      "project_id": "25-01-085",
+      "page_number": 3,
+      "region_number": 4,
+      "relative_path": "page_003/region_04_red_box.png"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "South elevation",
+      "level": "Unknown",
+      "orientation": "South",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Prefinished Metal Fascia",
+        "Eavestrough",
+        "Vented Soffit",
+        "Concrete Foundation",
+        "Prefinished Metal Cladding"
+      ],
+      "text_verbatim": "SOUTH ELEVATION\n1/8\" = 1'-0\"\nPREFIN. METAL FASCIA, EAVESTROUGH & VENTED SOFFIT. (PER OWNER).\nU/S TRUSS 16'-4 1/2\"\nT/O FDN. 2'-0\"\nT/O FLOOR 0'\nGRADE\n(1) DOUBLE 2x6 BRACE E.W. (AS PER DETAIL)\nPREFIN. METAL CLADDING (PER OWNER)\n48\" x 36\"H\nCONCRETE FOUNDATION",
+      "summary": "This elevation view depicts the south side of the Vleuten 50' x 90' Shed. Key components include prefinished metal fascia, eavestrough, and vented soffit, as specified by the owner. The elevation shows the upper side of the truss at 16'-4 1/2\", the top of the foundation at 2'-0\", and the top of the floor at 0'. The concrete foundation supports the structure, and prefinished metal cladding covers the exterior. The elevation also includes a double 2x6 brace as per detail, and windows measuring 48\" x 36\"H are shown. This view provides a comprehensive look at the exterior finish and structural elements of the south elevation.",
+      "project_id": "25-01-085",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": "page_004/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "North elevation",
+      "level": "Unknown",
+      "orientation": "North",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Prefinished Metal Fascia",
+        "Eavestrough",
+        "Vented Soffit",
+        "Concrete Foundation",
+        "Prefinished Metal Cladding"
+      ],
+      "text_verbatim": "NORTH ELEVATION\n1/8\" = 1'-0\"\nPREFIN. METAL FASCIA, EAVESTROUGH & VENTED SOFFIT. (PER OWNER).\nU/S TRUSS 16'-4 1/2\"\nT/O FDN. 2'-0\"\nT/O FLOOR 0'\nGRADE\n(1) DOUBLE 2x6 BRACE E.W. (AS PER DETAIL)\nPREFIN. METAL CLADDING (PER OWNER)\n48\" x 36\"H\nCONCRETE FOUNDATION",
+      "summary": "This elevation view shows the north side of the Vleuten 50' x 90' Shed. It features prefinished metal fascia, eavestrough, and vented soffit as specified by the owner. The elevation indicates the upper side of the truss at 16'-4 1/2\", the top of the foundation at 2'-0\", and the top of the floor at 0'. The concrete foundation is visible, supporting the structure, and prefinished metal cladding covers the exterior. A double 2x6 brace is included as per detail, and windows measuring 48\" x 36\"H are shown. This view provides a detailed look at the exterior finish and structural elements of the north elevation.",
+      "project_id": "25-01-085",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": "page_004/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "West elevation of the Vleuten 50' x 90' Shed",
+      "level": "Unknown",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Prefinished Metal Fascia",
+        "Eavestrough",
+        "Vented Soffit",
+        "Prefinished Metal Roofing",
+        "Prefinished Metal Cladding",
+        "Concrete Foundation"
+      ],
+      "text_verbatim": "WEST ELEVATION\nPREFIN. METAL FASCIA, EAVESTROUGH & VENTED SOFFIT. (PER OWNER).\nPREFIN. METAL ROOFING (PER OWNER)\nPREFIN. METAL CLADDING (PER OWNER)\nCONCRETE FOUNDATION\n16'-0\" x 14'-0\" H\n12'-0\" x 14'-0\" H\n16'-0\" x 14'-0\" H\n48\" x 36\"H\n3'6\" x 8'0\"H\nU/S TRUSS 16'-4 1/2\"\nT/O FDN. 2'-0\"\nT/O FLOOR 0'-0\"\nGRADE\n1/8\" = 1'-0\"",
+      "summary": "This image shows the west elevation of the Vleuten 50' x 90' Shed. The elevation includes prefinished metal fascia, eavestrough, and vented soffit as specified by the owner. The roofing and cladding are also prefinished metal. The concrete foundation is visible at the base. The elevation details include three large doors measuring 16'-0\" x 14'-0\" H and 12'-0\" x 14'-0\" H, along with a smaller door measuring 3'6\" x 8'0\"H. Windows are shown as 48\" x 36\"H. The top of the foundation is at 2'-0\", and the top of the floor is at 0'-0\". The underside of the truss is at 16'-4 1/2\". The scale is 1/8\" = 1'-0\".",
+      "project_id": "25-01-085",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": "page_004/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "East elevation of the Vleuten 50' x 90' Shed",
+      "level": "Unknown",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Prefinished Metal Fascia",
+        "Eavestrough",
+        "Vented Soffit",
+        "Prefinished Metal Roofing",
+        "Prefinished Metal Cladding",
+        "Concrete Foundation",
+        "Double 2x6 Brace"
+      ],
+      "text_verbatim": "EAST ELEVATION\nPREFIN. METAL FASCIA, EAVESTROUGH & VENTED SOFFIT. (PER OWNER).\nPREFIN. METAL ROOFING (PER OWNER)\nPREFIN. METAL CLADDING (PER OWNER)\nCONCRETE FOUNDATION\n48\" x 36\"H\n(1) DOUBLE 2x6 BRACE E.W. (AS PER DETAIL)\nU/S TRUSS 16'-4 1/2\"\nT/O FDN. 2'-0\"\nT/O FLOOR 0'-0\"\nGRADE\n1/8\" = 1'-0\"",
+      "summary": "This image shows the east elevation of the Vleuten 50' x 90' Shed. It features prefinished metal fascia, eavestrough, and vented soffit as specified by the owner. The roofing and cladding are prefinished metal. The concrete foundation is visible at the base. Windows are shown as 48\" x 36\"H. A double 2x6 brace is indicated as per detail. The top of the foundation is at 2'-0\", and the top of the floor is at 0'-0\". The underside of the truss is at 16'-4 1/2\". The scale is 1/8\" = 1'-0\".",
+      "project_id": "25-01-085",
+      "page_number": 4,
+      "region_number": 4,
+      "relative_path": "page_004/region_04_red_box.png"
+    }
+  ]
+}

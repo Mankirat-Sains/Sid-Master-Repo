@@ -1,0 +1,106 @@
+{
+  "pages": [
+    {
+      "page_number": 2,
+      "sheet_id": "A002",
+      "drawing_title": "PROP. FIRST FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "Living Room",
+        "Kitchen",
+        "Garage",
+        "Family Room",
+        "Proposed Wood Deck"
+      ],
+      "text_verbatim_title_block": "PROJECT\nPROPOSE INTERIOR ALTERATIONS AND REBUILD EXIST. DECK AT 4 GROVELAND CRES. CITY OF BRAMPTON\nFORBES’ RESIDENCE\nDRAWING PROP. FIRST FLOOR PLAN\nDRAWN BY M.L.\nAPPROVED BY\nSCALE 1/4\" = 1'-0\"\nDATE 01/07/2023\nPROJECT NO. 2401",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet presents the proposed first floor plan for a residence, detailing the layout of key areas such as the living room, kitchen, family room, and garage. It also includes a proposed wood deck. Dimensions and room labels are clearly marked, providing a comprehensive view of the ground floor layout."
+    },
+    {
+      "page_number": 1,
+      "sheet_id": "A001",
+      "drawing_title": "EXIST. BASEMENT & FIRST FLOOR PLAN",
+      "overall_classification": "Plan",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Basement Layout",
+        "First Floor Layout",
+        "Mechanical/Laundry Room",
+        "Rec Room",
+        "Crawl Space"
+      ],
+      "text_verbatim_title_block": "PROJECT\nPROPOSE INTERIOR ALTERATIONS AND REBUILD EXIST. DECK AT 4 GROVELAND CRES. CITY OF BRAMPTON\nFORBES’ RESIDENCE\nDRAWING EXIST. BASEMENT & FIRST FLOOR PLAN\nDRAWN BY M.L.\nAPPROVED BY\nSCALE 1/4\" = 1'-0\"\nDATE 01/07/2023\nPROJECT NO. 2401",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet shows the existing basement and first floor plans, highlighting areas such as the mechanical/laundry room, rec room, and crawl space in the basement, as well as the family room and kitchen on the first floor. It provides a detailed view of the existing layout for both levels."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": "A003",
+      "drawing_title": "EXIST. SECOND FLOOR & ROOF PLAN - NO CHANGE",
+      "overall_classification": "Plan",
+      "level": "Multiple",
+      "primary_orientation": null,
+      "key_components": [
+        "Second Floor Bedrooms",
+        "Bathroom",
+        "Closets",
+        "Roof Layout"
+      ],
+      "text_verbatim_title_block": "PROJECT\nPROPOSE INTERIOR ALTERATIONS AND REBUILD EXIST. DECK AT 4 GROVELAND CRES. CITY OF BRAMPTON\nFORBES’ RESIDENCE\nDRAWING EXIST. SECOND FLOOR & ROOF PLAN\nDRAWN BY M.L.\nAPPROVED BY\nSCALE 1/4\" = 1'-0\"\nDATE 01/07/2023\nPROJECT NO. 2401",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet illustrates the existing second floor and roof plans, indicating no changes. It includes the layout of bedrooms, a bathroom, and closets on the second floor, along with the roof configuration. The plans provide a clear understanding of the upper levels of the residence."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": "A004",
+      "drawing_title": "ELEVATIONS",
+      "overall_classification": "Elevation",
+      "level": "Multiple",
+      "primary_orientation": "North, East, and West Elevations",
+      "key_components": [
+        "North Elevation",
+        "East Elevation",
+        "West Elevation",
+        "Proposed Wood Deck"
+      ],
+      "text_verbatim_title_block": "PROJECT\nPROPOSE INTERIOR ALTERATIONS AND REBUILD EXIST. DECK AT 4 GROVELAND CRES. CITY OF BRAMPTON\nFORBES’ RESIDENCE\nDRAWING ELEVATIONS\nDRAWN BY M.L.\nAPPROVED BY\nSCALE 1/4\" = 1'-0\"\nDATE 01/07/2023\nPROJECT NO. 2401",
+      "general_notes_verbatim": "",
+      "page_overview_summary": "This sheet provides the north, east, and west elevations of the residence, showing the exterior views and proposed changes, including the wood deck. Elevation details such as window and door placements, as well as overall building height, are clearly depicted."
+    },
+    {
+      "page_number": 5,
+      "sheet_id": "A005",
+      "drawing_title": "PROP. BASEMENT STRUCTURAL PLAN",
+      "overall_classification": "Plan",
+      "level": "Basement",
+      "primary_orientation": null,
+      "key_components": [
+        "Basement Structural Layout",
+        "Proposed Rear Wood Deck",
+        "Sonotube Detail"
+      ],
+      "text_verbatim_title_block": "PROJECT\nPROPOSE INTERIOR ALTERATIONS AND REBUILD EXIST. DECK AT 4 GROVELAND CRES. CITY OF BRAMPTON\nFORBES’ RESIDENCE\nDRAWING PROP. BASEMENT STRUCTURAL PLAN\nDRAWN BY M.L.\nAPPROVED BY\nSCALE AS INDICATED\nDATE 01/07/2023\nPROJECT NO. 2401",
+      "general_notes_verbatim": "P.T. RATING:\nDECKING - UC3.2B\nLEDGER BOARDS, JOISTS, BEAMS, STAIR STRINGERS - UC3.2C\nPOSTS - UC4.1\nALL EXTERIOR LVL BEAMS WRAPPED AGAINST MOISTURE\nNUMBER OF RISERS TO BE CONFIRMED ON SITE PRIOR TO COMMENCEMENT OF WORK.\nEXISTING GRADE TO REMAIN. NO CHANGE\nNOTE:\nCONTRACTOR TO VERIFY ON SITE ALL ASSUMED JOIST DIRECTIONS, LOCATION OF ALL BEAMS AND COLUMNS BEFORE COMMENCING CONSTRUCTION & REPORT ANY DISCREPANCIES TO DESIGNER BEFORE PROCEEDING.",
+      "page_overview_summary": "This sheet outlines the proposed basement structural plan, including the layout for the basement and details for the proposed rear wood deck. It includes a sonotube detail and general notes regarding material specifications and construction verification requirements."
+    },
+    {
+      "page_number": 6,
+      "sheet_id": "A006",
+      "drawing_title": "PROP. FIRST FLOOR STRUCTURAL PLAN",
+      "overall_classification": "Mixed",
+      "level": "Ground Floor",
+      "primary_orientation": null,
+      "key_components": [
+        "First Floor Structural Layout",
+        "Deck Details",
+        "Beam Detail"
+      ],
+      "text_verbatim_title_block": "PROJECT\nPROPOSE INTERIOR ALTERATIONS AND REBUILD EXIST. DECK AT 4 GROVELAND CRES. CITY OF BRAMPTON\nFORBES’ RESIDENCE\nDRAWING PROP. FIRST FLOOR STRUCTURAL PLAN\nDRAWN BY M.L.\nAPPROVED BY\nSCALE AS INDICATED\nDATE 01/07/2023\nPROJECT NO. 2401",
+      "general_notes_verbatim": "P.T. RATING:\nDECKING - UC3.2B\nLEDGER BOARDS, JOISTS, BEAMS, STAIR STRINGERS - UC3.2C\nPOSTS - UC4.1\nALL EXTERIOR LVL BEAMS WRAPPED AGAINST MOISTURE\nNUMBER OF RISERS TO BE CONFIRMED ON SITE PRIOR TO COMMENCEMENT OF WORK.\nEXISTING GRADE TO REMAIN. NO CHANGE\nNOTE:\nCONTRACTOR TO VERIFY ON SITE ALL ASSUMED JOIST DIRECTIONS, LOCATION OF ALL BEAMS AND COLUMNS BEFORE COMMENCING CONSTRUCTION & REPORT ANY DISCREPANCIES TO DESIGNER BEFORE PROCEEDING.",
+      "page_overview_summary": "This sheet presents the proposed first floor structural plan, including detailed layouts for the structural components of the ground floor. It also features deck and beam details, providing comprehensive information for construction. General notes emphasize material specifications and construction verification."
+    }
+  ]
+}

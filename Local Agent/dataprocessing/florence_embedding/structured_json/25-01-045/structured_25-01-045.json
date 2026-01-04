@@ -1,0 +1,124 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Mechanical Room 2 – Section through monorail",
+      "level": "Multiple",
+      "orientation": "Transverse section looking East",
+      "grid_references": [
+        "Z1",
+        "1x",
+        "1y",
+        "1z",
+        "Z2",
+        "Z3",
+        "Z4",
+        "Z5"
+      ],
+      "section_callouts": [
+        "4/M101",
+        "3/M101",
+        "2/1:50"
+      ],
+      "element_type": "Monorail Section",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Slab",
+        "Steel Beam",
+        "Columns"
+      ],
+      "text_verbatim": "4 M101\n3 M101\n2 Section 1\n1:50",
+      "summary": "This section view shows a transverse cut through the monorail in Mechanical Room 2. It includes grid references Z1, 1x, 1y, 1z, Z2, Z3, Z4, and Z5. The section callouts '4/M101' and '3/M101' indicate connections to other views or details. The section is drawn at a scale of 1:50. Key components visible include a concrete slab, steel beam, and columns. The section illustrates the structural layout and connections of the monorail system.",
+      "project_id": "25-01-045",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": "page_001/region_01_red_box.png"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Mechanical Room 2 – Plan view of monorail layout",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [
+        "Z1",
+        "1x",
+        "1y",
+        "1z",
+        "Z2",
+        "Z3",
+        "Zcw",
+        "Zbw",
+        "Zaw"
+      ],
+      "section_callouts": [
+        "3/M101",
+        "2/M101"
+      ],
+      "element_type": "Monorail Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Monorail Beam",
+        "Support Columns"
+      ],
+      "text_verbatim": "5611 mm\n8000 mm\n1350 mm\n3 M101\n2 M101\nMONORAIL IN MECH ROOM 2\n1:100",
+      "summary": "This plan view shows the layout of the monorail in Mechanical Room 2. Dimensions include 5611 mm, 8000 mm, and 1350 mm, indicating the spacing and layout of the monorail beams and support columns. Section callouts '3/M101' and '2/M101' reference additional details or sections. The plan is drawn at a scale of 1:100. Key components include the monorail beam and support columns, illustrating the structural arrangement within the room.",
+      "project_id": "25-01-045",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": "page_001/region_02_red_box.png"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Mechanical Room 2 – Section through concourse levels",
+      "level": "Multiple",
+      "orientation": "Longitudinal section looking West",
+      "grid_references": [
+        "Zbw"
+      ],
+      "section_callouts": [
+        "2/M101",
+        "3/1:50"
+      ],
+      "element_type": "Concourse Section",
+      "element_callouts": [],
+      "key_components": [
+        "Concourse Level",
+        "Lower Concourse Level",
+        "Service Rooms"
+      ],
+      "text_verbatim": "2 M101\n3 Section 3\n1:50\nCONCOURSE LEVEL\n79040 mm\nLOWER CONCOURSE LEVEL - WEST\n75690 mm\nSERVICE ROOMS - WEST\n74865 mm\n3842 mm",
+      "summary": "This section view illustrates the longitudinal cut through the concourse levels in Mechanical Room 2. It includes grid reference Zbw. The section callouts '2/M101' and '3/1:50' indicate connections to other views. The section is drawn at a scale of 1:50. Key components include the concourse level at 79040 mm, lower concourse level at 75690 mm, and service rooms at 74865 mm. The section shows the vertical relationships and structural layout of these levels.",
+      "project_id": "25-01-045",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": "page_001/region_03_red_box.png"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Mechanical Room 2 – Detail of monorail beam connection",
+      "level": "Multiple",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "4/1:10"
+      ],
+      "element_type": "Monorail Beam Detail",
+      "element_callouts": [],
+      "key_components": [
+        "W10X30 Beam",
+        "Festoon",
+        "Connection Plate"
+      ],
+      "text_verbatim": "300 mm\n267 mm\n13 mm\n148 mm\nW10X30\nFESTOON\n4 Section 1 - Callout 1\n1:10",
+      "summary": "This detail view shows the connection of a monorail beam in Mechanical Room 2. The section callout '4/1:10' references this specific detail. Dimensions include 300 mm, 267 mm, 13 mm, and 148 mm, specifying the size and spacing of the components. The W10X30 beam is shown with a festoon connection. This detail is drawn at a scale of 1:10, illustrating the precise connection and arrangement of the monorail beam components.",
+      "project_id": "25-01-045",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": "page_001/region_04_red_box.png"
+    }
+  ]
+}

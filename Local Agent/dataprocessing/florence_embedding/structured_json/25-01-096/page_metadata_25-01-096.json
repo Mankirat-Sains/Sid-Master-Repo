@@ -1,0 +1,65 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "sheet_id": null,
+      "drawing_title": "Structural Memo",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Lintel Location",
+        "Timber Porch"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nTo: Susanne Murchison; City of Kawartha Lakes; CBO\nFrom: Sam DesRoches, Waddell Engineering Ltd.\nProject: 30x168 Dog Kennel Lintel & Timber\nLocation: 146 Yankee Line, Omemee, ON, K0L 2W0\nProject No.: 25-01-096\nSTRUCTURAL MEMO\nFriday, January 17, 2025",
+      "general_notes_verbatim": "To whom it may concern,\nWaddell Engineering Ltd. has been retained to provide a structural review of the design for the project mentioned above.\nBackground:\nDuring a recent site inspection completed by a third-party inspector, it was noted that a timber porch was installed at one of the entrances supported by an existing 6-foot span 2x10 lintel. The inspector was concerned that this existing lintel will not be able to support the additional loads from the timber porch and has requested that an engineer review the lintel and porch structures. The following figure displays the lintel location as well as the timber porch design.",
+      "page_overview_summary": "This page is a structural memo from Waddell Engineering Ltd. regarding a review of a lintel and timber porch design for a dog kennel. It provides background information on the project and highlights concerns about the existing lintel's ability to support additional loads. The page includes a figure showing the lintel and porch location."
+    },
+    {
+      "page_number": 2,
+      "sheet_id": null,
+      "drawing_title": "Timber Porch Design and Existing Lintel Size",
+      "overall_classification": "Detail",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Timber Framing",
+        "Lintel",
+        "Design Loads"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nFriday, January 17, 2025",
+      "general_notes_verbatim": "Design Loads:\nThe following design loads were used for the review of the existing lintel and the timber porch. The existing lintel is highlighted in Figures 1 and 2 above.\nDead Load = 0.55 kPa\nLive Load = 1.41 kPa",
+      "page_overview_summary": "This page provides detailed drawings of the timber porch design and the existing lintel size. It includes specifications for timber framing and design loads used in the review. The design loads are specified as 0.55 kPa for dead load and 1.41 kPa for live load."
+    },
+    {
+      "page_number": 3,
+      "sheet_id": null,
+      "drawing_title": "Design Results",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Design Adequacy",
+        "Ontario Building Code Compliance"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nFriday, January 17, 2025",
+      "general_notes_verbatim": "Design Results:\nThe existing 3 ply 2x10 lintel is able to support both the existing loads and the timber porch point load addition. No changes need to be made.\nComments:\nIt is the opinion of Waddell Engineering Ltd. that the design is structurally adequate and agrees with the Ontario Building Code.\nAny questions or comments can be directed to the writer.\nRegards,\nSam DesRoches P.Eng.",
+      "page_overview_summary": "This page presents the design results, confirming that the existing 3 ply 2x10 lintel can support the loads without requiring changes. The design is deemed structurally adequate and compliant with the Ontario Building Code. Contact information for further inquiries is provided."
+    },
+    {
+      "page_number": 4,
+      "sheet_id": null,
+      "drawing_title": "Limitations",
+      "overall_classification": "Notes",
+      "level": "Unknown",
+      "primary_orientation": null,
+      "key_components": [
+        "Report Limitations",
+        "Liability Disclaimer"
+      ],
+      "text_verbatim_title_block": "WADDELL ENGINEERING LTD.\nSTRUCTURAL MEMO\nFriday, January 17, 2025",
+      "general_notes_verbatim": "Limitations\nThis report has been prepared by Waddell Engineering Ltd. (WEL) at the request of the above-mentioned company.\nThe information and opinions expressed in this report are only for the sole benefit of the above-mentioned client at the address listed above. No other party may use or rely upon this report or any portion thereof without WEL’s written consent and such use shall be on such terms and conditions as WEL may expressly approve. Ownership in and copyright for the contents of this report belong to WEL. Any use which a third party makes of this report, is the sole responsibility of such third party. WEL accepts no responsibility whatsoever for damages suffered by any third party resulting from use of the report without WEL’s express prior written permission. WEL does not accept responsibility for independent conclusions, interpretations, interpolations, deductions and/or decisions of the client, or others who may come into possession of this report or any portion thereof, which may be based on information contained in the report, unless WEL is specifically advised and participates in such actions, in which case WEL’s responsibility will be agreed to at that time. The client must understand the suggestions, recommendations and opinions expressed herein, rather, there must be reliance on the whole of the report. WEL is not responsible for use by any party of portions of the report without reference to the whole report. Any user of this report denies any right to claim against the Consultants, Sub-consultants, the Officers, Agents and Employees in excess of the fee paid for the professional services.\nThe information, interpretations and conclusions in this report are based on WEL’s interpretation of conditions revealed through limited investigation conducted within a defined scope of services. No physical or destructive testing and no engineering calculations have been performed unless specifically mentioned in the report. Existing conditions which have no...",
+      "page_overview_summary": "This page outlines the limitations and disclaimers associated with the structural memo. It specifies that the report is intended solely for the client and disclaims liability for third-party use. The report is based on limited investigation and does not include environmental assessments. Waddell Engineering Ltd. relies on client-provided information and disclaims responsibility for inaccuracies resulting from such information."
+    }
+  ]
+}
