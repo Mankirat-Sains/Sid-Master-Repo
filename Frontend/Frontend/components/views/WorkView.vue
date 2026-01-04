@@ -1,43 +1,7 @@
 <template>
   <div class="h-full">
-    <!-- Welcome Screen (Project Selection) - Modern Apple-like Design -->
-    <div v-if="!selectedProject" class="h-full flex flex-col items-center justify-center px-8">
-      <h2 class="text-4xl font-light text-gray-900 mb-16 tracking-tight" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
-        Select one of the projects you have been assigned and get to work
-      </h2>
-      
-      <div class="grid grid-cols-4 gap-8 mt-8 max-w-6xl">
-        <button
-          v-for="project in assignedProjects"
-          :key="project.id"
-          @click="selectProject(project)"
-          :class="[
-            'group relative p-8 rounded-3xl transition-all duration-300 ease-out backdrop-blur-sm',
-            selectedProjectId === project.id
-              ? 'bg-white/80 shadow-2xl scale-105 border border-gray-200/50'
-              : 'bg-white/40 hover:bg-white/60 hover:scale-105 hover:shadow-xl border border-transparent hover:border-gray-200/50'
-          ]"
-        >
-          <div class="text-center">
-            <div :class="[
-              'w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-all duration-300',
-              selectedProjectId === project.id
-                ? 'bg-gradient-to-br from-purple-500 to-purple-700 shadow-lg'
-                : 'bg-gradient-to-br from-purple-400 to-purple-600 group-hover:shadow-lg'
-            ]">
-              <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
-            </div>
-            <p class="font-medium text-gray-900 text-lg mb-1" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">{{ project.id }}</p>
-            <p class="text-sm text-gray-600 font-light" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">{{ project.name }}</p>
-          </div>
-        </button>
-      </div>
-    </div>
-
-    <!-- Workspace Content (shown when workspace has content, even without selected task) -->
-    <div v-else-if="workspaceState.mode !== 'empty'" class="h-full flex flex-col">
+    <!-- Workspace Content (shown when workspace has content - takes priority) -->
+    <div v-if="workspaceState.mode !== 'empty'" class="h-full flex flex-col">
       <div class="flex-1 min-h-0 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden border border-gray-200/50">
         <!-- PDF Viewer -->
         <PDFViewer
@@ -70,6 +34,42 @@
           height="100%"
           @close="workspace.clear()"
         />
+      </div>
+    </div>
+
+    <!-- Welcome Screen (Project Selection) - Modern Apple-like Design -->
+    <div v-else-if="!selectedProject" class="h-full flex flex-col items-center justify-center px-8">
+      <h2 class="text-4xl font-light text-gray-900 mb-16 tracking-tight" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+        Select one of the projects you have been assigned and get to work
+      </h2>
+      
+      <div class="grid grid-cols-4 gap-8 mt-8 max-w-6xl">
+        <button
+          v-for="project in assignedProjects"
+          :key="project.id"
+          @click="selectProject(project)"
+          :class="[
+            'group relative p-8 rounded-3xl transition-all duration-300 ease-out backdrop-blur-sm',
+            selectedProjectId === project.id
+              ? 'bg-white/80 shadow-2xl scale-105 border border-gray-200/50'
+              : 'bg-white/40 hover:bg-white/60 hover:scale-105 hover:shadow-xl border border-transparent hover:border-gray-200/50'
+          ]"
+        >
+          <div class="text-center">
+            <div :class="[
+              'w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-all duration-300',
+              selectedProjectId === project.id
+                ? 'bg-gradient-to-br from-purple-500 to-purple-700 shadow-lg'
+                : 'bg-gradient-to-br from-purple-400 to-purple-600 group-hover:shadow-lg'
+            ]">
+              <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <p class="font-medium text-gray-900 text-lg mb-1" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">{{ project.id }}</p>
+            <p class="text-sm text-gray-600 font-light" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">{{ project.name }}</p>
+          </div>
+        </button>
       </div>
     </div>
 

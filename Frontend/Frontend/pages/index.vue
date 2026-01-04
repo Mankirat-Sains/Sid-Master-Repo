@@ -77,8 +77,7 @@
         class="flex-1 flex flex-col bg-transparent overflow-hidden relative"
         :style="{ 
           marginTop: tasksPanelOpen ? `${tasksPanelHeight}px` : '0',
-          marginLeft: documentsListOpen ? `${documentsListWidth}px` : '0',
-          paddingBottom: logsPanelOpen ? `${logsPanelHeight}px` : '0'
+          marginLeft: documentsListOpen ? `${documentsListWidth}px` : '0'
         }"
       >
         <!-- Tasks Toggle Button (when closed) - Positioned over left panel only -->
@@ -124,15 +123,6 @@
           <SettingsView v-else-if="activeNav === 'settings'" />
         </div>
 
-        <!-- Agent Logs Panel (Bottom Slider, Resizable) - Only in left panel -->
-        <AgentLogsPanel
-          v-if="logsPanelOpen"
-          :is-open="logsPanelOpen"
-          :logs="agentLogs"
-          :panel-height="logsPanelHeight"
-          @close="logsPanelOpen = false"
-          @resize-start="handleLogsResizeStart"
-        />
 
         <!-- Logs Toggle Button (when closed) - Positioned over left panel only -->
         <button
@@ -166,6 +156,19 @@
         ></div>
       </div>
     </div>
+
+    <!-- Agent Logs Panel (Bottom Slider, Draggable & Resizable) - Spans across bottom, aligned with chat panel -->
+    <AgentLogsPanel
+      v-if="logsPanelOpen"
+      :is-open="logsPanelOpen"
+      :logs="agentLogs"
+      :panel-height="logsPanelHeight"
+      :panel-bottom="logsPanelBottom"
+      :chat-panel-width="chatPanelWidth"
+      @close="logsPanelOpen = false"
+      @resize-start="handleLogsResizeStart"
+      @drag-start="handleLogsDragStart"
+    />
   </div>
 </template>
 
@@ -180,6 +183,7 @@ import ClipboardIcon from '~/components/icons/ClipboardIcon.vue'
 import ChatIcon from '~/components/icons/ChatIcon.vue'
 import GearIcon from '~/components/icons/GearIcon.vue'
 import { useWorkspace } from '~/composables/useWorkspace'
+import { useRuntimeConfig } from '#app'
 
 const activeNav = ref<'work' | 'timesheet' | 'todo' | 'discussion' | 'settings' | null>(null)
 const tasksPanelOpen = ref(false)
@@ -198,14 +202,19 @@ const documentsListWidth = ref(400)
 const tasksPanelHeight = ref(180)
 const chatPanelWidth = ref(420)
 const logsPanelHeight = ref(320)
+const logsPanelBottom = ref(0) // Position from bottom (0 = at bottom)
 
 // Workspace management
 const workspace = useWorkspace()
+const config = useRuntimeConfig()
 
 // Resizing state
 const resizingPanel = ref<'tasks' | 'chat' | 'logs' | null>(null)
+const draggingPanel = ref<'logs' | null>(null)
 const resizeStartPos = ref(0)
 const resizeStartSize = ref(0)
+const dragStartPos = ref(0)
+const dragStartBottom = ref(0)
 
 // Navigation items with icons
 const navItems = [
@@ -260,10 +269,22 @@ function handleLogsResizeStart(e: MouseEvent, currentHeight: number) {
   e.stopPropagation()
 }
 
-function handleMouseMove(e: MouseEvent) {
-  if (!resizingPanel.value) return
+function handleLogsDragStart(e: MouseEvent, currentBottom: number) {
+  draggingPanel.value = 'logs'
+  dragStartPos.value = e.clientY
+  dragStartBottom.value = currentBottom
+  e.preventDefault()
+  e.stopPropagation()
+}
 
-  if (resizingPanel.value === 'tasks') {
+function handleMouseMove(e: MouseEvent) {
+  if (draggingPanel.value === 'logs') {
+    // Dragging: move panel up/down
+    const delta = dragStartPos.value - e.clientY // Inverted: moving mouse up increases bottom offset
+    const maxBottom = window.innerHeight - logsPanelHeight.value - 50 // Max position (leave some space at top)
+    const newBottom = Math.max(0, Math.min(maxBottom, dragStartBottom.value + delta))
+    logsPanelBottom.value = newBottom
+  } else if (resizingPanel.value === 'tasks') {
     const delta = e.clientY - resizeStartPos.value
     const newHeight = Math.max(120, Math.min(window.innerHeight * 0.6, resizeStartSize.value + delta))
     tasksPanelHeight.value = newHeight
@@ -272,14 +293,17 @@ function handleMouseMove(e: MouseEvent) {
     const newWidth = Math.max(320, Math.min(window.innerWidth * 0.5, resizeStartSize.value + delta))
     chatPanelWidth.value = newWidth
   } else if (resizingPanel.value === 'logs') {
-    const delta = resizeStartPos.value - e.clientY
-    const newHeight = Math.max(200, Math.min(window.innerHeight * 0.7, resizeStartSize.value + delta))
+    // Resizing: adjust panel height
+    const delta = resizeStartPos.value - e.clientY // Inverted: moving mouse up increases height
+    const maxHeight = window.innerHeight - logsPanelBottom.value - 20 // Leave some margin
+    const newHeight = Math.max(200, Math.min(maxHeight, resizeStartSize.value + delta))
     logsPanelHeight.value = newHeight
   }
 }
 
 function handleMouseUp() {
   resizingPanel.value = null
+  draggingPanel.value = null
 }
 
 function handleAgentLog(log: AgentLog) {
@@ -300,10 +324,24 @@ function handleFirstMessage() {
 }
 
 function handleDocumentSelect(document: any) {
+  // Ensure work view is active to show the viewer
+  if (!activeNav.value || activeNav.value !== 'work') {
+    activeNav.value = 'work'
+  }
+  
   // Check if this is a Speckle model (has projectId and modelId in metadata)
   if (document.metadata?.projectId && document.metadata?.modelId) {
     // Open Speckle model in workspace
-    const modelUrl = document.url || `https://app.speckle.systems/projects/${document.metadata.projectId}/models/${document.metadata.modelId}`
+    // Use document.url if available (already constructed with correct server URL)
+    // Otherwise construct URL using configured Speckle server
+    const modelUrl = document.url || `${config.public.speckleUrl}/projects/${document.metadata.projectId}/models/${document.metadata.modelId}`
+    console.log('Opening Speckle model:', { 
+      modelUrl, 
+      document,
+      speckleUrl: config.public.speckleUrl,
+      projectId: document.metadata.projectId,
+      modelId: document.metadata.modelId
+    })
     workspace.openModel(modelUrl, document.title || document.name)
   } else if (document.url || document.filePath) {
     // Open PDF in workspace
@@ -313,6 +351,7 @@ function handleDocumentSelect(document: any) {
 
 // Expose workspace methods for chat to use
 provide('workspace', workspace)
+provide('emitAgentLog', handleAgentLog)
 provide('openDocumentsList', (documents: any[], title?: string, subtitle?: string) => {
   similarDocuments.value = documents
   documentsListTitle.value = title || 'Documents'

@@ -1,15 +1,17 @@
 <template>
   <div
     v-if="isOpen"
-    class="absolute bottom-0 left-0 right-0 border-t border-gray-200 shadow-2xl"
+    class="fixed border-t border-gray-200 shadow-2xl"
     :style="{ 
       height: `${panelHeight}px`, 
+      bottom: `${panelBottom}px`,
+      left: '0',
+      width: `calc(100% - ${chatPanelWidth}px)`,
       maxHeight: '70vh', 
       minHeight: '200px',
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
-      width: '100%',
       backgroundColor: 'rgba(255, 255, 255, 0.95)',
       backdropFilter: 'blur(20px)',
       zIndex: 50
@@ -17,12 +19,16 @@
   >
     <!-- Resize Handle (top edge) -->
     <div
-      class="absolute top-0 left-0 right-0 h-1 bg-gray-200 cursor-ns-resize hover:bg-purple-400 transition-colors"
-      @mousedown="(e) => $emit('resize-start', e, panelHeight)"
+      class="absolute top-0 left-0 right-0 h-1 bg-gray-200 cursor-ns-resize hover:bg-purple-400 transition-colors z-10"
+      @mousedown="(e) => emit('resize-start', e, panelHeight)"
     ></div>
 
-    <!-- Logs Header -->
-    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
+    <!-- Logs Header (Draggable) -->
+    <div 
+      class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm cursor-move select-none hover:bg-white/90 transition-colors"
+      @mousedown="(e) => handleHeaderMouseDown(e)"
+      title="Drag to move panel up or down"
+    >
       <div class="flex items-center gap-4">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg">
           <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,7 +44,7 @@
         </span>
       </div>
       <button
-        @click="$emit('close')"
+        @click="emit('close')"
         class="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600 hover:text-gray-900"
         title="Close Logs"
       >
@@ -92,15 +98,33 @@ const props = withDefaults(defineProps<{
   isOpen: boolean
   logs: AgentLog[]
   panelHeight?: number
+  panelBottom?: number
+  chatPanelWidth?: number
 }>(), {
-  panelHeight: 384
+  panelHeight: 384,
+  panelBottom: 0,
+  chatPanelWidth: 420
 })
 
-defineEmits<{
+const emit = defineEmits<{
   open: []
   close: []
   'resize-start': [e: MouseEvent, currentHeight: number]
+  'drag-start': [e: MouseEvent, currentBottom: number]
 }>()
+
+function handleHeaderMouseDown(e: MouseEvent) {
+  // Only start dragging if not clicking on buttons or interactive elements
+  const target = e.target as HTMLElement
+  if (target.tagName === 'BUTTON' || target.closest('button')) {
+    return
+  }
+  // Check if clicking on resize handle
+  if (target.classList.contains('cursor-ns-resize')) {
+    return
+  }
+  emit('drag-start', e, props.panelBottom || 0)
+}
 
 function getLogBorderColor(type: AgentLog['type']): string {
   const colors = {

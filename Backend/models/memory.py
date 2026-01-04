@@ -197,11 +197,12 @@ FOLLOW-UP INDICATORS (clear signals that indicate follow-up):
 - Explicit references to prior context:
   * Pronouns: "it", "that one", "those", "the project", "the one you mentioned"
   * Positional references: "the first one", "the second project", "the last one", "the second one"
-  * Explicit references: "the project I asked about", "the same one", "that project"
-  * Requests for more info: "tell me more about it", "give me more info on the second one"
+  * Explicit references: "the project I asked about", "the same one", "that project", "the project I pulled before", "the previous project", "the one we just discussed"
+  * Requests for more info: "tell me more about it", "give me more info on the second one", "what about the gravity system", "how does the [aspect] work"
 - Query is incomplete without prior context (unclear what "it", "that", "the second one" refers to)
 - Query continues previous topic: "also", "additionally", "furthermore" (when clearly continuing same topic)
 - Query asks for different perspective on same topic from prior conversation
+- Query asks about a specific aspect/feature of something mentioned before (e.g., "gravity system", "foundation", "roof structure" when a project was just discussed)
 
 NON-FOLLOW-UP INDICATORS (clear signals that indicate NEW query):
 - Complete, self-contained questions that make sense without context
@@ -219,10 +220,12 @@ CLASSIFICATION RULES:
 - Only classify as follow-up if you can identify what prior context is being referenced
 
 CONFIDENCE GUIDELINES:
-- 0.95-1.0: Strong evidence (pronouns, "the second one", "tell me more about it", etc.)
-- 0.85-0.94: Clear evidence but some ambiguity
+- 0.95-1.0: Strong evidence (pronouns, "the second one", "tell me more about it", "the project I pulled before", etc.)
+- 0.85-0.94: Clear evidence but some ambiguity - STILL TREAT AS FOLLOW-UP if context projects exist
 - 0.70-0.84: Ambiguous - classify as "new" unless very clear follow-up indicators
 - 0.0-0.69: Clear standalone question - classify as "new"
+
+IMPORTANT: If confidence >= 0.85 AND there are recent projects in context, treat as follow-up and use the MOST RECENT project from last_answer_projects.
 
 REWRITING STRATEGY:
 1. If follow-up: Expand query with specific terms from context
@@ -271,7 +274,11 @@ OUTPUT STRICT JSON (no markdown, no code fences):
             log_query.info(f"🧠 SEMANTIC ENRICHMENT: {semantic_enrichment}")
         
         # Process based on LLM's follow-up determination
-        if is_followup and confidence >= 0.95:
+        # Lower threshold: 0.85+ if we have context projects, otherwise 0.95+
+        has_context_projects = bool(focus_state["last_answer_projects"] or focus_state["recent_projects"])
+        confidence_threshold = 0.85 if has_context_projects else 0.95
+        
+        if is_followup and confidence >= confidence_threshold:
             rewritten_query = result.get("rewritten_query", user_query)
             filters = result.get("filters", {})
             
@@ -280,9 +287,18 @@ OUTPUT STRICT JSON (no markdown, no code fences):
             
             # Fallback logic if LLM didn't identify specific projects
             if not project_keys:
-                fallback_projects = focus_state["last_answer_projects"] or focus_state["recent_projects"]
-                if fallback_projects:
-                    project_keys = fallback_projects[:2]  # Limit to 2 most relevant
+                # CRITICAL FIX: Use MOST RECENT project from last_answer_projects (the immediately previous exchange)
+                # Only fall back to recent_projects if last_answer_projects is empty
+                if focus_state["last_answer_projects"]:
+                    # Use the MOST RECENT project (last in list = most recent)
+                    project_keys = [focus_state["last_answer_projects"][-1]]
+                    log_query.info(f"🎯 USING MOST RECENT PROJECT FROM LAST ANSWER: {project_keys}")
+                elif focus_state["recent_projects"]:
+                    # Fallback to most recent from recent_projects
+                    project_keys = [focus_state["recent_projects"][-1]]
+                    log_query.info(f"🎯 FALLBACK TO MOST RECENT PROJECT: {project_keys}")
+                
+                if project_keys:
                     filters["project_keys"] = project_keys
                     log_query.info(f"🎯 FALLBACK TO CONTEXT PROJECTS: {project_keys}")
             
@@ -292,7 +308,7 @@ OUTPUT STRICT JSON (no markdown, no code fences):
             # Not a follow-up or low confidence - pass through unchanged
             rewritten_query = user_query
             filters = {}
-            log_query.info(f"🎯 NON-FOLLOW-UP: Passing through unchanged (confidence={confidence:.2f})")
+            log_query.info(f"🎯 NON-FOLLOW-UP: Passing through unchanged (confidence={confidence:.2f}, threshold={confidence_threshold:.2f})")
         
         log_query.info(f"🎯 QUERY REWRITER: {user_query} → {rewritten_query}")
         log_query.info(f"🎯 FILTERS: {filters}")

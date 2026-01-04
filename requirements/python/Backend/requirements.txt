@@ -1,0 +1,37 @@
+# Backend RAG System Requirements
+# Inferred from codebase imports and dependencies
+
+# Web Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+
+# LangChain (for RAG system)
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.20
+langchain-anthropic>=0.1.0
+
+# Database & Vector Store
+supabase>=2.0.0
+psycopg2-binary>=2.9.9
+
+# AI/LLM
+openai>=1.0.0
+
+# Environment & Configuration
+python-dotenv>=1.0.0
+pydantic-settings>=2.1.0
+
+# HTTP Client
+httpx>=0.25.0
+
+# Utilities
+python-dateutil>=2.8.0
+
+# Note: This is an inferred requirements file.
+# Check Backend/ directory for actual dependencies used.
+# Some packages may need version adjustments based on actual usage.
+
+
