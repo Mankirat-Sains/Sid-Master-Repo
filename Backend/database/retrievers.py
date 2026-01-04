@@ -118,7 +118,9 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
                     unique_project_keys = _prefiltered_project_keys_cache
                     
                     # Use the new capped project functions for better project diversity
-                    rpc_function = 'match_documents_cap_projects' if table_name == SUPA_SMART_TABLE else 'match_documents_cap_projects_large'
+                    rpc_function = 'match_image_descriptions_verbatim' if table_name == SUPA_SMART_TABLE else 'match_project_descriptions'
+                    
+                    print(f"🔍 RPC CALL (pre-filtered): function={rpc_function}, table={table_name}, project_keys={len(unique_project_keys) if unique_project_keys else 0}")  # Diagnostic
                     
                     chunks_per_project = 20
                     projects_limit = min(50, len(unique_project_keys)) if unique_project_keys else 50
@@ -134,6 +136,14 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
                     
                     # Convert HNSW result to rows
                     dense_rows = result.data or []
+                    print(f"📊 RPC RETURNED (pre-filtered): {len(dense_rows)} rows")  # Diagnostic
+                    if dense_rows:
+                        first_projects = []
+                        for row in dense_rows[:5]:
+                            meta = row.get('metadata', {})
+                            proj = meta.get('project_key') or meta.get('project_id') or 'UNKNOWN'
+                            first_projects.append(proj)
+                        print(f"📋 First projects: {first_projects}")  # Diagnostic
                     
                     # Ensure even distribution across projects
                     if dense_rows:
@@ -157,11 +167,11 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
                     # Convert fused rows to Document objects
                     dense_docs = []
                     for row in fused_rows:
-                        metadata = row['metadata'].copy() if row['metadata'] else {}
+                        metadata = row.get('metadata', {}).copy() if isinstance(row.get('metadata'), dict) else {}
                         metadata['similarity_score'] = row.get('similarity', row.get('score', 0.0))
                         
                         doc = Document(
-                            page_content=row['content'],
+                            page_content=row.get('content', ''),
                             metadata=metadata
                         )
                         dense_docs.append(doc)
@@ -177,7 +187,9 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
             # Regular dense vector search (fallback or when no filters)
             query_embedding = emb.embed_query(query)
             
-            rpc_function = 'match_documents_cap_projects' if table_name == SUPA_SMART_TABLE else 'match_documents_cap_projects_large'
+            rpc_function = 'match_image_descriptions_verbatim' if table_name == SUPA_SMART_TABLE else 'match_project_descriptions'
+            
+            print(f"🔍 RPC CALL: function={rpc_function}, table={table_name}, route={route}")  # Diagnostic
             
             if route == "large" or table_name == SUPA_LARGE_TABLE:
                 chunks_per_project = 3
@@ -198,15 +210,26 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
             }).execute()
             
             dense_rows = result.data or []
+            print(f"📊 RPC RETURNED: {len(dense_rows)} rows from {rpc_function}")  # Diagnostic
+            
+            # Show first few project keys returned
+            if dense_rows:
+                first_projects = []
+                for row in dense_rows[:5]:
+                    meta = row.get('metadata', {})
+                    proj = meta.get('project_key') or meta.get('project_id') or 'UNKNOWN'
+                    first_projects.append(proj)
+                print(f"📋 First projects returned: {first_projects}")  # Diagnostic
+            
             fused_rows = dense_rows[:k]
             
             dense_docs = []
             for row in fused_rows:
-                metadata = row['metadata'].copy() if row['metadata'] else {}
+                metadata = row.get('metadata', {}).copy() if isinstance(row.get('metadata'), dict) else {}
                 metadata['similarity_score'] = row.get('similarity', row.get('score', 0.0))
                 
                 doc = Document(
-                    page_content=row['content'],
+                    page_content=row.get('content', ''),
                     metadata=metadata
                 )
                 dense_docs.append(doc)

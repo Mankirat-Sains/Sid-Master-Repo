@@ -9,6 +9,7 @@ from typing import Dict, TypedDict, Optional, Tuple, List
 # Import configurations and LLM instances
 from config.logging_config import log_query
 from config.llm_instances import llm_fast
+from config.settings import MAX_CONVERSATION_HISTORY, MAX_SEMANTIC_HISTORY
 
 # =============================================================================
 # MEMORY STORAGE

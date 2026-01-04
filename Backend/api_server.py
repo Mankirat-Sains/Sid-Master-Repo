@@ -917,6 +917,18 @@ async def get_renderer_file(filename: str):
     return FileResponse(file_path, media_type=media_type)
 
 
+# Test endpoint to verify which backend is running
+@app.get("/test/backend-version")
+async def test_backend_version():
+    """Test endpoint to verify we're using the new Backend/Backend code"""
+    from config.settings import SUPA_SMART_TABLE, SUPA_LARGE_TABLE
+    return {
+        "backend": "Backend/Backend (NEW)",
+        "smart_table": SUPA_SMART_TABLE,
+        "large_table": SUPA_LARGE_TABLE,
+        "message": "This is the NEW modular backend"
+    }
+
 # Root endpoint
 @app.get("/")
 @app.head("/")
@@ -924,10 +936,12 @@ async def root():
     return {
         "message": "Mantle RAG API Server",
         "version": "1.0.0",
+        "backend": "Backend/Backend (NEW)",
         "endpoints": {
             "chat": "/chat",
             "health": "/health",
             "db_health": "/db/health",
+            "test_backend": "/test/backend-version",
             "instructions": "/instructions",
             "logs_enhanced": "/logs/enhanced",
             "logs_stats": "/logs/enhanced/stats",
