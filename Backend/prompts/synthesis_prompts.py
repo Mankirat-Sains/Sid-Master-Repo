@@ -1,7 +1,7 @@
 """
 Synthesis Prompts - For answer generation and reformulation
 """
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from config.settings import PROJECT_CATEGORIES
 
 ANSWER_PROMPT = PromptTemplate.from_template(

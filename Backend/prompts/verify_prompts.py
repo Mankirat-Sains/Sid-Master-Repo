@@ -1,7 +1,7 @@
 """
 Verify Prompts - For answer verification and quality checking
 """
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 VERIFY_PROMPT = PromptTemplate.from_template("""
 You are a strict verifier for a retrieval QA system.

@@ -1,7 +1,7 @@
 """
 Planner Prompts - For query planning and decomposition
 """
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from config.llm_instances import llm_fast
 from config.settings import PLANNER_PLAYBOOK
 

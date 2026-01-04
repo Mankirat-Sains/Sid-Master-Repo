@@ -1,7 +1,7 @@
 """
 Router Prompts - For routing between smart and large chunk databases
 """
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from config.llm_instances import llm_router
 
 ROUTER_PROMPT = PromptTemplate.from_template(

@@ -131,7 +131,7 @@ def wrap_project_links(text: str) -> str:
 
 
 def sanitize_file_path(file_path: str) -> str:
-    """
+    r"""
     Sanitize file path from Supabase:
     1. Stop at \md (remove \md and everything after)
     2. Change .md extension to .pdf
@@ -345,6 +345,7 @@ class ChatResponse(BaseModel):
     code_citations: Optional[int] = None
     coop_citations: Optional[int] = None
     image_similarity_results: Optional[List[Dict[str, Any]]] = None  # Similar images found via image embedding search
+    thinking_log: Optional[List[str]] = None  # Agent thinking logs for frontend display
 
 class FeedbackRequest(BaseModel):
     message_id: str
@@ -466,7 +467,10 @@ async def chat_handler(request: ChatRequest):
             images_to_process = [request.image_base64]  # Backwards compatibility
         
         # Run the agentic RAG system (with optional images for VLM processing)
-        rag_result = run_agentic_rag(
+        # Use wrapper that adds thinking logs
+        from thinking.rag_wrapper import run_agentic_rag_with_thinking_logs
+        
+        rag_result = run_agentic_rag_with_thinking_logs(
             question=request.message,
             session_id=request.session_id,
             data_sources=request.data_sources,
@@ -554,6 +558,9 @@ async def chat_handler(request: ChatRequest):
                 }
                 supabase_logger.log_user_query(query_data)
 
+            # Extract thinking log from result
+            thinking_log = rag_result.get("thinking_log", [])
+            
             # Return separate answers
             response = ChatResponse(
                 reply=processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
@@ -569,7 +576,8 @@ async def chat_handler(request: ChatRequest):
                 project_citations=len(project_citations) if has_project else None,
                 code_citations=len(code_citations) if has_code else None,
                 coop_citations=len(coop_citations) if has_coop else None,
-                image_similarity_results=image_similarity_results if image_similarity_results else None
+                image_similarity_results=image_similarity_results if image_similarity_results else None,
+                thinking_log=thinking_log if thinking_log else None
             )
         else:
             # Single answer mode (backward compatible)
@@ -628,6 +636,9 @@ async def chat_handler(request: ChatRequest):
                 }
                 supabase_logger.log_user_query(query_data)
 
+            # Extract thinking log from result
+            thinking_log = rag_result.get("thinking_log", [])
+            
             # Prepare response
             response = ChatResponse(
                 reply=combined_answer,
@@ -637,7 +648,8 @@ async def chat_handler(request: ChatRequest):
                 citations=total_citations,
                 route=rag_result.get("route"),
                 message_id=message_id,
-                image_similarity_results=image_similarity_results if image_similarity_results else None
+                image_similarity_results=image_similarity_results if image_similarity_results else None,
+                thinking_log=thinking_log if thinking_log else None
             )
 
         logger.info(f"Successfully processed request in {latency_ms:.2f}ms [ID: {message_id}]")
@@ -654,7 +666,8 @@ async def chat_handler(request: ChatRequest):
             timestamp=datetime.now().isoformat(),
             latency_ms=round(latency_ms, 2),
             citations=0,
-            message_id=f"err_{int(time.time())}"
+            message_id=f"err_{int(time.time())}",
+            thinking_log=None
         )
 
         # Don't raise HTTPException here - return error message instead

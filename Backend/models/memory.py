@@ -10,6 +10,16 @@ from typing import Dict, TypedDict, Optional, Tuple, List
 from config.logging_config import log_query
 from config.llm_instances import llm_fast
 
+
+# =============================================================================
+# MEMORY LIMITS
+# =============================================================================
+
+# Maximum number of conversation exchanges to keep in memory
+MAX_CONVERSATION_HISTORY = 10
+
+# Maximum number of semantic intelligence records to keep
+MAX_SEMANTIC_HISTORY = 5
 # =============================================================================
 # MEMORY STORAGE
 # =============================================================================

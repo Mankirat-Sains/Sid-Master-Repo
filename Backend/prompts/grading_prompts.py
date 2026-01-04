@@ -1,7 +1,7 @@
 """
 Grading Prompts - For relevance grading of retrieved chunks
 """
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from config.llm_instances import llm_grader
 
 SELF_GRADE_PROMPT = PromptTemplate.from_template(
