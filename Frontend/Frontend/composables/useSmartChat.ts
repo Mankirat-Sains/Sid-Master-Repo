@@ -93,10 +93,15 @@ export const useSmartChat = () => {
         code_db?: boolean
         coop_manual?: boolean
       }
+      images_base64?: string[]
     }
   ): Promise<SmartChatResponse> {
     const intent = determineQueryIntent(message)
     const sessionId = context?.sessionId || 'default'
+    
+    console.log('📸 [useSmartChat] sendSmartMessage called')
+    console.log('📸 [useSmartChat] context?.images_base64 =', context?.images_base64)
+    console.log('📸 [useSmartChat] context?.images_base64 length =', context?.images_base64?.length)
     
     // For BIM queries, try Speckle GraphQL first, then fallback to RAG if needed
     if (intent === 'speckle' || intent === 'hybrid') {
@@ -104,7 +109,8 @@ export const useSmartChat = () => {
         // Try Speckle GraphQL queries for BIM data
         // For now, we'll route through RAG backend which can handle BIM queries
         // In the future, you might want direct GraphQL calls here
-        const ragResponse = await sendChatMessage(message, sessionId, undefined, context?.dataSources)
+        console.log('📸 [useSmartChat] Calling sendChatMessage with images_base64:', context?.images_base64)
+        const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, context?.dataSources)
         
         // Handle multi-answer responses (matching web-app behavior)
         const hasProjectAnswer = ragResponse.project_answer && ragResponse.project_answer.trim()
@@ -145,7 +151,7 @@ export const useSmartChat = () => {
       } catch (error) {
         console.error('Speckle query failed, falling back to RAG:', error)
         // Fallback to RAG
-        const ragResponse = await sendChatMessage(message, sessionId, undefined, context?.dataSources)
+        const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, context?.dataSources)
         
         // Handle multi-answer responses (matching web-app behavior)
         const hasProjectAnswer = ragResponse.project_answer && ragResponse.project_answer.trim()
@@ -185,7 +191,8 @@ export const useSmartChat = () => {
     }
     
     // For document queries, use RAG backend
-    const ragResponse = await sendChatMessage(message, sessionId, undefined, context?.dataSources)
+    console.log('📸 [useSmartChat] Document query - Calling sendChatMessage with images_base64:', context?.images_base64)
+    const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, context?.dataSources)
     
     // Handle multi-answer responses (matching web-app behavior)
     // The backend may return separate answers for each database
