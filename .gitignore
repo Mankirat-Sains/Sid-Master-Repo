@@ -112,3 +112,6 @@ __pycache__/
 *.png
 *.jpg
 *.csv
+
+# Local Agent connector (large files)
+Local Agent/Connector/
