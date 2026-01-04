@@ -7,7 +7,12 @@ from .settings import DEBUG_MODE
 
 # Set logging level based on DEBUG_MODE
 LOG_LEVEL = logging.INFO if DEBUG_MODE else logging.WARNING
-logging.basicConfig(level=LOG_LEVEL, format="%(message)s")  # Simple format - just the message
+# Enhanced format with timestamp for VLM logs - makes it easier to track
+logging.basicConfig(
+    level=LOG_LEVEL, 
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%H:%M:%S"
+)
 
 # Create loggers for different components
 log_query = logging.getLogger("QUERY_FLOW")

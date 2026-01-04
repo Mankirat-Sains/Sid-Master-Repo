@@ -45,6 +45,19 @@
             class="whitespace-pre-wrap text-sm leading-relaxed"
             style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;"
           >{{ message.content }}</p>
+          <!-- User images -->
+          <div
+            v-if="message.role === 'user' && message.userImages && message.userImages.length > 0"
+            class="mt-3 flex flex-wrap gap-2"
+          >
+            <img
+              v-for="(img, idx) in message.userImages"
+              :key="idx"
+              :src="img.preview"
+              :alt="img.fileName"
+              class="max-w-[150px] max-h-[120px] rounded-lg object-cover shadow-sm border border-gray-200"
+            />
+          </div>
           <!-- Images -->
           <div
             v-if="message.images && message.images.length > 0"
@@ -156,7 +169,46 @@
         </button>
       </div>
 
+      <!-- Attachment Preview -->
+      <div v-if="pendingImages.length > 0" class="mb-3 flex flex-wrap gap-2 p-2 bg-purple-50 rounded-xl border border-purple-200">
+        <div
+          v-for="(img, idx) in pendingImages"
+          :key="idx"
+          class="flex items-center gap-2 bg-white rounded-lg px-2 py-1.5 border border-purple-200 shadow-sm"
+        >
+          <img :src="img.preview" :alt="img.fileName" class="w-8 h-8 rounded object-cover" />
+          <span class="text-xs text-gray-700 max-w-[120px] truncate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">{{ img.fileName }}</span>
+          <button
+            @click="removeImage(idx)"
+            type="button"
+            class="w-5 h-5 rounded-full bg-gray-200 hover:bg-red-500 hover:text-white flex items-center justify-center text-xs transition-colors text-gray-600 hover:border-0"
+            title="Remove"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+
       <form @submit.prevent="handleSend" class="flex gap-3">
+        <input
+          ref="imageInputRef"
+          type="file"
+          accept="image/*"
+          multiple
+          class="hidden"
+          @change="handleImageSelect"
+        />
+        <button
+          type="button"
+          @click="triggerImageInput"
+          class="px-3 py-3 rounded-xl border border-gray-300 bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-white hover:border-purple-400 transition-colors flex items-center justify-center"
+          :class="{ 'border-purple-500 bg-purple-50': pendingImages.length > 0 }"
+          title="Attach image"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
         <input
           v-model="inputMessage"
           type="text"
@@ -167,7 +219,7 @@
         />
         <button
           type="submit"
-          :disabled="isLoading || !inputMessage.trim()"
+          :disabled="isLoading || (!inputMessage.trim() && pendingImages.length === 0)"
           class="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-700 hover:to-purple-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold shadow-lg hover:shadow-xl disabled:shadow-md"
         >
           <svg v-if="!isLoading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,7 +233,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, inject, computed, onBeforeUnmount } from 'vue'
+import { ref, nextTick, inject, computed, onBeforeUnmount, onMounted } from 'vue'
 import { useSmartChat, type ChatSource } from '~/composables/useSmartChat'
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 import { useRFPWorkflow } from '~/composables/useRFPWorkflow'
@@ -194,6 +246,12 @@ function handleLogoError(event: Event) {
   console.error('Logo failed to load:', event)
 }
 
+interface ImageAttachment {
+  fileName: string
+  base64: string
+  preview: string
+}
+
 interface Message {
   id: string
   role: 'user' | 'assistant'
@@ -204,6 +262,7 @@ interface Message {
   modelName?: string
   isTyping?: boolean
   images?: Array<{ url: string; caption?: string }>
+  userImages?: ImageAttachment[]
 }
 
 const messages = ref<Message[]>([])
@@ -212,6 +271,8 @@ const isLoading = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
 const thinkingMessage = ref<string>('')
 const thinkingInterval = ref<ReturnType<typeof setInterval> | null>(null)
+const imageInputRef = ref<HTMLInputElement>()
+const pendingImages = ref<ImageAttachment[]>([])
 
 // Data source toggles (default all enabled)
 const dataSources = ref({
@@ -236,6 +297,102 @@ function toggleDataSource(source: 'project' | 'code' | 'coop') {
   if (!dataSources.value.project_db && !dataSources.value.code_db && !dataSources.value.coop_manual) {
     dataSources.value.project_db = true
   }
+}
+
+function resizeImage(file: File, maxDimension: number = 2048): Promise<{ base64: string; preview: string; wasResized: boolean }> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      try {
+        let width = img.width
+        let height = img.height
+        let wasResized = false
+
+        if (width > maxDimension || height > maxDimension) {
+          const ratio = Math.min(maxDimension / width, maxDimension / height)
+          width = Math.round(width * ratio)
+          height = Math.round(height * ratio)
+          wasResized = true
+        }
+
+        const canvas = document.createElement('canvas')
+        canvas.width = width
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'))
+          return
+        }
+        ctx.drawImage(img, 0, 0, width, height)
+        const dataUrl = canvas.toDataURL('image/png')
+        const base64Data = dataUrl.split(',')[1]
+        URL.revokeObjectURL(img.src)
+
+        resolve({
+          base64: base64Data,
+          preview: dataUrl,
+          wasResized,
+        })
+      } catch (err) {
+        reject(err)
+      }
+    }
+    img.onerror = () => reject(new Error('Failed to load image'))
+    img.src = URL.createObjectURL(file)
+  })
+}
+
+async function handleImageSelect(event: Event) {
+  const target = event.target as HTMLInputElement
+  const files = target.files
+  if (!files || files.length === 0) return
+
+  const maxImages = 5
+  if (pendingImages.value.length >= maxImages) {
+    alert(`Maximum ${maxImages} images allowed. Remove some to add more.`)
+    target.value = ''
+    return
+  }
+
+  for (const file of Array.from(files)) {
+    if (!file.type.startsWith('image/')) {
+      alert(`${file.name} is not an image file.`)
+      continue
+    }
+
+    const maxSize = 20 * 1024 * 1024 // 20MB
+    if (file.size > maxSize) {
+      alert(`${file.name} is too large. Maximum size is 20MB.`)
+      continue
+    }
+
+    if (pendingImages.value.length >= maxImages) {
+      alert(`Maximum ${maxImages} images allowed.`)
+      break
+    }
+
+    try {
+      const result = await resizeImage(file)
+      pendingImages.value.push({
+        fileName: file.name || 'image.png',
+        base64: result.base64,
+        preview: result.preview,
+      })
+    } catch (error) {
+      console.error('Error processing image:', error)
+      alert(`Error processing ${file.name}. Please try again.`)
+    }
+  }
+
+  target.value = '' // Reset input for re-selection
+}
+
+function triggerImageInput() {
+  imageInputRef.value?.click()
+}
+
+function removeImage(index: number) {
+  pendingImages.value.splice(index, 1)
 }
 
 const { sendSmartMessage, determineQueryIntent } = useSmartChat()
@@ -354,10 +511,17 @@ function getNextModelDesignStep():
 }
 
 async function handleSend() {
-  if (!inputMessage.value.trim() || isLoading.value) return
+  if ((!inputMessage.value.trim() && pendingImages.value.length === 0) || isLoading.value) return
 
-  const userMessage = inputMessage.value.trim()
+  const imagesToSend = [...pendingImages.value]
+  console.log('📸 [SmartChatPanel] handleSend called')
+  console.log('📸 [SmartChatPanel] pendingImages.value.length =', pendingImages.value.length)
+  console.log('📸 [SmartChatPanel] imagesToSend.length =', imagesToSend.length)
+  console.log('📸 [SmartChatPanel] imagesToSend =', imagesToSend)
+  
+  const userMessage = inputMessage.value.trim() || 'What is shown in these images?'
   inputMessage.value = ''
+  pendingImages.value = []
 
   // Check if this is the first user message
   const isFirstMessage = messages.value.filter(m => m.role === 'user').length === 0
@@ -366,7 +530,8 @@ async function handleSend() {
     id: Date.now().toString(),
     role: 'user',
     content: userMessage,
-    timestamp: new Date()
+    timestamp: new Date(),
+    userImages: imagesToSend.length > 0 ? imagesToSend : undefined,
   })
 
   // Emit event when first message is sent to hide welcome screen
@@ -409,9 +574,18 @@ async function handleSend() {
       'Processing response...'
     ])
     
+    const imagesBase64 = imagesToSend.length > 0 ? imagesToSend.map((img) => img.base64) : undefined
+    console.log('📸 [SmartChatPanel] imagesBase64 created:', imagesBase64 ? `${imagesBase64.length} images, first length=${imagesBase64[0]?.substring(0, 50)}...` : 'undefined')
+    console.log('📸 [SmartChatPanel] Calling sendSmartMessage with:', {
+      message: userMessage,
+      images_base64: imagesBase64,
+      dataSources: dataSources.value
+    })
+    
     const response = await sendSmartMessage(userMessage, {
       sessionId: 'default',
-      dataSources: dataSources.value
+      dataSources: dataSources.value,
+      images_base64: imagesBase64
     })
     
     stopThinking()
@@ -1339,8 +1513,33 @@ function openModelFromMessage(modelUrl: string, modelName?: string) {
   }
 }
 
+// Handle paste events for image paste
+function handlePaste(e: ClipboardEvent) {
+  const items = e.clipboardData?.items
+  if (!items) return
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.startsWith('image/')) {
+      e.preventDefault()
+      const file = items[i].getAsFile()
+      if (file) {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
+        const namedFile = new File([file], `screenshot-${timestamp}.png`, { type: file.type })
+        const fakeEvent = { target: { files: [namedFile] } } as any
+        handleImageSelect(fakeEvent)
+      }
+      break
+    }
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('paste', handlePaste)
+})
+
 // Cleanup thinking interval on unmount
 onBeforeUnmount(() => {
   stopThinking()
+  document.removeEventListener('paste', handlePaste)
 })
 </script>

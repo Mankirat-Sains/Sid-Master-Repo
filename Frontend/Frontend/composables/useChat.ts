@@ -39,24 +39,32 @@ export const useChat = () => {
     console.log('📤 Sending chat message to:', url)
     console.log('📝 Message:', message)
     console.log('📚 Data Sources:', dataSources || 'all enabled')
+    console.log('📸 [useChat] images parameter received:', images)
+    console.log('📸 [useChat] images length:', images?.length || 0)
+    console.log('📸 [useChat] images first item preview:', images?.[0]?.substring(0, 50) || 'none')
     
     try {
+      const requestBody = {
+        message,
+        session_id: sessionId,
+        images_base64: images,
+        // Use provided data sources or default to all enabled
+        data_sources: dataSources || {
+          project_db: true,
+          code_db: true,
+          coop_manual: true
+        }
+      }
+      
+      console.log('📸 [useChat] Request body images_base64:', requestBody.images_base64 ? `${requestBody.images_base64.length} images` : 'undefined')
+      console.log('📸 [useChat] Full request body keys:', Object.keys(requestBody))
+      
       const response = await $fetch<ChatResponse>(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: {
-          message,
-          session_id: sessionId,
-          images_base64: images,
-          // Use provided data sources or default to all enabled
-          data_sources: dataSources || {
-            project_db: true,
-            code_db: true,
-            coop_manual: true
-          }
-        }
+        body: requestBody
       })
       
       console.log('✅ Chat response received:', response)

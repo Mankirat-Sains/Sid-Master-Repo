@@ -28,11 +28,16 @@ class RAGWrapper:
         Wraps run_agentic_rag and adds thinking logs.
         This hooks into the graph execution to capture state at each node.
         """
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"🔄 RAGWrapper.run_with_thinking_logs: images_base64={images_base64 is not None}, count={len(images_base64) if images_base64 else 0}")
+        
         # Reset collector
         self.collector = ExecutionStateCollector()
         self.collector.user_query = question
         
         # Call original function
+        logger.info(f"🔄 Calling run_agentic_rag with images_base64={images_base64 is not None}")
         result = run_agentic_rag(
             question=question,
             session_id=session_id,
@@ -142,6 +147,9 @@ def run_agentic_rag_with_thinking_logs(
     images_base64: Optional[List[str]] = None
 ) -> Dict:
     """Public function to call RAG with thinking logs"""
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info(f"🔄 run_agentic_rag_with_thinking_logs called with images_base64={images_base64 is not None}, count={len(images_base64) if images_base64 else 0}")
     return _wrapper.run_with_thinking_logs(
         question=question,
         session_id=session_id,

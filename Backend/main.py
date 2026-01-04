@@ -16,7 +16,6 @@ from config.settings import MAX_CITATIONS_DISPLAY, MAX_ROUTER_DOCS
 from config.logging_config import log_query, log_vlm
 from database import test_database_connection
 from database.supabase_client import vs_smart, vs_large
-from nodes.image_nodes import classify_image_query_intent
 
 # Build graph once at module load
 graph = build_graph()
@@ -38,12 +37,24 @@ def run_agentic_rag(
         question: User's question
         session_id: Session identifier for conversation memory
         data_sources: Dict specifying which databases to use
-        images_base64: Optional list of base64-encoded images for similarity search
+        images_base64: Optional list of base64-encoded images for VLM description (converted to text and used in search)
         
     Returns:
         Dict with answer, citations, and metadata
     """
     t0 = time.time()
+    
+    # Log image receipt at entry point
+    log_vlm.info("")
+    log_vlm.info("🔍" * 30)
+    log_vlm.info(f"🔍 run_agentic_rag CALLED with images_base64={images_base64 is not None}")
+    if images_base64:
+        log_vlm.info(f"🔍 Image count: {len(images_base64)}")
+        log_vlm.info(f"🔍 Image data lengths: {[len(img) for img in images_base64[:3]]} chars (first 3)")
+    else:
+        log_vlm.info(f"🔍 No images provided")
+    log_vlm.info("🔍" * 30)
+    log_vlm.info("")
     
     # Log memory state
     prior = SESSION_MEMORY.get(session_id, {})
@@ -64,31 +75,31 @@ def run_agentic_rag(
     image_context = ""
     if images_base64 and len(images_base64) > 0:
         from nodes.image_nodes import describe_image_for_search
-        log_vlm.info(f"🖼️ {len(images_base64)} image(s) attached - processing with VLM...")
+        log_vlm.info("")
+        log_vlm.info("🔷" * 30)
+        log_vlm.info(f"🖼️ PROCESSING {len(images_base64)} IMAGE(S) WITH VLM")
+        log_vlm.info(f"📝 User question: {question[:150] if question else 'General image description'}")
+        log_vlm.info("🔷" * 30)
         image_descriptions = []
         for i, image_base64 in enumerate(images_base64):
+            log_vlm.info("")
+            log_vlm.info(f"📸 Processing image {i+1}/{len(images_base64)}")
             try:
                 image_description = describe_image_for_search(image_base64, question)
                 image_descriptions.append(f"Image {i+1}: {image_description}")
-                log_vlm.info(f"🖼️ VLM Description {i+1} extracted: {len(image_description)} chars")
+                log_vlm.info(f"✅ Image {i+1} description completed successfully")
             except Exception as e:
-                log_vlm.error(f"🖼️ VLM processing failed for image {i+1}, skipping: {e}")
+                log_vlm.error(f"❌ VLM processing failed for image {i+1}, skipping: {e}")
         
         if image_descriptions:
             image_context = "\n\n[Image Context: " + " | ".join(image_descriptions) + "]"
-            log_vlm.info(f"🖼️ Combined image context: {len(image_context)} chars")
+            log_vlm.info("")
+            log_vlm.info(f"📊 ALL IMAGES PROCESSED - Combined context length: {len(image_context)} chars")
+            log_vlm.info("🔷" * 30)
+            log_vlm.info("")
 
     # Combine question with image context for enhanced search
     enhanced_question = question + image_context if image_context else question
-
-    # Image similarity search setup
-    use_image_similarity = False
-    query_intent = None
-    if images_base64 and len(images_base64) > 0:
-        intent_result = classify_image_query_intent(question, images_base64[0])
-        use_image_similarity = intent_result.get("use_image_similarity", False)
-        query_intent = intent_result.get("intent", None)
-        log_vlm.info(f"🖼️ IMAGE INTENT CLASSIFICATION: intent={query_intent}, use_similarity={use_image_similarity}, confidence={intent_result.get('confidence', 0.0):.2f}")
 
     # Intelligent query rewriting
     log_query.info(f"🎯 QUERY REWRITING INPUT: '{enhanced_question[:500]}...' (truncated)" if len(enhanced_question) > 500 else f"🎯 QUERY REWRITING INPUT: '{enhanced_question}'")
@@ -121,8 +132,8 @@ def run_agentic_rag(
         corrective_attempted=False,
         data_sources=data_sources,
         images_base64=images_base64 if images_base64 else None,
-        use_image_similarity=use_image_similarity,
-        query_intent=query_intent
+        use_image_similarity=False,  # Image embedding disabled - using VLM description only
+        query_intent=None
     )
 
     # Convert dataclass to dict - graph.invoke expects a dict, not a dataclass
