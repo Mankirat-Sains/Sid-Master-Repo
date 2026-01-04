@@ -93,3 +93,22 @@ Backend/.env
 # python junk
 __pycache__/
 *.pyc
+
+
+
+# .NET build + binaries
+**/bin/
+**/obj/
+*.dll
+*.pdb
+*.exe
+
+# large assets / archives
+*.zip
+*.hdr
+*.ifc
+*.ifc.zip
+*.obj
+*.png
+*.jpg
+*.csv
