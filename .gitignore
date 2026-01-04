@@ -85,3 +85,6 @@ coverage/
 *.seed
 *.pid.lock
 
+
+__pycache__/
+*.pyc
