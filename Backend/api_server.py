@@ -466,10 +466,17 @@ async def chat_handler(request: ChatRequest):
         if not images_to_process and request.image_base64:
             images_to_process = [request.image_base64]  # Backwards compatibility
         
+        # Log image receipt status
+        logger.info(f"📸 IMAGE RECEIPT: images_base64={request.images_base64 is not None}, image_base64={request.image_base64 is not None}")
+        logger.info(f"📸 IMAGES TO PROCESS: count={len(images_to_process)}, has_images={len(images_to_process) > 0}")
+        if images_to_process:
+            logger.info(f"📸 Image data lengths: {[len(img) for img in images_to_process[:3]]} chars (showing first 3)")
+        
         # Run the agentic RAG system (with optional images for VLM processing)
         # Use wrapper that adds thinking logs
         from thinking.rag_wrapper import run_agentic_rag_with_thinking_logs
         
+        logger.info(f"🔄 Calling run_agentic_rag_with_thinking_logs with images_base64={images_to_process if images_to_process else None}")
         rag_result = run_agentic_rag_with_thinking_logs(
             question=request.message,
             session_id=request.session_id,
