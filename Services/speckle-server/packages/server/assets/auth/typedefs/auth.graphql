@@ -1,0 +1,14 @@
+extend type ServerInfo {
+  """
+  The authentication strategies available on this server.
+  """
+  authStrategies: [AuthStrategy!]!
+}
+
+type AuthStrategy {
+  id: String!
+  name: String!
+  icon: String!
+  url: String!
+  color: String
+}

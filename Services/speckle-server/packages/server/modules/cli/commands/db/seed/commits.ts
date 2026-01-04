@@ -1,0 +1,78 @@
+import { db } from '@/db/knex'
+import { cliLogger as logger } from '@/observability/logging'
+import { StreamNotFoundError } from '@/modules/core/errors/stream'
+import { UserNotFoundError } from '@/modules/core/errors/user'
+import { getStreamFactory } from '@/modules/core/repositories/streams'
+import { getUserFactory } from '@/modules/core/repositories/users'
+import { ForbiddenError } from '@/modules/shared/errors'
+import type { BasicTestCommit } from '@/test/speckle-helpers/commitHelper'
+import { createTestCommits } from '@/test/speckle-helpers/commitHelper'
+import dayjs from 'dayjs'
+import { times } from 'lodash-es'
+import type { CommandModule } from 'yargs'
+import { ProjectRecordVisibility } from '@/modules/core/helpers/types'
+
+const command: CommandModule<
+  unknown,
+  { streamId: string; count: number; authorId: string }
+> = {
+  command: 'commits <authorId> <streamId> <count>',
+  describe: 'Generate fake commits into the specified stream',
+  builder: {
+    authorId: {
+      describe: 'ID of the user who is going to be the commit author',
+      type: 'string'
+    },
+    streamId: {
+      describe: 'ID of the stream that should receive the commits',
+      type: 'string'
+    },
+    count: {
+      describe: 'Commit count',
+      type: 'number',
+      default: 50
+    }
+  },
+  handler: async (argv) => {
+    const getUser = getUserFactory({ db })
+    const getStream = getStreamFactory({ db })
+
+    const count = argv.count
+    const streamId = argv.streamId
+    const authorId = argv.authorId
+    const date = dayjs().toISOString()
+
+    const user = await getUser(authorId)
+    if (!user?.id) {
+      throw new UserNotFoundError(`User with ID ${authorId} not found`)
+    }
+
+    const stream = await getStream({ streamId, userId: user.id })
+    if (!stream?.id) {
+      throw new StreamNotFoundError(`Stream with ID ${streamId} not found`)
+    }
+    if (stream.visibility !== ProjectRecordVisibility.Public && !stream.role) {
+      throw new ForbiddenError(
+        `Commit author does not have access to the specified stream ${streamId}`
+      )
+    }
+
+    logger.info(`Generating ${count} objects & commits for stream ${streamId}...`)
+    await createTestCommits(
+      times(
+        count,
+        (i): BasicTestCommit => ({
+          id: '',
+          objectId: '',
+          branchId: '',
+          streamId,
+          authorId,
+          message: `#${i} - ${date} - Fake commit batch`
+        })
+      )
+    )
+    logger.info(`...done`)
+  }
+}
+
+export = command

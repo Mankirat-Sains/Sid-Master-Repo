@@ -1,0 +1,257 @@
+extend type Stream {
+  """
+  Returns a list of all the file uploads for this stream.
+  """
+  fileUploads: [FileUpload!]!
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use Project.pendingImportedModels or Model.pendingImportedVersions instead."
+    )
+
+  """
+  Returns a specific file upload that belongs to this stream.
+  """
+  fileUpload(id: String!): FileUpload
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use Project.pendingImportedModels or Model.pendingImportedVersions instead."
+    )
+}
+
+extend type Project {
+  """
+  Returns a list models that are being created from a file import
+  """
+  pendingImportedModels(limit: Int = 25): [FileUpload!]!
+}
+
+type FileUploadCollection {
+  totalCount: Int!
+  cursor: String
+  items: [FileUpload!]!
+}
+
+input GetModelUploadsInput {
+  """
+  The maximum number of uploads to return.
+  """
+  limit: Int = 25
+  """
+  The cursor for pagination.
+  """
+  cursor: String
+}
+
+extend type Model {
+  """
+  Returns a list of versions that are being created from a file import
+  """
+  pendingImportedVersions(limit: Int = 25): [FileUpload!]!
+
+  """
+  Get all file uploads ever done in this model
+  """
+  uploads(input: GetModelUploadsInput): FileUploadCollection!
+}
+
+type FileUpload {
+  id: String!
+  """
+  Alias for streamId
+  """
+  projectId: String!
+  """
+  Alias for branchName
+  """
+  modelName: String!
+  streamId: String!
+  branchName: String!
+  """
+  If present, the conversion result is stored in this commit.
+  """
+  convertedCommitId: String
+  """
+  Alias for convertedCommitId
+  """
+  convertedVersionId: String
+  """
+  The user's id that uploaded this file.
+  """
+  userId: String!
+  """
+  0 = queued, 1 = processing, 2 = success, 3 = error
+  """
+  convertedStatus: Int!
+  """
+  Holds any errors or info.
+  """
+  convertedMessage: String
+  fileName: String!
+  fileType: String!
+  fileSize: Int!
+  uploadComplete: Boolean!
+  uploadDate: DateTime!
+  convertedLastUpdate: DateTime!
+
+  """
+  Model associated with the file upload, if it exists already
+  """
+  model: Model
+  modelId: String
+  """
+  Date when upload was last updated
+  """
+  updatedAt: DateTime!
+}
+
+input GenerateFileUploadUrlInput {
+  projectId: String!
+  fileName: String!
+}
+
+type GenerateFileUploadUrlOutput {
+  url: String!
+  fileId: String!
+}
+
+input StartFileImportInput {
+  projectId: String!
+  modelId: String!
+
+  fileId: String!
+  """
+  The etag is returned by the blob storage provider in the response body after a successful upload.
+  It is used to verify the integrity of the uploaded file.
+  """
+  etag: String!
+}
+
+input FileImportResultInput {
+  """
+  Total processing time in seconds, since job was picked up until it completed
+  """
+  durationSeconds: Float!
+  """
+  Duration of the file download before parsing started in seconds
+  """
+  downloadDurationSeconds: Float!
+  """
+  Duration of the transformation in seconds
+  """
+  parseDurationSeconds: Float!
+  """
+  Parser used for import
+  """
+  parser: String!
+  """
+  Version associated if applicable
+  """
+  versionId: String
+}
+
+enum JobResultStatus {
+  success
+  error
+}
+
+input FinishFileImportInput {
+  projectId: String!
+  """
+  This is the blob Id of the uploaded file. For legacy reasons it is named jobId.
+  Note: This is the not the background job Id.
+  """
+  jobId: String!
+  status: JobResultStatus!
+  reason: String
+  warnings: [String!]
+  result: FileImportResultInput!
+}
+
+type FileUploadMutations {
+  """
+  Generate a pre-signed url to which a file can be uploaded.
+  After uploading the file, call mutation startFileImport to register the completed upload.
+  """
+  generateUploadUrl(input: GenerateFileUploadUrlInput!): GenerateFileUploadUrlOutput!
+    @hasServerRole(role: SERVER_GUEST)
+
+  """
+  Before calling this mutation, call generateUploadUrl to get the
+  pre-signed url and blobId. Then upload the file to that url.
+  Once the upload to the pre-signed url is completed, this mutation should be
+  called to register the completed upload and create the blob metadata.
+  """
+  startFileImport(input: StartFileImportInput!): FileUpload!
+    @hasServerRole(role: SERVER_GUEST)
+
+  """
+  Marks the file import flow as completed for that specific job
+  recording the provided status, and emitting the needed subscriptions.
+  Mostly for internal service usage.
+  """
+  finishFileImport(input: FinishFileImportInput!): Boolean!
+}
+
+extend type Mutation {
+  fileUploadMutations: FileUploadMutations!
+    @hasScope(scope: "streams:write")
+    @hasServerRole(role: SERVER_GUEST)
+}
+
+enum ProjectPendingModelsUpdatedMessageType {
+  CREATED
+  UPDATED
+}
+
+type ProjectPendingModelsUpdatedMessage {
+  type: ProjectPendingModelsUpdatedMessageType!
+  """
+  Upload ID
+  """
+  id: String!
+  model: FileUpload!
+}
+
+enum ProjectPendingVersionsUpdatedMessageType {
+  CREATED
+  UPDATED
+}
+
+type ProjectPendingVersionsUpdatedMessage {
+  type: ProjectPendingVersionsUpdatedMessageType!
+  """
+  Upload ID
+  """
+  id: String!
+  version: FileUpload!
+}
+
+enum ProjectFileImportUpdatedMessageType {
+  CREATED
+  UPDATED
+}
+
+type ProjectFileImportUpdatedMessage {
+  type: ProjectFileImportUpdatedMessageType!
+  """
+  Upload ID
+  """
+  id: String!
+  upload: FileUpload!
+}
+
+extend type Subscription {
+  """
+  Subscribe to changes to a project's pending models
+  """
+  projectPendingModelsUpdated(id: String!): ProjectPendingModelsUpdatedMessage!
+  """
+  Subscribe to changes to a project's pending versions
+  """
+  projectPendingVersionsUpdated(id: String!): ProjectPendingVersionsUpdatedMessage!
+  """
+  Subscribe to changes to any of a project's file imports
+  """
+  projectFileImportUpdated(id: String!): ProjectFileImportUpdatedMessage!
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use projectPendingModelsUpdated or projectPendingVersionsUpdated instead."
+    )
+}

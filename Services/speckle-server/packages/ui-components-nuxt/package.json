@@ -1,0 +1,32 @@
+{
+  "name": "@speckle/ui-components-nuxt",
+  "description": "Companion Nuxt module for @speckle/ui-components",
+  "version": "0.0.1",
+  "scripts": {
+    "lint:js": "eslint .",
+    "lint:prettier": "prettier --config ../../.prettierrc --ignore-path ../../.prettierignore --check .",
+    "lint": "yarn lint:js && yarn lint:prettier",
+    "lint:ci": "echo 1"
+  },
+  "type": "module",
+  "module": "index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    }
+  },
+  "peerDependencies": {
+    "@nuxt/kit": "^3.2.0",
+    "@speckle/ui-components": "*"
+  },
+  "dependencies": {
+    "lodash-es": "^4.0.0"
+  },
+  "devDependencies": {
+    "@nuxt/kit": "^3.8.2",
+    "@speckle/ui-components": "workspace:^",
+    "eslint": "^9.4.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^2.7.1"
+  }
+}

@@ -1,0 +1,27 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: speckle-server
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "speckle.labels" . | indent 4 }}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    {{- if .Values.cert_manager_issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.cert_manager_issuer }}
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    {{- end }}
+spec:
+  ingressClassName: alb
+  {{- if .Values.cert_manager_issuer }}
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+    secretName: server-tls
+  {{- end }}
+  rules:
+  - host: {{ .Values.domain }}
+{{- end }}

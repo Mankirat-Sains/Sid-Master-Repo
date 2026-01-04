@@ -1,0 +1,11 @@
+# Enable ingress with AWS ALB
+ingress:
+  enabled: true
+  namespace: kube-system
+  controllerName: aws-load-balancer-controller
+  client_max_body_size_mb: 10
+
+# Domain - using the main ALB hostname
+domain: k8s-specklep-speckles-6cd6f77af2-1310801954.ca-central-1.elb.amazonaws.com
+ssl_canonical_url: false  # Set to true if you configure HTTPS later
+

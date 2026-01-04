@@ -1,0 +1,94 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>SpeckleAutoInstaller</AssemblyName>
+    <RootNamespace>Speckle.AutoInstaller</RootNamespace>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <!-- UI Automation references for dialog handling -->
+  <ItemGroup>
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
+  </ItemGroup>
+
+
+  <!-- Embedded Resources: Connector DLLs for each Revit version -->
+  <!-- Note: DLLs must be placed in Resources/Revit{Year}/ folders before building -->
+  <!-- See DLL_SETUP_GUIDE.md for instructions -->
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Revit2020\**\*.dll">
+      <Link>Resources\Revit2020\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Revit2021\**\*.dll">
+      <Link>Resources\Revit2021\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Revit2022\**\*.dll">
+      <Link>Resources\Revit2022\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Revit2023\**\*.dll">
+      <Link>Resources\Revit2023\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Revit2024\**\*.dll">
+      <Link>Resources\Revit2024\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Revit2025\**\*.dll">
+      <Link>Resources\Revit2025\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- Ensure SQLite native DLLs are copied to output directory for .NET Framework -->
+  <!-- This is needed because .NET Framework doesn't automatically handle native dependencies like .NET Core -->
+  <Target Name="CopySqliteNativeDlls" AfterTargets="AfterBuild">
+    <PropertyGroup>
+      <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    </PropertyGroup>
+    
+    <!-- Find e_sqlite3.dll from the Microsoft.Data.Sqlite.Core package -->
+    <ItemGroup>
+      <SqliteNativeDlls Include="$(NuGetPackageRoot)Microsoft.Data.Sqlite.Core\7.0.5\runtimes\win-x64\native\e_sqlite3.dll" />
+      <!-- Fallback: try to find any version -->
+      <SqliteNativeDllsFallback Include="$(NuGetPackageRoot)Microsoft.Data.Sqlite.Core\*\runtimes\win-x64\native\e_sqlite3.dll" />
+    </ItemGroup>
+    
+    <!-- Use fallback if specific version not found -->
+    <ItemGroup Condition="'@(SqliteNativeDlls)' == ''">
+      <SqliteNativeDlls Include="@(SqliteNativeDllsFallback)" />
+    </ItemGroup>
+    
+    <!-- Ensure the runtimes folder structure exists at the ROOT output path (not in win-x64 subfolder) -->
+    <MakeDir Directories="$(OutputPath)runtimes\win-x64\native" Condition="!Exists('$(OutputPath)runtimes\win-x64\native')" />
+    
+    <!-- Copy native DLL from NuGet package to output runtimes folder -->
+    <Copy SourceFiles="@(SqliteNativeDlls)" 
+          DestinationFolder="$(OutputPath)runtimes\win-x64\native" 
+          Condition="'@(SqliteNativeDlls)' != '' AND Exists('%(Identity)')"
+          SkipUnchangedFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="FilesCopied" />
+    </Copy>
+    
+    <!-- Also copy to root as fallback (but this should be the correct one from runtimes) -->
+    <Copy SourceFiles="@(FilesCopied)" 
+          DestinationFiles="$(OutputPath)e_sqlite3.dll" 
+          Condition="'@(FilesCopied)' != ''"
+          SkipUnchangedFiles="true" />
+    
+    <Message Text="SQLite native DLL source: @(SqliteNativeDlls)" Condition="'@(SqliteNativeDlls)' != ''" Importance="high" />
+    <Message Text="Copied SQLite native DLL to: $(OutputPath)runtimes\win-x64\native\e_sqlite3.dll" Condition="'@(FilesCopied)' != ''" Importance="high" />
+    <Warning Text="SQLite native DLL (e_sqlite3.dll) not found. Searched in: $(NuGetPackageRoot)Microsoft.Data.Sqlite.Core" Condition="'@(FilesCopied)' == ''" />
+  </Target>
+</Project>

@@ -1,0 +1,18 @@
+{
+  "signal": "SIGKILL",
+  "watch": [
+    "./modules",
+    "./assets",
+    "./db",
+    "./healthchecks",
+    "./observability",
+    "./app.ts",
+    "./bootstrap.ts",
+    "./knexfile.ts",
+    "./root.js",
+    ".env",
+    "multiregion.json"
+  ],
+  "ext": "js,ts,graphql,env,gql",
+  "delay": 1000
+}

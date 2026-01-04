@@ -1,0 +1,280 @@
+extend type Stream {
+  commits(limit: Int! = 25, cursor: String): CommitCollection
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use Project.versions instead."
+    )
+  commit(id: String): Commit
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use Project.version instead."
+    )
+  branches(limit: Int! = 25, cursor: String): BranchCollection
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use Project.models or Project.modelsTree instead."
+    )
+  branch(name: String = "main"): Branch
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use Project.model or Project.modelByName instead."
+    )
+}
+
+extend type User {
+  """
+  Get commits authored by the user. If requested for another user, then only commits
+  from public streams will be returned.
+  """
+  commits(limit: Int! = 25, cursor: String): CommitCollection
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use User.versions instead."
+    )
+}
+
+extend type LimitedUser {
+  """
+  Get public stream commits authored by the user
+  """
+  commits(limit: Int! = 25, cursor: String): CommitCollection
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future."
+    )
+}
+
+type Branch {
+  id: String!
+  name: String!
+  author: User
+  description: String
+  createdAt: DateTime
+  commits(limit: Int! = 25, cursor: String): CommitCollection
+}
+
+type Commit {
+  id: String!
+  referencedObject: String!
+  message: String
+  sourceApplication: String
+  totalChildrenCount: Int
+  branchName: String
+  branch: Branch
+  parents: [String]
+  authorName: String
+  authorId: String
+  authorAvatar: String
+  createdAt: DateTime
+  streamId: String @deprecated(reason: "Use the stream field instead")
+  streamName: String @deprecated(reason: "Use the stream field instead")
+  """
+  Will throw an authorization error if active user isn't authorized to see it, for example,
+  if a stream isn't public and the user doesn't have the appropriate rights.
+  """
+  stream: Stream! @hasServerRole(role: SERVER_GUEST) @hasScope(scope: "streams:read")
+}
+
+type BranchCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Branch!]
+}
+
+type CommitCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Commit!]
+}
+
+extend type Mutation {
+  branchCreate(branch: BranchCreateInput!): String!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use ModelMutations.create instead."
+    )
+  branchUpdate(branch: BranchUpdateInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use ModelMutations.update instead."
+    )
+
+  branchDelete(branch: BranchDeleteInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use ModelMutations.delete instead."
+    )
+
+  commitCreate(commit: CommitCreateInput!): String!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.create instead."
+    )
+
+  commitUpdate(commit: CommitUpdateInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.update/moveToModel instead."
+    )
+
+  commitReceive(input: CommitReceivedInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:read")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.markReceived instead."
+    )
+
+  commitDelete(commit: CommitDeleteInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.delete instead."
+    )
+
+  """
+  Move a batch of commits to a new branch
+  """
+  commitsMove(input: CommitsMoveInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.moveToModel instead."
+    )
+
+  """
+  Delete a batch of commits
+  """
+  commitsDelete(input: CommitsDeleteInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:write")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.delete instead."
+    )
+}
+
+extend type Subscription {
+  # TODO: auth for these subscriptions
+  """
+  Subscribe to branch created event
+  """
+  branchCreated(streamId: String!): JSONObject
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:read")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use 'projectModelsUpdated' instead."
+    )
+
+  """
+  Subscribe to branch updated event.
+  """
+  branchUpdated(streamId: String!, branchId: String): JSONObject
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:read")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use 'projectModelsUpdated' instead."
+    )
+
+  """
+  Subscribe to branch deleted event
+  """
+  branchDeleted(streamId: String!): JSONObject
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:read")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use 'projectModelsUpdated' instead."
+    )
+
+  """
+  Subscribe to commit created event
+  """
+  commitCreated(streamId: String!): JSONObject
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:read")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use 'projectVersionsUpdated' instead."
+    )
+
+  """
+  Subscribe to commit updated event.
+  """
+  commitUpdated(streamId: String!, commitId: String): JSONObject
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:read")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use 'projectVersionsUpdated' instead."
+    )
+
+  """
+  Subscribe to commit deleted event
+  """
+  commitDeleted(streamId: String!): JSONObject
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "streams:read")
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future. Use 'projectVersionsUpdated' instead."
+    )
+}
+
+input BranchCreateInput {
+  streamId: String!
+  name: String!
+  description: String
+}
+
+input BranchUpdateInput {
+  streamId: String!
+  id: String!
+  name: String
+  description: String
+}
+
+input BranchDeleteInput {
+  streamId: String!
+  id: String!
+}
+
+input CommitCreateInput {
+  streamId: String!
+  branchName: String!
+  objectId: String!
+  message: String
+  sourceApplication: String
+  totalChildrenCount: Int
+  """
+  **DEPRECATED** Use the `parents` field.
+  """
+  previousCommitIds: [String] @deprecated
+  parents: [String]
+}
+
+input CommitUpdateInput {
+  streamId: String!
+  id: String!
+  message: String
+  """
+  To move the commit to a different branch, please the name of the branch.
+  """
+  newBranchName: String
+}
+
+input CommitReceivedInput {
+  streamId: String!
+  commitId: String!
+  sourceApplication: String!
+  message: String
+}
+
+input CommitDeleteInput {
+  streamId: String!
+  id: String!
+}
+
+input CommitsMoveInput {
+  streamId: ID!
+  targetBranch: String!
+  commitIds: [String!]!
+}
+
+input CommitsDeleteInput {
+  streamId: ID!
+  commitIds: [String!]!
+}

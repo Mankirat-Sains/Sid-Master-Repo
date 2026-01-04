@@ -1,0 +1,21 @@
+extend type Automation {
+  permissions: AutomationPermissionChecks!
+}
+
+type AutomationPermissionChecks {
+  canRead: PermissionCheckResult!
+  canUpdate: PermissionCheckResult!
+  canDelete: PermissionCheckResult!
+}
+
+extend type ProjectPermissionChecks {
+  canCreateAutomation: PermissionCheckResult!
+}
+
+type AutomateFunctionPermissionChecks {
+  canRegenerateToken: PermissionCheckResult!
+}
+
+extend type AutomateFunction {
+  permissions: AutomateFunctionPermissionChecks!
+}

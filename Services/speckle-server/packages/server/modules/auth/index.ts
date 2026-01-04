@@ -1,0 +1,195 @@
+import type { SpeckleModule } from '@/modules/shared/helpers/typeHelper'
+
+import { registerOrUpdateScopeFactory } from '@/modules/shared/repositories/scopes'
+import { logger, moduleLogger } from '@/observability/logging'
+import db from '@/db/knex'
+import { initializeDefaultAppsFactory } from '@/modules/auth/services/serverApps'
+import {
+  getAllScopesFactory,
+  getAppFactory,
+  updateDefaultAppFactory,
+  registerDefaultAppFactory,
+  createAuthorizationCodeFactory
+} from '@/modules/auth/repositories/apps'
+import setupStrategiesFactory from '@/modules/auth/strategies'
+import githubStrategyBuilderFactory from '@/modules/auth/strategies/github'
+import {
+  validateServerInviteFactory,
+  finalizeInvitedServerRegistrationFactory,
+  resolveAuthRedirectPathFactory
+} from '@/modules/serverinvites/services/processing'
+import {
+  findServerInviteFactory,
+  deleteServerOnlyInvitesFactory,
+  updateAllInviteTargetsFactory
+} from '@/modules/serverinvites/repositories/serverInvites'
+import authRestApi from '@/modules/auth/rest/index'
+import authScopes from '@/modules/auth/scopes'
+import type { AuthStrategyMetadata } from '@/modules/auth/helpers/types'
+import azureAdStrategyBuilderFactory from '@/modules/auth/strategies/azureAd'
+import googleStrategyBuilderFactory from '@/modules/auth/strategies/google'
+import localStrategyBuilderFactory from '@/modules/auth/strategies/local'
+import oidcStrategyBuilderFactory from '@/modules/auth/strategies/oidc'
+import { throwIfRateLimitedFactory } from '@/modules/core/utils/ratelimiter'
+import { passportAuthenticateHandlerBuilderFactory } from '@/modules/auth/services/passportService'
+import {
+  countAdminUsersFactory,
+  getUserByEmailFactory,
+  getUserFactory,
+  legacyGetUserByEmailFactory,
+  legacyGetUserFactory,
+  storeUserAclFactory,
+  storeUserFactory
+} from '@/modules/core/repositories/users'
+import {
+  createUserFactory,
+  findOrCreateUserFactory,
+  validateUserPasswordFactory
+} from '@/modules/core/services/users/management'
+import {
+  createUserEmailFactory,
+  ensureNoPrimaryEmailForUserFactory,
+  findEmailFactory,
+  findPrimaryEmailForUserFactory
+} from '@/modules/core/repositories/userEmails'
+import { validateAndCreateUserEmailFactory } from '@/modules/core/services/userEmails'
+import { requestNewEmailVerificationFactory } from '@/modules/emails/services/verification/request'
+import { deleteOldAndInsertNewVerificationFactory } from '@/modules/emails/repositories'
+import { renderEmail } from '@/modules/emails/services/emailRendering'
+import { sendEmail } from '@/modules/emails/services/sending'
+import { getServerInfoFactory } from '@/modules/core/repositories/server'
+import { getEventBus } from '@/modules/shared/services/eventBus'
+import { isRateLimiterEnabled } from '@/modules/shared/helpers/envHelper'
+import { getAllRegisteredDbs } from '@/modules/multiregion/utils/dbSelector'
+import type { CreateValidatedUser } from '@/modules/core/domain/users/operations'
+import { asMultiregionalOperation } from '@/modules/shared/command'
+
+const initializeDefaultApps = initializeDefaultAppsFactory({
+  getAllScopes: getAllScopesFactory({ db }),
+  getApp: getAppFactory({ db }),
+  updateDefaultApp: updateDefaultAppFactory({ db }),
+  registerDefaultApp: registerDefaultAppFactory({ db })
+})
+
+const validateServerInvite = validateServerInviteFactory({
+  findServerInvite: findServerInviteFactory({ db })
+})
+const finalizeInvitedServerRegistration = finalizeInvitedServerRegistrationFactory({
+  deleteServerOnlyInvites: deleteServerOnlyInvitesFactory({ db }),
+  updateAllInviteTargets: updateAllInviteTargetsFactory({ db })
+})
+const resolveAuthRedirectPath = resolveAuthRedirectPathFactory()
+
+const createUser: CreateValidatedUser = async (...input) =>
+  asMultiregionalOperation(
+    async ({ mainDb, allDbs, emit }) => {
+      const createUser = createUserFactory({
+        getServerInfo: getServerInfoFactory({ db: mainDb }),
+        findEmail: findEmailFactory({ db: mainDb }),
+        storeUser: async (...params) => {
+          const [user] = await Promise.all(
+            allDbs.map((db) => storeUserFactory({ db })(...params))
+          )
+
+          return user
+        },
+        countAdminUsers: countAdminUsersFactory({ db: mainDb }),
+        storeUserAcl: storeUserAclFactory({ db: mainDb }),
+        validateAndCreateUserEmail: validateAndCreateUserEmailFactory({
+          createUserEmail: createUserEmailFactory({ db: mainDb }),
+          ensureNoPrimaryEmailForUser: ensureNoPrimaryEmailForUserFactory({
+            db: mainDb
+          }),
+          findEmail: findEmailFactory({ db: mainDb }),
+          updateEmailInvites: finalizeInvitedServerRegistrationFactory({
+            deleteServerOnlyInvites: deleteServerOnlyInvitesFactory({ db: mainDb }),
+            updateAllInviteTargets: updateAllInviteTargetsFactory({ db: mainDb })
+          }),
+          requestNewEmailVerification: requestNewEmailVerificationFactory({
+            getServerInfo: getServerInfoFactory({ db }),
+            findEmail: findEmailFactory({ db: mainDb }),
+            getUser: getUserFactory({ db: mainDb }),
+            deleteOldAndInsertNewVerification: deleteOldAndInsertNewVerificationFactory(
+              {
+                db: mainDb
+              }
+            ),
+            renderEmail,
+            sendEmail
+          })
+        }),
+        emitEvent: emit
+      })
+
+      return createUser(...input)
+    },
+    {
+      dbs: await getAllRegisteredDbs(),
+      name: 'create user',
+      logger
+    }
+  )
+
+const commonBuilderDeps = {
+  getServerInfo: getServerInfoFactory({ db }),
+  getUserByEmail: legacyGetUserByEmailFactory({ db }),
+  buildFindOrCreateUser: async () => {
+    return findOrCreateUserFactory({
+      createUser,
+      findPrimaryEmailForUser: findPrimaryEmailForUserFactory({ db })
+    })
+  },
+  validateServerInvite,
+  finalizeInvitedServerRegistration,
+  resolveAuthRedirectPath,
+  passportAuthenticateHandlerBuilder: passportAuthenticateHandlerBuilderFactory({
+    resolveAuthRedirectPath
+  })
+}
+const setupStrategies = setupStrategiesFactory({
+  githubStrategyBuilder: githubStrategyBuilderFactory({
+    ...commonBuilderDeps
+  }),
+  azureAdStrategyBuilder: azureAdStrategyBuilderFactory({ ...commonBuilderDeps }),
+  googleStrategyBuilder: googleStrategyBuilderFactory({ ...commonBuilderDeps }),
+  localStrategyBuilder: localStrategyBuilderFactory({
+    ...commonBuilderDeps,
+    validateUserPassword: validateUserPasswordFactory({
+      getUserByEmail: getUserByEmailFactory({ db })
+    }),
+    createUser,
+    throwIfRateLimited: throwIfRateLimitedFactory({
+      rateLimiterEnabled: isRateLimiterEnabled()
+    })
+  }),
+  oidcStrategyBuilder: oidcStrategyBuilderFactory({ ...commonBuilderDeps }),
+  createAuthorizationCode: createAuthorizationCodeFactory({ db }),
+  getUser: legacyGetUserFactory({ db }),
+  emitEvent: getEventBus().emit
+})
+
+let authStrategies: AuthStrategyMetadata[]
+
+export const init: SpeckleModule['init'] = async ({ app }) => {
+  moduleLogger.info('🔑 Init auth module')
+
+  // Initialize authn strategies
+  authStrategies = await setupStrategies(app)
+
+  // Hoist auth routes
+  authRestApi(app)
+
+  // Register core-based scopes
+  const registerFunc = registerOrUpdateScopeFactory({ db })
+  for (const scope of authScopes) {
+    await registerFunc({ scope })
+  }
+}
+
+export const finalize: SpeckleModule['finalize'] = async () => {
+  // Note: we're registering the default apps last as we want to ensure that all
+  // scopes have been registered by any other modules.
+  await initializeDefaultApps()
+}
+
+export const getAuthStrategies = (): AuthStrategyMetadata[] => authStrategies

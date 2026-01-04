@@ -11,7 +11,7 @@ from config.settings import (
 from config.logging_config import log_query
 from database.supabase_client import vs_smart, vs_large, vs_code, vs_coop
 from database.retrievers import (
-    make_code_hybrid_retriever, make_coop_hybrid_retriever,
+    make_hybrid_retriever, make_code_hybrid_retriever, make_coop_hybrid_retriever,
     mmr_rerank_code, mmr_rerank_coop
 )
 from config.llm_instances import emb
@@ -53,15 +53,19 @@ def _log_retrieved_chunks_detailed(docs, logger):
 
 def node_retrieve(state: RAGState) -> dict:
     """Retrieve documents based on plan or direct query"""
+    print("🔍 node_retrieve called")  # Diagnostic - always visible
     t_start = time.time()
     try:
         log_query.info(">>> RETRIEVE START")
 
         if state.query_plan and state.query_plan.get("steps"):
+            print("✅ Using plan-based retrieval")  # Diagnostic
             result = execute_plan(state)
             docs = result.get("retrieved_docs", [])
             code_docs = result.get("retrieved_code_docs", [])
             coop_docs = result.get("retrieved_coop_docs", [])
+            
+            print(f"📊 Plan retrieval: {len(docs)} project docs, {len(code_docs)} code docs, {len(coop_docs)} coop docs")  # Diagnostic
             
             _log_docs_summary(docs, log_query, "Retrieved via plan (project)")
             if code_docs:
@@ -88,6 +92,7 @@ def node_retrieve(state: RAGState) -> dict:
             return result
 
         # Fallback to legacy retrieval when no plan is provided
+        print("⚠️ Using legacy retrieval path (no plan)")  # Diagnostic
         log_query.info("Using legacy retrieval (no plan)")
         
         data_sources = state.data_sources or {"project_db": True, "code_db": False, "coop_manual": False}
@@ -99,7 +104,7 @@ def node_retrieve(state: RAGState) -> dict:
         code_docs = []
         coop_docs = []
         
-        # PROJECT DATABASE RETRIEVAL
+        # PROJECT DATABASE RETRIEVAL - Use hybrid retriever instead of direct similarity_search
         if project_db_enabled:
             route = state.data_route if (state.data_route and state.data_route != "code") else "smart"
             
@@ -112,11 +117,15 @@ def node_retrieve(state: RAGState) -> dict:
                 route = "smart"
             
             try:
-                if route == "smart" and vs_smart is not None:
-                    project_docs = vs_smart.similarity_search(state.user_query, k=chunk_limit)
-                elif route == "large" and vs_large is not None:
-                    project_docs = vs_large.similarity_search(state.user_query, k=chunk_limit)
+                print(f"🔍 Legacy retrieval: route={route}, chunk_limit={chunk_limit}")  # Diagnostic
+                # Use hybrid retriever instead of direct similarity_search to ensure RPC functions are used
+                retriever = make_hybrid_retriever(project=None, sql_filters=None, route=route)
+                project_docs = retriever(state.user_query, k=chunk_limit)
+                print(f"✅ Legacy retrieval got {len(project_docs)} docs")  # Diagnostic
             except Exception as e:
+                print(f"❌ Legacy retrieval failed: {e}")  # Diagnostic
+                import traceback
+                traceback.print_exc()
                 log_query.error(f"❌ Project database retrieve failed ({route}): {e}")
                 project_docs = []
         
@@ -175,6 +184,9 @@ def node_retrieve(state: RAGState) -> dict:
         
         return result
     except Exception as e:
+        print(f"❌ node_retrieve failed: {e}")  # Diagnostic - always visible
+        import traceback
+        traceback.print_exc()  # Show full traceback
         log_query.error(f"node_retrieve failed: {e}")
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< RETRIEVE DONE (with error) in {t_elapsed:.2f}s")

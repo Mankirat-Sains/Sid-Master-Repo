@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <Title>SpeckleRhino</Title>
+    <Description>Description of SpeckleRhino</Description>
+    <TargetExt>.rhp</TargetExt>
+    <Product>ConnectorRhino6</Product>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblyName>SpeckleConnectorRhino</AssemblyName>
+    <Configurations>Debug;Release;Debug Mac;Release Mac</Configurations>
+    <RootNamespace>SpeckleRhino</RootNamespace>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <UseWpf>true</UseWpf>
+    <DefineConstants>$(DefineConstants);RHINO6;RHINO6_OR_GREATER</DefineConstants>
+    <RhinoMacLauncher>/Applications/Rhinoceros.app</RhinoMacLauncher>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
+    <StartProgram>C:\Program Files\Rhino 6\System\Rhino.exe</StartProgram>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug Mac' Or '$(Configuration)'=='Release Mac'">
+    <DefineConstants>$(DefineConstants);MAC</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="..\ConnectorRhino\ConnectorRhinoShared\ConnectorRhinoShared.projitems" Label="Shared"/>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\**\*"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon" Version="6.28.20199.17141"/>
+    <PackageReference Include="RhinoWindows" Version="6.28.20199.17141"/>
+    <PackageReference Include="System.Resources.Extensions" Version="7.0.0"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ConnectorGrasshopper\ConnectorGrasshopper6\ConnectorGrasshopper6.csproj"/>
+    <ProjectReference Include="..\..\DesktopUI2\AvaloniaHwndHost\AvaloniaHwndHost.csproj"/>
+    <ProjectReference Include="..\..\DesktopUI2\DesktopUI2\DesktopUI2.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore"/>
+    <Reference Include="PresentationFramework"/>
+    <Reference Include="System.Xaml"/>
+  </ItemGroup>
+</Project>

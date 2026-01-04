@@ -1,0 +1,44 @@
+<UserControl
+  x:Class="DesktopUI2.Views.Windows.Dialogs.Dialog"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  d:DesignHeight="200"
+  d:DesignWidth="400"
+  mc:Ignorable="d">
+  <Grid ColumnDefinitions="auto,*" RowDefinitions="auto, auto, auto">
+    <icons:MaterialIcon
+      Name="Icon"
+      Width="20"
+      Height="20"
+      Margin="15,15,10,15"
+      Kind="HandOkay" />
+    <TextBlock
+      Name="Title"
+      Grid.Column="1"
+      Margin="0,15,15,15"
+      VerticalAlignment="Center"
+      Classes="Subtitle1"
+      Text="Something happened and it is really bad test new line"
+      TextWrapping="Wrap" />
+
+    <TextBlock
+      Name="Message"
+      Grid.Row="1"
+      Grid.ColumnSpan="2"
+      Margin="15,15,15,0"
+      Text="I am some text"
+      TextWrapping="Wrap" />
+
+    <Button
+      Grid.Row="2"
+      Grid.ColumnSpan="2"
+      Margin="15"
+      HorizontalAlignment="Right"
+      Click="Close_Click"
+      Content="Close" />
+
+  </Grid>
+</UserControl>

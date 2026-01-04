@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>SpeckleConnector</RootNamespace>
+    <AssemblyName>SpeckleConnector</AssemblyName>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyTitle>DriverPluginCSharp</AssemblyTitle>
+    <Product>DriverPluginCSharp</Product>
+    <Copyright />
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DriverCSharp\DriverCSharp.csproj" />
+  </ItemGroup>
+</Project>

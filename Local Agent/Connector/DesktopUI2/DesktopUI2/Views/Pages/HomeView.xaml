@@ -1,0 +1,543 @@
+<UserControl
+  x:Class="DesktopUI2.Views.Pages.HomeView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+  xmlns:c="clr-namespace:DesktopUI2.Views.Controls"
+  xmlns:conv="clr-namespace:DesktopUI2.Views.Converters"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:dvm="clr-namespace:DesktopUI2.ViewModels.DesignViewModels"
+  xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+  xmlns:local="clr-namespace:DesktopUI2.Views.Pages"
+  xmlns:m="clr-namespace:Material.Styles;assembly=Material.Styles"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  d:DesignHeight="550"
+  d:DesignWidth="400"
+  mc:Ignorable="d">
+  <Design.DataContext>
+    <dvm:DesignHomeViewModel />
+  </Design.DataContext>
+  <UserControl.Resources>
+    <conv:EnumBooleanConverter x:Key="EnumBooleanConverter" />
+    <conv:RoleReceiveErrorMessageConverter x:Key="RoleReceiveErrorMessageConverter" />
+    
+  </UserControl.Resources>
+  <Grid RowDefinitions="auto, *">
+    <!--  HEADER BAR  -->
+    <Border
+      Padding="10"
+      Background="{DynamicResource PrimaryHueMidBrush}"
+      CornerRadius="0">
+      <Grid ColumnDefinitions="auto,auto,auto,*,auto,auto,auto,auto">
+
+        <Image
+          Grid.Column="0"
+          Height="30"
+          Source="/Assets/logo.png" />
+        <TextBlock
+          Grid.Column="1"
+          Margin="5,0,0,0"
+          VerticalAlignment="Center"
+          Classes="SpeckleFont"
+          FontSize="16"
+          FontWeight="Medium"
+          Foreground="White"
+          Text="{Binding Title}"
+          TextTrimming="CharacterEllipsis" />
+
+        <TextBlock
+          Grid.Column="2"
+          Margin="6,0,0,0"
+          VerticalAlignment="Center"
+          FontSize="10"
+          Foreground="White"
+          Opacity="0.9"
+          Text="{Binding Version}"
+          TextTrimming="CharacterEllipsis" />
+        
+
+        <!--  ACCOUNT MENU  -->
+
+        <Menu
+          Grid.Column="6"
+          VerticalAlignment="Center"
+          IsEnabled="{Binding !InProgress}"
+          Items="{Binding MenuItems}">
+          <Menu.Styles>
+            <Style Selector="MenuItem">
+              <Setter Property="Header" Value="{Binding Header}" />
+              <Setter Property="Icon" Value="{Binding Icon}" />
+              <Setter Property="MinWidth" Value="28" />
+              <Setter Property="Items" Value="{Binding Items}" />
+              <Setter Property="Command" Value="{Binding Command}" />
+              <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
+            </Style>
+          </Menu.Styles>
+        </Menu>
+
+
+
+        <!--  NOTIFICATIONS  -->
+        <Grid Grid.Column="7" IsVisible="{Binding Notifications.Count}">
+          <m:FloatingButton
+            VerticalAlignment="Center"
+            assists:ShadowAssist.ShadowDepth="Depth0"
+            Background="Transparent"
+            Classes="Mini"
+            Command="{Binding NotificationsCommand}"
+            ToolTip.Tip="Notifications">
+            <Button.Content>
+              <Grid>
+                <icons:MaterialIcon
+                  Width="15"
+                  Height="15"
+                  assists:ShadowAssist.ShadowDepth="0"
+                  Foreground="White"
+                  Kind="Notifications" />
+              </Grid>
+            </Button.Content>
+          </m:FloatingButton>
+          <Border
+            Width="15"
+            Height="15"
+            Margin="15,0,0,15"
+            Background="Red"
+            CornerRadius="8"
+            ToolTip.Tip="You have notifications">
+            <TextBlock
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              assists:TextFieldAssist.CornerRadius="20"
+              FontSize="8"
+              FontWeight="Bold"
+              Foreground="White"
+              Text="{Binding Notifications.Count}" />
+          </Border>
+        </Grid>
+      </Grid>
+    </Border>
+    <!--  MAIN BODY  -->
+    <Grid
+      Grid.Row="1"
+      Margin="5,10,5,5"
+      IsVisible="{Binding HasAccounts}"
+      RowDefinitions="auto, auto, auto, auto, *, auto">
+      
+      <!-- Next-gen connectors Banner -->
+      <Border
+        Grid.Row="0"
+        Margin="0,10,0,15"
+        CornerRadius="10"
+        Background="White"
+        Padding="10"
+        IsVisible="{Binding ShowLegacyConnectorWarning}">
+        <Grid>
+          <!-- Dismiss Button -->
+          <Button
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Command="{Binding DismissWarningCommand}">
+            <TextBlock
+              Text="✕"
+              FontSize="10"
+              Foreground="Black"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center" />
+          </Button>
+          <Grid Margin="0,20,0,0">
+            <StackPanel Grid.Column="1">
+              <TextBlock
+                Text="⚠ You are using a Sidian Connector."
+                FontSize="15"
+                Foreground="Black"
+                FontWeight="Bold"
+                HorizontalAlignment="Center"
+                TextWrapping="Wrap"
+                Margin="0,0,0,10" />
+              <Button
+                Background="Transparent"
+                BorderThickness="0"
+                Foreground="Blue"
+                Cursor="Hand"
+                HorizontalAlignment="Center"
+                Padding="0"
+                Command="{Binding NextGenConnectorsCommand}">
+                <TextBlock
+                  Text="Click here to switch to our Next-Gen Connectors"
+                  Foreground="Black"
+                  FontWeight="Bold"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center" 
+                  Margin="5"/>
+              </Button>
+            </StackPanel>
+          </Grid>
+        </Grid>
+      </Border>   
+      
+      <!--  SEARCH STREAMS  -->
+      <Grid Grid.Row="1" Margin="0">
+        <m:Card
+          Margin="5,0"
+          Padding="0"
+          HorizontalAlignment="Stretch"
+          CornerRadius="25">
+          <TextBox
+            Margin="0"
+            Padding="0"
+            Classes="Solo Small"
+            Text="{Binding SearchQuery}"
+            Watermark="Search projects">
+            <TextBox.InnerRightContent>
+              <StackPanel Orientation="Horizontal">
+                <m:FloatingButton
+                  Grid.Column="1"
+                  VerticalAlignment="Center"
+                  assists:ShadowAssist.ShadowDepth="Depth0"
+                  Background="Transparent"
+                  Classes="Mini"
+                  Command="{Binding ClearSearchCommand}"
+                  IsVisible="{Binding SearchQuery, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                  ToolTip.Tip="Clear">
+                  <Button.Content>
+                    <icons:MaterialIcon
+                      Width="15"
+                      Height="15"
+                      assists:ShadowAssist.ShadowDepth="0"
+                      Foreground="{DynamicResource MaterialDesignBody}"
+                      Kind="CloseCircle" />
+                  </Button.Content>
+                </m:FloatingButton>
+
+
+                <Menu
+                  Grid.Column="1"
+                  Margin="2,0,0,0"
+                  VerticalAlignment="Center"
+                  ToolTip.Tip="Filter projects by ownership or favorite">
+
+                  <MenuItem
+                    Width="30"
+                    Height="30"
+                    Padding="0"
+                    Classes="NoHighlight">
+                    <MenuItem.Header>
+                      <Grid>
+                        <icons:MaterialIcon IsVisible="{Binding !ActiveFilter}" Kind="FilterVariant" />
+                        <icons:MaterialIcon
+                          Foreground="Red"
+                          IsVisible="{Binding ActiveFilter}"
+                          Kind="FilterVariant" />
+                      </Grid>
+                    </MenuItem.Header>
+
+                    <RadioButton
+                      HorizontalContentAlignment="Center"
+                      Classes="Button"
+                      Content="all"
+                      GroupName="3"
+                      IsChecked="{Binding SelectedFilter, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=all}" />
+
+                    <RadioButton
+                      HorizontalContentAlignment="Center"
+                      Classes="Button"
+                      Content="owner"
+                      GroupName="3"
+                      IsChecked="{Binding Path=SelectedFilter, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=owner}" />
+                    <RadioButton
+                      HorizontalContentAlignment="Center"
+                      Classes="Button"
+                      Content="contributor"
+                      GroupName="3"
+                      IsChecked="{Binding Path=SelectedFilter, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=contributor}" />
+                    <RadioButton
+                      HorizontalContentAlignment="Center"
+                      Classes="Button"
+                      Content="reviewer"
+                      GroupName="3"
+                      IsChecked="{Binding Path=SelectedFilter, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=reviewer}" />
+                    <!-- Favourite streams is deprecated-->
+                    <!-- <RadioButton -->
+                    <!--   Classes="Button" -->
+                    <!--   Content="{icons:MaterialIconExt Kind=Heart}" -->
+                    <!--   GroupName="3" -->
+                    <!--   IsChecked="{Binding Path=SelectedFilter, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=favorite}" /> -->
+
+                  </MenuItem>
+                </Menu>
+              </StackPanel>
+
+            </TextBox.InnerRightContent>
+            <TextBox.InnerLeftContent>
+              <icons:MaterialIcon
+                Width="15"
+                Height="15"
+                Margin="5,0,0,0"
+                Kind="Search" />
+            </TextBox.InnerLeftContent>
+          </TextBox>
+        </m:Card>
+
+      </Grid>
+
+
+      <!--  CREATE/ADD STREAMS  -->
+      <Grid
+        Grid.Row="2"
+        Margin="0,15,0,5"
+        ColumnDefinitions="*,*">
+        <Button
+          Margin="0,0,7,0"
+          Classes="Flat"
+          Command="{Binding NewStreamCommand}">
+          <Grid Margin="0" ColumnDefinitions="auto,*">
+            <icons:MaterialIcon VerticalAlignment="Center" Kind="Plus" />
+            <TextBlock
+              Grid.Column="1"
+              Margin="8,0"
+              Padding="0"
+              VerticalAlignment="Center"
+              Text="Create new project"
+              TextTrimming="CharacterEllipsis" />
+          </Grid>
+        </Button>
+        <Button
+          Grid.Column="1"
+          Margin="7,0,0,0"
+          Classes="Flat"
+          Command="{Binding AddFromUrlCommand}">
+          <Grid ColumnDefinitions="auto,*">
+            <icons:MaterialIcon VerticalAlignment="Center" Kind="Link" />
+            <TextBlock
+              Grid.Column="1"
+              Margin="8,0"
+              VerticalAlignment="Center"
+              Text="Add by ID or URL"
+              TextTrimming="CharacterEllipsis" />
+          </Grid>
+        </Button>
+      </Grid>
+      <Grid
+        Grid.Row="3"
+        Margin="0,10,0,0"
+        IsVisible="{Binding InProgress}">
+        <ProgressBar IsIndeterminate="True" />
+      </Grid>
+
+
+      <ScrollViewer
+        Grid.Row="4"
+        Padding="0,5,13,5"
+        IsEnabled="{Binding InProgress, Converter={x:Static BoolConverters.Not}, FallbackValue=True}">
+        <StackPanel Margin="5,0,5,5" Orientation="Vertical">
+          <!--  SAVED STREAMS  -->
+          <Expander
+            Margin="0,7,0,0"
+            IsExpanded="True"
+            IsVisible="{Binding HasSavedStreams}">
+            <Expander.Header>
+              <TextBlock
+                Margin="-8,0,0,0"
+                Classes="Overline"
+                Foreground="Gray"
+                IsVisible="{Binding HasSavedStreams}"
+                Text="SAVED PROJECTS:" />
+            </Expander.Header>
+            <c:SavedStreams />
+          </Expander>
+
+
+
+          <!--  ALL STREAMS  -->
+
+          <Expander Margin="0,10,0,0" IsExpanded="True">
+            <Expander.Header>
+              <TextBlock
+                Margin="-8,0,0,0"
+                Padding="0"
+                Classes="Overline"
+                Foreground="Gray"
+                Text="{Binding StreamsText, FallbackValue='ALL STREAMS/PROJECTS:'}" />
+            </Expander.Header>
+            <Grid IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+              <TextBlock
+                Margin="15"
+                IsVisible="{Binding HasStreams, Converter={x:Static BoolConverters.Not}, FallbackValue=False}"
+                Text="No projects found 😅&#x0a;&#x0a;You can create a new one or add a public project by ID or URL."
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+              <ItemsRepeater
+                Background="Transparent"
+                IsEnabled="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"
+                IsVisible="{Binding HasStreams}"
+                Items="{Binding FilteredStreams}">
+                <ItemsRepeater.Styles>
+                  <Style Selector="Button.Invisible:not(:pointerover) StackPanel#HoverButtons">
+                    <Setter Property="IsVisible" Value="False" />
+                  </Style>
+                  <Style Selector="Button.Invisible:pointerover StackPanel#HoverButtons">
+                    <Setter Property="IsVisible" Value="True" />
+                  </Style>
+                </ItemsRepeater.Styles>
+                <ItemsRepeater.ItemTemplate>
+                  <DataTemplate>
+                      <Button
+                        Grid.Column="0"
+                        Padding="5,7"
+                        Classes="Invisible"
+                        Command="{Binding $parent[local:HomeView].DataContext.OpenStreamCommand}"
+                        ToolTip.Tip="{Binding Stream.role, Converter={StaticResource RoleReceiveErrorMessageConverter}}"
+                        ToolTip.ShowDelay="750"
+                        CommandParameter="{Binding}"
+                        Classes.CanNotReceive="{Binding CanReceive, Converter={x:Static BoolConverters.Not }}"
+                        >
+                        <Button.Styles>
+                          <Style Selector="Button.CanNotReceive">
+                            <Setter Property="Foreground" Value="Gray"/>
+                          </Style>
+                        </Button.Styles>
+                        <Grid
+                          Margin="4,0"
+                          ColumnDefinitions="*,Auto"
+                          RowDefinitions="auto, auto">
+                          <Grid Grid.ColumnSpan="2" ColumnDefinitions="*,auto">
+                            <TextBlock
+                              Classes="Medium"
+                              Text="{Binding Stream.name}"
+                              TextTrimming="CharacterEllipsis" />
+                            <icons:MaterialIcon
+                              Grid.Column="1"
+                              Width="10"
+                              Height="10"
+                              Margin="5,0,0,0"
+                              VerticalAlignment="Center"
+                              IsVisible="{Binding Stream.favoritedDate, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                              Kind="Heart"
+                              ToolTip.Tip="This is a favorite project" />
+                          </Grid>
+                          <Grid
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            RowDefinitions="15,15, auto">
+
+
+                            <TextBlock
+                              Grid.Row="0"
+                              Margin="0,3,0,0"
+                              Classes="Caption"
+                              MaxLines="1"
+                              Text="{Binding Stream.description}"
+                              TextTrimming="CharacterEllipsis" />
+
+                            <c:StreamDetails Grid.Row="1" />
+
+                            <Grid
+                              Grid.Row="2"
+                              Margin="0,3,0,0"
+                              ColumnDefinitions="auto,auto,*"
+                              IsVisible="{Binding $parent[local:HomeView].DataContext.HasOneAccount, Converter={x:Static BoolConverters.Not}}">
+                              <TextBlock
+                                Classes="Overline"
+                                Text="{Binding Account.userInfo.email}"
+                                TextTrimming="CharacterEllipsis" />
+                              <TextBlock
+                                Grid.Column="1"
+                                Classes="Overline"
+                                Text=" | " />
+                              <TextBlock
+                                Grid.Column="2"
+                                Classes="Overline"
+                                Text="{Binding Account.serverInfo.url}"
+                                TextTrimming="CharacterEllipsis" />
+                            </Grid>
+                          </Grid>
+                          <StackPanel
+                            Name="HoverButtons"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Top"
+                            Orientation="Horizontal"
+                            Spacing="10">
+
+                            <m:FloatingButton
+                              VerticalAlignment="Center"
+                              assists:ShadowAssist.ShadowDepth="0"
+                              Background="Transparent"
+                              Classes="Mini"
+                              Command="{Binding $parent[local:HomeView].DataContext.ViewOnlineCommand}"
+                              CommandParameter="{Binding}"
+                              ToolTip.Tip="View online">
+                              <Button.Content>
+                                <icons:MaterialIcon
+                                  Width="15"
+                                  Height="15"
+                                  Foreground="Gray"
+                                  Kind="ExternalLink" />
+                              </Button.Content>
+                            </m:FloatingButton>
+                          </StackPanel>
+                        </Grid>
+                      </Button>
+                  </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+
+              </ItemsRepeater>
+            </Grid>
+          </Expander>
+
+        </StackPanel>
+
+      </ScrollViewer>
+
+      <!-- <Button -->
+      <!--   Grid.Row="4" -->
+      <!--   Margin="5" -->
+      <!--   Classes="Flat Mini" -->
+      <!--   Command="{Binding OneClickModeCommand}"> -->
+      <!--   <Button.Content> -->
+      <!--     <StackPanel -->
+      <!--       Margin="10" -->
+      <!--       Orientation="Horizontal" -->
+      <!--       Spacing="12"> -->
+      <!--       <icons:MaterialIcon -->
+      <!--         Width="15" -->
+      <!--         Height="15" -->
+      <!--         Foreground="{DynamicResource PrimaryHueDarkBrush}" -->
+      <!--         Kind="SwapHorizontalVariant" /> -->
+      <!--       <TextBlock Classes="ButtonText" Text="Switch to OneClick mode" /> -->
+      <!--     </StackPanel> -->
+      <!--   </Button.Content> -->
+      <!-- </Button> -->
+
+    </Grid>
+    <!--  NO INTERNET  -->
+    <Border
+      Grid.Row="1"
+      Background="{DynamicResource MaterialDesignCardBackground}"
+      IsVisible="{Binding IsOffline, FallbackValue=False}">
+      <StackPanel
+        Margin="15"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Orientation="Vertical">
+        <TextBlock
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Text="🏜&#x0a;You're offline"
+          TextAlignment="Center" />
+        <Button
+          Margin="20"
+          HorizontalAlignment="Center"
+          Classes="Flat"
+          Command="{Binding RefreshCommand}"
+          Content="Retry" />
+      </StackPanel>
+    </Border>
+
+
+  </Grid>
+</UserControl>

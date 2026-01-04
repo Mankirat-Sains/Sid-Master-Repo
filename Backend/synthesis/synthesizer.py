@@ -35,6 +35,8 @@ def synthesize(
     cites = []
     unique_projects = set()
 
+    print(f"🔍 SYNTHESIS: Processing {len(docs)} docs")  # Diagnostic
+
     for i, d in enumerate(docs[:MAX_SYNTHESIS_DOCS], 1):
         md = d.metadata or {}
         proj = md.get("drawing_number") or md.get("project_key") or "?"
@@ -64,8 +66,11 @@ def synthesize(
         grouped[proj].append(
             f"[{i}] (proj {proj}, page {page}, date {date_str}) {title}\n{d.page_content}"
         )
+    
+    print(f"📋 SYNTHESIS: Extracted project IDs from docs: {sorted(list(unique_projects))[:20]}{'...' if len(unique_projects) > 20 else ''}")  # Diagnostic
 
     # Fetch metadata from Supabase for ALL unique projects (if not pre-fetched)
+    print(f"🔍 SYNTHESIS: About to fetch metadata for {len(unique_projects)} unique projects")  # Diagnostic
     if project_metadata is None:
         project_metadata = fetch_project_metadata(list(unique_projects))
     else:

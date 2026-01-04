@@ -1,0 +1,29 @@
+extend type Workspace {
+  """
+  The default region where project data will be stored, if set. If undefined, defaults to main/default
+  region.
+  """
+  defaultRegion: ServerRegionItem @hasWorkspaceRole(role: MEMBER)
+}
+
+extend type WorkspaceMutations {
+  """
+  Set the default region where project data will be stored. Only available to admins.
+  """
+  setDefaultRegion(workspaceId: String!, regionKey: String!): Workspace!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "workspace:update")
+}
+
+extend type WorkspaceProjectMutations {
+  """
+  Schedule a job that will:
+  - Move all regional data to target region
+  - Update project region key
+  - TODO: Eventually delete data in previous region
+  """
+  moveToRegion(projectId: String!, regionKey: String!): String!
+    @hasServerRole(role: SERVER_ADMIN)
+    @hasStreamRole(role: STREAM_OWNER)
+    @hasScope(scope: "streams:write")
+}

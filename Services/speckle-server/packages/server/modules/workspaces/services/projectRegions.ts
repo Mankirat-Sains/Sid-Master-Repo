@@ -1,0 +1,174 @@
+import type { GetProject } from '@/modules/core/domain/projects/operations'
+import type {
+  CopyProjectAutomations,
+  CopyProjectBlobs,
+  CopyProjectComments,
+  CopyProjectModels,
+  CopyProjectObjects,
+  CopyProjects,
+  CopyProjectSavedViews,
+  CopyProjectVersions,
+  CopyProjectWebhooks,
+  CopyWorkspace,
+  CountProjectAutomations,
+  CountProjectComments,
+  CountProjectModels,
+  CountProjectObjects,
+  CountProjectSavedViews,
+  CountProjectVersions,
+  CountProjectWebhooks,
+  GetAvailableRegions,
+  MoveProjectToRegion,
+  ValidateProjectRegionCopy
+} from '@/modules/workspaces/domain/operations'
+import { ProjectRegionAssignmentError } from '@/modules/workspaces/errors/regions'
+import { logger } from '@/observability/logging'
+
+export const moveProjectToRegionFactory =
+  (deps: {
+    getProject: GetProject
+    getAvailableRegions: GetAvailableRegions
+    copyWorkspace: CopyWorkspace
+    copyProjects: CopyProjects
+    copyProjectModels: CopyProjectModels
+    copyProjectVersions: CopyProjectVersions
+    copyProjectObjects: CopyProjectObjects
+    copyProjectAutomations: CopyProjectAutomations
+    copyProjectComments: CopyProjectComments
+    copyProjectWebhooks: CopyProjectWebhooks
+    copyProjectBlobs: CopyProjectBlobs
+    copyProjectSavedViews: CopyProjectSavedViews
+    validateProjectRegionCopy: ValidateProjectRegionCopy
+  }): MoveProjectToRegion =>
+  async (params) => {
+    const { projectId, regionKey } = params
+
+    const project = await deps.getProject({ projectId })
+    if (!project) {
+      throw new ProjectRegionAssignmentError('Project not found', {
+        info: { params }
+      })
+    }
+    if (!project.workspaceId) {
+      throw new ProjectRegionAssignmentError('Project not a part of a workspace', {
+        info: { params }
+      })
+    }
+
+    const availableRegions = await deps.getAvailableRegions({
+      workspaceId: project.workspaceId
+    })
+    if (!availableRegions.find((region) => region.key === regionKey)) {
+      throw new ProjectRegionAssignmentError(
+        'Specified region not available for workspace',
+        {
+          info: {
+            params,
+            workspaceId: project.workspaceId
+          }
+        }
+      )
+    }
+
+    // Move workspace
+    await deps.copyWorkspace({ workspaceId: project.workspaceId })
+
+    // Move commits
+    const projectIds = await deps.copyProjects({ projectIds: [projectId] })
+    const copiedModelCount = await deps.copyProjectModels({ projectIds })
+    const copiedVersionCount = await deps.copyProjectVersions({ projectIds })
+
+    // Move objects
+    const copiedObjectCount = await deps.copyProjectObjects({ projectIds })
+
+    // Move automations
+    const copiedAutomationCount = await deps.copyProjectAutomations({ projectIds })
+
+    // Move comments
+    const copiedCommentCount = await deps.copyProjectComments({ projectIds })
+
+    // Move webhooks
+    const copiedWebhookCount = await deps.copyProjectWebhooks({ projectIds })
+
+    // Move file blobs
+    await deps.copyProjectBlobs({ projectIds })
+
+    // Move saved views
+    const copiedSavedViewsCount = await deps.copyProjectSavedViews({ projectIds })
+
+    // Validate that state after move captures latest state of project
+    const targetProjectResources = {
+      models: copiedModelCount[projectId] ?? 0,
+      versions: copiedVersionCount[projectId] ?? 0,
+      objects: copiedObjectCount[projectId] ?? 0,
+      automations: copiedAutomationCount[projectId] ?? 0,
+      comments: copiedCommentCount[projectId] ?? 0,
+      webhooks: copiedWebhookCount[projectId] ?? 0,
+      savedViews: copiedSavedViewsCount[projectId] ?? 0
+    }
+
+    const [isValidCopy, sourceProjectResources] = await deps.validateProjectRegionCopy({
+      projectId,
+      copiedRowCount: targetProjectResources
+    })
+
+    if (!isValidCopy) {
+      // TODO: Move failed or source project added data while changing regions. Retry move.
+      logger.error(
+        {
+          sourceData: sourceProjectResources,
+          targetData: targetProjectResources
+        },
+        'Failed to copy all project resources during project region move.'
+      )
+      throw new ProjectRegionAssignmentError(
+        'Missing data from source project in target region copy after move.'
+      )
+    }
+  }
+
+export const validateProjectRegionCopyFactory =
+  (deps: {
+    countProjectModels: CountProjectModels
+    countProjectVersions: CountProjectVersions
+    countProjectObjects: CountProjectObjects
+    countProjectAutomations: CountProjectAutomations
+    countProjectComments: CountProjectComments
+    countProjectWebhooks: CountProjectWebhooks
+    countProjectSavedViews: CountProjectSavedViews
+  }): ValidateProjectRegionCopy =>
+  async ({ projectId, copiedRowCount }) => {
+    const sourceProjectModelCount = await deps.countProjectModels({ projectId })
+    const sourceProjectVersionCount = await deps.countProjectVersions({ projectId })
+    const sourceProjectObjectCount = await deps.countProjectObjects({ projectId })
+    const sourceProjectAutomationCount = await deps.countProjectAutomations({
+      projectId
+    })
+    const sourceProjectCommentCount = await deps.countProjectComments({ projectId })
+    const sourceProjectWebhooksCount = await deps.countProjectWebhooks({ projectId })
+    const sourceProjectSavedViewsCount = await deps.countProjectSavedViews({
+      projectId
+    })
+
+    const tests = [
+      copiedRowCount.models === sourceProjectModelCount,
+      copiedRowCount.versions === sourceProjectVersionCount,
+      copiedRowCount.objects === sourceProjectObjectCount,
+      copiedRowCount.automations === sourceProjectAutomationCount,
+      copiedRowCount.comments === sourceProjectCommentCount,
+      copiedRowCount.webhooks === sourceProjectWebhooksCount,
+      copiedRowCount.savedViews === sourceProjectSavedViewsCount
+    ]
+
+    return [
+      tests.every((test) => !!test),
+      {
+        models: sourceProjectModelCount,
+        versions: sourceProjectVersionCount,
+        objects: sourceProjectObjectCount,
+        automations: sourceProjectAutomationCount,
+        comments: sourceProjectCommentCount,
+        webhooks: sourceProjectWebhooksCount
+      }
+    ]
+  }

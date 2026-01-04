@@ -39,9 +39,12 @@ def fetch_project_metadata(project_ids: List[str]) -> Dict[str, Dict[str, str]]:
         
         # Query project_info table for all project IDs
         # Use .in_() filter for efficient batch lookup
+        print(f"🔍 FETCHING METADATA for projects: {project_ids[:10]}{'...' if len(project_ids) > 10 else ''}")  # Diagnostic
         result = _supa.table("project_info").select(
             "project_key, project_name, project_address, project_city, project_postal_code"
         ).in_("project_key", project_ids).execute()
+        
+        print(f"📊 METADATA QUERY returned {len(result.data)} rows")  # Diagnostic
         
         # Build result dictionary for ALL found projects
         metadata = {}
@@ -54,6 +57,8 @@ def fetch_project_metadata(project_ids: List[str]) -> Dict[str, Dict[str, str]]:
                     "city": row.get("project_city") or "",
                     "postal_code": row.get("project_postal_code") or ""
                 }
+        
+        print(f"📋 METADATA FOUND for: {list(metadata.keys())[:10]}{'...' if len(metadata) > 10 else ''}")  # Diagnostic
         
         log_db.info(f"Retrieved metadata for {len(metadata)}/{len(project_ids)} projects from Supabase")
         
