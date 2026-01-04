@@ -16,9 +16,8 @@ from config.settings import MAX_CITATIONS_DISPLAY, MAX_ROUTER_DOCS
 from config.logging_config import log_query, log_vlm
 from database import test_database_connection
 from database.supabase_client import vs_smart, vs_large
-from nodes.image_nodes import classify_image_query_intent
 
-# Build graph once at module load
+# Build graph once at module load and expose it for streaming
 graph = build_graph()
 
 # Project ID regex

@@ -674,6 +674,215 @@ async def chat_handler(request: ChatRequest):
         # The Electron app expects a ChatResponse object
         return error_response
 
+
+# Streaming chat endpoint with real-time thinking logs
+@app.post("/chat/stream")
+async def chat_stream_handler(request: ChatRequest):
+    """
+    Streaming chat endpoint that emits thinking logs in real-time via Server-Sent Events (SSE).
+    
+    Returns:
+        StreamingResponse with SSE format:
+        - data: {"type": "connected"} - Initial connection
+        - data: {"type": "thinking", "message": "...", "node": "...", "timestamp": ...} - Thinking logs
+        - data: {"type": "complete", "result": {...}} - Final result
+        - data: {"type": "error", "message": "..."} - Error messages
+    """
+    import time
+    import uuid
+    import asyncio
+    
+    def _extract_projects(docs):
+        """Extract project keys from documents"""
+        projects = set()
+        for doc in docs:
+            if hasattr(doc, 'metadata') and isinstance(doc.metadata, dict):
+                proj = doc.metadata.get("drawing_number") or doc.metadata.get("project_key")
+                if proj:
+                    projects.add(proj)
+        return list(projects)[:20]
+    
+    def _extract_projects_from_citations(citations):
+        """Extract project keys from citations"""
+        projects = set()
+        for citation in citations:
+            if isinstance(citation, dict):
+                proj = citation.get("project_key") or citation.get("drawing_number")
+                if proj:
+                    projects.add(proj)
+        return list(projects)[:20]
+    
+    async def generate_stream():
+        """Generate SSE stream of thinking logs and final result"""
+        start_time = time.time()
+        message_id = f"msg_{int(time.time())}_{uuid.uuid4().hex[:8]}"
+        
+        try:
+            # Send initial connection event
+            yield f"data: {json.dumps({'type': 'connected', 'message_id': message_id})}\n\n"
+            
+            # Consolidate images
+            images_to_process = request.images_base64 or []
+            if not images_to_process and request.image_base64:
+                images_to_process = [request.image_base64]
+            
+            # Import graph and state
+            from main import graph
+            from models.rag_state import RAGState
+            from dataclasses import asdict
+            from thinking.intelligent_log_generator import IntelligentLogGenerator
+            
+            log_generator = IntelligentLogGenerator()
+            
+            # Create initial state
+            init_state = RAGState(
+                session_id=request.session_id,
+                user_query=request.message,
+                query_plan=None,
+                data_route=None,
+                project_filter=None,
+                expanded_queries=[],
+                retrieved_docs=[],
+                graded_docs=[],
+                db_result=None,
+                final_answer=None,
+                answer_citations=[],
+                code_answer=None,
+                code_citations=[],
+                coop_answer=None,
+                coop_citations=[],
+                answer_support_score=0.0,
+                corrective_attempted=False,
+                data_sources=request.data_sources,
+                images_base64=images_to_process if images_to_process else None
+            )
+            
+            # Track state as we go to detect which node ran
+            previous_state = asdict(init_state)
+            final_result = None
+            
+            config = {
+                "configurable": {"thread_id": request.session_id}
+            }
+            
+            # Use astream to get state after each node execution
+            # astream returns dicts like: {"plan": {...state...}, "retrieve": {...state...}}
+            async for node_outputs in graph.astream(asdict(init_state), config=config):
+                # node_outputs is a dict where keys are node names and values are state updates
+                # Process each node that executed
+                for node_name, state_update in node_outputs.items():
+                    if not isinstance(state_update, dict):
+                        continue
+                    
+                    # Update previous state with this node's output
+                    previous_state.update(state_update)
+                    
+                    # Create state dict for easier access
+                    state_dict = previous_state.copy()
+                
+                # Generate thinking log based on node
+                if node_name == "plan":
+                    plan = state_dict.get("query_plan") or {}
+                    thinking_log = log_generator.generate_planning_log(
+                        query=request.message,
+                        plan=plan,
+                        route=state_dict.get("data_route") or "smart",
+                        project_filter=state_dict.get("project_filter")
+                    )
+                elif node_name == "retrieve":
+                    thinking_log = log_generator.generate_retrieval_log(
+                        query=request.message,
+                        project_count=len(state_dict.get("retrieved_docs") or []),
+                        code_count=len(state_dict.get("retrieved_code_docs") or []),
+                        coop_count=len(state_dict.get("retrieved_coop_docs") or []),
+                        projects=_extract_projects(state_dict.get("retrieved_docs") or []),
+                        route=state_dict.get("data_route") or "smart",
+                        project_filter=state_dict.get("project_filter")
+                    )
+                elif node_name == "grade":
+                    thinking_log = log_generator.generate_grading_log(
+                        query=request.message,
+                        retrieved_count=len(state_dict.get("retrieved_docs") or []),
+                        graded_count=len(state_dict.get("graded_docs") or []),
+                        filtered_out=len(state_dict.get("retrieved_docs") or []) - len(state_dict.get("graded_docs") or [])
+                    )
+                elif node_name == "answer":
+                    thinking_log = log_generator.generate_synthesis_log(
+                        query=request.message,
+                        graded_count=len(state_dict.get("answer_citations") or []),
+                        projects=_extract_projects_from_citations(state_dict.get("answer_citations") or []),
+                        has_code=bool(state_dict.get("code_answer")),
+                        has_coop=bool(state_dict.get("coop_answer"))
+                    )
+                else:
+                    thinking_log = f"## ✅ Completed {node_name.title()}\n\nFinished processing this step."
+                
+                # Emit thinking log
+                yield f"data: {json.dumps({'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()})}\n\n"
+                await asyncio.sleep(0.01)
+                
+                # Check if we're done
+                if state_dict.get("final_answer"):
+                    final_result = state_dict
+                    break
+            
+            # If we didn't get final result, run once more to get it
+            if not final_result:
+                final_result = graph.invoke(asdict(init_state), config=config)
+            
+            # Check if we got a result
+            if not final_result:
+                yield f"data: {json.dumps({'type': 'error', 'message': 'No result returned from RAG'})}\n\n"
+                return
+            
+            # Extract final answer
+            answer = final_result.get("final_answer") or final_result.get("answer", "No answer generated.")
+            code_answer = final_result.get("code_answer")
+            coop_answer = final_result.get("coop_answer")
+            
+            # Combine answers
+            combined_answer = answer
+            if code_answer:
+                combined_answer = f"{combined_answer}\n\n--- Code References ---\n\n{code_answer}"
+            if coop_answer:
+                combined_answer = f"{combined_answer}\n\n--- Training Manual References ---\n\n{coop_answer}"
+            
+            # Calculate latency
+            latency_ms = (time.time() - start_time) * 1000
+            
+            # Build response
+            response_data = {
+                'reply': combined_answer,
+                'message': combined_answer,  # For compatibility
+                'session_id': request.session_id,
+                'timestamp': datetime.now().isoformat(),
+                'latency_ms': round(latency_ms, 2),
+                'citations': len(final_result.get("answer_citations", [])),
+                'route': final_result.get("data_route"),
+                'message_id': message_id
+            }
+            
+            # Send completion event with final result
+            yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"
+            
+            logger.info(f"✅ Streaming completed in {latency_ms:.2f}ms [ID: {message_id}]")
+            
+        except Exception as e:
+            logger.error(f"❌ Streaming error: {e}")
+            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+    
+    return StreamingResponse(
+        generate_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",  # Disable nginx buffering
+            "Access-Control-Allow-Origin": "*"  # CORS for streaming
+        }
+    )
+
+
 # Additional endpoint for compatibility with different response formats
 @app.post("/chat/legacy")
 async def chat_legacy(request: ChatRequest):

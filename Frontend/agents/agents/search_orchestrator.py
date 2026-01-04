@@ -842,28 +842,40 @@ def get_conversation_context(session_id: str, max_exchanges: int = 3) -> str:
 from pathlib import Path
 
 BACKEND_DIR  = Path(__file__).resolve().parent
-PROJECT_ROOT = BACKEND_DIR.parent  # go up: <project>/
+PROJECT_ROOT = BACKEND_DIR.parent.parent  # go up: <project>/ (from agents/agents/ to project root)
 #--------------------------Load Playbook---------------------------------------------------
 try:
-    # Try current directory first (for Docker), then try Backend subdirectory (for local)
+    # Try multiple locations: references folder, Backend root, agents directory
     playbook_paths = [
+        PROJECT_ROOT / "Backend" / "references" / "planner_playbook.md",  # Backend/references/
         BACKEND_DIR / "planner_playbook.md",  # Docker: /app/planner_playbook.md
-        PROJECT_ROOT / "Backend" / "planner_playbook.md"  # Local: RAG/Backend/planner_playbook.md
+        PROJECT_ROOT / "Backend" / "planner_playbook.md",  # Backend root
+        PROJECT_ROOT / "planner_playbook.md"  # Project root
     ]
-    PLAYBOOK_PATH = next((p for p in playbook_paths if p.exists()), playbook_paths[0])
-    PLANNER_PLAYBOOK = PLAYBOOK_PATH.read_text(encoding="utf-8")
+    PLAYBOOK_PATH = next((p for p in playbook_paths if p.exists()), None)
+    if PLAYBOOK_PATH:
+        PLANNER_PLAYBOOK = PLAYBOOK_PATH.read_text(encoding="utf-8")
+    else:
+        PLANNER_PLAYBOOK = "No playbook provided."
+        print(f"Failed to load playbook: No file found in any of the checked locations")
 except Exception as e:
     PLANNER_PLAYBOOK = "No playbook provided."
     print(f"Failed to load playbook: {e}")  # Debug log
 #--------------------------Load Project Categories---------------------------------------------------
 try:
-    # Try current directory first (for Docker), then try Backend subdirectory (for local)
+    # Try multiple locations: references folder, Backend root, agents directory
     category_paths = [
+        PROJECT_ROOT / "Backend" / "references" / "project_categories.md",  # Backend/references/
         BACKEND_DIR / "project_categories.md",  # Docker: /app/project_categories.md
-        PROJECT_ROOT / "Backend" / "project_categories.md"  # Local: RAG/Backend/project_categories.md
+        PROJECT_ROOT / "Backend" / "project_categories.md",  # Backend root
+        PROJECT_ROOT / "project_categories.md"  # Project root
     ]
-    CATEGORIES_PATH = next((p for p in category_paths if p.exists()), category_paths[0])
-    PROJECT_CATEGORIES = CATEGORIES_PATH.read_text(encoding="utf-8")
+    CATEGORIES_PATH = next((p for p in category_paths if p.exists()), None)
+    if CATEGORIES_PATH:
+        PROJECT_CATEGORIES = CATEGORIES_PATH.read_text(encoding="utf-8")
+    else:
+        PROJECT_CATEGORIES = "No project categories provided."
+        print(f"Failed to load project categories: No file found in any of the checked locations")
 except Exception as e:
     PROJECT_CATEGORIES = "No project categories provided."
     print(f"Failed to load project categories: {e}")  # Debug log

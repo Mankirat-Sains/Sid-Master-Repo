@@ -1,0 +1,19 @@
+# SidOS Local Agent Requirements
+# Production-grade dependencies for Excel Tool API
+
+# Excel interaction
+xlwings>=0.32.0  # Excel automation library
+
+# Standard library (no external deps needed for core functionality)
+# json, logging, pathlib, typing are all built-in
+
+# Optional: For future cloud communication
+# requests>=2.31.0  # HTTP client for orchestrator communication
+# websockets>=12.0  # WebSocket client for real-time communication
+
+# Development dependencies (optional)
+# pytest>=7.4.0  # Testing framework
+# black>=23.0.0  # Code formatting
+# mypy>=1.5.0  # Type checking
+
+

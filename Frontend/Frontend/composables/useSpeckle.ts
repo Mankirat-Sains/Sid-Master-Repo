@@ -103,9 +103,62 @@ export const useSpeckle = () => {
     }
   }
 
+  async function findProjectByKey(projectKey: string): Promise<Project | null> {
+    const graphqlQuery = `
+      query FindProjectByName($projectName: String!) {
+        activeUser {
+          projects(filter: { search: $projectName }, limit: 25) {
+            items {
+              id
+              name
+              description
+            }
+            totalCount
+          }
+        }
+      }
+    `
+
+    try {
+      const response = await $fetch(`${config.public.speckleUrl}/graphql`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.public.speckleToken}`
+        },
+        body: {
+          query: graphqlQuery,
+          variables: { projectName: projectKey }
+        }
+      })
+
+      const data = response as {
+        data?: {
+          activeUser?: {
+            projects?: {
+              items?: Project[]
+            }
+          }
+        }
+      }
+
+      // Find project whose name contains the project key (e.g., "(25-01-006)")
+      const projects = data.data?.activeUser?.projects?.items || []
+      const matchingProject = projects.find(p => 
+        p.name.includes(`(${projectKey})`) || p.name.includes(projectKey)
+      )
+      
+      return matchingProject || null
+    } catch (error) {
+      console.error('Error finding project by key:', error)
+      return null
+    }
+  }
+
   return {
     searchSpeckleProjects,
-    getProjectModels
+    getProjectModels,
+    findProjectByKey
   }
 }
 

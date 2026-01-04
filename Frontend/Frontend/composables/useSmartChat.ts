@@ -36,6 +36,7 @@ interface SmartChatResponse {
     code_answer?: string
     coop_answer?: string
   }
+  thinking_log?: string[]  // Agent thinking log from backend
 }
 
 export const useSmartChat = () => {
@@ -138,7 +139,8 @@ export const useSmartChat = () => {
             project_answer: ragResponse.project_answer,
             code_answer: ragResponse.code_answer,
             coop_answer: ragResponse.coop_answer,
-          }
+          },
+          thinking_log: ragResponse.thinking_log
         }
       } catch (error) {
         console.error('Speckle query failed, falling back to RAG:', error)
@@ -176,7 +178,8 @@ export const useSmartChat = () => {
             project_answer: ragResponse.project_answer,
             code_answer: ragResponse.code_answer,
             coop_answer: ragResponse.coop_answer,
-          }
+          },
+          thinking_log: ragResponse.thinking_log
         }
       }
     }
@@ -218,7 +221,8 @@ export const useSmartChat = () => {
         project_answer: ragResponse.project_answer,
         code_answer: ragResponse.code_answer,
         coop_answer: ragResponse.coop_answer,
-      }
+      },
+      thinking_log: ragResponse.thinking_log
     }
   }
 
