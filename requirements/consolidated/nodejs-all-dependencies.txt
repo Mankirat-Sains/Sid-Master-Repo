@@ -1,0 +1,67 @@
+# Consolidated Node.js Dependencies
+# This file lists all dependencies from all package.json files in the repository
+# Organized by project and type (dependencies vs devDependencies)
+
+# ============================================================================
+# Frontend/Frontend (Nuxt.js Application)
+# ============================================================================
+
+## Dependencies
+@apollo/client@^3.13.8
+@speckle/viewer@^2.20.2
+@speckle/objectloader2@^2.26.8
+@vue/apollo-composable@^4.2.2
+apollo-upload-client@^18.0.1
+graphql@^16.6.0
+nuxt@^4.0.3
+vue@^3.5.13
+vue-router@^4.4.5
+
+## DevDependencies
+@nuxt/devtools@^1.7.0
+@nuxt/eslint@^1.1.0
+@nuxtjs/tailwindcss@^6.12.2
+@types/node@^20.14.0
+@typescript-eslint/eslint-plugin@^8.0.0
+@typescript-eslint/parser@^8.0.0
+autoprefixer@^10.4.14
+eslint@^9.0.0
+postcss@^8.4.31
+tailwindcss@^3.4.1
+typescript@^5.5.0
+vue-tsc@^2.2.10
+
+# ============================================================================
+# Local Agent/ExcelAgent/AI (Office Add-in)
+# ============================================================================
+
+## DevDependencies
+@types/office-js@^1.0.552
+@types/office-runtime@^1.0.35
+copy-webpack-plugin@^13.0.1
+css-loader@^7.1.2
+generator-office@^3.0.2
+html-webpack-plugin@^5.6.4
+office-addin-debugging@^6.0.3
+office-addin-dev-certs@^2.0.3
+office-addin-manifest@^2.0.3
+style-loader@^4.0.0
+ts-loader@^9.5.4
+typescript@^5.9.3
+webpack@^5.102.1
+webpack-cli@^6.0.1
+webpack-dev-server@^5.2.2
+yo@^5.1.0
+
+# ============================================================================
+# Installation Notes
+# ============================================================================
+# 
+# To install all dependencies for a specific project:
+# 1. Navigate to the project directory
+# 2. Run: npm install (or yarn install)
+# 
+# Each project should be installed separately to avoid conflicts.
+# Do not attempt to install all dependencies in one location.
+
+

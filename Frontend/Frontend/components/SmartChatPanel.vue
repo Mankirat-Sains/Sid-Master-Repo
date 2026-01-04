@@ -3,12 +3,6 @@
     <!-- Chat Header -->
     <div class="p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
       <div class="flex items-center gap-3 mb-2">
-        <img 
-          src="/logo.png" 
-          alt="Sid Logo" 
-          class="w-10 h-10 object-contain"
-          @error="handleLogoError"
-        />
         <div>
           <h3 class="font-semibold text-gray-900 text-lg" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">Sid</h3>
           <p class="text-xs text-gray-500 mt-0.5" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">The Autonomous Engineer</p>
@@ -210,12 +204,17 @@
           </svg>
         </button>
         <input
+      <form @submit.prevent="handleSend" class="flex gap-3 items-end">
+        <textarea
+          ref="inputTextarea"
           v-model="inputMessage"
-          type="text"
+          @keydown="handleKeyDown"
+          @input="autoResize"
           placeholder="Ask about projects, models, or documents..."
-          class="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white/80 backdrop-blur-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm transition-all"
-          style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;"
+          class="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white/80 backdrop-blur-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm transition-all resize-none overflow-hidden"
+          style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; min-height: 48px; max-height: 200px;"
           :disabled="isLoading"
+          rows="1"
         />
         <button
           type="submit"
@@ -235,10 +234,13 @@
 <script setup lang="ts">
 import { ref, nextTick, inject, computed, onBeforeUnmount, onMounted } from 'vue'
 import { useSmartChat, type ChatSource } from '~/composables/useSmartChat'
+import { useChat } from '~/composables/useChat'
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 import { useRFPWorkflow } from '~/composables/useRFPWorkflow'
 import { useModelDesignWorkflow, type ProjectParameter, type SimilarProject, type ModelDesignState } from '~/composables/useModelDesignWorkflow'
 import { useRFPProposalWorkflow, type RFPProposalState } from '~/composables/useRFPProposalWorkflow'
+import { useSpeckle } from '~/composables/useSpeckle'
+import { useRuntimeConfig } from '#app'
 
 const { formatMessageText } = useMessageFormatter()
 
@@ -267,6 +269,7 @@ interface Message {
 
 const messages = ref<Message[]>([])
 const inputMessage = ref('')
+const inputTextarea = ref<HTMLTextAreaElement | null>(null)
 const isLoading = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
 const thinkingMessage = ref<string>('')
@@ -396,6 +399,7 @@ function removeImage(index: number) {
 }
 
 const { sendSmartMessage, determineQueryIntent } = useSmartChat()
+const { sendChatMessageStream } = useChat()
 const { analyzeRFPAndFindSimilar, generateProposal, exportToWord } = useRFPWorkflow()
 const { 
   extractSpanRequirement, 
@@ -433,6 +437,10 @@ const openPDF = inject<(url: string, fileName?: string) => void>('openPDF')
 const openDraft = inject<(title: string, content?: string) => void>('openDraft')
 const openModel = inject<(url: string, name?: string) => void>('openModel')
 const similarDocuments = inject<Ref<any[]>>('similarDocuments')
+const emitAgentLog = inject<(log: import('~/components/AgentLogsPanel').AgentLog) => void>('emitAgentLog')
+
+// Speckle integration
+const { findProjectByKey, getProjectModels } = useSpeckle()
 
 // Welcome message
 messages.value.push({
@@ -448,10 +456,6 @@ const emit = defineEmits<{
   responseReceived: [response: any]
   'first-message-sent': []
 }>()
-
-function emitAgentLog(log: import('~/components/AgentLogsPanel').AgentLog) {
-  emit('agent-log', log)
-}
 
 // Determine next step in RFP workflow based on current state
 function getNextRFPStep():
@@ -522,6 +526,11 @@ async function handleSend() {
   const userMessage = inputMessage.value.trim() || 'What is shown in these images?'
   inputMessage.value = ''
   pendingImages.value = []
+  
+  // Reset textarea height
+  if (inputTextarea.value) {
+    inputTextarea.value.style.height = '48px' // Reset to min height
+  }
 
   // Check if this is the first user message
   const isFirstMessage = messages.value.filter(m => m.role === 'user').length === 0
@@ -540,7 +549,7 @@ async function handleSend() {
   }
 
   isLoading.value = true
-  await scrollToBottom()
+  await scrollToBottom(true) // Force scroll when user sends message
 
   // Check for active workflows and advance to next step ONLY if user is in a workflow
   // Otherwise, send to backend agents system
@@ -550,7 +559,7 @@ async function handleSend() {
     if (nextStep) {
       await handleModelDesignWorkflow(userMessage, nextStep)
       isLoading.value = false
-      await scrollToBottom()
+      await scrollToBottom(true) // Force scroll after workflow completes
       return
     }
   }
@@ -560,19 +569,14 @@ async function handleSend() {
     if (nextStep) {
       await handleRFPWorkflow(userMessage, nextStep)
       isLoading.value = false
-      await scrollToBottom()
+      await scrollToBottom(true) // Force scroll after workflow completes
       return
     }
   }
 
-  // No active workflow - send to backend agents system
+  // No active workflow - send to backend agents system with streaming
   try {
     stopThinking()
-    startThinking([
-      'Analyzing your query...',
-      'Routing to appropriate agent...',
-      'Processing response...'
-    ])
     
     const imagesBase64 = imagesToSend.length > 0 ? imagesToSend.map((img) => img.base64) : undefined
     console.log('📸 [SmartChatPanel] imagesBase64 created:', imagesBase64 ? `${imagesBase64.length} images, first length=${imagesBase64[0]?.substring(0, 50)}...` : 'undefined')
@@ -586,14 +590,97 @@ async function handleSend() {
       sessionId: 'default',
       dataSources: dataSources.value,
       images_base64: imagesBase64
+    // Create a message ID for the assistant response
+    const assistantMessageId = Date.now().toString()
+    
+    // Add empty assistant message that will be filled with thinking logs
+    messages.value.push({
+      id: assistantMessageId,
+      role: 'assistant',
+      content: '',
+      timestamp: new Date(),
+      isTyping: true
     })
     
-    stopThinking()
+    await scrollToBottom(true)
     
-    await addTypedMessage(response.message, undefined, 300)
+    // Accumulated thinking logs to display in message
+    let thinkingContent = ''
+    let finalAnswer = ''
     
-    // Emit response for logging
-    emit('responseReceived', response)
+    // Use streaming endpoint
+    await sendChatMessageStream(
+      userMessage,
+      'default',
+      undefined,
+      dataSources.value,
+      {
+        // On thinking log received
+        onLog: (log) => {
+          console.log('💭 Thinking log:', log)
+          
+          // Emit to Agent Thinking panel (if available)
+          if (emitAgentLog) {
+            emitAgentLog({
+              id: `thinking-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+              type: 'thinking',
+              thinking: log.message,
+              timestamp: new Date()
+            })
+          }
+          
+          // Append to thinking content (will show in message bubble)
+          thinkingContent += `${log.message}\n\n`
+          
+          // Update assistant message with thinking content (show in real-time)
+          const assistantMsg = messages.value.find(m => m.id === assistantMessageId)
+          if (assistantMsg) {
+            assistantMsg.content = thinkingContent + (finalAnswer ? `\n\n---\n\n${finalAnswer}` : '⏳ Working...')
+          }
+          
+          scrollToBottom()
+        },
+        
+        // On completion
+        onComplete: async (result) => {
+          console.log('✅ Stream complete:', result)
+          stopThinking()
+          
+          finalAnswer = result.reply || result.message || 'No response generated.'
+          
+          // Update assistant message with final answer only (remove thinking logs from chat)
+          const assistantMsg = messages.value.find(m => m.id === assistantMessageId)
+          if (assistantMsg) {
+            assistantMsg.content = ''
+            assistantMsg.isTyping = false
+          }
+          
+          // Type out the final answer
+          await addTypedMessage(finalAnswer, undefined, 300)
+          
+          // Extract project keys from answer text and fetch Speckle models
+          await fetchAndDisplaySpeckleModels(finalAnswer)
+          
+          // Emit response for logging
+          emit('responseReceived', {
+            ...result,
+            thinking_log: [thinkingContent]  // Include thinking logs
+          })
+        },
+        
+        // On error
+        onError: (error) => {
+          console.error('❌ Stream error:', error)
+          stopThinking()
+          
+          const assistantMsg = messages.value.find(m => m.id === assistantMessageId)
+          if (assistantMsg) {
+            assistantMsg.content = `Sorry, I encountered an error: ${error.message}`
+            assistantMsg.isTyping = false
+          }
+        }
+      }
+    )
   } catch (error) {
     console.error('Chat error:', error)
     stopThinking()
@@ -604,8 +691,29 @@ async function handleSend() {
     )
   } finally {
     isLoading.value = false
-    await scrollToBottom()
+    await scrollToBottom(true) // Force scroll after message handling completes
   }
+}
+
+function handleKeyDown(event: KeyboardEvent) {
+  // If Enter is pressed without Shift, submit the form
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault()
+    handleSend()
+  }
+  // If Shift+Enter is pressed, allow default behavior (new line)
+}
+
+function autoResize() {
+  nextTick(() => {
+    if (inputTextarea.value) {
+      // Reset height to auto to get the correct scrollHeight
+      inputTextarea.value.style.height = 'auto'
+      // Set height to scrollHeight (content height)
+      const newHeight = Math.min(inputTextarea.value.scrollHeight, 200) // Max 200px
+      inputTextarea.value.style.height = `${newHeight}px`
+    }
+  })
 }
 
 function formatMessage(text: string): string {
@@ -788,7 +896,7 @@ async function handleModelDesignWorkflow(
         modelName: modelName
       })
       
-      await scrollToBottom()
+      await scrollToBottom(true) // Force scroll when new message starts
       await typeMessageContent(
         messageId,
         `✅ I've created the ${bridgeType} bridge design model!\n\n**Design Summary:**\n- **Span:** ${modelDesignState.value.parameters.span}m\n- **Bridge Width:** ${bridgeWidth}\n- **Traffic Type:** ${modelDesignState.value.parameters.trafficType || 'Mixed'}\n\n**Bridge Width:**\n${widthExplanation}\n\n**Selected Features:**\nThe design incorporates structural systems and features from the reference projects that are proven for this span length. The ${bridgeType} bridge type was chosen for its structural efficiency and suitability for ${modelDesignState.value.parameters.span}m spans. Design elements reference successful approaches from similar past projects while ensuring compliance with CSA S6 Canadian Highway Bridge Design Code requirements.\n\nThe model is now available in your project and ready for review.`
@@ -837,7 +945,7 @@ async function handleModelDesignWorkflow(
         ]
       })
       
-      await scrollToBottom()
+      await scrollToBottom(true) // Force scroll when new message starts
       await typeMessageContent(
         mtoMessageId,
         'I can find for you relevant MTO details based on this design.'
@@ -1450,9 +1558,9 @@ async function typeMessageContent(messageId: string, fullContent: string, speed:
     const chunk = chunks[i]
     messages.value[messageIndex].content += chunk
     
-    // Scroll periodically
+    // Scroll periodically (only if user is at bottom - don't force)
     if (i % 5 === 0) {
-      await scrollToBottom()
+      await scrollToBottom() // Don't force - respect user's scroll position
     }
     
     // Variable delay - longer for punctuation, shorter for spaces
@@ -1465,7 +1573,7 @@ async function typeMessageContent(messageId: string, fullContent: string, speed:
     messages.value[messageIndex].isTyping = false
   }
   
-  await scrollToBottom()
+  await scrollToBottom() // Don't force - respect user's scroll position
 }
 
 // Helper function to add a message with typing effect and optional thinking
@@ -1490,7 +1598,7 @@ async function addTypedMessage(content: string, thinkingMessages?: string[], del
     isTyping: true
   })
   
-  await scrollToBottom()
+  await scrollToBottom(true) // Force scroll when new message starts
   
   // Type the content
   await typeMessageContent(messageId, content)
@@ -1498,10 +1606,17 @@ async function addTypedMessage(content: string, thinkingMessages?: string[], del
   return messageId
 }
 
-async function scrollToBottom() {
+async function scrollToBottom(force: boolean = false) {
   await nextTick()
   if (messagesContainer.value) {
-    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+    const container = messagesContainer.value
+    const threshold = 100 // pixels from bottom - if user is within this, consider them "at bottom"
+    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < threshold
+    
+    // Only auto-scroll if user is already near bottom, or if forced (like when sending a new message)
+    if (force || isNearBottom) {
+      container.scrollTop = container.scrollHeight
+    }
   }
 }
 
@@ -1536,6 +1651,72 @@ function handlePaste(e: ClipboardEvent) {
 onMounted(() => {
   document.addEventListener('paste', handlePaste)
 })
+
+// Extract project keys from answer text and fetch Speckle models
+async function fetchAndDisplaySpeckleModels(answerText: string) {
+  if (!openDocumentsList) return
+  
+  // Extract project keys from answer text using regex
+  const projectKeyRegex = /\b(\d{2}-\d{2}-\d{3})\b/g
+  const projectKeys = new Set<string>()
+  let match
+  while ((match = projectKeyRegex.exec(answerText)) !== null) {
+    projectKeys.add(match[1])
+  }
+  
+  // If no project keys found, return early
+  if (projectKeys.size === 0) return
+  
+  // Fetch projects and models for each project key
+  const modelDocuments: any[] = []
+  
+  for (const projectKey of Array.from(projectKeys)) {
+    try {
+      // Find Speckle project by key
+      const project = await findProjectByKey(projectKey)
+      if (!project) {
+        console.log(`No Speckle project found for key: ${projectKey}`)
+        continue
+      }
+      
+      // Get models for this project
+      const models = await getProjectModels(project.id)
+      if (models.length === 0) {
+        console.log(`No models found for project ${project.name} (${projectKey})`)
+        continue
+      }
+      
+      // Create document-like objects for each model
+      for (const model of models) {
+        const modelUrl = `${config.public.speckleUrl}/projects/${project.id}/models/${model.id}`
+        modelDocuments.push({
+          id: `speckle-${project.id}-${model.id}`,
+          title: model.name,
+          name: model.name,
+          description: `${project.name} - ${model.name}`,
+          url: modelUrl,
+          metadata: {
+            projectId: project.id,
+            modelId: model.id,
+            projectKey: projectKey,
+            projectName: project.name
+          }
+        })
+      }
+    } catch (error) {
+      console.error(`Error fetching models for project ${projectKey}:`, error)
+    }
+  }
+  
+  // Show models in left panel if we found any
+  if (modelDocuments.length > 0) {
+    openDocumentsList(
+      modelDocuments,
+      '3D Models',
+      'Click on a model to view it in the viewer'
+    )
+  }
+}
 
 // Cleanup thinking interval on unmount
 onBeforeUnmount(() => {

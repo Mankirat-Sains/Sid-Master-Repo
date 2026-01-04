@@ -272,6 +272,13 @@ async def chat(request: ChatRequest):
                 "confidence": result["routing"].get("confidence")
             }
         
+        # Add thinking log from trace (for Agent Thinking panel)
+        trace = result.get("trace")
+        if trace and hasattr(trace, "thinking_log"):
+            response["thinking_log"] = trace.thinking_log
+        elif trace and isinstance(trace, dict):
+            response["thinking_log"] = trace.get("thinking_log", [])
+        
         return response
         
     except Exception as e:

@@ -17,7 +17,7 @@ from config.logging_config import log_query, log_vlm
 from database import test_database_connection
 from database.supabase_client import vs_smart, vs_large
 
-# Build graph once at module load
+# Build graph once at module load and expose it for streaming
 graph = build_graph()
 
 # Project ID regex
