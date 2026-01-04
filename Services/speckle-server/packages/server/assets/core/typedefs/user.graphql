@@ -1,0 +1,242 @@
+extend type Query {
+  """
+  Gets the profile of the authenticated user or null if not authenticated
+  """
+  activeUser: User @hasScope(scope: "profile:read")
+
+  """
+  Get the (limited) profile information of another server user
+  """
+  otherUser(id: String!): LimitedUser
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "users:read")
+
+  """
+  Gets the profile of a user. If no id argument is provided, will return the current authenticated user's profile (as extracted from the authorization header).
+  """
+  user(id: String): User
+    @hasScope(scope: "profile:read")
+    @deprecated(
+      reason: "To be removed in the near future! Use 'activeUser' to get info about the active user or 'otherUser' to get info about another user."
+    )
+
+  """
+  Get all (or search for specific) users, registered or invited, from the server in a paginated view.
+  The query looks for matches in name, company and email.
+  """
+  adminUsers(
+    limit: Int! = 25
+    offset: Int! = 0
+    query: String = null
+  ): AdminUsersListCollection
+    @hasServerRole(role: SERVER_ADMIN)
+    @deprecated(reason: "use admin.UserList instead")
+    @hasScope(scope: "users:read")
+
+  """
+  Search for users and return limited metadata about them, if you have the server:user role.
+  The query looks for matches in name & email
+  """
+  userSearch(
+    query: String!
+    limit: Int! = 25
+    cursor: String
+    archived: Boolean = false
+    emailOnly: Boolean = false
+  ): UserSearchResultCollection!
+    @hasScope(scope: "users:read")
+    @deprecated(reason: "Use users() instead.")
+
+  """
+  Look up server users
+  """
+  users(input: UsersRetrievalInput!): UserSearchResultCollection!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScopes(scopes: ["users:read", "profile:read"])
+
+  """
+  Look up server users with a collection of emails
+  """
+  usersByEmail(input: BulkUsersRetrievalInput!): [LimitedUser]!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScopes(scopes: ["users:read", "profile:read"])
+
+  """
+  Validate password strength
+  """
+  userPwdStrength(pwd: String!): PasswordStrengthCheckResults!
+    @deprecated(
+      reason: "Part of the old API surface and will be removed in the future."
+    )
+}
+
+input UsersRetrievalInput {
+  """
+  The query looks for matches in user name & email
+  """
+  query: String!
+  cursor: String
+  """
+  Limit defaults to 10
+  """
+  limit: Int
+  """
+  Only find users with directly matching emails
+  """
+  emailOnly: Boolean
+  """
+  Only find users that are collaborators of the specified project
+  """
+  projectId: String
+}
+
+input BulkUsersRetrievalInput {
+  emails: [String!]!
+  cursor: String
+  limit: Int
+}
+
+type PasswordStrengthCheckResults {
+  """
+  Integer from 0-4 (useful for implementing a strength bar):
+  0 too guessable: risky password. (guesses < 10^3)
+  1 very guessable: protection from throttled online attacks. (guesses < 10^6)
+  2 somewhat guessable: protection from unthrottled online attacks. (guesses < 10^8)
+  3 safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
+  4 very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
+  """
+  score: Int!
+
+  """
+  Verbal feedback to help choose better passwords. set when score <= 2.
+  """
+  feedback: PasswordStrengthCheckFeedback!
+}
+
+type PasswordStrengthCheckFeedback {
+  warning: String
+  suggestions: [String!]!
+}
+
+"""
+Full user type, should only be used in the context of admin operations or
+when a user is reading/writing info about himself
+"""
+type User {
+  id: ID!
+  """
+  Only returned if API user is the user being requested or an admin
+  """
+  email: String
+  name: String!
+  bio: String
+  company: String
+  avatar: String
+  verified: Boolean
+  profiles: JSONObject
+  role: String
+  """
+  Whether post-sign up onboarding has been finished or skipped entirely
+  """
+  isOnboardingFinished: Boolean @isOwner
+  createdAt: DateTime @isOwner
+}
+
+"""
+Limited user type, for showing public info about a user
+to another user
+"""
+type LimitedUser {
+  id: ID!
+  name: String!
+  bio: String
+  company: String
+  avatar: String
+  verified: Boolean
+  role: String
+}
+
+"""
+A representation of a registered or invited user in the admin users list. Either registeredUser
+or invitedUser will always be set, both values can't be null.
+"""
+type AdminUsersListItem {
+  registeredUser: User
+  invitedUser: ServerInvite
+  id: String!
+}
+
+type AdminUsersListCollection {
+  totalCount: Int!
+  items: [AdminUsersListItem!]!
+}
+
+type UserSearchResultCollection {
+  cursor: String
+  items: [LimitedUser!]!
+}
+
+input OnboardingCompletionInput {
+  role: String
+  plans: [String!]
+  source: String
+}
+
+type ActiveUserMutations {
+  """
+  Mark onboarding as complete
+  """
+  finishOnboarding(input: OnboardingCompletionInput): Boolean!
+
+  """
+  Edit a user's profile
+  """
+  update(user: UserUpdateInput!): User!
+}
+
+extend type Mutation {
+  """
+  Edits a user's profile.
+  """
+  userUpdate(user: UserUpdateInput!): Boolean!
+    @deprecated(reason: "Use activeUserMutations version")
+    @hasScope(scope: "profile:write")
+
+  """
+  Delete a user's account.
+  """
+  userDelete(userConfirmation: UserDeleteInput!): Boolean!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "profile:delete")
+
+  adminDeleteUser(userConfirmation: UserDeleteInput!): Boolean!
+    @hasServerRole(role: SERVER_ADMIN)
+    @hasScope(scope: "profile:delete")
+
+  userRoleChange(userRoleInput: UserRoleInput!): Boolean!
+    @hasServerRole(role: SERVER_ADMIN)
+    @hasScope(scope: "profile:write")
+
+  """
+  Various Active User oriented mutations
+  """
+  activeUserMutations: ActiveUserMutations!
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "profile:write")
+}
+
+input UserRoleInput {
+  id: String!
+  role: String!
+}
+
+input UserUpdateInput {
+  name: String
+  company: String
+  bio: String
+  avatar: String
+}
+
+input UserDeleteInput {
+  email: String!
+}

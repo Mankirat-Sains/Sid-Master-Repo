@@ -1,0 +1,91 @@
+type AdminUserListItem {
+  id: ID!
+  email: String
+  name: String!
+  company: String
+  avatar: String
+  verified: Boolean
+  role: String
+}
+
+type AdminUserList {
+  items: [AdminUserListItem!]!
+  cursor: String
+  totalCount: Int!
+}
+
+type AdminInviteList {
+  items: [ServerInvite!]!
+  cursor: String
+  totalCount: Int!
+}
+
+type ServerStatistics {
+  totalProjectCount: Int!
+  totalUserCount: Int!
+  totalPendingInvites: Int!
+}
+
+type ProjectCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Project!]!
+}
+
+input AdminUpdateEmailVerificationInput {
+  email: String!
+  """
+  Defaults to true. If set to false, the email will be marked as unverified.
+  """
+  verified: Boolean
+}
+
+type AdminQueries {
+  userList(
+    limit: Int! = 25
+    cursor: String = null
+    query: String = null
+    role: ServerRole = null
+  ): AdminUserList! @hasServerRole(role: SERVER_ADMIN) @hasScope(scope: "users:read")
+
+  inviteList(
+    limit: Int! = 25
+    cursor: String = null
+    query: String = null
+  ): AdminInviteList!
+    @hasServerRole(role: SERVER_ADMIN)
+    @hasScope(scope: "users:invite")
+
+  projectList(
+    query: String
+    orderBy: String
+    visibility: String
+    limit: Int! = 25
+    cursor: String = null
+  ): ProjectCollection! @hasServerRole(role: SERVER_ADMIN)
+
+  serverStatistics: ServerStatistics!
+    @hasServerRole(role: SERVER_ADMIN)
+    @hasScope(scope: "server:stats")
+}
+
+type AdminMutations {
+  """
+  A server administrator can update the verification status of an user's email.
+  The server administrator is recommended to confirm ownership of the email address
+  with the user before performing this action.
+  """
+  updateEmailVerification(input: AdminUpdateEmailVerificationInput!): Boolean!
+    @hasServerRole(role: SERVER_ADMIN)
+    @hasScope(scope: "users:email")
+}
+
+extend type Query {
+  admin: AdminQueries!
+    @hasServerRole(role: SERVER_ADMIN)
+    @hasScope(scope: "server:stats")
+}
+
+extend type Mutation {
+  admin: AdminMutations! @hasServerRole(role: SERVER_ADMIN)
+}

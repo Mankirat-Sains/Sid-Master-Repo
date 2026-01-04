@@ -1,0 +1,52 @@
+type SmartTextEditorValue {
+  """
+  The version of the schema
+  """
+  version: String!
+
+  """
+  The type of editor value (comment, blog post etc.)
+  """
+  type: String!
+
+  """
+  The actual (ProseMirror) document representing the text. Can be empty,
+  if there are attachments.
+  """
+  doc: JSONObject
+
+  """
+  File attachments, if any
+  """
+  attachments: [BlobMetadata!]
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+"""
+Can be used instead of a full item collection, when the implementation doesn't call for it yet. Because
+of the structure, it can be swapped out to a full item collection in the future
+"""
+type CountOnlyCollection {
+  totalCount: Int!
+}
+
+type Price {
+  amount: Float!
+  currency: String!
+  currencySymbol: String!
+}
+
+type PermissionCheckResult {
+  authorized: Boolean!
+  code: String!
+  message: String!
+  payload: JSONObject
+  """
+  Same as message, or undefined if check is authorized
+  """
+  errorMessage: String
+}

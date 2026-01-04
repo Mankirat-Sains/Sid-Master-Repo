@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+'use strict'
+
+import { logger } from '../dist/observability/logging.js'
+import { init, startHttp } from '../dist/app.js'
+
+init()
+  .then(({ app, graphqlServer, registers, server, readinessCheck }) =>
+    startHttp({ app, graphqlServer, registers, server, readinessCheck })
+  )
+  .catch((err) => {
+    logger.error(err, 'Failed to start server. Exiting with non-zero exit code...')
+
+    // kill it with fire 🔥
+    process.exit(1)
+  })
+
+// 💥

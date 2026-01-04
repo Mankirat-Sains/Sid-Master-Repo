@@ -1,0 +1,54 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: speckle-server-redirect
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "speckle.labels" . | indent 4 }}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/load-balancer-name: speckle-alb
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    {{- if .Values.cert_manager_issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.cert_manager_issuer }}
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    {{- end }}
+    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+spec:
+  ingressClassName: alb
+  rules:
+  - host: {{ .Values.domain }}
+    http:
+      paths:
+      - pathType: Exact
+        path: "/metrics"
+        backend:
+          service:
+            name: speckle-frontend-2
+            port:
+              name: web
+      - pathType: Exact
+        path: "/api/status"
+        backend:
+          service:
+            name: speckle-frontend-2
+            port:
+              name: web
+      - pathType: Exact
+        path: "/liveness"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Exact
+        path: "/readiness"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+{{- end }}

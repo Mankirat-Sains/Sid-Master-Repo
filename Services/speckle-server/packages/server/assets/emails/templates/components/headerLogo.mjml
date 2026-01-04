@@ -1,0 +1,9 @@
+<mj-section padding-bottom="0">
+  <mj-column>
+    <mj-image
+      width="40px"
+      src="<%- params.serverInfo.canonicalUrl -%>/static/speckle-email-logo.png?v=1"
+      alt="Speckle"
+    />
+  </mj-column>
+</mj-section>

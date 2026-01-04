@@ -1,0 +1,104 @@
+extend type Query {
+  """
+  Query elements by material. Fast query using indexed material field.
+  """
+  elementsByMaterial(
+    projectId: String
+    material: String!
+    ifcType: String
+    limit: Int = 100
+  ): [QueryableElement!]!
+
+  """
+  Query elements by building storey/level.
+  """
+  elementsByStorey(
+    projectId: String
+    storey: String!
+    ifcType: String
+    limit: Int = 100
+  ): [QueryableElement!]!
+
+  """
+  Query elements by volume range.
+  """
+  elementsByVolume(
+    projectId: String
+    minVolume: Float
+    maxVolume: Float
+    ifcType: String
+    limit: Int = 100
+  ): [QueryableElement!]!
+
+  """
+  Complex multi-filter query for elements. Supports filtering by multiple criteria simultaneously.
+  """
+  elementsQuery(
+    projectId: String
+    ifcType: String
+    material: String
+    storey: String
+    minVolume: Float
+    maxVolume: Float
+    level: String
+    limit: Int = 100
+  ): [QueryableElement!]!
+
+  """
+  Count elements matching criteria. Fast count query.
+  """
+  countElements(
+    projectId: String
+    ifcType: String
+    material: String
+  ): Int!
+}
+
+"""
+Denormalized element data with all hierarchy and extracted fields in one place.
+This type represents an element from the elements_queryable table, which contains
+flattened data from objects, streams, commits, and branches for fast querying.
+"""
+type QueryableElement {
+  # IDs
+  elementId: String!
+  streamId: String!
+  projectId: String!
+  modelId: String
+  versionId: String
+  rootObjectId: String
+
+  # Hierarchy info
+  projectName: String
+  modelName: String
+  versionMessage: String
+
+  # Object fields
+  speckleType: String
+  createdAt: DateTime
+  totalChildrenCount: Int
+
+  # Extracted indexed fields
+  ifcType: String
+  elementName: String
+  material: String
+  buildingStorey: String
+  tag: String
+
+  # Revit fields
+  revitType: String
+  revitFamily: String
+  revitCategory: String
+  revitMaterial: String
+
+  # Quantities
+  volume: Float
+  length: Float
+  width: Float
+  height: Float
+  area: Float
+  level: String
+
+  # Full data for detailed access
+  fullData: JSONObject
+}

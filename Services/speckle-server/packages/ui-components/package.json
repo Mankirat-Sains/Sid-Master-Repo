@@ -1,0 +1,104 @@
+{
+  "name": "@speckle/ui-components",
+  "description": "Speckle theme UI components built with Vue 3 & Tailwind",
+  "version": "0.0.1",
+  "scripts": {
+    "dev:vite": "vite",
+    "dev": "yarn storybook",
+    "build": "echo \"Building ui-components...\" && vue-tsc && vite build && echo \"Done building ui-components!\"",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "storybook:test": "test-storybook",
+    "storybook:test:ci": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"yarn build-storybook --quiet && npx http-server storybook-static --port 6006 --silent\" \"wait-on tcp:6006 && yarn test-storybook --ci\"",
+    "storybook:test:watch": "test-storybook --watch",
+    "lint:js": "eslint .",
+    "lint:tsc": "vue-tsc --noEmit",
+    "lint:prettier": "prettier --config ../../.prettierrc --ignore-path ../../.prettierignore --check .",
+    "lint:ci": "yarn lint:tsc",
+    "lint": "yarn lint:js && yarn lint:tsc && yarn lint:prettier"
+  },
+  "type": "module",
+  "main": "./dist/lib.cjs",
+  "module": "./dist/lib.js",
+  "types": "./dist/lib.d.ts",
+  "imports": {
+    "#lodash": {
+      "require": "lodash",
+      "import": "lodash-es"
+    }
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/lib.js",
+      "types": "./dist/lib.d.ts",
+      "require": "./dist/lib.cjs"
+    },
+    "./style.css": "./dist/style.css",
+    "./tailwind-configure": {
+      "import": "./utils/tailwind-configure.js",
+      "require": "./utils/tailwind-configure.cjs",
+      "types": "./utils/tailwind-configure.d.ts"
+    }
+  },
+  "peerDependencies": {
+    "vee-validate": "^4.7.0",
+    "vue": "^3.3.0"
+  },
+  "dependencies": {
+    "@headlessui/vue": "npm:@speckle/headlessui-vue@1.7.23-alpha.0",
+    "@heroicons/vue": "^2.0.12",
+    "@speckle/shared": "workspace:^",
+    "@storybook/test": "^8.1.10",
+    "@vueuse/core": "^9.13.0",
+    "lodash": "^4.0.0",
+    "lodash-es": "^4.0.0",
+    "lucide-vue-next": "^0.537.0",
+    "nanoid": "^3.0.0",
+    "v3-infinite-loading": "^1.2.2",
+    "vue-advanced-cropper": "^2.8.8",
+    "vue-tippy": "^6.7.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@speckle/tailwind-theme": "workspace:^",
+    "@storybook/addon-essentials": "^8.1.10",
+    "@storybook/addon-interactions": "^8.1.10",
+    "@storybook/addon-links": "^8.1.10",
+    "@storybook/blocks": "^8.1.10",
+    "@storybook/test-runner": "^0.18.2",
+    "@storybook/vue3": "^8.1.10",
+    "@storybook/vue3-vite": "^8.1.10",
+    "@types/eslint": "^8.56.10",
+    "@types/lodash": "^4.0.0",
+    "@types/lodash-es": "^4.17.12",
+    "@typescript-eslint/eslint-plugin": "^7.12.0",
+    "@typescript-eslint/parser": "^7.12.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.14",
+    "concurrently": "^8.0.1",
+    "eslint": "^9.4.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-storybook": "^0.8.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "eslint-plugin-vuejs-accessibility": "^2.3.0",
+    "postcss": "^8.4.31",
+    "postcss-nesting": "^10.2.0",
+    "prettier": "^2.7.1",
+    "storybook": "^8.1.10",
+    "tailwindcss": "^3.3.2",
+    "type-fest": "^2.13.1",
+    "typescript": "^5.0.4",
+    "vee-validate": "4.7.0",
+    "vite": "^4.5.14",
+    "vite-plugin-dts": "^4.5.4",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.2",
+    "wait-on": "^6.0.1"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  }
+}

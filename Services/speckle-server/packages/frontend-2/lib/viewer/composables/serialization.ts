@@ -1,0 +1,389 @@
+import {
+  useInjectedViewerState,
+  useResetUiState
+} from '~~/lib/viewer/composables/setup'
+import { isUndefinedOrVoid, SpeckleViewer } from '@speckle/shared'
+import { get } from 'lodash-es'
+import { Vector3 } from 'three'
+import {
+  useDiffUtilities,
+  useSelectionUtilities,
+  useSectionBoxUtilities
+} from '~~/lib/viewer/composables/ui'
+import { useFilterUtilities } from '~/lib/viewer/composables/filtering/filtering'
+import { useFilteringDataStore } from '~/lib/viewer/composables/filtering/dataStore'
+import { CameraController, SectionTool, VisualDiffMode } from '@speckle/viewer'
+import type {
+  FilterLogic,
+  SerializedFilterData
+} from '~/lib/viewer/helpers/filters/types'
+import type { Merge, PartialDeep } from 'type-fest'
+import {
+  defaultMeasurementOptions,
+  formatSerializedViewerState
+} from '@speckle/shared/viewer/state'
+import { useViewerRealtimeActivityTracker } from '~/lib/viewer/composables/activity'
+import {
+  isModelResource,
+  resourceBuilder,
+  type ViewerResource
+} from '@speckle/shared/viewer/route'
+import { until } from '@vueuse/core'
+
+type SerializedViewerState = SpeckleViewer.ViewerState.SerializedViewerState
+
+export function useStateSerialization() {
+  const state = useInjectedViewerState()
+  const { objects: selectedObjects } = useSelectionUtilities()
+  const { serializeDiffCommand } = useDiffUtilities()
+  const { filters } = useFilterUtilities()
+  const dataStore = useFilteringDataStore()
+  const { box3ToSectionBoxData } = useSectionBoxUtilities()
+
+  const serialize = (
+    options?: Partial<{
+      /**
+       * Instead of saving the current resourceIdString value, build a more concrete one that specifies exact version & object ids, so that the
+       * string doesn't resolve to different objects in the future. Useful when serializing state for posterity (e.g. for new comment threads)
+       */
+      concreteResourceIdString: boolean
+    }>
+  ): SerializedViewerState => {
+    const { concreteResourceIdString } = options || {}
+
+    const camControls = state.viewer.instance.getExtension(CameraController).controls
+
+    const rawBox = state.viewer.instance.getExtension(SectionTool).getBox()
+    const box = rawBox ? box3ToSectionBoxData(rawBox) : null
+
+    const ret: SerializedViewerState = {
+      projectId: state.projectId.value,
+      sessionId: state.sessionId.value,
+      viewer: {
+        metadata: {
+          filteringState: state.viewer.metadata.filteringState.value
+            ? {
+                passMin: state.viewer.metadata.filteringState.value.passMin,
+                passMax: state.viewer.metadata.filteringState.value.passMax
+              }
+            : null
+        }
+      },
+      resources: {
+        request: {
+          resourceIdString: concreteResourceIdString
+            ? state.resources.response.concreteResourceIdString.value
+            : state.resources.request.resourceIdString.value,
+          threadFilters: { ...state.resources.request.threadFilters.value }
+        }
+      },
+      ui: {
+        threads: {
+          openThread: {
+            threadId: state.ui.threads.openThread.thread.value?.id || null,
+            isTyping: state.ui.threads.openThread.isTyping.value,
+            newThreadEditor: state.ui.threads.openThread.newThreadEditor.value
+          }
+        },
+        diff: {
+          command: state.urlHashState.diff.value
+            ? serializeDiffCommand(state.urlHashState.diff.value)
+            : null,
+          time: state.ui.diff.time.value,
+          mode: state.ui.diff.mode.value
+        },
+        spotlightUserSessionId: state.ui.spotlightUserSessionId.value,
+        filters: (() => {
+          // Convert current FilterData to serializable format
+          const propertyFilters = filters.propertyFilters.value.map((filterData) => ({
+            key: filterData.filter?.key || null,
+            isApplied: filterData.isApplied,
+            selectedValues: filterData.selectedValues,
+            id: filterData.id,
+            condition: filterData.condition,
+            numericRange:
+              filterData.type === 'numeric' ? filterData.numericRange : undefined
+          }))
+
+          return {
+            isolatedObjectIds: state.ui.filters.isolatedObjectIds.value,
+            hiddenObjectIds: state.ui.filters.hiddenObjectIds.value,
+            selectedObjectApplicationIds: selectedObjects.value.reduce((ret, obj) => {
+              ret[obj.id] = obj.applicationId ?? null
+              return ret
+            }, {} as Record<string, string | null>),
+            propertyFilters,
+            activeColorFilterId: state.ui.filters.activeColorFilterId.value,
+            filterLogic: dataStore.currentFilterLogic.value
+          }
+        })(),
+        camera: {
+          position: state.ui.camera.position.value.toArray(),
+          target: state.ui.camera.target.value.toArray(),
+          isOrthoProjection: state.ui.camera.isOrthoProjection.value,
+          zoom: (get(camControls, '_zoom') as unknown as number) || 1 // kinda hacky, _zoom is a protected prop
+        },
+        viewMode: {
+          mode: state.ui.viewMode.mode.value,
+          edgesEnabled: state.ui.viewMode.edgesEnabled.value,
+          edgesWeight: state.ui.viewMode.edgesWeight.value,
+          outlineOpacity: state.ui.viewMode.outlineOpacity.value,
+          edgesColor: state.ui.viewMode.edgesColor.value
+        },
+        sectionBox: state.ui.sectionBox.value ? box : null,
+        lightConfig: { ...state.ui.lightConfig.value },
+        explodeFactor: state.ui.explodeFactor.value,
+        selection: state.ui.selection.value?.toArray() || null,
+        measurement: {
+          enabled: state.ui.measurement.enabled.value,
+          options: state.ui.measurement.options.value,
+          measurements: state.ui.measurement.measurements.value.slice()
+        }
+      }
+    }
+    return ret
+  }
+
+  return { serialize }
+}
+
+export enum StateApplyMode {
+  Spotlight,
+  ThreadOpen,
+  ThreadFullContextOpen,
+  Reset,
+  FederatedContext,
+  SavedView
+}
+
+export type StateApplyOptions = Merge<
+  Record<StateApplyMode, never>,
+  {
+    [StateApplyMode.SavedView]: { loadOriginal: boolean }
+  }
+>
+
+export function useApplySerializedState() {
+  const {
+    projectId,
+    ui: {
+      camera: { position, target, isOrthoProjection },
+      sectionBox,
+      highlightedObjectIds,
+      explodeFactor,
+      lightConfig,
+      diff,
+      viewMode,
+      measurement,
+      sectionBoxContext,
+      loading
+    },
+    resources: {
+      request: { resourceIdString }
+    },
+    urlHashState
+  } = useInjectedViewerState()
+  const { resetFilters, hideObjects, restoreFilters } = useFilterUtilities()
+  const resetState = useResetUiState()
+  const { diffModelVersions, deserializeDiffCommand, endDiff } = useDiffUtilities()
+  const { setSelectionFromObjectIds } = useSelectionUtilities()
+  const { update } = useViewerRealtimeActivityTracker()
+
+  return async <Mode extends StateApplyMode>(
+    state: PartialDeep<SerializedViewerState>,
+    mode: Mode,
+    options?: StateApplyOptions[Mode]
+  ) => {
+    if (mode === StateApplyMode.Reset) {
+      resetState()
+      update() // Trigger activity update
+      return
+    }
+
+    // Format the state to handle backwards compatibility (e.g., propertyFilter -> propertyFilters)
+    const formattedState = formatSerializedViewerState(state)
+
+    if (formattedState.projectId && formattedState.projectId !== projectId.value) {
+      await projectId.update(formattedState.projectId)
+    }
+
+    // Handle loaded resource change
+    let newResourceIdString: string | undefined = undefined
+    if (
+      [StateApplyMode.Spotlight, StateApplyMode.ThreadFullContextOpen].includes(mode)
+    ) {
+      newResourceIdString = formattedState.resources?.request?.resourceIdString || ''
+    } else if (mode === StateApplyMode.SavedView) {
+      const { loadOriginal } = options || {}
+
+      const current = resourceBuilder().addResources(resourceIdString.value)
+      const incoming = resourceBuilder().addResources(
+        formattedState.resources?.request?.resourceIdString || ''
+      )
+
+      const finalItems: ViewerResource[] = []
+      for (const incomingItem of incoming) {
+        if (!isModelResource(incomingItem)) {
+          finalItems.push(incomingItem)
+          continue
+        }
+
+        // Update versionId based on loadOriginal
+        incomingItem.versionId = loadOriginal
+          ? incomingItem.versionId
+          : current
+              .filter(isModelResource)
+              .find((r) => r.modelId === incomingItem.modelId)?.versionId
+        finalItems.push(incomingItem)
+      }
+      newResourceIdString = resourceBuilder()
+        .addResources(finalItems)
+        // .addNew(current) // keeping other federated models around
+        .toString()
+    } else if (mode === StateApplyMode.FederatedContext) {
+      // For federated context, append only model IDs (without versions) to show latest
+      const { parseUrlParameters, ViewerModelResource, createGetParamFromResources } =
+        SpeckleViewer.ViewerRoute
+
+      const currentResources = parseUrlParameters(resourceIdString.value)
+      const newResources = parseUrlParameters(
+        formattedState.resources?.request?.resourceIdString ?? ''
+      ).map((resource) => {
+        if (resource instanceof ViewerModelResource) {
+          // Only keep model ID, drop version
+          return new ViewerModelResource(resource.modelId)
+        }
+        return resource
+      })
+
+      if (newResources.length) {
+        const allResources = [...currentResources, ...newResources]
+        newResourceIdString = createGetParamFromResources(allResources)
+      }
+    }
+
+    // We want to make sure the final resources have been loaded before we continue on
+    // with applying the rest of the state
+    if (newResourceIdString && newResourceIdString !== resourceIdString.value) {
+      await until(loading).toBe(false)
+      await resourceIdString.update(newResourceIdString)
+      await until(loading).toBe(false)
+    }
+
+    position.value = new Vector3(
+      formattedState.ui?.camera?.position?.[0],
+      formattedState.ui?.camera?.position?.[1],
+      formattedState.ui?.camera?.position?.[2]
+    )
+    target.value = new Vector3(
+      formattedState.ui?.camera?.target?.[0],
+      formattedState.ui?.camera?.target?.[1],
+      formattedState.ui?.camera?.target?.[2]
+    )
+
+    isOrthoProjection.value = !!formattedState.ui?.camera?.isOrthoProjection
+
+    sectionBox.value = formattedState.ui?.sectionBox
+      ? {
+          min: formattedState.ui.sectionBox.min || [],
+          max: formattedState.ui.sectionBox.max || [],
+          rotation: formattedState.ui.sectionBox.rotation || []
+        }
+      : null
+    sectionBoxContext.visible.value = false
+    if (!sectionBox.value) {
+      sectionBoxContext.edited.value = false
+    }
+
+    const filters = formattedState.ui?.filters || {}
+
+    resetFilters()
+
+    if (filters.hiddenObjectIds?.length) {
+      hideObjects(filters.hiddenObjectIds, { replace: true })
+    } else {
+      hideObjects([], { replace: true })
+    }
+
+    if (filters.propertyFilters?.length) {
+      restoreFilters(
+        filters.propertyFilters as SerializedFilterData[],
+        filters.activeColorFilterId,
+        filters.filterLogic as FilterLogic
+      )
+    } else {
+      resetFilters()
+    }
+
+    if ([StateApplyMode.Spotlight, StateApplyMode.SavedView].includes(mode)) {
+      await urlHashState.focusedThreadId.update(
+        formattedState.ui?.threads?.openThread?.threadId || null
+      )
+    }
+
+    const selectedObjectIds = Object.keys(filters.selectedObjectApplicationIds ?? {})
+    if (mode === StateApplyMode.Spotlight) {
+      highlightedObjectIds.value = selectedObjectIds
+    } else {
+      if (selectedObjectIds.length || mode === StateApplyMode.SavedView) {
+        setSelectionFromObjectIds(selectedObjectIds)
+      }
+    }
+
+    const command = formattedState.ui?.diff?.command
+      ? deserializeDiffCommand(formattedState.ui.diff.command)
+      : null
+    const activeDiffEnabled = !!diff.enabled.value
+    if (command && command.diffs.length && formattedState.ui?.diff) {
+      diff.time.value = formattedState.ui.diff.time || 0.5
+      diff.mode.value = formattedState.ui?.diff.mode || VisualDiffMode.COLORED
+
+      const instruction = command.diffs[0]
+      await diffModelVersions(
+        instruction.versionA.modelId,
+        instruction.versionA.versionId,
+        instruction.versionB.versionId
+      )
+    } else if (!activeDiffEnabled || mode === StateApplyMode.Spotlight) {
+      await endDiff()
+    }
+
+    // Restore view mode
+    if (!isUndefinedOrVoid(formattedState.ui?.viewMode?.mode))
+      viewMode.mode.value = formattedState.ui!.viewMode!.mode
+    if (!isUndefinedOrVoid(formattedState.ui?.viewMode?.edgesEnabled))
+      viewMode.edgesEnabled.value = formattedState.ui!.viewMode!.edgesEnabled
+    if (!isUndefinedOrVoid(formattedState.ui?.viewMode?.edgesWeight))
+      viewMode.edgesWeight.value = formattedState.ui!.viewMode!.edgesWeight
+    if (!isUndefinedOrVoid(formattedState.ui?.viewMode?.outlineOpacity))
+      viewMode.outlineOpacity.value = formattedState.ui!.viewMode!.outlineOpacity
+    if (!isUndefinedOrVoid(formattedState.ui?.viewMode?.edgesColor))
+      viewMode.edgesColor.value = formattedState.ui!.viewMode!.edgesColor
+
+    explodeFactor.value = formattedState.ui?.explodeFactor || 0
+    lightConfig.value = {
+      ...lightConfig.value,
+      ...(formattedState.ui?.lightConfig || {})
+    }
+
+    // Apply measurements
+    const incomingMeasurement = formattedState.ui?.measurement
+    if (incomingMeasurement) {
+      if (!isUndefinedOrVoid(incomingMeasurement.enabled)) {
+        measurement.enabled.value = incomingMeasurement.enabled
+      }
+      if (!isUndefinedOrVoid(incomingMeasurement.options)) {
+        measurement.options.value = {
+          ...defaultMeasurementOptions,
+          ...incomingMeasurement.options
+        }
+      }
+      if (!isUndefinedOrVoid(incomingMeasurement.measurements)) {
+        measurement.measurements.value = incomingMeasurement.measurements
+      }
+    }
+
+    // Trigger activity update
+    update()
+  }
+}

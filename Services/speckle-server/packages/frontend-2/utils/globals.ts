@@ -1,0 +1,52 @@
+import type { RouteLocationNormalized } from 'vue-router'
+import { noop } from 'lodash-es'
+import {
+  refLogged,
+  makeRefLogged,
+  refWithLogging
+} from '~/lib/common/helpers/debugging'
+import { ToastNotificationType } from '~~/lib/common/composables/toast'
+import {
+  convertThrowIntoFetchResult,
+  getCacheId,
+  getFirstErrorMessage as getFirstGqlErrorMessage,
+  iterateObjectField,
+  modifyObjectField,
+  ROOT_MUTATION,
+  ROOT_QUERY,
+  ROOT_SUBSCRIPTION
+} from '~/lib/common/helpers/graphql'
+import { checkIfIsInPlaceNavigation } from '~/lib/common/helpers/navigation'
+import { ViewerEventBusKeys } from '~/lib/viewer/helpers/eventBus'
+import { defineParallelizedNuxtRouteMiddleware } from '~/lib/core/helpers/middleware'
+
+/**
+ * Debugging helper to ensure variables are available in debugging scope
+ */
+export const markUsed = noop
+
+/**
+ * Will attempt to resolve the current route definition in various ways.
+ */
+export const getRouteDefinition = (route?: RouteLocationNormalized) => {
+  const matchedPath = route ? route.matched[route.matched.length - 1]?.path : undefined
+  return matchedPath || '/404'
+}
+export {
+  ToastNotificationType,
+  makeRefLogged,
+  refLogged,
+  refWithLogging,
+  noop,
+  convertThrowIntoFetchResult,
+  getFirstGqlErrorMessage,
+  modifyObjectField,
+  iterateObjectField,
+  getCacheId,
+  checkIfIsInPlaceNavigation,
+  ROOT_QUERY,
+  ROOT_MUTATION,
+  ROOT_SUBSCRIPTION,
+  ViewerEventBusKeys,
+  defineParallelizedNuxtRouteMiddleware
+}

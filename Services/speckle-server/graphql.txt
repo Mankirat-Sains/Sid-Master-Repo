@@ -1,0 +1,4669 @@
+"""
+Ensure that the user has the specified SERVER role (e.g. server user, admin etc.)
+"""
+directive @hasServerRole(role: ServerRole!) on FIELD_DEFINITION
+
+"""
+Ensure that the user has the specified STREAM role for a target stream (e.g. owner)
+
+Note: Only supported on Stream type fields!
+"""
+directive @hasStreamRole(role: StreamRole!) on FIELD_DEFINITION
+
+"""
+Ensure that if there is a token, the token  has the specified scope allowed for it
+It does not ensure that the token exists, for that, use @hasServerRole
+"""
+directive @hasScope(scope: String!) on FIELD_DEFINITION
+
+"""
+Ensure that if there is a token, the token has all of the specified scopes allowed for it
+It does not ensure that the token exists, for that, use @hasServerRole
+"""
+directive @hasScopes(scopes: [String]!) on FIELD_DEFINITION
+
+"""
+Ensure that the authenticated user owns the object whose properties
+are being accessed
+
+Note: Only supported when added onto the fields that are directly defined on the
+owned object.
+
+Note 2: Only supports the following types currently: User
+"""
+directive @isOwner on FIELD_DEFINITION
+
+"""
+Ensure that the active user has the specified Workspace role
+Note: Only supported on Workspace type fields
+"""
+directive @hasWorkspaceRole(role: WorkspaceRole!) on FIELD_DEFINITION
+
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+enum ServerRole {
+  SERVER_USER
+  SERVER_ADMIN
+  SERVER_GUEST
+  SERVER_ARCHIVED_USER
+}
+
+enum StreamRole {
+  STREAM_OWNER
+  STREAM_CONTRIBUTOR
+  STREAM_REVIEWER
+}
+
+enum WorkspaceRole {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type Query {
+  """Stare into the void."""
+  _: String
+
+  """Get authed user's stream access request"""
+  streamAccessRequest(streamId: String!): StreamAccessRequest @deprecated(reason: "Part of the old API surface and will be removed in the future. Use User.projectAccessRequest instead.")
+
+  """Gets a specific app from the server."""
+  app(id: String!): ServerApp
+
+  """Returns all the publicly available apps on this server."""
+  apps: [ServerAppListItem] @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """
+  Get a single automate function by id. Error will be thrown if function is not found or inaccessible.
+  """
+  automateFunction(id: ID!): AutomateFunction!
+
+  """Part of the automation/function creation handshake mechanism"""
+  automateValidateAuthCode(payload: AutomateAuthCodePayloadTest!, resources: AutomateAuthCodeResources): Boolean!
+  comment(id: String!, streamId: String!): Comment @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.comment instead.")
+
+  """
+  This query can be used in the following ways:
+  - get all the comments for a stream: **do not pass in any resource identifiers**.
+  - get the comments targeting any of a set of provided resources (comments/objects): **pass in an array of resources.**
+  """
+  comments(streamId: String!, resources: [ResourceIdentifierInput], limit: Int = 25, cursor: String, archived: Boolean! = false): CommentCollection @deprecated(reason: "Use Project/Version/Model 'commentThreads' fields instead")
+  admin: AdminQueries!
+
+  """
+  If user is authenticated using an app token, this will describe the app
+  """
+  authenticatedAsApp: ServerAppListItem
+
+  """
+  Find a specific project. Will throw an authorization error if active user isn't authorized
+  to see it, for example, if a project isn't public and the user doesn't have the appropriate rights.
+  """
+  project(id: String!): Project!
+  serverInfo: ServerInfo!
+
+  """
+  Returns a specific stream. Will throw an authorization error if active user isn't authorized
+  to see it, for example, if a stream isn't public and the user doesn't have the appropriate rights.
+  """
+  stream(id: String!): Stream @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Query.project instead.")
+
+  """
+  Returns all streams that the active user is a collaborator on.
+  Pass in the `query` parameter to search by name, description or ID.
+  """
+  streams(query: String, limit: Int = 25, cursor: String): UserStreamCollection @deprecated(reason: "Part of the old API surface and will be removed in the future. Use User.projects instead.")
+
+  """All the streams of the server. Available to admins only."""
+  adminStreams(offset: Int = 0, query: String, orderBy: String, visibility: String, limit: Int = 25): StreamCollection @deprecated(reason: "use admin.projectList instead")
+
+  """All of the discoverable streams of the server"""
+  discoverableStreams(
+    limit: Int! = 25
+    cursor: String
+
+    """Defaults to sorting by creation date in a descending order"""
+    sort: DiscoverableStreamsSortingInput
+  ): StreamCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """
+  Gets the profile of the authenticated user or null if not authenticated
+  """
+  activeUser: User
+
+  """Get the (limited) profile information of another server user"""
+  otherUser(id: String!): LimitedUser
+
+  """
+  Gets the profile of a user. If no id argument is provided, will return the current authenticated user's profile (as extracted from the authorization header).
+  """
+  user(id: String): User @deprecated(reason: "To be removed in the near future! Use 'activeUser' to get info about the active user or 'otherUser' to get info about another user.")
+
+  """
+  Get all (or search for specific) users, registered or invited, from the server in a paginated view.
+  The query looks for matches in name, company and email.
+  """
+  adminUsers(limit: Int! = 25, offset: Int! = 0, query: String = null): AdminUsersListCollection @deprecated(reason: "use admin.UserList instead")
+
+  """
+  Search for users and return limited metadata about them, if you have the server:user role.
+  The query looks for matches in name & email
+  """
+  userSearch(query: String!, limit: Int! = 25, cursor: String, archived: Boolean = false, emailOnly: Boolean = false): UserSearchResultCollection! @deprecated(reason: "Use users() instead.")
+
+  """Look up server users"""
+  users(input: UsersRetrievalInput!): UserSearchResultCollection!
+
+  """Look up server users with a collection of emails"""
+  usersByEmail(input: BulkUsersRetrievalInput!): [LimitedUser]!
+
+  """Validate password strength"""
+  userPwdStrength(pwd: String!): PasswordStrengthCheckResults! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  dashboard(id: String!): Dashboard!
+
+  """
+  Look for an invitation to a stream, for the current user (authed or not). If token
+  isn't specified, the server will look for any valid invite.
+  """
+  streamInvite(streamId: String!, token: String): PendingStreamCollaborator @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Query.projectInvite instead.")
+
+  """
+  Look for an invitation to a project, for the current user (authed or not). If token
+  isn't specified, the server will look for any valid invite.
+  """
+  projectInvite(projectId: String!, token: String): PendingStreamCollaborator
+
+  """Get all invitations to streams that the active user has"""
+  streamInvites: [PendingStreamCollaborator!]! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use User.projectInvites instead.")
+
+  """Receive metadata about an invite by the invite token"""
+  serverInviteByToken(token: String): ServerInvite
+  serverStats: ServerStats! @deprecated(reason: "use admin.serverStatistics instead")
+  workspace(id: String!): Workspace!
+  workspaceBySlug(slug: String!): Workspace!
+
+  """Find workspaces a given user email can use SSO to sign with"""
+  workspaceSsoByEmail(email: String!): [LimitedWorkspace!]!
+
+  """
+  Look for an invitation to a workspace, for the current user (authed or not).
+  
+  If token is specified, it will return the corresponding invite even if it belongs to a different user.
+  
+  Either token or workspaceId must be specified, or both
+  """
+  workspaceInvite(workspaceId: String, token: String, options: WorkspaceInviteLookupOptions): PendingWorkspaceCollaborator
+
+  """
+  Validates the slug, to make sure it contains only valid characters and its not taken.
+  """
+  validateWorkspaceSlug(slug: String!): Boolean!
+}
+
+type Mutation {
+  """The void stares back."""
+  _: String
+  accSyncItemMutations: AccSyncItemMutations!
+
+  """
+  Accept or decline a stream access request. Must be a stream owner to invoke this.
+  """
+  streamAccessRequestUse(requestId: String!, accept: Boolean!, role: StreamRole! = STREAM_CONTRIBUTOR): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectAccessRequestMutations.use instead.")
+
+  """Request access to a specific stream"""
+  streamAccessRequestCreate(streamId: String!): StreamAccessRequest! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectAccessRequestMutations.create instead.")
+
+  """Register a new third party application."""
+  appCreate(app: AppCreateInput!): String!
+
+  """
+  Update an existing third party application. **Note: This will invalidate all existing tokens, refresh tokens and access codes and will require existing users to re-authorize it.**
+  """
+  appUpdate(app: AppUpdateInput!): Boolean!
+
+  """Deletes a thirty party application."""
+  appDelete(appId: String!): Boolean!
+
+  """
+  Revokes (de-authorizes) an application that you have previously authorized.
+  """
+  appRevokeAccess(appId: String!): Boolean
+  automateFunctionRunStatusReport(input: AutomateFunctionRunStatusReportInput!): Boolean!
+  automateMutations: AutomateMutations!
+  commentMutations: CommentMutations!
+
+  """
+  Used for broadcasting real time chat head bubbles and status. Does not persist any info.
+  """
+  userViewerActivityBroadcast(streamId: String!, resourceId: String!, data: JSONObject): Boolean! @deprecated(reason: "Use broadcastViewerUserActivity")
+
+  """
+  Used for broadcasting real time typing status in comment threads. Does not persist any info.
+  """
+  userCommentThreadActivityBroadcast(streamId: String!, commentId: String!, data: JSONObject): Boolean! @deprecated(reason: "Use broadcastViewerUserActivity")
+
+  """Creates a comment"""
+  commentCreate(input: CommentCreateInput!): String! @deprecated(reason: "Use commentMutations version")
+
+  """Flags a comment as viewed by you (the logged in user)."""
+  commentView(streamId: String!, commentId: String!): Boolean! @deprecated(reason: "Use commentMutations version")
+
+  """Archives a comment."""
+  commentArchive(streamId: String!, commentId: String!, archived: Boolean! = true): Boolean! @deprecated(reason: "Use commentMutations version")
+
+  """Edits a comment."""
+  commentEdit(input: CommentEditInput!): Boolean! @deprecated(reason: "Use commentMutations version")
+
+  """Adds a reply to a comment."""
+  commentReply(input: ReplyCreateInput!): String! @deprecated(reason: "Use commentMutations version")
+
+  """Broadcast user activity in the viewer"""
+  broadcastViewerUserActivity(projectId: String!, resourceIdString: String!, message: ViewerUserActivityMessageInput!): Boolean!
+  admin: AdminMutations!
+
+  """Creates an personal api token."""
+  apiTokenCreate(token: ApiTokenCreateInput!): String!
+
+  """Revokes (deletes) an personal api token/app token."""
+  apiTokenRevoke(token: String!): Boolean!
+
+  """
+  Create an app token. Only apps can create app tokens and they don't show up under personal access tokens.
+  """
+  appTokenCreate(token: AppTokenCreateInput!): String!
+  branchCreate(branch: BranchCreateInput!): String! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ModelMutations.create instead.")
+  branchUpdate(branch: BranchUpdateInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ModelMutations.update instead.")
+  branchDelete(branch: BranchDeleteInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ModelMutations.delete instead.")
+  commitCreate(commit: CommitCreateInput!): String! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.create instead.")
+  commitUpdate(commit: CommitUpdateInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.update/moveToModel instead.")
+  commitReceive(input: CommitReceivedInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.markReceived instead.")
+  commitDelete(commit: CommitDeleteInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.delete instead.")
+
+  """Move a batch of commits to a new branch"""
+  commitsMove(input: CommitsMoveInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.moveToModel instead.")
+
+  """Delete a batch of commits"""
+  commitsDelete(input: CommitsDeleteInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use VersionMutations.delete instead.")
+  modelMutations: ModelMutations!
+  versionMutations: VersionMutations!
+  objectCreate(objectInput: ObjectCreateInput!): [String!]! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  projectMutations: ProjectMutations!
+  serverInfoUpdate(info: ServerInfoUpdateInput!): Boolean
+
+  """Creates a new stream."""
+  streamCreate(stream: StreamCreateInput!): String @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectMutations.create instead.")
+
+  """Updates an existing stream."""
+  streamUpdate(stream: StreamUpdateInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectMutations.update instead.")
+
+  """Deletes an existing stream."""
+  streamDelete(id: String!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectMutations.delete instead.")
+  streamsDelete(ids: [String!]): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectMutations.batchDelete instead.")
+
+  """Update permissions of a user on a given stream."""
+  streamUpdatePermission(permissionParams: StreamUpdatePermissionInput!): Boolean @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectMutations.updateRole instead.")
+
+  """Revokes the permissions of a user on a given stream."""
+  streamRevokePermission(permissionParams: StreamRevokePermissionInput!): Boolean @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectMutations.updateRole instead.")
+  streamFavorite(streamId: String!, favorited: Boolean!): Stream @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """Remove yourself from stream collaborators (not possible for the owner)"""
+  streamLeave(streamId: String!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectMutations.leave instead.")
+
+  """Edits a user's profile."""
+  userUpdate(user: UserUpdateInput!): Boolean! @deprecated(reason: "Use activeUserMutations version")
+
+  """Delete a user's account."""
+  userDelete(userConfirmation: UserDeleteInput!): Boolean!
+  adminDeleteUser(userConfirmation: UserDeleteInput!): Boolean!
+  userRoleChange(userRoleInput: UserRoleInput!): Boolean!
+
+  """Various Active User oriented mutations"""
+  activeUserMutations: ActiveUserMutations!
+  dashboardMutations: DashboardMutations!
+
+  """(Re-)send the account verification e-mail"""
+  requestVerification: Boolean!
+  requestVerificationByEmail(email: String!): Boolean!
+  fileUploadMutations: FileUploadMutations!
+  serverInfoMutations: ServerInfoMutations!
+  userNotificationPreferencesUpdate(preferences: JSONObject!): Boolean
+
+  """Invite a new user to the speckle server and return the invite ID"""
+  serverInviteCreate(input: ServerInviteCreateInput!): Boolean!
+
+  """
+  Invite a new or registered user to the specified stream
+  Note: The required scope to invoke this is not given out to app or personal access tokens
+  """
+  streamInviteCreate(input: StreamInviteCreateInput!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectInviteMutations.create instead.")
+
+  """
+  Note: The required scope to invoke this is not given out to app or personal access tokens
+  """
+  serverInviteBatchCreate(input: [ServerInviteCreateInput!]!): Boolean!
+
+  """
+  Note: The required scope to invoke this is not given out to app or personal access tokens
+  """
+  streamInviteBatchCreate(input: [StreamInviteCreateInput!]!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectInviteMutations.batchCreate instead.")
+
+  """Accept or decline a stream invite"""
+  streamInviteUse(accept: Boolean!, streamId: String!, token: String!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectInviteMutations.use instead.")
+
+  """
+  Cancel a pending stream invite. Can only be invoked by a stream owner.
+  Note: The required scope to invoke this is not given out to app or personal access tokens
+  """
+  streamInviteCancel(streamId: String!, inviteId: String!): Boolean! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use ProjectInviteMutations.cancel instead.")
+
+  """
+  Re-send a pending invite
+  Note: The required scope to invoke this is not given out to app or personal access tokens
+  """
+  inviteResend(inviteId: String!): Boolean!
+
+  """
+  Delete a pending invite
+  Note: The required scope to invoke this is not given out to app or personal access tokens
+  """
+  inviteDelete(inviteId: String!): Boolean!
+
+  """Creates a new webhook on a stream"""
+  webhookCreate(webhook: WebhookCreateInput!): String!
+
+  """Updates an existing webhook"""
+  webhookUpdate(webhook: WebhookUpdateInput!): String!
+
+  """Deletes an existing webhook"""
+  webhookDelete(webhook: WebhookDeleteInput!): String!
+  workspaceJoinRequestMutations: WorkspaceJoinRequestMutations!
+  workspaceMutations: WorkspaceMutations!
+}
+
+type Subscription {
+  """It's lonely in the void."""
+  _: String
+
+  """
+  Subscribe to changes to a project's sync items. Optionally specify lineage urns to subscribe to.
+  """
+  projectAccSyncItemsUpdated(id: String!, itemIds: [String!]): ProjectAccSyncItemsUpdatedMessage!
+
+  """
+  Subscribe to updates to any triggered automations statuses in the project
+  """
+  projectTriggeredAutomationsStatusUpdated(projectId: String!): ProjectTriggeredAutomationsStatusUpdatedMessage!
+
+  """Subscribe to updates to automations in the project"""
+  projectAutomationsUpdated(projectId: String!): ProjectAutomationsUpdatedMessage!
+
+  """
+  Subscribe to updates to resource comments/threads. Optionally specify resource ID string to only receive
+  updates regarding comments for those resources.
+  """
+  projectCommentsUpdated(target: ViewerUpdateTrackingTarget!): ProjectCommentsUpdatedMessage!
+
+  """Broadcasts "real-time" location data for viewer users."""
+  userViewerActivity(streamId: String!, resourceId: String!): JSONObject @deprecated(reason: "Use viewerUserActivityBroadcasted")
+
+  """
+  Subscribe to new comment events. There's two ways to use this subscription:
+  - for a whole stream: do not pass in any resourceIds; this sub will get called whenever a comment (not reply) is added to any of the stream's resources.
+  - for a specific resource/set of resources: pass in a list of resourceIds (commit or object ids); this sub will get called when *any* of the resources provided get a comment.
+  """
+  commentActivity(streamId: String!, resourceIds: [String]): CommentActivityMessage! @deprecated(reason: "Use projectCommentsUpdated")
+
+  """
+  Subscribes to events on a specific comment. Use to find out when:
+  - a top level comment is deleted (trigger a deletion event outside)
+  - a top level comment receives a reply.
+  """
+  commentThreadActivity(streamId: String!, commentId: String!): CommentThreadActivityMessage! @deprecated(reason: "Use projectCommentsUpdated or viewerUserActivityBroadcasted for reply status")
+
+  """
+  Track user activities in the viewer relating to the specified resources
+  """
+  viewerUserActivityBroadcasted(target: ViewerUpdateTrackingTarget!, sessionId: String): ViewerUserActivityMessage!
+
+  """Subscribe to branch created event"""
+  branchCreated(streamId: String!): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use 'projectModelsUpdated' instead.")
+
+  """Subscribe to branch updated event."""
+  branchUpdated(streamId: String!, branchId: String): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use 'projectModelsUpdated' instead.")
+
+  """Subscribe to branch deleted event"""
+  branchDeleted(streamId: String!): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use 'projectModelsUpdated' instead.")
+
+  """Subscribe to commit created event"""
+  commitCreated(streamId: String!): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use 'projectVersionsUpdated' instead.")
+
+  """Subscribe to commit updated event."""
+  commitUpdated(streamId: String!, commitId: String): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use 'projectVersionsUpdated' instead.")
+
+  """Subscribe to commit deleted event"""
+  commitDeleted(streamId: String!): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use 'projectVersionsUpdated' instead.")
+
+  """
+  Subscribe to changes to a project's models. Optionally specify modelIds to track.
+  """
+  projectModelsUpdated(id: String!, modelIds: [String!]): ProjectModelsUpdatedMessage!
+
+  """Subscribe to changes to a project's versions."""
+  projectVersionsUpdated(id: String!): ProjectVersionsUpdatedMessage!
+
+  """
+  Subscribe to when a project's versions get their preview image fully generated.
+  """
+  projectVersionsPreviewGenerated(id: String!): ProjectVersionsPreviewGeneratedMessage!
+
+  """Track newly added or deleted projects owned by the active user"""
+  userProjectsUpdated: UserProjectsUpdatedMessage!
+
+  """Track updates to a specific project"""
+  projectUpdated(id: String!): ProjectUpdatedMessage!
+
+  """
+  Subscribes to new stream added event for your profile. Use this to display an up-to-date list of streams.
+  **NOTE**: If someone shares a stream with you, this subscription will be triggered with an extra value of `sharedBy` in the payload.
+  """
+  userStreamAdded: JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use userProjectsUpdated instead.")
+
+  """
+  Subscribes to stream removed event for your profile. Use this to display an up-to-date list of streams for your profile.
+  **NOTE**: If someone revokes your permissions on a stream, this subscription will be triggered with an extra value of `revokedBy` in the payload.
+  """
+  userStreamRemoved: JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use userProjectsUpdated instead.")
+
+  """
+  Subscribes to stream updated event. Use this in clients/components that pertain only to this stream.
+  """
+  streamUpdated(streamId: String): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use projectUpdated instead.")
+
+  """
+  Subscribes to stream deleted event. Use this in clients/components that pertain only to this stream.
+  """
+  streamDeleted(streamId: String): JSONObject @deprecated(reason: "Part of the old API surface and will be removed in the future. Use projectUpdated instead.")
+
+  """
+  Cyclically sends a message to the client, used for testing
+  Note: Only works in test environment
+  """
+  ping: String!
+
+  """Subscribe to changes to a project's pending models"""
+  projectPendingModelsUpdated(id: String!): ProjectPendingModelsUpdatedMessage!
+
+  """Subscribe to changes to a project's pending versions"""
+  projectPendingVersionsUpdated(id: String!): ProjectPendingVersionsUpdatedMessage!
+
+  """Subscribe to changes to any of a project's file imports"""
+  projectFileImportUpdated(id: String!): ProjectFileImportUpdatedMessage! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use projectPendingModelsUpdated or projectPendingVersionsUpdated instead.")
+  projectVersionGendoAIRenderCreated(id: String!, versionId: String!): GendoAIRender!
+  projectVersionGendoAIRenderUpdated(id: String!, versionId: String!): GendoAIRender!
+
+  """Subscribe to changes to a project's saved views."""
+  projectSavedViewsUpdated(projectId: ID!): ProjectSavedViewsUpdatedMessage!
+
+  """Subscribe to changes to a project's saved view groups."""
+  projectSavedViewGroupsUpdated(projectId: ID!): ProjectSavedViewGroupsUpdatedMessage!
+
+  """
+  Track newly added or deleted projects in a specific workspace.
+  Either slug or id must be set.
+  """
+  workspaceProjectsUpdated(workspaceId: String, workspaceSlug: String): WorkspaceProjectsUpdatedMessage!
+
+  """
+  Track updates to a specific workspace.
+  Either slug or id must be set.
+  """
+  workspaceUpdated(workspaceId: String, workspaceSlug: String): WorkspaceUpdatedMessage!
+}
+
+type WorkspaceIntegrations {
+  acc(token: String): AccIntegration
+}
+
+type AccIntegration {
+  hub(id: String!): AccHub!
+  hubs: AccHubCollection!
+  project(hubId: String!, projectId: String!): AccProject!
+  folder(projectId: String!, folderId: String!): AccFolder!
+  item(projectId: String!, itemId: String!): AccItem!
+}
+
+type AccHub {
+  id: ID!
+  name: String!
+  project(id: ID!): AccProject!
+  projects: AccProjectCollection!
+}
+
+type AccHubCollection {
+  items: [AccHub!]!
+  cursor: String
+}
+
+type AccProject {
+  id: ID!
+  name: String!
+  folder(id: String!): AccFolder!
+  rootFolder: AccFolder!
+}
+
+type AccProjectCollection {
+  items: [AccProject!]!
+  cursor: String
+}
+
+type AccFolder {
+  id: ID!
+  name: String!
+  contents: AccItemCollection!
+  children: AccFolderCollection!
+}
+
+type AccFolderCollection {
+  items: [AccFolder!]!
+  cursor: String
+}
+
+type AccItem {
+  """lineage urn"""
+  id: ID!
+  name: String!
+  latestVersion: AccItemVersion!
+}
+
+type AccItemCollection {
+  items: [AccItem!]!
+  cursor: String
+}
+
+type AccItemVersion {
+  """version urn"""
+  id: ID!
+  name: String!
+  versionNumber: Int!
+  fileType: String
+}
+
+type Workspace {
+  integrations: WorkspaceIntegrations
+  dashboards(limit: Int! = 50, cursor: String, filter: WorkspaceDashboardsFilter): DashboardCollection!
+  plan: WorkspacePlan
+  subscription: WorkspaceSubscription
+  seats: WorkspaceSubscriptionSeats
+  customerPortalUrl: String
+  hasAccessToFeature(featureName: WorkspaceFeatureName!): Boolean!
+
+  """
+  A Workspace is marked as readOnly if its trial period is finished or a paid plan is subscribed but payment has failed
+  """
+  readOnly: Boolean!
+
+  """Shows the plan prices localized for the given workspace"""
+  planPrices: WorkspacePaidPlanPrices
+
+  """
+  Active user's seat type for this workspace. `null` if request is not authenticated, or the workspace is not explicitly shared with you.
+  """
+  seatType: WorkspaceSeatType
+
+  """
+  The default seat assigned to users that join a workspace. Used during workspace discovery or on invites without seat types.
+  """
+  defaultSeatType: WorkspaceSeatType!
+  permissions: WorkspacePermissionChecks!
+
+  """
+  The default region where project data will be stored, if set. If undefined, defaults to main/default
+  region.
+  """
+  defaultRegion: ServerRegionItem
+
+  """Get all join requests for all the workspaces the user is an admin of"""
+  adminWorkspacesJoinRequests(filter: AdminWorkspaceJoinRequestFilter, cursor: String, limit: Int! = 25): WorkspaceJoinRequestCollection
+  id: ID!
+  name: String!
+  slug: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  """Logo image as base64-encoded string"""
+  logo: String
+
+  """
+  The default role workspace members will receive for workspace projects.
+  """
+  defaultProjectRole: String! @deprecated(reason: "Always the reviewer role. Will be removed in the future.")
+
+  """Verified workspace domains"""
+  domains: [WorkspaceDomain!]
+
+  """
+  Active user's role for this workspace. `null` if request is not authenticated, or the workspace is not explicitly shared with you.
+  """
+  role: String
+  team(limit: Int! = 25, cursor: String, filter: WorkspaceTeamFilter): WorkspaceCollaboratorCollection!
+  teamByRole: WorkspaceTeamByRole!
+
+  """Only available to workspace owners/members"""
+  invitedTeam(filter: PendingWorkspaceCollaboratorsFilter): [PendingWorkspaceCollaborator!]
+  projects(limit: Int! = 25, cursor: String, filter: WorkspaceProjectsFilter): ProjectCollection!
+  automateFunctions(limit: Int! = 25, cursor: String, filter: AutomateFunctionsFilter): AutomateFunctionCollection!
+
+  """
+  Information about the workspace's SSO configuration and the current user's SSO session, if present
+  """
+  sso: WorkspaceSso
+
+  """Enable/Disable restriction to invite users to workspace as Guests only"""
+  domainBasedMembershipProtectionEnabled: Boolean!
+
+  """Enable/Disable discovery of the workspace"""
+  discoverabilityEnabled: Boolean!
+
+  """
+  If true, allow users to automatically join discoverable workspaces (instead of requesting to join)
+  """
+  discoverabilityAutoJoinEnabled: Boolean!
+
+  """Info about the workspace creation state"""
+  creationState: WorkspaceCreationState
+
+  """Workspace-level configuration for models in embedded viewer"""
+  embedOptions: WorkspaceEmbedOptions!
+
+  """
+  Exclusive workspaces do not allow their workspace members to create or join other workspaces as members.
+  """
+  isExclusive: Boolean!
+}
+
+type ProjectPermissionChecks {
+  canReadAccIntegrationSettings: PermissionCheckResult!
+  canCreateAutomation: PermissionCheckResult!
+  canCreateComment: PermissionCheckResult!
+  canBroadcastActivity: PermissionCheckResult!
+  canCreateModel: PermissionCheckResult!
+  canMoveToWorkspace(workspaceId: String): PermissionCheckResult!
+  canRead: PermissionCheckResult!
+  canUpdate: PermissionCheckResult!
+  canDelete: PermissionCheckResult!
+  canUpdateAllowPublicComments: PermissionCheckResult!
+  canReadSettings: PermissionCheckResult!
+  canReadWebhooks: PermissionCheckResult!
+  canLeave: PermissionCheckResult!
+  canRequestRender: PermissionCheckResult!
+  canPublish: PermissionCheckResult!
+  canLoad: PermissionCheckResult!
+  canInvite: PermissionCheckResult!
+  canCreateEmbedTokens: PermissionCheckResult!
+  canRevokeEmbedTokens: PermissionCheckResult!
+  canReadEmbedTokens: PermissionCheckResult!
+  canCreateSavedView: PermissionCheckResult!
+}
+
+type Project {
+  accSyncItems(cursor: String, limit: Int): AccSyncItemCollection!
+  accSyncItem(id: String!): AccSyncItem!
+
+  """Pending project access requests"""
+  pendingAccessRequests: [ProjectAccessRequest!]
+  automations(filter: String, cursor: String, limit: Int): AutomationCollection!
+
+  """
+  Get a single automation by id. Error will be thrown if automation is not found or inaccessible.
+  """
+  automation(id: String!): Automation!
+
+  """Get the metadata collection of blobs stored for this stream."""
+  blobs(query: String = null, limit: Int = 25, cursor: String = null): BlobMetadataCollection
+  blob(id: String!): BlobMetadata
+
+  """All comment threads in this project"""
+  commentThreads(cursor: String, limit: Int, filter: ProjectCommentsFilter): ProjectCommentCollection!
+
+  """Get specific project comment/thread by ID"""
+  comment(id: String!): Comment
+  embedTokens(cursor: String, limit: Int): EmbedTokenCollection!
+
+  """Returns a flat list of all models"""
+  models(cursor: String, limit: Int! = 25, filter: ProjectModelsFilter): ModelCollection!
+
+  """
+  Return's a project's models in a tree view with submodels being nested under parent models
+  real or fake (e.g., with a foo/bar model, it will be nested under foo even if such a model doesn't actually exist)
+  """
+  modelsTree(cursor: String, limit: Int! = 25, filter: ProjectModelsTreeFilter): ModelsTreeItemCollection!
+
+  """Returns a specific model by its ID"""
+  model(id: String!): Model!
+
+  """Return a model tree of children for the specified model name"""
+  modelChildrenTree(fullName: String!): [ModelsTreeItem!]!
+
+  """Returns a flat list of all project versions"""
+  versions(limit: Int! = 25, cursor: String): VersionCollection!
+
+  """Retrieve a specific project version by its ID"""
+  version(id: String!): Version!
+
+  """Retrieve a specific project model by its ID"""
+  modelByName(name: String!): Model!
+  object(id: String!): Object
+  permissions: ProjectPermissionChecks!
+  id: ID!
+  name: String!
+  description: String
+  visibility: ProjectVisibility!
+  allowPublicComments: Boolean!
+
+  """
+  Active user's role for this project. `null` if request is not authenticated, or the project is not explicitly shared with you.
+  """
+  role: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  team: [ProjectCollaborator!]!
+
+  """Collaborators who have been invited, but not yet accepted."""
+  invitedTeam: [PendingStreamCollaborator!]
+
+  """Source apps used in any models of this project"""
+  sourceApps: [String!]!
+  dashboards(limit: Int! = 50, cursor: String, filter: ProjectDashboardsFilter): DashboardCollection!
+  dashboardTokens(cursor: String, limit: Int): DashboardTokenCollection!
+
+  """Returns a list models that are being created from a file import"""
+  pendingImportedModels(limit: Int = 25): [FileUpload!]!
+  hasAccessToFeature(featureName: WorkspaceFeatureName!): Boolean!
+  savedViews(input: ProjectSavedViewsInput!): SavedViewCollection!
+  savedViewGroups(input: SavedViewGroupsInput!): SavedViewGroupCollection!
+  savedViewGroup(id: ID!): SavedViewGroup!
+  ungroupedViewGroup(input: GetUngroupedViewGroupInput!): SavedViewGroup!
+  savedView(id: ID!): SavedView!
+
+  """Same as savedView(), but won't throw if view isn't found"""
+  savedViewIfExists(id: ID): SavedView
+
+  """Return metadata about resources being requested in the viewer"""
+  viewerResources(
+    resourceIdString: String!
+
+    """
+    If a saved view ID is specified, the returned resources will be adjusted to return the view's resources instead.
+    Even if no saved view ID is specified - if the resourceIdString refers to a model w/ a home view, that home
+    saved view will be implicitly applied.
+    """
+    savedViewId: ID
+    savedViewSettings: SavedViewsLoadSettings
+    loadedVersionsOnly: Boolean = true
+  ): [ViewerResourceGroup!]! @deprecated(reason: "Use viewerResourcesExtended instead. viewerResources() will be removed soon")
+
+  """Return extended metadata about resources being requested in the viewer"""
+  viewerResourcesExtended(
+    resourceIdString: String!
+
+    """
+    If a saved view ID is specified, the returned resources will be adjusted to return the view's resources instead.
+    Even if no saved view ID is specified - if the resourceIdString refers to a model w/ a home view, that home
+    saved view will be implicitly applied.
+    """
+    savedViewId: ID
+    savedViewSettings: SavedViewsLoadSettings
+    loadedVersionsOnly: Boolean = true
+  ): ExtendedViewerResources!
+  webhooks(id: String): WebhookCollection!
+  invitableCollaborators(filter: InvitableCollaboratorsFilter, cursor: String, limit: Int! = 25): WorkspaceCollaboratorCollection!
+
+  """Full workspace information for the project."""
+  workspace: Workspace
+
+  """
+  Limited workspace records that exposes public data projects workspaces.
+  """
+  limitedWorkspace: LimitedWorkspace
+
+  """Public project-level configuration for embedded viewer"""
+  embedOptions: ProjectEmbedOptions!
+
+  """
+  Returns information about the potential effects of moving a project to a given workspace.
+  """
+  moveToWorkspaceDryRun(workspaceId: String!): ProjectMoveToWorkspaceDryRun!
+  workspaceId: String
+}
+
+type Model {
+  accSyncItem: AccSyncItem
+  automationsStatus: TriggeredAutomationsStatus
+
+  """All comment threads in this model"""
+  commentThreads(cursor: String, limit: Int! = 25): CommentCollection!
+  id: ID!
+
+  """
+  Full name including the names of parent models delimited by forward slashes
+  """
+  name: String!
+
+  """
+  The shortened/display name that doesn't include the names of parent models
+  """
+  displayName: String!
+  author: LimitedUser
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  previewUrl: String
+
+  """Return a model tree of children"""
+  childrenTree: [ModelsTreeItem!]!
+  version(id: String!): Version!
+  versions(limit: Int! = 25, cursor: String, filter: ModelVersionsFilter): VersionCollection!
+  projectId: String!
+  permissions: ModelPermissionChecks!
+
+  """Returns a list of versions that are being created from a file import"""
+  pendingImportedVersions(limit: Int = 25): [FileUpload!]!
+
+  """Get all file uploads ever done in this model"""
+  uploads(input: GetModelUploadsInput): FileUploadCollection!
+
+  """The model's home view, if any"""
+  homeView: SavedView
+
+  """
+  The resourceIdString to use when building links to this model in the viewer. Takes home view settings into account.
+  """
+  resourceIdString: String!
+}
+
+type AccSyncItemCollection {
+  items: [AccSyncItem!]!
+  totalCount: Int!
+  cursor: String
+}
+
+type AccSyncItem {
+  id: ID!
+  project: Project!
+  model: Model
+  author: LimitedUser
+  accRegion: String!
+  accHubId: String!
+  accProjectId: String!
+  accRootProjectFolderUrn: String!
+  accFileLineageUrn: String!
+  accFileName: String!
+  accFileExtension: String!
+  accFileVersionIndex: Int!
+  accFileVersionUrn: String!
+  accFileViewName: String
+  accWebhookId: String
+  status: AccSyncItemStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum AccSyncItemStatus {
+  pending
+  syncing
+  failed
+  succeeded
+  paused
+}
+
+input DeleteAccSyncItemInput {
+  id: ID!
+  projectId: String!
+}
+
+input UpdateAccSyncItemInput {
+  id: ID!
+  projectId: String!
+  status: AccSyncItemStatus!
+}
+
+input CreateAccSyncItemInput {
+  projectId: String!
+  modelId: String!
+  accRegion: String!
+  accHubId: String!
+  accProjectId: String!
+  accRootProjectFolderUrn: String!
+  accFileLineageUrn: String!
+  accFileName: String!
+  accFileExtension: String!
+  accFileVersionIndex: Int!
+  accFileVersionUrn: String!
+  accFileViewName: String
+}
+
+type AccSyncItemMutations {
+  create(input: CreateAccSyncItemInput!): AccSyncItem!
+  delete(input: DeleteAccSyncItemInput!): Boolean!
+  update(input: UpdateAccSyncItemInput!): AccSyncItem!
+}
+
+enum ProjectAccSyncItemsUpdatedMessageType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type ProjectAccSyncItemsUpdatedMessage {
+  type: ProjectAccSyncItemsUpdatedMessageType!
+  id: String!
+  accSyncItem: AccSyncItem
+}
+
+"""
+Full user type, should only be used in the context of admin operations or
+when a user is reading/writing info about himself
+"""
+type User {
+  """Get pending project access request, that the user made"""
+  projectAccessRequest(projectId: String!): ProjectAccessRequest
+
+  """All the recent activity from this user in chronological order"""
+  activity(actionType: String, after: DateTime, before: DateTime, cursor: DateTime, limit: Int! = 25): ActivityCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """The user's timeline in chronological order"""
+  timeline(after: DateTime, before: DateTime, cursor: DateTime, limit: Int! = 25): ActivityCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """Returns the apps you have authorized."""
+  authorizedApps: [ServerAppListItem!]
+
+  """Returns the apps you have created."""
+  createdApps: [ServerApp!]
+  automateInfo: UserAutomateInfo!
+  automateFunctions(filter: AutomateFunctionsFilter, cursor: String, limit: Int): AutomateFunctionCollection!
+
+  """Returns a list of your personal api tokens."""
+  apiTokens: [ApiToken!]!
+
+  """
+  Get commits authored by the user. If requested for another user, then only commits
+  from public streams will be returned.
+  """
+  commits(limit: Int! = 25, cursor: String): CommitCollection @deprecated(reason: "Part of the old API surface and will be removed in the future. Use User.versions instead.")
+
+  """
+  Get (count of) user's versions. By default gets all versions of all projects the user has access to.
+  Set authoredOnly=true to only retrieve versions authored by the user.
+  
+  Note: Only count resolution is currently implemented
+  """
+  versions(authoredOnly: Boolean! = false, limit: Int! = 25): CountOnlyCollection!
+  permissions: RootPermissionChecks!
+
+  """Get projects that the user participates in"""
+  projects(limit: Int! = 25, cursor: String, filter: UserProjectsFilter, sortBy: [String!]): UserProjectCollection!
+
+  """Get all invitations to projects that the active user has"""
+  projectInvites: [PendingStreamCollaborator!]!
+
+  """
+  Returns all streams that the user is a collaborator on. If requested for a user, who isn't the
+  authenticated user, then this will only return discoverable streams.
+  """
+  streams(limit: Int! = 25, cursor: String): UserStreamCollection! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use User.projects instead.")
+
+  """
+  All the streams that a active user has favorited.
+  Note: You can't use this to retrieve another user's favorite streams.
+  """
+  favoriteStreams(limit: Int! = 25, cursor: String): StreamCollection! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """Total amount of favorites attached to streams owned by the user"""
+  totalOwnedStreamsFavorites: Int! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  id: ID!
+
+  """Only returned if API user is the user being requested or an admin"""
+  email: String
+  name: String!
+  bio: String
+  company: String
+  avatar: String
+  verified: Boolean
+  profiles: JSONObject
+  role: String
+
+  """Whether post-sign up onboarding has been finished or skipped entirely"""
+  isOnboardingFinished: Boolean
+  createdAt: DateTime
+  emails: [UserEmail!]!
+  meta: UserMeta!
+
+  """Whether the user has a pending/active email verification token"""
+  hasPendingVerification: Boolean
+  gendoAICredits: UserGendoAICredits!
+  notificationPreferences: JSONObject!
+  workspaceJoinRequests(filter: WorkspaceJoinRequestFilter, cursor: String, limit: Int! = 25): LimitedWorkspaceJoinRequestCollection
+
+  """
+  Get discoverable workspaces with verified domains that match the active user's
+  """
+  discoverableWorkspaces: [LimitedWorkspace!]!
+
+  """
+  A list of workspaces for the active user where:
+  (1) The user is a member or admin
+  (2) The workspace has SSO provider enabled
+  (3) The user does not have a valid SSO session for the given SSO provider
+  """
+  expiredSsoSessions: [LimitedWorkspace!]!
+
+  """Get the workspaces for the user"""
+  workspaces(limit: Int! = 25, cursor: String = null, filter: UserWorkspacesFilter): WorkspaceCollection!
+
+  """Get all invitations to workspaces that the active user has"""
+  workspaceInvites: [PendingWorkspaceCollaborator!]!
+
+  """The last-visited workspace for the given user"""
+  activeWorkspace: LimitedWorkspace
+}
+
+type Stream {
+  """Pending stream access requests"""
+  pendingAccessRequests: [StreamAccessRequest!] @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.pendingAccessRequests instead.")
+
+  """All the recent activity on this stream in chronological order"""
+  activity(actionType: String, after: DateTime, before: DateTime, cursor: DateTime, limit: Int! = 25): ActivityCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """Get the metadata collection of blobs stored for this stream."""
+  blobs(query: String = null, limit: Int = 25, cursor: String = null): BlobMetadataCollection @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.blobs instead.")
+  blob(id: String!): BlobMetadata @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.blob instead.")
+
+  """
+  The total number of comments for this stream. To actually get the comments, use the comments query without passing in a resource array. E.g.:
+  
+  ```
+  query{
+    comments(streamId:"streamId"){
+      ...
+    }
+  ```
+  """
+  commentCount: Int! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  commits(limit: Int! = 25, cursor: String): CommitCollection @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.versions instead.")
+  commit(id: String): Commit @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.version instead.")
+  branches(limit: Int! = 25, cursor: String): BranchCollection @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.models or Project.modelsTree instead.")
+  branch(name: String = "main"): Branch @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.model or Project.modelByName instead.")
+  object(id: String!): Object @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.object instead.")
+  id: String!
+  name: String!
+  description: String
+
+  """Whether the stream can be viewed by non-contributors"""
+  isPublic: Boolean!
+
+  """
+  Whether the stream (if public) can be found on public stream exploration pages
+  and searches
+  """
+  isDiscoverable: Boolean! @deprecated(reason: "Discoverability as a feature has been removed.")
+  allowPublicComments: Boolean!
+
+  """
+  Your role for this stream. `null` if request is not authenticated, or the stream is not explicitly shared with you.
+  """
+  role: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  collaborators: [StreamCollaborator!]!
+
+  """Collaborators who have been invited, but not yet accepted."""
+  pendingCollaborators: [PendingStreamCollaborator!]
+  size: String
+
+  """
+  Date when you favorited this stream. `null` if stream isn't viewed from a specific user's perspective or if it isn't favorited.
+  """
+  favoritedDate: DateTime
+  favoritesCount: Int!
+
+  """Returns a list of all the file uploads for this stream."""
+  fileUploads: [FileUpload!]! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.pendingImportedModels or Model.pendingImportedVersions instead.")
+
+  """Returns a specific file upload that belongs to this stream."""
+  fileUpload(id: String!): FileUpload @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.pendingImportedModels or Model.pendingImportedVersions instead.")
+  webhooks(id: String): WebhookCollection! @deprecated(reason: "Part of the old API surface and will be removed in the future. Use Project.webhooks instead.")
+}
+
+type ProjectAccessRequestMutations {
+  """Request access to a specific project"""
+  create(projectId: String!): ProjectAccessRequest!
+
+  """
+  Accept or decline a project access request. Must be a project owner to invoke this.
+  """
+  use(requestId: String!, accept: Boolean!, role: StreamRole! = STREAM_CONTRIBUTOR): Project!
+}
+
+type ProjectMutations {
+  """Access request related mutations"""
+  accessRequestMutations: ProjectAccessRequestMutations!
+  automationMutations(projectId: ID!): ProjectAutomationMutations!
+  createEmbedToken(token: EmbedTokenCreateInput!): CreateEmbedTokenReturn!
+  revokeEmbedToken(token: String!, projectId: String!): Boolean!
+  revokeEmbedTokens(projectId: String!): Boolean!
+
+  """Delete an existing project"""
+  delete(id: String!): Boolean!
+
+  """Batch delete projects"""
+  batchDelete(ids: [String!]!): Boolean!
+
+  """Updates an existing project"""
+  update(update: ProjectUpdateInput!): Project!
+
+  """
+  Create onboarding/tutorial project. If one is already created for the active user, that
+  one will be returned instead.
+  """
+  createForOnboarding: Project!
+
+  """Create new project"""
+  create(input: ProjectCreateInput): Project!
+
+  """Invite related mutations"""
+  invites: ProjectInviteMutations!
+
+  """Update role for a collaborator"""
+  updateRole(input: ProjectUpdateRoleInput!): Project!
+
+  """Leave a project. Only possible if you're not the last remaining owner."""
+  leave(id: String!): Boolean!
+  savedViewMutations: SavedViewMutations!
+}
+
+"""Created when a user requests to become a contributor on a stream"""
+type StreamAccessRequest {
+  id: ID!
+  requester: LimitedUser!
+  requesterId: String!
+  streamId: String!
+
+  """Can only be selected if authed user has proper access"""
+  stream: Stream!
+  createdAt: DateTime!
+}
+
+"""Created when a user requests to become a contributor on a project"""
+type ProjectAccessRequest {
+  id: ID!
+  requester: LimitedUser!
+  requesterId: String!
+  projectId: String!
+
+  """Can only be selected if authed user has proper access"""
+  project: Project!
+  createdAt: DateTime!
+}
+
+"""
+Limited user type, for showing public info about a user
+to another user
+"""
+type LimitedUser {
+  """All the recent activity from this user in chronological order"""
+  activity(actionType: String, after: DateTime, before: DateTime, cursor: DateTime, limit: Int! = 25): ActivityCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """The user's timeline in chronological order"""
+  timeline(after: DateTime, before: DateTime, cursor: DateTime, limit: Int! = 25): ActivityCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """Get public stream commits authored by the user"""
+  commits(limit: Int! = 25, cursor: String): CommitCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """Returns all discoverable streams that the user is a collaborator on"""
+  streams(limit: Int! = 25, cursor: String): UserStreamCollection! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """Total amount of favorites attached to streams owned by the user"""
+  totalOwnedStreamsFavorites: Int! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  id: ID!
+  name: String!
+  bio: String
+  company: String
+  avatar: String
+  verified: Boolean
+  role: String
+  workspaceDomainPolicyCompliant(workspaceSlug: String): Boolean
+  workspaceRole(workspaceId: String): String
+}
+
+type Branch {
+  """All the recent activity on this branch in chronological order"""
+  activity(actionType: String, after: DateTime, before: DateTime, cursor: DateTime, limit: Int! = 25): ActivityCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  id: String!
+  name: String!
+  author: User
+  description: String
+  createdAt: DateTime
+  commits(limit: Int! = 25, cursor: String): CommitCollection
+}
+
+type Commit {
+  """All the recent activity on this commit in chronological order"""
+  activity(actionType: String, after: DateTime, before: DateTime, cursor: DateTime, limit: Int! = 25): ActivityCollection @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+
+  """
+  The total number of comments for this commit. To actually get the comments, use the comments query and pass in a resource array consisting of of this commit's id.
+  E.g.,
+  ```
+  query{
+    comments(streamId:"streamId" resources:[{resourceType: commit, resourceId:"commitId"}] ){
+      ...
+    }
+  ```
+  """
+  commentCount: Int! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  id: String!
+  referencedObject: String!
+  message: String
+  sourceApplication: String
+  totalChildrenCount: Int
+  branchName: String
+  branch: Branch
+  parents: [String]
+  authorName: String
+  authorId: String
+  authorAvatar: String
+  createdAt: DateTime
+  streamId: String @deprecated(reason: "Use the stream field instead")
+  streamName: String @deprecated(reason: "Use the stream field instead")
+
+  """
+  Will throw an authorization error if active user isn't authorized to see it, for example,
+  if a stream isn't public and the user doesn't have the appropriate rights.
+  """
+  stream: Stream!
+}
+
+type ActivityCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Activity!]!
+}
+
+type Activity {
+  id: ID!
+  actionType: String!
+  info: JSONObject!
+  userId: String!
+  streamId: String
+  resourceId: String!
+  resourceType: String!
+  time: DateTime!
+  message: String!
+}
+
+type ServerApp {
+  id: String!
+  secret: String
+  name: String!
+  description: String
+  termsAndConditionsLink: String
+  logo: String
+  public: Boolean
+  trustByDefault: Boolean
+  author: AppAuthor
+  createdAt: DateTime!
+  redirectUrl: String!
+  scopes: [Scope!]!
+}
+
+type ServerAppListItem {
+  id: String!
+  name: String!
+  description: String
+  redirectUrl: String!
+  termsAndConditionsLink: String
+  trustByDefault: Boolean
+  logo: String
+  author: AppAuthor
+}
+
+type AppAuthor {
+  name: String!
+  id: String!
+  avatar: String
+}
+
+input AppCreateInput {
+  name: String!
+  description: String!
+  termsAndConditionsLink: String
+  logo: String
+  public: Boolean
+  redirectUrl: String!
+  scopes: [String]!
+}
+
+input AppUpdateInput {
+  id: String!
+  name: String!
+  description: String!
+  termsAndConditionsLink: String
+  logo: String
+  public: Boolean
+  redirectUrl: String!
+  scopes: [String]!
+}
+
+"""Information about this server."""
+type ServerInfo {
+  """The authentication strategies available on this server."""
+  authStrategies: [AuthStrategy!]!
+  automate: ServerAutomateInfo!
+  blobSizeLimitBytes: Int! @deprecated(reason: "Use the ServerInfo{configuration{blobSizeLimitBytes}} field instead.")
+  name: String!
+  company: String
+  description: String
+  adminContact: String
+  canonicalUrl: String
+  termsOfService: String
+  roles: [Role!]! @deprecated(reason: "Use role constants from the @speckle/shared npm package instead")
+  scopes: [Scope!]!
+  inviteOnly: Boolean
+  guestModeEnabled: Boolean!
+  version: String
+  serverRoles: [ServerRoleItem!]!
+
+  """Base URL of Speckle Automate, if set"""
+  automateUrl: String
+
+  """Server relocation / migration info"""
+  migration: ServerMigration
+
+  """Whether or not to show messaging about FE2 (banners etc.)"""
+  enableNewWebUiMessaging: Boolean
+
+  """
+  Configuration values that are specific to this server.
+  These are read-only and can only be adjusted during server setup.
+  Please contact your server administrator if you wish to suggest a change to these values.
+  """
+  configuration: ServerConfiguration!
+
+  """Info about server regions"""
+  multiRegion: ServerMultiRegionConfiguration!
+  workspaces: ServerWorkspacesInfo!
+}
+
+type AuthStrategy {
+  id: String!
+  name: String!
+  icon: String!
+  url: String!
+  color: String
+}
+
+enum AutomateRunStatus {
+  PENDING
+  INITIALIZING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  EXCEPTION
+  TIMEOUT
+  CANCELED
+}
+
+enum AutomateRunTriggerType {
+  VERSION_CREATED
+}
+
+type AutomationRevisionFunction {
+  """The secrets in parameters are redacted with six asterisks - ******"""
+  parameters: JSONObject
+  release: AutomateFunctionRelease!
+}
+
+type VersionCreatedTriggerDefinition {
+  type: AutomateRunTriggerType!
+  model: Model
+}
+
+union AutomationRevisionTriggerDefinition = VersionCreatedTriggerDefinition
+
+type AutomationRevision {
+  id: ID!
+  triggerDefinitions: [AutomationRevisionTriggerDefinition!]!
+  functions: [AutomationRevisionFunction!]!
+}
+
+type VersionCreatedTrigger {
+  type: AutomateRunTriggerType!
+  version: Version
+  model: Model
+}
+
+union AutomationRunTrigger = VersionCreatedTrigger
+
+type TriggeredAutomationsStatus {
+  id: ID!
+  status: AutomateRunStatus!
+  statusMessage: String
+  automationRuns: [AutomateRun!]!
+}
+
+type Version {
+  automationsStatus: TriggeredAutomationsStatus
+
+  """All comment threads in this version"""
+  commentThreads(cursor: String, limit: Int! = 25): CommentCollection!
+  id: ID!
+  referencedObject: String
+  message: String
+  sourceApplication: String
+  authorUser: LimitedUser
+  createdAt: DateTime!
+  model: Model!
+  previewUrl: String!
+  totalChildrenCount: Int
+  parents: [String]
+  permissions: VersionPermissionChecks!
+  gendoAIRenders: GendoAIRenderCollection!
+  gendoAIRender(id: String!): GendoAIRender!
+}
+
+type Automation {
+  id: ID!
+  name: String!
+  enabled: Boolean!
+  isTestAutomation: Boolean!
+  runs(cursor: String, limit: Int): AutomateRunCollection!
+  currentRevision: AutomationRevision
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  """Only accessible to automation owners"""
+  creationPublicKeys: [String!]!
+  permissions: AutomationPermissionChecks!
+}
+
+type AutomateFunctionRun {
+  id: ID!
+  status: AutomateRunStatus!
+  statusMessage: String
+  contextView: String
+  functionId: String
+  functionReleaseId: String
+
+  """
+  Nullable, in case the function is not retrievable due to poor network conditions
+  """
+  function: AutomateFunction
+  elapsed: Float!
+
+  """AutomateTypes.ResultsSchema type from @speckle/shared"""
+  results: JSONObject
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type AutomateRun {
+  id: ID!
+  trigger: AutomationRunTrigger!
+  status: AutomateRunStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  automation: Automation!
+  automationId: String!
+  functionRuns: [AutomateFunctionRun!]!
+}
+
+type AutomateRunCollection {
+  items: [AutomateRun!]!
+  totalCount: Int!
+  cursor: String
+}
+
+type AutomationCollection {
+  items: [Automation!]!
+  totalCount: Int!
+  cursor: String
+}
+
+input AutomateFunctionReleasesFilter {
+  search: String
+}
+
+type BasicGitRepositoryMetadata {
+  id: ID!
+  owner: String!
+  name: String!
+  url: String!
+}
+
+type AutomateFunction {
+  id: ID!
+  name: String!
+  repo: BasicGitRepositoryMetadata!
+  isFeatured: Boolean!
+  description: String!
+  logo: String
+  releases(cursor: String, limit: Int, filter: AutomateFunctionReleasesFilter): AutomateFunctionReleaseCollection!
+
+  """
+  SourceAppNames values from @speckle/shared. Empty array means - all of them
+  """
+  supportedSourceApps: [String!]!
+  tags: [String!]!
+
+  """Only returned if user is a part of this speckle server"""
+  creator: LimitedUser
+  workspaceIds: [String!]!
+  permissions: AutomateFunctionPermissionChecks!
+}
+
+type AutomateFunctionToken {
+  functionId: String!
+  functionToken: String!
+}
+
+type AutomateFunctionRelease {
+  id: ID!
+  functionId: String!
+  function: AutomateFunction!
+  versionTag: String!
+  createdAt: DateTime!
+  inputSchema: JSONObject
+  commitId: String!
+}
+
+type AutomateFunctionReleaseCollection {
+  items: [AutomateFunctionRelease!]!
+  totalCount: Int!
+  cursor: String
+}
+
+type AutomateFunctionCollection {
+  items: [AutomateFunction!]!
+  totalCount: Int!
+  cursor: String
+}
+
+input ProjectAutomationUpdateInput {
+  id: ID!
+  name: String
+  enabled: Boolean
+}
+
+input AutomationRevisionCreateFunctionInput {
+  functionId: String!
+  functionReleaseId: String!
+
+  """Should be encrypted from the client side"""
+  parameters: String
+}
+
+input ProjectAutomationRevisionCreateInput {
+  automationId: ID!
+
+  """AutomateTypes.TriggerDefinitionsSchema type from @speckle/shared"""
+  triggerDefinitions: JSONObject!
+  functions: [AutomationRevisionCreateFunctionInput!]!
+}
+
+input ProjectAutomationCreateInput {
+  name: String!
+  enabled: Boolean!
+}
+
+input ProjectTestAutomationCreateInput {
+  name: String!
+  modelId: String!
+}
+
+input AutomateFunctionsFilter {
+  search: String
+
+  """
+  By default, we include featured ("public") functions. Set this to false to exclude them.
+  """
+  includeFeatured: Boolean
+
+  """
+  By default, we exclude functions without releases. Set this to false to include them.
+  """
+  requireRelease: Boolean
+}
+
+input AutomateFunctionRunStatusReportInput {
+  projectId: String!
+  functionRunId: String!
+  status: AutomateRunStatus!
+  statusMessage: String
+  contextView: String
+
+  """AutomateTypes.ResultsSchema type from @speckle/shared"""
+  results: JSONObject
+}
+
+input CreateAutomateFunctionInput {
+  name: String!
+  template: AutomateFunctionTemplateLanguage!
+  description: String!
+
+  """SourceAppNames values from @speckle/shared"""
+  supportedSourceApps: [String!]!
+  tags: [String!]!
+
+  """Base64 encoded image data string"""
+  logo: String
+
+  """GitHub organization to create the repository in"""
+  org: String
+}
+
+input CreateAutomateFunctionWithoutVersionInput {
+  name: String!
+  description: String!
+}
+
+"""Any null values will be ignored"""
+input UpdateAutomateFunctionInput {
+  id: ID!
+  name: String
+  description: String
+
+  """SourceAppNames values from @speckle/shared"""
+  supportedSourceApps: [String!]
+  tags: [String!]
+  logo: String
+  workspaceIds: [String!]
+}
+
+type UserAutomateInfo {
+  hasAutomateGithubApp: Boolean!
+  availableGithubOrgs: [String!]!
+}
+
+enum AutomateFunctionTemplateLanguage {
+  TYPESCRIPT
+  PYTHON
+  DOT_NET
+}
+
+type AutomateFunctionTemplate {
+  id: AutomateFunctionTemplateLanguage!
+  title: String!
+  logo: String!
+  url: String!
+}
+
+type ServerAutomateInfo {
+  availableFunctionTemplates: [AutomateFunctionTemplate!]!
+}
+
+type ProjectAutomationMutations {
+  create(input: ProjectAutomationCreateInput!): Automation!
+  update(input: ProjectAutomationUpdateInput!): Automation!
+  delete(automationId: ID!): Boolean!
+  createRevision(input: ProjectAutomationRevisionCreateInput!): AutomationRevision!
+
+  """
+  Trigger an automation with a fake "version created" trigger. The "version created" will
+  just refer to the last version of the model.
+  """
+  trigger(automationId: ID!): String!
+  createTestAutomation(input: ProjectTestAutomationCreateInput!): Automation!
+  createTestAutomationRun(automationId: ID!): TestAutomationRun!
+}
+
+type AutomateMutations {
+  createFunction(input: CreateAutomateFunctionInput!): AutomateFunction!
+  createFunctionWithoutVersion(input: CreateAutomateFunctionWithoutVersionInput!): AutomateFunctionToken!
+  updateFunction(input: UpdateAutomateFunctionInput!): AutomateFunction!
+  regenerateFunctionToken(functionId: String!): String!
+}
+
+input AutomateAuthCodePayloadTest {
+  code: String!
+  userId: String!
+  workspaceId: String
+  action: String!
+}
+
+"""Additional resources to validate user access to."""
+input AutomateAuthCodeResources {
+  workspaceId: String
+}
+
+enum ProjectTriggeredAutomationsStatusUpdatedMessageType {
+  RUN_CREATED
+  RUN_UPDATED
+}
+
+type ProjectTriggeredAutomationsStatusUpdatedMessage {
+  type: ProjectTriggeredAutomationsStatusUpdatedMessageType!
+  version: Version!
+  model: Model!
+  project: Project!
+  run: AutomateRun!
+}
+
+enum ProjectAutomationsUpdatedMessageType {
+  CREATED
+  UPDATED
+  CREATED_REVISION
+}
+
+type ProjectAutomationsUpdatedMessage {
+  type: ProjectAutomationsUpdatedMessageType!
+  automationId: String!
+  automation: Automation
+
+  """Only set if type === CREATED_REVISION"""
+  revision: AutomationRevision
+}
+
+type TestAutomationRun {
+  automationRunId: String!
+  functionRunId: String!
+  triggers: [TestAutomationRunTrigger!]!
+}
+
+type TestAutomationRunTrigger {
+  payload: TestAutomationRunTriggerPayload!
+  triggerType: String!
+}
+
+type TestAutomationRunTriggerPayload {
+  modelId: String!
+  versionId: String!
+}
+
+type AutomationPermissionChecks {
+  canRead: PermissionCheckResult!
+  canUpdate: PermissionCheckResult!
+  canDelete: PermissionCheckResult!
+}
+
+type AutomateFunctionPermissionChecks {
+  canRegenerateToken: PermissionCheckResult!
+}
+
+"""Server configuration."""
+type ServerConfiguration {
+  blobSizeLimitBytes: Int!
+  objectSizeLimitBytes: Int!
+  objectMultipartUploadSizeLimitBytes: Int!
+
+  """Whether the email feature is enabled on this server"""
+  isEmailEnabled: Boolean!
+
+  """Email verification code timeout in minutes"""
+  emailVerificationTimeoutMinutes: Int!
+}
+
+type BlobMetadataCollection {
+  totalCount: Int!
+  totalSize: Int!
+  cursor: String
+  items: [BlobMetadata!]
+}
+
+type BlobMetadata {
+  id: String!
+  streamId: String!
+  userId: String!
+  fileName: String!
+  fileType: String!
+  fileHash: String
+  fileSize: Int
+  uploadStatus: Int!
+  uploadError: String
+  createdAt: DateTime!
+}
+
+type Object {
+  """
+  The total number of comments for this commit. To actually get the comments, use the comments query and pass in a resource array consisting of of this object's id.
+  E.g.,
+  ```
+  query{
+    comments(streamId:"streamId" resources:[{resourceType: object, resourceId:"objectId"}] ){
+      ...
+    }
+  ```
+  """
+  commentCount: Int! @deprecated(reason: "Part of the old API surface and will be removed in the future.")
+  id: String!
+  speckleType: String
+  applicationId: String @deprecated(reason: "Not implemented.")
+  createdAt: DateTime
+  totalChildrenCount: Int
+
+  """
+  The full object, with all its props & other things. **NOTE:** If you're requesting objects for the purpose of recreating & displaying, you probably only want to request this specific field.
+  """
+  data: JSONObject
+
+  """
+  Get any objects that this object references. In the case of commits, this will give you a commit's constituent objects.
+  **NOTE**: Providing any of the two last arguments ( `query`, `orderBy` ) will trigger a different code branch that executes a much more expensive SQL query. It is not recommended to do so for basic clients that are interested in purely getting all the objects of a given commit.
+  """
+  children(limit: Int! = 100, depth: Int! = 50, select: [String], cursor: String, query: [JSONObject!], orderBy: JSONObject): ObjectCollection!
+}
+
+type CommentDataFilters {
+  hiddenIds: [String!]
+  isolatedIds: [String!]
+  propertyInfoKey: String
+  passMax: Float
+  passMin: Float
+  sectionBox: JSONObject
+}
+
+type LegacyCommentViewerData {
+  """THREE.Vector3 {x, y, z}"""
+  location: JSONObject!
+
+  """
+  An array representing a user's camera position:
+  [camPos.x, camPos.y, camPos.z, camTarget.x, camTarget.y, camTarget.z, isOrtho, zoomNumber]
+  """
+  camPos: [Float!]!
+
+  """Viewer.getCurrentSectionBox(): THREE.Box3"""
+  sectionBox: JSONObject
+
+  """
+  Currently unused. Ideally comments should keep track of selected objects.
+  """
+  selection: JSONObject
+
+  """Old FE LocalFilterState type"""
+  filters: CommentDataFilters!
+}
+
+type Comment {
+  id: String!
+  author: LimitedUser!
+  authorId: String!
+  archived: Boolean!
+  screenshot: String
+  text: SmartTextEditorValue
+
+  """Plain-text version of the comment text, ideal for previews"""
+  rawText: String
+
+  """
+  Resources that this comment targets. Can be a mixture of either one stream, or multiple commits and objects.
+  """
+  resources: [ResourceIdentifier!]!
+
+  """
+  Resource identifiers as defined and implemented in the Viewer of the new frontend
+  """
+  viewerResources: [ViewerResourceItem!]!
+  createdAt: DateTime!
+
+  """
+  The time this comment was last updated. Corresponds also to the latest reply to this comment, if any.
+  """
+  updatedAt: DateTime!
+
+  """
+  The last time you viewed this comment. Present only if an auth'ed request. Relevant only if a top level commit.
+  """
+  viewedAt: DateTime
+
+  """Gets the replies to this comment."""
+  replies(limit: Int = 25, cursor: String): CommentCollection!
+
+  """Get authors of replies to this comment"""
+  replyAuthors(limit: Int! = 25): CommentReplyAuthorCollection!
+  reactions: [String] @deprecated(reason: "Not actually implemented")
+
+  """Whether or not comment is a reply to another comment"""
+  hasParent: Boolean!
+
+  """Parent thread, if there's any"""
+  parent: Comment
+  permissions: CommentPermissionChecks!
+
+  """Legacy comment viewer data field"""
+  data: JSONObject @deprecated(reason: "Use the new viewerState field instead")
+
+  """SerializedViewerState"""
+  viewerState: JSONObject
+}
+
+type CommentReplyAuthorCollection {
+  items: [LimitedUser!]!
+  totalCount: Int!
+}
+
+type CommentCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Comment!]!
+}
+
+type ProjectCommentCollection {
+  totalCount: Int!
+  totalArchivedCount: Int!
+  cursor: String
+  items: [Comment!]!
+}
+
+input ProjectCommentsFilter {
+  """
+  Only request comments belonging to the resources identified by this
+  comma-delimited resouce string (same format that's used in the viewer URL)
+  """
+  resourceIdString: String
+
+  """
+  By default if resourceIdString is set, the "versionId" part of model resource identifiers will be ignored
+  and all comments of all versions of any of the referenced models will be returned. If `loadedVersionsOnly` is
+  enabled, then only comment threads of loaded/referenced versions in resourceIdString will be returned.
+  """
+  loadedVersionsOnly: Boolean
+
+  """Whether or not to include archived/resolved threads"""
+  includeArchived: Boolean
+}
+
+type ResourceIdentifier {
+  resourceId: String!
+  resourceType: ResourceType!
+}
+
+input ResourceIdentifierInput {
+  resourceId: String!
+  resourceType: ResourceType!
+}
+
+enum ResourceType {
+  comment
+  object
+  commit
+  stream
+}
+
+"""Equivalent to frontend-1's LocalFilterState"""
+input CommentDataFiltersInput {
+  hiddenIds: [String!]
+  isolatedIds: [String!]
+  propertyInfoKey: String
+  passMax: Float
+  passMin: Float
+  sectionBox: JSONObject
+}
+
+"""Deprecated: Used by old stream-based mutations"""
+input CommentCreateInput {
+  streamId: String!
+
+  """
+  Specifies the resources this comment is linked to. There are several use cases:
+  - a comment targets only one resource (commit or object)
+  - a comment targets one or more resources (commits or objects)
+  - a comment targets only a stream
+  """
+  resources: [ResourceIdentifierInput]!
+
+  """ProseMirror document object"""
+  text: JSONObject
+  data: JSONObject!
+
+  """IDs of uploaded blobs that should be attached to this comment"""
+  blobIds: [String!]!
+  screenshot: String
+}
+
+input CommentContentInput {
+  doc: JSONObject
+  blobIds: [String!]
+}
+
+input CreateCommentInput {
+  projectId: String!
+  content: CommentContentInput!
+
+  """
+  SerializedViewerState. If omitted, comment won't render (correctly) inside the
+  viewer, but will still be retrievable through the API
+  """
+  viewerState: JSONObject
+
+  """Resources that this comment should be attached to"""
+  resourceIdString: String!
+  screenshot: String
+}
+
+"""Deprecated: Used by old stream-based mutations"""
+input ReplyCreateInput {
+  streamId: String!
+  parentComment: String!
+
+  """ProseMirror document object"""
+  text: JSONObject
+
+  """IDs of uploaded blobs that should be attached to this reply"""
+  blobIds: [String!]!
+  data: JSONObject
+}
+
+input CreateCommentReplyInput {
+  content: CommentContentInput!
+  threadId: String!
+  projectId: String!
+}
+
+"""Deprecated: Used by old stream-based mutations"""
+input CommentEditInput {
+  streamId: String!
+  id: String!
+
+  """ProseMirror document object"""
+  text: JSONObject
+
+  """IDs of uploaded blobs that should be attached to this comment"""
+  blobIds: [String!]!
+}
+
+input EditCommentInput {
+  commentId: String!
+  projectId: String!
+  content: CommentContentInput!
+}
+
+input MarkCommentViewedInput {
+  commentId: String!
+  projectId: String!
+}
+
+input ArchiveCommentInput {
+  commentId: String!
+  projectId: String!
+  archived: Boolean!
+}
+
+type CommentMutations {
+  markViewed(input: MarkCommentViewedInput!): Boolean!
+  create(input: CreateCommentInput!): Comment!
+  reply(input: CreateCommentReplyInput!): Comment!
+  edit(input: EditCommentInput!): Comment!
+  archive(input: ArchiveCommentInput!): Boolean!
+}
+
+type CommentActivityMessage {
+  type: String!
+  comment: Comment!
+}
+
+type CommentThreadActivityMessage {
+  type: String!
+  data: JSONObject
+  reply: Comment
+}
+
+enum ProjectCommentsUpdatedMessageType {
+  CREATED
+  UPDATED
+  ARCHIVED
+}
+
+type ProjectCommentsUpdatedMessage {
+  type: ProjectCommentsUpdatedMessageType!
+  id: String!
+
+  """Null if deleted"""
+  comment: Comment
+}
+
+input ViewerUpdateTrackingTarget {
+  projectId: String!
+
+  """
+  Only request updates to the resources identified by this
+  comma-delimited resouce string (same format that's used in the viewer URL)
+  """
+  resourceIdString: String!
+
+  """
+  By default if resourceIdString is set, the "versionId" part of model resource identifiers will be ignored
+  and all updates to of all versions of any of the referenced models will be returned. If `loadedVersionsOnly` is
+  enabled, then only updates of loaded/referenced versions in resourceIdString will be returned.
+  """
+  loadedVersionsOnly: Boolean
+}
+
+type CommentPermissionChecks {
+  canArchive: PermissionCheckResult!
+}
+
+type ViewerUserActivityMessage {
+  userName: String!
+  userId: String
+  sessionId: String!
+
+  """SerializedViewerState, only null if DISCONNECTED"""
+  state: JSONObject
+  user: LimitedUser
+  status: ViewerUserActivityStatus!
+}
+
+enum ViewerUserActivityStatus {
+  VIEWING
+  DISCONNECTED
+}
+
+input ViewerUserActivityMessageInput {
+  userName: String!
+  userId: String
+  sessionId: String!
+
+  """SerializedViewerState, only null if DISCONNECTED"""
+  state: JSONObject
+  status: ViewerUserActivityStatus!
+}
+
+type AdminUserListItem {
+  id: ID!
+  email: String
+  name: String!
+  company: String
+  avatar: String
+  verified: Boolean
+  role: String
+}
+
+type AdminUserList {
+  items: [AdminUserListItem!]!
+  cursor: String
+  totalCount: Int!
+}
+
+type AdminInviteList {
+  items: [ServerInvite!]!
+  cursor: String
+  totalCount: Int!
+}
+
+type ServerStatistics {
+  totalProjectCount: Int!
+  totalUserCount: Int!
+  totalPendingInvites: Int!
+}
+
+type ProjectCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Project!]!
+}
+
+input AdminUpdateEmailVerificationInput {
+  email: String!
+
+  """
+  Defaults to true. If set to false, the email will be marked as unverified.
+  """
+  verified: Boolean
+}
+
+type AdminQueries {
+  userList(limit: Int! = 25, cursor: String = null, query: String = null, role: ServerRole = null): AdminUserList!
+  inviteList(limit: Int! = 25, cursor: String = null, query: String = null): AdminInviteList!
+  projectList(query: String, orderBy: String, visibility: String, limit: Int! = 25, cursor: String = null): ProjectCollection!
+  serverStatistics: ServerStatistics!
+  workspaceList(query: String, limit: Int! = 25, cursor: String = null): WorkspaceCollection!
+}
+
+type AdminMutations {
+  """
+  A server administrator can update the verification status of an user's email.
+  The server administrator is recommended to confirm ownership of the email address
+  with the user before performing this action.
+  """
+  updateEmailVerification(input: AdminUpdateEmailVerificationInput!): Boolean!
+  updateWorkspacePlan(input: AdminUpdateWorkspacePlanInput!): Boolean!
+  giveAccessToWorkspaceFeature(input: AdminAccessToWorkspaceFeatureInput!): Boolean!
+  removeAccessToWorkspaceFeature(input: AdminAccessToWorkspaceFeatureInput!): Boolean!
+}
+
+type ApiToken {
+  id: String!
+  name: String!
+  lastChars: String!
+  scopes: [String]!
+  createdAt: DateTime!
+  lifespan: BigInt!
+  lastUsed: DateTime!
+}
+
+enum TokenResourceIdentifierType {
+  project
+  workspace
+}
+
+type TokenResourceIdentifier {
+  id: String!
+  type: TokenResourceIdentifierType!
+}
+
+input TokenResourceIdentifierInput {
+  id: String!
+  type: TokenResourceIdentifierType!
+}
+
+input ApiTokenCreateInput {
+  scopes: [String!]!
+  name: String!
+  lifespan: BigInt
+
+  """Optionally limit the token to only have access to specific resources"""
+  limitResources: [TokenResourceIdentifierInput!]
+}
+
+input AppTokenCreateInput {
+  scopes: [String!]!
+  name: String!
+  lifespan: BigInt
+
+  """Optionally limit the token to only have access to specific resources"""
+  limitResources: [TokenResourceIdentifierInput!]
+}
+
+"""A token used to enable an embedded viewer for a private project"""
+type EmbedToken {
+  tokenId: String!
+  projectId: String!
+  user: LimitedUser
+  resourceIdString: String!
+  createdAt: DateTime!
+  lifespan: BigInt!
+  lastUsed: DateTime!
+}
+
+input EmbedTokenCreateInput {
+  projectId: String!
+
+  """The model(s) and version(s) string used in the embed url"""
+  resourceIdString: String!
+  lifespan: BigInt
+}
+
+type CreateEmbedTokenReturn {
+  token: String!
+  tokenMetadata: EmbedToken!
+}
+
+type EmbedTokenCollection {
+  items: [EmbedToken!]!
+  totalCount: Int!
+  cursor: String
+}
+
+type BranchCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Branch!]
+}
+
+type CommitCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Commit!]
+}
+
+input BranchCreateInput {
+  streamId: String!
+  name: String!
+  description: String
+}
+
+input BranchUpdateInput {
+  streamId: String!
+  id: String!
+  name: String
+  description: String
+}
+
+input BranchDeleteInput {
+  streamId: String!
+  id: String!
+}
+
+input CommitCreateInput {
+  streamId: String!
+  branchName: String!
+  objectId: String!
+  message: String
+  sourceApplication: String
+  totalChildrenCount: Int
+
+  """**DEPRECATED** Use the `parents` field."""
+  previousCommitIds: [String] @deprecated
+  parents: [String]
+}
+
+input CommitUpdateInput {
+  streamId: String!
+  id: String!
+  message: String
+
+  """
+  To move the commit to a different branch, please the name of the branch.
+  """
+  newBranchName: String
+}
+
+input CommitReceivedInput {
+  streamId: String!
+  commitId: String!
+  sourceApplication: String!
+  message: String
+}
+
+input CommitDeleteInput {
+  streamId: String!
+  id: String!
+}
+
+input CommitsMoveInput {
+  streamId: ID!
+  targetBranch: String!
+  commitIds: [String!]!
+}
+
+input CommitsDeleteInput {
+  streamId: ID!
+  commitIds: [String!]!
+}
+
+type SmartTextEditorValue {
+  """The version of the schema"""
+  version: String!
+
+  """The type of editor value (comment, blog post etc.)"""
+  type: String!
+
+  """
+  The actual (ProseMirror) document representing the text. Can be empty,
+  if there are attachments.
+  """
+  doc: JSONObject
+
+  """File attachments, if any"""
+  attachments: [BlobMetadata!]
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+"""
+Can be used instead of a full item collection, when the implementation doesn't call for it yet. Because
+of the structure, it can be swapped out to a full item collection in the future
+"""
+type CountOnlyCollection {
+  totalCount: Int!
+}
+
+type Price {
+  amount: Float!
+  currency: String!
+  currencySymbol: String!
+}
+
+type PermissionCheckResult {
+  authorized: Boolean!
+  code: String!
+  message: String!
+  payload: JSONObject
+
+  """Same as message, or undefined if check is authorized"""
+  errorMessage: String
+}
+
+input ProjectModelsTreeFilter {
+  """
+  Search for specific models. If used, tree items from different levels may be mixed.
+  """
+  search: String
+
+  """Filter by source apps used in models"""
+  sourceApps: [String!]
+
+  """Filter by IDs of contributors who participated in models"""
+  contributors: [String!]
+}
+
+type ModelCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Model!]!
+}
+
+type ModelsTreeItemCollection {
+  totalCount: Int!
+  cursor: String
+  items: [ModelsTreeItem!]!
+}
+
+input CreateModelInput {
+  projectId: ID!
+  name: String!
+  description: String
+}
+
+input UpdateModelInput {
+  projectId: ID!
+  id: ID!
+  name: String
+  description: String
+}
+
+input DeleteModelInput {
+  projectId: ID!
+  id: ID!
+}
+
+type ModelMutations {
+  create(input: CreateModelInput!): Model!
+  update(input: UpdateModelInput!): Model!
+  delete(input: DeleteModelInput!): Boolean!
+}
+
+input MoveVersionsInput {
+  projectId: ID!
+  versionIds: [ID!]!
+
+  """If the name references a nonexistant model, it will be created"""
+  targetModelName: String!
+}
+
+input DeleteVersionsInput {
+  projectId: ID!
+  versionIds: [ID!]!
+}
+
+"""Only non-null values will be updated"""
+input UpdateVersionInput {
+  projectId: ID!
+  versionId: ID!
+  message: String
+}
+
+input CreateVersionInput {
+  projectId: String!
+  modelId: String!
+  objectId: String!
+  message: String
+  sourceApplication: String
+  totalChildrenCount: Int
+  parents: [String!]
+}
+
+input MarkReceivedVersionInput {
+  projectId: String!
+  versionId: String!
+  sourceApplication: String!
+  message: String
+}
+
+type VersionMutations {
+  moveToModel(input: MoveVersionsInput!): Model!
+  delete(input: DeleteVersionsInput!): Boolean!
+  update(input: UpdateVersionInput!): Version!
+  create(input: CreateVersionInput!): Version!
+  markReceived(input: MarkReceivedVersionInput!): Boolean!
+  requestGendoAIRender(input: GendoAIRenderInput!): Boolean!
+}
+
+type ModelsTreeItem {
+  id: ID!
+  name: String!
+  fullName: String!
+
+  """
+  Nullable cause the item can represent a parent that doesn't actually exist as a model on its own.
+  E.g. A model named "foo/bar" is supposed to be a child of "foo" and will be represented as such,
+  even if "foo" doesn't exist as its own model.
+  """
+  model: Model
+
+  """Whether or not this item has nested children models"""
+  hasChildren: Boolean!
+  children: [ModelsTreeItem!]!
+  updatedAt: DateTime!
+}
+
+type VersionCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Version!]!
+}
+
+input ProjectModelsFilter {
+  """Filter by model names"""
+  search: String
+
+  """Filter by source apps used in models"""
+  sourceApps: [String!]
+
+  """Filter by IDs of contributors who participated in models"""
+  contributors: [String!]
+
+  """Filter out models that don't have any versions"""
+  onlyWithVersions: Boolean
+
+  """Only select models w/ the specified IDs"""
+  ids: [String!]
+
+  """Excldue models w/ the specified IDs"""
+  excludeIds: [String!]
+}
+
+input ModelVersionsFilter {
+  """Make sure these specified versions are always loaded first"""
+  priorityIds: [String!]
+
+  """Only return versions specified in `priorityIds`"""
+  priorityIdsOnly: Boolean
+}
+
+enum ProjectModelsUpdatedMessageType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type ProjectModelsUpdatedMessage {
+  type: ProjectModelsUpdatedMessageType!
+
+  """Model ID"""
+  id: String!
+
+  """Null if model was deleted"""
+  model: Model
+}
+
+enum ProjectVersionsUpdatedMessageType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type ProjectVersionsUpdatedMessage {
+  type: ProjectVersionsUpdatedMessageType!
+
+  """Version ID"""
+  id: String!
+
+  """Null if version was deleted"""
+  version: Version
+
+  """Version's model ID"""
+  modelId: String!
+}
+
+type ProjectVersionsPreviewGeneratedMessage {
+  projectId: String!
+  objectId: String!
+  versionId: String!
+}
+
+type ObjectCollection {
+  totalCount: Int!
+  cursor: String
+  objects: [Object!]!
+}
+
+input ObjectCreateInput {
+  """The stream against which these objects will be created."""
+  streamId: String!
+
+  """The objects you want to create."""
+  objects: [JSONObject]!
+}
+
+type RootPermissionChecks {
+  canCreatePersonalProject: PermissionCheckResult!
+  canCreateWorkspace: PermissionCheckResult!
+}
+
+type ModelPermissionChecks {
+  canUpdate: PermissionCheckResult!
+  canDelete: PermissionCheckResult!
+  canCreateVersion: PermissionCheckResult!
+}
+
+type VersionPermissionChecks {
+  canUpdate: PermissionCheckResult!
+  canReceive: PermissionCheckResult!
+}
+
+enum ProjectVisibility {
+  """Only accessible to explicit collaborators"""
+  PRIVATE
+
+  """Legacy - same as public"""
+  UNLISTED
+
+  """Accessible to everyone (even non-logged in users)"""
+  PUBLIC
+
+  """Accessible to everyone in the project's workspace"""
+  WORKSPACE
+}
+
+"""
+Any values left null will be ignored, so only set the properties that you want updated
+"""
+input ProjectUpdateInput {
+  id: ID!
+  name: String
+  description: String
+  visibility: ProjectVisibility
+  allowPublicComments: Boolean
+}
+
+"""Any values left null will be ignored"""
+input ProjectCreateInput {
+  name: String
+  description: String
+  visibility: ProjectVisibility
+}
+
+input ProjectUpdateRoleInput {
+  projectId: String!
+  userId: String!
+
+  """Leave role as null to revoke access entirely"""
+  role: String
+}
+
+input ProjectInviteCreateInput {
+  """Either this or userId must be filled"""
+  email: String
+
+  """Either this or email must be filled"""
+  userId: String
+
+  """Defaults to the contributor role, if not specified"""
+  role: String
+
+  """Can only be specified if guest mode is on or if the user is an admin"""
+  serverRole: String
+}
+
+input ProjectInviteUseInput {
+  projectId: ID!
+  token: String!
+  accept: Boolean!
+}
+
+type ProjectInviteMutations {
+  """
+  Invite a new or registered user to be a project collaborator. Can only be invoked by a project owner.
+  """
+  create(projectId: ID!, input: ProjectInviteCreateInput!): Project!
+
+  """Batch invite to project"""
+  batchCreate(projectId: ID!, input: [ProjectInviteCreateInput!]!): Project!
+
+  """Accept or decline a project invite"""
+  use(input: ProjectInviteUseInput!): Boolean!
+
+  """
+  Cancel a pending stream invite. Can only be invoked by a project owner.
+  """
+  cancel(projectId: ID!, inviteId: String!): Project!
+
+  """
+  Create invite(-s) for a project in a workspace. Unlike the base create() mutation, this allows
+  configuring the workspace role.
+  """
+  createForWorkspace(projectId: ID!, inputs: [WorkspaceProjectInviteCreateInput!]!): Project!
+}
+
+type UserProjectCollection {
+  totalCount: Int!
+  numberOfHidden: Int!
+  cursor: String
+  items: [Project!]!
+}
+
+type ProjectCollaborator {
+  id: ID!
+  role: String!
+  user: LimitedUser!
+
+  """
+  The collaborator's workspace seat type for the workspace this project is in
+  """
+  seatType: WorkspaceSeatType
+
+  """
+  The collaborator's workspace role for the workspace this project is in, if any
+  """
+  workspaceRole: String
+}
+
+input UserProjectsFilter {
+  """Filter out projects by name"""
+  search: String
+
+  """Only include projects where user has the specified roles"""
+  onlyWithRoles: [String!]
+
+  """Only include projects in the specified workspace"""
+  workspaceId: ID
+
+  """Only include personal projects (not in any workspace)"""
+  personalOnly: Boolean
+
+  """
+  If set to true, will also include streams that the user may not have an explicit role on,
+  but has implicit access to because of workspaces
+  """
+  includeImplicitAccess: Boolean
+}
+
+enum UserProjectsUpdatedMessageType {
+  ADDED
+  REMOVED
+}
+
+type UserProjectsUpdatedMessage {
+  """Message type"""
+  type: UserProjectsUpdatedMessageType!
+
+  """Project ID"""
+  id: String!
+
+  """Project entity, null if project was deleted"""
+  project: Project
+}
+
+enum ProjectUpdatedMessageType {
+  UPDATED
+  DELETED
+}
+
+type ProjectUpdatedMessage {
+  """Message type"""
+  type: ProjectUpdatedMessageType!
+
+  """Project ID"""
+  id: String!
+
+  """Project entity, null if project was deleted"""
+  project: Project
+}
+
+type ServerMigration {
+  movedFrom: String
+  movedTo: String
+}
+
+type Role {
+  name: String!
+  description: String!
+  resourceTarget: String!
+}
+
+type ServerRoleItem {
+  id: String!
+  title: String!
+}
+
+"""Available scopes."""
+type Scope {
+  name: String!
+  description: String!
+}
+
+input ServerInfoUpdateInput {
+  name: String!
+  company: String
+  description: String
+  adminContact: String
+  termsOfService: String
+  inviteOnly: Boolean
+  guestModeEnabled: Boolean
+}
+
+type StreamCollaborator {
+  id: String!
+  name: String!
+  role: String!
+  company: String
+  avatar: String
+  serverRole: String!
+}
+
+type PendingStreamCollaborator {
+  id: String!
+  inviteId: String!
+  projectId: String!
+  projectName: String!
+  streamId: String! @deprecated(reason: "Use projectId instead")
+  streamName: String! @deprecated(reason: "Use projectName instead")
+
+  """E-mail address or name of the invited user"""
+  title: String!
+  role: String!
+  invitedBy: LimitedUser!
+
+  """Set only if user is registered"""
+  user: LimitedUser
+
+  """Only available if the active user is the pending stream collaborator"""
+  token: String
+  workspaceSlug: String
+}
+
+type UserStreamCollection {
+  numberOfHidden: Int!
+  totalCount: Int!
+  cursor: String
+  items: [Stream!]
+}
+
+type StreamCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Stream!]
+}
+
+input StreamCreateInput {
+  name: String
+  description: String
+
+  """Whether the stream can be viewed by non-contributors"""
+  isPublic: Boolean
+
+  """
+  Whether the stream (if public) can be found on public stream exploration pages
+  and searches
+  """
+  isDiscoverable: Boolean
+
+  """
+  Optionally specify user IDs of users that you want to invite to be contributors to this stream
+  """
+  withContributors: [String!]
+}
+
+input StreamUpdateInput {
+  id: String!
+  name: String
+  description: String
+
+  """Whether the stream can be viewed by non-contributors"""
+  isPublic: Boolean
+
+  """
+  Whether the stream (if public) can be found on public stream exploration pages
+  and searches
+  """
+  isDiscoverable: Boolean
+  allowPublicComments: Boolean
+}
+
+input StreamUpdatePermissionInput {
+  streamId: String!
+  userId: String!
+  role: String!
+}
+
+input StreamRevokePermissionInput {
+  streamId: String!
+  userId: String!
+}
+
+input DiscoverableStreamsSortingInput {
+  type: DiscoverableStreamsSortType!
+  direction: SortDirection!
+}
+
+enum DiscoverableStreamsSortType {
+  FAVORITES_COUNT
+  CREATED_DATE
+}
+
+input UsersRetrievalInput {
+  """The query looks for matches in user name & email"""
+  query: String!
+  cursor: String
+
+  """Limit defaults to 10"""
+  limit: Int
+
+  """Only find users with directly matching emails"""
+  emailOnly: Boolean
+
+  """Only find users that are collaborators of the specified project"""
+  projectId: String
+}
+
+input BulkUsersRetrievalInput {
+  emails: [String!]!
+  cursor: String
+  limit: Int
+}
+
+type PasswordStrengthCheckResults {
+  """
+  Integer from 0-4 (useful for implementing a strength bar):
+  0 too guessable: risky password. (guesses < 10^3)
+  1 very guessable: protection from throttled online attacks. (guesses < 10^6)
+  2 somewhat guessable: protection from unthrottled online attacks. (guesses < 10^8)
+  3 safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
+  4 very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
+  """
+  score: Int!
+
+  """Verbal feedback to help choose better passwords. set when score <= 2."""
+  feedback: PasswordStrengthCheckFeedback!
+}
+
+type PasswordStrengthCheckFeedback {
+  warning: String
+  suggestions: [String!]!
+}
+
+"""
+A representation of a registered or invited user in the admin users list. Either registeredUser
+or invitedUser will always be set, both values can't be null.
+"""
+type AdminUsersListItem {
+  registeredUser: User
+  invitedUser: ServerInvite
+  id: String!
+}
+
+type AdminUsersListCollection {
+  totalCount: Int!
+  items: [AdminUsersListItem!]!
+}
+
+type UserSearchResultCollection {
+  cursor: String
+  items: [LimitedUser!]!
+}
+
+input OnboardingCompletionInput {
+  role: String
+  plans: [String!]
+  source: String
+}
+
+type ActiveUserMutations {
+  """Mark onboarding as complete"""
+  finishOnboarding(input: OnboardingCompletionInput): Boolean!
+
+  """Edit a user's profile"""
+  update(user: UserUpdateInput!): User!
+  emailMutations: UserEmailMutations!
+  meta: UserMetaMutations!
+
+  """
+  Either workspace slug or id is accepted. If neither are provided, the active workspace will be unset.
+  """
+  setActiveWorkspace(slug: String, id: String): LimitedWorkspace
+}
+
+input UserRoleInput {
+  id: String!
+  role: String!
+}
+
+input UserUpdateInput {
+  name: String
+  company: String
+  bio: String
+  avatar: String
+}
+
+input UserDeleteInput {
+  email: String!
+}
+
+type UserEmail {
+  id: ID!
+  email: String!
+  verified: Boolean!
+  primary: Boolean!
+  userId: ID!
+}
+
+input CreateUserEmailInput {
+  email: String!
+}
+
+input DeleteUserEmailInput {
+  id: ID!
+}
+
+input SetPrimaryUserEmailInput {
+  id: ID!
+}
+
+input EmailVerificationRequestInput {
+  id: ID!
+}
+
+input VerifyUserEmailInput {
+  email: String!
+  code: String!
+}
+
+type UserEmailMutations {
+  create(input: CreateUserEmailInput!): User!
+  delete(input: DeleteUserEmailInput!): User!
+  setPrimary(input: SetPrimaryUserEmailInput!): User!
+  requestNewEmailVerification(input: EmailVerificationRequestInput!): Boolean
+  verify(input: VerifyUserEmailInput!): Boolean
+}
+
+type UserMeta {
+  flag(key: String!): Boolean!
+  newWorkspaceExplainerDismissed: Boolean!
+  speckleConBannerDismissed: Boolean!
+  intelligenceCommunityStandUpBannerDismissed: Boolean!
+  speckleCon25BannerDismissed: Boolean!
+  legacyProjectsExplainerCollapsed: Boolean!
+}
+
+type UserMetaMutations {
+  setFlag(key: String!, value: Boolean!): Boolean!
+  setNewWorkspaceExplainerDismissed(value: Boolean!): Boolean!
+  setSpeckleConBannerDismissed(value: Boolean!): Boolean!
+  setIntelligenceCommunityStandUpBannerDismissed(value: Boolean!): Boolean!
+  setSpeckleCon25BannerDismissed(value: Boolean!): Boolean!
+  setLegacyProjectsExplainerCollapsed(value: Boolean!): Boolean!
+}
+
+type DashboardMutations {
+  create(workspace: WorkspaceIdentifier!, input: DashboardCreateInput!): Dashboard!
+  delete(id: String!): Boolean!
+  update(input: DashboardUpdateInput!): Dashboard!
+  share(dashboardId: String!): DashboardShareLink!
+  deleteShare(input: DashboardShareInput!): Boolean!
+  disableShare(input: DashboardShareInput!): DashboardShareLink!
+  enableShare(input: DashboardShareInput!): DashboardShareLink!
+  createToken(dashboardId: String!): CreateDashboardTokenReturn!
+}
+
+type Dashboard {
+  id: String!
+  name: String!
+  workspace: LimitedWorkspace!
+  createdBy: LimitedUser
+
+  """
+  If null, this is a new dashboard and should be initialized by the client
+  """
+  state: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  permissions: DashboardPermissionChecks!
+  shareLink: DashboardShareLink
+}
+
+type DashboardCollection {
+  items: [Dashboard!]!
+  cursor: String
+  totalCount: Int!
+}
+
+input WorkspaceDashboardsFilter {
+  projectIds: [String!]
+  search: String
+}
+
+input ProjectDashboardsFilter {
+  search: String
+}
+
+input DashboardCreateInput {
+  name: String!
+}
+
+input DashboardUpdateInput {
+  id: String!
+  name: String
+  projectIds: [String!]
+  state: String
+}
+
+type WorkspacePermissionChecks {
+  canCreateDashboards: PermissionCheckResult!
+  canListDashboards: PermissionCheckResult!
+  canCreateProject: PermissionCheckResult!
+  canInvite: PermissionCheckResult!
+  canMoveProjectToWorkspace(projectId: String): PermissionCheckResult!
+  canEditEmbedOptions: PermissionCheckResult!
+  canMakeWorkspaceExclusive: PermissionCheckResult!
+  canReadMemberEmail: PermissionCheckResult!
+}
+
+type DashboardPermissionChecks {
+  canCreateToken: PermissionCheckResult!
+  canDelete: PermissionCheckResult!
+  canEdit: PermissionCheckResult!
+  canRead: PermissionCheckResult!
+}
+
+type DashboardShareLink {
+  id: ID!
+  validUntil: DateTime!
+  createdAt: DateTime!
+  content: String!
+  revoked: Boolean!
+}
+
+input DashboardShareInput {
+  dashboardId: ID!
+  shareId: ID!
+}
+
+type DashboardToken {
+  tokenId: String!
+  dashboard: Dashboard!
+  projects: [Project!]!
+  user: LimitedUser
+  createdAt: DateTime!
+  lifespan: BigInt!
+  lastUsed: DateTime!
+}
+
+input DashboardTokenCreateInput {
+  dashboardId: String!
+  lifespan: BigInt
+}
+
+type CreateDashboardTokenReturn {
+  token: String!
+  tokenMetadata: DashboardToken!
+}
+
+type DashboardTokenCollection {
+  items: [DashboardToken!]!
+  totalCount: Int!
+  cursor: String
+}
+
+type FileUploadCollection {
+  totalCount: Int!
+  cursor: String
+  items: [FileUpload!]!
+}
+
+input GetModelUploadsInput {
+  """The maximum number of uploads to return."""
+  limit: Int = 25
+
+  """The cursor for pagination."""
+  cursor: String
+}
+
+type FileUpload {
+  id: String!
+
+  """Alias for streamId"""
+  projectId: String!
+
+  """Alias for branchName"""
+  modelName: String!
+  streamId: String!
+  branchName: String!
+
+  """If present, the conversion result is stored in this commit."""
+  convertedCommitId: String
+
+  """Alias for convertedCommitId"""
+  convertedVersionId: String
+
+  """The user's id that uploaded this file."""
+  userId: String!
+
+  """0 = queued, 1 = processing, 2 = success, 3 = error"""
+  convertedStatus: Int!
+
+  """Holds any errors or info."""
+  convertedMessage: String
+  fileName: String!
+  fileType: String!
+  fileSize: Int!
+  uploadComplete: Boolean!
+  uploadDate: DateTime!
+  convertedLastUpdate: DateTime!
+
+  """Model associated with the file upload, if it exists already"""
+  model: Model
+  modelId: String
+
+  """Date when upload was last updated"""
+  updatedAt: DateTime!
+}
+
+input GenerateFileUploadUrlInput {
+  projectId: String!
+  fileName: String!
+}
+
+type GenerateFileUploadUrlOutput {
+  url: String!
+  fileId: String!
+}
+
+input StartFileImportInput {
+  projectId: String!
+  modelId: String!
+  fileId: String!
+
+  """
+  The etag is returned by the blob storage provider in the response body after a successful upload.
+  It is used to verify the integrity of the uploaded file.
+  """
+  etag: String!
+}
+
+input FileImportResultInput {
+  """
+  Total processing time in seconds, since job was picked up until it completed
+  """
+  durationSeconds: Float!
+
+  """Duration of the file download before parsing started in seconds"""
+  downloadDurationSeconds: Float!
+
+  """Duration of the transformation in seconds"""
+  parseDurationSeconds: Float!
+
+  """Parser used for import"""
+  parser: String!
+
+  """Version associated if applicable"""
+  versionId: String
+}
+
+enum JobResultStatus {
+  success
+  error
+}
+
+input FinishFileImportInput {
+  projectId: String!
+
+  """
+  This is the blob Id of the uploaded file. For legacy reasons it is named jobId.
+  Note: This is the not the background job Id.
+  """
+  jobId: String!
+  status: JobResultStatus!
+  reason: String
+  warnings: [String!]
+  result: FileImportResultInput!
+}
+
+type FileUploadMutations {
+  """
+  Generate a pre-signed url to which a file can be uploaded.
+  After uploading the file, call mutation startFileImport to register the completed upload.
+  """
+  generateUploadUrl(input: GenerateFileUploadUrlInput!): GenerateFileUploadUrlOutput!
+
+  """
+  Before calling this mutation, call generateUploadUrl to get the
+  pre-signed url and blobId. Then upload the file to that url.
+  Once the upload to the pre-signed url is completed, this mutation should be
+  called to register the completed upload and create the blob metadata.
+  """
+  startFileImport(input: StartFileImportInput!): FileUpload!
+
+  """
+  Marks the file import flow as completed for that specific job
+  recording the provided status, and emitting the needed subscriptions.
+  Mostly for internal service usage.
+  """
+  finishFileImport(input: FinishFileImportInput!): Boolean!
+}
+
+enum ProjectPendingModelsUpdatedMessageType {
+  CREATED
+  UPDATED
+}
+
+type ProjectPendingModelsUpdatedMessage {
+  type: ProjectPendingModelsUpdatedMessageType!
+
+  """Upload ID"""
+  id: String!
+  model: FileUpload!
+}
+
+enum ProjectPendingVersionsUpdatedMessageType {
+  CREATED
+  UPDATED
+}
+
+type ProjectPendingVersionsUpdatedMessage {
+  type: ProjectPendingVersionsUpdatedMessageType!
+
+  """Upload ID"""
+  id: String!
+  version: FileUpload!
+}
+
+enum ProjectFileImportUpdatedMessageType {
+  CREATED
+  UPDATED
+}
+
+type ProjectFileImportUpdatedMessage {
+  type: ProjectFileImportUpdatedMessageType!
+
+  """Upload ID"""
+  id: String!
+  upload: FileUpload!
+}
+
+type WorkspaceMutations {
+  billing: WorkspaceBillingMutations!
+  updateSeatType(input: WorkspaceUpdateSeatTypeInput!): Workspace!
+
+  """
+  Set the default region where project data will be stored. Only available to admins.
+  """
+  setDefaultRegion(workspaceId: String!, regionKey: String!): Workspace!
+  create(input: WorkspaceCreateInput!): Workspace!
+  delete(workspaceId: String!): Boolean!
+  update(input: WorkspaceUpdateInput!): Workspace!
+  updateRole(input: WorkspaceRoleUpdateInput!): Workspace!
+  leave(id: ID!): Boolean!
+  addDomain(input: AddDomainToWorkspaceInput!): Workspace!
+  deleteDomain(input: WorkspaceDomainDeleteInput!): Workspace!
+  deleteSsoProvider(workspaceId: String!): Boolean!
+  invites: WorkspaceInviteMutations!
+  projects: WorkspaceProjectMutations!
+  updateCreationState(input: WorkspaceCreationStateInput!): Boolean!
+  updateEmbedOptions(input: WorkspaceUpdateEmbedOptionsInput!): WorkspaceEmbedOptions!
+
+  """
+  Dismiss a workspace from the discoverable list, behind the scene a join request is created with the status "dismissed"
+  """
+  dismiss(input: WorkspaceDismissInput!): Boolean!
+  requestToJoin(input: WorkspaceRequestToJoinInput!): Boolean!
+}
+
+enum PaidWorkspacePlans {
+  team
+  teamUnlimited
+  pro
+  proUnlimited
+}
+
+enum BillingInterval {
+  monthly
+  yearly
+}
+
+enum SessionPaymentStatus {
+  paid
+  unpaid
+}
+
+input CheckoutSessionInput {
+  workspaceId: ID!
+  workspacePlan: PaidWorkspacePlans!
+  billingInterval: BillingInterval!
+  isCreateFlow: Boolean
+  currency: Currency
+}
+
+type CheckoutSession {
+  id: ID!
+  url: String!
+  workspacePlan: PaidWorkspacePlans!
+  paymentStatus: SessionPaymentStatus!
+  billingInterval: BillingInterval!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CancelCheckoutSessionInput {
+  sessionId: ID!
+  workspaceId: ID!
+}
+
+input UpgradePlanInput {
+  workspaceId: ID!
+  workspacePlan: PaidWorkspacePlans!
+  billingInterval: BillingInterval!
+}
+
+type WorkspaceBillingMutations {
+  createCheckoutSession(input: CheckoutSessionInput!): CheckoutSession!
+  cancelCheckoutSession(input: CancelCheckoutSessionInput!): Boolean!
+  upgradePlan(input: UpgradePlanInput!): Boolean!
+}
+
+enum WorkspacePlans {
+  free
+  unlimited
+  academia
+  team
+  teamUnlimited
+  teamUnlimitedInvoiced
+  pro
+  proUnlimited
+  proUnlimitedInvoiced
+  enterprise
+}
+
+enum WorkspacePlanStatuses {
+  valid
+  paymentFailed
+  cancelationScheduled
+  canceled
+}
+
+enum WorkspacePaymentMethod {
+  unpaid
+  invoice
+  billing
+}
+
+type WorkspacePlanUsage {
+  projectCount: Int!
+  modelCount: Int!
+}
+
+type WorkspacePlan {
+  name: WorkspacePlans!
+  status: WorkspacePlanStatuses!
+  createdAt: DateTime!
+  paymentMethod: WorkspacePaymentMethod!
+  usage: WorkspacePlanUsage!
+}
+
+type WorkspaceSubscriptionSeats {
+  editors: WorkspaceSubscriptionSeatCount!
+  viewers: WorkspaceSubscriptionSeatCount!
+}
+
+type WorkspaceSubscriptionSeatCount {
+  """
+  Total number of seats purchased and available in the current subscription cycle
+  """
+  available: Int!
+
+  """Total number of seats in use by workspace users"""
+  assigned: Int!
+}
+
+enum Currency {
+  usd
+  gbp
+}
+
+type WorkspaceSubscription {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  currentBillingCycleEnd: DateTime!
+  billingInterval: BillingInterval!
+  currency: Currency!
+  seats: WorkspaceSubscriptionSeats!
+}
+
+enum WorkspaceFeatureName {
+  accIntegration
+  dashboards
+  domainBasedSecurityPolicies
+  oidcSso
+  hideSpeckleBranding
+  workspaceDataRegionSpecificity
+  exclusiveMembership
+  savedViews
+  presentations
+}
+
+type WorkspacePlanPrice {
+  monthly: Price!
+  yearly: Price!
+}
+
+type WorkspacePaidPlanPrices {
+  team: WorkspacePlanPrice!
+  teamUnlimited: WorkspacePlanPrice!
+  pro: WorkspacePlanPrice!
+  proUnlimited: WorkspacePlanPrice!
+}
+
+type CurrencyBasedPrices {
+  usd: WorkspacePaidPlanPrices!
+  gbp: WorkspacePaidPlanPrices!
+}
+
+type ServerWorkspacesInfo {
+  """Up-to-date prices for paid & non-invoiced Workspace plans"""
+  planPrices: CurrencyBasedPrices
+
+  """
+  This is a backend control variable for the workspaces feature set.
+  Since workspaces need a backend logic to be enabled, this is not enough as a feature flag.
+  """
+  workspacesEnabled: Boolean!
+}
+
+enum WorkspaceSeatType {
+  editor
+  viewer
+}
+
+"""Overridden by `WorkspaceCollaboratorGraphQLReturn`"""
+type WorkspaceCollaborator {
+  seatType: WorkspaceSeatType
+  id: ID!
+  role: String!
+  user: LimitedUser!
+  email: String
+  projectRoles: [ProjectRole!]!
+
+  """Date that the user joined the workspace."""
+  joinDate: DateTime!
+}
+
+type WorkspaceSeatsByType {
+  editors: WorkspaceSeatCollection
+  viewers: WorkspaceSeatCollection
+}
+
+type WorkspaceSeatCollection {
+  totalCount: Int!
+}
+
+input WorkspaceUpdateSeatTypeInput {
+  userId: String!
+  workspaceId: String!
+  seatType: WorkspaceSeatType!
+}
+
+type GendoAIRenderCollection {
+  totalCount: Int!
+  items: [GendoAIRender]!
+}
+
+type GendoAIRender {
+  id: ID!
+  projectId: String!
+  modelId: String!
+  versionId: String!
+  userId: String!
+  user: LimitedUser
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  gendoGenerationId: String
+  status: String!
+  prompt: String!
+  camera: JSONObject
+
+  """This is a blob id."""
+  responseImage: String
+}
+
+input GendoAIRenderInput {
+  projectId: ID!
+  modelId: ID!
+  versionId: ID!
+  camera: JSONObject!
+
+  """The generation prompt."""
+  prompt: String!
+
+  """Base64 encoded image of the depthmap."""
+  baseImage: String!
+}
+
+type UserGendoAICredits {
+  used: Int!
+  limit: Int!
+  resetDate: DateTime!
+}
+
+type ServerRegionItem {
+  id: String!
+  key: String!
+  name: String!
+  description: String
+}
+
+type ServerMultiRegionConfiguration {
+  """
+  Keys of available regions defined in the multi region config file. Used keys will
+  be filtered out from the result.
+  """
+  availableKeys: [String!]!
+
+  """Regions available for project data residency"""
+  regions: [ServerRegionItem!]!
+}
+
+input CreateServerRegionInput {
+  key: String!
+  name: String!
+  description: String
+}
+
+input UpdateServerRegionInput {
+  key: String!
+  name: String
+  description: String
+}
+
+type ServerRegionMutations {
+  create(input: CreateServerRegionInput!): ServerRegionItem!
+  update(input: UpdateServerRegionInput!): ServerRegionItem!
+}
+
+type ServerInfoMutations {
+  multiRegion: ServerRegionMutations!
+}
+
+type ServerInvite {
+  id: String!
+  invitedBy: LimitedUser!
+  email: String!
+}
+
+input ServerInviteCreateInput {
+  email: String!
+  message: String
+
+  """Can only be specified if guest mode is on or if the user is an admin"""
+  serverRole: String
+}
+
+input StreamInviteCreateInput {
+  email: String
+  userId: String
+  streamId: String!
+  message: String
+
+  """Defaults to the contributor role, if not specified"""
+  role: String
+
+  """Can only be specified if guest mode is on or if the user is an admin"""
+  serverRole: String
+}
+
+type ServerStats {
+  totalStreamCount: Int!
+  totalCommitCount: Int!
+  totalObjectCount: Int!
+  totalUserCount: Int!
+
+  """
+  An array of objects currently structured as { created_month: Date, count: int }.
+  """
+  streamHistory: [JSONObject]
+
+  """
+  An array of objects currently structured as { created_month: Date, count: int }.
+  """
+  commitHistory: [JSONObject]
+
+  """
+  An array of objects currently structured as { created_month: Date, count: int }.
+  """
+  objectHistory: [JSONObject]
+
+  """
+  An array of objects currently structured as { created_month: Date, count: int }.
+  """
+  userHistory: [JSONObject]
+}
+
+type SavedViewPermissionChecks {
+  """
+  Can the current user fully update everything about this view. Even if this fails,
+  the user may be able to do partial updates (e.g. just change the title)
+  """
+  canUpdate: PermissionCheckResult!
+  canMove: PermissionCheckResult!
+  canEditTitle: PermissionCheckResult!
+  canEditDescription: PermissionCheckResult!
+  canSetAsHomeView: PermissionCheckResult!
+}
+
+type SavedView {
+  permissions: SavedViewPermissionChecks!
+  id: ID!
+  name: String!
+  description: String
+
+  """Empty ID means default/ungrouped view"""
+  groupId: ID
+
+  """
+  Always available because even ungrouped views show up in a fake "Ungrouped" group
+  """
+  group: SavedViewGroup!
+  author: LimitedUser
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  projectId: ID!
+
+  """Original resource ID string that this view is associated with."""
+  resourceIdString: String!
+
+  """Same as resourceIdString, but split into an array of resource IDs."""
+  resourceIds: [String!]!
+
+  """
+  Truncated resourceIds w/o specific version data that is used to associate the view w/
+  specific groups
+  """
+  groupResourceIds: [String!]!
+  isHomeView: Boolean!
+  visibility: SavedViewVisibility!
+
+  """Viewer state, the actual view configuration"""
+  viewerState: JSONObject!
+
+  """
+  Encoded screenshot of the view. Can be a very large value, its preferred you
+  use the thumbnailUrl or previewUrl fields to load the image from a separate endpoint
+  """
+  screenshot: String! @deprecated(reason: "Use thumbnailUrl or previewUrl instead")
+  thumbnailUrl: String!
+  previewUrl: String!
+
+  """For figuring out position in the group"""
+  position: Float!
+}
+
+type SavedViewGroupPermissionChecks {
+  canCreateToken: PermissionCheckResult!
+  canUpdate: PermissionCheckResult!
+}
+
+type SavedViewGroup {
+  permissions: SavedViewGroupPermissionChecks!
+
+  """
+  This is always set even for fake/not persisted groups for Apollo caching
+  """
+  id: ID!
+
+  """Only set if this is a real/persisted group."""
+  groupId: ID
+  projectId: ID!
+  author: LimitedUser
+
+  """Resources that were used to find this group"""
+  resourceIds: [String!]!
+  title: String!
+  isUngroupedViewsGroup: Boolean!
+  views(input: SavedViewGroupViewsInput!): SavedViewCollection!
+  shareLink: SavedViewGroupShareLink
+}
+
+enum SavedViewVisibility {
+  public
+  authorOnly
+}
+
+type SavedViewCollection {
+  cursor: String
+  totalCount: Int!
+  items: [SavedView!]!
+}
+
+input SavedViewGroupViewsInput {
+  """Whether to only views authored by the current user"""
+  onlyAuthored: Boolean
+
+  """
+  Optionally filter by visibility. Setting this to 'authorOnly' is the equivalent of setting 'onlyAuthored' to true.
+  """
+  onlyVisibility: SavedViewVisibility
+
+  """Whether to only include views matching this search term"""
+  search: String
+
+  """Optionally specify sort direction. Default: descending"""
+  sortDirection: SortDirection
+
+  """
+  Optionally specify sort by field. Default: position
+  Options: updatedAt, createdAt, name, position
+  """
+  sortBy: String
+  limit: Int
+  cursor: String
+}
+
+input ProjectSavedViewsInput {
+  """
+  Viewer resource ID string that identifies which resources should be loaded. If not specified,
+  views from all resources in the project will be returned.
+  """
+  resourceIdString: String
+
+  """Optionally filter by visibility."""
+  onlyVisibility: SavedViewVisibility
+
+  """Whether to only include views matching this search term"""
+  search: String
+
+  """Optionally specify sort direction. Default: descending"""
+  sortDirection: SortDirection
+
+  """
+  Optionally specify sort by field. Default: position
+  Options: updatedAt, createdAt, name, position
+  """
+  sortBy: String
+  limit: Int
+  cursor: String
+}
+
+type SavedViewGroupCollection {
+  cursor: String
+  totalCount: Int!
+  items: [SavedViewGroup!]!
+}
+
+input SavedViewGroupsInput {
+  """
+  Viewer resource ID string that identifies which resources should be loaded
+  """
+  resourceIdString: String!
+
+  """Whether to only include groups w/ views authored by the current user"""
+  onlyAuthored: Boolean
+
+  """
+  Whether to only include groups that have names or views matching this search term
+  """
+  search: String
+
+  """
+  Optionally filter by visibility. Setting this to 'authorOnly' is the equivalent of setting 'onlyAuthored' to true.
+  """
+  onlyVisibility: SavedViewVisibility
+  limit: Int
+  cursor: String
+}
+
+input GetUngroupedViewGroupInput {
+  """
+  Viewer resource ID string that identifies which resources should be loaded
+  """
+  resourceIdString: String!
+}
+
+input CreateSavedViewInput {
+  projectId: ID!
+  resourceIdString: String!
+
+  """Group id, if grouping necessary"""
+  groupId: ID
+
+  """Auto-generated name, if not specified"""
+  name: String
+  description: String
+
+  """
+  SerializedViewerState. If omitted, comment won't render (correctly) inside the
+  viewer, but will still be retrievable through the API
+  """
+  viewerState: JSONObject!
+
+  """Encoded screenshot of the view"""
+  screenshot: String!
+
+  """Optionally also set this as the home/default view for the target model"""
+  isHomeView: Boolean
+
+  """Set visibility of the view. Default: public"""
+  visibility: SavedViewVisibility
+  position: ViewPositionInput
+}
+
+input CreateSavedViewGroupInput {
+  projectId: ID!
+  resourceIdString: String!
+
+  """Will default to auto-generated group name otherwise"""
+  groupName: String
+}
+
+input DeleteSavedViewGroupInput {
+  projectId: ID!
+  groupId: ID!
+}
+
+input DeleteSavedViewInput {
+  id: ID!
+  projectId: ID!
+}
+
+enum ViewPositionInputType {
+  between
+}
+
+"""
+If only one is set, the other will be resolved automatically
+If none are set, the view will be added to the end of the list
+"""
+input ViewPositionInput {
+  type: ViewPositionInputType!
+
+  """The ID of the view that should be after the new position"""
+  afterViewId: ID
+
+  """The ID of the view that should be before the new position"""
+  beforeViewId: ID
+}
+
+input UpdateSavedViewInput {
+  id: ID!
+  projectId: ID!
+
+  """
+  New resource targets, if necessary. Must be set together w/ viewerState & screenshot.
+  """
+  resourceIdString: String
+
+  """New group id, if grouping necessary"""
+  groupId: String
+
+  """New name for the view"""
+  name: String
+  description: String
+
+  """
+  SerializedViewerState. If omitted, comment won't render (correctly) inside the
+  viewer, but will still be retrievable through the API.
+  Must be set together w/ resourceIdString & screenshot.
+  """
+  viewerState: JSONObject
+
+  """Encoded screenshot of the view."""
+  screenshot: String
+
+  """Optionally also set this as the home/default view for the target model"""
+  isHomeView: Boolean
+
+  """Optionally change visibility of the view"""
+  visibility: SavedViewVisibility
+  position: ViewPositionInput
+}
+
+input UpdateSavedViewGroupInput {
+  projectId: ID!
+  groupId: ID!
+  name: String
+}
+
+type SavedViewMutations {
+  createGroup(input: CreateSavedViewGroupInput!): SavedViewGroup!
+  deleteGroup(input: DeleteSavedViewGroupInput!): Boolean!
+  updateGroup(input: UpdateSavedViewGroupInput!): SavedViewGroup!
+  createView(input: CreateSavedViewInput!): SavedView!
+  deleteView(input: DeleteSavedViewInput!): Boolean!
+  updateView(input: UpdateSavedViewInput!): SavedView!
+  share(input: SavedViewGroupShareInput!): SavedViewGroupShareLink!
+  deleteShare(input: SavedViewGroupShareUpdateInput!): Boolean!
+  disableShare(input: SavedViewGroupShareUpdateInput!): SavedViewGroupShareLink!
+  enableShare(input: SavedViewGroupShareUpdateInput!): SavedViewGroupShareLink!
+}
+
+enum ProjectSavedViewsUpdatedMessageType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type BeforeChangeSavedView {
+  groupId: ID
+  resourceIds: [String!]!
+  groupResourceIds: [String!]!
+  position: Float!
+}
+
+type ProjectSavedViewsUpdatedMessage {
+  type: ProjectSavedViewsUpdatedMessageType!
+
+  """SavedView ID"""
+  id: ID!
+
+  """
+  Set if view was deleted/updated, allows some limited access into the view before the change (update/delete)
+  """
+  beforeChangeSavedView: BeforeChangeSavedView
+
+  """Null if view was deleted"""
+  savedView: SavedView
+
+  """The project that the update belongs to"""
+  project: Project!
+}
+
+type ProjectSavedViewGroupsUpdatedMessage {
+  type: ProjectSavedViewsUpdatedMessageType!
+
+  """SavedViewGroup ID"""
+  id: ID!
+
+  """Null if group was deleted"""
+  savedViewGroup: SavedViewGroup
+
+  """The project that the update belongs to"""
+  project: Project!
+}
+
+type SavedViewGroupShareLink {
+  id: ID!
+  validUntil: DateTime!
+  createdAt: DateTime!
+  content: String!
+  revoked: Boolean!
+}
+
+input SavedViewGroupShareInput {
+  groupId: ID!
+  projectId: ID!
+}
+
+input SavedViewGroupShareUpdateInput {
+  groupId: ID!
+  projectId: ID!
+  shareId: ID!
+}
+
+input SavedViewsLoadSettings {
+  """
+  If true, load versions originally specified in the view, rather than the latest ones
+  or ones already being loaded otherwise
+  """
+  loadOriginal: Boolean
+}
+
+type ViewerResourceGroup {
+  """Resource identifier used to refer to a collection of resource items"""
+  identifier: String!
+
+  """Viewer resources that the identifier refers to"""
+  items: [ViewerResourceItem!]!
+}
+
+type ViewerResourceItem {
+  """Null if resource represents an object"""
+  modelId: String
+
+  """Null if resource represents an object"""
+  versionId: String
+  objectId: String!
+}
+
+type ExtendedViewerResourcesRequest {
+  """
+  Specific id that was requested or null if loaded implicit (undefined req) or nothing (null req)
+  """
+  savedViewId: ID
+}
+
+type ExtendedViewerResources {
+  """The groups of viewer resources themselves"""
+  groups: [ViewerResourceGroup!]!
+
+  """
+  The saved view that was used, if any. Even if no savedViewId was specified, a home view could
+  have been implicitly loaded.
+  """
+  savedView: SavedView
+
+  """Final/adjusted/resolved resource id string"""
+  resourceIdString: String!
+
+  """Metadata about the request that was made to resolve this."""
+  request: ExtendedViewerResourcesRequest!
+}
+
+type WebhookCollection {
+  totalCount: Int!
+  items: [Webhook!]!
+}
+
+type Webhook {
+  id: String!
+  streamId: String!
+  projectId: String!
+  hasSecret: Boolean!
+  url: String!
+  description: String
+  triggers: [String!]!
+  enabled: Boolean
+  history(limit: Int! = 25): WebhookEventCollection
+}
+
+type WebhookEventCollection {
+  totalCount: Int
+  items: [WebhookEvent]
+}
+
+type WebhookEvent {
+  id: String!
+  webhookId: String!
+  status: Int!
+  statusInfo: String!
+  retryCount: Int!
+  lastUpdate: DateTime!
+  payload: String!
+}
+
+input WebhookCreateInput {
+  streamId: String!
+  url: String!
+  description: String
+  triggers: [String!]!
+  secret: String
+  enabled: Boolean
+}
+
+input WebhookUpdateInput {
+  id: String!
+  streamId: String!
+  url: String
+  description: String
+  secret: String
+  enabled: Boolean
+  triggers: [String!]
+}
+
+input WebhookDeleteInput {
+  id: String!
+  streamId: String!
+}
+
+input InvitableCollaboratorsFilter {
+  search: String
+}
+
+type WorkspaceProjectMutations {
+  """
+  Schedule a job that will:
+  - Move all regional data to target region
+  - Update project region key
+  - TODO: Eventually delete data in previous region
+  """
+  moveToRegion(projectId: String!, regionKey: String!): String!
+  updateRole(input: ProjectUpdateRoleInput!): Project!
+  moveToWorkspace(projectId: String!, workspaceId: String!): Project!
+  create(input: WorkspaceProjectCreateInput!): Project!
+}
+
+input ApproveWorkspaceJoinRequestInput {
+  workspaceId: String!
+  userId: String!
+}
+
+input DenyWorkspaceJoinRequestInput {
+  workspaceId: String!
+  userId: String!
+}
+
+type WorkspaceJoinRequestMutations {
+  approve(input: ApproveWorkspaceJoinRequestInput!): Boolean!
+  deny(input: DenyWorkspaceJoinRequestInput!): Boolean!
+}
+
+type LimitedWorkspaceJoinRequest {
+  id: String!
+  workspace: LimitedWorkspace!
+  user: LimitedUser!
+  status: WorkspaceJoinRequestStatus!
+  createdAt: DateTime!
+}
+
+type LimitedWorkspaceJoinRequestCollection {
+  totalCount: Int!
+  cursor: String
+  items: [LimitedWorkspaceJoinRequest!]!
+}
+
+input WorkspaceJoinRequestFilter {
+  status: WorkspaceJoinRequestStatus
+}
+
+type WorkspaceJoinRequestCollection {
+  totalCount: Int!
+  cursor: String
+  items: [WorkspaceJoinRequest!]!
+}
+
+type WorkspaceJoinRequest {
+  id: String!
+  workspace: Workspace!
+  user: LimitedUser!
+  email: String
+  status: WorkspaceJoinRequestStatus!
+  createdAt: DateTime!
+}
+
+enum WorkspaceJoinRequestStatus {
+  pending
+  approved
+  denied
+}
+
+input AdminWorkspaceJoinRequestFilter {
+  status: WorkspaceJoinRequestStatus
+}
+
+input WorkspaceInviteLookupOptions {
+  """
+  If true, the query will assume workspaceId is actually the workspace slug, and do the lookup by slug
+  """
+  useSlug: Boolean
+}
+
+input WorkspaceCreateInput {
+  name: String!
+  slug: String
+  description: String
+
+  """Logo image as base64-encoded string"""
+  logo: String
+
+  """
+  Add this domain to the workspace as a verified domain and enable domain discoverability
+  """
+  enableDomainDiscoverabilityForDomain: String
+}
+
+input WorkspaceUpdateInput {
+  id: String!
+  name: String
+  slug: String
+  description: String
+
+  """Logo image as base64-encoded string"""
+  logo: String
+  defaultProjectRole: String @deprecated(reason: "Always the reviewer role. Will be removed in the future.")
+  domainBasedMembershipProtectionEnabled: Boolean
+  discoverabilityEnabled: Boolean
+  discoverabilityAutoJoinEnabled: Boolean
+  defaultSeatType: WorkspaceSeatType
+  isExclusive: Boolean
+}
+
+input WorkspaceRoleUpdateInput {
+  userId: String!
+  workspaceId: String!
+
+  """Leave role null to revoke access entirely"""
+  role: String
+}
+
+input WorkspaceRoleDeleteInput {
+  userId: String!
+  workspaceId: String!
+}
+
+input WorkspaceProjectInviteCreateInput {
+  """Either this or userId must be filled"""
+  email: String
+
+  """Either this or email must be filled"""
+  userId: String
+
+  """Defaults to the contributor role, if not specified"""
+  role: String
+
+  """Can only be specified if guest mode is on or if the user is an admin"""
+  serverRole: String
+
+  """
+  Only taken into account, if project belongs to a workspace. Defaults to guest access.
+  """
+  workspaceRole: String
+
+  """
+  The workspace seat type to assign to the user upon accepting the invite
+  (if user is a workspace member already, the seat type will be updated)
+  """
+  seatType: WorkspaceSeatType
+}
+
+input AddDomainToWorkspaceInput {
+  domain: String!
+  workspaceId: ID!
+}
+
+input JoinWorkspaceInput {
+  workspaceId: ID!
+}
+
+input WorkspaceUpdateEmbedOptionsInput {
+  workspaceId: String!
+  hideSpeckleBranding: Boolean!
+}
+
+input WorkspaceDismissInput {
+  workspaceId: ID!
+}
+
+input WorkspaceRequestToJoinInput {
+  workspaceId: ID!
+}
+
+input WorkspaceCreationStateInput {
+  workspaceId: ID!
+  completed: Boolean!
+  state: JSONObject!
+}
+
+input WorkspaceProjectCreateInput {
+  name: String
+  description: String
+  visibility: ProjectVisibility
+  workspaceId: String!
+}
+
+input WorkspaceDomainDeleteInput {
+  workspaceId: ID!
+  id: ID!
+}
+
+input WorkspaceInviteCreateInput {
+  """Either this or userId must be filled"""
+  email: String
+
+  """Either this or email must be filled"""
+  userId: String
+
+  """Defaults to the member role, if not specified"""
+  role: WorkspaceRole
+
+  """Defaults to User, if not specified"""
+  serverRole: ServerRole
+
+  """
+  The workspace seat type to assign to the user upon accepting the invite.
+  """
+  seatType: WorkspaceSeatType
+}
+
+input WorkspaceInviteUseInput {
+  token: String!
+  accept: Boolean!
+
+  """
+  If invite is attached to an unregistered email, the invite can only be used if this is set to true.
+  Upon accepting such an invite, the unregistered email will be added to the user's account as well.
+  """
+  addNewEmail: Boolean
+}
+
+input WorkspaceInviteResendInput {
+  workspaceId: String!
+  inviteId: String!
+}
+
+type WorkspaceInviteMutations {
+  create(workspaceId: String!, input: WorkspaceInviteCreateInput!): Workspace!
+  batchCreate(workspaceId: String!, input: [WorkspaceInviteCreateInput!]!): Workspace!
+  use(input: WorkspaceInviteUseInput!): Boolean!
+  resend(input: WorkspaceInviteResendInput!): Boolean!
+  cancel(workspaceId: String!, inviteId: String!): Workspace!
+}
+
+input PendingWorkspaceCollaboratorsFilter {
+  search: String
+}
+
+input WorkspaceIdentifier {
+  id: String
+  slug: String
+}
+
+type WorkspaceEmbedOptions {
+  hideSpeckleBranding: Boolean!
+}
+
+type WorkspaceTeamByRole {
+  admins: WorkspaceRoleCollection
+  members: WorkspaceRoleCollection
+  guests: WorkspaceRoleCollection
+}
+
+type WorkspaceRoleCollection {
+  totalCount: Int!
+}
+
+type WorkspaceCreationState {
+  completed: Boolean!
+  state: JSONObject!
+}
+
+type WorkspaceSso {
+  """If null, the workspace does not have SSO configured"""
+  provider: WorkspaceSsoProvider
+  session: WorkspaceSsoSession
+}
+
+type WorkspaceSsoProvider {
+  id: ID!
+  name: String!
+  clientId: String!
+  issuerUrl: String!
+}
+
+type WorkspaceSsoSession {
+  createdAt: DateTime!
+  validUntil: DateTime!
+}
+
+"""Workspace metadata visible to non-workspace members."""
+type LimitedWorkspace {
+  """Workspace id"""
+  id: ID!
+
+  """Workspace name"""
+  name: String!
+
+  """Unique workspace short id. Used for navigation."""
+  slug: String!
+
+  """Workspace description"""
+  description: String
+
+  """
+  Active user's role for this workspace. `null` if request is not authenticated, or the workspace is not explicitly shared with you.
+  """
+  role: String
+
+  """Optional base64 encoded workspace logo image"""
+  logo: String
+
+  """
+  If true, the users with a matching domain may join the workspace directly
+  """
+  discoverabilityAutoJoinEnabled: Boolean!
+
+  """Workspace members visible to people with verified email domain"""
+  team(cursor: String, limit: Int! = 25): LimitedWorkspaceCollaboratorCollection
+
+  """Workspace admins ordered by join date"""
+  adminTeam: [LimitedWorkspaceCollaborator!]!
+}
+
+type LimitedWorkspaceCollaboratorCollection {
+  totalCount: Int!
+  cursor: String
+  items: [LimitedWorkspaceCollaborator!]!
+}
+
+type LimitedWorkspaceCollaborator {
+  user: LimitedUser!
+}
+
+type WorkspaceDomain {
+  id: ID!
+  domain: String!
+}
+
+input WorkspaceProjectsFilter {
+  """Filter out projects by name"""
+  search: String
+
+  """
+  Only return workspace projects that the active user has an explicit project role in
+  """
+  withProjectRoleOnly: Boolean
+}
+
+input WorkspaceTeamFilter {
+  """Limit team members to provided role(s)"""
+  roles: [String!]
+
+  """Search for team members by name or email"""
+  search: String
+  seatType: WorkspaceSeatType
+}
+
+type WorkspaceCollaboratorCollection {
+  totalCount: Int!
+  cursor: String
+  items: [WorkspaceCollaborator!]!
+}
+
+type ProjectRole {
+  role: String!
+  project: Project!
+}
+
+type PendingWorkspaceCollaborator {
+  id: ID!
+  updatedAt: DateTime!
+  inviteId: String!
+  workspace: LimitedWorkspace!
+
+  """
+  E-mail address if target is unregistered or primary e-mail of target registered user
+  if token was specified to retrieve this invite
+  """
+  email: String
+
+  """E-mail address or name of the invited user"""
+  title: String!
+
+  """Target workspace role"""
+  role: String!
+  invitedBy: LimitedUser!
+
+  """Set only if user is registered"""
+  user: LimitedUser
+
+  """
+  Only available if the active user is the pending workspace collaborator or if it was already
+  specified when retrieving this invite
+  """
+  token: String
+}
+
+type WorkspaceCollection {
+  totalCount: Int!
+  cursor: String
+  items: [Workspace!]!
+}
+
+type ProjectEmbedOptions {
+  hideSpeckleBranding: Boolean!
+}
+
+type ProjectMoveToWorkspaceDryRun {
+  addedToWorkspace(limit: Int): [LimitedUser!]!
+  addedToWorkspaceTotalCount: Int!
+}
+
+input UserWorkspacesFilter {
+  search: String
+  completed: Boolean
+}
+
+enum WorkspaceProjectsUpdatedMessageType {
+  ADDED
+  REMOVED
+}
+
+type WorkspaceProjectsUpdatedMessage {
+  """Message type"""
+  type: WorkspaceProjectsUpdatedMessageType!
+
+  """Project ID"""
+  projectId: String!
+
+  """Workspace ID"""
+  workspaceId: String!
+
+  """Project entity, null if project was deleted"""
+  project: Project
+}
+
+type WorkspaceUpdatedMessage {
+  """Workspace ID"""
+  id: String!
+
+  """Workspace itself"""
+  workspace: Workspace!
+}
+
+input AdminUpdateWorkspacePlanInput {
+  workspaceId: ID!
+  plan: WorkspacePlans!
+  status: WorkspacePlanStatuses!
+}
+
+enum WorkspaceFeatureFlagName {
+  dashboards
+  accIntegration
+  presentations
+}
+
+"""Either the ID or slug must be set"""
+input AdminAccessToWorkspaceFeatureInput {
+  workspaceId: ID
+  workspaceSlug: String
+  featureFlagName: WorkspaceFeatureFlagName!
+}

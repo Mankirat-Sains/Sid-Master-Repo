@@ -1,0 +1,9 @@
+extend type User {
+  notificationPreferences: JSONObject! @isOwner
+}
+
+extend type Mutation {
+  userNotificationPreferencesUpdate(preferences: JSONObject!): Boolean
+    @hasServerRole(role: SERVER_GUEST)
+    @hasScope(scope: "profile:update")
+}

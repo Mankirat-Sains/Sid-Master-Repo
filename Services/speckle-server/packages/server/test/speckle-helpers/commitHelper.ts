@@ -1,0 +1,175 @@
+import {
+  getBranchByIdFactory,
+  getStreamBranchByNameFactory,
+  markCommitBranchUpdatedFactory
+} from '@/modules/core/repositories/branches'
+import {
+  createCommitFactory,
+  insertBranchCommitsFactory,
+  insertStreamCommitsFactory
+} from '@/modules/core/repositories/commits'
+import {
+  getObjectFactory,
+  storeSingleObjectIfNotFoundFactory
+} from '@/modules/core/repositories/objects'
+import {
+  createCommitByBranchIdFactory,
+  createCommitByBranchNameFactory
+} from '@/modules/core/services/commit/management'
+import { createObjectFactory } from '@/modules/core/services/objects/management'
+import { getProjectDbClient } from '@/modules/multiregion/utils/dbSelector'
+import { getEventBus } from '@/modules/shared/services/eventBus'
+import type { BasicTestUser } from '@/test/authHelper'
+import type { BasicTestStream } from '@/test/speckle-helpers/streamHelper'
+import cryptoRandomString from 'crypto-random-string'
+
+export type BasicTestCommit = {
+  /**
+   * Can be left empty, will be filled on creation
+   */
+  id: string
+  /**
+   * Can be left empty, will be filled on creation
+   */
+  objectId: string
+  /**
+   * Can be left empty, will be filled on creation if stream passed in
+   */
+  streamId: string
+  /**
+   * Can be left empty, will be filled on creation if owner passed in
+   */
+  authorId: string
+  /**
+   * Can be left empty, will be filled on creation. Takes precedence over branchName
+   */
+  branchId: string
+  /**
+   * Defaults to 'main'
+   */
+  branchName?: string
+  /**
+   * Auto-generated, if empty
+   */
+  message?: string
+
+  /**
+   * Empty array by default
+   */
+  parents?: string[]
+
+  /**
+   * Optionally override the createdAt date
+   */
+  createdAt?: Date
+}
+
+export async function createTestObject(params: {
+  projectId: string
+  object?: Record<string, unknown>
+}) {
+  const projectDb = await getProjectDbClient(params)
+  const createObject = createObjectFactory({
+    storeSingleObjectIfNotFoundFactory: storeSingleObjectIfNotFoundFactory({
+      db: projectDb
+    })
+  })
+
+  return await createObject({
+    streamId: params.projectId,
+    object: params.object ?? { foo: 'bar' }
+  })
+}
+
+/**
+ * Ensure all commits have objectId set
+ */
+async function ensureObjects(commits: BasicTestCommit[]) {
+  const commitsWithoutObjects = commits.filter((c) => !c.objectId)
+  await Promise.all(
+    commitsWithoutObjects.map(async (c) => {
+      const projectDb = await getProjectDbClient({ projectId: c.streamId })
+      const createObject = createObjectFactory({
+        storeSingleObjectIfNotFoundFactory: storeSingleObjectIfNotFoundFactory({
+          db: projectDb
+        })
+      })
+
+      return createObject({
+        streamId: c.streamId,
+        object: { foo: cryptoRandomString({ length: 256 }) }
+      }).then((oid) => (c.objectId = oid))
+    })
+  )
+}
+
+/**
+ * Create test commits
+ */
+export async function createTestCommits(
+  commits: BasicTestCommit[],
+  options?: Partial<{ owner: BasicTestUser; stream: BasicTestStream }>
+) {
+  const { owner, stream } = options || {}
+
+  commits.forEach((c) => {
+    if (owner) c.authorId = owner.id
+    if (stream) c.streamId = stream.id
+  })
+
+  await ensureObjects(commits)
+  const newCommits = await Promise.all(
+    commits.map(async (c) => {
+      const projectDb = await getProjectDbClient({ projectId: c.streamId })
+      const getObject = getObjectFactory({ db: projectDb })
+      const createCommitByBranchId = createCommitByBranchIdFactory({
+        createCommit: createCommitFactory({ db: projectDb }),
+        getObject,
+        getBranchById: getBranchByIdFactory({ db: projectDb }),
+        insertStreamCommits: insertStreamCommitsFactory({ db: projectDb }),
+        insertBranchCommits: insertBranchCommitsFactory({ db: projectDb }),
+        markCommitBranchUpdated: markCommitBranchUpdatedFactory({ db: projectDb }),
+        emitEvent: getEventBus().emit
+      })
+
+      const createCommitByBranchName = createCommitByBranchNameFactory({
+        createCommitByBranchId,
+        getStreamBranchByName: getStreamBranchByNameFactory({ db: projectDb }),
+        getBranchById: getBranchByIdFactory({ db: projectDb })
+      })
+
+      const baseArgs = {
+        streamId: c.streamId,
+        branchName: c.branchName || 'main',
+        message: c.message || 'this message is auto generated',
+        sourceApplication: 'tests',
+        objectId: c.objectId,
+        authorId: c.authorId,
+        totalChildrenCount: 0,
+        parents: c.parents || [],
+        createdAt: c.createdAt
+      }
+
+      const commit = await (c.branchId?.length
+        ? createCommitByBranchId({
+            ...baseArgs,
+            branchId: c.branchId
+          })
+        : createCommitByBranchName(baseArgs))
+      c.id = commit.id
+      c.branchId = commit.branchId
+
+      return c
+    })
+  )
+
+  return newCommits
+}
+
+export async function createTestCommit(
+  commit: BasicTestCommit,
+  options?: Partial<{ owner: BasicTestUser; stream: BasicTestStream }>
+) {
+  const [newCommit] = await createTestCommits([commit], options)
+  return newCommit
+}

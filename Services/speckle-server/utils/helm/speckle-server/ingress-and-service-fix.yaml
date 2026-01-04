@@ -1,0 +1,224 @@
+﻿---
+# Source: speckle-server/templates/objects/service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: speckle-objects
+  namespace: speckle-production
+  labels:
+    helm.sh/chart: speckle-server-0.1.0-local
+    app.kubernetes.io/version: "0.1.0-local"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: speckle-server
+    app: speckle-objects
+    app.kubernetes.io/name: speckle-objects
+    app.kubernetes.io/instance: speckle-server
+    project: speckle-server
+    app.kubernetes.io/component: speckle-objects
+spec:
+  selector:
+    app: speckle-server
+    project: speckle-server
+  ports:
+    - protocol: TCP
+      name: web
+      port: 3000
+      targetPort: http
+---
+# Source: speckle-server/templates/objects.minion.ingress.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: speckle-server-minion-api-objects
+  namespace: speckle-production
+  labels:
+    helm.sh/chart: speckle-server-0.1.0-local
+    app.kubernetes.io/version: "0.1.0-local"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: speckle-server
+    app.kubernetes.io/name: speckle-server
+    app.kubernetes.io/instance: speckle-server
+    project: speckle-server
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/load-balancer-name: speckle-alb
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/order: "1"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/getobjects/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/api/objects/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/api/diff/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/objects/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/streams/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+---
+# Source: speckle-server/templates/minion.ingress.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: speckle-server-minion
+  namespace: speckle-production
+  labels:
+    helm.sh/chart: speckle-server-0.1.0-local
+    app.kubernetes.io/version: "0.1.0-local"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: speckle-server
+    app.kubernetes.io/name: speckle-server
+    app.kubernetes.io/instance: speckle-server
+    project: speckle-server
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/load-balancer-name: speckle-alb
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/order: "99"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - pathType: Exact
+        path: "/graphql"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Exact
+        path: "/explorer"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/auth/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/static/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        # for /api/file/ see file.minion.ingress.yml
+        # for /api/objects/, /api/getobjects/, & /api/diff/ see objects.minion.ingress.yml
+        path: "/api/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/preview/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      # Catch-all must be LAST to allow more specific paths to match first
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: speckle-frontend-2
+            port:
+              name: web
+---
+# Source: speckle-server/templates/file.minion.ingress.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: speckle-server-minion-api-file
+  namespace: speckle-production
+  labels:
+    helm.sh/chart: speckle-server-0.1.0-local
+    app.kubernetes.io/version: "0.1.0-local"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: speckle-server
+    app.kubernetes.io/name: speckle-server
+    app.kubernetes.io/instance: speckle-server
+    project: speckle-server
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/load-balancer-name: speckle-alb
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/order: "2"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/file/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/api/stream/"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
+      - pathType: Prefix
+        path: "/api/thirdparty/gendo"
+        backend:
+          service:
+            name: speckle-server
+            port:
+              name: web
