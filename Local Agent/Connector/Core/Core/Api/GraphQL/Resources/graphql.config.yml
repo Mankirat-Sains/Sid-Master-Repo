@@ -1,0 +1,2 @@
+﻿schema: https://latest.speckle.systems/graphql
+documents: '**/*.graphql'

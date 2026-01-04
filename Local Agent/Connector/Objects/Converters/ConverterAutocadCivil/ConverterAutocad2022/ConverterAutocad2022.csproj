@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Objects.Converter.Autocad2022</AssemblyName>
+        <RootNamespace>Objects.Converter.Autocad</RootNamespace>
+        <DefineConstants>$(DefineConstants);AUTOCAD2022</DefineConstants>
+        <PackageId>Speckle.Objects.Converter.Autocad2022</PackageId>
+        <Product>Objects.Converter.Autocad2022</Product>
+        <Description>Converter for Autocad 2022</Description>
+        <PackageTags>$(PackageTags) objects converter autocad</PackageTags>
+        <CopyToKitFolder>true</CopyToKitFolder>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Speckle.AutoCAD.API" Version="2022.0.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Core\Core\Core.csproj" />
+        <ProjectReference Include="..\..\..\Objects\Objects.csproj" />
+    </ItemGroup>
+  
+    <Import Project="..\ConverterAutocadCivilShared\ConverterAutocadCivilShared.projitems"
+        Label="Shared" />
+
+</Project>
