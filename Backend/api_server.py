@@ -798,7 +798,9 @@ async def chat_stream_handler(request: ChatRequest):
                     # Create state dict for easier access
                     state_dict = previous_state.copy()
                 
-                # Generate thinking log based on node
+                # Generate thinking log based on node (skip intermediate nodes that don't add value)
+                thinking_log = None
+                
                 if node_name == "plan":
                     plan = state_dict.get("query_plan") or {}
                     thinking_log = log_generator.generate_planning_log(
@@ -832,12 +834,18 @@ async def chat_stream_handler(request: ChatRequest):
                         has_code=bool(state_dict.get("code_answer")),
                         has_coop=bool(state_dict.get("coop_answer"))
                     )
+                # Skip route, verify, and correct nodes - they don't provide value to engineers
+                elif node_name in ["route", "verify", "correct"]:
+                    thinking_log = None  # Suppress these nodes
                 else:
-                    thinking_log = f"## ✅ Completed {node_name.title()}\n\nFinished processing this step."
+                    # For any unexpected nodes, log them but don't show to user
+                    logger.info(f"Skipping thinking log for node: {node_name}")
+                    thinking_log = None
                 
-                # Emit thinking log
-                yield f"data: {json.dumps({'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()})}\n\n"
-                await asyncio.sleep(0.01)
+                # Only emit thinking log if one was generated
+                if thinking_log:
+                    yield f"data: {json.dumps({'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()})}\n\n"
+                    await asyncio.sleep(0.01)
                 
                 # Check if we're done
                 if state_dict.get("final_answer"):

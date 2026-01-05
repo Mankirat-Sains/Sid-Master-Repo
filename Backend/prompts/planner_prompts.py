@@ -53,6 +53,9 @@ CURRENT QUESTION:
 {q}
 
 Remember: Return ONLY the JSON object, nothing else.
+
+Key Notes:
+- Ensure your reasoning is very thorough and detailed. They should clearly describe how you are decomposing the user query and how that is influencing what you, the best structural engineering agent in the world, are searching for.
 """
 )
 
