@@ -183,7 +183,38 @@
         </div>
       </div>
 
-      <form @submit.prevent="handleSend" class="flex gap-3">
+      <!-- IFC File Preview -->
+      <div v-if="pendingIFCFile" class="mb-3 p-3 bg-blue-50 rounded-xl border border-blue-200">
+        <div class="flex items-center gap-3">
+          <div class="flex-shrink-0">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-800" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">{{ pendingIFCFile.name }}</p>
+            <p class="text-xs text-gray-500">{{ formatFileSize(pendingIFCFile.size) }}</p>
+            <div v-if="uploadProgress > 0" class="mt-2">
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full transition-all" :style="{ width: `${uploadProgress}%` }"></div>
+              </div>
+              <p class="text-xs text-gray-600 mt-1">{{ Math.round(uploadProgress) }}% uploaded</p>
+            </div>
+          </div>
+          <button
+            @click="pendingIFCFile = null; uploadProgress = 0"
+            type="button"
+            class="text-red-600 hover:text-red-800 transition-colors"
+            title="Remove file"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <form @submit.prevent="handleSend" class="flex gap-3 items-end">
         <input
           ref="imageInputRef"
           type="file"
@@ -191,6 +222,13 @@
           multiple
           class="hidden"
           @change="handleImageSelect"
+        />
+        <input
+          ref="ifcInputRef"
+          type="file"
+          accept=".ifc,.IFC"
+          class="hidden"
+          @change="handleIFCSelect"
         />
         <button
           type="button"
@@ -203,8 +241,18 @@
             <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-        <input
-      <form @submit.prevent="handleSend" class="flex gap-3 items-end">
+        <button
+          type="button"
+          @click="triggerIFCInput"
+          class="px-3 py-3 rounded-xl border border-gray-300 bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-white hover:border-blue-400 transition-colors flex items-center justify-center"
+          :class="{ 'border-blue-500 bg-blue-50': pendingIFCFile !== null }"
+          title="Upload IFC file"
+          :disabled="isLoading"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </button>
         <textarea
           ref="inputTextarea"
           v-model="inputMessage"
@@ -240,6 +288,7 @@ import { useRFPWorkflow } from '~/composables/useRFPWorkflow'
 import { useModelDesignWorkflow, type ProjectParameter, type SimilarProject, type ModelDesignState } from '~/composables/useModelDesignWorkflow'
 import { useRFPProposalWorkflow, type RFPProposalState } from '~/composables/useRFPProposalWorkflow'
 import { useSpeckle } from '~/composables/useSpeckle'
+import { useIFCUpload } from '~/composables/useIFCUpload'
 import { useRuntimeConfig } from '#app'
 
 const { formatMessageText } = useMessageFormatter()
@@ -275,7 +324,13 @@ const messagesContainer = ref<HTMLElement | null>(null)
 const thinkingMessage = ref<string>('')
 const thinkingInterval = ref<ReturnType<typeof setInterval> | null>(null)
 const imageInputRef = ref<HTMLInputElement>()
+const ifcInputRef = ref<HTMLInputElement>()
 const pendingImages = ref<ImageAttachment[]>([])
+const pendingIFCFile = ref<File | null>(null)
+const uploadProgress = ref(0)
+
+// Initialize composables early so functions can use them
+const { uploadIFCFile } = useIFCUpload()
 
 // Data source toggles (default all enabled)
 const dataSources = ref({
@@ -392,6 +447,69 @@ async function handleImageSelect(event: Event) {
 
 function triggerImageInput() {
   imageInputRef.value?.click()
+}
+
+function triggerIFCInput() {
+  ifcInputRef.value?.click()
+}
+
+function formatFileSize(bytes: number): string {
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i]
+}
+
+async function handleIFCSelect(event: Event) {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  // Check if it's an IFC file
+  if (!file.name.toLowerCase().endsWith('.ifc')) {
+    await addTypedMessage(
+      'Please select an IFC file (.ifc)',
+      undefined,
+      300
+    )
+    return
+  }
+
+  pendingIFCFile.value = file
+  uploadProgress.value = 0
+
+  try {
+    const result = await uploadIFCFile(
+      file,
+      undefined, // projectId - will create new project
+      'main',
+      (percentage) => {
+        uploadProgress.value = percentage
+      }
+    )
+
+    await addTypedMessage(
+      `✅ ${result.message}`,
+      undefined,
+      300
+    )
+
+    // Clear file
+    pendingIFCFile.value = null
+    uploadProgress.value = 0
+    if (ifcInputRef.value) {
+      ifcInputRef.value.value = ''
+    }
+  } catch (error: any) {
+    console.error('IFC upload error:', error)
+    await addTypedMessage(
+      `❌ Failed to upload IFC file: ${error.message || 'Unknown error'}`,
+      undefined,
+      300
+    )
+    // Keep file in case user wants to retry
+  }
 }
 
 function removeImage(index: number) {
@@ -590,23 +708,10 @@ async function handleSend() {
       sessionId: 'default',
       dataSources: dataSources.value,
       images_base64: imagesBase64
-    // Create a message ID for the assistant response
-    const assistantMessageId = Date.now().toString()
-    
-    // Add empty assistant message that will be filled with thinking logs
-    messages.value.push({
-      id: assistantMessageId,
-      role: 'assistant',
-      content: '',
-      timestamp: new Date(),
-      isTyping: true
     })
     
-    await scrollToBottom(true)
-    
-    // Accumulated thinking logs to display in message
+    // Accumulated thinking logs for logging purposes only (not displayed in chat)
     let thinkingContent = ''
-    let finalAnswer = ''
     
     // Use streaming endpoint
     await sendChatMessageStream(
@@ -619,7 +724,7 @@ async function handleSend() {
         onLog: (log) => {
           console.log('💭 Thinking log:', log)
           
-          // Emit to Agent Thinking panel (if available)
+          // Emit to Agent Thinking panel only (thinking never shows in chat)
           if (emitAgentLog) {
             emitAgentLog({
               id: `thinking-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -629,16 +734,11 @@ async function handleSend() {
             })
           }
           
-          // Append to thinking content (will show in message bubble)
+          // Accumulate thinking content for logging purposes only (not displayed in chat)
           thinkingContent += `${log.message}\n\n`
           
-          // Update assistant message with thinking content (show in real-time)
-          const assistantMsg = messages.value.find(m => m.id === assistantMessageId)
-          if (assistantMsg) {
-            assistantMsg.content = thinkingContent + (finalAnswer ? `\n\n---\n\n${finalAnswer}` : '⏳ Working...')
-          }
-          
-          scrollToBottom()
+          // Do NOT update the chat message with thinking content
+          // Thinking only appears in Agent Thinking panel
         },
         
         // On completion
@@ -646,16 +746,9 @@ async function handleSend() {
           console.log('✅ Stream complete:', result)
           stopThinking()
           
-          finalAnswer = result.reply || result.message || 'No response generated.'
+          const finalAnswer = result.reply || result.message || 'No response generated.'
           
-          // Update assistant message with final answer only (remove thinking logs from chat)
-          const assistantMsg = messages.value.find(m => m.id === assistantMessageId)
-          if (assistantMsg) {
-            assistantMsg.content = ''
-            assistantMsg.isTyping = false
-          }
-          
-          // Type out the final answer
+          // Only create and display the final answer in chat (no thinking content)
           await addTypedMessage(finalAnswer, undefined, 300)
           
           // Extract project keys from answer text and fetch Speckle models
@@ -664,20 +757,21 @@ async function handleSend() {
           // Emit response for logging
           emit('responseReceived', {
             ...result,
-            thinking_log: [thinkingContent]  // Include thinking logs
+            thinking_log: [thinkingContent]  // Include thinking logs for logging
           })
         },
         
         // On error
-        onError: (error) => {
+        onError: async (error) => {
           console.error('❌ Stream error:', error)
           stopThinking()
           
-          const assistantMsg = messages.value.find(m => m.id === assistantMessageId)
-          if (assistantMsg) {
-            assistantMsg.content = `Sorry, I encountered an error: ${error.message}`
-            assistantMsg.isTyping = false
-          }
+          // Display error message in chat
+          await addTypedMessage(
+            `Sorry, I encountered an error: ${error.message}`,
+            undefined,
+            300
+          )
         }
       }
     )

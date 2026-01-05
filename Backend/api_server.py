@@ -8,7 +8,7 @@ from datetime import datetime
 import logging
 import re
 from typing import Dict, Any, Optional, List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
 from pydantic import BaseModel
@@ -17,9 +17,20 @@ from dotenv import load_dotenv
 import os
 import json
 from html import escape
+import httpx
+from pathlib import Path
 
 # Load environment variables from .env file
-load_dotenv()
+# Try Backend/.env first, then Frontend/.env (where Speckle credentials are)
+load_dotenv()  # Backend/.env
+
+# Also load Frontend/.env (where Speckle credentials are stored)
+frontend_env_path = Path(__file__).parent.parent / "Frontend" / ".env"
+if frontend_env_path.exists():
+    load_dotenv(dotenv_path=str(frontend_env_path), override=True)
+    print(f"✅ Loaded Speckle credentials from {frontend_env_path}")
+else:
+    print(f"⚠️ Frontend/.env not found at {frontend_env_path}")
 
 # Import the RAG system from new modular structure
 from main import run_agentic_rag, rag_healthcheck
@@ -905,6 +916,158 @@ async def chat_legacy(request: ChatRequest):
         "route": response.route,
         "data_sources": response.data_sources
     }
+
+# IFC File Upload endpoint
+@app.post("/chat/upload-ifc")
+async def upload_ifc_to_speckle(
+    file: UploadFile = File(...),
+    project_id: Optional[str] = Form(None),
+    model_name: str = Form("main")
+):
+    """
+    Upload IFC file to Speckle server.
+    Creates new project if project_id not provided.
+    Saves metadata to database.
+    
+    Returns:
+        {
+            "success": bool,
+            "speckle_project_id": str,
+            "speckle_model_name": str,
+            "message": str
+        }
+    """
+    try:
+        logger.info(f"📤 IFC upload request: {file.filename}, project_id={project_id}, model={model_name}")
+        
+        # Get Speckle credentials from environment
+        speckle_url = os.getenv("SPECKLE_URL") or os.getenv("SPECKLE_SERVER_URL") or "https://app.speckle.systems"
+        speckle_token = os.getenv("SPECKLE_TOKEN")
+        
+        if not speckle_token:
+            raise HTTPException(status_code=500, detail="Speckle token not configured")
+        
+        # Read file content
+        file_content = await file.read()
+        file_size = len(file_content)
+        file_type = file.filename.split('.')[-1].lower() if '.' in file.filename else ''
+        
+        logger.info(f"📦 File details: {file.filename}, size={file_size} bytes, type={file_type}")
+        
+        # 1. CREATE PROJECT IN SPECKLE (if not provided)
+        speckle_project_id = project_id
+        if not speckle_project_id:
+            project_name = file.filename.replace('.ifc', '').replace('.IFC', '') or f"IFC Upload {datetime.now().strftime('%Y-%m-%d')}"
+            
+            logger.info(f"🏗️ Creating Speckle project: {project_name}")
+            
+            # Call Speckle GraphQL to create project
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                create_project_response = await client.post(
+                    f"{speckle_url}/graphql",
+                    headers={
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {speckle_token}"
+                    },
+                    json={
+                        "query": """
+                            mutation CreateProject($input: ProjectCreateInput!) {
+                                projectMutations {
+                                    create(input: $input) {
+                                        id
+                                        name
+                                    }
+                                }
+                            }
+                        """,
+                        "variables": {
+                            "input": {
+                                "name": project_name,
+                                "description": f"Uploaded from chat: {file.filename}",
+                                "visibility": "PRIVATE"
+                            }
+                        }
+                    }
+                )
+                
+                if create_project_response.status_code != 200:
+                    raise HTTPException(
+                        status_code=500,
+                        detail=f"Failed to create Speckle project: {create_project_response.text}"
+                    )
+                
+                result = create_project_response.json()
+                if "errors" in result:
+                    raise HTTPException(
+                        status_code=500,
+                        detail=f"GraphQL error: {result['errors']}"
+                    )
+                
+                speckle_project_id = result["data"]["projectMutations"]["create"]["id"]
+                project_name_created = result["data"]["projectMutations"]["create"]["name"]
+                logger.info(f"✅ Created Speckle project: {speckle_project_id} ({project_name_created})")
+        
+        # 2. SAVE TO YOUR DATABASE (if you have a database setup)
+        # TODO: Add your database save logic here
+        # Example:
+        # file_record = {
+        #     "filename": file.filename,
+        #     "file_type": file_type,
+        #     "file_size": file_size,
+        #     "speckle_project_id": speckle_project_id,
+        #     "speckle_model_name": model_name,
+        #     "upload_date": datetime.now().isoformat(),
+        #     "status": "uploading"
+        # }
+        # await your_db.file_uploads.insert(file_record)
+        
+        # 3. UPLOAD TO SPECKLE SERVER using autodetect endpoint
+        logger.info(f"⬆️ Uploading file to Speckle: project={speckle_project_id}, model={model_name}")
+        
+        async with httpx.AsyncClient(timeout=300.0) as client:
+            # Create multipart form data
+            files = {
+                "file": (file.filename, file_content, file.content_type or "application/octet-stream")
+            }
+            
+            upload_response = await client.post(
+                f"{speckle_url}/api/file/autodetect/{speckle_project_id}/{model_name}",
+                headers={
+                    "Authorization": f"Bearer {speckle_token}"
+                },
+                files=files
+            )
+            
+            if upload_response.status_code != 201:
+                error_text = upload_response.text
+                logger.error(f"❌ Speckle upload failed: {upload_response.status_code} - {error_text}")
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Speckle upload failed: {error_text}"
+                )
+            
+            upload_result = upload_response.json()
+            logger.info(f"✅ File uploaded to Speckle successfully: {upload_result}")
+        
+        # 4. UPDATE YOUR DATABASE (if you have one)
+        # TODO: Update status to "completed"
+        # await your_db.file_uploads.update(
+        #     {"status": "completed", "speckle_blob_id": upload_result.get("blobId")}
+        # )
+        
+        return {
+            "success": True,
+            "speckle_project_id": speckle_project_id,
+            "speckle_model_name": model_name,
+            "message": f"File '{file.filename}' uploaded successfully. Speckle is processing it and it will appear in your project shortly."
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ IFC upload error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
 
 # Feedback endpoint
 @app.post("/feedback")
