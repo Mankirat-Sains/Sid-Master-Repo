@@ -172,7 +172,9 @@ def run_agentic_rag(
             image_embeddings=final.get("image_embeddings"),
             image_similarity_results=final.get("image_similarity_results", []),
             use_image_similarity=final.get("use_image_similarity", False),
-            query_intent=final.get("query_intent")
+            query_intent=final.get("query_intent"),
+            follow_up_questions=final.get("follow_up_questions", []),
+            follow_up_suggestions=final.get("follow_up_suggestions", [])
         )
     else:
         final_state = final
@@ -344,6 +346,8 @@ def run_agentic_rag(
             "subqueries": plan_for_ui.get("subqueries", []),
         },
         "image_similarity_results": final_state.image_similarity_results or [],
+        "follow_up_questions": final_state.follow_up_questions or [],
+        "follow_up_suggestions": final_state.follow_up_suggestions or [],
     }
 
 

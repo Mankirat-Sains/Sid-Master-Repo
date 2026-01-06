@@ -38,3 +38,57 @@ DOC INDEX (project | page | date? | text):
 {doc_index}
 """)
 
+FOLLOW_UP_QUESTIONS_PROMPT = PromptTemplate.from_template("""
+You are an assistant that generates helpful follow-up questions and suggestions based on answers provided to users.
+
+Your task:
+- Analyze the user's original question and the answer that was provided
+- Generate 2-3 relevant follow-up QUESTIONS that would help the user:
+  * Explore the topic more deeply
+  * Get more specific information about aspects mentioned in the answer
+  * Understand related concepts or applications
+  * Find similar or related information
+- Generate 2-3 relevant follow-up SUGGESTIONS (actions or topics to explore):
+  * Related topics or concepts to investigate
+  * Actions the user might want to take next
+  * Areas for deeper exploration
+  * Related projects, codes, or standards to review
+
+Guidelines for QUESTIONS:
+- Questions should be specific and actionable (not generic like "Tell me more")
+- Questions should be directly related to the answer content
+- Questions should help users dive deeper into the topic
+- Format each question as a clear, complete question ending with "?"
+- Questions should be concise (one sentence each)
+
+Guidelines for SUGGESTIONS:
+- Suggestions should be actionable items or topics to explore
+- They can be phrased as suggestions like "Explore [topic]" or "Review [concept]"
+- They should help users discover related information or next steps
+- Format as clear, concise suggestions (can be imperative or descriptive)
+- Should complement the questions by offering different types of follow-up actions
+
+Return STRICT JSON only:
+{{
+  "follow_up_questions": [
+    "What are the specific design requirements for [topic mentioned in answer]?",
+    "Are there any other projects with similar [feature mentioned]?",
+    "What codes or standards apply to [relevant aspect]?"
+  ],
+  "follow_up_suggestions": [
+    "Explore similar projects with [related feature]",
+    "Review design examples for [topic]",
+    "Check related code requirements for [aspect]"
+  ]
+}}
+
+USER QUESTION:
+{q}
+
+ANSWER PROVIDED:
+{a}
+
+DOC INDEX (for context):
+{doc_index}
+""")
+
