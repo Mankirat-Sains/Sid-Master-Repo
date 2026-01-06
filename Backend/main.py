@@ -116,8 +116,13 @@ def run_agentic_rag(
     base_query = rewritten_query
     log_query.info(f"🎯 FINAL QUERY FOR RAG: '{base_query}'")
 
+    # Initialize RAGState - if data_sources is None, let the router decide
+    # RAGState has a default_factory that provides fallback defaults, but router will override
+    # We pass data_sources=None explicitly when we want router to decide
     if data_sources is None:
-        data_sources = {"project_db": True, "code_db": False, "coop_manual": False}
+        # Don't set a default - let the router intelligently select based on query and user role
+        # The router (in rag_router or route node) will set state.data_sources
+        pass
     
     init = RAGState(
         session_id=session_id,
@@ -130,7 +135,7 @@ def run_agentic_rag(
         coop_answer=None, coop_citations=[],
         answer_support_score=0.0,
         corrective_attempted=False,
-        data_sources=data_sources,
+        data_sources=data_sources,  # None is OK - router will set it, or will use RAGState default
         images_base64=images_base64 if images_base64 else None,
         use_image_similarity=False,  # Image embedding disabled - using VLM description only
         query_intent=None
@@ -161,6 +166,8 @@ def run_agentic_rag(
             corrective_attempted=final.get("corrective_attempted", False),
             needs_fix=final.get("needs_fix", False),
             selected_projects=final.get("selected_projects", []),
+            needs_clarification=final.get("needs_clarification", False),
+            clarification_question=final.get("clarification_question"),
             images_base64=final.get("images_base64"),
             image_embeddings=final.get("image_embeddings"),
             image_similarity_results=final.get("image_similarity_results", []),
@@ -302,6 +309,22 @@ def run_agentic_rag(
             "content": d.page_content[:500] if d.page_content else "",
             "search_type": md.get("search_type", "unknown"),
         })
+    # Check if router needs clarification
+    if final_state.needs_clarification:
+        log_query.info(f"❓ Router requested clarification: {final_state.clarification_question}")
+        return {
+            "answer": final_state.clarification_question or "Which databases would you like me to search?",
+            "code_answer": None,
+            "coop_answer": None,
+            "support": 0.0,
+            "citations": [],
+            "code_citations": [],
+            "coop_citations": [],
+            "route": None,
+            "project_filter": final_state.project_filter,
+            "needs_clarification": True
+        }
+    
     plan_for_ui = final_state.query_plan if isinstance(final_state.query_plan, dict) else {}
     return {
         "answer": final_state.final_answer,
@@ -313,6 +336,7 @@ def run_agentic_rag(
         "coop_citations": final_state.coop_citations,
         "route": final_state.data_route,
         "project_filter": final_state.project_filter,
+        "needs_clarification": False,
         "expanded_queries": final_state.expanded_queries[:MAX_ROUTER_DOCS],
         "latency_s": latency,
         "graded_preview": graded_preview,

@@ -5,11 +5,20 @@ Constructs the RAG workflow graph
 from langgraph.graph import StateGraph, END
 from models.rag_state import RAGState
 from database import memory
+
 from nodes.plan import node_plan
-from nodes.route import node_route
+
+# RAG node - wrapper that runs rag_plan and rag_router in parallel
+from nodes.rag import node_rag
+
+# Optional: sub-nodes used internally by node_rag (imports harmless if unused here)
+from nodes.rag_plan import node_rag_plan  # noqa: F401
+from nodes.rag_router import node_rag_router  # noqa: F401
+
 from nodes.web_router import node_web_router
 from nodes.desktop_router import node_desktop_router
 from nodes.router_dispatcher import node_router_dispatcher
+
 from nodes.retrieve import node_retrieve
 from nodes.grade import node_grade
 from nodes.answer import node_answer
@@ -18,12 +27,25 @@ from nodes.correct import node_correct
 
 
 def _router_route(state: RAGState) -> str:
-    """Route to router dispatcher based on selected routers"""
-    selected_routers = state.selected_routers or []
+    """
+    Planner routing:
+    - If the plan selected any routers, run router_dispatcher first.
+    - Otherwise go straight to rag.
+    """
+    selected_routers = getattr(state, "selected_routers", None) or []
     if selected_routers:
         return "router_dispatcher"
-    # Fallback to rag router if no routers selected
-    return "route"
+    return "rag"
+
+
+def _rag_condition(state) -> str:
+    """Check if router needs clarification"""
+    if isinstance(state, dict):
+        needs_clarification = state.get("needs_clarification", False)
+    else:
+        needs_clarification = getattr(state, "needs_clarification", False)
+
+    return "clarification" if needs_clarification else "retrieve"
 
 
 def build_graph():
@@ -32,10 +54,15 @@ def build_graph():
 
     # Add nodes
     g.add_node("plan", node_plan)
-    g.add_node("route", node_route)  # Existing RAG router (unchanged)
+
+    # RAG wrapper node
+    g.add_node("rag", node_rag)
+
+    # Non-RAG routers + dispatcher
     g.add_node("web_router", node_web_router)
     g.add_node("desktop_router", node_desktop_router)
     g.add_node("router_dispatcher", node_router_dispatcher)
+
     g.add_node("retrieve", node_retrieve)
     g.add_node("grade", node_grade)
     g.add_node("answer", node_answer)
@@ -45,22 +72,29 @@ def build_graph():
     # Entry point
     g.set_entry_point("plan")
 
-    # Conditional routing from plan to router dispatcher
+    # Plan routes to either router_dispatcher or rag (NO legacy route)
     g.add_conditional_edges(
         "plan",
         _router_route,
         {
             "router_dispatcher": "router_dispatcher",
-            "route": "route"  # Fallback to existing route node
-        }
+            "rag": "rag",
+        },
     )
-    
-    # Router dispatcher routes to retrieve (after running all selected routers in parallel)
+
+    # Router dispatcher routes to retrieve (after running selected routers)
     g.add_edge("router_dispatcher", "retrieve")
-    
-    # Keep existing route path for backward compatibility
-    g.add_edge("route", "retrieve")
-    
+
+    # RAG routes to retrieve or END (clarification)
+    g.add_conditional_edges(
+        "rag",
+        _rag_condition,
+        {
+            "clarification": END,
+            "retrieve": "retrieve",
+        },
+    )
+
     # Continue with existing flow
     g.add_edge("retrieve", "grade")
     g.add_edge("grade", "answer")
@@ -70,10 +104,9 @@ def build_graph():
     g.add_conditional_edges(
         "verify",
         _verify_route,
-        {"fix": "retrieve", "ok": "correct"}
+        {"fix": "retrieve", "ok": "correct"},
     )
 
     g.add_edge("correct", END)
 
     return g.compile(checkpointer=memory)
-

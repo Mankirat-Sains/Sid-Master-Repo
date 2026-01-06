@@ -16,6 +16,7 @@ class RAGState:
     # Session & Query
     session_id: str = ""
     user_query: str = ""
+    user_role: Optional[str] = None  # User role for role-based database preferences (e.g., "structural_engineer", "trainer")
     
     # Planning / Routing
     query_plan: Optional[Dict] = None
@@ -23,12 +24,15 @@ class RAGState:
         default_factory=lambda: {
             "project_db": True,
             "code_db": False,
-            "coop_manual": False
+            "coop_manual": False,
+            "speckle_db": False
         }
     )
     data_route: Optional[Literal["smart", "large"]] = None
     project_filter: Optional[str] = None
     active_filters: Optional[Dict[str, Any]] = None  # Store extracted filters for synthesis
+    needs_clarification: bool = False  # Flag indicating router needs clarification
+    clarification_question: Optional[str] = None  # Clarification question from router
     selected_routers: List[str] = field(default_factory=list)  # List of selected routers: "rag", "web", "desktop"
     
     # Retrieval Artifacts
