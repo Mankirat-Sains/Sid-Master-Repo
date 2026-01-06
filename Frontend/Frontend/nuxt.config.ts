@@ -56,6 +56,10 @@ export default defineNuxtConfig({
       include: ['@speckle/viewer']
     },
     server: {
+      hmr: {
+        port: 24679,
+        host: '127.0.0.1'
+      },
       proxy: {
         // Note: Public Speckle.systems instance has CORS configured, so proxy may not be needed
       // Keeping this for reference in case you switch back to a custom server
@@ -98,8 +102,10 @@ export default defineNuxtConfig({
           defer: true,
           id: 'MathJax-script'
         }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
       ]
     }
   }
 })
-
