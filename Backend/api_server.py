@@ -760,6 +760,15 @@ async def chat_stream_handler(request: ChatRequest):
             
             log_generator = IntelligentLogGenerator()
             
+            # Determine if image similarity should be enabled
+            use_image_similarity = False
+            query_intent = None
+            if images_to_process:
+                from nodes.DBRetrieval.image_nodes import classify_image_query_intent
+                intent_result = classify_image_query_intent(request.message, images_to_process[0])
+                use_image_similarity = intent_result.get("use_image_similarity", False)
+                query_intent = intent_result.get("intent")
+            
             # Create initial state
             init_state = RAGState(
                 session_id=request.session_id,
@@ -780,7 +789,9 @@ async def chat_stream_handler(request: ChatRequest):
                 answer_support_score=0.0,
                 corrective_attempted=False,
                 data_sources=request.data_sources,
-                images_base64=images_to_process if images_to_process else None
+                images_base64=images_to_process if images_to_process else None,
+                use_image_similarity=use_image_similarity,
+                query_intent=query_intent
             )
             
             # Track state as we go to detect which node ran
@@ -806,7 +817,7 @@ async def chat_stream_handler(request: ChatRequest):
                     # Create state dict for easier access
                     state_dict = previous_state.copy()
                 
-                # Generate thinking log based on node (skip intermediate nodes that don't add value)
+                # Generate thinking log based on node using intelligent_log_generator and RAG state data
                 thinking_log = None
                 
                 if node_name == "plan":
@@ -816,6 +827,36 @@ async def chat_stream_handler(request: ChatRequest):
                         plan=plan,
                         route=state_dict.get("data_route") or "smart",
                         project_filter=state_dict.get("project_filter")
+                    )
+                elif node_name == "router_dispatcher":
+                    thinking_log = log_generator.generate_router_dispatcher_log(
+                        query=request.message,
+                        selected_routers=state_dict.get("selected_routers", [])
+                    )
+                elif node_name == "rag":
+                    thinking_log = log_generator.generate_rag_log(
+                        query=request.message,
+                        query_plan=state_dict.get("query_plan"),
+                        data_route=state_dict.get("data_route"),
+                        data_sources=state_dict.get("data_sources")
+                    )
+                elif node_name == "generate_image_embeddings":
+                    image_count = len(state_dict.get("images_base64") or [])
+                    thinking_log = log_generator.generate_image_embeddings_log(
+                        query=request.message,
+                        image_count=image_count
+                    )
+                elif node_name == "image_similarity_search":
+                    similarity_results = state_dict.get("image_similarity_results", [])
+                    project_keys = set()
+                    for img in similarity_results:
+                        proj = img.get("project_key")
+                        if proj:
+                            project_keys.add(proj)
+                    thinking_log = log_generator.generate_image_similarity_log(
+                        query=request.message,
+                        result_count=len(similarity_results),
+                        project_count=len(project_keys)
                     )
                 elif node_name == "retrieve":
                     thinking_log = log_generator.generate_retrieval_log(
@@ -842,9 +883,19 @@ async def chat_stream_handler(request: ChatRequest):
                         has_code=bool(state_dict.get("code_answer")),
                         has_coop=bool(state_dict.get("coop_answer"))
                     )
-                # Skip route, verify, and correct nodes - they don't provide value to engineers
-                elif node_name in ["route", "verify", "correct"]:
-                    thinking_log = None  # Suppress these nodes
+                elif node_name == "verify":
+                    thinking_log = log_generator.generate_verify_log(
+                        query=request.message,
+                        needs_fix=state_dict.get("needs_fix", False),
+                        follow_up_count=len(state_dict.get("follow_up_questions", [])),
+                        suggestion_count=len(state_dict.get("follow_up_suggestions", []))
+                    )
+                elif node_name == "correct":
+                    thinking_log = log_generator.generate_correct_log(
+                        query=request.message,
+                        support_score=state_dict.get("answer_support_score", 1.0),
+                        corrective_attempted=state_dict.get("corrective_attempted", False)
+                    )
                 else:
                     # For any unexpected nodes, log them but don't show to user
                     logger.info(f"Skipping thinking log for node: {node_name}")

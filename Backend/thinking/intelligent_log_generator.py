@@ -290,6 +290,148 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             log_query.error(f"Error generating synthesis log: {e}")
             proj_str = f"{len(projects)} projects: {projects_list if len(projects) <= 5 else ', '.join(projects[:5]) + f' and {len(projects)-5} others'}" if projects else "multiple project sources"
             return f"INFORMATION COMPILATION\n\nCompiling technical information from {graded_count} engineering documents across {proj_str}. Extracting design details, calculations, specifications, and practical implementation examples to provide comprehensive response to query requirements."
+    
+    def generate_router_dispatcher_log(
+        self,
+        query: str,
+        selected_routers: list
+    ) -> str:
+        """
+        Generate log for router dispatcher node.
+        
+        Args:
+            query: User's original question
+            selected_routers: List of routers selected (e.g., ["rag", "web", "desktop"])
+        """
+        if not selected_routers:
+            return "ROUTER SELECTION\n\nAnalyzing query to determine appropriate data sources and tools."
+        
+        router_names = {
+            "rag": "document database",
+            "web": "web calculation tools",
+            "desktop": "desktop applications"
+        }
+        
+        router_descriptions = [router_names.get(r, r) for r in selected_routers]
+        
+        if len(router_descriptions) == 1:
+            return f"ROUTER SELECTION\n\nSelected {router_descriptions[0]} to process this query."
+        else:
+            router_list = ", ".join(router_descriptions[:-1]) + f", and {router_descriptions[-1]}"
+            return f"ROUTER SELECTION\n\nSelected multiple tools: {router_list} to process this query in parallel."
+    
+    def generate_rag_log(
+        self,
+        query: str,
+        query_plan: Optional[Dict] = None,
+        data_route: Optional[str] = None,
+        data_sources: Optional[Dict] = None
+    ) -> str:
+        """
+        Generate log for RAG wrapper node.
+        
+        Args:
+            query: User's original question
+            query_plan: Query plan from rag_plan
+            data_route: Data route (smart/large)
+            data_sources: Selected data sources
+        """
+        if query_plan:
+            steps = query_plan.get("steps", [])
+            if steps:
+                return f"QUERY PLANNING\n\nDecomposed query into {len(steps)} execution steps. Analyzing query structure and determining optimal search strategy."
+        
+        route_desc = "optimized search" if data_route == "smart" else "comprehensive search"
+        return f"QUERY PLANNING\n\nPreparing {route_desc} strategy based on query complexity and available data sources."
+    
+    def generate_verify_log(
+        self,
+        query: str,
+        needs_fix: bool = False,
+        follow_up_count: int = 0,
+        suggestion_count: int = 0
+    ) -> str:
+        """
+        Generate log for verification node.
+        
+        Args:
+            query: User's original question
+            needs_fix: Whether answer needs correction
+            follow_up_count: Number of follow-up questions generated
+            suggestion_count: Number of follow-up suggestions generated
+        """
+        if needs_fix:
+            return "QUALITY VERIFICATION\n\nAnswer quality check identified areas requiring improvement. Initiating corrective retrieval to enhance response accuracy."
+        
+        follow_up_text = ""
+        if follow_up_count > 0 or suggestion_count > 0:
+            parts = []
+            if follow_up_count > 0:
+                parts.append(f"{follow_up_count} follow-up question{'s' if follow_up_count != 1 else ''}")
+            if suggestion_count > 0:
+                parts.append(f"{suggestion_count} suggestion{'s' if suggestion_count != 1 else ''}")
+            follow_up_text = f" Generated {', '.join(parts)} to help explore related topics."
+        
+        return f"QUALITY VERIFICATION\n\nVerified answer quality and completeness against retrieved documents.{follow_up_text}"
+    
+    def generate_correct_log(
+        self,
+        query: str,
+        support_score: float = 1.0,
+        corrective_attempted: bool = False
+    ) -> str:
+        """
+        Generate log for correction node.
+        
+        Args:
+            query: User's original question
+            support_score: Answer support score (0.0-1.0)
+            corrective_attempted: Whether correction was attempted
+        """
+        if corrective_attempted:
+            score_pct = int(support_score * 100)
+            return f"ANSWER FINALIZATION\n\nFinalized answer with {score_pct}% support score based on document evidence. Answer is ready for delivery."
+        
+        return "ANSWER FINALIZATION\n\nFinalizing answer and preparing for delivery."
+    
+    def generate_image_embeddings_log(
+        self,
+        query: str,
+        image_count: int
+    ) -> str:
+        """
+        Generate log for image embedding generation.
+        
+        Args:
+            query: User's original question
+            image_count: Number of images being processed
+        """
+        if image_count == 1:
+            return "IMAGE PROCESSING\n\nGenerating embedding for uploaded image to enable similarity search."
+        else:
+            return f"IMAGE PROCESSING\n\nGenerating embeddings for {image_count} uploaded images to enable similarity search."
+    
+    def generate_image_similarity_log(
+        self,
+        query: str,
+        result_count: int,
+        project_count: int = 0
+    ) -> str:
+        """
+        Generate log for image similarity search.
+        
+        Args:
+            query: User's original question
+            result_count: Number of similar images found
+            project_count: Number of unique projects in results
+        """
+        if result_count == 0:
+            return "IMAGE SIMILARITY SEARCH\n\nNo similar images found in database. Proceeding with text-based search."
+        
+        if project_count > 0:
+            return f"IMAGE SIMILARITY SEARCH\n\nFound {result_count} similar image{'s' if result_count != 1 else ''} from {project_count} project{'s' if project_count != 1 else ''}. These will be included in the search results."
+        else:
+            return f"IMAGE SIMILARITY SEARCH\n\nFound {result_count} similar image{'s' if result_count != 1 else ''}. These will be included in the search results."
 
 
 # Singleton instance

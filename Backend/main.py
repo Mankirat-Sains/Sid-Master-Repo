@@ -74,7 +74,7 @@ def run_agentic_rag(
     # Process images if provided - Convert to searchable text via VLM
     image_context = ""
     if images_base64 and len(images_base64) > 0:
-        from nodes.image_nodes import describe_image_for_search
+        from nodes.DBRetrieval.image_nodes import describe_image_for_search
         log_vlm.info("")
         log_vlm.info("🔷" * 30)
         log_vlm.info(f"🖼️ PROCESSING {len(images_base64)} IMAGE(S) WITH VLM")

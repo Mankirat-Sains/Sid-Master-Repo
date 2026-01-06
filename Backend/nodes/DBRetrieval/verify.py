@@ -14,7 +14,7 @@ from config.llm_instances import llm_verify
 from prompts.verify_prompts import VERIFY_PROMPT, FOLLOW_UP_QUESTIONS_PROMPT
 from synthesis.synthesizer import synthesize
 
-USE_VERIFIER = True  # Enable verifier to generate follow-up questions
+USE_VERIFIER = False  # Enable verifier to generate follow-up questions
 
 PROJECT_RE = re.compile(r'\d{2}-\d{2}-\d{3,4}')
 

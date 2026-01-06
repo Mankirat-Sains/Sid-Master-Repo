@@ -9,21 +9,22 @@ from database import memory
 from nodes.plan import node_plan
 
 # RAG node - wrapper that runs rag_plan and rag_router in parallel
-from nodes.rag import node_rag
+from nodes.DBRetrieval.rag import node_rag
 
 # Optional: sub-nodes used internally by node_rag (imports harmless if unused here)
-from nodes.rag_plan import node_rag_plan  # noqa: F401
-from nodes.rag_router import node_rag_router  # noqa: F401
+from nodes.DBRetrieval.rag_plan import node_rag_plan  # noqa: F401
+from nodes.DBRetrieval.rag_router import node_rag_router  # noqa: F401
 
-from nodes.web_router import node_web_router
-from nodes.desktop_router import node_desktop_router
+from nodes.WebCalcs.web_router import node_web_router
+from nodes.DesktopAgent.desktop_router import node_desktop_router
 from nodes.router_dispatcher import node_router_dispatcher
 
-from nodes.retrieve import node_retrieve
-from nodes.grade import node_grade
-from nodes.answer import node_answer
-from nodes.verify import node_verify, _verify_route
-from nodes.correct import node_correct
+from nodes.DBRetrieval.retrieve import node_retrieve
+from nodes.DBRetrieval.grade import node_grade
+from nodes.DBRetrieval.answer import node_answer
+from nodes.DBRetrieval.verify import node_verify, _verify_route
+from nodes.DBRetrieval.correct import node_correct
+from nodes.DBRetrieval.image_nodes import node_generate_image_embeddings, node_image_similarity_search
 
 
 def _router_route(state: RAGState) -> str:
@@ -63,6 +64,10 @@ def build_graph():
     g.add_node("desktop_router", node_desktop_router)
     g.add_node("router_dispatcher", node_router_dispatcher)
 
+    # Image processing nodes
+    g.add_node("generate_image_embeddings", node_generate_image_embeddings)
+    g.add_node("image_similarity_search", node_image_similarity_search)
+    
     g.add_node("retrieve", node_retrieve)
     g.add_node("grade", node_grade)
     g.add_node("answer", node_answer)
@@ -82,18 +87,62 @@ def build_graph():
         },
     )
 
-    # Router dispatcher routes to retrieve (after running selected routers)
-    g.add_edge("router_dispatcher", "retrieve")
-
-    # RAG routes to retrieve or END (clarification)
+    # Router dispatcher routes to image processing or retrieve
+    def _router_dispatcher_to_image_or_retrieve(state) -> str:
+        """Check if we need image processing after router dispatcher"""
+        if isinstance(state, dict):
+            images_base64 = state.get("images_base64")
+            use_image_similarity = state.get("use_image_similarity", False)
+        else:
+            images_base64 = getattr(state, "images_base64", None)
+            use_image_similarity = getattr(state, "use_image_similarity", False)
+        
+        if images_base64 and use_image_similarity:
+            return "generate_image_embeddings"
+        return "retrieve"
+    
     g.add_conditional_edges(
-        "rag",
-        _rag_condition,
+        "router_dispatcher",
+        _router_dispatcher_to_image_or_retrieve,
         {
-            "clarification": END,
+            "generate_image_embeddings": "generate_image_embeddings",
             "retrieve": "retrieve",
         },
     )
+
+    # RAG routes to image processing or retrieve (clarification)
+    def _rag_to_image_or_retrieve(state) -> str:
+        """Check if we need image processing before retrieval"""
+        if isinstance(state, dict):
+            needs_clarification = state.get("needs_clarification", False)
+            images_base64 = state.get("images_base64")
+            use_image_similarity = state.get("use_image_similarity", False)
+        else:
+            needs_clarification = getattr(state, "needs_clarification", False)
+            images_base64 = getattr(state, "images_base64", None)
+            use_image_similarity = getattr(state, "use_image_similarity", False)
+        
+        if needs_clarification:
+            return "clarification"
+        if images_base64 and use_image_similarity:
+            return "generate_image_embeddings"
+        return "retrieve"
+    
+    g.add_conditional_edges(
+        "rag",
+        _rag_to_image_or_retrieve,
+        {
+            "clarification": END,
+            "generate_image_embeddings": "generate_image_embeddings",
+            "retrieve": "retrieve",
+        },
+    )
+    
+    # Image embedding generation always goes to image similarity search
+    g.add_edge("generate_image_embeddings", "image_similarity_search")
+    
+    # Image similarity search feeds into retrieve (to merge results)
+    g.add_edge("image_similarity_search", "retrieve")
 
     # Continue with existing flow
     g.add_edge("retrieve", "grade")
