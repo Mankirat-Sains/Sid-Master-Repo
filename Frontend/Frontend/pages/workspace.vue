@@ -22,7 +22,7 @@
 
     <div class="flex flex-1 overflow-hidden min-w-0 min-h-0 workspace-shell">
       <!-- Icon rail -->
-      <aside class="w-12 bg-[#0b0b0b] border-r border-white/10 flex flex-col items-center py-2 space-y-1.5 overflow-visible">
+      <aside class="w-12 bg-white/5 backdrop-blur-lg border-r border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex flex-col items-center py-2 space-y-1.5 overflow-visible relative z-30">
         <template v-for="icon in railIcons" :key="icon.id">
           <div
             v-if="icon.id === 'timesheet'"
@@ -82,13 +82,12 @@
             </div>
           </div>
         </template>
-        <div class="mt-auto h-9 w-9 rounded border border-white/10 bg-white/5"></div>
       </aside>
 
       <!-- Conversation list -->
       <aside
         v-if="activePage === 'home'"
-        class="w-56 bg-[#0d0d0d] border-r border-white/10 flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll"
+        class="w-56 bg-white/8 backdrop-blur-2xl border-r border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)] flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll"
         style="height: calc(100vh - 36px); max-height: calc(100vh - 36px);"
       >
         <div class="px-2.5 py-2 border-b border-white/10">
@@ -295,45 +294,89 @@
                       <div
                         v-for="(entry, idx) in activeChatLog"
                         :key="idx"
-                        class="flex gap-4"
+                        class="flex gap-4 group"
                         :class="entry.role === 'user' ? 'justify-end' : 'justify-start'"
                       >
                         <div
-                          v-if="entry.role === 'assistant'"
-                          class="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-fuchsia-600 flex items-center justify-center text-[12px] font-semibold flex-shrink-0"
+                          class="flex flex-col max-w-[520px]"
+                          :class="entry.role === 'user' ? 'items-end' : 'items-start'"
                         >
-                          S
-                        </div>
-                        <div
-                          class="max-w-[520px] rounded-2xl px-3.5 py-3 leading-relaxed shadow-lg"
-                          :class="entry.role === 'user'
-                            ? 'bg-[#2a2a2a] border border-white/10'
-                            : 'bg-transparent'
-                          "
-                        >
-                          <p class="text-[9px] uppercase tracking-[0.12em] text-white/40 mb-1">
-                            {{ entry.role === 'user' ? 'You' : 'Sid' }}
-                          </p>
-                          <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="entry.content"></div>
-                          <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
                           <div
-                            v-if="entry.attachments?.length"
-                            class="flex flex-wrap gap-2 mt-3"
+                            class="w-auto inline-flex rounded-2xl px-3.5 py-3 leading-relaxed shadow-lg max-w-full"
+                            :class="entry.role === 'user'
+                              ? 'bg-[#2a2a2a] border border-white/10'
+                              : 'bg-transparent'
+                            "
                           >
-                            <span
-                              v-for="file in entry.attachments"
-                              :key="file"
-                              class="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[12px] text-white/80"
+                            <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="entry.content"></div>
+                            <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
+                            <div
+                              v-if="entry.attachments?.length"
+                              class="flex flex-wrap gap-2 mt-3"
                             >
-                              {{ file }}
-                            </span>
+                              <span
+                                v-for="file in entry.attachments"
+                                :key="file"
+                                class="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[12px] text-white/80"
+                              >
+                                {{ file }}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div
-                          v-if="entry.role === 'user'"
-                          class="h-9 w-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-[11px] font-semibold flex-shrink-0"
-                        >
-                          You
+                          <div
+                            class="flex items-center gap-3 text-[11px] text-white/50 mt-1 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto"
+                            :class="entry.role === 'user' ? 'self-end' : 'self-start pl-1'"
+                          >
+                            <span>{{ formatEntryTime(entry) }}</span>
+                            <template v-if="entry.role === 'user'">
+                              <button class="hover:text-white transition" @click="resendEntry(entry)" title="Resend">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                  <path d="M4 4v6h6" stroke-linecap="round" stroke-linejoin="round" />
+                                  <path d="M20 20v-6h-6" stroke-linecap="round" stroke-linejoin="round" />
+                                  <path d="M20 9a8 8 0 00-14.14-5.14L4 10" stroke-linecap="round" stroke-linejoin="round" />
+                                  <path d="M4 15a8 8 0 0014.14 5.14L20 14" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                              </button>
+                              <button class="hover:text-white transition" @click="editEntry(entry)" title="Edit">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                  <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
+                                  <path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4 12.5-12.5z" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                              </button>
+                              <button class="hover:text-white transition" @click="copyEntry(entry)" title="Copy">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                              </button>
+                            </template>
+                            <template v-else>
+                              <button class="hover:text-white transition" @click="copyEntry(entry)" title="Copy">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                  <rect x="9" y="9" width="11" height="11" rx="2" ry="2" />
+                                  <rect x="4" y="4" width="11" height="11" rx="2" ry="2" />
+                                </svg>
+                              </button>
+                              <button class="hover:text-white transition" :class="entry.liked ? 'text-white' : ''" @click="toggleLike(entry)" title="Like">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                  <path d="M14 9V5a3 3 0 00-3-3l-3 6H5a2 2 0 00-2 2v7a2 2 0 002 2h7.5a2 2 0 001.94-1.52l1.1-4.4A2 2 0 0013.6 11H10" stroke-linecap="round" stroke-linejoin="round" />
+                                  <path d="M7 12v8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                              </button>
+                              <button class="hover:text-white transition" :class="entry.disliked ? 'text-white' : ''" @click="toggleDislike(entry)" title="Dislike">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                  <path d="M14 15v4a3 3 0 01-3 3l-3-6H5a2 2 0 01-2-2V7a2 2 0 012-2h7.5a2 2 0 011.94 1.52l1.1 4.4A2 2 0 0113.6 13H10" stroke-linecap="round" stroke-linejoin="round" />
+                                  <path d="M7 12V4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                              </button>
+                              <button class="hover:text-white transition" @click="retryAssistant(idx)" title="Retry">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                  <path d="M4 4v5h5" stroke-linecap="round" stroke-linejoin="round" />
+                                  <path d="M4 9a7 7 0 107-7" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                              </button>
+                            </template>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -528,6 +571,102 @@
         </div>
       </div>
     </div>
+
+    <!-- Document list (restored Speckle list) -->
+    <DocumentListPanel
+      :is-open="docListOpen"
+      :documents="docListDocs"
+      :title="docListTitle"
+      :subtitle="docListSubtitle"
+      :loading="speckleViewerFetchLoading"
+      @close="docListOpen = false"
+      @open="docListOpen = true"
+      @select-document="handleDocumentSelect"
+    />
+
+    <!-- Speckle Viewer Modal -->
+    <div
+      v-if="speckleViewerModalOpen"
+      class="fixed inset-0 z-50 flex items-center justify-center px-4"
+    >
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeSpeckleModal"></div>
+      <div class="relative w-full max-w-6xl max-h-[90vh] bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-3 border-b border-slate-700 bg-slate-800/70 backdrop-blur-sm">
+          <div>
+            <p class="text-sm text-slate-300">Speckle 3D Viewer</p>
+            <p class="text-lg font-semibold text-white">
+              {{ selectedSpeckleModel?.name || 'Model' }}
+              <span v-if="selectedSpeckleModel?.projectName" class="text-sm text-slate-400 font-normal">
+                — {{ selectedSpeckleModel.projectName }}
+              </span>
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div v-if="speckleViewerModels.length > 1" class="flex items-center gap-2">
+              <label class="text-xs text-slate-300 uppercase tracking-wide">Model</label>
+              <select
+                v-model="speckleViewerSelectedId"
+                class="bg-slate-700 text-white text-sm rounded-lg px-3 py-1.5 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option
+                  v-for="model in speckleViewerModels"
+                  :key="model.id"
+                  :value="model.id"
+                >
+                  {{ model.name }}{{ model.projectName ? ` • ${model.projectName}` : '' }}
+                </option>
+              </select>
+            </div>
+            <button
+              @click="closeSpeckleModal"
+              class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition-colors flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Close
+            </button>
+          </div>
+        </div>
+
+        <div class="relative bg-slate-900" style="height: calc(90vh - 120px); min-height: 360px;">
+          <div
+            v-if="speckleViewerFetchLoading && !selectedSpeckleModel"
+            class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+          >
+            <div class="text-center space-y-2">
+              <div class="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+              <p class="text-slate-200 text-sm">Loading models…</p>
+            </div>
+          </div>
+          <div
+            v-else-if="speckleViewerFetchError && !selectedSpeckleModel"
+            class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+          >
+            <div class="text-center space-y-2">
+              <p class="text-slate-200 text-sm">{{ speckleViewerFetchError }}</p>
+              <button
+                class="px-3 py-1.5 rounded-lg bg-slate-700 text-white text-sm hover:bg-slate-600 transition-colors"
+                @click="closeSpeckleModal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+
+          <SpeckleViewer
+            v-if="selectedSpeckleModel"
+            :model-url="selectedSpeckleModel.url"
+            :model-name="selectedSpeckleModel.name"
+            :visible="true"
+            height="100%"
+            :server-url="config.public.speckleUrl"
+            :token="config.public.speckleToken"
+            @close="closeSpeckleModal"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -547,14 +686,22 @@ import TimesheetView from '~/components/views/TimesheetView.vue'
 import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
+import SpeckleViewer from '~/components/SpeckleViewer.vue'
+import DocumentListPanel from '~/components/DocumentListPanel.vue'
 import { useChat } from '~/composables/useChat'
 import { useSmartChat } from '~/composables/useSmartChat'
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
+import { useSpeckle } from '~/composables/useSpeckle'
+import { useWorkspace } from '~/composables/useWorkspace'
+import { useRuntimeConfig } from '#app'
 
 type ChatEntry = {
   role: 'user' | 'assistant'
   content: string
   attachments?: string[]
+  timestamp?: number
+  liked?: boolean
+  disliked?: boolean
 }
 
 type Conversation = {
@@ -565,9 +712,18 @@ type Conversation = {
   section: string
   sessionId: string
   chatLog: ChatEntry[]
+  autoTitleGenerated?: boolean
+  userRenamed?: boolean
 }
 
+const PAGE_IDS = ['home', 'settings', 'work', 'timesheet', 'todo', 'discussion'] as const
+type ActivePage = (typeof PAGE_IDS)[number]
+const TIMESHEET_SECTIONS = ['employees', 'projects', 'projectInsights', 'employeeInsights', 'nonDigital', 'settings'] as const
+type TimesheetSection = (typeof TIMESHEET_SECTIONS)[number]
+
 const STORAGE_KEY = 'workspace-memory-v1'
+const GENERIC_TITLE_PREFIX = 'New Agent'
+const AUTO_TITLE_MAX_LENGTH = 50
 
 const WorkIcon = defineComponent({
   name: 'WorkGlyph',
@@ -602,7 +758,7 @@ const railIcons = [
 
 const availableModels = ['gpt-4o-120b', 'gpt-4o-mini']
 const selectedModel = ref(availableModels[0])
-const activePage = ref<'home' | 'settings' | 'work' | 'timesheet' | 'todo' | 'discussion'>('home')
+const activePage = ref<ActivePage>('home')
 const activeRail = computed(() => {
   return railIcons.some(icon => icon.id === activePage.value) ? activePage.value : 'home'
 })
@@ -614,7 +770,9 @@ const greetingTime = computed(() => {
   return 'Evening'
 })
 const greetingMessage = computed(() => `${greetingTime.value}, ${userName}`)
-const timesheetSection = ref<'employees' | 'projects' | 'projectInsights' | 'employeeInsights' | 'nonDigital' | 'settings'>('employees')
+const route = useRoute()
+const router = useRouter()
+const timesheetSection = ref<TimesheetSection>('employees')
 const timesheetMenuOpen = ref(false)
 let timesheetMenuTimer: ReturnType<typeof setTimeout> | null = null
 const hoveredSimpleMenu = ref<string | null>(null)
@@ -629,7 +787,7 @@ const timesheetMenuItems = [
   { id: 'employeeInsights', label: 'Employee Insights', icon: '📊' },
   { id: 'nonDigital', label: 'Daily Tasks', icon: '📝' },
   { id: 'settings', label: 'Settings', icon: '⚙️' }
-] as const
+] as const satisfies { id: TimesheetSection; label: string; icon: string }[]
 const search = ref('')
 const prompt = ref('')
 const promptInput = ref<HTMLTextAreaElement | null>(null)
@@ -640,8 +798,11 @@ const attachments = ref<{ name: string; base64: string }[]>([])
 const fileInput = ref<HTMLInputElement | null>(null)
 const contextMenuRef = ref<HTMLElement | null>(null)
 const { formatMessageText } = useMessageFormatter()
-const { sendChatMessageStream } = useChat()
+const { sendChatMessage, sendChatMessageStream } = useChat()
 const { sendSmartMessage } = useSmartChat()
+const { findProjectByKey, getProjectModels } = useSpeckle()
+const workspace = useWorkspace()
+const config = useRuntimeConfig()
 type DataSources = { project_db: boolean; code_db: boolean; coop_manual: boolean }
 const dataSources = ref<DataSources>({
   project_db: true,
@@ -661,6 +822,20 @@ const deleteDialog = ref<{ open: boolean; convId: string | null }>({
   open: false,
   convId: null
 })
+const titleGenerationInFlight = new Set<string>()
+
+// Speckle document list + modal state (restores SmartChatPanel behavior)
+const docListOpen = ref(true)
+const docListDocs = ref<any[]>([])
+const docListTitle = ref('')
+const docListSubtitle = ref('')
+
+const speckleViewerModels = ref<Array<{ id: string; url: string; name: string; projectName?: string }>>([])
+const speckleViewerSelectedId = ref('')
+const speckleViewerModalOpen = ref(false)
+const speckleViewerFetchLoading = ref(false)
+const speckleViewerFetchError = ref('')
+const selectedSpeckleModel = computed(() => speckleViewerModels.value.find(model => model.id === speckleViewerSelectedId.value) || null)
 
 const defaultConversations: Conversation[] = [
   { id: 'conv-1', title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago', section: 'Today', sessionId: 'session-1', chatLog: [] },
@@ -718,6 +893,66 @@ function scrollToBottom(smooth = false) {
   })
 }
 
+function formatEntryTime(entry: ChatEntry) {
+  if (!entry.timestamp) return ''
+  return new Date(entry.timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+}
+
+function getPlainTextContent(html: string) {
+  if (typeof document === 'undefined') return html
+  const container = document.createElement('div')
+  container.innerHTML = html.replace(/<br\s*\/?>/gi, '\n')
+  const text = container.innerText || container.textContent || html
+  return text.replace(/\n{3,}/g, '\n\n').trim()
+}
+
+function copyEntry(entry: ChatEntry) {
+  const textToCopy = getPlainTextContent(entry.content)
+  if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) return
+  navigator.clipboard.writeText(textToCopy).catch(err => console.warn('Copy failed', err))
+}
+
+function editEntry(entry: ChatEntry) {
+  prompt.value = entry.content
+  nextTick(() => promptInput.value?.focus())
+}
+
+function resendEntry(entry: ChatEntry) {
+  prompt.value = entry.content
+  attachments.value = []
+  handleSend()
+}
+
+function retryAssistant(index: number) {
+  const conversation = activeConversation.value
+  if (!conversation) return
+  const entry = conversation.chatLog[index]
+  if (!entry || entry.role !== 'assistant') return
+
+  // Find the most recent user message before this assistant reply
+  const priorUser = [...conversation.chatLog]
+    .slice(0, index)
+    .reverse()
+    .find(e => e.role === 'user')
+
+  // Remove the assistant reply we're retrying
+  conversation.chatLog.splice(index, 1)
+
+  if (priorUser) {
+    regenerateAssistant(priorUser.content, conversation.sessionId)
+  }
+}
+
+function toggleLike(entry: ChatEntry) {
+  if (entry.disliked) entry.disliked = false
+  entry.liked = !entry.liked
+}
+
+function toggleDislike(entry: ChatEntry) {
+  if (entry.liked) entry.liked = false
+  entry.disliked = !entry.disliked
+}
+
 function handleChatScroll() {
   const el = chatContainer.value
   if (!el) return
@@ -733,7 +968,9 @@ function saveMemory() {
       activeConversationId: activeConversationId.value,
       tags: tags.value,
       selectedModel: selectedModel.value,
-      dataSources: dataSources.value
+      dataSources: dataSources.value,
+      activePage: activePage.value,
+      timesheetSection: timesheetSection.value
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   } catch (error) {
@@ -766,6 +1003,12 @@ function loadMemory() {
         coop_manual: parsed.dataSources.coop_manual ?? true
       }
     }
+    if (isActivePage(parsed.activePage)) {
+      activePage.value = parsed.activePage
+    }
+    if (isTimesheetSection(parsed.timesheetSection)) {
+      timesheetSection.value = parsed.timesheetSection
+    }
     const hasActive = conversations.value.some(conv => conv.id === activeConversationId.value)
     if (!hasActive) {
       activeConversationId.value = conversations.value[0]?.id || ''
@@ -795,6 +1038,7 @@ watch(activeConversationId, () => {
 
 onMounted(() => {
   loadMemory()
+  hydrateFromRoute()
   chatContainer.value?.addEventListener('scroll', handleChatScroll)
   handleChatScroll()
   document.addEventListener('click', handleGlobalClick)
@@ -802,7 +1046,7 @@ onMounted(() => {
 })
 
 watch(
-  [conversations, activeConversationId, tags, selectedModel],
+  [conversations, activeConversationId, tags, selectedModel, dataSources, activePage, timesheetSection],
   () => saveMemory(),
   { deep: true }
 )
@@ -811,13 +1055,63 @@ watch(prompt, () => {
   nextTick(resizePrompt)
 })
 
+watch(
+  () => docListDocs.value.length,
+  newLen => {
+    if (newLen > 0) docListOpen.value = true
+  }
+)
+
+watch(
+  () => [route.query.page, route.query.section],
+  () => hydrateFromRoute()
+)
+
 onBeforeUnmount(() => {
   chatContainer.value?.removeEventListener('scroll', handleChatScroll)
   document.removeEventListener('click', handleGlobalClick)
 })
 
-function setActivePage(id: string) {
-  activePage.value = id as typeof activePage.value
+function normalizeQueryParam(value: unknown) {
+  if (Array.isArray(value)) return value[0] ?? null
+  return typeof value === 'string' ? value : null
+}
+
+function isActivePage(value: unknown): value is ActivePage {
+  return typeof value === 'string' && PAGE_IDS.includes(value as ActivePage)
+}
+
+function isTimesheetSection(value: unknown): value is TimesheetSection {
+  return typeof value === 'string' && TIMESHEET_SECTIONS.includes(value as TimesheetSection)
+}
+
+function syncRouteToPage(page: ActivePage, section?: TimesheetSection) {
+  const nextQuery = { ...route.query }
+  if (page === 'home') {
+    delete nextQuery.page
+  } else {
+    nextQuery.page = page
+  }
+  if (page === 'timesheet') {
+    nextQuery.section = section || timesheetSection.value
+  } else {
+    delete nextQuery.section
+  }
+  router.replace({ query: nextQuery })
+}
+
+function setActivePage(id: string, options?: { section?: TimesheetSection; fromRoute?: boolean }) {
+  const nextPage: ActivePage = isActivePage(id) ? id : 'home'
+  activePage.value = nextPage
+  timesheetMenuOpen.value = false
+
+  if (nextPage === 'timesheet' && options?.section) {
+    timesheetSection.value = options.section
+  }
+
+  if (!options?.fromRoute) {
+    syncRouteToPage(nextPage, options?.section)
+  }
 }
 
 function setActiveRail(id: string) {
@@ -836,10 +1130,24 @@ function closeTimesheetMenu() {
   }, 120)
 }
 
-function handleTimesheetNav(section: typeof timesheetSection.value) {
+function handleTimesheetNav(section: TimesheetSection) {
   timesheetSection.value = section
-  activePage.value = 'timesheet'
+  setActivePage('timesheet', { section })
   timesheetMenuOpen.value = false
+}
+
+function hydrateFromRoute() {
+  const pageFromRoute = normalizeQueryParam(route.query.page)
+  if (!pageFromRoute || !isActivePage(pageFromRoute)) return
+
+  const sectionFromRoute =
+    pageFromRoute === 'timesheet' ? normalizeQueryParam(route.query.section) : null
+  const resolvedSection =
+    pageFromRoute === 'timesheet' && sectionFromRoute && isTimesheetSection(sectionFromRoute)
+      ? sectionFromRoute
+      : undefined
+
+  setActivePage(pageFromRoute, { section: resolvedSection, fromRoute: true })
 }
 
 function showSimpleMenu(id: string) {
@@ -888,6 +1196,8 @@ function confirmRename(convId: string) {
   convo.title = newTitle
   convo.short = shortenTitle(newTitle)
   convo.time = 'Just now'
+  convo.userRenamed = true
+  convo.autoTitleGenerated = true
   touchConversation(convo.id)
   cancelRename()
 }
@@ -900,7 +1210,7 @@ function cycleModel() {
 
 function startNewConversation() {
   const newId = `conv-${Date.now()}`
-  const title = `New Agent ${conversations.value.length + 1}`
+  const title = `${GENERIC_TITLE_PREFIX} ${conversations.value.length + 1}`
   const newConversation: Conversation = {
     id: newId,
     title,
@@ -908,11 +1218,13 @@ function startNewConversation() {
     time: 'Just now',
     section: 'Today',
     sessionId: newId,
-    chatLog: []
+    chatLog: [],
+    autoTitleGenerated: false,
+    userRenamed: false
   }
   conversations.value = [newConversation, ...conversations.value]
   activeConversationId.value = newId
-  activePage.value = 'home'
+  setActivePage('home')
   prompt.value = ''
   attachments.value = []
 }
@@ -920,7 +1232,7 @@ function startNewConversation() {
 function selectConversation(id: string) {
   if (activeConversationId.value === id) return
   activeConversationId.value = id
-  activePage.value = 'home'
+  setActivePage('home')
   prompt.value = ''
   closeContextMenu()
 }
@@ -939,6 +1251,109 @@ function openFilePicker() {
 
 function shortenTitle(title: string) {
   return title.length > 26 ? `${title.slice(0, 23)}...` : title
+}
+
+function isGenericTitle(title: string) {
+  if (!title) return true
+  const normalized = title.trim().toLowerCase()
+  const generic = GENERIC_TITLE_PREFIX.toLowerCase()
+  return normalized === generic || normalized.startsWith(`${generic} `) || normalized === 'untitled'
+}
+
+function normalizeTitleSource(text: string) {
+  return text.replace(/\s+/g, ' ').trim()
+}
+
+function isMeaningfulTitleSource(text: string) {
+  const cleaned = normalizeTitleSource(text)
+  if (!cleaned) return false
+  const words = cleaned.split(' ')
+  return cleaned.length >= 8 || words.length >= 3
+}
+
+function truncateForPrompt(text: string, limit = 320) {
+  if (!text) return ''
+  const trimmed = normalizeTitleSource(text)
+  return trimmed.length > limit ? `${trimmed.slice(0, limit)}...` : trimmed
+}
+
+function buildTitlePrompt(question: string, answer?: string) {
+  const parts = [
+    'Generate a concise conversation title (3-7 words, max 50 characters).',
+    'Prefer key project numbers if they exist. Respond with the title only.',
+    `Question: ${truncateForPrompt(question)}`
+  ]
+
+  if (answer) {
+    parts.push(`Assistant: ${truncateForPrompt(answer)}`)
+  }
+
+  return parts.join('\n')
+}
+
+function sanitizeGeneratedTitle(raw: string) {
+  if (!raw) return ''
+  const firstLine = raw.split(/\r?\n/)[0]
+  const cleaned = firstLine
+    .replace(/^["'\s]+|["'\s]+$/g, '')
+    .replace(/^title[:\-]?\s*/i, '')
+    .trim()
+
+  if (!cleaned) return ''
+  return cleaned.length > AUTO_TITLE_MAX_LENGTH
+    ? cleaned.slice(0, AUTO_TITLE_MAX_LENGTH).trim()
+    : cleaned
+}
+
+function getFirstUserMessageText(conversation: Conversation) {
+  const firstUser = conversation.chatLog.find(entry => entry.role === 'user')
+  return normalizeTitleSource(firstUser?.content || '')
+}
+
+function pickTitleQuestion(conversation: Conversation, latestUserMessage: string) {
+  const firstUserQuestion = getFirstUserMessageText(conversation)
+  if (isMeaningfulTitleSource(firstUserQuestion)) return firstUserQuestion
+
+  const latest = normalizeTitleSource(latestUserMessage)
+  if (isMeaningfulTitleSource(latest)) return latest
+
+  return ''
+}
+
+async function maybeGenerateTitle(conversation: Conversation | null, latestUserMessage: string, assistantReply?: string) {
+  if (!conversation) return
+  if (conversation.userRenamed) return
+  if (conversation.autoTitleGenerated) return
+  if (!isGenericTitle(conversation.title)) return
+  if (!conversation.chatLog.some(entry => entry.role === 'user')) return
+
+  const titleQuestion = pickTitleQuestion(conversation, latestUserMessage)
+  if (!titleQuestion) return
+
+  if (titleGenerationInFlight.has(conversation.id)) return
+  titleGenerationInFlight.add(conversation.id)
+
+  try {
+    const prompt = buildTitlePrompt(titleQuestion, assistantReply)
+    const response = await sendChatMessage(
+      prompt,
+      `${conversation.sessionId}-title`,
+      undefined,
+      { project_db: false, code_db: false, coop_manual: false }
+    )
+    const generated = sanitizeGeneratedTitle(response.reply || response.message || '')
+    if (!generated) return
+
+    conversation.title = generated
+    conversation.short = shortenTitle(generated)
+    conversation.autoTitleGenerated = true
+    conversation.time = 'Just now'
+    touchConversation(conversation.id)
+  } catch (error) {
+    console.warn('Auto-title generation failed', error)
+  } finally {
+    titleGenerationInFlight.delete(conversation.id)
+  }
 }
 
 function convertFileToBase64(file: File): Promise<{ name: string; base64: string }> {
@@ -978,6 +1393,130 @@ function toggleDataSource(key: keyof DataSources) {
   dataSources.value[key] = !dataSources.value[key]
 }
 
+// Recreate SmartChatPanel's document list + Speckle modal wiring
+function openDocumentsList(documents: any[], title?: string, subtitle?: string) {
+  docListDocs.value = documents
+  docListTitle.value = title || 'Documents'
+  docListSubtitle.value = subtitle || ''
+  docListOpen.value = true
+}
+
+function handleDocumentSelect(doc: any) {
+  const models = docListDocs.value
+    .filter(d => d.url)
+    .map(d => ({
+      id: d.id,
+      url: d.url,
+      name: d.name || d.title || 'Model',
+      projectName: d.metadata?.projectName
+    }))
+
+  if (models.length) {
+    // Ensure models are available for the modal
+    speckleViewerModels.value = models
+    speckleViewerSelectedId.value = doc.id || models[0].id
+    speckleViewerModalOpen.value = true
+  }
+
+  // Also open in the shared workspace viewer area
+  if (doc.url) {
+    workspace.openModel(doc.url, doc.name || doc.title)
+  }
+}
+
+function closeSpeckleModal() {
+  speckleViewerModalOpen.value = false
+}
+
+function openSpeckleModalWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
+  if (!models.length) return
+  speckleViewerModels.value = models
+  speckleViewerSelectedId.value = models[0].id
+  speckleViewerModalOpen.value = true
+}
+
+async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: string) {
+  speckleViewerFetchLoading.value = true
+  speckleViewerFetchError.value = ''
+
+  const projectKeys = new Set<string>()
+  const collect = (text?: string) => {
+    if (!text) return
+    const regex = /\b(\d{2}-\d{2}-\d{3})\b/g
+    let match
+    while ((match = regex.exec(text)) !== null) {
+      projectKeys.add(match[1])
+    }
+  }
+
+  collect(answerText)
+  collect(fallbackText)
+
+  if (projectKeys.size === 0) {
+    speckleViewerFetchLoading.value = false
+    return
+  }
+
+  const modelDocuments: any[] = []
+
+  for (const projectKey of Array.from(projectKeys)) {
+    try {
+      const project = await findProjectByKey(projectKey)
+      if (!project) {
+        console.log(`No Speckle project found for key: ${projectKey}`)
+        continue
+      }
+
+      const models = await getProjectModels(project.id)
+      if (models.length === 0) {
+        console.log(`No models found for project ${project.name} (${projectKey})`)
+        continue
+      }
+
+      for (const model of models) {
+        const modelUrl = `${config.public.speckleUrl}/projects/${project.id}/models/${model.id}`
+        modelDocuments.push({
+          id: `speckle-${project.id}-${model.id}`,
+          title: model.name,
+          name: model.name,
+          description: `${project.name} - ${model.name}`,
+          url: modelUrl,
+          metadata: {
+            projectId: project.id,
+            modelId: model.id,
+            projectKey,
+            projectName: project.name
+          }
+        })
+      }
+    } catch (error) {
+      console.error(`Error fetching models for project ${projectKey}:`, error)
+      speckleViewerFetchError.value = 'Unable to load 3D models right now.'
+    }
+  }
+
+  if (modelDocuments.length > 0) {
+    openDocumentsList(
+      modelDocuments,
+      '3D Models',
+      'Click on a model to view it in the viewer'
+    )
+    const modalModels = modelDocuments.map(doc => ({
+      id: doc.id,
+      url: doc.url,
+      name: doc.name,
+      projectName: doc.metadata?.projectName as string | undefined
+    }))
+    openSpeckleModalWithModels(modalModels)
+  } else {
+    speckleViewerModels.value = []
+    speckleViewerSelectedId.value = ''
+    speckleViewerModalOpen.value = false
+  }
+
+  speckleViewerFetchLoading.value = false
+}
+
 function resizePrompt() {
   const el = promptInput.value
   if (!el) return
@@ -1012,7 +1551,8 @@ async function handleSend() {
   conversation.chatLog.push({
     role: 'user',
     content: message,
-    attachments: attachmentNames.length ? attachmentNames : undefined
+    attachments: attachmentNames.length ? attachmentNames : undefined,
+    timestamp: Date.now()
   })
 
   prompt.value = ''
@@ -1046,10 +1586,12 @@ async function handleSend() {
             timestamp: new Date()
           })
         },
-        onComplete: result => {
+        onComplete: async result => {
           const finalAnswer = result.reply || result.message || 'No response generated.'
-          conversation.chatLog.push({ role: 'assistant', content: formatMessageText(finalAnswer) })
+          conversation.chatLog.push({ role: 'assistant', content: formatMessageText(finalAnswer), timestamp: Date.now() })
           gotResponse = true
+          void maybeGenerateTitle(conversation, message, finalAnswer)
+          await fetchAndDisplaySpeckleModels(finalAnswer, message)
           scrollToBottom(true)
         },
         onError: error => {
@@ -1064,12 +1606,92 @@ async function handleSend() {
 
     if (!gotResponse) {
       const fallback = smartResp?.message || smartResp?.reply || 'No response generated.'
-      conversation.chatLog.push({ role: 'assistant', content: formatMessageText(fallback) })
+      conversation.chatLog.push({ role: 'assistant', content: formatMessageText(fallback), timestamp: Date.now() })
+      void maybeGenerateTitle(conversation, message, fallback)
+      await fetchAndDisplaySpeckleModels(fallback, message)
       scrollToBottom(true)
     }
   } catch (error: any) {
     console.error('Send failed', error)
     conversation.chatLog.push({ role: 'assistant', content: 'Sorry, something went wrong sending that message.' })
+  } finally {
+    isSending.value = false
+    scrollToBottom()
+  }
+}
+
+async function regenerateAssistant(message: string, sessionId: string) {
+  if (isSending.value) return
+  isSending.value = true
+  let smartResp: any = null
+  try {
+    smartResp = await sendSmartMessage(message, {
+      sessionId,
+      dataSources: dataSources.value,
+      images_base64: undefined
+    })
+
+    let gotResponse = false
+    let streamError: Error | null = null
+
+    await sendChatMessageStream(
+      message,
+      sessionId,
+      undefined,
+      dataSources.value,
+      {
+        onLog: log => {
+          agentLogs.value.unshift({
+            id: `log-${Date.now()}`,
+            thinking: log.message,
+            timestamp: new Date()
+          })
+        },
+        onComplete: async result => {
+          const finalAnswer = result.reply || result.message || 'No response generated.'
+          const conversation = activeConversation.value
+          if (conversation) {
+            conversation.chatLog.push({
+              role: 'assistant',
+              content: formatMessageText(finalAnswer),
+              timestamp: Date.now()
+            })
+            void maybeGenerateTitle(conversation, message, finalAnswer)
+          }
+          gotResponse = true
+          await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          scrollToBottom(true)
+        },
+        onError: error => {
+          streamError = error
+        }
+      }
+    )
+
+    if (streamError) {
+      throw streamError
+    }
+
+    if (!gotResponse) {
+      const conversation = activeConversation.value
+      const fallback = smartResp?.message || smartResp?.reply || 'No response generated.'
+      if (conversation) {
+        conversation.chatLog.push({
+          role: 'assistant',
+          content: formatMessageText(fallback),
+          timestamp: Date.now()
+        })
+        void maybeGenerateTitle(conversation, message, fallback)
+      }
+      await fetchAndDisplaySpeckleModels(fallback, message)
+      scrollToBottom(true)
+    }
+  } catch (error: any) {
+    console.error('Regenerate failed', error)
+    const conversation = activeConversation.value
+    if (conversation) {
+      conversation.chatLog.push({ role: 'assistant', content: 'Sorry, something went wrong regenerating that response.' })
+    }
   } finally {
     isSending.value = false
     scrollToBottom()
