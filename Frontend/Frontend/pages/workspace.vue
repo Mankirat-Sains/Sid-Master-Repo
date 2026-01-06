@@ -22,23 +22,72 @@
 
     <div class="flex flex-1 overflow-hidden min-w-0 min-h-0 workspace-shell">
       <!-- Icon rail -->
-      <aside class="w-12 bg-[#0b0b0b] border-r border-white/10 flex flex-col items-center py-2 space-y-1.5">
-        <button
-          v-for="icon in railIcons"
-          :key="icon.id"
-          class="relative h-8 w-8 rounded border border-transparent flex items-center justify-center text-white/60 hover:text-white hover:border-white/10 transition"
-          :aria-label="icon.label"
-          :class="activePage === icon.id ? 'text-white border-white/20 bg-white/5' : ''"
-          @click="setActivePage(icon.id)"
-        >
-          <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-purple-500 rounded-r" v-if="icon.id === activePage"></span>
-          <component :is="icon.component" class="w-5 h-5" />
-        </button>
+      <aside class="w-12 bg-[#0b0b0b] border-r border-white/10 flex flex-col items-center py-2 space-y-1.5 overflow-visible">
+        <template v-for="icon in railIcons" :key="icon.id">
+          <div
+            v-if="icon.id === 'timesheet'"
+            class="relative group"
+            @mouseenter="openTimesheetMenu"
+            @mouseleave="closeTimesheetMenu"
+          >
+            <button
+              class="relative h-8 w-8 rounded border border-transparent flex items-center justify-center text-white/60 hover:text-white hover:border-white/10 transition"
+              :aria-label="icon.label"
+              :class="activeRail === icon.id ? 'text-white border-white/20 bg-white/5' : ''"
+              @click="handleTimesheetNav(timesheetSection)"
+            >
+              <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-purple-500 rounded-r" v-if="icon.id === activeRail"></span>
+              <component :is="icon.component" class="w-5 h-5" />
+            </button>
+            <div
+              v-if="timesheetMenuOpen"
+              class="absolute left-full top-0 ml-3 z-20 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-2xl min-w-[180px] py-1.5"
+            >
+              <div class="px-3 py-1.5 text-[13px] font-semibold text-white/85 border-b border-white/10">Timeline</div>
+              <div class="px-2.5 py-1.5 space-y-1 border-l border-white/10 ml-2">
+                <button
+                  v-for="item in timesheetMenuItems"
+                  :key="item.id"
+                  class="w-full flex items-center gap-2 px-3 py-1.75 text-[12px] text-white/70 hover:bg-white/10 rounded-lg text-left leading-tight"
+                  @click="handleTimesheetNav(item.id)"
+                >
+                  <span class="flex items-center justify-center w-5 h-5 text-[14px] leading-none shrink-0">{{ item.icon }}</span>
+                  <span class="leading-[15px]">{{ item.label }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            v-else
+            class="relative group"
+            @mouseenter="showSimpleMenu(icon.id)"
+            @mouseleave="hideSimpleMenu"
+          >
+            <button
+              class="relative h-8 w-8 rounded border border-transparent flex items-center justify-center text-white/60 hover:text-white hover:border-white/10 transition"
+              :aria-label="icon.label"
+                :class="activeRail === icon.id ? 'text-white border-white/20 bg-white/5' : ''"
+                @click="setActivePage(icon.id)"
+              >
+                <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-purple-500 rounded-r" v-if="icon.id === activeRail"></span>
+                <component :is="icon.component" class="w-5 h-5" />
+              </button>
+            <div
+              v-if="hoveredSimpleMenu === icon.id"
+              class="absolute left-full top-0 ml-3 z-20 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-2xl min-w-[180px] py-2"
+              @mouseenter="showSimpleMenu(icon.id)"
+              @mouseleave="hideSimpleMenu"
+            >
+              <div class="px-3 py-1.5 text-sm font-semibold text-white/80">{{ icon.label }}</div>
+            </div>
+          </div>
+        </template>
         <div class="mt-auto h-9 w-9 rounded border border-white/10 bg-white/5"></div>
       </aside>
 
       <!-- Conversation list -->
       <aside
+        v-if="activePage === 'home'"
         class="w-56 bg-[#0d0d0d] border-r border-white/10 flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll"
         style="height: calc(100vh - 36px); max-height: calc(100vh - 36px);"
       >
@@ -68,28 +117,6 @@
           </div>
         </div>
 
-        <div class="px-2.5 py-2 border-b border-white/10">
-          <p class="text-[10px] uppercase tracking-[0.18em] text-white/35 mb-2 font-medium">Workspace</p>
-          <div class="space-y-1">
-            <button
-              v-for="tab in navTabs"
-              :key="tab.id"
-              class="w-full flex items-center gap-2 px-3 py-2 rounded border border-transparent text-[12px] text-white/80 hover:bg-white/5 transition"
-              :class="activePage === tab.id ? 'bg-white/5 border-white/10 text-white' : ''"
-              @click="setActivePage(tab.id)"
-            >
-              <component v-if="tab.component" :is="tab.component" class="w-4 h-4" />
-              <span
-                v-else
-                class="w-4 h-4 rounded bg-white/10 border border-white/15 flex items-center justify-center text-[10px] text-white/80"
-              >
-                {{ tab.label.charAt(0) }}
-              </span>
-              <span class="font-medium">{{ tab.label }}</span>
-            </button>
-          </div>
-        </div>
-
         <div class="flex-1 min-h-0 overflow-y-auto custom-scroll pr-1">
           <div
             v-for="section in filteredConversationSections"
@@ -101,13 +128,32 @@
               <button
                 v-for="conv in section.items"
                 :key="conv.id"
-                class="w-full text-left px-2.5 py-1.5 rounded bg-transparent border border-transparent hover:bg-white/5 transition"
+                class="w-full text-left px-2.5 py-1.5 rounded bg-transparent border border-transparent hover:bg-white/5 transition group"
                 :class="activeConversationId === conv.id && activePage === 'home' ? 'bg-white/5 border-white/10' : ''"
                 @click="selectConversation(conv.id)"
                 @contextmenu.prevent.stop="openContextMenu($event, conv.id)"
+                @dblclick.stop.prevent="startRename(conv.id)"
               >
-                <p class="text-[12px] font-semibold truncate" :title="conv.title">{{ conv.title }}</p>
-                <p class="text-[10px] text-white/55">{{ conv.time }}</p>
+                <div v-if="renamingConversationId === conv.id" class="space-y-1">
+                  <div class="relative">
+                    <input
+                      type="text"
+                      v-model="renameDraft"
+                      class="w-full bg-[#1a1a1a] border border-white/20 rounded px-2 py-1 pr-4 text-[12px] font-semibold text-white focus:outline-none focus:border-white/40"
+                      :ref="el => setRenameInputRef(conv.id, el as HTMLInputElement | null)"
+                      @click.stop
+                      @keydown.enter.stop.prevent="confirmRename(conv.id)"
+                      @keydown.esc.stop.prevent="cancelRename"
+                      @blur="confirmRename(conv.id)"
+                    />
+                    <span class="absolute right-2 top-1/2 -translate-y-1/2 w-px h-4 bg-white animate-pulse pointer-events-none"></span>
+                  </div>
+                  <p class="text-[10px] text-white/55">{{ conv.time }}</p>
+                </div>
+                <div v-else class="space-y-0.5">
+                  <p class="text-[12px] font-semibold truncate" :title="conv.title">{{ conv.title }}</p>
+                  <p class="text-[10px] text-white/55">{{ conv.time }}</p>
+                </div>
               </button>
             </div>
           </div>
@@ -140,97 +186,102 @@
           <div class="flex items-center justify-between flex-wrap gap-3"></div>
 
           <div v-if="activePage === 'home'" class="flex-1 min-h-0 flex justify-center">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden flex flex-col">
+            <div class="h-full w-full chat-frame overflow-hidden flex flex-col">
               <template v-if="!activeChatLog.length">
-                <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-5 text-center px-5">
-                  <div class="flex flex-col items-center gap-2">
-                    <svg
-                      aria-label="Sidian logo"
-                      class="h-10 w-10"
-                      viewBox="0 0 48 48"
-                      fill="#6b21a8"
-                    >
-                      <path d="M24 4 42 44H6z" />
-                    </svg>
-                    <p class="text-sm text-white/75">What can I help with?</p>
+                <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5">
+                  <div class="flex flex-col items-center gap-3">
+                    <div class="flex items-center gap-2 text-[11px] text-white/65">
+                      <span class="px-3 py-1 rounded-full bg-white/5 border border-white/12 shadow-[0_4px_16px_rgba(0,0,0,0.35)]">Free plan</span>
+                      <button class="text-white/75 hover:text-white transition" @click="handleUpgrade">Upgrade</button>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <span class="text-lg">✺</span>
+                      <p class="text-[26px] font-semibold tracking-tight text-white/90" style="font-family: 'Georgia', 'Times New Roman', serif;">
+                        {{ greetingMessage }}
+                      </p>
+                    </div>
                   </div>
-                  <div class="flex items-center gap-2">
-                    <button
-                      v-for="tag in tags"
-                      :key="tag"
-                      class="px-2.5 py-1.5 rounded-full bg-[#2a2a2a] text-[11px] text-white/85 border border-[#3a3a3a]"
-                      @click="handleTagClick(tag)"
-                    >
-                      {{ tag }}
-                      <span
-                        class="ml-1 text-white/50 hover:text-white transition cursor-pointer"
-                        @click.stop="removeTag(tag)"
-                        aria-label="Remove tag"
-                      >
-                        ×
-                      </span>
-                    </button>
-                  </div>
-                  <div class="w-full max-w-5xl rounded-2xl bg-[#1a1a1a] border border-[#2a2a2a] shadow-[0_18px_60px_rgba(0,0,0,0.55)] overflow-hidden">
-                    <div class="px-6 py-5 space-y-3">
-                      <div class="flex items-center gap-3">
-                        <input
-                          v-model="prompt"
-                          type="text"
-                          class="flex-1 bg-transparent text-white placeholder-white/60 text-[18px] font-medium focus:outline-none border-0 focus:ring-0 appearance-none"
-                          placeholder="Setup a..."
-                          aria-label="Prompt input"
-                          @keydown.enter.exact.prevent="handleSend"
-                        />
-                        <button
-                          class="h-11 w-11 rounded-sm bg-[#2a2a2a] border border-[#3a3a3a] text-white/70 hover:text-white transition flex items-center justify-center"
-                          aria-label="Attach"
-                          @click="openFilePicker"
-                        >
-                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.586-6.586a4 4 0 10-5.656-5.656L5.757 9.343" />
-                          </svg>
-                        </button>
-                        <button
-                          class="h-11 w-11 bg-white text-black rounded-sm flex items-center justify-center hover:scale-105 transition disabled:opacity-60"
-                          aria-label="Send"
-                          @click="handleSend"
-                          :disabled="isSending || (!prompt.trim() && !attachments.length)"
-                        >
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-                          </svg>
-                        </button>
-                      </div>
-                      <div v-if="attachments.length" class="flex flex-wrap gap-2">
-                        <div
-                          v-for="(file, idx) in attachments"
-                          :key="file.name + idx"
-                          class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#222] border border-white/10 text-xs text-white/80"
-                        >
-                          <span class="max-w-[180px] truncate">{{ file.name }}</span>
+                  <div class="w-full max-w-3xl">
+                    <div class="relative rounded-[14px] bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-3 space-y-2.5 text-left">
+                      <span class="absolute top-3.5 right-3.5 h-1.5 w-1.5 rounded-full border border-[#5af2cf] shadow-[0_0_0_2px_rgba(90,242,207,0.12)]"></span>
+                      <textarea
+                        v-model="prompt"
+                        ref="promptInput"
+                        class="w-full bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[1.6] text-white placeholder-white/55 resize-none min-h-[38px] max-h-[160px] overflow-y-hidden"
+                        placeholder="How can I help you today?"
+                        aria-label="Prompt input"
+                        rows="1"
+                        @keydown.enter.exact.prevent="handleSend"
+                        @input="resizePrompt"
+                      ></textarea>
+                      <div class="flex flex-wrap items-center justify-between gap-3 text-white/75">
+                        <div class="flex flex-wrap items-center gap-2">
                           <button
-                            class="text-white/50 hover:text-white transition"
-                            type="button"
-                            @click="removeAttachment(idx)"
-                            aria-label="Remove attachment"
+                            class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
+                            aria-label="Attach"
+                            @click="openFilePicker"
                           >
-                            ×
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
+                            </svg>
+                          </button>
+                          <div class="h-9 w-9 rounded-full border border-white/12 bg-white/5 flex items-center justify-center text-white/70">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2.5 2.5" />
+                              <circle cx="12" cy="12" r="8.5" stroke-width="2" />
+                            </svg>
+                          </div>
+                          <div class="flex items-center gap-1.5">
+                            <button
+                              class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
+                              :class="dataSources.project_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                              type="button"
+                              @click="toggleDataSource('project_db')"
+                            >
+                              Project DB
+                            </button>
+                            <button
+                              class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
+                              :class="dataSources.code_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                              type="button"
+                              @click="toggleDataSource('code_db')"
+                            >
+                              Code DB
+                            </button>
+                            <button
+                              class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
+                              :class="dataSources.coop_manual ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                              type="button"
+                              @click="toggleDataSource('coop_manual')"
+                            >
+                              Coop Manual
+                            </button>
+                          </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                          <button
+                            class="px-3.5 h-9 rounded-full bg-white/5 border border-white/12 hover:bg-white/10 transition text-[12px] font-semibold flex items-center gap-1.5"
+                            type="button"
+                            @click="cycleModel"
+                            :title="`Model: ${selectedModel}`"
+                          >
+                            <span class="text-white/85">{{ selectedModel }}</span>
+                            <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          <button
+                            class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
+                            :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                            aria-label="Send"
+                            @click="handleSend"
+                            :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                          >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
                           </button>
                         </div>
-                      </div>
-                      <div class="flex items-center gap-2 text-sm text-white/75">
-                        <button
-                          class="px-3 py-2 rounded bg-[#2a2a2a] border border-[#3a3a3a] flex items-center gap-1"
-                          type="button"
-                          @click="cycleModel"
-                          :title="`Model: ${selectedModel}`"
-                        >
-                          <span>{{ selectedModel }}</span>
-                          <svg class="w-3 h-3 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -249,7 +300,7 @@
                       >
                         <div
                           v-if="entry.role === 'assistant'"
-                          class="h-8 w-8 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-[12px] font-semibold flex-shrink-0"
+                          class="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-fuchsia-600 flex items-center justify-center text-[12px] font-semibold flex-shrink-0"
                         >
                           S
                         </div>
@@ -263,8 +314,8 @@
                           <p class="text-[9px] uppercase tracking-[0.12em] text-white/40 mb-1">
                             {{ entry.role === 'user' ? 'You' : 'Sid' }}
                           </p>
-                          <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-xs max-w-none" v-html="entry.content"></div>
-                          <div v-else class="whitespace-pre-wrap text-[11px] text-white/90">{{ entry.content }}</div>
+                          <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="entry.content"></div>
+                          <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
                           <div
                             v-if="entry.attachments?.length"
                             class="flex flex-wrap gap-2 mt-3"
@@ -298,61 +349,110 @@
                     </button>
                   </div>
 
-                  <div class="border-t border-white/10 bg-[#0d0d0d]/90 px-5 py-4">
-                    <div v-if="attachments.length" class="max-w-5xl mx-auto mb-3 flex flex-wrap gap-2">
-                      <div
-                        v-for="(file, idx) in attachments"
-                        :key="file.name + idx"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#121212] border border-white/10 text-xs text-white/80"
-                      >
-                        <span class="max-w-[180px] truncate">{{ file.name }}</span>
-                        <button
-                          class="text-white/50 hover:text-white transition"
-                          type="button"
-                          @click="removeAttachment(idx)"
-                          aria-label="Remove attachment"
+                  <div class="px-4 py-3">
+                    <div class="max-w-3xl mx-auto space-y-2.5">
+                      <div v-if="attachments.length" class="flex flex-wrap gap-2">
+                        <div
+                          v-for="(file, idx) in attachments"
+                          :key="file.name + idx"
+                          class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#1f1f1f] border border-white/12 text-xs text-white/80"
                         >
-                          ×
-                        </button>
+                          <span class="max-w-[180px] truncate">{{ file.name }}</span>
+                          <button
+                            class="text-white/50 hover:text-white transition"
+                            type="button"
+                            @click="removeAttachment(idx)"
+                            aria-label="Remove attachment"
+                          >
+                            ×
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <div class="w-full max-w-3xl mx-auto flex items-end gap-2.5">
-                      <button
-                        class="h-9 w-9 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center justify-center text-white/70 flex-shrink-0"
-                        aria-label="Attach"
-                        @click="openFilePicker"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.586-6.586a4 4 0 10-5.656-5.656L5.757 9.343" />
-                        </svg>
-                      </button>
-                      <textarea
-                        v-model="prompt"
-                        ref="promptInput"
-                        class="flex-1 bg-[#121212] border border-white/10 focus:border-white/30 focus:ring-0 rounded-xl text-[13px] text-white placeholder-white/40 px-3 py-2.5 resize-none leading-relaxed min-h-[42px] max-h-[180px] overflow-y-hidden"
-                        placeholder="Reply to Sid..."
+
+                      <div class="relative rounded-[14px] bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-3 space-y-2.5">
+                        <span class="absolute top-3.5 right-3.5 h-1.5 w-1.5 rounded-full border border-[#5af2cf] shadow-[0_0_0_2px_rgba(90,242,207,0.12)]"></span>
+                        <textarea
+                          v-model="prompt"
+                          ref="promptInput"
+                          class="w-full bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[1.6] text-white placeholder-white/55 resize-none min-h-[38px] max-h-[160px] overflow-y-hidden"
+                        placeholder="Reply..."
                         aria-label="Prompt input"
                         rows="1"
                         @keydown.enter.exact.prevent="handleSend"
                         @input="resizePrompt"
                       ></textarea>
-                      <button
-                        class="h-9 w-9 rounded-xl flex items-center justify-center text-white flex-shrink-0 transition"
-                        :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-orange-500 hover:bg-orange-600' : 'bg-orange-500/40 cursor-not-allowed'"
-                        aria-label="Send"
-                        @click="handleSend"
-                        :disabled="isSending || (!prompt.trim() && !attachments.length)"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    </div>
-                    <div class="flex items-center justify-between text-[11px] text-white/45 mt-3 max-w-3xl mx-auto">
-                      <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/75 tracking-[0.14em] uppercase">
-                          {{ selectedModel }}
-                        </span>
+                      <div class="flex flex-wrap items-center justify-between gap-3 text-white/75">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <button
+                            class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
+                              aria-label="Attach"
+                              @click="openFilePicker"
+                            >
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
+                              </svg>
+                            </button>
+                            <div class="h-9 w-9 rounded-full border border-white/12 bg-white/5 flex items-center justify-center text-white/70">
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2.5 2.5" />
+                                <circle cx="12" cy="12" r="8.5" stroke-width="2" />
+                              </svg>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                              <button
+                                class="px-2.5 h-8 rounded-full border text-[11px] font-semibold transition"
+                                :class="dataSources.project_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                                type="button"
+                                @click="toggleDataSource('project_db')"
+                              >
+                                Project DB
+                              </button>
+                              <button
+                                class="px-2.5 h-8 rounded-full border text-[11px] font-semibold transition"
+                                :class="dataSources.code_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                                type="button"
+                                @click="toggleDataSource('code_db')"
+                              >
+                                Code DB
+                              </button>
+                              <button
+                                class="px-2.5 h-8 rounded-full border text-[11px] font-semibold transition"
+                                :class="dataSources.coop_manual ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                                type="button"
+                                @click="toggleDataSource('coop_manual')"
+                              >
+                                Coop Manual
+                              </button>
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-3">
+                            <button
+                              class="px-3.5 h-9 rounded-full bg-white/5 border border-white/12 hover:bg-white/10 transition text-[12px] font-semibold flex items-center gap-1.5"
+                              type="button"
+                              @click="cycleModel"
+                              :title="`Model: ${selectedModel}`"
+                            >
+                              <span class="text-white/85">{{ selectedModel }}</span>
+                              <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+                            <button
+                              class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
+                              :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                              aria-label="Send"
+                              @click="handleSend"
+                              :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                            >
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div v-if="tags.length" class="flex flex-wrap items-center gap-2 text-[11px] text-white/50 pl-1">
                         <span
                           v-for="tag in tags"
                           :key="tag"
@@ -360,8 +460,8 @@
                         >
                           {{ tag }}
                         </span>
+                        <span class="ml-auto">Shift + Enter for newline</span>
                       </div>
-                      <span>Shift + Enter for newline</span>
                     </div>
                   </div>
                 </div>
@@ -369,47 +469,8 @@
             </div>
           </div>
 
-          <div v-else-if="activePage === 'search'" class="flex-1 min-h-0">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-white font-semibold text-sm">Search</h2>
-                <span class="text-[11px] text-white/50">Workspace search</span>
-              </div>
-              <div class="flex gap-3">
-                <input
-                  type="text"
-                  class="flex-1 rounded-lg bg-[#161616] border border-white/10 text-white text-sm px-3 py-2 placeholder-white/40 focus:outline-none focus:border-white/30"
-                  placeholder="Search agents, chats, or history..."
-                />
-                <button class="px-3 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium transition">Search</button>
-              </div>
-              <div class="flex-1 bg-[#101010] border border-white/5 rounded-xl p-4 text-white/60 text-sm">
-                No recent searches.
-              </div>
-            </div>
-          </div>
-
           <div v-else-if="activePage === 'settings'" class="flex-1 min-h-0 overflow-hidden">
             <SettingsView />
-          </div>
-
-          <div v-else-if="activePage === 'history'" class="flex-1 min-h-0">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-white font-semibold text-sm">History</h2>
-                <span class="text-[11px] text-white/50">{{ conversations.length }} chats</span>
-              </div>
-              <div class="flex-1 overflow-y-auto custom-scroll space-y-2">
-                <div
-                  v-for="conv in conversations"
-                  :key="conv.id"
-                  class="px-3 py-2 rounded-lg border border-white/10 bg-[#101010] hover:bg-[#161616] transition"
-                >
-                  <p class="text-white text-sm font-semibold truncate">{{ conv.title }}</p>
-                  <p class="text-[11px] text-white/50">{{ conv.time }}</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div v-else-if="activePage === 'work'" class="flex-1 min-h-0 overflow-hidden">
@@ -417,7 +478,7 @@
           </div>
 
           <div v-else-if="activePage === 'timesheet'" class="flex-1 min-h-0 overflow-hidden">
-            <TimesheetView />
+            <TimesheetView :initial-section="timesheetSection" />
           </div>
 
           <div v-else-if="activePage === 'todo'" class="flex-1 min-h-0 overflow-hidden">
@@ -475,7 +536,7 @@ definePageMeta({
   layout: false
 })
 
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import FolderIcon from '~/components/icons/FolderIcon.vue'
 import ChatIcon from '~/components/icons/ChatIcon.vue'
 import GearIcon from '~/components/icons/GearIcon.vue'
@@ -486,6 +547,7 @@ import TimesheetView from '~/components/views/TimesheetView.vue'
 import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
+import { useChat } from '~/composables/useChat'
 import { useSmartChat } from '~/composables/useSmartChat'
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 
@@ -507,23 +569,67 @@ type Conversation = {
 
 const STORAGE_KEY = 'workspace-memory-v1'
 
+const WorkIcon = defineComponent({
+  name: 'WorkGlyph',
+  setup() {
+    return () =>
+      h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2' }, [
+        h('rect', { x: '4', y: '7', width: '16', height: '11', rx: '2' }),
+        h('path', { d: 'M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2' })
+      ])
+  }
+})
+
+const TodoIcon = defineComponent({
+  name: 'TodoGlyph',
+  setup() {
+    return () =>
+      h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2' }, [
+        h('rect', { x: '4', y: '4', width: '16', height: '16', rx: '2' }),
+        h('path', { d: 'M8 12l3 3 5-6', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })
+      ])
+  }
+})
+
 const railIcons = [
   { id: 'home', component: FolderIcon, label: 'Home' },
-  { id: 'search', component: ChatIcon, label: 'Search' },
-  { id: 'settings', component: GearIcon, label: 'Settings' },
-  { id: 'history', component: ClockIcon, label: 'History' }
-]
-
-const navTabs = [
-  { id: 'work', label: 'Work', component: null },
-  { id: 'timesheet', label: 'Timesheet', component: null },
-  { id: 'todo', label: 'To-Do List', component: null },
-  { id: 'discussion', label: 'Discussion', component: null }
+  { id: 'work', component: WorkIcon, label: 'Work' },
+  { id: 'timesheet', component: ClockIcon, label: 'Timeline' },
+  { id: 'todo', component: TodoIcon, label: 'To-Do List' },
+  { id: 'discussion', component: ChatIcon, label: 'Discussion' },
+  { id: 'settings', component: GearIcon, label: 'Settings' }
 ]
 
 const availableModels = ['gpt-4o-120b', 'gpt-4o-mini']
 const selectedModel = ref(availableModels[0])
-const activePage = ref<'home' | 'search' | 'settings' | 'history' | 'work' | 'timesheet' | 'todo' | 'discussion'>('home')
+const activePage = ref<'home' | 'settings' | 'work' | 'timesheet' | 'todo' | 'discussion'>('home')
+const activeRail = computed(() => {
+  return railIcons.some(icon => icon.id === activePage.value) ? activePage.value : 'home'
+})
+const userName = 'Zaryab'
+const greetingTime = computed(() => {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Morning'
+  if (hour < 18) return 'Afternoon'
+  return 'Evening'
+})
+const greetingMessage = computed(() => `${greetingTime.value}, ${userName}`)
+const timesheetSection = ref<'employees' | 'projects' | 'projectInsights' | 'employeeInsights' | 'nonDigital' | 'settings'>('employees')
+const timesheetMenuOpen = ref(false)
+let timesheetMenuTimer: ReturnType<typeof setTimeout> | null = null
+const hoveredSimpleMenu = ref<string | null>(null)
+let simpleMenuTimer: ReturnType<typeof setTimeout> | null = null
+const renamingConversationId = ref<string | null>(null)
+const renameDraft = ref('')
+const renameInputRefs: Record<string, HTMLInputElement | null> = {}
+const timesheetMenuItems = [
+  { id: 'employees', label: 'Employees', icon: '👤' },
+  { id: 'projects', label: 'Projects', icon: '📁' },
+  { id: 'projectInsights', label: 'Project Insights', icon: '📈' },
+  { id: 'employeeInsights', label: 'Employee Insights', icon: '📊' },
+  { id: 'nonDigital', label: 'Daily Tasks', icon: '📝' },
+  { id: 'settings', label: 'Settings', icon: '⚙️' }
+] as const
 const search = ref('')
 const prompt = ref('')
 const promptInput = ref<HTMLTextAreaElement | null>(null)
@@ -534,7 +640,16 @@ const attachments = ref<{ name: string; base64: string }[]>([])
 const fileInput = ref<HTMLInputElement | null>(null)
 const contextMenuRef = ref<HTMLElement | null>(null)
 const { formatMessageText } = useMessageFormatter()
+const { sendChatMessageStream } = useChat()
 const { sendSmartMessage } = useSmartChat()
+type DataSources = { project_db: boolean; code_db: boolean; coop_manual: boolean }
+const dataSources = ref<DataSources>({
+  project_db: true,
+  code_db: true,
+  coop_manual: true
+})
+type AgentLog = { id: string; thinking: string; timestamp: Date }
+const agentLogs = ref<AgentLog[]>([])
 const showScrollToBottom = ref(false)
 const contextMenu = ref<{ visible: boolean; x: number; y: number; convId: string | null }>({
   visible: false,
@@ -617,7 +732,8 @@ function saveMemory() {
       conversations: conversations.value,
       activeConversationId: activeConversationId.value,
       tags: tags.value,
-      selectedModel: selectedModel.value
+      selectedModel: selectedModel.value,
+      dataSources: dataSources.value
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   } catch (error) {
@@ -642,6 +758,13 @@ function loadMemory() {
     }
     if (typeof parsed.selectedModel === 'string' && availableModels.includes(parsed.selectedModel)) {
       selectedModel.value = parsed.selectedModel
+    }
+    if (parsed.dataSources) {
+      dataSources.value = {
+        project_db: parsed.dataSources.project_db ?? true,
+        code_db: parsed.dataSources.code_db ?? true,
+        coop_manual: parsed.dataSources.coop_manual ?? true
+      }
     }
     const hasActive = conversations.value.some(conv => conv.id === activeConversationId.value)
     if (!hasActive) {
@@ -699,6 +822,74 @@ function setActivePage(id: string) {
 
 function setActiveRail(id: string) {
   setActivePage(id)
+}
+
+function openTimesheetMenu() {
+  if (timesheetMenuTimer) clearTimeout(timesheetMenuTimer)
+  timesheetMenuOpen.value = true
+}
+
+function closeTimesheetMenu() {
+  if (timesheetMenuTimer) clearTimeout(timesheetMenuTimer)
+  timesheetMenuTimer = setTimeout(() => {
+    timesheetMenuOpen.value = false
+  }, 120)
+}
+
+function handleTimesheetNav(section: typeof timesheetSection.value) {
+  timesheetSection.value = section
+  activePage.value = 'timesheet'
+  timesheetMenuOpen.value = false
+}
+
+function showSimpleMenu(id: string) {
+  if (simpleMenuTimer) clearTimeout(simpleMenuTimer)
+  hoveredSimpleMenu.value = id
+}
+
+function hideSimpleMenu() {
+  if (simpleMenuTimer) clearTimeout(simpleMenuTimer)
+  simpleMenuTimer = setTimeout(() => {
+    hoveredSimpleMenu.value = null
+  }, 120)
+}
+
+function setRenameInputRef(id: string, el: HTMLInputElement | null) {
+  if (!el) {
+    delete renameInputRefs[id]
+  } else {
+    renameInputRefs[id] = el
+  }
+}
+
+function startRename(convId: string) {
+  const convo = conversations.value.find(conv => conv.id === convId)
+  if (!convo) return
+  renamingConversationId.value = convId
+  renameDraft.value = convo.title
+  closeContextMenu()
+  nextTick(() => {
+    renameInputRefs[convId]?.focus()
+    renameInputRefs[convId]?.select()
+  })
+}
+
+function cancelRename() {
+  renamingConversationId.value = null
+  renameDraft.value = ''
+}
+
+function confirmRename(convId: string) {
+  if (renamingConversationId.value !== convId) return
+  const convo = conversations.value.find(conv => conv.id === convId)
+  if (!convo) return cancelRename()
+  const newTitle = renameDraft.value.trim()
+  if (!newTitle || newTitle === convo.title) return cancelRename()
+  convo.title = newTitle
+  convo.short = shortenTitle(newTitle)
+  convo.time = 'Just now'
+  touchConversation(convo.id)
+  cancelRename()
 }
 
 function cycleModel() {
@@ -783,6 +974,10 @@ function removeAttachment(idx: number) {
   attachments.value.splice(idx, 1)
 }
 
+function toggleDataSource(key: keyof DataSources) {
+  dataSources.value[key] = !dataSources.value[key]
+}
+
 function resizePrompt() {
   const el = promptInput.value
   if (!el) return
@@ -812,6 +1007,7 @@ async function handleSend() {
 
   const message = hasMessage ? prompt.value.trim() : 'What is shown in these attachments?'
   const attachmentNames = attachments.value.map(file => file.name)
+  const imagesBase64 = attachments.value.length ? attachments.value.map(file => file.base64) : undefined
 
   conversation.chatLog.push({
     role: 'user',
@@ -820,28 +1016,62 @@ async function handleSend() {
   })
 
   prompt.value = ''
+  attachments.value = []
   touchConversation(conversation.id)
   isSending.value = true
   scrollToBottom()
 
   try {
-    const imagesBase64 = attachments.value.length ? attachments.value.map(file => file.base64) : undefined
-    const resp = await sendSmartMessage(message, {
+    // Initial routing (matches legacy SmartChatPanel behavior)
+    const smartResp = await sendSmartMessage(message, {
       sessionId: conversation.sessionId,
-      dataSources: {
-        project_db: true,
-        code_db: true,
-        coop_manual: true
-      },
+      dataSources: dataSources.value,
       images_base64: imagesBase64
     })
-    conversation.chatLog.push({ role: 'assistant', content: formatMessageText(resp.message || 'No response') })
+
+    let gotResponse = false
+    let streamError: Error | null = null
+
+    await sendChatMessageStream(
+      message,
+      conversation.sessionId,
+      imagesBase64,
+      dataSources.value,
+      {
+        onLog: log => {
+          console.log('Thinking log:', log)
+          agentLogs.value.unshift({
+            id: `log-${Date.now()}`,
+            thinking: log.message,
+            timestamp: new Date()
+          })
+        },
+        onComplete: result => {
+          const finalAnswer = result.reply || result.message || 'No response generated.'
+          conversation.chatLog.push({ role: 'assistant', content: formatMessageText(finalAnswer) })
+          gotResponse = true
+          scrollToBottom(true)
+        },
+        onError: error => {
+          streamError = error
+        }
+      }
+    )
+
+    if (streamError) {
+      throw streamError
+    }
+
+    if (!gotResponse) {
+      const fallback = smartResp?.message || smartResp?.reply || 'No response generated.'
+      conversation.chatLog.push({ role: 'assistant', content: formatMessageText(fallback) })
+      scrollToBottom(true)
+    }
   } catch (error: any) {
     console.error('Send failed', error)
     conversation.chatLog.push({ role: 'assistant', content: 'Sorry, something went wrong sending that message.' })
   } finally {
     isSending.value = false
-    attachments.value = []
     scrollToBottom()
   }
 }
@@ -851,16 +1081,7 @@ function handleUpgrade() {
 }
 
 function renameConversation(convId: string) {
-  const convo = conversations.value.find(conv => conv.id === convId)
-  if (!convo) return closeContextMenu()
-  const newTitle = window.prompt('Rename conversation', convo.title)?.trim()
-  if (!newTitle || newTitle === convo.title) return closeContextMenu()
-
-  convo.title = newTitle
-  convo.short = shortenTitle(newTitle)
-  convo.time = 'Just now'
-  touchConversation(convo.id)
-  closeContextMenu()
+  startRename(convId)
 }
 
 function openContextMenu(event: MouseEvent, convId: string) {
