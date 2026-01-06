@@ -53,18 +53,18 @@ const isTyping = ref(false)
 
 onMounted(() => {
   // Immediately navigate to main app (welcome screen will show there)
-  navigateTo('/')
+  navigateTo('/app')
 })
 
 function startTypingSequence() {
   const typeNextMessage = (messageIndex: number) => {
-    if (messageIndex >= messages.value.length) {
-      // All messages typed, wait a moment then navigate
-      setTimeout(() => {
-        navigateTo('/')
-      }, 800)
-      return
-    }
+      if (messageIndex >= messages.value.length) {
+        // All messages typed, wait a moment then navigate
+        setTimeout(() => {
+          navigateTo('/app')
+        }, 800)
+        return
+      }
 
     const message = messages.value[messageIndex]
     currentMessageIndex.value = messageIndex
@@ -109,4 +109,3 @@ function startTypingSequence() {
   animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>
-
