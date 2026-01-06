@@ -29,11 +29,12 @@ def node_answer(state: RAGState) -> dict:
                 metadata={"drawing_number": "DB", "page_id": "-"}
             ))
 
-        # Check which databases are enabled
-        data_sources = state.data_sources or {"project_db": True, "code_db": False, "coop_manual": False}
+        # Check which databases are enabled (set by router) - include speckle_db in fallback
+        data_sources = state.data_sources or {"project_db": True, "code_db": False, "coop_manual": False, "speckle_db": False}
         project_db_enabled = data_sources.get("project_db", True)
         code_db_enabled = data_sources.get("code_db", False)
         coop_db_enabled = data_sources.get("coop_manual", False)
+        speckle_db_enabled = data_sources.get("speckle_db", False)
         
         # Get code docs from state
         code_docs = list(state.graded_code_docs or [])

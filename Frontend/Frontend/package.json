@@ -4,11 +4,11 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "./node_modules/.bin/nuxt dev",
-        "build": "./node_modules/.bin/nuxt build",
-        "generate": "./node_modules/.bin/nuxt generate",
-        "preview": "./node_modules/.bin/nuxt preview",
-        "postinstall": "./node_modules/.bin/nuxt prepare",
+        "dev": "nuxt dev",
+        "build": "nuxt build",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
         "lint": "eslint .",
         "typecheck": "vue-tsc --noEmit"
     },

@@ -1,6 +1,13 @@
 """
-Routing Node
-Routes query to appropriate databases and determines smart/large chunk selection for project_db
+RAG Router Node
+Routes query to appropriate databases and determines smart/large chunk selection for project_db.
+This runs in parallel with node_rag_plan (both are sub-nodes called by the top-level plan node).
+
+Handles selection among 4 databases:
+- project_db (with smart/large chunking)
+- code_db
+- coop_manual (internal_docs_db)
+- speckle_db
 """
 import json
 import re
@@ -22,51 +29,20 @@ def _get_route_reasoning(data_route: str) -> str:
     return route_reasoning.get(data_route, "default_routing")
 
 
-def node_route(state: RAGState) -> dict:
-    """Route query to the correct source with guardrails"""
+def node_rag_router(state: RAGState) -> dict:
+    """
+    RAG Router - Routes query to appropriate databases and determines smart/large chunk selection for project_db.
+    This runs in parallel with node_rag_plan (both are sub-nodes called by the top-level plan node).
+    
+    Uses the router prompt to select from 4 databases:
+    - project_db (with smart/large chunking options)
+    - code_db
+    - coop_manual (internal_docs_db)
+    - speckle_db
+    """
     t_start = time.time()
-    log_route.info(">>> ROUTE START")
+    log_route.info(">>> RAG ROUTER START")
 
-    # Check if routing was already done in parallel during node_plan
-    if hasattr(state, '_parallel_route_result'):
-        route_result = state._parallel_route_result
-        log_route.info(f"Using pre-computed route from parallel execution")
-        
-        # Extract data_sources if present, otherwise construct from data_route
-        data_sources = route_result.get('data_sources')
-        if not data_sources:
-            # Legacy format - construct data_sources from data_route
-            project_route = route_result.get('data_route')
-            data_sources = {
-                "project_db": project_route is not None,
-                "code_db": False,
-                "coop_manual": False,
-                "speckle_db": False
-            }
-        
-        # Update state with data sources
-        state.data_sources = data_sources
-        
-        log_route.info(f"Routing: databases={data_sources}, route={route_result.get('data_route')}, filter={route_result.get('project_filter')}")
-
-        # SEMANTIC INTELLIGENCE: Capture routing intelligence 
-        routing_intelligence = {
-            "data_route": route_result.get('data_route'),
-            "data_sources": data_sources,
-            "project_filter": route_result.get('project_filter'),
-            "route_reasoning": _get_route_reasoning(route_result.get('data_route', 'smart')) if route_result.get('data_route') else "no_project_db",
-            "scope_assessment": "filtered" if route_result.get('project_filter') else "open",
-            "timestamp": time.time(),
-            "source": "parallel_execution"
-        }
-        
-        state._routing_intelligence = routing_intelligence
-
-        t_elapsed = time.time() - t_start
-        log_route.info(f"<<< ROUTE DONE in {t_elapsed:.2f}s (used cached result)")
-        return route_result
-
-    # Fallback: run routing if it wasn't done in parallel
     try:
         project_filter = detect_project_filter(state.user_query)
         
@@ -100,7 +76,7 @@ def node_route(state: RAGState) -> dict:
                 log_route.info(f"❓ Router needs clarification: {clarification_question}")
                 
                 t_elapsed = time.time() - t_start
-                log_route.info(f"<<< ROUTE DONE in {t_elapsed:.2f}s (clarification needed)")
+                log_route.info(f"<<< RAG ROUTER DONE in {t_elapsed:.2f}s (clarification needed)")
                 
                 # Update state with clarification
                 state.needs_clarification = True
@@ -120,6 +96,7 @@ def node_route(state: RAGState) -> dict:
             }
         
         # Extract database selections and project route
+        # The router prompt uses "databases" key with the 4 database names
         databases = router_result.get("databases", {})
         data_sources = {
             "project_db": databases.get("project_db", False),
@@ -147,7 +124,7 @@ def node_route(state: RAGState) -> dict:
         # Update state with selected data sources
         state.data_sources = data_sources
         
-        log_route.info(f"🎯 ROUTER DECISION:")
+        log_route.info(f"🎯 RAG ROUTER DECISION:")
         log_route.info(f"   Query: '{state.user_query[:80]}...'")
         log_route.info(f"   Databases: project_db={data_sources['project_db']}, code_db={data_sources['code_db']}, coop_manual={data_sources['coop_manual']}, speckle_db={data_sources['speckle_db']}")
         log_route.info(f"   Project route: {project_route}")
@@ -159,13 +136,13 @@ def node_route(state: RAGState) -> dict:
             "route_reasoning": _get_route_reasoning(project_route) if project_route else "no_project_db",
             "scope_assessment": "filtered" if project_filter else "open",
             "timestamp": time.time(),
-            "source": "standalone_execution"
+            "source": "rag_router_execution"
         }
         
         state._routing_intelligence = routing_intelligence
 
         t_elapsed = time.time() - t_start
-        log_route.info(f"<<< ROUTE DONE in {t_elapsed:.2f}s")
+        log_route.info(f"<<< RAG ROUTER DONE in {t_elapsed:.2f}s")
         
         return {
             "data_route": project_route,
@@ -173,7 +150,7 @@ def node_route(state: RAGState) -> dict:
             "project_filter": project_filter
         }
     except Exception as e:
-        log_route.error(f"Router failed: {e}")
+        log_route.error(f"RAG Router failed: {e}")
         import traceback
         traceback.print_exc()
         # Fallback to default

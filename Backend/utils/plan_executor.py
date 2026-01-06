@@ -128,10 +128,12 @@ def execute_plan(state: RAGState) -> dict:
             qlist = args.get("queries") or [state.user_query]
             k = int(args.get("k", MAX_RETRIEVAL_DOCS))
             
-            data_sources = state.data_sources or {"project_db": True, "code_db": False, "coop_manual": False}
+            # Get data_sources from state (set by router) - include speckle_db in fallback
+            data_sources = state.data_sources or {"project_db": True, "code_db": False, "coop_manual": False, "speckle_db": False}
             project_db_enabled = data_sources.get("project_db", True)
             code_db_enabled = data_sources.get("code_db", False)
             coop_db_enabled = data_sources.get("coop_manual", False)
+            speckle_db_enabled = data_sources.get("speckle_db", False)
             
             project_docs = []
             code_docs = []

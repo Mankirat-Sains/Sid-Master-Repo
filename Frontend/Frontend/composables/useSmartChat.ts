@@ -110,7 +110,7 @@ export const useSmartChat = () => {
         // For now, we'll route through RAG backend which can handle BIM queries
         // In the future, you might want direct GraphQL calls here
         console.log('📸 [useSmartChat] Calling sendChatMessage with images_base64:', context?.images_base64)
-        const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, context?.dataSources)
+        const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, undefined) // dataSources removed - backend router decides
         
         // Handle multi-answer responses (matching web-app behavior)
         const hasProjectAnswer = ragResponse.project_answer && ragResponse.project_answer.trim()
@@ -151,7 +151,7 @@ export const useSmartChat = () => {
       } catch (error) {
         console.error('Speckle query failed, falling back to RAG:', error)
         // Fallback to RAG
-        const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, context?.dataSources)
+        const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, undefined) // dataSources removed - backend router decides
         
         // Handle multi-answer responses (matching web-app behavior)
         const hasProjectAnswer = ragResponse.project_answer && ragResponse.project_answer.trim()
@@ -192,7 +192,7 @@ export const useSmartChat = () => {
     
     // For document queries, use RAG backend
     console.log('📸 [useSmartChat] Document query - Calling sendChatMessage with images_base64:', context?.images_base64)
-    const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, context?.dataSources)
+    const ragResponse = await sendChatMessage(message, sessionId, context?.images_base64, undefined) // dataSources removed - backend router decides
     
     // Handle multi-answer responses (matching web-app behavior)
     // The backend may return separate answers for each database
