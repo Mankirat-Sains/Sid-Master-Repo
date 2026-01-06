@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware((to) => {
-  // Always send root visitors to the login page
-  if (to.path === '/') {
+  // Keep landing page accessible; opt-in redirect with ?redirect=login if needed
+  if (to.path === '/' && to.query.redirect === 'login') {
     return navigateTo('/login', { replace: true })
   }
 })

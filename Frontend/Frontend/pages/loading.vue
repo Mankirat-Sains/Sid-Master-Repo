@@ -1,18 +1,23 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#04060d] via-[#090c1a] to-[#0d0820] relative overflow-hidden text-white">
     <!-- Animated background -->
     <div class="absolute inset-0 opacity-20">
       <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
+    </div>
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-purple-600/25 blur-[120px]"></div>
+      <div class="absolute right-[-12rem] top-6 h-[26rem] w-[26rem] rounded-full bg-purple-400/18 blur-[160px]"></div>
+      <div class="absolute left-1/3 bottom-[-4rem] h-72 w-72 rounded-full bg-indigo-400/12 blur-[140px]"></div>
     </div>
 
     <!-- Content -->
     <div class="relative z-10 text-center px-8">
       <!-- Welcome Message -->
-      <h1 class="text-5xl md:text-7xl font-light text-white mb-16 tracking-tight">
+      <h1 class="text-5xl md:text-7xl font-semibold text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.45)] mb-10 tracking-tight">
         Welcome Back James...
       </h1>
       
-      <p class="text-2xl md:text-3xl font-light text-white/90 mb-20 tracking-wide">
+      <p class="text-2xl md:text-3xl font-medium text-white/90 drop-shadow-[0_8px_30px_rgba(0,0,0,0.35)] mb-16 tracking-wide">
         Let's Build Together
       </p>
 
@@ -23,11 +28,11 @@
           :key="index"
           class="flex items-center justify-center"
         >
-          <div class="text-2xl md:text-3xl font-light text-white/80 tracking-wide">
-            <span v-html="displayedMessages[index]"></span>
+          <div class="text-2xl md:text-3xl font-medium text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.35)] tracking-wide">
+            <span class="text-white/90" v-html="displayedMessages[index]"></span>
             <span 
               v-if="message.index < message.fullText.length || (index === currentMessageIndex && message.index === message.fullText.length)"
-              class="inline-block w-1 h-8 bg-white/80 ml-1 animate-pulse"
+              class="inline-block w-1.5 h-8 bg-purple-300 ml-2 animate-pulse rounded-full"
             ></span>
           </div>
         </div>
@@ -53,7 +58,7 @@ const isTyping = ref(false)
 
 onMounted(() => {
   // Immediately navigate to main app (welcome screen will show there)
-  navigateTo('/app')
+  navigateTo('/workspace')
 })
 
 function startTypingSequence() {
@@ -61,7 +66,7 @@ function startTypingSequence() {
       if (messageIndex >= messages.value.length) {
         // All messages typed, wait a moment then navigate
         setTimeout(() => {
-          navigateTo('/app')
+          navigateTo('/workspace')
         }, 800)
         return
       }
