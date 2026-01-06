@@ -44,8 +44,8 @@ except Exception as e:
 print("\n4. Testing node imports...")
 try:
     from nodes.plan import node_plan
-    from nodes.route import node_route
-    from nodes.retrieve import node_retrieve
+    from nodes.DBRetrieval.rag import node_rag
+    from nodes.DBRetrieval.retrieve import node_retrieve
     print("   ✓ Nodes imported")
 except Exception as e:
     print(f"   ✗ Node import failed: {e}")

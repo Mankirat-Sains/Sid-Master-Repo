@@ -6,9 +6,9 @@ Runs selected routers in parallel
 import time
 from concurrent.futures import ThreadPoolExecutor
 from models.rag_state import RAGState
-from nodes.route import node_route
-from nodes.web_router import node_web_router
-from nodes.desktop_router import node_desktop_router
+from nodes.DBRetrieval.rag import node_rag
+from nodes.WebCalcs.web_router import node_web_router
+from nodes.DesktopAgent.desktop_router import node_desktop_router
 from config.logging_config import log_route
 
 
@@ -28,7 +28,7 @@ def node_router_dispatcher(state: RAGState) -> dict:
         
         if "rag" in selected_routers:
             log_route.info("🚀 Dispatching to RAG router")
-            futures["rag"] = executor.submit(node_route, state)
+            futures["rag"] = executor.submit(node_rag, state)
         
         if "web" in selected_routers:
             log_route.info("🚀 Dispatching to Web router")

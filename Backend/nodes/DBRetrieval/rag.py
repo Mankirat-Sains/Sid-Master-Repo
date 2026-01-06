@@ -6,8 +6,8 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from models.rag_state import RAGState
 from config.logging_config import log_query, log_route
-from nodes.rag_plan import node_rag_plan
-from nodes.rag_router import node_rag_router
+from .rag_plan import node_rag_plan
+from .rag_router import node_rag_router
 
 
 def node_rag(state: RAGState) -> dict:
