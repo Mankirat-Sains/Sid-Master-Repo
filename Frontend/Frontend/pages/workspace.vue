@@ -1,387 +1,201 @@
 <template>
-  <div 
-    class="h-screen w-screen flex flex-col bg-gradient-to-br from-[#050507] via-[#0b0f1a] to-[#0f0a1b] overflow-hidden relative text-white"
-    @mousemove="handleMouseMove"
-    @mouseup="handleMouseUp"
-    @mouseleave="handleMouseUp"
-  >
-    <!-- Ambient glows -->
-    <div class="pointer-events-none absolute inset-0">
-      <div class="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-purple-700/25 blur-3xl"></div>
-      <div class="absolute right-[-14rem] top-10 h-[30rem] w-[30rem] rounded-full bg-purple-400/18 blur-[180px]"></div>
-      <div class="absolute left-1/3 bottom-0 h-72 w-72 rounded-full bg-indigo-400/12 blur-[140px]"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-black/40"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.04),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.04),transparent_32%)]"></div>
-    </div>
-    <!-- Tasks Panel (Top Slider) - Only covers left panel, not chat -->
-    <div
-      v-if="tasksPanelOpen"
-      class="absolute top-0 left-0 border-b border-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.55)] z-30 transition-all backdrop-blur-xl bg-[#0f1224]/90"
-      :style="{ 
-        height: `${tasksPanelHeight}px`, 
-        maxHeight: '60vh', 
-        minHeight: '120px',
-        width: `calc(100% - ${chatPanelWidth}px)`,
-        right: 'auto',
-        backgroundColor: 'rgba(15, 18, 36, 0.92)',
-        backdropFilter: 'blur(20px)'
-      }"
-    >
-      <!-- Navigation: WORK, TIMESHEET, TO-DO LIST, DISCUSSION, SETTINGS -->
-      <div class="bg-white/5 backdrop-blur-sm border-b border-white/10 px-8 py-5 flex items-center justify-center gap-6 relative">
-        <button
-          v-for="navItem in navItems"
-          :key="navItem.id"
-          @click="activeNav = navItem.id; tasksPanelOpen = false"
-          :class="[
-            'flex flex-col items-center gap-2 px-5 py-3 rounded-xl transition-all duration-200 border',
-            activeNav === navItem.id
-              ? 'bg-gradient-to-r from-purple-500 to-purple-400 text-black shadow-lg shadow-purple-900/50 scale-105 border-purple-200/60'
-              : 'text-gray-200 hover:text-white hover:bg-white/10 hover:border-white/10 border-transparent'
-          ]"
-          style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;"
-        >
-          <component :is="navItem.icon" :class-name="activeNav === navItem.id ? 'w-6 h-6' : 'w-5 h-5'" />
-          <span class="text-xs font-semibold tracking-wide">{{ navItem.label }}</span>
-        </button>
-        
-        <button
-          @click="tasksPanelOpen = false"
-          class="absolute right-6 p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-300 hover:text-white"
-          title="Close Tasks"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+  <div class="min-h-screen bg-black text-white flex flex-col">
+    <!-- Header -->
+    <header class="h-11 flex items-center justify-between px-4 border-b border-white/10 bg-black">
+      <div class="flex items-center gap-2">
+        <div class="h-7 w-7 rounded bg-red-600 flex items-center justify-center text-xs font-bold" aria-label="Navier AI logo">N</div>
+        <span class="text-sm font-semibold">Navier AI</span>
       </div>
+      <div class="flex items-center gap-3">
+        <div class="h-8 w-8 rounded-full bg-white/10 border border-white/10"></div>
+      </div>
+    </header>
 
-      <!-- Resize Handle (bottom edge) -->
-      <div
-        class="absolute bottom-0 left-0 right-0 h-1 bg-white/10 cursor-ns-resize hover:bg-purple-400 transition-colors"
-        @mousedown="(e) => handleTasksResizeStart(e, tasksPanelHeight)"
-      ></div>
-    </div>
-
-    <!-- Main Content Area -->
-    <div 
-      class="flex-1 flex overflow-hidden relative z-10"
-    >
-      <!-- Document List Panel (Left Side, Resizable) -->
-      <DocumentListPanel
-        v-if="documentsListOpen"
-        :is-open="documentsListOpen"
-        :title="documentsListTitle"
-        :subtitle="documentsListSubtitle"
-        :documents="similarDocuments"
-        :width="documentsListWidth"
-        @close="documentsListOpen = false"
-        @select-document="handleDocumentSelect"
-        @resize="documentsListWidth = $event"
-      />
-
-      <!-- Left Main Panel - With Tasks and Logs panels -->
-      <div 
-        class="flex-1 flex flex-col bg-transparent overflow-hidden relative"
-        :style="{ 
-          marginTop: tasksPanelOpen ? `${tasksPanelHeight}px` : '0',
-          marginLeft: documentsListOpen ? `${documentsListWidth}px` : '0'
-        }"
-      >
-        <!-- Tasks Toggle Button (when closed) - Positioned over left panel only -->
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Icon rail -->
+      <aside class="w-16 bg-[#0b0b0b] border-r border-white/10 flex flex-col items-center py-3 space-y-2">
         <button
-          v-if="!tasksPanelOpen"
-          @click="tasksPanelOpen = true"
-          class="absolute top-2 left-1/2 transform -translate-x-1/2 bg-[#121527]/90 backdrop-blur-lg hover:bg-[#171b31] text-gray-100 hover:text-white px-6 py-2.5 rounded-b-xl shadow-lg shadow-purple-900/40 transition-all z-40 flex items-center gap-2 border-b-2 border-purple-500/60 border border-white/10"
-          title="Show Tasks"
-          style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;"
+          v-for="icon in railIcons"
+          :key="icon.id"
+          class="relative h-10 w-10 rounded border border-transparent flex items-center justify-center text-white/60 hover:text-white hover:border-white/10 transition"
+          :aria-label="icon.label"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-          <span class="font-semibold text-sm">Tasks</span>
+          <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-red-600 rounded-r" v-if="icon.id === 'home'"></span>
+          <component :is="icon.component" class="w-5 h-5" />
         </button>
+        <div class="mt-auto h-10 w-10 rounded border border-white/10 bg-white/5"></div>
+      </aside>
 
-        <!-- Breadcrumb Bar -->
-        <div v-if="breadcrumb" class="bg-white/5 backdrop-blur-sm border-b border-white/10 px-8 py-3 flex items-center gap-3 text-sm text-gray-200">
-          <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-          <span class="font-medium" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">{{ breadcrumb }}</span>
+      <!-- Conversation list -->
+      <aside class="w-72 bg-[#0d0d0d] border-r border-white/10 flex flex-col">
+        <div class="flex items-center gap-2 px-3 py-3 border-b border-white/10">
+          <button class="h-9 px-3 rounded bg-white/8 border border-white/12 text-xs font-semibold hover:bg-white/12 transition flex items-center gap-2">
+            <span class="text-sm">*</span>
+          </button>
+          <button class="flex-1 h-9 px-3 rounded bg-white/8 border border-white/12 text-xs font-semibold hover:bg-white/12 transition text-left">
+            + NEW AGENT
+          </button>
         </div>
 
-        <!-- Content based on active nav -->
-        <div class="flex-1 overflow-auto bg-gradient-to-br from-[#0c0f1c] via-[#0c0f20] to-[#120c24] p-8 text-gray-100">
-          <!-- Welcome Screen (shown when no active nav) -->
-          <WelcomeScreen v-if="!activeNav" />
-          
-          <!-- WORK View (shows projects only when work is active) -->
-          <WorkView v-else-if="activeNav === 'work'" @update-breadcrumb="breadcrumb = $event" />
-          
-          <!-- TIMESHEET View -->
-          <TimesheetView v-else-if="activeNav === 'timesheet'" />
-          
-          <!-- TO-DO LIST View -->
-          <TodoListView v-else-if="activeNav === 'todo'" />
-          
-          <!-- DISCUSSION View -->
-          <DiscussionView v-else-if="activeNav === 'discussion'" />
-          
-          <!-- SETTINGS View -->
-          <SettingsView v-else-if="activeNav === 'settings'" />
+        <div class="px-3 py-3 border-b border-white/10">
+          <div class="relative">
+            <input
+              v-model="search"
+              type="text"
+              class="w-full rounded bg-white/5 border border-white/10 text-sm px-3 py-2 placeholder-white/40 focus:outline-none focus:border-white/30"
+              placeholder="Search agents..."
+              aria-label="Search agents"
+            />
+            <svg class="absolute right-3 top-2.5 w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
         </div>
 
+        <div class="flex-1 overflow-y-auto custom-scroll">
+          <div
+            v-for="section in conversationSections"
+            :key="section.title"
+            class="px-3 py-3"
+          >
+            <p class="text-[11px] uppercase tracking-[0.2em] text-white/35 mb-2">{{ section.title }}</p>
+            <div class="space-y-1.5">
+              <button
+                v-for="conv in section.items"
+                :key="conv.id"
+                class="w-full text-left px-3 py-2 rounded bg-transparent border border-transparent hover:bg-white/5 transition"
+              >
+                <p class="text-sm font-semibold truncate" :title="conv.title">{{ conv.title }}</p>
+                <p class="text-[12px] text-white/55">{{ conv.time }}</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
 
-        <!-- Logs Toggle Button (when closed) - Positioned over left panel only -->
-        <button
-          v-if="!logsPanelOpen"
-          @click="logsPanelOpen = true"
-          class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#121527]/90 backdrop-blur-lg hover:bg-[#171b31] text-gray-100 hover:text-white px-6 py-2.5 rounded-t-xl shadow-lg shadow-purple-900/40 transition-all z-40 flex items-center gap-2 border-t-2 border-purple-500/60 border border-white/10"
-          title="Show Agent Logs"
-          style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <span class="font-semibold text-sm">Logs</span>
-          <span v-if="agentLogs.length > 0" class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full text-xs font-semibold border border-purple-200">
-            {{ agentLogs.length }}
-          </span>
-        </button>
-      </div>
+      <!-- Main content -->
+      <main class="flex-1 bg-black flex flex-col items-center justify-center px-6">
+        <div class="flex flex-col items-center gap-2 mb-6">
+          <div class="text-6xl font-light text-white/85">*</div>
+          <p class="text-lg text-white/75">What can I help with?</p>
+        </div>
 
-      <!-- Right Chat Panel (Resizable) - Always visible, never covered -->
-      <div 
-        class="bg-[#0e1023]/90 backdrop-blur-xl border-l border-white/10 relative flex-shrink-0 shadow-[0_10px_60px_rgba(0,0,0,0.6)]"
-        :style="{ width: `${chatPanelWidth}px`, minWidth: '320px', maxWidth: '50%' }"
-      >
-        <SmartChatPanel @agent-log="handleAgentLog" @first-message-sent="handleFirstMessage" />
-        
-        <!-- Resize Handle (left edge) -->
-        <div
-          class="absolute left-0 top-0 bottom-0 w-1 bg-white/10 cursor-ew-resize hover:bg-purple-500 transition-colors"
-          @mousedown="(e) => handleChatResizeStart(e, chatPanelWidth)"
-        ></div>
-      </div>
+        <div class="flex flex-col items-center gap-3 w-full max-w-5xl">
+          <div class="flex items-center gap-2">
+            <button
+              v-for="tag in tags"
+              :key="tag"
+              class="px-3 py-1.5 rounded-full bg-[#2a2a2a] text-xs text-white/85 border border-[#3a3a3a]"
+            >
+              {{ tag }}
+              <span class="ml-1 text-white/50">×</span>
+            </button>
+          </div>
+
+          <div class="w-[85%] max-w-5xl rounded-lg bg-[#1f1f1f] border border-[#2e2e2e] shadow-[0_18px_60px_rgba(0,0,0,0.55)] overflow-hidden">
+            <div class="px-6 py-5 space-y-3">
+              <div class="flex items-center gap-3">
+                <input
+                  v-model="prompt"
+                  type="text"
+                  class="flex-1 bg-transparent text-white placeholder-white/60 text-[18px] font-medium focus:outline-none border-0 focus:ring-0"
+                  placeholder="Setup a..."
+                  aria-label="Prompt input"
+                />
+                <button class="h-11 w-11 rounded-sm bg-[#2a2a2a] border border-[#3a3a3a] text-white/70 hover:text-white transition flex items-center justify-center" aria-label="Attach">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.586-6.586a4 4 0 10-5.656-5.656L5.757 9.343" />
+                  </svg>
+                </button>
+                <button class="h-11 w-11 bg-white text-black rounded-sm flex items-center justify-center hover:scale-105 transition" aria-label="Send">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              <div class="flex items-center gap-2 text-sm text-white/75">
+                <button class="px-3 py-2 rounded bg-[#2a2a2a] border border-[#3a3a3a] flex items-center gap-1">
+                  <span>gpt-4o-120b</span>
+                  <svg class="w-3 h-3 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
-
-    <!-- Agent Logs Panel (Bottom Slider, Draggable & Resizable) - Spans across bottom, aligned with chat panel -->
-    <AgentLogsPanel
-      v-if="logsPanelOpen"
-      :is-open="logsPanelOpen"
-      :logs="agentLogs"
-      :panel-height="logsPanelHeight"
-      :panel-bottom="logsPanelBottom"
-      :chat-panel-width="chatPanelWidth"
-      @close="logsPanelOpen = false"
-      @resize-start="handleLogsResizeStart"
-      @drag-start="handleLogsDragStart"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent, provide } from 'vue'
-import SmartChatPanel from '~/components/SmartChatPanel.vue'
-import AgentLogsPanel, { type AgentLog } from '~/components/AgentLogsPanel.vue'
-import DocumentListPanel from '~/components/DocumentListPanel.vue'
+definePageMeta({
+  layout: false
+})
+
+import { ref } from 'vue'
 import FolderIcon from '~/components/icons/FolderIcon.vue'
-import ClockIcon from '~/components/icons/ClockIcon.vue'
-import ClipboardIcon from '~/components/icons/ClipboardIcon.vue'
 import ChatIcon from '~/components/icons/ChatIcon.vue'
 import GearIcon from '~/components/icons/GearIcon.vue'
-import { useWorkspace } from '~/composables/useWorkspace'
-import { useRuntimeConfig } from '#app'
+import ClockIcon from '~/components/icons/ClockIcon.vue'
 
-const activeNav = ref<'work' | 'timesheet' | 'todo' | 'discussion' | 'settings' | null>(null)
-const tasksPanelOpen = ref(false)
-const logsPanelOpen = ref(false) // Hidden by default
-const breadcrumb = ref<string | null>(null)
-const agentLogs = ref<AgentLog[]>([])
-
-// Document list panel
-const documentsListOpen = ref(false)
-const documentsListTitle = ref('Similar Projects')
-const documentsListSubtitle = ref('')
-const similarDocuments = ref<any[]>([])
-const documentsListWidth = ref(400)
-
-// Panel sizes
-const tasksPanelHeight = ref(180)
-const chatPanelWidth = ref(420)
-const logsPanelHeight = ref(320)
-const logsPanelBottom = ref(0) // Position from bottom (0 = at bottom)
-
-// Workspace management
-const workspace = useWorkspace()
-const config = useRuntimeConfig()
-
-// Resizing state
-const resizingPanel = ref<'tasks' | 'chat' | 'logs' | null>(null)
-const draggingPanel = ref<'logs' | null>(null)
-const resizeStartPos = ref(0)
-const resizeStartSize = ref(0)
-const dragStartPos = ref(0)
-const dragStartBottom = ref(0)
-
-// Navigation items with icons
-const navItems = [
-  {
-    id: 'work',
-    label: 'WORK',
-    icon: FolderIcon
-  },
-  {
-    id: 'timesheet',
-    label: 'TIMESHEET',
-    icon: ClockIcon
-  },
-  {
-    id: 'todo',
-    label: 'TO-DO LIST',
-    icon: ClipboardIcon
-  },
-  {
-    id: 'discussion',
-    label: 'DISCUSSION',
-    icon: ChatIcon
-  },
-  {
-    id: 'settings',
-    label: 'SETTINGS',
-    icon: GearIcon
-  }
+const railIcons = [
+  { id: 'home', component: FolderIcon, label: 'Home' },
+  { id: 'search', component: ChatIcon, label: 'Search' },
+  { id: 'settings', component: GearIcon, label: 'Settings' },
+  { id: 'history', component: ClockIcon, label: 'History' }
 ]
 
-function handleTasksResizeStart(e: MouseEvent, currentHeight: number) {
-  resizingPanel.value = 'tasks'
-  resizeStartPos.value = e.clientY
-  resizeStartSize.value = currentHeight
-  e.preventDefault()
-  e.stopPropagation()
-}
+const search = ref('')
+const prompt = ref('')
+const tags = ['missile.ai']
 
-function handleChatResizeStart(e: MouseEvent, currentWidth: number) {
-  resizingPanel.value = 'chat'
-  resizeStartPos.value = e.clientX
-  resizeStartSize.value = currentWidth
-  e.preventDefault()
-  e.stopPropagation()
-}
-
-function handleLogsResizeStart(e: MouseEvent, currentHeight: number) {
-  resizingPanel.value = 'logs'
-  resizeStartPos.value = e.clientY
-  resizeStartSize.value = currentHeight
-  e.preventDefault()
-  e.stopPropagation()
-}
-
-function handleLogsDragStart(e: MouseEvent, currentBottom: number) {
-  draggingPanel.value = 'logs'
-  dragStartPos.value = e.clientY
-  dragStartBottom.value = currentBottom
-  e.preventDefault()
-  e.stopPropagation()
-}
-
-function handleMouseMove(e: MouseEvent) {
-  if (draggingPanel.value === 'logs') {
-    // Dragging: move panel up/down
-    const delta = dragStartPos.value - e.clientY // Inverted: moving mouse up increases bottom offset
-    const maxBottom = window.innerHeight - logsPanelHeight.value - 50 // Max position (leave some space at top)
-    const newBottom = Math.max(0, Math.min(maxBottom, dragStartBottom.value + delta))
-    logsPanelBottom.value = newBottom
-  } else if (resizingPanel.value === 'tasks') {
-    const delta = e.clientY - resizeStartPos.value
-    const newHeight = Math.max(120, Math.min(window.innerHeight * 0.6, resizeStartSize.value + delta))
-    tasksPanelHeight.value = newHeight
-  } else if (resizingPanel.value === 'chat') {
-    const delta = resizeStartPos.value - e.clientX
-    const newWidth = Math.max(320, Math.min(window.innerWidth * 0.5, resizeStartSize.value + delta))
-    chatPanelWidth.value = newWidth
-  } else if (resizingPanel.value === 'logs') {
-    // Resizing: adjust panel height
-    const delta = resizeStartPos.value - e.clientY // Inverted: moving mouse up increases height
-    const maxHeight = window.innerHeight - logsPanelBottom.value - 20 // Leave some margin
-    const newHeight = Math.max(200, Math.min(maxHeight, resizeStartSize.value + delta))
-    logsPanelHeight.value = newHeight
+const conversationSections = [
+  {
+    title: 'Today',
+    items: [
+      { id: 1, title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago' },
+      { id: 2, title: 'CFD Simulation Setup Review', short: 'CFD Setup Review', time: '1h ago' },
+      { id: 3, title: 'Calculating Reynolds number', short: 'Reynolds number', time: '2h ago' },
+      { id: 4, title: 'CFD Mesh Creation Request', short: 'CFD Mesh Request', time: '2h ago' },
+      { id: 5, title: 'Python Conversion: Knots to Mach', short: 'Knots to Mach', time: '3h ago' },
+      { id: 6, title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '5h ago' },
+      { id: 7, title: 'CFD Simulation for Car Model', short: 'Car CFD Sim', time: '6h ago' },
+      { id: 8, title: 'Ahmed Body Mesh Generation', short: 'Ahmed Mesh Gen', time: '6h ago' }
+    ]
+  },
+  {
+    title: 'Yesterday',
+    items: [
+      { id: 9, title: 'CFD Simulation Request follow-up', short: 'CFD follow-up', time: 'Yesterday' }
+    ]
+  },
+  {
+    title: 'This Month',
+    items: [
+      { id: 10, title: 'Mesh Setup for Y+ Target', short: 'Y+ Target mesh', time: 'Nov 24' },
+      { id: 11, title: 'Workspace Inquiry and Mapping', short: 'Workspace inquiry', time: 'Nov 24' },
+      { id: 12, title: 'Available Tools Inquiry', short: 'Tools inquiry', time: 'Nov 19' },
+      { id: 13, title: 'Mesh Setup for Geometry', short: 'Geometry mesh', time: 'Nov 19' },
+      { id: 14, title: 'Mesh Refinement Zone Design', short: 'Refinement zone', time: 'Nov 19' }
+    ]
   }
-}
-
-function handleMouseUp() {
-  resizingPanel.value = null
-  draggingPanel.value = null
-}
-
-function handleAgentLog(log: AgentLog) {
-  agentLogs.value.unshift(log)
-  if (agentLogs.value.length > 50) {
-    agentLogs.value = agentLogs.value.slice(0, 50)
-  }
-  if (!logsPanelOpen.value) {
-    logsPanelOpen.value = true
-  }
-}
-
-function handleFirstMessage() {
-  // Hide welcome screen by setting activeNav to 'work'
-  if (!activeNav.value) {
-    activeNav.value = 'work'
-  }
-}
-
-function handleDocumentSelect(document: any) {
-  // Ensure work view is active to show the viewer
-  if (!activeNav.value || activeNav.value !== 'work') {
-    activeNav.value = 'work'
-  }
-  
-  // Check if this is a Speckle model (has projectId and modelId in metadata)
-  if (document.metadata?.projectId && document.metadata?.modelId) {
-    // Open Speckle model in workspace
-    // Use document.url if available (already constructed with correct server URL)
-    // Otherwise construct URL using configured Speckle server
-    const modelUrl = document.url || `${config.public.speckleUrl}/projects/${document.metadata.projectId}/models/${document.metadata.modelId}`
-    console.log('Opening Speckle model:', { 
-      modelUrl, 
-      document,
-      speckleUrl: config.public.speckleUrl,
-      projectId: document.metadata.projectId,
-      modelId: document.metadata.modelId
-    })
-    workspace.openModel(modelUrl, document.title || document.name)
-  } else if (document.url || document.filePath) {
-    // Open PDF in workspace
-    workspace.openPDF(document.url || document.filePath, document.title || document.name)
-  }
-}
-
-// Expose workspace methods for chat to use
-provide('workspace', workspace)
-provide('emitAgentLog', handleAgentLog)
-provide('openDocumentsList', (documents: any[], title?: string, subtitle?: string) => {
-  similarDocuments.value = documents
-  documentsListTitle.value = title || 'Documents'
-  documentsListSubtitle.value = subtitle || ''
-  documentsListOpen.value = true
-})
-provide('openPDF', (url: string, fileName?: string) => {
-  workspace.openPDF(url, fileName)
-})
-provide('openDraft', (title: string, content?: string) => {
-  workspace.openDraft(title, content)
-})
-provide('openModel', (url: string, name?: string) => {
-  workspace.openModel(url, name)
-})
-provide('similarDocuments', similarDocuments)
-
-// Lazy load view components
-const WelcomeScreen = defineAsyncComponent(() => import('~/components/WelcomeScreen.vue'))
-const WorkView = defineAsyncComponent(() => import('~/components/views/WorkView.vue'))
-const TimesheetView = defineAsyncComponent(() => import('~/components/views/TimesheetView.vue'))
-const TodoListView = defineAsyncComponent(() => import('~/components/views/TodoListView.vue'))
-const DiscussionView = defineAsyncComponent(() => import('~/components/views/DiscussionView.vue'))
-const SettingsView = defineAsyncComponent(() => import('~/components/views/SettingsView.vue'))
+]
 </script>
+
+<style scoped>
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #1f1f1f;
+  border-radius: 8px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #2a2a2a;
+}
+</style>
