@@ -113,56 +113,6 @@
 
     <!-- Input -->
     <div class="border-t border-gray-200 bg-white/80 backdrop-blur-sm p-4">
-      <!-- Database Toggles -->
-      <div class="mb-3 flex items-center gap-2">
-        <button
-          @click="toggleDataSource('project')"
-          :class="[
-            'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5',
-            dataSourcesComputed.project_db
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-          ]"
-          :disabled="isLoading"
-        >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 16 16">
-            <path d="M8 2L2 5V13L8 16L14 13V5L8 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Project DB
-        </button>
-        <button
-          @click="toggleDataSource('code')"
-          :class="[
-            'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5',
-            dataSourcesComputed.code_db
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-          ]"
-          :disabled="isLoading"
-        >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 16 16">
-            <path d="M4 8L2 10L4 12M12 8L14 10L12 12M6 3L5.33 12.67" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Code DB
-        </button>
-        <button
-          @click="toggleDataSource('coop')"
-          :class="[
-            'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5',
-            dataSourcesComputed.coop_manual
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-          ]"
-          :disabled="isLoading"
-        >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 16 16">
-            <path d="M2 3L8 1L14 3V13L8 15L2 13V3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8 1V15M2 3L8 5L14 3M2 13L8 11L14 13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Coop DB
-        </button>
-      </div>
-
       <!-- Attachment Preview -->
       <div v-if="pendingImages.length > 0" class="mb-3 flex flex-wrap gap-2 p-2 bg-purple-50 rounded-xl border border-purple-200">
         <div
@@ -332,30 +282,8 @@ const uploadProgress = ref(0)
 // Initialize composables early so functions can use them
 const { uploadIFCFile } = useIFCUpload()
 
-// Data source toggles (default all enabled)
-const dataSources = ref({
-  project_db: true,
-  code_db: true,
-  coop_manual: true
-})
-
-// Computed for template access (handles SSR better)
-const dataSourcesComputed = computed(() => dataSources.value)
-
-function toggleDataSource(source: 'project' | 'code' | 'coop') {
-  if (source === 'project') {
-    dataSources.value.project_db = !dataSources.value.project_db
-  } else if (source === 'code') {
-    dataSources.value.code_db = !dataSources.value.code_db
-  } else if (source === 'coop') {
-    dataSources.value.coop_manual = !dataSources.value.coop_manual
-  }
-  
-  // Ensure at least one is enabled
-  if (!dataSources.value.project_db && !dataSources.value.code_db && !dataSources.value.coop_manual) {
-    dataSources.value.project_db = true
-  }
-}
+// Database selection is now handled automatically by the backend router
+// Removed manual toggle buttons - the system intelligently selects databases based on query content and user role
 
 function resizeImage(file: File, maxDimension: number = 2048): Promise<{ base64: string; preview: string; wasResized: boolean }> {
   return new Promise((resolve, reject) => {
@@ -700,13 +628,13 @@ async function handleSend() {
     console.log('📸 [SmartChatPanel] imagesBase64 created:', imagesBase64 ? `${imagesBase64.length} images, first length=${imagesBase64[0]?.substring(0, 50)}...` : 'undefined')
     console.log('📸 [SmartChatPanel] Calling sendSmartMessage with:', {
       message: userMessage,
-      images_base64: imagesBase64,
-      dataSources: dataSources.value
+      images_base64: imagesBase64
+      // dataSources removed - backend router now intelligently selects databases
     })
     
     const response = await sendSmartMessage(userMessage, {
       sessionId: 'default',
-      dataSources: dataSources.value,
+      // dataSources removed - backend router now intelligently selects databases
       images_base64: imagesBase64
     })
     
@@ -718,7 +646,7 @@ async function handleSend() {
       userMessage,
       'default',
       undefined,
-      dataSources.value,
+      undefined, // dataSources removed - backend router now intelligently selects databases
       {
         // On thinking log received
         onLog: (log) => {

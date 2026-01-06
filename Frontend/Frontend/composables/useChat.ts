@@ -43,27 +43,21 @@ export const useChat = () => {
       project_db?: boolean
       code_db?: boolean
       coop_manual?: boolean
-    }
+    } | undefined  // Keep for backwards compatibility but don't use
   ): Promise<ChatResponse> {
     const url = `${config.public.orchestratorUrl}/chat`
     console.log('📤 Sending chat message to:', url)
     console.log('📝 Message:', message)
-    console.log('📚 Data Sources:', dataSources || 'all enabled')
     console.log('📸 [useChat] images parameter received:', images)
     console.log('📸 [useChat] images length:', images?.length || 0)
     console.log('📸 [useChat] images first item preview:', images?.[0]?.substring(0, 50) || 'none')
     
     try {
-      const requestBody = {
+      const requestBody: any = {
         message,
         session_id: sessionId,
-        images_base64: images,
-        // Use provided data sources or default to all enabled
-        data_sources: dataSources || {
-          project_db: true,
-          code_db: true,
-          coop_manual: true
-        }
+        images_base64: images
+        // data_sources removed - backend router now intelligently selects databases automatically
       }
       
       console.log('📸 [useChat] Request body images_base64:', requestBody.images_base64 ? `${requestBody.images_base64.length} images` : 'undefined')
@@ -114,7 +108,7 @@ export const useChat = () => {
     const url = `${config.public.orchestratorUrl}/chat/stream`
     console.log('📤 Starting streaming chat to:', url)
     console.log('📝 Message:', message)
-    console.log('📚 Data Sources:', dataSources || 'all enabled')
+    // dataSources removed - backend router now intelligently selects databases automatically
     
     try {
       const response = await fetch(url, {
@@ -125,12 +119,8 @@ export const useChat = () => {
         body: JSON.stringify({
           message,
           session_id: sessionId,
-          images_base64: images,
-          data_sources: dataSources || {
-            project_db: true,
-            code_db: true,
-            coop_manual: true
-          }
+          images_base64: images
+          // data_sources removed - backend router now intelligently selects databases automatically
         })
       })
       

@@ -115,6 +115,87 @@ MAX_CONVERSATION_HISTORY = 5  # Keep last 5 Q&A exchanges
 MAX_SEMANTIC_HISTORY = 5      # Keep semantic intelligence for last 5 exchanges
 
 # =============================================================================
+# ROLE-BASED DATABASE PREFERENCES
+# =============================================================================
+# Defines which databases should be preferred/prioritized for different user roles
+# Used by the router to guide database selection in query routing
+#
+# DATABASES:
+# 1. project_db: Project database with two sub-tables:
+#    - image_descriptions (smart chunks): VLM-described small images, more accurate for specific info
+#    - project_description (large chunks): Overall project summaries from all image summaries
+# 2. code_db: Building codes, standards, guidelines, and recommendations
+# 3. coop_manual (internal_docs): Company-specific data, resources, procedures, and training materials
+# 4. speckle_db (models_db): BIM information - materials, structural elements, dimensions, member connections
+#
+# Format: {
+#     "role_name": {
+#         "project_db": priority (0-1),    # 1.0 = highest priority, 0.0 = lowest
+#         "code_db": priority (0-1),
+#         "coop_manual": priority (0-1),
+#         "speckle_db": priority (0-1),
+#         "description": "Role description for router context"
+#     }
+# }
+#
+# Priorities guide the router but don't force exclusive selection - the router
+# can still select multiple databases when the query requires it.
+ROLE_DATABASE_PREFERENCES = {
+    "structural_engineer": {
+        "project_db": 1.0,      # Primary focus: project documents and drawings
+        "code_db": 0.9,         # High: code references for design compliance
+        "coop_manual": 0.4,     # Low: training materials less relevant
+        "speckle_db": 0.9,      # High: BIM models for structural analysis
+        "description": "Structural engineers primarily work with project documents, building codes, and BIM models for design and analysis."
+    },
+    "design_engineer": {
+        "project_db": 0.9,      # High: project documents essential
+        "code_db": 0.9,         # High: design standards and codes critical
+        "coop_manual": 0.5,     # Medium: some procedures relevant
+        "speckle_db": 1.0,      # Primary: BIM models for design work
+        "description": "Design engineers need project context, code standards, and BIM models for design work."
+    },
+    "project_manager": {
+        "project_db": 1.0,      # Primary: project documents and history
+        "code_db": 0.5,         # Medium: some code awareness needed
+        "coop_manual": 0.8,     # High: procedures and workflows very relevant
+        "speckle_db": 0.6,      # Medium: BIM models for project overview
+        "description": "Project managers focus on project documents, timelines, organizational procedures, and project overview."
+    },
+    "code_specialist": {
+        "project_db": 0.6,      # Medium: project context helpful
+        "code_db": 1.0,         # Primary: codes and standards are main focus
+        "coop_manual": 0.5,     # Medium: some company procedures
+        "speckle_db": 0.4,      # Low: BIM models less relevant
+        "description": "Code specialists primarily work with building codes, standards, and regulatory requirements."
+    },
+    "trainer": {
+        "project_db": 0.6,      # Medium: example projects for training
+        "code_db": 0.6,         # Medium: code references for training
+        "coop_manual": 1.0,     # Primary: training materials and procedures
+        "speckle_db": 0.5,      # Medium: example models for training
+        "description": "Trainers focus on training materials, procedures, and educational content."
+    },
+    "bim_specialist": {
+        "project_db": 0.7,      # Medium: project context helpful
+        "code_db": 0.6,         # Medium: some code awareness
+        "coop_manual": 0.5,     # Medium: company procedures
+        "speckle_db": 1.0,      # Primary: BIM models and structural information
+        "description": "BIM specialists focus on model data, structural elements, materials, and dimensions."
+    },
+    "default": {
+        "project_db": 0.8,      # Balanced: all databases equally accessible
+        "code_db": 0.8,
+        "coop_manual": 0.8,
+        "speckle_db": 0.8,
+        "description": "Default role with balanced access to all databases."
+    }
+}
+
+# Valid role names (for validation)
+VALID_ROLES = list(ROLE_DATABASE_PREFERENCES.keys())
+
+# =============================================================================
 # DEBUG MODE
 # =============================================================================
 DEBUG_MODE = True  # ON - Show all INFO level logs

@@ -31,10 +31,12 @@ def node_grade(state: RAGState) -> dict:
     try:
         log_enh.info(">>> GRADE START")
         
-        data_sources = state.data_sources or {"project_db": True, "code_db": False, "coop_manual": False}
+        # Get data_sources from state (set by router) - include speckle_db in fallback
+        data_sources = state.data_sources or {"project_db": True, "code_db": False, "coop_manual": False, "speckle_db": False}
         project_db_enabled = data_sources.get("project_db", True)
         code_db_enabled = data_sources.get("code_db", False)
         coop_db_enabled = data_sources.get("coop_manual", False)
+        speckle_db_enabled = data_sources.get("speckle_db", False)
         
         log_enh.info(f"USE_GRADER={USE_GRADER}, Project docs: {len(state.retrieved_docs or [])}, Code docs: {len(state.retrieved_code_docs or [])}, Coop docs: {len(state.retrieved_coop_docs or [])}")
 
