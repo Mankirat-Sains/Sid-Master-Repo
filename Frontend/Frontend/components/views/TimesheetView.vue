@@ -1,12 +1,12 @@
 <template>
-  <div class="h-full w-full flex bg-gradient-to-br from-slate-50 to-white overflow-hidden">
+  <div class="h-full w-full flex bg-[#0f0f0f] text-white overflow-hidden timesheet-view">
     <!-- Left sidebar nav (mirrors v0: Employees, Projects, Insights, etc.) -->
-    <aside class="w-56 border-r border-gray-200 bg-white/80 backdrop-blur-xl flex flex-col">
-      <div class="px-4 py-4 border-b border-gray-200">
-        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
+    <aside class="w-56 border-r border-white/10 bg-[#111] backdrop-blur-xl flex flex-col">
+      <div class="px-4 py-4 border-b border-white/10">
+        <p class="text-xs font-semibold uppercase tracking-wide text-white/60 mb-2">
           IanAnalytics (IA)
         </p>
-        <p class="text-sm text-gray-700">
+        <p class="text-sm text-white/80">
           Engineering Tracking System
         </p>
       </div>
@@ -16,7 +16,7 @@
           :key="item.id"
           type="button"
           class="w-full flex items-center gap-2 px-4 py-2 rounded-lg text-left transition-colors"
-          :class="activeSection === item.id ? 'bg-purple-100 text-purple-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+          :class="activeSection === item.id ? 'bg-white/10 text-white font-medium border border-white/15' : 'text-white/70 hover:bg-white/5 hover:text-white'"
           @click="handleNavClick(item.id)"
         >
           <span class="inline-block w-5 text-center">
@@ -28,13 +28,13 @@
     </aside>
 
     <!-- Right content area -->
-    <div class="flex-1 flex flex-col bg-gradient-to-br from-slate-50 to-white overflow-hidden">
+    <div class="flex-1 flex flex-col bg-[#0f0f0f] overflow-hidden">
       <!-- Header + search -->
-      <header class="border-b border-gray-200 bg-white/80 backdrop-blur-xl p-6">
+      <header class="border-b border-white/10 bg-[#0f0f0f] backdrop-blur-xl p-6">
         <div class="flex items-center justify-between mb-4">
           <div>
-            <h2 class="text-3xl font-bold text-gray-900">{{ headerTitle }}</h2>
-            <p class="text-sm text-gray-500 mt-1">
+            <h2 class="text-3xl font-bold text-white">{{ headerTitle }}</h2>
+            <p class="text-sm text-white/60 mt-1">
               {{ headerSubtitle }}
             </p>
           </div>
@@ -50,7 +50,7 @@
             v-model="searchQuery"
             type="text"
             placeholder="Search employees by name or role..."
-            class="w-full max-w-md pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            class="w-full max-w-md pl-10 pr-4 py-2.5 rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
           />
           <svg
             class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
@@ -69,7 +69,7 @@
       </header>
 
       <!-- Main content: either dashboard list or drill-down detail, similar to v0 routing -->
-      <main class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-br from-slate-50/50 to-white/50">
+      <main class="flex-1 overflow-y-auto p-6 space-y-6 bg-[#0f0f0f]">
         <!-- Employees dashboard (v0 /app/page) -->
         <section
           v-if="activeSection === 'employees' && !selectedEmployee"

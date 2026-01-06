@@ -28,10 +28,10 @@
           :key="icon.id"
           class="relative h-8 w-8 rounded border border-transparent flex items-center justify-center text-white/60 hover:text-white hover:border-white/10 transition"
           :aria-label="icon.label"
-          :class="activeRail === icon.id ? 'text-white border-white/20 bg-white/5' : ''"
-          @click="setActiveRail(icon.id)"
+          :class="activePage === icon.id ? 'text-white border-white/20 bg-white/5' : ''"
+          @click="setActivePage(icon.id)"
         >
-          <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-purple-500 rounded-r" v-if="icon.id === activeRail"></span>
+          <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-purple-500 rounded-r" v-if="icon.id === activePage"></span>
           <component :is="icon.component" class="w-5 h-5" />
         </button>
         <div class="mt-auto h-9 w-9 rounded border border-white/10 bg-white/5"></div>
@@ -76,25 +76,13 @@
               :key="tab.id"
               class="w-full flex items-center gap-2 px-3 py-2 rounded border border-transparent text-[12px] text-white/80 hover:bg-white/5 transition"
               :class="activePage === tab.id ? 'bg-white/5 border-white/10 text-white' : ''"
-              @click="setActiveRail(tab.id)"
+              @click="setActivePage(tab.id)"
             >
-              <component :is="tab.component" class="w-4 h-4" />
-              <span class="font-medium">{{ tab.label }}</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="px-2.5 py-2 border-b border-white/10">
-          <p class="text-[10px] uppercase tracking-[0.18em] text-white/35 mb-2 font-medium">Tasks</p>
-          <div class="space-y-1">
-            <button
-              v-for="tab in taskTabs"
-              :key="tab.id"
-              class="w-full flex items-center gap-2 px-3 py-2 rounded border border-transparent text-[12px] text-white/80 hover:bg-white/5 transition"
-              :class="activePage === tab.id ? 'bg-white/5 border-white/10 text-white' : ''"
-              @click="activePage = tab.id as typeof activePage.value"
-            >
-              <span class="w-4 h-4 rounded bg-white/10 border border-white/15 flex items-center justify-center text-[10px] text-white/80">
+              <component v-if="tab.component" :is="tab.component" class="w-4 h-4" />
+              <span
+                v-else
+                class="w-4 h-4 rounded bg-white/10 border border-white/15 flex items-center justify-center text-[10px] text-white/80"
+              >
                 {{ tab.label.charAt(0) }}
               </span>
               <span class="font-medium">{{ tab.label }}</span>
@@ -114,7 +102,7 @@
                 v-for="conv in section.items"
                 :key="conv.id"
                 class="w-full text-left px-2.5 py-1.5 rounded bg-transparent border border-transparent hover:bg-white/5 transition"
-                :class="activeConversationId === conv.id ? 'bg-white/5 border-white/10' : ''"
+                :class="activeConversationId === conv.id && activePage === 'home' ? 'bg-white/5 border-white/10' : ''"
                 @click="selectConversation(conv.id)"
                 @contextmenu.prevent.stop="openContextMenu($event, conv.id)"
               >
@@ -328,7 +316,7 @@
                         </button>
                       </div>
                     </div>
-                    <div class="max-w-5xl mx-auto flex items-end gap-2.5">
+                    <div class="w-full max-w-3xl mx-auto flex items-end gap-2.5">
                       <button
                         class="h-9 w-9 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center justify-center text-white/70 flex-shrink-0"
                         aria-label="Attach"
@@ -340,11 +328,13 @@
                       </button>
                       <textarea
                         v-model="prompt"
-                        class="flex-1 bg-[#121212] border border-white/10 focus:border-white/30 focus:ring-0 rounded-xl text-[13px] text-white placeholder-white/40 px-3 py-2.5 resize-none leading-relaxed min-h-[42px]"
+                        ref="promptInput"
+                        class="flex-1 bg-[#121212] border border-white/10 focus:border-white/30 focus:ring-0 rounded-xl text-[13px] text-white placeholder-white/40 px-3 py-2.5 resize-none leading-relaxed min-h-[42px] max-h-[180px] overflow-y-hidden"
                         placeholder="Reply to Sid..."
                         aria-label="Prompt input"
                         rows="1"
                         @keydown.enter.exact.prevent="handleSend"
+                        @input="resizePrompt"
                       ></textarea>
                       <button
                         class="h-9 w-9 rounded-xl flex items-center justify-center text-white flex-shrink-0 transition"
@@ -358,7 +348,7 @@
                         </svg>
                       </button>
                     </div>
-                    <div class="flex items-center justify-between text-[11px] text-white/45 mt-3 max-w-5xl mx-auto">
+                    <div class="flex items-center justify-between text-[11px] text-white/45 mt-3 max-w-3xl mx-auto">
                       <div class="flex items-center gap-2">
                         <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/75 tracking-[0.14em] uppercase">
                           {{ selectedModel }}
@@ -399,27 +389,8 @@
             </div>
           </div>
 
-          <div v-else-if="activePage === 'settings'" class="flex-1 min-h-0">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-white font-semibold text-sm">Settings</h2>
-                <span class="text-[11px] text-white/50">Preferences</span>
-              </div>
-              <div class="space-y-4 text-sm text-white/80">
-                <label class="flex items-center justify-between bg-[#101010] border border-white/10 rounded-lg px-3 py-2">
-                  <span>Notifications</span>
-                  <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 bg-[#1a1a1a] border-white/20" />
-                </label>
-                <label class="flex items-center justify-between bg-[#101010] border border-white/10 rounded-lg px-3 py-2">
-                  <span>Light mode</span>
-                  <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 bg-[#1a1a1a] border-white/20" />
-                </label>
-                <label class="flex items-center justify-between bg-[#101010] border border-white/10 rounded-lg px-3 py-2">
-                  <span>Auto-save transcripts</span>
-                  <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 bg-[#1a1a1a] border-white/20" checked />
-                </label>
-              </div>
-            </div>
+          <div v-else-if="activePage === 'settings'" class="flex-1 min-h-0 overflow-hidden">
+            <SettingsView />
           </div>
 
           <div v-else-if="activePage === 'history'" class="flex-1 min-h-0">
@@ -441,88 +412,20 @@
             </div>
           </div>
 
-          <div v-else-if="activePage === 'work'" class="flex-1 min-h-0">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-white font-semibold text-sm">Work</h2>
-                <span class="text-[11px] text-white/50">Projects & tasks</span>
-              </div>
-              <div class="flex-1 overflow-y-auto custom-scroll text-white/80 text-sm space-y-2">
-                <div
-                  v-for="item in sampleWorkItems"
-                  :key="item.title"
-                  class="px-4 py-3 rounded-lg border border-white/10 bg-[#111]"
-                >
-                  <p class="text-white font-semibold">{{ item.title }}</p>
-                  <div class="flex items-center gap-3 text-[12px] text-white/60 mt-1">
-                    <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 uppercase tracking-[0.08em]">{{ item.status }}</span>
-                    <span>Owner: {{ item.owner }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div v-else-if="activePage === 'work'" class="flex-1 min-h-0 overflow-hidden">
+            <WorkView />
           </div>
 
-          <div v-else-if="activePage === 'timesheet'" class="flex-1 min-h-0">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-white font-semibold text-sm">Timesheet</h2>
-                <span class="text-[11px] text-white/50">Track hours</span>
-              </div>
-              <div class="flex-1 overflow-y-auto custom-scroll text-white/80 text-sm space-y-2">
-                <div
-                  v-for="entry in sampleTimesheet"
-                  :key="entry.date + entry.task"
-                  class="px-4 py-3 rounded-lg border border-white/10 bg-[#111] flex items-center justify-between"
-                >
-                  <div>
-                    <p class="text-white font-semibold">{{ entry.task }}</p>
-                    <p class="text-[12px] text-white/60">{{ entry.date }}</p>
-                  </div>
-                  <span class="text-white font-semibold">{{ entry.hours }}h</span>
-                </div>
-              </div>
-            </div>
+          <div v-else-if="activePage === 'timesheet'" class="flex-1 min-h-0 overflow-hidden">
+            <TimesheetView />
           </div>
 
-          <div v-else-if="activePage === 'todo'" class="flex-1 min-h-0">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-white font-semibold text-sm">To-Do List</h2>
-                <span class="text-[11px] text-white/50">Tasks</span>
-              </div>
-              <div class="flex-1 overflow-y-auto custom-scroll text-white/80 text-sm space-y-2">
-                <div
-                  v-for="item in sampleTodos"
-                  :key="item.title"
-                  class="px-4 py-3 rounded-lg border border-white/10 bg-[#111] flex items-center gap-3"
-                >
-                  <input type="checkbox" :checked="item.done" class="form-checkbox h-4 w-4 text-purple-600 bg-[#1a1a1a] border-white/20" disabled />
-                  <div>
-                    <p :class="item.done ? 'text-white/50 line-through' : 'text-white'">{{ item.title }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div v-else-if="activePage === 'todo'" class="flex-1 min-h-0 overflow-hidden">
+            <TodoListView />
           </div>
 
-          <div v-else-if="activePage === 'discussion'" class="flex-1 min-h-0">
-            <div class="h-full w-full chat-frame rounded-[24px] bg-[#0f0f0f] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-white font-semibold text-sm">Discussion</h2>
-                <span class="text-[11px] text-white/50">Threads</span>
-              </div>
-              <div class="flex-1 overflow-y-auto custom-scroll text-white/80 text-sm space-y-2">
-                <div
-                  v-for="thread in sampleDiscussions"
-                  :key="thread.title"
-                  class="px-4 py-3 rounded-lg border border-white/10 bg-[#111]"
-                >
-                  <p class="text-white font-semibold">{{ thread.title }}</p>
-                  <div class="text-[12px] text-white/60 mt-1">Messages: {{ thread.messages }} · Updated {{ thread.updated }}</div>
-                </div>
-              </div>
-            </div>
+          <div v-else-if="activePage === 'discussion'" class="flex-1 min-h-0 overflow-hidden">
+            <DiscussionView />
           </div>
         </div>
       </main>
@@ -577,6 +480,12 @@ import FolderIcon from '~/components/icons/FolderIcon.vue'
 import ChatIcon from '~/components/icons/ChatIcon.vue'
 import GearIcon from '~/components/icons/GearIcon.vue'
 import ClockIcon from '~/components/icons/ClockIcon.vue'
+import ClipboardIcon from '~/components/icons/ClipboardIcon.vue'
+import WorkView from '~/components/views/WorkView.vue'
+import TimesheetView from '~/components/views/TimesheetView.vue'
+import TodoListView from '~/components/views/TodoListView.vue'
+import DiscussionView from '~/components/views/DiscussionView.vue'
+import SettingsView from '~/components/views/SettingsView.vue'
 import { useSmartChat } from '~/composables/useSmartChat'
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 
@@ -606,26 +515,18 @@ const railIcons = [
 ]
 
 const navTabs = [
-  { id: 'home', label: 'Home', component: FolderIcon },
-  { id: 'search', label: 'Search', component: ChatIcon },
-  { id: 'settings', label: 'Settings', component: GearIcon },
-  { id: 'history', label: 'History', component: ClockIcon }
-]
-
-const taskTabs = [
-  { id: 'work', label: 'Work' },
-  { id: 'timesheet', label: 'Timesheet' },
-  { id: 'todo', label: 'To-Do List' },
-  { id: 'discussion', label: 'Discussion' },
-  { id: 'settings', label: 'Settings' }
+  { id: 'work', label: 'Work', component: null },
+  { id: 'timesheet', label: 'Timesheet', component: null },
+  { id: 'todo', label: 'To-Do List', component: null },
+  { id: 'discussion', label: 'Discussion', component: null }
 ]
 
 const availableModels = ['gpt-4o-120b', 'gpt-4o-mini']
 const selectedModel = ref(availableModels[0])
-const activeRail = ref('home')
 const activePage = ref<'home' | 'search' | 'settings' | 'history' | 'work' | 'timesheet' | 'todo' | 'discussion'>('home')
 const search = ref('')
 const prompt = ref('')
+const promptInput = ref<HTMLTextAreaElement | null>(null)
 const tags = ref(['missile.ai'])
 const chatContainer = ref<HTMLElement | null>(null)
 const isSending = ref(false)
@@ -645,27 +546,6 @@ const deleteDialog = ref<{ open: boolean; convId: string | null }>({
   open: false,
   convId: null
 })
-
-const sampleWorkItems = [
-  { title: 'IFC Import prototype', status: 'In Progress', owner: 'You' },
-  { title: 'Mesh refinement review', status: 'Pending', owner: 'Sid' }
-]
-
-const sampleTimesheet = [
-  { date: 'Today', task: 'IFC import fixes', hours: 1.5 },
-  { date: 'Yesterday', task: 'Mesh tuning', hours: 2 }
-]
-
-const sampleTodos = [
-  { title: 'Validate IFC upload flow', done: false },
-  { title: 'Document mesh presets', done: true },
-  { title: 'Add error banner copy', done: false }
-]
-
-const sampleDiscussions = [
-  { title: 'IFC import edge cases', messages: 4, updated: '1h ago' },
-  { title: 'Mesh sizing defaults', messages: 2, updated: '3h ago' }
-]
 
 const defaultConversations: Conversation[] = [
   { id: 'conv-1', title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago', section: 'Today', sessionId: 'session-1', chatLog: [] },
@@ -786,6 +666,7 @@ watch(
 watch(activeConversationId, () => {
   prompt.value = ''
   attachments.value = []
+  nextTick(resizePrompt)
   scrollToBottom()
 })
 
@@ -794,6 +675,7 @@ onMounted(() => {
   chatContainer.value?.addEventListener('scroll', handleChatScroll)
   handleChatScroll()
   document.addEventListener('click', handleGlobalClick)
+  nextTick(resizePrompt)
 })
 
 watch(
@@ -802,14 +684,21 @@ watch(
   { deep: true }
 )
 
+watch(prompt, () => {
+  nextTick(resizePrompt)
+})
+
 onBeforeUnmount(() => {
   chatContainer.value?.removeEventListener('scroll', handleChatScroll)
   document.removeEventListener('click', handleGlobalClick)
 })
 
-function setActiveRail(id: string) {
-  activeRail.value = id
+function setActivePage(id: string) {
   activePage.value = id as typeof activePage.value
+}
+
+function setActiveRail(id: string) {
+  setActivePage(id)
 }
 
 function cycleModel() {
@@ -832,6 +721,7 @@ function startNewConversation() {
   }
   conversations.value = [newConversation, ...conversations.value]
   activeConversationId.value = newId
+  activePage.value = 'home'
   prompt.value = ''
   attachments.value = []
 }
@@ -839,6 +729,7 @@ function startNewConversation() {
 function selectConversation(id: string) {
   if (activeConversationId.value === id) return
   activeConversationId.value = id
+  activePage.value = 'home'
   prompt.value = ''
   closeContextMenu()
 }
@@ -890,6 +781,16 @@ async function handleFileChange(event: Event) {
 
 function removeAttachment(idx: number) {
   attachments.value.splice(idx, 1)
+}
+
+function resizePrompt() {
+  const el = promptInput.value
+  if (!el) return
+  const maxHeight = 180
+  el.style.height = 'auto'
+  const next = Math.min(el.scrollHeight, maxHeight)
+  el.style.height = `${next}px`
+  el.style.overflowY = el.scrollHeight > maxHeight ? 'auto' : 'hidden'
 }
 
 function touchConversation(convId: string) {

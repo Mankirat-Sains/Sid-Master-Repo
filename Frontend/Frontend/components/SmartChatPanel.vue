@@ -242,6 +242,9 @@ import { useSpeckle } from '~/composables/useSpeckle'
 import { useIFCUpload } from '~/composables/useIFCUpload'
 import { useRuntimeConfig } from '#app'
 
+const DEMO_RFP_PATH = '/writing/Structural Engineer RFP 63023.pdf'
+const DEMO_RFP_FILE_NAME = 'Structural Engineer RFP 63023.pdf'
+
 const { formatMessageText } = useMessageFormatter()
 
 function handleLogoError(event: Event) {
@@ -1331,8 +1334,8 @@ async function handleRFPWorkflow(message: string, action: 'new_rfp' | 'open_rfp'
     if (action === 'open_rfp') {
       if (!rfpProposalState.value.rfpPath) {
         // Fallback to demo RFP if path missing
-        rfpProposalState.value.rfpPath = '/writing/Structural Engineer RFP 63023.pdf'
-        rfpProposalState.value.rfpFileName = 'Structural Engineer RFP 63023.pdf'
+        rfpProposalState.value.rfpPath = DEMO_RFP_PATH
+        rfpProposalState.value.rfpFileName = DEMO_RFP_FILE_NAME
       }
       
       // Add RFP to document list
@@ -1556,7 +1559,7 @@ async function handleRFPWorkflow(message: string, action: 'new_rfp' | 'open_rfp'
       })
 
       // For now, use a mock RFP path - in production, this would come from user selection
-      const rfpPath = '/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Visual Studio/rag-GHD-Demo/writing/Structural Engineer RFP 63023.pdf'
+      const rfpPath = rfpProposalState.value.rfpPath || DEMO_RFP_PATH
       
       const analysis = await analyzeRFPAndFindSimilar(rfpPath)
       
@@ -1592,7 +1595,7 @@ async function handleRFPWorkflow(message: string, action: 'new_rfp' | 'open_rfp'
 
       // Get similar projects from current state (would be stored in component state)
       const similarProjects: any[] = [] // TODO: Get from state
-      const rfpPath = '/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Visual Studio/rag-GHD-Demo/writing/Structural Engineer RFP 63023.pdf'
+      const rfpPath = rfpProposalState.value.rfpPath || DEMO_RFP_PATH
       
       const proposalContent = await generateProposal(rfpPath, similarProjects, message)
       

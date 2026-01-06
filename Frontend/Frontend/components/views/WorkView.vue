@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div class="h-full work-view">
     <!-- Workspace Content (shown when workspace has content - takes priority) -->
     <div v-if="workspaceState.mode !== 'empty'" class="h-full flex flex-col">
       <div class="flex-1 min-h-0 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden border border-gray-200/50">
@@ -357,3 +357,47 @@ function selectTask(task: Task) {
 }
 </script>
 
+<style scoped>
+.work-view {
+  background: #0f0f0f;
+  color: #fff;
+}
+
+.work-view :deep([class*="text-gray-900"]),
+.work-view :deep([class*="text-gray-800"]),
+.work-view :deep([class*="text-gray-700"]) {
+  color: #fff !important;
+}
+
+.work-view :deep([class*="text-gray-600"]) {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.work-view :deep([class*="text-gray-500"]),
+.work-view :deep([class*="text-gray-400"]),
+.work-view :deep([class*="text-gray-300"]) {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.work-view :deep([class*="bg-white"]),
+.work-view :deep([class*="bg-gray-1"]),
+.work-view :deep([class*="bg-gray-2"]),
+.work-view :deep([class*="bg-gray-3"]) {
+  background-color: #131313 !important;
+  color: #fff;
+}
+
+.work-view :deep([class*="bg-gray-5"]) {
+  background-color: #0f0f0f !important;
+}
+
+.work-view :deep([class*="border-gray-"]) {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+.work-view :deep(.shadow-xl),
+.work-view :deep(.shadow-lg),
+.work-view :deep(.shadow-2xl) {
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45) !important;
+}
+</style>
