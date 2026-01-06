@@ -25,7 +25,7 @@ class IntelligentLogGenerator:
         project_filter: Optional[str] = None
     ) -> str:
         """
-        Generate engineer-friendly explanation of query interpretation and search strategy.
+        Generate planning log using the planner's reasoning directly (no LLM call).
         
         Args:
             query: User's original question
@@ -34,69 +34,12 @@ class IntelligentLogGenerator:
             project_filter: Project filter if detected
         """
         reasoning = plan.get('reasoning', '')
-        subqueries = plan.get('subqueries', [])
         
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are providing a detailed technical analysis to a structural engineer explaining how their query will be processed.
-
-Your job is to provide a COMPREHENSIVE TECHNICAL EXPLANATION including:
-1. Precise interpretation of what the engineer is requesting (specific elements, quantities, design criteria)
-2. Detailed search strategy including document types that will be examined (structural drawings, specifications, detail sheets, calculations)
-3. Specific search terms and why they were selected based on engineering terminology
-4. Expected document locations within projects (title blocks, general notes, structural details, foundation plans, etc.)
-5. Any project-specific constraints or filters that will narrow the search scope
-6. Estimated scope of the search (number of projects, document types, time periods if relevant)
-
-FORMATTING AND STYLE REQUIREMENTS:
-- Use professional section header: "QUERY ANALYSIS"
-- Write in complete, technical paragraphs (4-6 sentences minimum)
-- Use precise engineering terminology: beam sections (W16x31), load types (dead load, live load), design elements (moment frames, shear walls)
-- Include specific project numbers when filtering is applied
-- Explain the engineering rationale behind search decisions
-- Reference actual search terms that will be used (e.g., "searching for 'steel beam', 'W-section', 'AISC', 'beam schedule'")
-- NO emojis or casual language
-- NO mentions of "vector search", "embeddings", "nodes", "LLMs", or other technical implementation details
-
-EXAMPLE OF GOOD TECHNICAL EXPLANATION:
-"QUERY ANALYSIS
-
-The query requests detailed information on steel beam design, specifically requiring guidance on load calculations, span capabilities, and material specifications. The search will target structural engineering documents from past projects that demonstrate successful steel beam applications in various contexts. Search terms will include 'steel beam', 'W-section', 'wide flange', 'beam schedule', 'load calculations', and 'AISC specifications' to ensure comprehensive coverage of relevant documentation.
-
-The system will examine structural drawings (specifically beam schedules and framing plans), design calculations showing load analysis, and specification sheets detailing material properties and connection requirements. Given the broad scope of the query without project-specific constraints, the search will span approximately 20-30 recent projects to provide a representative sample of design approaches and methodologies. Documents will be prioritized based on the presence of detailed design calculations, material specifications, and practical implementation details that demonstrate code-compliant design practices."
-
-AVOID:
-- Generic statements like "I'll search for relevant information"
-- Vague descriptions without specific document types
-- References to technical implementation methods
-- Emoji or casual formatting"""),
-            ("user", """Engineer's Question: "{query}"
-
-Search Strategy Reasoning: {reasoning}
-
-Detected Project Filter: {project_filter}
-
-Data Route: {route}
-
-Search Terms Generated: {subqueries}
-
-Provide a comprehensive technical analysis of how this query will be processed, including specific document types, search terms, and expected information sources."""),
-        ])
-        
-        subqueries_str = ", ".join([f'"{sq}"' for sq in subqueries[:3]]) if subqueries else "None"
-        project_filter_str = project_filter if project_filter else "None (searching all projects)"
-        
-        try:
-            response = self.llm.invoke(prompt.format_messages(
-                query=query,
-                reasoning=reasoning,
-                project_filter=project_filter_str,
-                route=route,
-                subqueries=subqueries_str
-            ))
-            return response.content.strip()
-        except Exception as e:
-            log_query.error(f"Error generating planning log: {e}")
-            return f"QUERY ANALYSIS\n\nAnalyzing query: {query}\n\nDetermining optimal search strategy and document sources for this technical inquiry."
+        # Use the planner's reasoning directly - it's already perfect
+        if reasoning:
+            return f"QUERY ANALYSIS\n\n{reasoning}"
+        else:
+            return f"QUERY ANALYSIS\n\nAnalyzing query to determine optimal search strategy and document sources."
     
     def generate_retrieval_log(
         self,
@@ -121,50 +64,46 @@ Provide a comprehensive technical analysis of how this query will be processed, 
             project_filter: Project filter if used
         """
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are providing a detailed technical summary to a structural engineer of the document retrieval results.
+            ("system", """You are providing a concise, factual summary of document retrieval results to a structural engineer.
 
-Your job is to provide a COMPREHENSIVE RETRIEVAL REPORT including:
-1. Specific description of what was searched for in technical terms
-2. Complete list of project numbers found (list ALL projects by number if 10 or fewer, summarize if more)
-3. Types of documents retrieved from each source (structural drawings, calculations, specifications, detail sheets)
-4. Breakdown of document counts by category with brief descriptions of content
-5. Relevance explanation: why these specific projects were selected and what makes them applicable
-6. If multiple projects found: sorting/prioritization strategy being used
-7. Any notable patterns in the results (common design approaches, specific firms, time periods)
+CRITICAL RULES - ANTI-HALLUCINATION:
+- Report ONLY the exact data provided (counts and project numbers)
+- DO NOT invent or assume document contents you haven't seen
+- DO NOT invent specific beam sizes, dimensions, or technical details
+- DO NOT elaborate beyond what the data shows
+- If project numbers are provided, list them. If not, say "projects not yet identified"
+- State counts and scope ONLY - no speculation about document quality or contents
 
-FORMATTING AND STYLE REQUIREMENTS:
-- Use professional section header: "DOCUMENT RETRIEVAL SUMMARY"
-- Write in detailed, technical paragraphs (5-7 sentences minimum)
-- List ALL project numbers when 10 or fewer projects (format: "Projects identified: 25-01-006, 25-01-017, 25-01-022...")
-- For each data source, specify document types: "project documents (100 structural drawings and specifications)", "code examples (50 design calculation sheets)", "training materials (25 reference sections)"
-- Explain WHY each project is relevant (e.g., "Project 25-01-006 contains W-section beam designs with similar span requirements")
-- Include information about document quality and completeness
-- Reference specific drawing types: "foundation plans", "framing elevations", "structural details", "beam schedules"
-- NO emojis or casual language
-- NO mentions of technical implementation details
+Your job:
+1. Report document counts clearly
+2. List actual project numbers provided (all of them if 10 or fewer, first 5 + "and X others" if more)
+3. State what was searched for (based on the query)
+4. Keep to 2-3 sentences maximum
 
-EXAMPLE OF GOOD TECHNICAL RETRIEVAL SUMMARY:
+FORMATTING:
+- Header: "DOCUMENT RETRIEVAL SUMMARY"
+- Be direct and factual
+- NO emojis
+- NO technical implementation details
+
+GOOD EXAMPLE:
 "DOCUMENT RETRIEVAL SUMMARY
 
-The search for steel beam design guidance has identified 100 project documents and 100 code reference examples containing relevant structural information. Projects identified include: 25-01-006, 25-01-017, 25-01-022, 25-01-038, 25-01-045, 25-01-052, 25-01-063, 25-01-071, 25-01-084, and 91 additional projects. These projects were selected based on the presence of steel beam design elements, including W-section specifications, load calculations, and connection details.
+Retrieved 100 project documents and 100 code examples for steel beam design. Projects identified: 25-01-005, 25-01-012, 25-01-036, 25-01-044, 25-01-060, and 15 others. Documents selected based on relevance to steel beam design criteria."
 
-From the project database, retrieved documents include structural drawings showing beam schedules and framing plans, design calculations demonstrating load analysis and member sizing, and specification sheets detailing material properties (ASTM A992 steel) and welding/bolting requirements. The code example database provided 100 reference documents containing AISC design procedures, load combination examples, and connection design calculations. Given the substantial number of results, documents will be prioritized based on the completeness of design information, presence of detailed calculations, and clarity of material specifications to ensure the most useful examples are presented first."
+BAD EXAMPLE (inventing details):
+"Retrieved documents containing W16x31 beam specifications..." ❌ (you don't know this)
+"Project 25-01-006 shows detailed connection details..." ❌ (you haven't seen the documents)"""),
+            ("user", """Query: "{query}"
 
-AVOID:
-- Generic counts without context
-- Vague descriptions like "found some projects"
-- Missing project numbers when available
-- No explanation of relevance or document types"""),
-            ("user", """Engineer's Question: "{query}"
+ACTUAL DATA PROVIDED:
+- Project documents: {project_count}
+- Code examples: {code_count}
+- Training materials: {coop_count}
+- Project numbers: {projects_list}
+- Scope: {search_scope}
 
-Search Results:
-- Project documents found: {project_count}
-- Code examples found: {code_count}
-- Training manual sections found: {coop_count}
-- Projects: {projects_list}
-- Search scope: {search_scope}
-
-Provide a comprehensive technical summary of the retrieval results, including all project numbers, document types, and relevance explanations."""),
+Report ONLY this factual data. 2-3 sentences maximum."""),
         ])
         
         # Format projects list
@@ -215,50 +154,44 @@ Provide a comprehensive technical summary of the retrieval results, including al
             filtered_out: Documents filtered out
         """
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are providing a detailed technical assessment to a structural engineer of the document relevance filtering process.
+            ("system", """You are providing a concise, factual summary of document filtering results to a structural engineer.
 
-Your job is to provide a COMPREHENSIVE FILTERING ANALYSIS including:
-1. Detailed explanation of the review criteria used to assess document relevance
-2. Specific technical requirements that documents must meet (e.g., must contain load calculations, not just mentions of beams)
-3. Complete breakdown of filtering results with counts and percentages
-4. Specific examples of why documents were kept (what relevant information they contain)
-5. Specific examples of why documents were filtered out (what they were missing or why they were insufficient)
-6. Types of information verified (design calculations, material specifications, code references, construction details)
-7. Quality assessment of the remaining documents (completeness, detail level, applicability)
+CRITICAL RULES - ANTI-HALLUCINATION:
+- Report ONLY the exact counts provided
+- DO NOT invent reasons why documents were kept or filtered
+- DO NOT assume or describe document contents you haven't seen
+- DO NOT invent technical details about what documents contain
+- State counts and percentages ONLY
 
-FORMATTING AND STYLE REQUIREMENTS:
-- Use professional section header: "RELEVANCE ASSESSMENT"
-- Write in detailed, technical paragraphs (5-7 sentences minimum)
-- Provide specific percentages: "Retained 75 of 100 documents (75% pass rate)"
-- Give concrete examples: "Kept documents that included specific beam sizes (W16x31), load calculations (DL + LL), and connection details"
-- Explain filtering criteria: "Filtered out documents that only mentioned beams in passing without sizing information, load data, or material specifications"
-- Reference document quality indicators: "complete design calculations", "detailed specifications", "code-compliant details"
-- Include information about what makes retained documents valuable
-- NO emojis or casual language
-- NO mentions of scoring algorithms or technical implementation
+Your job:
+1. Report how many documents were reviewed
+2. Report how many passed relevance criteria with percentage
+3. Report how many were filtered out
+4. State general criteria used (relevance to the query topic)
+5. Keep to 2-3 sentences maximum
 
-EXAMPLE OF GOOD TECHNICAL FILTERING ANALYSIS:
+FORMATTING:
+- Header: "RELEVANCE ASSESSMENT"
+- Be direct and factual
+- NO emojis
+- NO invented examples
+
+GOOD EXAMPLE:
 "RELEVANCE ASSESSMENT
 
-The document review process evaluated all 100 retrieved documents against specific technical criteria to ensure they contained substantive structural design information relevant to steel beam design. Review criteria included: presence of beam sizing calculations, material specifications (ASTM grade), load analysis documentation, connection design details, and code reference citations (AISC 360, IBC). Documents were required to demonstrate complete design information rather than merely mentioning steel beams in peripheral contexts.
+Reviewed 100 documents for relevance to steel beam design. Retained 100 documents (100% pass rate) that met relevance criteria. No documents were filtered out."
 
-Of the 100 documents reviewed, 100 documents (100%) met the relevance criteria and were retained for detailed analysis. All retained documents contain specific design details including beam member sizes (W-sections with depth and weight designations), load calculations showing dead load and live load components, material specifications referencing ASTM A992 steel, and connection methods with bolt or weld specifications. No documents were filtered out as all retrieved materials demonstrated substantive engineering content directly applicable to the query requirements.
+BAD EXAMPLE (inventing details):
+"Filtered out documents lacking W-section specifications..." ❌ (you don't know this)
+"Kept documents with load calculations showing DL + LL..." ❌ (you haven't seen the documents)"""),
+            ("user", """Query: "{query}"
 
-The high retention rate indicates strong initial search effectiveness, with retrieved documents showing consistent quality in terms of calculation completeness, specification detail, and design documentation standards. Retained documents represent a comprehensive reference set spanning multiple design approaches and project types, providing diverse examples of code-compliant steel beam design methodologies."
+ACTUAL DATA PROVIDED:
+- Documents reviewed: {retrieved_count}
+- Documents retained: {graded_count}
+- Documents filtered: {filtered_out}
 
-AVOID:
-- Generic statements like "documents were reviewed for relevance"
-- Missing specific counts and percentages
-- No explanation of what makes documents relevant or irrelevant
-- Vague criteria without technical specifics"""),
-            ("user", """Engineer's Question: "{query}"
-
-Filtering Results:
-- Total documents reviewed: {retrieved_count}
-- Documents meeting relevance criteria: {graded_count}
-- Documents filtered out: {filtered_out}
-
-Provide a comprehensive technical assessment of the document filtering process, including specific criteria, examples, and quality evaluation."""),
+Report ONLY this factual data. 2-3 sentences maximum."""),
         ])
         
         try:
@@ -293,53 +226,46 @@ Provide a comprehensive technical assessment of the document filtering process, 
             has_coop: Whether training manual info was included
         """
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are providing a detailed technical compilation summary to a structural engineer explaining how their answer is being assembled.
+            ("system", """You are providing a concise, factual summary of information compilation to a structural engineer.
 
-Your job is to provide a COMPREHENSIVE COMPILATION REPORT including:
-1. Complete list of all projects being analyzed with specific project numbers
-2. Types of information being extracted from each source (calculations, drawings, specifications, details)
-3. Specific technical elements being compiled (beam sizes, load values, material specs, connection types)
-4. Organization strategy: how information is being structured (by project, by design approach, chronologically, by load capacity, etc.)
-5. Cross-references between projects showing common approaches or variations
-6. Additional reference sources being included (code examples with section numbers, training materials with page numbers)
-7. Quality and completeness assessment of the compiled information
-8. Expected deliverables in the final answer (tables, calculations, design examples, specification excerpts)
+CRITICAL RULES - ANTI-HALLUCINATION:
+- Report ONLY the exact data provided (document counts and project numbers)
+- DO NOT invent or describe what information will be extracted
+- DO NOT assume document contents or organization strategies
+- DO NOT invent specific technical details, beam sizes, or code sections
+- If project numbers are provided, list them. If not, say "multiple projects"
+- State counts and sources ONLY
 
-FORMATTING AND STYLE REQUIREMENTS:
-- Use professional section header: "INFORMATION COMPILATION"
-- Write in detailed, technical paragraphs (6-8 sentences minimum)
-- List ALL project numbers being used
-- Specify exact information types: "extracting W-section beam schedules, shear and moment diagrams, connection details from shop drawings"
-- Describe organization method: "organizing by span length categories (10-20ft, 20-30ft, 30-40ft) to facilitate comparison"
-- Reference specific code sections: "including AISC 360 Chapter F provisions for flexural design"
-- Explain value of each information source
-- Describe how information will be presented (comparison tables, design example walkthroughs, specification templates)
-- NO emojis or casual language
-- NO mentions of synthesis algorithms or generation processes
+Your job:
+1. Report how many documents are being used
+2. List actual project numbers provided (all if 10 or fewer, first 5 + "and X others" if more)
+3. Note if code examples or training materials are included
+4. Keep to 2-3 sentences maximum
 
-EXAMPLE OF GOOD TECHNICAL COMPILATION REPORT:
+FORMATTING:
+- Header: "INFORMATION COMPILATION"
+- Be direct and factual
+- NO emojis
+- NO invented details about content or organization
+
+GOOD EXAMPLE:
 "INFORMATION COMPILATION
 
-Compiling comprehensive steel beam design information from 12 structural engineering projects: 25-01-006, 25-01-017, 25-01-022, 25-01-038, 25-01-045, 25-01-052, 25-01-063, 25-01-071, 25-01-084, 25-01-091, 25-01-098, and 25-01-105. From these projects, extracting complete design information including beam member sizes (W-sections with depth and weight designations), load calculations showing dead load, live load, and load combinations per ASCE 7, material specifications (ASTM A992 Grade 50 steel properties), deflection limits (L/360 for live load, L/240 for total load), and connection details (bolted and welded configurations with specific bolt sizes and weld dimensions).
+Compiling information from 100 documents across 15 projects including 30-02-001, 30-02-015, 30-02-027, 30-02-033, 30-02-045, and 10 others. Including code examples and training materials to provide comprehensive guidance."
 
-Information is being organized by beam span ranges to facilitate direct comparison of design approaches: short spans (10-20 feet), medium spans (20-35 feet), and long spans (35-50 feet). For each span category, presenting example calculations demonstrating load analysis, section selection using AISC Manual tables, deflection verification, and connection capacity checks. Additionally incorporating 50 code reference examples providing AISC 360 design procedures (Chapter F for flexural members, Chapter J for connections), load combination methodologies from ASCE 7, and material property tables from AISC Manual Part 1.
+BAD EXAMPLE (inventing details):
+"Extracting W-section beam schedules, load calculations..." ❌ (you haven't seen the documents)
+"Organizing by span ranges of 10-20ft, 20-30ft..." ❌ (you don't know the organization)
+"Including AISC 360 Chapter F provisions..." ❌ (you don't know what's in the docs)"""),
+            ("user", """Query: "{query}"
 
-The compiled information represents complete design documentation spanning initial loading assumptions through final member selection and detailing, providing both theoretical design procedures and practical implementation examples from successfully completed projects. Final answer will present information in structured format including design procedure step-by-step guides, comparison tables showing member selections across projects, calculation examples with detailed commentary, and specification templates for material and fabrication requirements."
+ACTUAL DATA PROVIDED:
+- Documents: {graded_count}
+- Projects: {projects_list}
+- Code examples: {has_code}
+- Training materials: {has_coop}
 
-AVOID:
-- Generic statements like "organizing information"
-- Missing project numbers or vague project references
-- No description of organization method
-- Lack of specific technical content details"""),
-            ("user", """Engineer's Question: "{query}"
-
-Information Sources:
-- Technical documents: {graded_count}
-- Projects referenced: {projects_list}
-- Code examples included: {has_code}
-- Standards/training materials included: {has_coop}
-
-Provide a comprehensive technical compilation report detailing all projects, information types, organization strategy, and expected deliverables."""),
+Report ONLY this factual data. 2-3 sentences maximum."""),
         ])
         
         # Format projects list

@@ -1,5 +1,5 @@
 """
-Routing Node
+Routing Node (RAG Router)
 Routes query to smart or large database
 """
 import time
