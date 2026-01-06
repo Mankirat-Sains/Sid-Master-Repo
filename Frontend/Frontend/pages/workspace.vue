@@ -20,7 +20,7 @@
       </div>
     </header>
 
-    <div class="flex flex-1 overflow-hidden min-w-0 min-h-0 workspace-shell">
+    <div class="flex flex-1 overflow-hidden min-w-0 min-h-0 workspace-shell relative">
       <!-- Icon rail -->
       <aside class="w-12 bg-white/5 backdrop-blur-lg border-r border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex flex-col items-center py-2 space-y-1.5 overflow-visible relative z-30">
         <template v-for="icon in railIcons" :key="icon.id">
@@ -29,7 +29,7 @@
             class="relative group"
             @mouseenter="openTimesheetMenu"
             @mouseleave="closeTimesheetMenu"
-          >
+      >
             <button
               class="relative h-8 w-8 rounded border border-transparent flex items-center justify-center text-white/60 hover:text-white hover:border-white/10 transition"
               :aria-label="icon.label"
@@ -84,79 +84,220 @@
         </template>
       </aside>
 
+      <!-- Floating action rail (outside the sidebar) -->
+      <div class="absolute select-none pointer-events-none" :style="sidebarRailStyle">
+        <div class="group relative flex flex-col items-center gap-2 px-2 py-3 rounded-full bg-[#0b0b0b]/95 border border-white/14 shadow-[0_24px_58px_rgba(0,0,0,0.55)] backdrop-blur-[6px] pointer-events-auto transition-shadow duration-500">
+          <div class="absolute inset-[-12px] rounded-full border border-[rgba(147,51,234,0.55)] shadow-[0_0_24px_6px_rgba(147,51,234,0.4)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-out"></div>
+          <div class="absolute inset-[-32px] rounded-full bg-[radial-gradient(circle_at_center,_rgba(147,51,234,0.7)_0%,_rgba(147,51,234,0.35)_35%,_rgba(147,51,234,0.1)_60%,_transparent_88%)] blur-[42px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-out"></div>
+          <template v-for="(action, index) in sidebarActions" :key="action.id">
+            <button
+              class="h-8 w-8 rounded-full border transition flex items-center justify-center text-white/75 hover:text-white shadow-[0_6px_14px_rgba(0,0,0,0.35)] pointer-events-auto"
+              :class="[
+                sidebarMode === action.id ? 'bg-white/10 border-white/30' : 'bg-white/4 border-white/10 hover:bg-white/12 hover:border-white/22'
+              ]"
+              :title="action.label"
+              :aria-label="action.label"
+              @click="handleSidebarAction(action.id)"
+            >
+              <component :is="action.component" class="w-4 h-4 text-current opacity-85" />
+            </button>
+            <div v-if="index !== sidebarActions.length - 1" class="h-5 w-px bg-white/14"></div>
+          </template>
+        </div>
+      </div>
+
       <!-- Conversation list -->
       <aside
         v-if="activePage === 'home'"
-        class="w-56 bg-white/8 backdrop-blur-2xl border-r border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)] flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll"
-        style="height: calc(100vh - 36px); max-height: calc(100vh - 36px);"
-      >
-        <div class="px-2.5 py-2 border-b border-white/10">
-          <button
-            class="w-full h-8 px-3 rounded bg-white/8 border border-white/12 text-[11px] font-semibold hover:bg-white/12 transition flex items-center gap-2"
-            @click="startNewConversation"
-            aria-label="Start a new agent conversation"
-          >
-            <span class="text-sm leading-none">+</span>
-            <span class="tracking-wide">NEW AGENT</span>
-          </button>
+        class="bg-white/8 backdrop-blur-2xl border-r border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)] flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll"
+        :style="sidebarStyle"
+        >
+        <!-- Resize handle -->
+        <div
+          class="absolute top-0 right-0 h-full w-2 cursor-col-resize z-50 pointer-events-auto"
+          @mousedown.prevent="startSidebarResize"
+        >
+          <div class="absolute left-0 top-1/2 -translate-y-1/2 h-14 w-[6px] rounded-full bg-white/10 border border-white/15 shadow-[0_4px_12px_rgba(0,0,0,0.35)]"></div>
         </div>
 
-        <div class="px-2.5 py-2.5 border-b border-white/10">
-          <div class="relative">
-            <input
-              v-model="search"
-              type="text"
-              class="w-full rounded bg-white/5 border border-white/10 text-[12px] px-3 py-1.5 pl-8 placeholder-white/40 focus:outline-none focus:border-white/30"
-              placeholder="Search agents..."
-              aria-label="Search agents"
-            />
-            <svg class="absolute left-3 top-2.5 w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+        <template v-if="sidebarMode === 'history'">
+          <div class="px-2.5 py-2 border-b border-white/10">
+            <button
+              class="w-full h-8 px-3 rounded bg-white/8 border border-white/12 text-[11px] font-semibold hover:bg-white/12 transition flex items-center gap-2"
+              @click="startNewConversation"
+              aria-label="Start a new agent conversation"
+            >
+              <span class="text-sm leading-none">+</span>
+              <span class="tracking-wide">NEW AGENT</span>
+            </button>
           </div>
-        </div>
 
-        <div class="flex-1 min-h-0 overflow-y-auto custom-scroll pr-1">
-          <div
-            v-for="section in filteredConversationSections"
-            :key="section.title"
-            class="px-2.5 py-2"
-          >
-            <p class="text-[10px] uppercase tracking-[0.18em] text-white/35 mb-2 font-medium">{{ section.title }}</p>
-            <div class="space-y-1">
-              <button
-                v-for="conv in section.items"
-                :key="conv.id"
-                class="w-full text-left px-2.5 py-1.5 rounded bg-transparent border border-transparent hover:bg-white/5 transition group"
-                :class="activeConversationId === conv.id && activePage === 'home' ? 'bg-white/5 border-white/10' : ''"
-                @click="selectConversation(conv.id)"
-                @contextmenu.prevent.stop="openContextMenu($event, conv.id)"
-                @dblclick.stop.prevent="startRename(conv.id)"
-              >
-                <div v-if="renamingConversationId === conv.id" class="space-y-1">
-                  <div class="relative">
-                    <input
-                      type="text"
-                      v-model="renameDraft"
-                      class="w-full bg-[#1a1a1a] border border-white/20 rounded px-2 py-1 pr-4 text-[12px] font-semibold text-white focus:outline-none focus:border-white/40"
-                      :ref="el => setRenameInputRef(conv.id, el as HTMLInputElement | null)"
-                      @click.stop
-                      @keydown.enter.stop.prevent="confirmRename(conv.id)"
-                      @keydown.esc.stop.prevent="cancelRename"
-                      @blur="confirmRename(conv.id)"
-                    />
-                    <span class="absolute right-2 top-1/2 -translate-y-1/2 w-px h-4 bg-white animate-pulse pointer-events-none"></span>
+          <div class="px-2.5 py-2.5 border-b border-white/10">
+            <div class="relative">
+              <input
+                v-model="search"
+                type="text"
+                class="w-full rounded bg-white/5 border border-white/10 text-[12px] px-3 py-1.5 pl-8 placeholder-white/40 focus:outline-none focus:border-white/30"
+                placeholder="Search agents..."
+                aria-label="Search agents"
+              />
+              <svg class="absolute left-3 top-2.5 w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="flex-1 min-h-0 overflow-y-auto custom-scroll pr-1">
+            <div
+              v-for="section in filteredConversationSections"
+              :key="section.title"
+              class="px-2.5 py-2"
+            >
+              <p class="text-[10px] uppercase tracking-[0.18em] text-white/35 mb-2 font-medium">{{ section.title }}</p>
+              <div class="space-y-1">
+                <button
+                  v-for="conv in section.items"
+                  :key="conv.id"
+                  class="w-full text-left px-2.5 py-1.5 rounded bg-transparent border border-transparent hover:bg-white/5 transition group"
+                  :class="activeConversationId === conv.id && activePage === 'home' ? 'bg-white/5 border-white/10' : ''"
+                  @click="selectConversation(conv.id)"
+                  @contextmenu.prevent.stop="openContextMenu($event, conv.id)"
+                  @dblclick.stop.prevent="startRename(conv.id)"
+                >
+                  <div v-if="renamingConversationId === conv.id" class="space-y-1">
+                    <div class="relative">
+                      <input
+                        type="text"
+                        v-model="renameDraft"
+                        class="w-full bg-[#1a1a1a] border border-white/20 rounded px-2 py-1 pr-4 text-[12px] font-semibold text-white focus:outline-none focus:border-white/40"
+                        :ref="el => setRenameInputRef(conv.id, el as HTMLInputElement | null)"
+                        @click.stop
+                        @keydown.enter.stop.prevent="confirmRename(conv.id)"
+                        @keydown.esc.stop.prevent="cancelRename"
+                        @blur="confirmRename(conv.id)"
+                      />
+                      <span class="absolute right-2 top-1/2 -translate-y-1/2 w-px h-4 bg-white animate-pulse pointer-events-none"></span>
+                    </div>
+                    <p class="text-[10px] text-white/55">{{ conv.time }}</p>
                   </div>
-                  <p class="text-[10px] text-white/55">{{ conv.time }}</p>
+                  <div v-else class="space-y-0.5">
+                    <p class="text-[12px] font-semibold truncate" :title="conv.title">{{ conv.title }}</p>
+                    <p class="text-[10px] text-white/55">{{ conv.time }}</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <template v-else-if="sidebarMode === 'logs'">
+          <div class="px-3 py-3 border-b border-white/10 flex items-center justify-between">
+            <p class="text-sm font-semibold text-white/85">Agent Logs</p>
+            <span class="text-[10px] text-white/50">{{ agentLogs.length }}</span>
+          </div>
+          <div class="flex-1 min-h-0 overflow-y-auto custom-scroll pr-1">
+            <div class="px-3 py-2 space-y-2">
+              <p v-if="!agentLogs.length" class="text-xs text-white/50">No logs yet.</p>
+              <div
+                v-for="log in agentLogs"
+                :key="log.id"
+                class="p-2 rounded-lg bg-white/5 border border-white/10"
+              >
+                <p class="text-xs text-white/85 leading-snug whitespace-pre-wrap">{{ log.thinking }}</p>
+                <p class="text-[10px] text-white/50 mt-1">{{ formatTimestamp(log.timestamp) }}</p>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <template v-else-if="sidebarMode === 'docs'">
+        <div class="px-3 py-3 border-b border-white/10 flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold text-white/85">Models & Docs</p>
+            <p class="text-[11px] text-white/50">Fetched from Speckle/search</p>
+          </div>
+          <span class="text-[10px] text-white/50">{{ docListDocs.length }}</span>
+        </div>
+        <div class="flex-1 min-h-0 overflow-y-auto custom-scroll pr-1">
+          <div class="px-3 py-3 space-y-3">
+            <div v-if="speckleViewerFetchLoading" class="space-y-3">
+              <div v-for="i in 4" :key="i" class="animate-pulse rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
+                <div class="h-4 w-32 bg-white/15 rounded"></div>
+                <div class="h-3 w-3/4 bg-white/10 rounded"></div>
+                <div class="flex gap-2">
+                  <div class="h-6 w-16 bg-white/10 rounded-full"></div>
+                  <div class="h-6 w-20 bg-white/10 rounded-full"></div>
                 </div>
-                <div v-else class="space-y-0.5">
-                  <p class="text-[12px] font-semibold truncate" :title="conv.title">{{ conv.title }}</p>
-                  <p class="text-[10px] text-white/55">{{ conv.time }}</p>
+              </div>
+            </div>
+
+            <div v-else-if="docListDocs.length === 0" class="flex flex-col items-center justify-center text-center py-10 gap-3 border border-dashed border-white/15 rounded-2xl bg-white/5">
+              <div class="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
+                <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div class="space-y-1">
+                <p class="text-white font-semibold text-sm">No models or documents yet</p>
+                <p class="text-white/60 text-xs px-4">Ask Sid to fetch 3D models or related docs to see them here.</p>
+              </div>
+            </div>
+
+            <div v-else class="space-y-3">
+              <p class="text-[11px] uppercase tracking-[0.16em] text-white/50 px-1">Available</p>
+              <div
+                v-for="(doc, index) in docListDocs"
+                :key="doc.id || index"
+                @click="handleDocumentSelect(doc)"
+                class="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-purple-400/60 transition shadow-[0_10px_30px_rgba(0,0,0,0.35)] cursor-pointer"
+              >
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0 w-11 h-11 bg-gradient-to-br from-purple-600 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg border border-white/15">
+                    <svg v-if="doc.metadata?.projectId && doc.metadata?.modelId" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div class="flex-1 min-w-0 space-y-1">
+                    <div class="flex items-center justify-between gap-2">
+                      <h4 class="font-semibold text-white truncate">{{ doc.title || doc.name || 'Untitled' }}</h4>
+                      <span
+                        v-if="doc.metadata?.projectName"
+                        class="text-[11px] px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/70 truncate"
+                      >
+                        {{ doc.metadata.projectName }}
+                      </span>
+                    </div>
+                    <p v-if="doc.description" class="text-sm text-white/70 line-clamp-2">{{ doc.description }}</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                      <span
+                        v-if="doc.metadata?.projectKey"
+                        class="text-[11px] px-2 py-1 bg-purple-900/40 border border-purple-500/50 text-purple-100 rounded-full"
+                      >
+                        {{ doc.metadata.projectKey }}
+                      </span>
+                      <span
+                        v-if="doc.metadata?.modelId"
+                        class="text-[11px] px-2 py-1 bg-white/10 border border-white/15 text-white/70 rounded-full"
+                      >
+                        Model: {{ doc.metadata.modelId }}
+                      </span>
+                      <span
+                        v-if="doc.reason"
+                        class="text-[11px] px-2 py-1 bg-white/10 border border-white/15 text-white/70 rounded-full"
+                      >
+                        {{ doc.reason }}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </button>
+              </div>
             </div>
           </div>
         </div>
+      </template>
 
         <div
           v-if="contextMenu.visible && contextMenu.convId"
@@ -572,18 +713,6 @@
       </div>
     </div>
 
-    <!-- Document list (restored Speckle list) -->
-    <DocumentListPanel
-      :is-open="docListOpen"
-      :documents="docListDocs"
-      :title="docListTitle"
-      :subtitle="docListSubtitle"
-      :loading="speckleViewerFetchLoading"
-      @close="docListOpen = false"
-      @open="docListOpen = true"
-      @select-document="handleDocumentSelect"
-    />
-
     <!-- Speckle Viewer Modal -->
     <div
       v-if="speckleViewerModalOpen"
@@ -687,13 +816,13 @@ import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
-import DocumentListPanel from '~/components/DocumentListPanel.vue'
 import { useChat } from '~/composables/useChat'
 import { useSmartChat } from '~/composables/useSmartChat'
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 import { useSpeckle } from '~/composables/useSpeckle'
 import { useWorkspace } from '~/composables/useWorkspace'
 import { useRuntimeConfig } from '#app'
+import type { Component } from 'vue'
 
 type ChatEntry = {
   role: 'user' | 'assistant'
@@ -756,6 +885,14 @@ const railIcons = [
   { id: 'settings', component: GearIcon, label: 'Settings' }
 ]
 
+const sidebarActions: Array<{ id: 'logs' | 'history' | 'docs'; label: string; component: Component }> = [
+  { id: 'logs', label: 'Logs', component: ClockIcon },
+  { id: 'history', label: 'Chat History', component: ChatIcon },
+  { id: 'docs', label: 'Docs', component: ClipboardIcon }
+]
+type SidebarMode = 'history' | 'logs' | 'docs'
+const sidebarMode = ref<SidebarMode>('history')
+
 const availableModels = ['gpt-4o-120b', 'gpt-4o-mini']
 const selectedModel = ref(availableModels[0])
 const activePage = ref<ActivePage>('home')
@@ -809,6 +946,18 @@ const dataSources = ref<DataSources>({
   code_db: true,
   coop_manual: true
 })
+const sidebarWidth = ref(224) // default 14rem
+const minSidebarWidth = 200
+const maxSidebarWidth = 340
+const isResizingSidebar = ref(false)
+const resizeStartX = ref(0)
+const resizeStartWidth = ref(0)
+const sidebarRailStyle = computed(() => ({
+  left: `${sidebarWidth.value + 16}px`,
+  top: '50%',
+  transform: 'translateY(-50%)',
+  zIndex: 60
+}))
 type AgentLog = { id: string; thinking: string; timestamp: Date }
 const agentLogs = ref<AgentLog[]>([])
 const showScrollToBottom = ref(false)
@@ -818,13 +967,21 @@ const contextMenu = ref<{ visible: boolean; x: number; y: number; convId: string
   y: 0,
   convId: null
 })
+
+const sidebarStyle = computed(() => ({
+  width: `${sidebarWidth.value}px`,
+  maxWidth: `${maxSidebarWidth}px`,
+  height: 'calc(100vh - 36px)',
+  maxHeight: 'calc(100vh - 36px)',
+  overflowX: 'visible'
+}))
 const deleteDialog = ref<{ open: boolean; convId: string | null }>({
   open: false,
   convId: null
 })
 const titleGenerationInFlight = new Set<string>()
 
-// Speckle document list + modal state (restores SmartChatPanel behavior)
+// Speckle document list state (inline in sidebar)
 const docListOpen = ref(true)
 const docListDocs = ref<any[]>([])
 const docListTitle = ref('')
@@ -1042,6 +1199,7 @@ onMounted(() => {
   chatContainer.value?.addEventListener('scroll', handleChatScroll)
   handleChatScroll()
   document.addEventListener('click', handleGlobalClick)
+  window.addEventListener('mouseup', stopSidebarResize)
   nextTick(resizePrompt)
 })
 
@@ -1070,6 +1228,8 @@ watch(
 onBeforeUnmount(() => {
   chatContainer.value?.removeEventListener('scroll', handleChatScroll)
   document.removeEventListener('click', handleGlobalClick)
+  window.removeEventListener('mousemove', onSidebarResize)
+  window.removeEventListener('mouseup', stopSidebarResize)
 })
 
 function normalizeQueryParam(value: unknown) {
@@ -1116,6 +1276,32 @@ function setActivePage(id: string, options?: { section?: TimesheetSection; fromR
 
 function setActiveRail(id: string) {
   setActivePage(id)
+}
+
+function handleSidebarAction(id: SidebarMode) {
+  sidebarMode.value = id
+}
+
+function startSidebarResize(e: MouseEvent) {
+  isResizingSidebar.value = true
+  resizeStartX.value = e.clientX
+  resizeStartWidth.value = sidebarWidth.value
+  window.addEventListener('mousemove', onSidebarResize)
+  window.addEventListener('mouseup', stopSidebarResize)
+}
+
+function onSidebarResize(e: MouseEvent) {
+  if (!isResizingSidebar.value) return
+  const delta = e.clientX - resizeStartX.value
+  const nextWidth = Math.min(maxSidebarWidth, Math.max(minSidebarWidth, resizeStartWidth.value + delta))
+  sidebarWidth.value = nextWidth
+}
+
+function stopSidebarResize() {
+  if (!isResizingSidebar.value) return
+  isResizingSidebar.value = false
+  window.removeEventListener('mousemove', onSidebarResize)
+  window.removeEventListener('mouseup', stopSidebarResize)
 }
 
 function openTimesheetMenu() {
@@ -1200,6 +1386,11 @@ function confirmRename(convId: string) {
   convo.autoTitleGenerated = true
   touchConversation(convo.id)
   cancelRename()
+}
+
+function formatTimestamp(ts: Date | number | string) {
+  const d = ts instanceof Date ? ts : new Date(ts)
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
 function cycleModel() {
@@ -1765,18 +1956,18 @@ function performDeleteConversation() {
 </script>
 
 <style scoped>
+.custom-scroll {
+  scrollbar-width: none; /* Firefox */
+}
 .custom-scroll::-webkit-scrollbar {
-  width: 8px;
+  width: 0px;
+  height: 0px;
 }
 .custom-scroll::-webkit-scrollbar-track {
-  background: #0d0d0d;
+  background: transparent;
 }
 .custom-scroll::-webkit-scrollbar-thumb {
-  background: #1f1f1f;
-  border-radius: 8px;
-}
-.custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: #2a2a2a;
+  background: transparent;
 }
 
 .workspace-shell {
