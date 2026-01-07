@@ -442,10 +442,15 @@ async def debug_categories():
         }
 
 # Main chat endpoint
+# NOTE: This endpoint should ideally not be called if /chat/stream is being used.
+# If both are called, it causes duplication. Frontend should use /chat/stream for real-time logs.
 @app.post("/chat", response_model=ChatResponse)
 async def chat_handler(request: ChatRequest):
     """
     Handle chat requests from the Electron chatbutton app.
+    
+    WARNING: This endpoint runs the full pipeline synchronously. For real-time thinking logs,
+    use /chat/stream instead. If both endpoints are called, it causes duplication.
 
     Expected request format:
     {
@@ -470,6 +475,7 @@ async def chat_handler(request: ChatRequest):
 
     try:
         logger.info(f"Processing chat request from session '{request.session_id}': {request.message[:100]}...")
+        logger.warning("⚠️ /chat endpoint called - consider using /chat/stream for real-time logs to avoid duplication")
 
         # Generate unique message ID for feedback tracking
         message_id = f"msg_{int(time.time())}_{uuid.uuid4().hex[:8]}"
@@ -745,6 +751,7 @@ async def chat_stream_handler(request: ChatRequest):
         
         try:
             # Send initial connection event
+            logger.info(f"📡 Starting streaming response for message: {request.message[:100]}...")
             yield f"data: {json.dumps({'type': 'connected', 'message_id': message_id})}\n\n"
             
             # Consolidate images
@@ -802,137 +809,199 @@ async def chat_stream_handler(request: ChatRequest):
                 "configurable": {"thread_id": request.session_id}
             }
             
-            # Use astream to get state after each node execution
-            # astream returns dicts like: {"plan": {...state...}, "retrieve": {...state...}}
-            async for node_outputs in graph.astream(asdict(init_state), config=config):
-                # node_outputs is a dict where keys are node names and values are state updates
-                # Process each node that executed
-                for node_name, state_update in node_outputs.items():
-                    if not isinstance(state_update, dict):
+            # Use LangGraph's native streaming with stream_mode="updates"
+            # "updates" mode gives us {node_name: state_updates} so we can identify which node ran
+            # "custom" mode gives us custom events emitted from nodes
+            accumulated_state = asdict(init_state)
+            final_state = None
+            
+            logger.info(f"🔄 Starting graph.astream with stream_mode=['updates', 'custom', 'messages']")
+            node_count = 0
+            # Use multiple stream modes per LangGraph best practices:
+            # - "updates": State updates per node with node names {node_name: state_updates}
+            # - "custom": Custom events emitted from nodes (for real-time progress)
+            # - "messages": LLM tokens as they're generated (for real-time answer streaming)
+            async for stream_mode, chunk in graph.astream(
+                asdict(init_state),
+                config=config,
+                stream_mode=["updates", "custom", "messages"]  # Add "messages" for token streaming
+            ):
+                # Handle LLM token streaming (messages mode)
+                if stream_mode == "messages":
+                    # chunk is a tuple: (message, metadata)
+                    # message is an AIMessage with content tokens
+                    # metadata contains node info
+                    try:
+                        message, metadata = chunk
+                        if hasattr(message, 'content') and message.content:
+                            # Only stream tokens from the answer node (final synthesis)
+                            # Filter out tokens from other nodes (plan, router, etc.) to avoid showing reasoning in chat
+                            node_name = metadata.get('node', 'unknown') if isinstance(metadata, dict) else 'unknown'
+                            
+                            # Only forward tokens from answer node to main chat
+                            # Other nodes' LLM outputs should only appear in Agent Thinking
+                            if node_name == "answer":
+                                token_data = {
+                                    'type': 'token',
+                                    'content': message.content,
+                                    'node': node_name,
+                                    'timestamp': time.time()
+                                }
+                                yield f"data: {json.dumps(token_data)}\n\n"
+                                await asyncio.sleep(0.001)  # Minimal delay for proper streaming
+                            else:
+                                # Log but don't forward - these are internal reasoning, not user-facing
+                                logger.debug(f"Filtered out token from node '{node_name}' (not answer node)")
+                    except (ValueError, TypeError) as e:
+                        # If chunk format is different, log and continue
+                        logger.debug(f"Messages mode chunk format: {type(chunk)}, error: {e}")
+                    continue
+                
+                # Handle custom events (emitted directly from nodes)
+                if stream_mode == "custom":
+                    logger.debug(f"📨 Custom event received: {chunk}")
+                    # Emit custom event immediately to frontend
+                    if isinstance(chunk, dict):
+                        if chunk.get("type") == "thinking":
+                            yield f"data: {json.dumps({'type': 'thinking', 'message': chunk.get('message', ''), 'node': chunk.get('node', 'unknown'), 'timestamp': time.time()})}\n\n"
+                            await asyncio.sleep(0.001)
+                        elif chunk.get("type") == "token":
+                            # Forward token to frontend for real-time streaming
+                            yield f"data: {json.dumps({'type': 'token', 'content': chunk.get('content', ''), 'node': chunk.get('node', 'answer'), 'timestamp': time.time()})}\n\n"
+                            await asyncio.sleep(0.001)
+                    continue
+                
+                # Handle state updates (updates mode)
+                if stream_mode != "updates":
+                    continue
+                    
+                # chunk is now {node_name: state_updates_dict}
+                # This gives us the node name directly as the key
+                node_outputs = chunk
+                logger.info(f"📦 Received node_outputs: {list(node_outputs.keys())}")
+                
+                for node_name, state_updates in node_outputs.items():
+                    node_count += 1
+                    logger.info(f"🔍 Processing node #{node_count}: '{node_name}'")
+                    
+                    if not isinstance(state_updates, dict):
                         continue
                     
-                    # Update previous state with this node's output
-                    previous_state.update(state_update)
+                    # Merge state updates into accumulated state
+                    # (updates mode gives us only the changes, not full state)
+                    accumulated_state.update(state_updates)
+                    state_dict = accumulated_state.copy()
                     
-                    # Create state dict for easier access
-                    state_dict = previous_state.copy()
-                
-                # Generate thinking log based on node using intelligent_log_generator and RAG state data
-                thinking_log = None
-                
-                if node_name == "plan":
-                    plan = state_dict.get("query_plan") or {}
-                    thinking_log = log_generator.generate_planning_log(
-                        query=request.message,
-                        plan=plan,
-                        route=state_dict.get("data_route") or "smart",
-                        project_filter=state_dict.get("project_filter")
-                    )
-                elif node_name == "router_dispatcher":
-                    thinking_log = log_generator.generate_router_dispatcher_log(
-                        query=request.message,
-                        selected_routers=state_dict.get("selected_routers", [])
-                    )
-                elif node_name == "rag":
-                    thinking_log = log_generator.generate_rag_log(
-                        query=request.message,
-                        query_plan=state_dict.get("query_plan"),
-                        data_route=state_dict.get("data_route"),
-                        data_sources=state_dict.get("data_sources")
-                    )
-                elif node_name == "generate_image_embeddings":
-                    image_count = len(state_dict.get("images_base64") or [])
-                    thinking_log = log_generator.generate_image_embeddings_log(
-                        query=request.message,
-                        image_count=image_count
-                    )
-                elif node_name == "image_similarity_search":
-                    similarity_results = state_dict.get("image_similarity_results", [])
-                    project_keys = set()
-                    for img in similarity_results:
-                        proj = img.get("project_key")
-                        if proj:
-                            project_keys.add(proj)
-                    thinking_log = log_generator.generate_image_similarity_log(
-                        query=request.message,
-                        result_count=len(similarity_results),
-                        project_count=len(project_keys)
-                    )
-                elif node_name == "retrieve":
-                    thinking_log = log_generator.generate_retrieval_log(
-                        query=request.message,
-                        project_count=len(state_dict.get("retrieved_docs") or []),
-                        code_count=len(state_dict.get("retrieved_code_docs") or []),
-                        coop_count=len(state_dict.get("retrieved_coop_docs") or []),
-                        projects=_extract_projects(state_dict.get("retrieved_docs") or []),
-                        route=state_dict.get("data_route") or "smart",
-                        project_filter=state_dict.get("project_filter")
-                    )
-                elif node_name == "grade":
-                    thinking_log = log_generator.generate_grading_log(
-                        query=request.message,
-                        retrieved_count=len(state_dict.get("retrieved_docs") or []),
-                        graded_count=len(state_dict.get("graded_docs") or []),
-                        filtered_out=len(state_dict.get("retrieved_docs") or []) - len(state_dict.get("graded_docs") or [])
-                    )
-                elif node_name == "answer":
-                    thinking_log = log_generator.generate_synthesis_log(
-                        query=request.message,
-                        graded_count=len(state_dict.get("answer_citations") or []),
-                        projects=_extract_projects_from_citations(state_dict.get("answer_citations") or []),
-                        has_code=bool(state_dict.get("code_answer")),
-                        has_coop=bool(state_dict.get("coop_answer"))
-                    )
-                elif node_name == "verify":
-                    thinking_log = log_generator.generate_verify_log(
-                        query=request.message,
-                        needs_fix=state_dict.get("needs_fix", False),
-                        follow_up_count=len(state_dict.get("follow_up_questions", [])),
-                        suggestion_count=len(state_dict.get("follow_up_suggestions", []))
-                    )
-                elif node_name == "correct":
-                    thinking_log = log_generator.generate_correct_log(
-                        query=request.message,
-                        support_score=state_dict.get("answer_support_score", 1.0),
-                        corrective_attempted=state_dict.get("corrective_attempted", False)
-                    )
-                else:
-                    # For any unexpected nodes, log them but don't show to user
-                    logger.info(f"Skipping thinking log for node: {node_name}")
+                    # Generate thinking log based on node using intelligent_log_generator and RAG state data
                     thinking_log = None
-                
-                # Only emit thinking log if one was generated
-                if thinking_log:
-                    yield f"data: {json.dumps({'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()})}\n\n"
-                    await asyncio.sleep(0.01)
-                
-                # Store final result but don't break - we need to let verify and correct nodes run
-                # Always update final_result with the latest accumulated state_dict
-                if node_name == "answer":
-                    final_result = state_dict.copy()
-                elif node_name == "verify":
-                    # Update final_result with full state_dict (includes verify's follow-up questions)
-                    final_result = state_dict.copy()
-                    logger.info(f"🔍 DEBUG: Updated final_result after verify node. Follow-ups: {final_result.get('follow_up_questions', [])}")
-                elif node_name == "correct":
-                    # After correct node, we're truly done - update final_result with latest state
-                    final_result = state_dict.copy()
-                    logger.info(f"🔍 DEBUG: Final result after correct node. Follow-ups: {final_result.get('follow_up_questions', [])}")
-                    break
-            
-            # If we didn't get final result, run once more to get it
-            if not final_result:
-                final_result = graph.invoke(asdict(init_state), config=config)
+                    
+                    if node_name == "plan":
+                        plan = state_dict.get("query_plan") or {}
+                        thinking_log = log_generator.generate_planning_log(
+                            query=request.message,
+                            plan=plan,
+                            route=state_dict.get("data_route") or "smart",
+                            project_filter=state_dict.get("project_filter")
+                        )
+                    elif node_name == "router_dispatcher":
+                        thinking_log = log_generator.generate_router_dispatcher_log(
+                            query=request.message,
+                            selected_routers=state_dict.get("selected_routers", [])
+                        )
+                    elif node_name == "rag":
+                        thinking_log = log_generator.generate_rag_log(
+                            query=request.message,
+                            query_plan=state_dict.get("query_plan"),
+                            data_route=state_dict.get("data_route"),
+                            data_sources=state_dict.get("data_sources")
+                        )
+                    elif node_name == "generate_image_embeddings":
+                        image_count = len(state_dict.get("images_base64") or [])
+                        thinking_log = log_generator.generate_image_embeddings_log(
+                            query=request.message,
+                            image_count=image_count
+                        )
+                    elif node_name == "image_similarity_search":
+                        similarity_results = state_dict.get("image_similarity_results", [])
+                        project_keys = set()
+                        for img in similarity_results:
+                            proj = img.get("project_key")
+                            if proj:
+                                project_keys.add(proj)
+                        thinking_log = log_generator.generate_image_similarity_log(
+                            query=request.message,
+                            result_count=len(similarity_results),
+                            project_count=len(project_keys)
+                        )
+                    elif node_name == "retrieve":
+                        thinking_log = log_generator.generate_retrieval_log(
+                            query=request.message,
+                            project_count=len(state_dict.get("retrieved_docs") or []),
+                            code_count=len(state_dict.get("retrieved_code_docs") or []),
+                            coop_count=len(state_dict.get("retrieved_coop_docs") or []),
+                            projects=_extract_projects(state_dict.get("retrieved_docs") or []),
+                            route=state_dict.get("data_route") or "smart",
+                            project_filter=state_dict.get("project_filter"),
+                            query_plan=state_dict.get("query_plan")
+                        )
+                    elif node_name == "grade":
+                        thinking_log = log_generator.generate_grading_log(
+                            query=request.message,
+                            retrieved_count=len(state_dict.get("retrieved_docs") or []),
+                            graded_count=len(state_dict.get("graded_docs") or []),
+                            filtered_out=len(state_dict.get("retrieved_docs") or []) - len(state_dict.get("graded_docs") or [])
+                        )
+                    elif node_name == "answer":
+                        thinking_log = log_generator.generate_synthesis_log(
+                            query=request.message,
+                            graded_count=len(state_dict.get("answer_citations") or []),
+                            projects=_extract_projects_from_citations(state_dict.get("answer_citations") or []),
+                            has_code=bool(state_dict.get("code_answer")),
+                            has_coop=bool(state_dict.get("coop_answer"))
+                        )
+                    elif node_name == "verify":
+                        thinking_log = log_generator.generate_verify_log(
+                            query=request.message,
+                            needs_fix=state_dict.get("needs_fix", False),
+                            follow_up_count=len(state_dict.get("follow_up_questions", [])),
+                            suggestion_count=len(state_dict.get("follow_up_suggestions", []))
+                        )
+                    elif node_name == "correct":
+                        thinking_log = log_generator.generate_correct_log(
+                            query=request.message,
+                            support_score=state_dict.get("answer_support_score", 1.0),
+                            corrective_attempted=state_dict.get("corrective_attempted", False)
+                        )
+                    else:
+                        # For any unexpected nodes, log them but don't show to user
+                        logger.info(f"Skipping thinking log for node: {node_name}")
+                        thinking_log = None
+                    
+                    # Emit thinking log immediately (same speed as terminal logs)
+                    if thinking_log:
+                        log_data = {'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()}
+                        logger.info(f"📤 Streaming thinking log for node '{node_name}': {thinking_log[:100]}...")
+                        yield f"data: {json.dumps(log_data)}\n\n"
+                        await asyncio.sleep(0.001)  # Minimal delay for proper streaming
+                    else:
+                        logger.info(f"⏭️  No thinking log generated for node '{node_name}'")
+                    
+                    # Store final state - correct node is the last one
+                    final_state = state_dict.copy()
+                    
+                    # Break after correct node (last node in pipeline)
+                    if node_name == "correct":
+                        break
             
             # Check if we got a result
-            if not final_result:
+            if not final_state:
                 yield f"data: {json.dumps({'type': 'error', 'message': 'No result returned from RAG'})}\n\n"
                 return
             
             # Extract final answer
-            answer = final_result.get("final_answer") or final_result.get("answer", "No answer generated.")
-            code_answer = final_result.get("code_answer")
-            coop_answer = final_result.get("coop_answer")
+            answer = final_state.get("final_answer") or final_state.get("answer", "No answer generated.")
+            code_answer = final_state.get("code_answer")
+            coop_answer = final_state.get("coop_answer")
             
             # Combine answers
             combined_answer = answer
@@ -945,14 +1014,8 @@ async def chat_stream_handler(request: ChatRequest):
             latency_ms = (time.time() - start_time) * 1000
             
             # Extract follow-up questions and suggestions
-            follow_up_questions = final_result.get("follow_up_questions", [])
-            follow_up_suggestions = final_result.get("follow_up_suggestions", [])
-            
-            # Debug logging
-            logger.info(f"🔍 DEBUG: Extracting follow-ups from final_result")
-            logger.info(f"🔍 DEBUG: final_result keys: {list(final_result.keys())}")
-            logger.info(f"🔍 DEBUG: follow_up_questions = {follow_up_questions}")
-            logger.info(f"🔍 DEBUG: follow_up_suggestions = {follow_up_suggestions}")
+            follow_up_questions = final_state.get("follow_up_questions", [])
+            follow_up_suggestions = final_state.get("follow_up_suggestions", [])
             
             # Build response
             response_data = {
@@ -961,15 +1024,13 @@ async def chat_stream_handler(request: ChatRequest):
                 'session_id': request.session_id,
                 'timestamp': datetime.now().isoformat(),
                 'latency_ms': round(latency_ms, 2),
-                'citations': len(final_result.get("answer_citations", [])),
-                'route': final_result.get("data_route"),
+                'citations': len(final_state.get("answer_citations", [])),
+                'route': final_state.get("data_route"),
                 'message_id': message_id,
                 'follow_up_questions': follow_up_questions if follow_up_questions else None,
-                'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
+                'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None,
+                'image_similarity_results': final_state.get("image_similarity_results") if final_state.get("image_similarity_results") else None
             }
-            
-            logger.info(f"🔍 DEBUG: response_data includes follow_up_questions: {'follow_up_questions' in response_data}")
-            logger.info(f"🔍 DEBUG: response_data['follow_up_questions'] = {response_data.get('follow_up_questions')}")
             
             # Send completion event with final result
             yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"

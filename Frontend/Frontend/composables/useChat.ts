@@ -27,6 +27,7 @@ interface ChatResponse {
 
 interface StreamCallbacks {
   onLog?: (log: { type: string; message: string; timestamp: number; node?: string }) => void
+  onToken?: (token: { content: string; node: string; timestamp: number }) => void
   onChunk?: (chunk: string) => void
   onComplete?: (result: ChatResponse) => void
   onError?: (error: Error) => void
@@ -108,6 +109,12 @@ export const useChat = () => {
     const url = `${config.public.orchestratorUrl}/chat/stream`
     console.log('📤 Starting streaming chat to:', url)
     console.log('📝 Message:', message)
+    console.log('📋 Callbacks provided:', {
+      hasCallbacks: !!callbacks,
+      hasOnLog: !!callbacks?.onLog,
+      hasOnComplete: !!callbacks?.onComplete,
+      hasOnError: !!callbacks?.onError
+    })
     // dataSources removed - backend router now intelligently selects databases automatically
     
     try {
@@ -160,13 +167,32 @@ export const useChat = () => {
                 console.log('✅ SSE stream connected:', data.message_id)
               } else if (data.type === 'thinking') {
                 // Emit thinking log
-                console.log('💭 Thinking:', data.message?.substring(0, 100) + '...')
-                callbacks?.onLog?.({
-                  type: 'thinking',
-                  message: data.message,
+                console.log('💭 Thinking log received from stream:', {
                   node: data.node,
-                  timestamp: data.timestamp
+                  messageLength: data.message?.length,
+                  messagePreview: data.message?.substring(0, 100) + '...',
+                  hasCallbacks: !!callbacks,
+                  hasOnLog: !!callbacks?.onLog
                 })
+                if (callbacks?.onLog) {
+                  callbacks.onLog({
+                    type: 'thinking',
+                    message: data.message,
+                    node: data.node,
+                    timestamp: data.timestamp
+                  })
+                } else {
+                  console.warn('⚠️ No onLog callback provided - thinking logs will not be displayed')
+                }
+              } else if (data.type === 'token') {
+                // Real-time token streaming from LLM
+                if (callbacks?.onToken) {
+                  callbacks.onToken({
+                    content: data.content,
+                    node: data.node,
+                    timestamp: data.timestamp
+                  })
+                }
               } else if (data.type === 'complete') {
                 // Final result
                 console.log('✅ Stream complete, got result')

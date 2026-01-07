@@ -307,13 +307,22 @@ function handleMouseUp() {
 }
 
 function handleAgentLog(log: AgentLog) {
+  console.log('📥 handleAgentLog called with:', {
+    id: log.id,
+    type: log.type,
+    thinkingPreview: log.thinking?.substring(0, 100) + '...',
+    timestamp: log.timestamp,
+    currentLogsCount: agentLogs.value.length
+  })
   agentLogs.value.unshift(log)
   if (agentLogs.value.length > 50) {
     agentLogs.value = agentLogs.value.slice(0, 50)
   }
   if (!logsPanelOpen.value) {
+    console.log('📂 Opening logs panel (was closed)')
     logsPanelOpen.value = true
   }
+  console.log('✅ Log added. Total logs:', agentLogs.value.length)
 }
 
 function handleFirstMessage() {

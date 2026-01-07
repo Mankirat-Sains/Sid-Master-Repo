@@ -40,7 +40,7 @@ interface SmartChatResponse {
 }
 
 export const useSmartChat = () => {
-  const { sendChatMessage } = useChat()
+  const { sendChatMessage, sendChatMessageStream } = useChat()
   const { searchSpeckleProjects, getProjectModels } = useSpeckle()
 
   /**

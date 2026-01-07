@@ -49,7 +49,8 @@ class IntelligentLogGenerator:
         coop_count: int,
         projects: list,
         route: str = "smart",
-        project_filter: Optional[str] = None
+        project_filter: Optional[str] = None,
+        query_plan: Optional[Dict] = None
     ) -> str:
         """
         Generate engineer-friendly explanation of document search and results.
@@ -62,48 +63,80 @@ class IntelligentLogGenerator:
             projects: List of project keys found
             route: Search route used
             project_filter: Project filter if used
+            query_plan: Optional query plan with steps/subqueries
         """
+        # Extract technical context from query plan if available
+        search_terms = []
+        technical_context = ""
+        if query_plan:
+            steps = query_plan.get("steps", [])
+            subqueries = query_plan.get("subqueries", [])
+            if subqueries:
+                search_terms = [sq.get("query", "") for sq in subqueries if isinstance(sq, dict)]
+            elif steps:
+                # Extract search terms from step descriptions
+                for step in steps:
+                    if isinstance(step, dict) and "query" in step:
+                        search_terms.append(step["query"])
+                    elif isinstance(step, str):
+                        search_terms.append(step)
+            
+            if search_terms:
+                technical_context = f"Search terms: {', '.join(search_terms[:3])}" + (f" and {len(search_terms)-3} more" if len(search_terms) > 3 else "")
+        
+        # Extract engineering concepts from the query itself
+        engineering_keywords = []
+        query_lower = query.lower()
+        common_terms = ["slab", "beam", "column", "foundation", "truss", "connection", "reinforcement", "concrete", "steel", "timber", "design", "specification", "detail", "drawing", "calculation"]
+        for term in common_terms:
+            if term in query_lower:
+                engineering_keywords.append(term)
+        
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are providing a concise, factual summary of document retrieval results to a structural engineer.
+            ("system", """You are providing a concise, engineer-focused summary of document retrieval to a structural engineer.
 
-CRITICAL RULES - ANTI-HALLUCINATION:
-- Report ONLY the exact data provided (counts and project numbers)
-- DO NOT invent or assume document contents you haven't seen
-- DO NOT invent specific beam sizes, dimensions, or technical details
-- DO NOT elaborate beyond what the data shows
-- If project numbers are provided, list them. If not, say "projects not yet identified"
-- State counts and scope ONLY - no speculation about document quality or contents
+CRITICAL RULES - FACTUAL REPORTING:
+- Report the exact counts and project numbers provided
+- Explain what engineering task is being performed based on the query
+- Describe the search strategy in engineering terms (e.g., "searching for floating slab specifications")
+- DO NOT invent specific document contents (beam sizes, dimensions, etc.)
+- DO NOT claim to know what's inside documents you haven't seen
+- Focus on the ENGINEERING CONTEXT: what the system is searching for and why
 
 Your job:
-1. Report document counts clearly
-2. List actual project numbers provided (all of them if 10 or fewer, first 5 + "and X others" if more)
-3. State what was searched for (based on the query)
-4. Keep to 2-3 sentences maximum
+1. Explain the engineering task being performed (based on the query keywords)
+2. Report document counts and project numbers
+3. Describe the search scope and strategy
+4. Use engineering terminology naturally
+5. Keep to 3-4 sentences
 
 FORMATTING:
 - Header: "DOCUMENT RETRIEVAL SUMMARY"
-- Be direct and factual
+- Use engineering language (e.g., "specifications", "design details", "structural elements")
+- Be informative but factual
 - NO emojis
-- NO technical implementation details
 
 GOOD EXAMPLE:
 "DOCUMENT RETRIEVAL SUMMARY
 
-Retrieved 100 project documents and 100 code examples for steel beam design. Projects identified: 25-01-005, 25-01-012, 25-01-036, 25-01-044, 25-01-060, and 15 others. Documents selected based on relevance to steel beam design criteria."
+Searching past projects for floating slab design specifications and construction details. Retrieved 50 project documents and 0 code examples from 50 unique projects including 25-01-005, 25-01-012, 25-01-036, 25-01-044, 25-01-060, and 45 others. Documents were selected based on semantic similarity to the query terms and relevance to slab-on-grade construction methods."
 
 BAD EXAMPLE (inventing details):
-"Retrieved documents containing W16x31 beam specifications..." ❌ (you don't know this)
-"Project 25-01-006 shows detailed connection details..." ❌ (you haven't seen the documents)"""),
+"Retrieved documents containing 6-inch slab thickness specifications..." ❌ (you don't know this)
+"Project 25-01-006 shows detailed rebar spacing of #4@12"..." ❌ (you haven't seen the documents)"""),
             ("user", """Query: "{query}"
+{technical_context}
+{engineering_keywords}
 
 ACTUAL DATA PROVIDED:
 - Project documents: {project_count}
 - Code examples: {code_count}
 - Training materials: {coop_count}
 - Project numbers: {projects_list}
-- Scope: {search_scope}
+- Search scope: {search_scope}
+- Search route: {route} ({route_desc})
 
-Report ONLY this factual data. 2-3 sentences maximum."""),
+Generate an engineer-focused summary explaining what engineering information is being searched for and the results."""),
         ])
         
         # Format projects list
@@ -121,21 +154,31 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
         else:
             search_scope = "All past projects"
         
+        # Format technical context
+        tech_context_str = technical_context if technical_context else ""
+        eng_keywords_str = f"Engineering concepts identified: {', '.join(engineering_keywords)}" if engineering_keywords else ""
+        route_desc = "optimized semantic search" if route == "smart" else "comprehensive page-level search"
+        
         try:
             response = self.llm.invoke(prompt.format_messages(
                 query=query,
+                technical_context=tech_context_str,
+                engineering_keywords=eng_keywords_str,
                 project_count=project_count,
                 code_count=code_count,
                 coop_count=coop_count,
                 projects_list=projects_list,
-                search_scope=search_scope
+                search_scope=search_scope,
+                route=route,
+                route_desc=route_desc
             ))
             return response.content.strip()
         except Exception as e:
             log_query.error(f"Error generating retrieval log: {e}")
             total = project_count + code_count + coop_count
             projects_str = f"from {len(projects)} projects: {projects_list}" if projects else "from multiple project sources"
-            return f"DOCUMENT RETRIEVAL SUMMARY\n\nRetrieved {total} technical documents {projects_str}. Documents include structural drawings, design calculations, and specification sheets relevant to the query parameters."
+            eng_task = "engineering information" if not engineering_keywords else f"{', '.join(engineering_keywords)} design information"
+            return f"DOCUMENT RETRIEVAL SUMMARY\n\nSearching past projects for {eng_task} related to the query. Retrieved {total} technical documents {projects_str} using {route_desc}. Documents include structural drawings, design calculations, and specification sheets relevant to the query parameters."
     
     def generate_grading_log(
         self,
@@ -153,45 +196,63 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             graded_count: Documents that passed relevance check
             filtered_out: Documents filtered out
         """
+        # Extract engineering concepts from query
+        query_lower = query.lower()
+        engineering_focus = []
+        if any(term in query_lower for term in ["slab", "foundation", "footing"]):
+            engineering_focus.append("foundation systems")
+        if any(term in query_lower for term in ["beam", "girder", "joist"]):
+            engineering_focus.append("structural framing")
+        if any(term in query_lower for term in ["column", "post", "pier"]):
+            engineering_focus.append("vertical elements")
+        if any(term in query_lower for term in ["connection", "joint", "detail"]):
+            engineering_focus.append("connection details")
+        if any(term in query_lower for term in ["reinforcement", "rebar", "steel"]):
+            engineering_focus.append("reinforcement details")
+        
+        focus_text = ", ".join(engineering_focus) if engineering_focus else "the query topic"
+        
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are providing a concise, factual summary of document filtering results to a structural engineer.
+            ("system", """You are providing a concise, engineer-focused summary of document relevance filtering to a structural engineer.
 
-CRITICAL RULES - ANTI-HALLUCINATION:
-- Report ONLY the exact counts provided
-- DO NOT invent reasons why documents were kept or filtered
-- DO NOT assume or describe document contents you haven't seen
-- DO NOT invent technical details about what documents contain
-- State counts and percentages ONLY
+CRITICAL RULES - FACTUAL REPORTING:
+- Report the exact counts and percentages provided
+- Explain the relevance assessment process in engineering terms
+- Describe what criteria were used (relevance to engineering concepts in the query)
+- DO NOT invent specific reasons why individual documents were kept/filtered
+- DO NOT claim to know document contents you haven't seen
+- Focus on the ENGINEERING CONTEXT: what makes documents relevant
 
 Your job:
-1. Report how many documents were reviewed
-2. Report how many passed relevance criteria with percentage
-3. Report how many were filtered out
-4. State general criteria used (relevance to the query topic)
-5. Keep to 2-3 sentences maximum
+1. Explain what engineering information is being assessed for relevance
+2. Report how many documents were reviewed and retained
+3. Explain the relevance criteria in engineering terms
+4. Use engineering language naturally
+5. Keep to 3-4 sentences
 
 FORMATTING:
 - Header: "RELEVANCE ASSESSMENT"
-- Be direct and factual
+- Use engineering terminology
+- Be informative but factual
 - NO emojis
-- NO invented examples
 
 GOOD EXAMPLE:
 "RELEVANCE ASSESSMENT
 
-Reviewed 100 documents for relevance to steel beam design. Retained 100 documents (100% pass rate) that met relevance criteria. No documents were filtered out."
+Assessing 100 retrieved documents for relevance to floating slab design specifications and construction methods. Retained 100 documents (100% pass rate) that contain information directly related to slab-on-grade systems, foundation details, and related structural elements. No documents were filtered out, indicating strong alignment between the query and retrieved content."
 
 BAD EXAMPLE (inventing details):
-"Filtered out documents lacking W-section specifications..." ❌ (you don't know this)
-"Kept documents with load calculations showing DL + LL..." ❌ (you haven't seen the documents)"""),
+"Filtered out documents lacking 6-inch slab thickness specifications..." ❌ (you don't know this)
+"Kept documents with rebar spacing details..." ❌ (you haven't seen the documents)"""),
             ("user", """Query: "{query}"
 
 ACTUAL DATA PROVIDED:
 - Documents reviewed: {retrieved_count}
 - Documents retained: {graded_count}
 - Documents filtered: {filtered_out}
+- Engineering focus: {engineering_focus}
 
-Report ONLY this factual data. 2-3 sentences maximum."""),
+Generate an engineer-focused summary explaining the relevance assessment process and results."""),
         ])
         
         try:
@@ -199,13 +260,14 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
                 query=query,
                 retrieved_count=retrieved_count,
                 graded_count=graded_count,
-                filtered_out=filtered_out
+                filtered_out=filtered_out,
+                engineering_focus=focus_text
             ))
             return response.content.strip()
         except Exception as e:
             log_query.error(f"Error generating grading log: {e}")
             percent = round((graded_count / retrieved_count * 100)) if retrieved_count > 0 else 0
-            return f"RELEVANCE ASSESSMENT\n\nReviewed {retrieved_count} technical documents for relevance to query criteria. Retained {graded_count} documents ({percent}%) that met technical requirements including complete design information, material specifications, and applicable code references. Filtered {filtered_out} documents that lacked sufficient technical detail or direct applicability."
+            return f"RELEVANCE ASSESSMENT\n\nAssessing {retrieved_count} retrieved documents for relevance to {focus_text}. Retained {graded_count} documents ({percent}% pass rate) that contain information directly related to the engineering concepts in the query. Filtered {filtered_out} documents that lacked sufficient technical detail or direct applicability to the query requirements."
     
     def generate_synthesis_log(
         self,
@@ -225,37 +287,53 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             has_code: Whether code examples were included
             has_coop: Whether training manual info was included
         """
+        # Extract engineering task from query
+        query_lower = query.lower()
+        task_description = []
+        if any(term in query_lower for term in ["specification", "spec", "requirement"]):
+            task_description.append("design specifications")
+        if any(term in query_lower for term in ["detail", "drawing", "plan"]):
+            task_description.append("construction details")
+        if any(term in query_lower for term in ["calculation", "calc", "design"]):
+            task_description.append("design calculations")
+        if any(term in query_lower for term in ["method", "approach", "technique"]):
+            task_description.append("design methods")
+        
+        task_text = ", ".join(task_description) if task_description else "engineering information"
+        
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are providing a concise, factual summary of information compilation to a structural engineer.
+            ("system", """You are providing a concise, engineer-focused summary of information compilation to a structural engineer.
 
-CRITICAL RULES - ANTI-HALLUCINATION:
-- Report ONLY the exact data provided (document counts and project numbers)
-- DO NOT invent or describe what information will be extracted
-- DO NOT assume document contents or organization strategies
-- DO NOT invent specific technical details, beam sizes, or code sections
-- If project numbers are provided, list them. If not, say "multiple projects"
-- State counts and sources ONLY
+CRITICAL RULES - FACTUAL REPORTING:
+- Report the exact document counts and project numbers provided
+- Explain what engineering information is being compiled
+- Describe the compilation process in engineering terms
+- DO NOT invent specific details about what will be extracted
+- DO NOT assume document organization or content structure
+- DO NOT claim to know specific technical values (sizes, dimensions, etc.)
+- Focus on the ENGINEERING CONTEXT: what types of information are being synthesized
 
 Your job:
-1. Report how many documents are being used
-2. List actual project numbers provided (all if 10 or fewer, first 5 + "and X others" if more)
+1. Explain what engineering information is being compiled (based on query)
+2. Report document counts and project sources
 3. Note if code examples or training materials are included
-4. Keep to 2-3 sentences maximum
+4. Use engineering terminology naturally
+5. Keep to 3-4 sentences
 
 FORMATTING:
 - Header: "INFORMATION COMPILATION"
-- Be direct and factual
+- Use engineering language (e.g., "design specifications", "construction details")
+- Be informative but factual
 - NO emojis
-- NO invented details about content or organization
 
 GOOD EXAMPLE:
 "INFORMATION COMPILATION
 
-Compiling information from 100 documents across 15 projects including 30-02-001, 30-02-015, 30-02-027, 30-02-033, 30-02-045, and 10 others. Including code examples and training materials to provide comprehensive guidance."
+Compiling design specifications and construction details from 100 relevant documents across 15 projects including 30-02-001, 30-02-015, 30-02-027, 30-02-033, 30-02-045, and 10 others. Synthesizing information from project drawings, design calculations, and specification sheets. Including code examples and training materials to provide comprehensive guidance on design requirements and construction methods."
 
 BAD EXAMPLE (inventing details):
-"Extracting W-section beam schedules, load calculations..." ❌ (you haven't seen the documents)
-"Organizing by span ranges of 10-20ft, 20-30ft..." ❌ (you don't know the organization)
+"Extracting W16x31 beam schedules with load calculations..." ❌ (you haven't seen the documents)
+"Organizing by span ranges of 10-20ft..." ❌ (you don't know the organization)
 "Including AISC 360 Chapter F provisions..." ❌ (you don't know what's in the docs)"""),
             ("user", """Query: "{query}"
 
@@ -264,8 +342,9 @@ ACTUAL DATA PROVIDED:
 - Projects: {projects_list}
 - Code examples: {has_code}
 - Training materials: {has_coop}
+- Engineering task: {task_description}
 
-Report ONLY this factual data. 2-3 sentences maximum."""),
+Generate an engineer-focused summary explaining what engineering information is being compiled and from which sources."""),
         ])
         
         # Format projects list
@@ -283,13 +362,20 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
                 graded_count=graded_count,
                 projects_list=projects_list,
                 has_code="Yes" if has_code else "No",
-                has_coop="Yes" if has_coop else "No"
+                has_coop="Yes" if has_coop else "No",
+                task_description=task_text
             ))
             return response.content.strip()
         except Exception as e:
             log_query.error(f"Error generating synthesis log: {e}")
             proj_str = f"{len(projects)} projects: {projects_list if len(projects) <= 5 else ', '.join(projects[:5]) + f' and {len(projects)-5} others'}" if projects else "multiple project sources"
-            return f"INFORMATION COMPILATION\n\nCompiling technical information from {graded_count} engineering documents across {proj_str}. Extracting design details, calculations, specifications, and practical implementation examples to provide comprehensive response to query requirements."
+            sources_text = []
+            if has_code:
+                sources_text.append("code examples")
+            if has_coop:
+                sources_text.append("training materials")
+            sources_str = f" Including {', '.join(sources_text)}." if sources_text else ""
+            return f"INFORMATION COMPILATION\n\nCompiling {task_text} from {graded_count} relevant engineering documents across {proj_str}. Synthesizing information from project drawings, design calculations, and specification sheets to provide comprehensive response.{sources_str}"
     
     def generate_router_dispatcher_log(
         self,
@@ -304,21 +390,36 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             selected_routers: List of routers selected (e.g., ["rag", "web", "desktop"])
         """
         if not selected_routers:
-            return "ROUTER SELECTION\n\nAnalyzing query to determine appropriate data sources and tools."
+            return "ROUTER SELECTION\n\nAnalyzing query to determine appropriate data sources and engineering tools."
+        
+        # Extract engineering context from query
+        query_lower = query.lower()
+        needs_docs = any(term in query_lower for term in ["past project", "previous", "similar", "example", "specification", "detail", "drawing"])
+        needs_calc = any(term in query_lower for term in ["calculate", "design", "size", "dimension", "load"])
         
         router_names = {
-            "rag": "document database",
-            "web": "web calculation tools",
-            "desktop": "desktop applications"
+            "rag": "project document database",
+            "web": "web-based calculation tools",
+            "desktop": "desktop engineering applications"
         }
         
         router_descriptions = [router_names.get(r, r) for r in selected_routers]
         
+        # Generate context-aware message
         if len(router_descriptions) == 1:
-            return f"ROUTER SELECTION\n\nSelected {router_descriptions[0]} to process this query."
+            router_desc = router_descriptions[0]
+            if "rag" in selected_routers:
+                context = "searching past project documents and design specifications"
+            elif "web" in selected_routers:
+                context = "performing calculations using web-based tools"
+            elif "desktop" in selected_routers:
+                context = "accessing desktop engineering applications"
+            else:
+                context = "processing this engineering query"
+            return f"ROUTER SELECTION\n\nSelected {router_desc} for {context}."
         else:
             router_list = ", ".join(router_descriptions[:-1]) + f", and {router_descriptions[-1]}"
-            return f"ROUTER SELECTION\n\nSelected multiple tools: {router_list} to process this query in parallel."
+            return f"ROUTER SELECTION\n\nSelected multiple tools: {router_list} to process this query in parallel, enabling comprehensive engineering analysis."
     
     def generate_rag_log(
         self,
@@ -336,13 +437,39 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             data_route: Data route (smart/large)
             data_sources: Selected data sources
         """
+        # Extract engineering context
+        query_lower = query.lower()
+        engineering_focus = []
+        if any(term in query_lower for term in ["slab", "foundation", "footing"]):
+            engineering_focus.append("foundation systems")
+        if any(term in query_lower for term in ["beam", "girder", "framing"]):
+            engineering_focus.append("structural framing")
+        if any(term in query_lower for term in ["connection", "joint", "detail"]):
+            engineering_focus.append("connection details")
+        
+        focus_text = f" for {', '.join(engineering_focus)}" if engineering_focus else ""
+        
         if query_plan:
             steps = query_plan.get("steps", [])
+            subqueries = query_plan.get("subqueries", [])
             if steps:
-                return f"QUERY PLANNING\n\nDecomposed query into {len(steps)} execution steps. Analyzing query structure and determining optimal search strategy."
+                step_desc = f"{len(steps)} search steps" if len(steps) > 1 else "a structured search approach"
+                return f"QUERY PLANNING\n\nDecomposed engineering query into {step_desc}{focus_text}. Analyzing query structure and determining optimal search strategy across project documents and design specifications."
+            elif subqueries:
+                return f"QUERY PLANNING\n\nPreparing multi-faceted search strategy{focus_text} with {len(subqueries)} targeted subqueries to comprehensively address the engineering question."
         
-        route_desc = "optimized search" if data_route == "smart" else "comprehensive search"
-        return f"QUERY PLANNING\n\nPreparing {route_desc} strategy based on query complexity and available data sources."
+        route_desc = "optimized semantic search" if data_route == "smart" else "comprehensive page-level search"
+        data_sources_desc = []
+        if data_sources:
+            if data_sources.get("project_db"):
+                data_sources_desc.append("project documents")
+            if data_sources.get("code_db"):
+                data_sources_desc.append("code examples")
+            if data_sources.get("coop_manual"):
+                data_sources_desc.append("training materials")
+        
+        sources_text = f" across {', '.join(data_sources_desc)}" if data_sources_desc else ""
+        return f"QUERY PLANNING\n\nPreparing {route_desc} strategy{focus_text}{sources_text} based on query complexity and engineering requirements."
     
     def generate_verify_log(
         self,
@@ -360,8 +487,20 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             follow_up_count: Number of follow-up questions generated
             suggestion_count: Number of follow-up suggestions generated
         """
+        # Extract engineering context from query
+        query_lower = query.lower()
+        engineering_focus = []
+        if any(term in query_lower for term in ["specification", "requirement", "standard"]):
+            engineering_focus.append("design requirements")
+        if any(term in query_lower for term in ["detail", "drawing", "plan"]):
+            engineering_focus.append("construction details")
+        if any(term in query_lower for term in ["calculation", "design", "method"]):
+            engineering_focus.append("design methods")
+        
+        focus_text = f" for {', '.join(engineering_focus)}" if engineering_focus else ""
+        
         if needs_fix:
-            return "QUALITY VERIFICATION\n\nAnswer quality check identified areas requiring improvement. Initiating corrective retrieval to enhance response accuracy."
+            return f"QUALITY VERIFICATION\n\nAnswer quality assessment identified gaps{focus_text} that require additional information. Initiating corrective retrieval to enhance response accuracy and completeness with more relevant engineering documents."
         
         follow_up_text = ""
         if follow_up_count > 0 or suggestion_count > 0:
@@ -370,9 +509,9 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
                 parts.append(f"{follow_up_count} follow-up question{'s' if follow_up_count != 1 else ''}")
             if suggestion_count > 0:
                 parts.append(f"{suggestion_count} suggestion{'s' if suggestion_count != 1 else ''}")
-            follow_up_text = f" Generated {', '.join(parts)} to help explore related topics."
+            follow_up_text = f" Generated {', '.join(parts)} to help explore related engineering topics and design considerations."
         
-        return f"QUALITY VERIFICATION\n\nVerified answer quality and completeness against retrieved documents.{follow_up_text}"
+        return f"QUALITY VERIFICATION\n\nVerified answer quality and completeness against retrieved engineering documents{focus_text}. Confirmed that the response addresses the query requirements with appropriate technical detail.{follow_up_text}"
     
     def generate_correct_log(
         self,
@@ -388,11 +527,27 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             support_score: Answer support score (0.0-1.0)
             corrective_attempted: Whether correction was attempted
         """
+        # Extract engineering context
+        query_lower = query.lower()
+        engineering_focus = []
+        if any(term in query_lower for term in ["specification", "requirement"]):
+            engineering_focus.append("design specifications")
+        if any(term in query_lower for term in ["detail", "drawing"]):
+            engineering_focus.append("construction details")
+        
+        focus_text = f" covering {', '.join(engineering_focus)}" if engineering_focus else ""
+        
         if corrective_attempted:
             score_pct = int(support_score * 100)
-            return f"ANSWER FINALIZATION\n\nFinalized answer with {score_pct}% support score based on document evidence. Answer is ready for delivery."
+            if score_pct >= 90:
+                quality_desc = "high confidence"
+            elif score_pct >= 70:
+                quality_desc = "good confidence"
+            else:
+                quality_desc = "moderate confidence"
+            return f"ANSWER FINALIZATION\n\nFinalized engineering answer{focus_text} with {score_pct}% document support ({quality_desc}). The response is based on verified project documents and design specifications, ready for delivery."
         
-        return "ANSWER FINALIZATION\n\nFinalizing answer and preparing for delivery."
+        return f"ANSWER FINALIZATION\n\nFinalizing engineering answer{focus_text} and preparing for delivery. Synthesizing information from verified project documents and design specifications."
     
     def generate_image_embeddings_log(
         self,
@@ -406,10 +561,20 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             query: User's original question
             image_count: Number of images being processed
         """
+        # Extract engineering context from query
+        query_lower = query.lower()
+        image_type = []
+        if any(term in query_lower for term in ["drawing", "plan", "detail", "section"]):
+            image_type.append("drawings")
+        if any(term in query_lower for term in ["photo", "image", "picture"]):
+            image_type.append("images")
+        
+        type_text = f" ({', '.join(image_type)})" if image_type else ""
+        
         if image_count == 1:
-            return "IMAGE PROCESSING\n\nGenerating embedding for uploaded image to enable similarity search."
+            return f"IMAGE PROCESSING\n\nProcessing uploaded image{type_text} to extract visual features and enable similarity search across past project drawings and design documents."
         else:
-            return f"IMAGE PROCESSING\n\nGenerating embeddings for {image_count} uploaded images to enable similarity search."
+            return f"IMAGE PROCESSING\n\nProcessing {image_count} uploaded images{type_text} to extract visual features and enable similarity search across past project drawings and design documents."
     
     def generate_image_similarity_log(
         self,
@@ -425,13 +590,17 @@ Report ONLY this factual data. 2-3 sentences maximum."""),
             result_count: Number of similar images found
             project_count: Number of unique projects in results
         """
+        # Extract engineering context
+        query_lower = query.lower()
+        image_type = "drawings" if any(term in query_lower for term in ["drawing", "plan", "detail", "section"]) else "images"
+        
         if result_count == 0:
-            return "IMAGE SIMILARITY SEARCH\n\nNo similar images found in database. Proceeding with text-based search."
+            return f"IMAGE SIMILARITY SEARCH\n\nNo similar {image_type} found in the project database matching the uploaded image. Proceeding with text-based semantic search to find relevant design documents and specifications."
         
         if project_count > 0:
-            return f"IMAGE SIMILARITY SEARCH\n\nFound {result_count} similar image{'s' if result_count != 1 else ''} from {project_count} project{'s' if project_count != 1 else ''}. These will be included in the search results."
+            return f"IMAGE SIMILARITY SEARCH\n\nFound {result_count} similar {image_type} from {project_count} past project{'s' if project_count != 1 else ''} with matching visual features. These related drawings and design documents will be included in the search results to provide comprehensive engineering context."
         else:
-            return f"IMAGE SIMILARITY SEARCH\n\nFound {result_count} similar image{'s' if result_count != 1 else ''}. These will be included in the search results."
+            return f"IMAGE SIMILARITY SEARCH\n\nFound {result_count} similar {image_type} with matching visual features. These related drawings and design documents will be included in the search results to provide comprehensive engineering context."
 
 
 # Singleton instance

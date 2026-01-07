@@ -122,9 +122,9 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
                     
                     print(f"🔍 RPC CALL (pre-filtered): function={rpc_function}, table={table_name}, project_keys={len(unique_project_keys) if unique_project_keys else 0}")  # Diagnostic
                     
-                    chunks_per_project = 20
-                    projects_limit = min(50, len(unique_project_keys)) if unique_project_keys else 50
-                    match_count = 1000
+                    chunks_per_project = 5
+                    projects_limit = min(30, len(unique_project_keys)) if unique_project_keys else 50
+                    match_count = 300
                     
                     result = _supa.rpc(rpc_function, {
                         'query_embedding': query_embedding,
@@ -198,8 +198,8 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
             else:
                 chunks_per_project = 1
             
-            projects_limit = 50
-            match_count = 1000
+            projects_limit = 30
+            match_count = 300
             
             result = _supa.rpc(rpc_function, {
                 'query_embedding': query_embedding,

@@ -29,6 +29,7 @@
           <div 
             v-if="message.role === 'assistant'"
             class="text-sm leading-relaxed"
+            :data-message-id="message.id"
             style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;"
           >
             <span v-html="formatMessage(message.content)"></span>
@@ -231,7 +232,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, inject, computed, onBeforeUnmount, onMounted } from 'vue'
-import { useSmartChat, type ChatSource } from '~/composables/useSmartChat'
+import type { ChatSource } from '~/composables/useSmartChat' // Only importing type, not useSmartChat to avoid duplication
 import { useChat } from '~/composables/useChat'
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 import { useRFPWorkflow } from '~/composables/useRFPWorkflow'
@@ -444,7 +445,7 @@ function removeImage(index: number) {
   pendingImages.value.splice(index, 1)
 }
 
-const { sendSmartMessage, determineQueryIntent } = useSmartChat()
+// Removed sendSmartMessage to avoid duplication - using sendChatMessageStream directly
 const { sendChatMessageStream } = useChat()
 const { analyzeRFPAndFindSimilar, generateProposal, exportToWord } = useRFPWorkflow()
 const { 
@@ -484,6 +485,7 @@ const openDraft = inject<(title: string, content?: string) => void>('openDraft')
 const openModel = inject<(url: string, name?: string) => void>('openModel')
 const similarDocuments = inject<Ref<any[]>>('similarDocuments')
 const emitAgentLog = inject<(log: import('~/components/AgentLogsPanel').AgentLog) => void>('emitAgentLog')
+console.log('🔍 emitAgentLog injected:', !!emitAgentLog, typeof emitAgentLog)
 
 // Speckle integration
 const { findProjectByKey, getProjectModels } = useSpeckle()
@@ -626,22 +628,12 @@ async function handleSend() {
     
     const imagesBase64 = imagesToSend.length > 0 ? imagesToSend.map((img) => img.base64) : undefined
     console.log('📸 [SmartChatPanel] imagesBase64 created:', imagesBase64 ? `${imagesBase64.length} images, first length=${imagesBase64[0]?.substring(0, 50)}...` : 'undefined')
-    console.log('📸 [SmartChatPanel] Calling sendSmartMessage with:', {
-      message: userMessage,
-      images_base64: imagesBase64
-      // dataSources removed - backend router now intelligently selects databases
-    })
-    
-    const response = await sendSmartMessage(userMessage, {
-      sessionId: 'default',
-      // dataSources removed - backend router now intelligently selects databases
-      images_base64: imagesBase64
-    })
+    console.log('📸 [SmartChatPanel] Using streaming endpoint only (no duplication)')
     
     // Accumulated thinking logs for logging purposes only (not displayed in chat)
     let thinkingContent = ''
     
-    // Use streaming endpoint
+    // Use streaming endpoint ONLY (removed duplicate sendSmartMessage call)
     await sendChatMessageStream(
       userMessage,
       'default',
@@ -650,16 +642,21 @@ async function handleSend() {
       {
         // On thinking log received
         onLog: (log) => {
-          console.log('💭 Thinking log:', log)
+          console.log('💭 Thinking log received:', log)
+          console.log('💭 emitAgentLog available:', !!emitAgentLog)
           
           // Emit to Agent Thinking panel only (thinking never shows in chat)
           if (emitAgentLog) {
-            emitAgentLog({
+            const agentLog = {
               id: `thinking-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-              type: 'thinking',
+              type: 'thinking' as const,
               thinking: log.message,
               timestamp: new Date()
-            })
+            }
+            console.log('💭 Emitting agent log:', agentLog)
+            emitAgentLog(agentLog)
+          } else {
+            console.warn('⚠️ emitAgentLog is not available - logs will not appear in Agent Thinking panel')
           }
           
           // Accumulate thinking content for logging purposes only (not displayed in chat)
@@ -669,17 +666,74 @@ async function handleSend() {
           // Thinking only appears in Agent Thinking panel
         },
         
+        // On token received (real-time LLM token streaming)
+        onToken: async (token) => {
+          // Create or update streaming message
+          let streamingMessage = messages.value.find(m => m.id === 'streaming-answer')
+          
+          if (!streamingMessage) {
+            // Create new streaming message
+            stopThinking() // Stop thinking indicator when answer starts
+            streamingMessage = {
+              id: 'streaming-answer',
+              role: 'assistant',
+              content: '',
+              timestamp: new Date(),
+              isTyping: false // Not using simulated typing
+            }
+            messages.value.push(streamingMessage)
+            scrollToBottom(true) // Force scroll when streaming starts
+          }
+          
+          // Append token content in real-time
+          const messageIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
+          if (messageIndex !== -1) {
+            // Append raw token content
+            // Vue's reactivity will automatically trigger v-html re-render, which calls formatMessage()
+            // This ensures markdown formatting (bold, headers, etc.) updates in real-time as tokens arrive
+            // Note: Markdown patterns need to be complete to format (e.g., **text** needs both **)
+            messages.value[messageIndex].content += token.content
+            
+            // Use nextTick to ensure Vue processes the reactivity update and re-renders
+            // This ensures formatMessage() is called with the updated content immediately
+            await nextTick()
+            
+            // Render MathJax equations after DOM update
+            const messageElement = document.querySelector(`[data-message-id="${messages.value[messageIndex].id}"]`)
+            if (messageElement) {
+              renderMathJax(messageElement as HTMLElement)
+            }
+            
+            // Auto-scroll periodically during streaming
+            if (messages.value[messageIndex].content.length % 50 === 0) {
+              scrollToBottom() // Don't force - respect user's scroll position
+            }
+          }
+        },
+        
         // On completion
         onComplete: async (result) => {
           console.log('✅ Stream complete:', result)
           stopThinking()
           
-          const finalAnswer = result.reply || result.message || 'No response generated.'
-          
-          // Only create and display the final answer in chat (no thinking content)
-          await addTypedMessage(finalAnswer, undefined, 300)
+          // Finalize streaming message if it exists
+          const streamingIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
+          let finalAnswer = ''
+          if (streamingIndex !== -1) {
+            // Update the streaming message with final answer (in case there are any differences)
+            finalAnswer = result.reply || result.message || messages.value[streamingIndex].content || 'No response generated.'
+            messages.value[streamingIndex].content = finalAnswer
+            messages.value[streamingIndex].id = `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}` // Give it a permanent ID
+          } else {
+            // Fallback: if no streaming happened, use typed message
+            finalAnswer = result.reply || result.message || 'No response generated.'
+            await addTypedMessage(finalAnswer, undefined, 300)
+          }
           
           // Extract project keys from answer text and fetch Speckle models
+          if (!finalAnswer) {
+            finalAnswer = result.reply || result.message || ''
+          }
           await fetchAndDisplaySpeckleModels(finalAnswer)
           
           // Emit response for logging
@@ -687,6 +741,17 @@ async function handleSend() {
             ...result,
             thinking_log: [thinkingContent]  // Include thinking logs for logging
           })
+          
+          // Render MathJax equations after final content is set
+          await nextTick()
+          if (streamingIndex !== -1) {
+            const messageElement = document.querySelector(`[data-message-id="${messages.value[streamingIndex].id}"]`)
+            if (messageElement) {
+              renderMathJax(messageElement as HTMLElement)
+            }
+          }
+          
+          await scrollToBottom(true) // Force scroll after completion
         },
         
         // On error
@@ -740,6 +805,28 @@ function autoResize() {
 
 function formatMessage(text: string): string {
   return formatMessageText(text)
+}
+
+// MathJax rendering helper
+function renderMathJax(element?: HTMLElement) {
+  if (typeof window === 'undefined') return
+  
+  const MathJax = (window as any).MathJax
+  if (!MathJax) return
+  
+  try {
+    if (element) {
+      MathJax.typesetPromise([element]).catch((err: Error) => {
+        console.warn('MathJax rendering error:', err)
+      })
+    } else {
+      MathJax.typesetPromise().catch((err: Error) => {
+        console.warn('MathJax rendering error:', err)
+      })
+    }
+  } catch (err) {
+    console.warn('MathJax not available yet:', err)
+  }
 }
 
 async function handleModelDesignWorkflow(
