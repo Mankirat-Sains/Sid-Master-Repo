@@ -18,6 +18,7 @@
         "@speckle/viewer": "^2.20.2",
         "@vue/apollo-composable": "^4.2.2",
         "apollo-upload-client": "^18.0.1",
+        "echo": "^0.1.9",
         "graphql": "^16.6.0",
         "nuxt": "^4.0.3",
         "vue": "^3.5.13",

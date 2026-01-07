@@ -401,6 +401,14 @@
                 <template v-if="!activeChatLog.length">
                   <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5">
                     <div class="flex flex-col items-center gap-3">
+                      <div class="h-24 w-24 shrink-0 -translate-y-1">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sidian logo">
+                          <polygon
+                            points="12 1 3.6 23 20.4 23"
+                            fill="#6b21a8"
+                          />
+                        </svg>
+                      </div>
                       <div class="flex items-center gap-2 text-[11px] text-white/65">
                         <span class="px-3 py-1 rounded-full bg-white/5 border border-white/12 shadow-[0_4px_16px_rgba(0,0,0,0.35)]">Free plan</span>
                         <button class="text-white/75 hover:text-white transition" @click="handleUpgrade">Upgrade</button>
@@ -413,37 +421,54 @@
                       </div>
                     </div>
                     <div class="w-full max-w-3xl">
-                      <div class="relative rounded-full bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-2 flex items-center gap-3 text-left">
-                        <button
-                          class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center flex-shrink-0"
-                          aria-label="Attach"
-                          @click="openFilePicker"
-                        >
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
-                          </svg>
-                        </button>
-                        <textarea
-                          v-model="prompt"
-                          ref="promptInput"
-                          class="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[1.5] text-white placeholder-white/55 resize-none min-h-[42px] max-h-[160px] overflow-y-hidden py-2"
-                          placeholder="How can I help you today?"
-                          aria-label="Prompt input"
-                          rows="1"
-                          @keydown.enter.exact.prevent="handleSend"
-                          @input="resizePrompt"
-                        ></textarea>
-                        <button
-                          class="h-10 w-10 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
-                          :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
-                          aria-label="Send"
-                          @click="handleSend"
-                          :disabled="isSending || (!prompt.trim() && !attachments.length)"
-                        >
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-                          </svg>
-                        </button>
+                      <div class="relative">
+                        <transition name="attachment-tray">
+                          <div
+                            v-if="attachments.length"
+                            class="absolute bottom-full left-0 mb-2 w-full bg-[#1f1f1f] border border-white/12 rounded-xl shadow-[0_12px_28px_rgba(0,0,0,0.4)] px-3 py-2.5"
+                          >
+                            <div class="flex flex-wrap gap-2.5">
+                              <AttachmentChip
+                                v-for="(file, idx) in attachments"
+                                :key="file.name + idx"
+                                :file="file"
+                                @remove="removeAttachment(idx)"
+                              />
+                            </div>
+                          </div>
+                        </transition>
+                        <div class="relative rounded-full bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 h-16 flex items-center gap-4 text-left">
+                          <button
+                            class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center flex-shrink-0"
+                            aria-label="Attach"
+                            @click="openFilePicker"
+                          >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
+                            </svg>
+                          </button>
+                          <textarea
+                            v-model="prompt"
+                            ref="promptInput"
+                            class="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[20px] text-white placeholder-white/55 resize-none min-h-[20px] max-h-[48px] overflow-y-auto py-0 px-2"
+                            placeholder="How can I help you today?"
+                            aria-label="Prompt input"
+                            rows="1"
+                            @keydown.enter.exact.prevent="handleSend"
+                            @input="resizePrompt"
+                          ></textarea>
+                          <button
+                            class="h-10 w-10 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
+                            :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                            aria-label="Send"
+                            @click="handleSend"
+                            :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                          >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -464,6 +489,18 @@
                             :class="entry.role === 'user' ? 'items-end' : 'items-start'"
                           >
                             <div
+                              v-if="entry.attachments?.length"
+                              class="flex flex-wrap gap-2.5 mb-2 w-full"
+                              :class="entry.role === 'user' ? 'justify-end' : 'justify-start'"
+                            >
+                              <AttachmentChip
+                                v-for="file in entry.attachments"
+                                :key="file"
+                                :file="{ name: file, base64: '' }"
+                                @remove="() => {}"
+                              />
+                            </div>
+                            <div
                               class="w-auto inline-flex rounded-2xl px-3.5 py-3 leading-relaxed shadow-lg max-w-full"
                               :class="entry.role === 'user'
                                 ? 'bg-[#2a2a2a] border border-white/10'
@@ -472,18 +509,6 @@
                             >
                               <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="entry.content"></div>
                               <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
-                              <div
-                                v-if="entry.attachments?.length"
-                                class="flex flex-wrap gap-2 mt-3"
-                              >
-                                <span
-                                  v-for="file in entry.attachments"
-                                  :key="file"
-                                  class="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[12px] text-white/80"
-                                >
-                                  {{ file }}
-                                </span>
-                              </div>
                             </div>
                             <div
                               class="flex items-center gap-3 text-[11px] text-white/50 mt-1 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto"
@@ -556,25 +581,24 @@
 
                     <div class="px-4 py-3">
                       <div class="max-w-3xl mx-auto space-y-2.5">
-                        <div v-if="attachments.length" class="flex flex-wrap gap-2">
-                          <div
-                            v-for="(file, idx) in attachments"
-                            :key="file.name + idx"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#1f1f1f] border border-white/12 text-xs text-white/80"
-                          >
-                            <span class="max-w-[180px] truncate">{{ file.name }}</span>
-                            <button
-                              class="text-white/50 hover:text-white transition"
-                              type="button"
-                              @click="removeAttachment(idx)"
-                              aria-label="Remove attachment"
+                        <div class="relative">
+                          <transition name="attachment-tray">
+                            <div
+                              v-if="attachments.length"
+                              class="absolute bottom-full left-0 mb-2 w-full bg-[#1f1f1f] border border-white/12 rounded-xl shadow-[0_12px_28px_rgba(0,0,0,0.4)] px-3 py-2.5"
                             >
-                              ×
-                            </button>
-                          </div>
-                        </div>
+                              <div class="flex flex-wrap gap-2.5">
+                                <AttachmentChip
+                                  v-for="(file, idx) in attachments"
+                                  :key="file.name + idx"
+                                  :file="file"
+                                  @remove="removeAttachment(idx)"
+                                />
+                              </div>
+                            </div>
+                          </transition>
 
-                        <div class="relative rounded-full bg-[#1c1c1c] border border-white/10 shadow-[0_8px_18px_rgba(0,0,0,0.28)] px-3.5 py-2 flex items-center gap-3">
+                          <div class="relative rounded-full bg-[#1c1c1c] border border-white/10 shadow-[0_8px_18px_rgba(0,0,0,0.28)] px-4 h-16 flex items-center gap-4">
                           <button
                             class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center flex-shrink-0"
                             aria-label="Attach"
@@ -587,7 +611,7 @@
                           <textarea
                             v-model="prompt"
                             ref="promptInput"
-                          class="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-[13px] leading-[1.5] text-white placeholder-white/55 resize-none min-h-[40px] max-h-[150px] overflow-y-hidden py-1.5"
+                            class="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-[13px] leading-[20px] text-white placeholder-white/55 resize-none min-h-[20px] max-h-[48px] overflow-y-auto py-0 px-2"
                             placeholder="Reply..."
                             aria-label="Prompt input"
                             rows="1"
@@ -605,6 +629,7 @@
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                           </button>
+                        </div>
                         </div>
 
                         <div v-if="tags.length" class="flex flex-wrap items-center gap-2 text-[10px] text-white/50 pl-1">
@@ -741,10 +766,18 @@
             @click="performDeleteConversation"
           >
             Delete
-          </button>
-        </div>
-      </div>
-    </div>
+                            </button>
+                          </div>
+                        </div>
+                        <div v-if="attachments.length" class="flex flex-wrap gap-2.5 pl-12">
+                          <AttachmentChip
+                            v-for="(file, idx) in attachments"
+                            :key="file.name + idx"
+                            :file="file"
+                            @remove="removeAttachment(idx)"
+                          />
+                        </div>
+                        </div>
 
   </div>
 </template>
@@ -869,6 +902,75 @@ const PersonChartIcon = defineComponent({
         h('path', { d: 'M3 16h3' }),
         h('path', { d: 'M3 20h4' })
       ])
+  }
+})
+
+const AttachmentChip = defineComponent({
+  name: 'AttachmentChip',
+  props: {
+    file: {
+      type: Object as () => { name: string; base64: string },
+      required: true
+    }
+  },
+  emits: ['remove'],
+  setup(props, { emit }) {
+    const isImage = computed(() => isImageFile(props.file.name))
+    const imageError = ref(false)
+    const ext = computed(() => getFileExtension(props.file.name))
+    const sizeLabel = computed(() => formatBase64Size(props.file.base64))
+    const shouldShowThumb = computed(() => isImage.value && !!props.file.base64 && !imageError.value)
+
+    return () =>
+      h(
+        'div',
+        {
+          class:
+            'group flex items-center gap-3 min-w-0 pl-3 pr-2.5 py-2 rounded-xl border border-white/10 bg-[#202020] text-white/85 transition hover:bg-white/5 hover:border-white/18 shadow-[0_6px_14px_rgba(0,0,0,0.28)]'
+        },
+        [
+          h(
+            'div',
+            { class: 'w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shrink-0' },
+            [
+              shouldShowThumb.value
+                ? h('img', {
+                    src: `data:image/*;base64,${props.file.base64}`,
+                    alt: '',
+                    class: 'w-full h-full object-cover',
+                    onError: () => (imageError.value = true)
+                  })
+                : h(
+                    'div',
+                    { class: 'flex items-center justify-center w-full h-full text-white/75 text-[11px] font-medium' },
+                    ext.value ? ext.value.toUpperCase() : 'FILE'
+                  )
+            ]
+          ),
+          h('div', { class: 'flex-1 min-w-0 space-y-0.5' }, [
+            h(
+              'p',
+              { class: 'text-[13px] font-medium truncate', title: props.file.name },
+              props.file.name
+            ),
+            h(
+              'p',
+              { class: 'text-[11px] text-white/55 uppercase tracking-wide truncate' },
+              sizeLabel.value || (ext.value || 'File')
+            )
+          ]),
+          h(
+            'button',
+            {
+              class:
+                'w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition',
+              'aria-label': `Remove ${props.file.name}`,
+              onClick: () => emit('remove')
+            },
+            '×'
+          )
+        ]
+      )
   }
 })
 
@@ -1299,6 +1401,7 @@ watch(activeConversationId, () => {
 onMounted(() => {
   loadMemory()
   hydrateFromRoute()
+  ensureLandingNewConversation()
   chatContainer.value?.addEventListener('scroll', handleChatScroll)
   handleChatScroll()
   document.addEventListener('click', handleGlobalClick)
@@ -1636,6 +1739,20 @@ function startNewConversation() {
   attachments.value = []
 }
 
+function ensureLandingNewConversation() {
+  const pageFromRoute = normalizeQueryParam(route.query.page)
+  if (pageFromRoute && pageFromRoute !== 'home') return
+
+  startNewConversation()
+
+  const currentId = activeConversationId.value
+  conversations.value = conversations.value.filter(conv => {
+    if (conv.id === currentId) return true
+    const isEmptyGeneric = conv.chatLog.length === 0 && isGenericTitle(conv.title)
+    return !isEmptyGeneric
+  })
+}
+
 function selectConversation(id: string) {
   if (activeConversationId.value === id) return
   activeConversationId.value = id
@@ -1650,6 +1767,25 @@ function handleTagClick(tag: string) {
 
 function removeTag(tag: string) {
   tags.value = tags.value.filter(t => t !== tag)
+}
+
+function getFileExtension(name: string) {
+  const parts = name.split('.')
+  if (parts.length <= 1) return ''
+  return parts.pop()?.toLowerCase() || ''
+}
+
+function isImageFile(name: string) {
+  return /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(name)
+}
+
+function formatBase64Size(base64: string) {
+  if (!base64) return ''
+  const padding = (base64.match(/=+$/)?.[0].length ?? 0)
+  const bytes = Math.max(0, Math.floor((base64.length * 3) / 4 - padding))
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
 function openFilePicker() {
@@ -1925,7 +2061,7 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
 function resizePrompt() {
   const el = promptInput.value
   if (!el) return
-  const maxHeight = 180
+  const maxHeight = 48
   el.style.height = 'auto'
   const next = Math.min(el.scrollHeight, maxHeight)
   el.style.height = `${next}px`
@@ -2211,6 +2347,21 @@ function performDeleteConversation() {
 
 .workspace-main {
   min-width: 0;
+}
+
+.attachment-tray-enter-active,
+.attachment-tray-leave-active {
+  transition: opacity 180ms ease-out, transform 180ms ease-out;
+}
+.attachment-tray-enter-from,
+.attachment-tray-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.attachment-tray-enter-to,
+.attachment-tray-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .conversation-sidebar {
