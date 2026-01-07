@@ -399,7 +399,7 @@
                 :style="showSpeckleViewer ? chatPaneStyle : undefined"
               >
                 <template v-if="!activeChatLog.length">
-                  <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5">
+                  <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5 -translate-y-8 md:-translate-y-10">
                     <div class="flex flex-col items-center gap-3">
                       <div class="h-24 w-24 shrink-0 -translate-y-1">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sidian logo">
