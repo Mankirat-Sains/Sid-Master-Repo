@@ -227,6 +227,90 @@
         </button>
       </form>
     </div>
+
+    <!-- Speckle Viewer Modal -->
+    <div
+      v-if="speckleViewerModalOpen"
+      class="fixed inset-0 z-50 flex items-center justify-center px-4"
+    >
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeSpeckleModal"></div>
+      <div class="relative w-full max-w-6xl max-h-[90vh] bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-3 border-b border-slate-700 bg-slate-800/70 backdrop-blur-sm">
+          <div>
+            <p class="text-sm text-slate-300">Speckle 3D Viewer</p>
+            <p class="text-lg font-semibold text-white">
+              {{ selectedSpeckleModel?.name || 'Model' }}
+              <span v-if="selectedSpeckleModel?.projectName" class="text-sm text-slate-400 font-normal">
+                — {{ selectedSpeckleModel.projectName }}
+              </span>
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div v-if="speckleViewerModels.length > 1" class="flex items-center gap-2">
+              <label class="text-xs text-slate-300 uppercase tracking-wide">Model</label>
+              <select
+                v-model="speckleViewerSelectedId"
+                class="bg-slate-700 text-white text-sm rounded-lg px-3 py-1.5 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option
+                  v-for="model in speckleViewerModels"
+                  :key="model.id"
+                  :value="model.id"
+                >
+                  {{ model.name }}{{ model.projectName ? ` • ${model.projectName}` : '' }}
+                </option>
+              </select>
+            </div>
+            <button
+              @click="closeSpeckleModal"
+              class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition-colors flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Close
+            </button>
+          </div>
+        </div>
+
+        <div class="relative bg-slate-900" style="height: calc(90vh - 120px); min-height: 360px;">
+          <div
+            v-if="speckleViewerFetchLoading && !selectedSpeckleModel"
+            class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+          >
+            <div class="text-center space-y-2">
+              <div class="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+              <p class="text-slate-200 text-sm">Loading models…</p>
+            </div>
+          </div>
+          <div
+            v-else-if="speckleViewerFetchError && !selectedSpeckleModel"
+            class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+          >
+            <div class="text-center space-y-2">
+              <p class="text-slate-200 text-sm">{{ speckleViewerFetchError }}</p>
+              <button
+                class="px-3 py-1.5 rounded-lg bg-slate-700 text-white text-sm hover:bg-slate-600 transition-colors"
+                @click="closeSpeckleModal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+
+          <SpeckleViewer
+            v-if="selectedSpeckleModel"
+            :model-url="selectedSpeckleModel.url"
+            :model-name="selectedSpeckleModel.name"
+            :visible="true"
+            height="100%"
+            :server-url="config.public.speckleUrl"
+            :token="config.public.speckleToken"
+            @close="closeSpeckleModal"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -241,6 +325,10 @@ import { useRFPProposalWorkflow, type RFPProposalState } from '~/composables/use
 import { useSpeckle } from '~/composables/useSpeckle'
 import { useIFCUpload } from '~/composables/useIFCUpload'
 import { useRuntimeConfig } from '#app'
+import SpeckleViewer from '~/components/SpeckleViewer.vue'
+
+const DEMO_RFP_PATH = '/writing/Structural Engineer RFP 63023.pdf'
+const DEMO_RFP_FILE_NAME = 'Structural Engineer RFP 63023.pdf'
 
 const { formatMessageText } = useMessageFormatter()
 
@@ -279,12 +367,18 @@ const ifcInputRef = ref<HTMLInputElement>()
 const pendingImages = ref<ImageAttachment[]>([])
 const pendingIFCFile = ref<File | null>(null)
 const uploadProgress = ref(0)
+const speckleViewerModels = ref<Array<{ id: string; url: string; name: string; projectName?: string }>>([])
+const speckleViewerSelectedId = ref('')
+const speckleViewerModalOpen = ref(false)
+const speckleViewerFetchLoading = ref(false)
+const speckleViewerFetchError = ref('')
 
 // Initialize composables early so functions can use them
 const { uploadIFCFile } = useIFCUpload()
 
 // Database selection is now handled automatically by the backend router
 // Removed manual toggle buttons - the system intelligently selects databases based on query content and user role
+const selectedSpeckleModel = computed(() => speckleViewerModels.value.find(model => model.id === speckleViewerSelectedId.value) || null)
 
 function resizeImage(file: File, maxDimension: number = 2048): Promise<{ base64: string; preview: string; wasResized: boolean }> {
   return new Promise((resolve, reject) => {
@@ -632,6 +726,8 @@ async function handleSend() {
     
     // Accumulated thinking logs for logging purposes only (not displayed in chat)
     let thinkingContent = ''
+    let gotStreamResult = false
+    let streamError: Error | null = null
     
     // Use streaming endpoint ONLY (removed duplicate sendSmartMessage call)
     await sendChatMessageStream(
@@ -715,6 +811,7 @@ async function handleSend() {
         onComplete: async (result) => {
           console.log('✅ Stream complete:', result)
           stopThinking()
+          gotStreamResult = true
           
           // Finalize streaming message if it exists
           const streamingIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
@@ -734,7 +831,7 @@ async function handleSend() {
           if (!finalAnswer) {
             finalAnswer = result.reply || result.message || ''
           }
-          await fetchAndDisplaySpeckleModels(finalAnswer)
+          await fetchAndDisplaySpeckleModels(finalAnswer, userMessage)
           
           // Emit response for logging
           emit('responseReceived', {
@@ -758,6 +855,7 @@ async function handleSend() {
         onError: async (error) => {
           console.error('❌ Stream error:', error)
           stopThinking()
+          streamError = error
           
           // Display error message in chat
           await addTypedMessage(
@@ -768,6 +866,26 @@ async function handleSend() {
         }
       }
     )
+
+    if (streamError) {
+      // Error already surfaced to the user above, just exit early
+      return
+    }
+
+    if (!gotStreamResult) {
+      // Fallback to non-streaming response when stream finishes without a final answer
+      stopThinking()
+      const fallbackAnswer = response.message || 'No response generated.'
+      await addTypedMessage(fallbackAnswer, undefined, 300)
+      await fetchAndDisplaySpeckleModels(fallbackAnswer, userMessage)
+      
+      emit('responseReceived', {
+        ...response,
+        reply: fallbackAnswer,
+        message: fallbackAnswer,
+        thinking_log: response.thinking_log ?? (thinkingContent ? [thinkingContent] : undefined)
+      })
+    }
   } catch (error) {
     console.error('Chat error:', error)
     stopThinking()
@@ -1331,8 +1449,8 @@ async function handleRFPWorkflow(message: string, action: 'new_rfp' | 'open_rfp'
     if (action === 'open_rfp') {
       if (!rfpProposalState.value.rfpPath) {
         // Fallback to demo RFP if path missing
-        rfpProposalState.value.rfpPath = '/writing/Structural Engineer RFP 63023.pdf'
-        rfpProposalState.value.rfpFileName = 'Structural Engineer RFP 63023.pdf'
+        rfpProposalState.value.rfpPath = DEMO_RFP_PATH
+        rfpProposalState.value.rfpFileName = DEMO_RFP_FILE_NAME
       }
       
       // Add RFP to document list
@@ -1556,7 +1674,7 @@ async function handleRFPWorkflow(message: string, action: 'new_rfp' | 'open_rfp'
       })
 
       // For now, use a mock RFP path - in production, this would come from user selection
-      const rfpPath = '/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Visual Studio/rag-GHD-Demo/writing/Structural Engineer RFP 63023.pdf'
+      const rfpPath = rfpProposalState.value.rfpPath || DEMO_RFP_PATH
       
       const analysis = await analyzeRFPAndFindSimilar(rfpPath)
       
@@ -1592,7 +1710,7 @@ async function handleRFPWorkflow(message: string, action: 'new_rfp' | 'open_rfp'
 
       // Get similar projects from current state (would be stored in component state)
       const similarProjects: any[] = [] // TODO: Get from state
-      const rfpPath = '/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Visual Studio/rag-GHD-Demo/writing/Structural Engineer RFP 63023.pdf'
+      const rfpPath = rfpProposalState.value.rfpPath || DEMO_RFP_PATH
       
       const proposalContent = await generateProposal(rfpPath, similarProjects, message)
       
@@ -1737,6 +1855,17 @@ function openModelFromMessage(modelUrl: string, modelName?: string) {
   }
 }
 
+function closeSpeckleModal() {
+  speckleViewerModalOpen.value = false
+}
+
+function openSpeckleModalWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
+  if (!models.length) return
+  speckleViewerModels.value = models
+  speckleViewerSelectedId.value = models[0].id
+  speckleViewerModalOpen.value = true
+}
+
 // Handle paste events for image paste
 function handlePaste(e: ClipboardEvent) {
   const items = e.clipboardData?.items
@@ -1761,20 +1890,30 @@ onMounted(() => {
   document.addEventListener('paste', handlePaste)
 })
 
-// Extract project keys from answer text and fetch Speckle models
-async function fetchAndDisplaySpeckleModels(answerText: string) {
+// Extract project keys from answer (and user question) text and fetch Speckle models
+async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: string) {
   if (!openDocumentsList) return
-  
-  // Extract project keys from answer text using regex
-  const projectKeyRegex = /\b(\d{2}-\d{2}-\d{3})\b/g
+  speckleViewerFetchLoading.value = true
+  speckleViewerFetchError.value = ''
+
+  // Extract project keys from answer text (and optionally the user question as a fallback)
   const projectKeys = new Set<string>()
-  let match
-  while ((match = projectKeyRegex.exec(answerText)) !== null) {
-    projectKeys.add(match[1])
+  const collectProjectKeys = (text?: string) => {
+    if (!text) return
+    const projectKeyRegex = /\b(\d{2}-\d{2}-\d{3})\b/g
+    let match
+    while ((match = projectKeyRegex.exec(text)) !== null) {
+      projectKeys.add(match[1])
+    }
   }
+  collectProjectKeys(answerText)
+  collectProjectKeys(fallbackText)
   
   // If no project keys found, return early
-  if (projectKeys.size === 0) return
+  if (projectKeys.size === 0) {
+    speckleViewerFetchLoading.value = false
+    return
+  }
   
   // Fetch projects and models for each project key
   const modelDocuments: any[] = []
@@ -1814,6 +1953,7 @@ async function fetchAndDisplaySpeckleModels(answerText: string) {
       }
     } catch (error) {
       console.error(`Error fetching models for project ${projectKey}:`, error)
+      speckleViewerFetchError.value = 'Unable to load 3D models right now.'
     }
   }
   
@@ -1824,7 +1964,20 @@ async function fetchAndDisplaySpeckleModels(answerText: string) {
       '3D Models',
       'Click on a model to view it in the viewer'
     )
+    const modalModels = modelDocuments.map(doc => ({
+      id: doc.id,
+      url: doc.url,
+      name: doc.name,
+      projectName: doc.metadata?.projectName as string | undefined
+    }))
+    openSpeckleModalWithModels(modalModels)
+  } else {
+    speckleViewerModels.value = []
+    speckleViewerSelectedId.value = ''
+    speckleViewerModalOpen.value = false
   }
+
+  speckleViewerFetchLoading.value = false
 }
 
 // Cleanup thinking interval on unmount

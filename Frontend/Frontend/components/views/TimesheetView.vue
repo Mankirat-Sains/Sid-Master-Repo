@@ -1,75 +1,43 @@
 <template>
-  <div class="h-full w-full flex bg-gradient-to-br from-slate-50 to-white overflow-hidden">
-    <!-- Left sidebar nav (mirrors v0: Employees, Projects, Insights, etc.) -->
-    <aside class="w-56 border-r border-gray-200 bg-white/80 backdrop-blur-xl flex flex-col">
-      <div class="px-4 py-4 border-b border-gray-200">
-        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
-          IanAnalytics (IA)
-        </p>
-        <p class="text-sm text-gray-700">
-          Engineering Tracking System
-        </p>
+  <div class="h-full w-full flex flex-col bg-[#0f0f0f] text-white overflow-hidden timesheet-view">
+    <!-- Header + search -->
+    <header class="border-b border-white/10 bg-[#0f0f0f] backdrop-blur-xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-3xl font-bold text-white">{{ headerTitle }}</h2>
+          <p class="text-sm text-white/60 mt-1">
+            {{ headerSubtitle }}
+          </p>
+        </div>
+        <TimeScaleToggle v-model="timeScale" />
       </div>
-      <nav class="flex-1 py-4 space-y-1 text-sm">
-        <button
-          v-for="item in navItems"
-          :key="item.id"
-          type="button"
-          class="w-full flex items-center gap-2 px-4 py-2 rounded-lg text-left transition-colors"
-          :class="activeSection === item.id ? 'bg-purple-100 text-purple-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
-          @click="handleNavClick(item.id)"
-        >
-          <span class="inline-block w-5 text-center">
-            {{ item.icon }}
-          </span>
-          <span>{{ item.label }}</span>
-        </button>
-      </nav>
-    </aside>
 
-    <!-- Right content area -->
-    <div class="flex-1 flex flex-col bg-gradient-to-br from-slate-50 to-white overflow-hidden">
-      <!-- Header + search -->
-      <header class="border-b border-gray-200 bg-white/80 backdrop-blur-xl p-6">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h2 class="text-3xl font-bold text-gray-900">{{ headerTitle }}</h2>
-            <p class="text-sm text-gray-500 mt-1">
-              {{ headerSubtitle }}
-            </p>
-          </div>
-          <TimeScaleToggle v-model="timeScale" />
-        </div>
-
-        <!-- Search (employees section only) -->
-        <div
-          v-if="activeSection === 'employees'"
-          class="relative"
+      <!-- Search (employees section only) -->
+      <div v-if="activeSection === 'employees'" class="relative">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search employees by name or role..."
+          class="w-full max-w-md pl-10 pr-4 py-2.5 rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+        />
+        <svg
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search employees by name or role..."
-            class="w-full max-w-md pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
           />
-          <svg
-            class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </div>
-      </header>
+        </svg>
+      </div>
+    </header>
 
-      <!-- Main content: either dashboard list or drill-down detail, similar to v0 routing -->
-      <main class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-br from-slate-50/50 to-white/50">
+    <!-- Main content: either dashboard list or drill-down detail, similar to v0 routing -->
+    <main class="flex-1 overflow-y-auto p-6 space-y-6 bg-[#0f0f0f]">
         <!-- Employees dashboard (v0 /app/page) -->
         <section
           v-if="activeSection === 'employees' && !selectedEmployee"
@@ -98,48 +66,40 @@
           v-else-if="activeSection === 'employees' && selectedEmployee"
           class="space-y-4"
         >
-          <button
-            type="button"
-            class="text-xs text-gray-500 hover:text-gray-900 underline transition-colors"
-            @click="selectedEmployeeId = null"
-          >
-            ← Back to all employees
-          </button>
-
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <!-- Left column: summary + project metrics -->
             <div class="xl:col-span-1 space-y-4">
-              <div class="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 shadow-xl">
+              <div class="surface-card p-5 shadow-xl">
                 <div class="flex items-center justify-between mb-2">
                   <div>
-                    <h3 class="text-lg font-semibold text-gray-900">
+                    <h3 class="text-lg font-semibold text-white">
                       {{ selectedEmployee.name }}
                     </h3>
-                    <p class="text-xs text-gray-500 mt-1">
+                    <p class="text-xs text-white/60 mt-1">
                       {{ selectedEmployee.role }}
                     </p>
                   </div>
                   <div class="text-right">
-                    <p class="text-xs text-gray-500">
+                    <p class="text-xs text-white/60">
                       Weekly Hours
                     </p>
-                    <p class="text-2xl font-bold text-gray-900">
+                    <p class="text-2xl font-bold text-white">
                       {{ selectedEmployee.weeklyHours }}h
                     </p>
                   </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-3">
+                <p class="text-xs text-white/60 mt-3">
                   Detail view driven by the same sample project and timesheet data as the original v0 demo.
                 </p>
               </div>
 
-              <div class="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 shadow-xl">
-                <h4 class="text-sm font-semibold text-gray-900 mb-3">
+              <div class="surface-card p-5 shadow-xl">
+                <h4 class="text-sm font-semibold text-white mb-3">
                   Key Projects
                 </h4>
                 <div
                   v-if="relatedProjects.length === 0"
-                  class="text-xs text-gray-500"
+                  class="text-xs text-white/60"
                 >
                   No related projects found in the sample data.
                 </div>
@@ -153,10 +113,10 @@
                     class="flex items-start justify-between text-xs"
                   >
                     <div>
-                      <p class="font-medium text-gray-900">
+                      <p class="font-medium text-white">
                         {{ project.id }} · {{ project.name }}
                       </p>
-                      <p class="text-gray-500">
+                      <p class="text-white/60">
                         {{ project.totalHours }}h total
                         <span v-if="project.status">
                           · {{ project.status }}
@@ -164,13 +124,13 @@
                       </p>
                     </div>
                     <div class="text-right">
-                      <p class="text-gray-500">
+                      <p class="text-white/60">
                         {{
                           project.employees.find((e) => e.id === selectedEmployee.id)?.hours ??
                           '—'
                         }}h
                       </p>
-                      <p class="text-gray-500">
+                      <p class="text-white/60">
                         by {{ selectedEmployee.name.split(' ')[0] }}
                       </p>
                     </div>
@@ -180,13 +140,13 @@
             </div>
 
             <!-- Right column: detailed timesheet log -->
-            <div class="xl:col-span-2 bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 shadow-xl">
+            <div class="xl:col-span-2 surface-card p-5 shadow-xl">
               <div class="flex items-center justify-between mb-3">
                 <div>
-                  <h4 class="text-sm font-semibold text-gray-900">
+                  <h4 class="text-sm font-semibold text-white">
                     Timesheet Log (sample week)
                   </h4>
-                  <p class="text-xs text-gray-500">
+                  <p class="text-xs text-white/60">
                     Auto-captured events grouped by project, task, and app – copied from the v0 demo
                     dataset.
                   </p>
@@ -288,34 +248,34 @@
           <div
             v-for="project in timeProjects"
             :key="project.id"
-            class="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 grid grid-cols-1 md:grid-cols-2 gap-6 shadow-xl"
+            class="surface-card p-5 grid grid-cols-1 md:grid-cols-2 gap-6 shadow-xl"
           >
             <div class="space-y-2">
               <div class="flex items-center gap-2">
-                <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs border border-gray-300 bg-gray-100 text-gray-700">
+                <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs border border-white/20 bg-white/10 text-white">
                   {{ project.id }}
                 </span>
-                <span class="text-xs text-gray-500">
+                <span class="text-xs text-white/60">
                   {{ project.totalHours }}h total
                 </span>
               </div>
-              <h3 class="text-lg font-semibold text-gray-900">
+              <h3 class="text-lg font-semibold text-white">
                 {{ project.name }}
               </h3>
               <div class="mt-4">
-                <p class="text-xs font-semibold text-gray-500 mb-2">
+                <p class="text-xs font-semibold text-white/60 mb-2">
                   Team Members
                 </p>
                 <div class="space-y-2">
                   <div
                     v-for="member in project.employees"
                     :key="member.id"
-                    class="flex items-center justify-between px-3 py-2 rounded-lg bg-gray-50/80 backdrop-blur-sm border border-gray-200"
+                    class="flex items-center justify-between px-3 py-2 rounded-lg bg-white/5 border border-white/10"
                   >
-                    <span class="text-sm text-gray-900">
+                    <span class="text-sm text-white">
                       {{ member.name }}
                     </span>
-                    <span class="text-sm font-medium text-gray-900">
+                    <span class="text-sm font-medium text-white">
                       {{ member.hours }}h
                     </span>
                   </div>
@@ -325,7 +285,7 @@
 
             <!-- Simple task distribution bars -->
             <div class="space-y-3">
-              <p class="text-sm font-semibold text-gray-900 mb-1">
+              <p class="text-sm font-semibold text-white mb-1">
                 Task Distribution
               </p>
               <div class="space-y-2">
@@ -335,14 +295,14 @@
                   class="space-y-1"
                 >
                   <div class="flex items-center justify-between text-xs">
-                    <span class="text-gray-500 truncate">
+                    <span class="text-white/60 truncate">
                       {{ task.name }}
                     </span>
-                    <span class="text-gray-900">
+                    <span class="text-white">
                       {{ task.value }}h
                     </span>
                   </div>
-                  <div class="h-2 rounded-full bg-gray-200 overflow-hidden">
+                  <div class="h-2 rounded-full bg-white/10 overflow-hidden">
                     <div
                       class="h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-600"
                       :style="{ width: `${(task.value / project.totalHours) * 100}%` }"
@@ -359,14 +319,14 @@
           v-else-if="activeSection === 'projectInsights'"
           class="space-y-4"
         >
-          <div class="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 shadow-xl">
-            <h3 class="text-sm font-semibold text-gray-900 mb-3">
+          <div class="surface-card p-5 shadow-xl">
+            <h3 class="text-sm font-semibold text-white mb-3">
               Project Performance Table
             </h3>
             <div class="overflow-x-auto">
               <table class="min-w-full text-xs">
                 <thead>
-                  <tr class="text-left text-gray-500 border-b border-gray-200">
+                  <tr class="text-left text-white/60 border-b border-white/10">
                     <th class="py-2 pr-4 font-medium">Project ID</th>
                     <th class="py-2 pr-4 font-medium">Project Name</th>
                     <th class="py-2 pr-4 font-medium">Planned Hours</th>
@@ -379,23 +339,23 @@
                   <tr
                     v-for="proj in projectInsights"
                     :key="proj.id"
-                    class="border-b border-gray-200/60 last:border-b-0 hover:bg-gray-50/50 transition-colors"
+                    class="border-b border-white/10 last:border-b-0 hover:bg-white/5 transition-colors"
                   >
                     <td class="py-2 pr-4">
-                      <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[11px] border border-gray-300 bg-gray-100 text-gray-700">
+                      <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[11px] border border-white/20 bg-white/10 text-white">
                         {{ proj.id }}
                       </span>
                     </td>
-                    <td class="py-2 pr-4 text-gray-900">
+                    <td class="py-2 pr-4 text-white">
                       {{ proj.name }}
                     </td>
-                    <td class="py-2 pr-4 text-gray-900">
+                    <td class="py-2 pr-4 text-white">
                       {{ proj.plannedHours }}h
                     </td>
-                    <td class="py-2 pr-4 text-gray-900">
+                    <td class="py-2 pr-4 text-white">
                       {{ proj.actualHours }}h
                     </td>
-                    <td class="py-2 pr-4 text-gray-900">
+                    <td class="py-2 pr-4 text-white">
                       {{ proj.percentComplete }}%
                     </td>
                     <td class="py-2 pr-4 text-right">
@@ -418,11 +378,11 @@
           v-else-if="activeSection === 'employeeInsights'"
           class="space-y-4"
         >
-          <div class="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 shadow-xl">
-            <h3 class="text-sm font-semibold text-gray-900 mb-3">
+          <div class="surface-card p-5 shadow-xl">
+            <h3 class="text-sm font-semibold text-white mb-3">
               Billable vs Non-billable Hours by Employee
             </h3>
-            <p class="text-xs text-gray-500 mb-4">
+            <p class="text-xs text-white/60 mb-4">
               Approximate mix of billable vs non-billable time for each engineer. This mirrors the
               skills/insights view from the v0 system in a compact format.
             </p>
@@ -433,24 +393,24 @@
                 class="space-y-1"
               >
                 <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-900">{{ emp.name }}</span>
-                  <span class="text-gray-500">
+                  <span class="text-white">{{ emp.name }}</span>
+                  <span class="text-white/60">
                     {{ emp.yearlyHours || emp.weeklyHours * 52 }}h / year
                   </span>
                 </div>
 
-                <div class="h-3 w-full rounded-full bg-gray-200 overflow-hidden flex">
+                <div class="h-3 w-full rounded-full bg-white/10 overflow-hidden flex">
                   <div
-                    class="h-full bg-emerald-500"
+                    class="h-full bg-purple-500"
                     :style="{ width: `${billableRatio(emp) * 100}%` }"
                   />
                   <div
-                    class="h-full bg-amber-500"
+                    class="h-full bg-purple-900"
                     :style="{ width: `${(1 - billableRatio(emp)) * 100}%` }"
                   />
                 </div>
 
-                <div class="flex items-center justify-between text-[11px] text-gray-500">
+                <div class="flex items-center justify-between text-[11px] text-white/60">
                   <span>
                     Billable:
                     <strong>{{ Math.round(billableHours(emp)) }}h</strong>
@@ -470,11 +430,11 @@
           v-else-if="activeSection === 'nonDigital'"
           class="space-y-4"
         >
-          <div class="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 shadow-xl">
-            <h3 class="text-sm font-semibold text-gray-900 mb-1">
+          <div class="surface-card p-5 shadow-xl">
+            <h3 class="text-sm font-semibold text-white mb-1">
               Daily Tasks – Digital Activity Log
             </h3>
-            <p class="text-xs text-gray-500">
+            <p class="text-xs text-white/60">
               Shows what each person has done today, including bridge modeling, RFP work, email and
               Teams time, and admin entries. Data is mocked to mirror the v0 demo.
             </p>
@@ -484,22 +444,22 @@
             <article
               v-for="summary in todaySummaries"
               :key="summary.employee.id"
-              class="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-5 space-y-3 shadow-xl"
+              class="surface-card p-5 space-y-3 shadow-xl"
             >
               <header class="flex items-center justify-between">
                 <div>
-                  <h4 class="text-sm font-semibold text-gray-900">
+                  <h4 class="text-sm font-semibold text-white">
                     {{ summary.employee.name }}
                   </h4>
-                  <p class="text-[11px] text-gray-500">
+                  <p class="text-[11px] text-white/60">
                     {{ summary.employee.role }}
                   </p>
                 </div>
                 <div class="text-right">
-                  <p class="text-[11px] text-gray-500">
+                  <p class="text-[11px] text-white/60">
                     Today
                   </p>
-                  <p class="text-lg font-semibold text-gray-900">
+                  <p class="text-lg font-semibold text-white">
                     {{ (summary.totalMinutes / 60).toFixed(1) }}h
                   </p>
                 </div>
@@ -511,10 +471,10 @@
                   :key="app.name"
                   class="flex items-center justify-between"
                 >
-                  <span class="text-gray-500">
+                  <span class="text-white/60">
                     {{ app.name }}
                   </span>
-                  <span class="text-gray-900">
+                  <span class="text-white">
                     {{ (app.minutes / 60).toFixed(1) }}h
                   </span>
                 </div>
@@ -523,9 +483,9 @@
               <!-- Detailed list for James Hinsperger so the bridge + RFP work is visible -->
               <div
                 v-if="summary.employee.id === 'emp11'"
-                class="mt-3 border-t border-gray-200 pt-3 space-y-2 text-[11px]"
+                class="mt-3 border-t border-white/10 pt-3 space-y-2 text-[11px] text-white/80"
               >
-                <p class="font-semibold text-gray-900">
+                <p class="font-semibold text-white">
                   Detailed timeline (bridge design & RFP work)
                 </p>
                 <div
@@ -533,7 +493,7 @@
                   :key="event.startTime"
                   class="flex items-start justify-between"
                 >
-                  <div class="w-2/5 text-gray-500">
+                  <div class="w-2/5 text-white/60">
                     {{
                       new Date(event.startTime).toLocaleTimeString([], {
                         hour: '2-digit',
@@ -548,11 +508,11 @@
                       })
                     }}
                   </div>
-                  <div class="w-3/5 text-gray-900">
+                  <div class="w-3/5 text-white">
                     <div class="font-medium">
                       {{ event.task }}
                     </div>
-                    <div class="text-gray-500">
+                    <div class="text-white/60">
                       {{ event.subtask }}
                       <span class="ml-1">({{ event.app }})</span>
                     </div>
@@ -566,18 +526,17 @@
         <!-- Placeholder sections for Employee Insights, Non-digital Tasks, Settings -->
         <section
           v-else
-          class="text-sm text-gray-500"
+          class="text-sm text-white/60 text-center py-6"
         >
           This section will mirror the corresponding v0 page. Core Employees / Projects / Project
           Insights functionality is already available above.
         </section>
-      </main>
-    </div>
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch, defineProps } from 'vue'
 import { employees, type Employee } from '~/data/employees'
 import { timeEvents, timeProjects, type TimeEvent, type TimeProject } from '~/data/timeTracking'
 import { projectInsights } from '~/data/projectInsights'
@@ -586,18 +545,22 @@ import TimeScaleToggle from '~/components/TimeScaleToggle.vue'
 
 type TimeScale = 'weekly' | 'monthly' | 'yearly'
 
+const props = defineProps<{
+  initialSection?: (typeof navItems)[number]['id']
+}>()
+
 const timeScale = ref<TimeScale>('weekly')
 const searchQuery = ref('')
 const selectedEmployeeId = ref<string | null>(null)
-const activeSection = ref<'employees' | 'projects' | 'projectInsights' | 'employeeInsights' | 'nonDigital' | 'settings'>('employees')
+const activeSection = ref<'employees' | 'projects' | 'projectInsights' | 'employeeInsights' | 'nonDigital' | 'settings'>(props.initialSection || 'employees')
 
 const navItems = [
-  { id: 'employees', label: 'Employees', icon: '👤' },
-  { id: 'projects', label: 'Projects', icon: '📁' },
-  { id: 'projectInsights', label: 'Project Insights', icon: '📈' },
-  { id: 'employeeInsights', label: 'Employee Insights', icon: '📊' },
-  { id: 'nonDigital', label: 'Daily Tasks', icon: '📝' },
-  { id: 'settings', label: 'Settings', icon: '⚙️' },
+  { id: 'employees', label: 'Employees' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'projectInsights', label: 'Project Insights' },
+  { id: 'employeeInsights', label: 'Employee Insights' },
+  { id: 'nonDigital', label: 'Daily Tasks' },
+  { id: 'settings', label: 'Settings' }
 ] as const
 
 const headerTitle = computed(() => {
@@ -616,6 +579,15 @@ const headerTitle = computed(() => {
       return 'Employee Productivity Dashboard'
   }
 })
+
+watch(
+  () => props.initialSection,
+  (next) => {
+    if (next && navItems.some(item => item.id === next)) {
+      activeSection.value = next
+    }
+  }
+)
 
 const headerSubtitle = computed(() => {
   switch (activeSection.value) {
@@ -791,11 +763,48 @@ function handleNavClick(sectionId: (typeof navItems)[number]['id']) {
 
 function statusClass(status: 'On Track' | 'At Risk' | 'Behind') {
   if (status === 'On Track') {
-    return 'bg-emerald-500/15 text-emerald-400'
+    return 'bg-purple-600/20 text-purple-200'
   }
   if (status === 'At Risk') {
-    return 'bg-amber-500/15 text-amber-400'
+    return 'bg-purple-500/25 text-purple-100'
   }
-  return 'bg-rose-500/15 text-rose-400'
+  return 'bg-purple-900/30 text-purple-100'
 }
 </script>
+
+<style scoped>
+.timesheet-view {
+  background: #0f0f0f;
+  color: #fff;
+}
+
+.surface-card {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+}
+
+.timesheet-view :deep([class*="text-gray-900"]),
+.timesheet-view :deep([class*="text-gray-800"]),
+.timesheet-view :deep([class*="text-gray-700"]) {
+  color: #fff !important;
+}
+
+.timesheet-view :deep([class*="text-gray-600"]),
+.timesheet-view :deep([class*="text-gray-500"]),
+.timesheet-view :deep([class*="text-gray-400"]) {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.timesheet-view :deep([class*="bg-white"]),
+.timesheet-view :deep([class*="bg-gray-1"]),
+.timesheet-view :deep([class*="bg-gray-2"]),
+.timesheet-view :deep([class*="bg-gray-3"]) {
+  background: #111 !important;
+  color: #fff;
+}
+
+.timesheet-view :deep([class*="border-gray-"]) {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+</style>
