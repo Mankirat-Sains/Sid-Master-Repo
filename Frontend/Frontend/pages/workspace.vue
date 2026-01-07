@@ -41,19 +41,22 @@
             </button>
             <div
               v-if="timesheetMenuOpen"
-              class="absolute left-full top-0 ml-3 z-20 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-2xl min-w-[180px] py-1.5"
+              class="absolute left-full top-0 ml-3 z-20 min-w-[200px]"
             >
-              <div class="px-3 py-1.5 text-[13px] font-semibold text-white/85 border-b border-white/10">Timeline</div>
-              <div class="px-2.5 py-1.5 space-y-1 border-l border-white/10 ml-2">
-                <button
-                  v-for="item in timesheetMenuItems"
-                  :key="item.id"
-                  class="w-full flex items-center gap-2 px-3 py-1.75 text-[12px] text-white/70 hover:bg-white/10 rounded-lg text-left leading-tight"
-                  @click="handleTimesheetNav(item.id)"
-                >
-                  <span class="flex items-center justify-center w-5 h-5 text-[14px] leading-none shrink-0">{{ item.icon }}</span>
-                  <span class="leading-[15px]">{{ item.label }}</span>
-                </button>
+              <div class="bg-[#0f0f0f] border border-white/12 rounded-2xl shadow-[0_16px_36px_rgba(0,0,0,0.5)] p-3 space-y-2">
+                <div class="pb-2 border-b border-white/10 flex items-center justify-between">
+                  <p class="text-[13px] font-semibold text-white/90">Timeline</p>
+                </div>
+                <div class="space-y-1.5">
+                  <TimelineMenuItem
+                    v-for="item in timesheetMenuItems"
+                    :key="item.id"
+                    :icon="item.component"
+                    :label="item.label"
+                    :active="timesheetSection === item.id"
+                    @click="handleTimesheetNav(item.id)"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -823,6 +826,91 @@ const TodoIcon = defineComponent({
   }
 })
 
+const UsersIcon = defineComponent({
+  name: 'UsersGlyph',
+  setup() {
+    return () =>
+      h(
+        'svg',
+        { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' },
+        [
+          h('path', { d: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2' }),
+          h('circle', { cx: '9', cy: '7', r: '4' }),
+          h('path', { d: 'M22 21v-2a4 4 0 0 0-3-3.87' }),
+          h('path', { d: 'M16 3.13a4 4 0 0 1 0 7.75' })
+        ]
+      )
+  }
+})
+
+const ChartIcon = defineComponent({
+  name: 'ChartGlyph',
+  setup() {
+    return () =>
+      h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, [
+        h('path', { d: 'M3 3v18h18' }),
+        h('path', { d: 'M7 14l4-4 3 3 5-6' }),
+        h('circle', { cx: '7', cy: '14', r: '1' }),
+        h('circle', { cx: '11', cy: '10', r: '1' }),
+        h('circle', { cx: '14', cy: '13', r: '1' }),
+        h('circle', { cx: '19', cy: '7', r: '1' })
+      ])
+  }
+})
+
+const PersonChartIcon = defineComponent({
+  name: 'PersonChartGlyph',
+  setup() {
+    return () =>
+      h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, [
+        h('circle', { cx: '12', cy: '7', r: '3' }),
+        h('path', { d: 'M6 21v-1a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v1' }),
+        h('path', { d: 'M3 12h2' }),
+        h('path', { d: 'M3 16h3' }),
+        h('path', { d: 'M3 20h4' })
+      ])
+  }
+})
+
+const TimelineMenuItem = defineComponent({
+  name: 'TimelineMenuItem',
+  props: {
+    icon: {
+      type: Object as () => Component,
+      required: true
+    },
+    label: {
+      type: String,
+      required: true
+    },
+    active: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(props, { slots, emit }) {
+    const IconComp = props.icon
+    return () =>
+      h(
+        'button',
+        {
+          class: [
+            'w-full relative flex items-center gap-3 px-3 py-2 rounded-lg text-left text-[12px] transition-colors duration-150 cursor-pointer',
+            props.active ? 'bg-white/10 text-white' : 'text-white/75 hover:bg-white/6'
+          ],
+          onClick: (e: MouseEvent) => emit('click', e)
+        },
+        [
+          props.active
+            ? h('span', { class: 'absolute left-0 top-1 bottom-1 w-[3px] rounded-full bg-purple-500/80' })
+            : null,
+          h('span', { class: 'flex items-center justify-center w-7 shrink-0' }, [h(IconComp, { class: 'w-5 h-5' })]),
+          h('span', { class: 'leading-[15px]' }, slots.default ? slots.default() : props.label)
+        ]
+      )
+  }
+})
+
 const railIcons = [
   { id: 'home', component: FolderIcon, label: 'Home' },
   { id: 'work', component: WorkIcon, label: 'Work' },
@@ -865,13 +953,13 @@ const renamingConversationId = ref<string | null>(null)
 const renameDraft = ref('')
 const renameInputRefs: Record<string, HTMLInputElement | null> = {}
 const timesheetMenuItems = [
-  { id: 'employees', label: 'Employees', icon: '👤' },
-  { id: 'projects', label: 'Projects', icon: '📁' },
-  { id: 'projectInsights', label: 'Project Insights', icon: '📈' },
-  { id: 'employeeInsights', label: 'Employee Insights', icon: '📊' },
-  { id: 'nonDigital', label: 'Daily Tasks', icon: '📝' },
-  { id: 'settings', label: 'Settings', icon: '⚙️' }
-] as const satisfies { id: TimesheetSection; label: string; icon: string }[]
+  { id: 'employees', label: 'Employees', component: UsersIcon },
+  { id: 'projects', label: 'Projects', component: FolderIcon },
+  { id: 'projectInsights', label: 'Project Insights', component: ChartIcon },
+  { id: 'employeeInsights', label: 'Employee Insights', component: PersonChartIcon },
+  { id: 'nonDigital', label: 'Daily Tasks', component: TodoIcon },
+  { id: 'settings', label: 'Settings', component: GearIcon }
+] as const satisfies { id: TimesheetSection; label: string; component: Component }[]
 const search = ref('')
 const prompt = ref('')
 const promptInput = ref<HTMLTextAreaElement | null>(null)
@@ -1736,11 +1824,6 @@ function handleDocumentSelect(doc: any) {
     speckleViewerSelectedId.value = doc.id || models[0].id
     speckleViewerPanelOpen.value = true
     viewerSplitPercent.value = 50
-  }
-
-  // Also open in the shared workspace viewer area
-  if (doc.url) {
-    workspace.openModel(doc.url, doc.name || doc.title)
   }
 }
 
