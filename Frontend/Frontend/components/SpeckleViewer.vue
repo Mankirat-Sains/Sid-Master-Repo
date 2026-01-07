@@ -1,87 +1,28 @@
 <template>
   <div 
     v-if="visible"
-    class="speckle-viewer-container relative bg-slate-900 border border-slate-700 rounded-lg overflow-hidden shadow-2xl"
+      ref="containerRef"
+      class="speckle-viewer-container relative bg-slate-900 border border-slate-700 rounded-lg overflow-hidden shadow-2xl"
     :style="{ width: width, height: heightStyle }"
   >
     <!-- Viewer Toolbar -->
-    <div class="absolute top-0 left-0 right-0 bg-slate-800/95 backdrop-blur-sm border-b border-slate-700 px-4 py-2 flex items-center justify-between z-20">
-      <div class="flex items-center gap-2">
-        <button
-          @click="$emit('close')"
-          class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          Close
-        </button>
-        <span v-if="modelName" class="text-sm text-slate-300 px-3 py-1 bg-slate-700 rounded-lg">
+    <div class="toolbar-rail">
+      <div class="toolbar-buttons">
+        <button v-if="modelName" class="tool-pill muted" disabled>
           {{ modelName }}
-        </span>
-      </div>
-      
-      <div class="flex items-center gap-2">
-        <!-- Zoom Controls -->
-        <button
-          @click="zoomFit"
-          class="p-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-          title="Zoom to Fit"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-          </svg>
         </button>
-        <button
-          @click="zoomIn"
-          class="p-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-          title="Zoom In"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
-          </svg>
-        </button>
-        <button
-          @click="zoomOut"
-          class="p-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-          title="Zoom Out"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35M8 11h6" />
-          </svg>
-        </button>
-        <div class="w-px h-6 bg-slate-600"></div>
-        <!-- View Controls -->
-        <button
-          @click="setView('top')"
-          class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-medium transition-colors"
-        >
-          Top
-        </button>
-        <button
-          @click="setView('front')"
-          class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-medium transition-colors"
-        >
-          Front
-        </button>
-        <button
-          @click="setView('3d')"
-          class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-medium transition-colors"
-        >
-          3D
-        </button>
-        <div class="w-px h-6 bg-slate-600"></div>
-        <!-- Section Tool -->
+
+        <div class="tool-sep"></div>
+
+        <button @click="setView('top')" class="tool-pill">Top</button>
+        <button @click="setView('front')" class="tool-pill">Front</button>
+        <button @click="setView('3d')" class="tool-pill">3D</button>
+
+        <div class="tool-sep"></div>
+
         <button
           @click="toggleSections"
-          :class="[
-            'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
-            sectionsEnabled 
-              ? 'bg-purple-600 hover:bg-purple-700 text-white' 
-              : 'bg-slate-700 hover:bg-slate-600 text-white'
-          ]"
+          :class="['tool-pill', sectionsEnabled ? 'active' : '']"
           title="Toggle Section Cutting"
         >
           <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,15 +30,9 @@
           </svg>
           Sections
         </button>
-        <!-- Measurements Tool -->
         <button
           @click="toggleMeasurements"
-          :class="[
-            'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
-            measurementsEnabled 
-              ? 'bg-purple-600 hover:bg-purple-700 text-white' 
-              : 'bg-slate-700 hover:bg-slate-600 text-white'
-          ]"
+          :class="['tool-pill', measurementsEnabled ? 'active' : '']"
           title="Toggle Measurements"
         >
           <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,6 +40,29 @@
           </svg>
           Measure
         </button>
+      </div>
+    </div>
+
+    <div class="zoom-dock">
+      <div class="zoom-buttons">
+        <button @click="zoomFit" class="tool-btn" title="Zoom to Fit">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+          </svg>
+        </button>
+        <button @click="zoomIn" class="tool-btn" title="Zoom In">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
+          </svg>
+        </button>
+        <button @click="zoomOut" class="tool-btn" title="Zoom Out">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35M8 11h6" />
+          </svg>
+        </button>
+        <div class="tool-sep vertical"></div>
       </div>
     </div>
 
@@ -201,10 +159,13 @@ const loadingProgress = ref(0)
 const selectedObject = ref<any>(null)
 const sectionsEnabled = ref(false)
 const measurementsEnabled = ref(false)
+const containerRef = ref<HTMLElement | null>(null)
 
 let viewer: any = null
 let viewerModule: any = null
 let viewerExtensions: any = {}
+let resizeObserver: ResizeObserver | null = null
+let resizeRaf: number | null = null
 
 onMounted(async () => {
   if (props.modelUrl) {
@@ -229,9 +190,37 @@ watch(() => props.visible, async (isVisible) => {
     // Resize viewer when shown
     setTimeout(() => {
       viewer?.resize()
+      zoomFit()
     }, 100)
   }
 })
+
+function setupResizeObserver() {
+  if (resizeObserver || typeof ResizeObserver === 'undefined') return
+  resizeObserver = new ResizeObserver(() => {
+    if (resizeRaf) cancelAnimationFrame(resizeRaf)
+    resizeRaf = requestAnimationFrame(() => {
+      if (viewer) {
+        viewer.resize()
+        zoomFit()
+      }
+    })
+  })
+  if (containerRef.value) {
+    resizeObserver.observe(containerRef.value)
+  }
+}
+
+function teardownResizeObserver() {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
+  if (resizeRaf) {
+    cancelAnimationFrame(resizeRaf)
+    resizeRaf = null
+  }
+}
 
 async function clearViewer() {
   if (!viewer) return
@@ -400,12 +389,14 @@ async function loadModel(url: string) {
         console.log('✅ Model loaded successfully:', resourceUrl)
         loading.value = false
         loadingProgress.value = 100
+        setupResizeObserver()
         
         // Just resize - viewer handles rendering automatically
         // Don't manually call render() as it interferes with the viewer's render loop
         setTimeout(() => {
           if (viewer) {
             viewer.resize()
+            zoomFit()
           }
         }, 50)
         
@@ -599,6 +590,7 @@ async function loadModel(url: string) {
       if (viewer) {
         setTimeout(() => {
           viewer.resize()
+          zoomFit()
         }, 100)
       }
       
@@ -656,50 +648,61 @@ function zoomFit() {
 }
 
 function zoomIn() {
-  // Note: Speckle viewer uses mouse wheel and controls for zoom
-  // These functions can trigger zoom via the controls if available
-  // For now, we'll use a simple approach that works with the camera controller
-  if (!viewerExtensions.cameraController || !viewer) return
-  
-  try {
-    // Try to access the controls and trigger zoom in
-    const controls = (viewerExtensions.cameraController as any).controls
-    if (controls && typeof controls.zoomIn === 'function') {
-      controls.zoomIn()
-      return
-    }
-    
-    // Alternative: Use the camera's position if controls don't have zoomIn
-    const camera = (viewerExtensions.cameraController as any).renderingCamera
-    if (camera && camera.position) {
-      // Zoom in by moving camera closer (multiply position by factor < 1)
-      camera.position.multiplyScalar(0.9)
-    }
-  } catch (error) {
-    console.error('Error in zoomIn:', error)
-  }
+  applyZoom(0.9)
 }
 
 function zoomOut() {
-  // Note: Speckle viewer uses mouse wheel and controls for zoom
+  applyZoom(1.1)
+}
+
+function applyZoom(factor: number) {
   if (!viewerExtensions.cameraController || !viewer) return
-  
+
   try {
-    // Try to access the controls and trigger zoom out
-    const controls = (viewerExtensions.cameraController as any).controls
-    if (controls && typeof controls.zoomOut === 'function') {
-      controls.zoomOut()
+    const controller = viewerExtensions.cameraController as any
+    const controls = controller?.controls
+
+    // Preferred: use Speckle/three controls dolly if available
+    if (controls && typeof controls.dolly === 'function') {
+      controls.dolly(factor)
+      controls.update?.()
+      viewer.requestRender?.()
       return
     }
-    
-    // Alternative: Use the camera's position if controls don't have zoomOut
-    const camera = (viewerExtensions.cameraController as any).renderingCamera
+
+    // Fallback to zoomIn/zoomOut helpers if present
+    if (controls && factor < 1 && typeof controls.zoomIn === 'function') {
+      controls.zoomIn()
+      controls.update?.()
+      viewer.requestRender?.()
+      return
+    }
+    if (controls && factor > 1 && typeof controls.zoomOut === 'function') {
+      controls.zoomOut()
+      controls.update?.()
+      viewer.requestRender?.()
+      return
+    }
+
+    // Last resort: move camera along its view vector
+    const camera = controller?.renderingCamera
     if (camera && camera.position) {
-      // Zoom out by moving camera farther (multiply position by factor > 1)
-      camera.position.multiplyScalar(1.1)
+      const target = controls?.target || controller?.target || { x: 0, y: 0, z: 0 }
+      if (typeof camera.position.clone === 'function') {
+        const pos = camera.position.clone()
+        const tgt = typeof target.clone === 'function' ? target.clone() : target
+        const dir = pos.sub(tgt)
+        dir.multiplyScalar(factor)
+        camera.position.copy(tgt.clone ? tgt.clone().add(dir) : { x: dir.x + tgt.x, y: dir.y + tgt.y, z: dir.z + tgt.z })
+      } else if (typeof camera.position.multiplyScalar === 'function') {
+        camera.position.multiplyScalar(factor)
+      }
+      camera.updateProjectionMatrix?.()
+      controls?.update?.()
+      viewer.requestRender?.()
     }
   } catch (error) {
-    console.error('Error in zoomOut:', error)
+    console.error('Error applying zoom:', error)
   }
 }
 
@@ -787,11 +790,112 @@ onBeforeUnmount(() => {
     viewer.dispose()
     viewer = null
   }
+  teardownResizeObserver()
 })
 </script>
 
 <style scoped>
 .speckle-viewer-container {
   min-height: 400px;
+}
+
+.toolbar-rail {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: none;
+}
+
+.toolbar-buttons {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.tool-btn,
+.tool-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 8px;
+  min-width: 82px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(53, 64, 82, 0.9);
+  color: #e7edf5;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.tool-btn svg,
+.tool-pill svg {
+  width: 12px;
+  height: 12px;
+}
+
+.tool-btn:hover,
+.tool-pill:hover {
+  background: rgba(77, 92, 115, 0.95);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.tool-btn.primary {
+  background: rgba(91, 117, 157, 0.95);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.tool-pill.muted {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.tool-pill.active {
+  background: rgba(107, 33, 168, 0.9);
+  border-color: rgba(236, 72, 153, 0.35);
+  color: #fdf7ff;
+}
+
+.tool-sep {
+  width: 100%;
+  height: 1px;
+  background: transparent;
+}
+
+.tool-sep.vertical {
+  height: 40px;
+  width: 1px;
+}
+
+.zoom-dock {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 20;
+}
+
+.zoom-buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 </style>

@@ -84,8 +84,8 @@
         </template>
       </aside>
 
-      <!-- Floating action rail (outside the sidebar) -->
-      <div class="absolute select-none pointer-events-none" :style="sidebarRailStyle">
+      <!-- Floating action rail (outside the sidebar, chat only) -->
+      <div v-if="activePage === 'home'" class="absolute select-none pointer-events-none" :style="sidebarRailStyle">
         <div class="group relative flex flex-col items-center gap-2 px-2 py-3 rounded-full bg-[#0b0b0b]/95 border border-white/14 shadow-[0_24px_58px_rgba(0,0,0,0.55)] backdrop-blur-[6px] pointer-events-auto transition-shadow duration-500">
           <div class="absolute inset-[-12px] rounded-full border border-[rgba(147,51,234,0.55)] shadow-[0_0_24px_6px_rgba(147,51,234,0.4)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-out"></div>
           <div class="absolute inset-[-32px] rounded-full bg-[radial-gradient(circle_at_center,_rgba(147,51,234,0.7)_0%,_rgba(147,51,234,0.35)_35%,_rgba(147,51,234,0.1)_60%,_transparent_88%)] blur-[42px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-out"></div>
@@ -93,7 +93,10 @@
             <button
               class="h-8 w-8 rounded-full border transition flex items-center justify-center text-white/75 hover:text-white shadow-[0_6px_14px_rgba(0,0,0,0.35)] pointer-events-auto"
               :class="[
-                sidebarMode === action.id ? 'bg-white/10 border-white/30' : 'bg-white/4 border-white/10 hover:bg-white/12 hover:border-white/22'
+                sidebarMode === action.id
+                  ? 'bg-white/12 border-white/30'
+                  : 'bg-white/4 border-white/10 hover:bg-white/12 hover:border-white/22',
+                isRailActionFilled(action.id) ? 'bg-white/20 border-white/40 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.2)]' : ''
               ]"
               :title="action.label"
               :aria-label="action.label"
@@ -191,113 +194,153 @@
         </template>
 
         <template v-else-if="sidebarMode === 'logs'">
-          <div class="px-3 py-3 border-b border-white/10 flex items-center justify-between">
-            <p class="text-sm font-semibold text-white/85">Agent Logs</p>
-            <span class="text-[10px] text-white/50">{{ agentLogs.length }}</span>
-          </div>
-          <div class="flex-1 min-h-0 overflow-y-auto custom-scroll pr-1">
-            <div class="px-3 py-2 space-y-2">
-              <p v-if="!agentLogs.length" class="text-xs text-white/50">No logs yet.</p>
-              <div
-                v-for="log in agentLogs"
-                :key="log.id"
-                class="p-2 rounded-lg bg-white/5 border border-white/10"
-              >
-                <p class="text-xs text-white/85 leading-snug whitespace-pre-wrap">{{ log.thinking }}</p>
-                <p class="text-[10px] text-white/50 mt-1">{{ formatTimestamp(log.timestamp) }}</p>
+          <div class="px-3 pt-4 pb-3">
+            <div class="flex items-center justify-center text-center rounded-2xl border border-white/12 bg-white/5 px-4 py-3 shadow-[0_12px_26px_rgba(0,0,0,0.38)]">
+              <div class="space-y-0.5">
+                <p class="text-sm font-semibold text-white/90">Agent Thinking</p>
+                <p class="text-[11px] text-white/55 leading-tight">Real-time reasoning and decisions</p>
               </div>
+            </div>
+          </div>
+          <div class="flex-1 min-h-0 overflow-y-auto custom-scroll px-3 pb-4 space-y-3">
+            <div v-if="!agentLogs.length" class="flex flex-col items-center justify-center text-center py-10 px-6 gap-3 border border-dashed border-white/15 rounded-2xl bg-white/5 shadow-[0_12px_30px_rgba(0,0,0,0.32)]">
+              <div class="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 shadow-inner">
+                <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <div class="space-y-1 max-w-[260px]">
+                <p class="text-white font-semibold text-sm">No logs yet</p>
+                <p class="text-white/60 text-xs leading-relaxed">Agent thinking will appear here as you interact with the system.</p>
+              </div>
+            </div>
+
+            <div
+              v-for="log in agentLogs"
+              :key="log.id"
+              class="rounded-2xl p-4 transition-all duration-200 border-l-4 bg-white/5 border border-white/10 shadow-[0_10px_26px_rgba(0,0,0,0.35)]"
+              :class="log.type === 'result' ? 'border-green-400/70' : log.type === 'error' ? 'border-red-400/70' : 'border-purple-400/70'"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs text-white/60 font-mono">{{ formatTimestamp(log.timestamp) }}</span>
+                <span class="text-[10px] px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/65 uppercase tracking-wide">
+                  {{ log.type || 'thinking' }}
+                </span>
+              </div>
+              <div
+                class="text-white/90 prose prose-invert prose-sm max-w-none prose-headings:text-white prose-p:text-white/90 prose-strong:text-white prose-code:text-purple-200 prose-code:bg-purple-900/40 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10 prose-ul:text-white/80 prose-ol:text-white/80 prose-li:text-white/80"
+                style="background-color: transparent;"
+                v-html="formatThinking(log.thinking)"
+              ></div>
             </div>
           </div>
         </template>
 
         <template v-else-if="sidebarMode === 'docs'">
-        <div class="px-3 py-3 border-b border-white/10 flex items-center justify-between">
-          <div>
-            <p class="text-sm font-semibold text-white/85">Models & Docs</p>
-            <p class="text-[11px] text-white/50">Fetched from Speckle/search</p>
-          </div>
-          <span class="text-[10px] text-white/50">{{ docListDocs.length }}</span>
-        </div>
-        <div class="flex-1 min-h-0 overflow-y-auto custom-scroll pr-1">
-          <div class="px-3 py-3 space-y-3">
-            <div v-if="speckleViewerFetchLoading" class="space-y-3">
-              <div v-for="i in 4" :key="i" class="animate-pulse rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
-                <div class="h-4 w-32 bg-white/15 rounded"></div>
-                <div class="h-3 w-3/4 bg-white/10 rounded"></div>
-                <div class="flex gap-2">
-                  <div class="h-6 w-16 bg-white/10 rounded-full"></div>
-                  <div class="h-6 w-20 bg-white/10 rounded-full"></div>
-                </div>
-              </div>
-            </div>
-
-            <div v-else-if="docListDocs.length === 0" class="flex flex-col items-center justify-center text-center py-10 gap-3 border border-dashed border-white/15 rounded-2xl bg-white/5">
-              <div class="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
-                <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <div class="space-y-1">
-                <p class="text-white font-semibold text-sm">No models or documents yet</p>
-                <p class="text-white/60 text-xs px-4">Ask Sid to fetch 3D models or related docs to see them here.</p>
-              </div>
-            </div>
-
-            <div v-else class="space-y-3">
-              <p class="text-[11px] uppercase tracking-[0.16em] text-white/50 px-1">Available</p>
-              <div
-                v-for="(doc, index) in docListDocs"
-                :key="doc.id || index"
-                @click="handleDocumentSelect(doc)"
-                class="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-purple-400/60 transition shadow-[0_10px_30px_rgba(0,0,0,0.35)] cursor-pointer"
-              >
-                <div class="flex items-start gap-3">
-                  <div class="flex-shrink-0 w-11 h-11 bg-gradient-to-br from-purple-600 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg border border-white/15">
-                    <svg v-if="doc.metadata?.projectId && doc.metadata?.modelId" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                    <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div class="flex-1 min-w-0 space-y-1">
-                    <div class="flex items-center justify-between gap-2">
-                      <h4 class="font-semibold text-white truncate">{{ doc.title || doc.name || 'Untitled' }}</h4>
-                      <span
-                        v-if="doc.metadata?.projectName"
-                        class="text-[11px] px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/70 truncate"
-                      >
-                        {{ doc.metadata.projectName }}
-                      </span>
-                    </div>
-                    <p v-if="doc.description" class="text-sm text-white/70 line-clamp-2">{{ doc.description }}</p>
-                    <div class="flex flex-wrap gap-2 pt-1">
-                      <span
-                        v-if="doc.metadata?.projectKey"
-                        class="text-[11px] px-2 py-1 bg-purple-900/40 border border-purple-500/50 text-purple-100 rounded-full"
-                      >
-                        {{ doc.metadata.projectKey }}
-                      </span>
-                      <span
-                        v-if="doc.metadata?.modelId"
-                        class="text-[11px] px-2 py-1 bg-white/10 border border-white/15 text-white/70 rounded-full"
-                      >
-                        Model: {{ doc.metadata.modelId }}
-                      </span>
-                      <span
-                        v-if="doc.reason"
-                        class="text-[11px] px-2 py-1 bg-white/10 border border-white/15 text-white/70 rounded-full"
-                      >
-                        {{ doc.reason }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+          <div class="flex flex-col h-full">
+            <div class="px-3 pt-4 pb-3">
+            <div class="flex items-center justify-center text-center rounded-2xl border border-white/12 bg-white/5 px-4 py-3 shadow-[0_12px_26px_rgba(0,0,0,0.38)]">
+              <div class="space-y-0.5">
+                <p class="text-sm font-semibold text-white/90">Models & Docs</p>
+                <p class="text-[11px] text-white/55 leading-tight">Fetched from Speckle/search</p>
               </div>
             </div>
           </div>
-        </div>
-      </template>
+            <div class="flex-1 min-h-0 overflow-y-auto custom-scroll px-4 pb-4 space-y-3">
+              <div v-if="speckleViewerFetchLoading" class="space-y-3">
+                <div v-for="i in 4" :key="i" class="animate-pulse rounded-2xl border border-white/10 bg-white/5 px-4 py-5 space-y-3 shadow-[0_10px_26px_rgba(0,0,0,0.35)]">
+                  <div class="h-4 w-32 bg-white/15 rounded"></div>
+                  <div class="h-3 w-3/4 bg-white/10 rounded"></div>
+                  <div class="flex gap-2">
+                    <div class="h-6 w-16 bg-white/10 rounded-full"></div>
+                    <div class="h-6 w-20 bg-white/10 rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div v-else-if="docListDocs.length === 0" class="flex flex-col items-center justify-center text-center py-12 px-6 gap-4 border border-dashed border-white/15 rounded-2xl bg-white/5 shadow-[0_12px_30px_rgba(0,0,0,0.32)]">
+                <div class="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 shadow-inner">
+                  <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div class="space-y-1 max-w-[260px]">
+                  <p class="text-white font-semibold text-sm">No models or documents yet</p>
+                  <p class="text-white/60 text-xs leading-relaxed">Ask Sid to fetch 3D models or related docs to see them here.</p>
+                </div>
+              </div>
+
+              <div v-else class="space-y-3 pb-1">
+                <p class="text-[11px] uppercase tracking-[0.16em] text-white/50 px-1">Available</p>
+                <div
+                  v-for="(doc, index) in docListDocs"
+                  :key="doc.id || index"
+                  @click="handleDocumentSelect(doc)"
+                  class="p-3 md:p-4 rounded-2xl border border-white/12 bg-white/5 hover:bg-white/10 hover:border-purple-400/60 transition-all shadow-[0_12px_34px_rgba(0,0,0,0.38)] cursor-pointer doc-card"
+                  :class="{ 'doc-card--compact': isDocsCompact }"
+                >
+                  <div class="flex items-start gap-3 sm:gap-4 w-full">
+                    <div class="flex-shrink-0 w-11 h-11 bg-gradient-to-br from-purple-600 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg border border-white/15">
+                      <svg v-if="doc.metadata?.projectId && doc.metadata?.modelId" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                      </svg>
+                      <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div class="flex-1 min-w-0 space-y-1">
+                      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 min-w-0">
+                        <h4
+                          class="font-semibold text-white break-words leading-tight"
+                          :class="isDocsCompact ? 'text-sm line-clamp-2' : 'text-base line-clamp-2'"
+                        >
+                          {{ doc.title || doc.name || 'Untitled' }}
+                        </h4>
+                        <span
+                          v-if="doc.metadata?.projectName && !isDocsCompact"
+                          class="text-[11px] px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/70 truncate w-full sm:w-auto"
+                        >
+                          {{ doc.metadata.projectName }}
+                        </span>
+                      </div>
+                      <p
+                        v-if="doc.description && !isDocsCompact"
+                        class="text-sm text-white/70 line-clamp-2 break-words"
+                      >
+                        {{ doc.description }}
+                      </p>
+                      <div v-if="isDocsCompact && doc.metadata?.projectKey" class="flex flex-wrap gap-2 pt-1 w-full">
+                        <span class="text-[11px] px-2 py-1 bg-purple-900/40 border border-purple-500/50 text-purple-100 rounded-full">
+                          {{ doc.metadata.projectKey }}
+                        </span>
+                      </div>
+                      <div v-else class="flex flex-wrap gap-2 pt-1 w-full">
+                        <span
+                          v-if="doc.metadata?.projectKey"
+                          class="text-[11px] px-2 py-1 bg-purple-900/40 border border-purple-500/50 text-purple-100 rounded-full"
+                        >
+                          {{ doc.metadata.projectKey }}
+                        </span>
+                        <span
+                          v-if="doc.metadata?.modelId"
+                          class="text-[11px] px-2 py-1 bg-white/10 border border-white/15 text-white/70 rounded-full"
+                        >
+                          Model: {{ doc.metadata.modelId }}
+                        </span>
+                        <span
+                          v-if="doc.reason"
+                          class="text-[11px] px-2 py-1 bg-white/10 border border-white/15 text-white/70 rounded-full"
+                        >
+                          {{ doc.reason }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
 
         <div
           v-if="contextMenu.visible && contextMenu.convId"
@@ -325,250 +368,48 @@
         <div class="flex flex-col flex-1 min-h-0 w-full max-w-4xl max-w-full mx-auto py-4 px-3 gap-4 min-w-0">
           <div class="flex items-center justify-between flex-wrap gap-3"></div>
 
-          <div v-if="activePage === 'home'" class="flex-1 min-h-0 flex justify-center">
-            <div class="h-full w-full chat-frame overflow-hidden flex flex-col">
-              <template v-if="!activeChatLog.length">
-                <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5">
-                  <div class="flex flex-col items-center gap-3">
-                    <div class="flex items-center gap-2 text-[11px] text-white/65">
-                      <span class="px-3 py-1 rounded-full bg-white/5 border border-white/12 shadow-[0_4px_16px_rgba(0,0,0,0.35)]">Free plan</span>
-                      <button class="text-white/75 hover:text-white transition" @click="handleUpgrade">Upgrade</button>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="text-lg">✺</span>
-                      <p class="text-[26px] font-semibold tracking-tight text-white/90" style="font-family: 'Georgia', 'Times New Roman', serif;">
-                        {{ greetingMessage }}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="w-full max-w-3xl">
-                    <div class="relative rounded-[14px] bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-3 space-y-2.5 text-left">
-                      <span class="absolute top-3.5 right-3.5 h-1.5 w-1.5 rounded-full border border-[#5af2cf] shadow-[0_0_0_2px_rgba(90,242,207,0.12)]"></span>
-                      <textarea
-                        v-model="prompt"
-                        ref="promptInput"
-                        class="w-full bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[1.6] text-white placeholder-white/55 resize-none min-h-[38px] max-h-[160px] overflow-y-hidden"
-                        placeholder="How can I help you today?"
-                        aria-label="Prompt input"
-                        rows="1"
-                        @keydown.enter.exact.prevent="handleSend"
-                        @input="resizePrompt"
-                      ></textarea>
-                      <div class="flex flex-wrap items-center justify-between gap-3 text-white/75">
-                        <div class="flex flex-wrap items-center gap-2">
-                          <button
-                            class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
-                            aria-label="Attach"
-                            @click="openFilePicker"
-                          >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
-                            </svg>
-                          </button>
-                          <div class="h-9 w-9 rounded-full border border-white/12 bg-white/5 flex items-center justify-center text-white/70">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2.5 2.5" />
-                              <circle cx="12" cy="12" r="8.5" stroke-width="2" />
-                            </svg>
-                          </div>
-                          <div class="flex items-center gap-1.5">
-                            <button
-                              class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
-                              :class="dataSources.project_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                              type="button"
-                              @click="toggleDataSource('project_db')"
-                            >
-                              Project DB
-                            </button>
-                            <button
-                              class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
-                              :class="dataSources.code_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                              type="button"
-                              @click="toggleDataSource('code_db')"
-                            >
-                              Code DB
-                            </button>
-                            <button
-                              class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
-                              :class="dataSources.coop_manual ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                              type="button"
-                              @click="toggleDataSource('coop_manual')"
-                            >
-                              Coop Manual
-                            </button>
-                          </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                          <button
-                            class="px-3.5 h-9 rounded-full bg-white/5 border border-white/12 hover:bg-white/10 transition text-[12px] font-semibold flex items-center gap-1.5"
-                            type="button"
-                            @click="cycleModel"
-                            :title="`Model: ${selectedModel}`"
-                          >
-                            <span class="text-white/85">{{ selectedModel }}</span>
-                            <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                          </button>
-                          <button
-                            class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
-                            :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
-                            aria-label="Send"
-                            @click="handleSend"
-                            :disabled="isSending || (!prompt.trim() && !attachments.length)"
-                          >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                          </button>
-                        </div>
+          <div v-if="activePage === 'home'" class="flex-1 min-h-0 flex">
+            <div
+              ref="viewerSplitContainer"
+              class="flex flex-1 min-h-0"
+              :class="showSpeckleViewer ? '' : 'justify-center'"
+            >
+              <div
+                class="h-full w-full chat-frame overflow-hidden flex flex-col"
+                :class="{ 'chat-frame--docked': showSpeckleViewer }"
+                :style="showSpeckleViewer ? chatPaneStyle : undefined"
+              >
+                <template v-if="!activeChatLog.length">
+                  <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5">
+                    <div class="flex flex-col items-center gap-3">
+                      <div class="flex items-center gap-2 text-[11px] text-white/65">
+                        <span class="px-3 py-1 rounded-full bg-white/5 border border-white/12 shadow-[0_4px_16px_rgba(0,0,0,0.35)]">Free plan</span>
+                        <button class="text-white/75 hover:text-white transition" @click="handleUpgrade">Upgrade</button>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <span class="text-lg">✺</span>
+                        <p class="text-[26px] font-semibold tracking-tight text-white/90" style="font-family: 'Georgia', 'Times New Roman', serif;">
+                          {{ greetingMessage }}
+                        </p>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </template>
-
-              <template v-else>
-                <div class="flex-1 min-h-0 flex flex-col">
-                  <div ref="chatContainer" class="flex-1 min-h-0 overflow-y-auto px-4 py-4 custom-scroll relative">
-                    <div class="max-w-2xl mx-auto space-y-3">
-                      <div
-                        v-for="(entry, idx) in activeChatLog"
-                        :key="idx"
-                        class="flex gap-4 group"
-                        :class="entry.role === 'user' ? 'justify-end' : 'justify-start'"
-                      >
-                        <div
-                          class="flex flex-col max-w-[520px]"
-                          :class="entry.role === 'user' ? 'items-end' : 'items-start'"
-                        >
-                          <div
-                            class="w-auto inline-flex rounded-2xl px-3.5 py-3 leading-relaxed shadow-lg max-w-full"
-                            :class="entry.role === 'user'
-                              ? 'bg-[#2a2a2a] border border-white/10'
-                              : 'bg-transparent'
-                            "
-                          >
-                            <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="entry.content"></div>
-                            <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
-                            <div
-                              v-if="entry.attachments?.length"
-                              class="flex flex-wrap gap-2 mt-3"
-                            >
-                              <span
-                                v-for="file in entry.attachments"
-                                :key="file"
-                                class="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[12px] text-white/80"
-                              >
-                                {{ file }}
-                              </span>
-                            </div>
-                          </div>
-                          <div
-                            class="flex items-center gap-3 text-[11px] text-white/50 mt-1 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto"
-                            :class="entry.role === 'user' ? 'self-end' : 'self-start pl-1'"
-                          >
-                            <span>{{ formatEntryTime(entry) }}</span>
-                            <template v-if="entry.role === 'user'">
-                              <button class="hover:text-white transition" @click="resendEntry(entry)" title="Resend">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                  <path d="M4 4v6h6" stroke-linecap="round" stroke-linejoin="round" />
-                                  <path d="M20 20v-6h-6" stroke-linecap="round" stroke-linejoin="round" />
-                                  <path d="M20 9a8 8 0 00-14.14-5.14L4 10" stroke-linecap="round" stroke-linejoin="round" />
-                                  <path d="M4 15a8 8 0 0014.14 5.14L20 14" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                              </button>
-                              <button class="hover:text-white transition" @click="editEntry(entry)" title="Edit">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                  <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
-                                  <path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4 12.5-12.5z" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                              </button>
-                              <button class="hover:text-white transition" @click="copyEntry(entry)" title="Copy">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                              </button>
-                            </template>
-                            <template v-else>
-                              <button class="hover:text-white transition" @click="copyEntry(entry)" title="Copy">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                  <rect x="9" y="9" width="11" height="11" rx="2" ry="2" />
-                                  <rect x="4" y="4" width="11" height="11" rx="2" ry="2" />
-                                </svg>
-                              </button>
-                              <button class="hover:text-white transition" :class="entry.liked ? 'text-white' : ''" @click="toggleLike(entry)" title="Like">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                  <path d="M14 9V5a3 3 0 00-3-3l-3 6H5a2 2 0 00-2 2v7a2 2 0 002 2h7.5a2 2 0 001.94-1.52l1.1-4.4A2 2 0 0013.6 11H10" stroke-linecap="round" stroke-linejoin="round" />
-                                  <path d="M7 12v8" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                              </button>
-                              <button class="hover:text-white transition" :class="entry.disliked ? 'text-white' : ''" @click="toggleDislike(entry)" title="Dislike">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                  <path d="M14 15v4a3 3 0 01-3 3l-3-6H5a2 2 0 01-2-2V7a2 2 0 012-2h7.5a2 2 0 011.94 1.52l1.1 4.4A2 2 0 0113.6 13H10" stroke-linecap="round" stroke-linejoin="round" />
-                                  <path d="M7 12V4" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                              </button>
-                              <button class="hover:text-white transition" @click="retryAssistant(idx)" title="Retry">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                  <path d="M4 4v5h5" stroke-linecap="round" stroke-linejoin="round" />
-                                  <path d="M4 9a7 7 0 107-7" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                              </button>
-                            </template>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      v-if="showScrollToBottom"
-                      @click="scrollToBottom(true)"
-                      class="absolute right-4 bottom-4 h-9 w-9 rounded-full bg-white/10 border border-white/20 backdrop-blur hover:bg-white/20 transition text-white flex items-center justify-center shadow-lg"
-                      aria-label="Scroll to latest message"
-                    >
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div class="px-4 py-3">
-                    <div class="max-w-3xl mx-auto space-y-2.5">
-                      <div v-if="attachments.length" class="flex flex-wrap gap-2">
-                        <div
-                          v-for="(file, idx) in attachments"
-                          :key="file.name + idx"
-                          class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#1f1f1f] border border-white/12 text-xs text-white/80"
-                        >
-                          <span class="max-w-[180px] truncate">{{ file.name }}</span>
-                          <button
-                            class="text-white/50 hover:text-white transition"
-                            type="button"
-                            @click="removeAttachment(idx)"
-                            aria-label="Remove attachment"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      </div>
-
-                      <div class="relative rounded-[14px] bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-3 space-y-2.5">
+                    <div class="w-full max-w-3xl">
+                      <div class="relative rounded-[14px] bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-3 space-y-2.5 text-left">
                         <span class="absolute top-3.5 right-3.5 h-1.5 w-1.5 rounded-full border border-[#5af2cf] shadow-[0_0_0_2px_rgba(90,242,207,0.12)]"></span>
                         <textarea
                           v-model="prompt"
                           ref="promptInput"
                           class="w-full bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[1.6] text-white placeholder-white/55 resize-none min-h-[38px] max-h-[160px] overflow-y-hidden"
-                        placeholder="Reply..."
-                        aria-label="Prompt input"
-                        rows="1"
-                        @keydown.enter.exact.prevent="handleSend"
-                        @input="resizePrompt"
-                      ></textarea>
-                      <div class="flex flex-wrap items-center justify-between gap-3 text-white/75">
-                        <div class="flex flex-wrap items-center gap-2">
-                          <button
-                            class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
+                          placeholder="How can I help you today?"
+                          aria-label="Prompt input"
+                          rows="1"
+                          @keydown.enter.exact.prevent="handleSend"
+                          @input="resizePrompt"
+                        ></textarea>
+                        <div class="flex flex-wrap items-center justify-between gap-3 text-white/75">
+                          <div class="flex flex-wrap items-center gap-2">
+                            <button
+                              class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
                               aria-label="Attach"
                               @click="openFilePicker"
                             >
@@ -584,7 +425,7 @@
                             </div>
                             <div class="flex items-center gap-1.5">
                               <button
-                                class="px-2.5 h-8 rounded-full border text-[11px] font-semibold transition"
+                                class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
                                 :class="dataSources.project_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
                                 type="button"
                                 @click="toggleDataSource('project_db')"
@@ -592,7 +433,7 @@
                                 Project DB
                               </button>
                               <button
-                                class="px-2.5 h-8 rounded-full border text-[11px] font-semibold transition"
+                                class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
                                 :class="dataSources.code_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
                                 type="button"
                                 @click="toggleDataSource('code_db')"
@@ -600,7 +441,7 @@
                                 Code DB
                               </button>
                               <button
-                                class="px-2.5 h-8 rounded-full border text-[11px] font-semibold transition"
+                                class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
                                 :class="dataSources.coop_manual ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
                                 type="button"
                                 @click="toggleDataSource('coop_manual')"
@@ -610,17 +451,6 @@
                             </div>
                           </div>
                           <div class="flex items-center gap-3">
-                            <button
-                              class="px-3.5 h-9 rounded-full bg-white/5 border border-white/12 hover:bg-white/10 transition text-[12px] font-semibold flex items-center gap-1.5"
-                              type="button"
-                              @click="cycleModel"
-                              :title="`Model: ${selectedModel}`"
-                            >
-                              <span class="text-white/85">{{ selectedModel }}</span>
-                              <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </button>
                             <button
                               class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
                               :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
@@ -635,18 +465,305 @@
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </template>
 
-                      <div v-if="tags.length" class="flex flex-wrap items-center gap-2 text-[11px] text-white/50 pl-1">
-                        <span
-                          v-for="tag in tags"
-                          :key="tag"
-                          class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/75 tracking-[0.14em] uppercase"
+                <template v-else>
+                  <div class="flex-1 min-h-0 flex flex-col">
+                    <div ref="chatContainer" class="flex-1 min-h-0 overflow-y-auto px-4 py-4 custom-scroll relative">
+                      <div class="max-w-2xl mx-auto space-y-3">
+                        <div
+                          v-for="(entry, idx) in activeChatLog"
+                          :key="idx"
+                          class="flex gap-4 group"
+                          :class="entry.role === 'user' ? 'justify-end' : 'justify-start'"
                         >
-                          {{ tag }}
-                        </span>
-                        <span class="ml-auto">Shift + Enter for newline</span>
+                          <div
+                            class="flex flex-col max-w-[520px]"
+                            :class="entry.role === 'user' ? 'items-end' : 'items-start'"
+                          >
+                            <div
+                              class="w-auto inline-flex rounded-2xl px-3.5 py-3 leading-relaxed shadow-lg max-w-full"
+                              :class="entry.role === 'user'
+                                ? 'bg-[#2a2a2a] border border-white/10'
+                                : 'bg-transparent'
+                              "
+                            >
+                              <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="entry.content"></div>
+                              <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
+                              <div
+                                v-if="entry.attachments?.length"
+                                class="flex flex-wrap gap-2 mt-3"
+                              >
+                                <span
+                                  v-for="file in entry.attachments"
+                                  :key="file"
+                                  class="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[12px] text-white/80"
+                                >
+                                  {{ file }}
+                                </span>
+                              </div>
+                            </div>
+                            <div
+                              class="flex items-center gap-3 text-[11px] text-white/50 mt-1 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto"
+                              :class="entry.role === 'user' ? 'self-end' : 'self-start pl-1'"
+                            >
+                              <span>{{ formatEntryTime(entry) }}</span>
+                              <template v-if="entry.role === 'user'">
+                                <button class="hover:text-white transition" @click="resendEntry(entry)" title="Resend">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                    <path d="M4 4v6h6" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M20 20v-6h-6" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M20 9a8 8 0 00-14.14-5.14L4 10" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M4 15a8 8 0 0014.14 5.14L20 14" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+                                </button>
+                                <button class="hover:text-white transition" @click="editEntry(entry)" title="Edit">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                    <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4 12.5-12.5z" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+                                </button>
+                                <button class="hover:text-white transition" @click="copyEntry(entry)" title="Copy">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+                                </button>
+                              </template>
+                              <template v-else>
+                                <button class="hover:text-white transition" @click="copyEntry(entry)" title="Copy">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="9" y="9" width="11" height="11" rx="2" ry="2" />
+                                    <rect x="4" y="4" width="11" height="11" rx="2" ry="2" />
+                                  </svg>
+                                </button>
+                                <button class="hover:text-white transition" :class="entry.liked ? 'text-white' : ''" @click="toggleLike(entry)" title="Like">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                    <path d="M14 9V5a3 3 0 00-3-3l-3 6H5a2 2 0 00-2 2v7a2 2 0 002 2h7.5a2 2 0 001.94-1.52l1.1-4.4A2 2 0 0013.6 11H10" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M7 12v8" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+                                </button>
+                                <button class="hover:text-white transition" :class="entry.disliked ? 'text-white' : ''" @click="toggleDislike(entry)" title="Dislike">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                    <path d="M14 15v4a3 3 0 01-3 3l-3-6H5a2 2 0 01-2-2V7a2 2 0 012-2h7.5a2 2 0 011.94 1.52l1.1 4.4A2 2 0 0113.6 13H10" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M7 12V4" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+                                </button>
+                                <button class="hover:text-white transition" @click="retryAssistant(idx)" title="Retry">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M4 4v5h5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M4 9a7 7 0 107-7" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+                                </button>
+                              </template>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        v-if="showScrollToBottom"
+                        @click="scrollToBottom(true)"
+                        class="absolute right-4 bottom-4 h-9 w-9 rounded-full bg-white/10 border border-white/20 backdrop-blur hover:bg-white/20 transition text-white flex items-center justify-center shadow-lg"
+                        aria-label="Scroll to latest message"
+                      >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div class="px-4 py-3">
+                      <div class="max-w-3xl mx-auto space-y-2.5">
+                        <div v-if="attachments.length" class="flex flex-wrap gap-2">
+                          <div
+                            v-for="(file, idx) in attachments"
+                            :key="file.name + idx"
+                            class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#1f1f1f] border border-white/12 text-xs text-white/80"
+                          >
+                            <span class="max-w-[180px] truncate">{{ file.name }}</span>
+                            <button
+                              class="text-white/50 hover:text-white transition"
+                              type="button"
+                              @click="removeAttachment(idx)"
+                              aria-label="Remove attachment"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="relative rounded-[12px] bg-[#1c1c1c] border border-white/10 shadow-[0_8px_18px_rgba(0,0,0,0.28)] px-3.5 py-3 space-y-2">
+                          <textarea
+                            v-model="prompt"
+                            ref="promptInput"
+                            class="w-full bg-transparent border-0 focus:outline-none focus:ring-0 text-[13px] leading-[1.55] text-white placeholder-white/55 resize-none min-h-[34px] max-h-[150px] overflow-y-hidden"
+                          placeholder="Reply..."
+                          aria-label="Prompt input"
+                          rows="1"
+                          @keydown.enter.exact.prevent="handleSend"
+                          @input="resizePrompt"
+                        ></textarea>
+                        <div class="flex flex-wrap items-center justify-between gap-2.5 text-white/75">
+                          <div class="flex flex-wrap items-center gap-2">
+                            <button
+                              class="h-8 w-8 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
+                                aria-label="Attach"
+                                @click="openFilePicker"
+                              >
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
+                                </svg>
+                              </button>
+                              <div class="h-8 w-8 rounded-full border border-white/12 bg-white/5 flex items-center justify-center text-white/70">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2.5 2.5" />
+                                  <circle cx="12" cy="12" r="8.5" stroke-width="2" />
+                                </svg>
+                              </div>
+                              <div class="flex items-center gap-1.5">
+                                <button
+                                  class="px-2 h-7 rounded-full border text-[10.5px] font-semibold transition"
+                                  :class="dataSources.project_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                                  type="button"
+                                  @click="toggleDataSource('project_db')"
+                                >
+                                  Project DB
+                                </button>
+                                <button
+                                  class="px-2 h-7 rounded-full border text-[10.5px] font-semibold transition"
+                                  :class="dataSources.code_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                                  type="button"
+                                  @click="toggleDataSource('code_db')"
+                                >
+                                  Code DB
+                                </button>
+                                <button
+                                  class="px-2 h-7 rounded-full border text-[10.5px] font-semibold transition"
+                                  :class="dataSources.coop_manual ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
+                                  type="button"
+                                  @click="toggleDataSource('coop_manual')"
+                                >
+                                  Coop Manual
+                                </button>
+                              </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                              <button
+                                class="h-8 w-8 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
+                                :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                                aria-label="Send"
+                                @click="handleSend"
+                                :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                              >
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div v-if="tags.length" class="flex flex-wrap items-center gap-2 text-[10px] text-white/50 pl-1">
+                          <span
+                            v-for="tag in tags"
+                            :key="tag"
+                            class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/75 tracking-[0.14em] uppercase"
+                          >
+                            {{ tag }}
+                          </span>
+                          <span class="ml-auto text-white/45">Shift + Enter for newline</span>
+                        </div>
                       </div>
                     </div>
+                  </div>
+                </template>
+              </div>
+
+              <template v-if="showSpeckleViewer">
+                <div class="viewer-resize-handle" @mousedown.prevent="startViewerResize">
+                  <div class="viewer-resize-grip"></div>
+                </div>
+
+                <div
+                  class="flex flex-col min-h-0 viewer-pane bg-slate-950/70 border-l border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
+                  :style="viewerPaneStyle"
+                >
+                  <div class="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-slate-900/80 backdrop-blur-sm">
+                    <div class="space-y-0.5">
+                      <p class="text-xs text-white/70 uppercase tracking-[0.14em]">Speckle 3D Viewer</p>
+                      <p class="text-base font-semibold text-white leading-tight">
+                        {{ selectedSpeckleModel?.name || 'Model' }}
+                        <span v-if="selectedSpeckleModel?.projectName" class="text-sm text-white/60 font-normal">
+                          — {{ selectedSpeckleModel.projectName }}
+                        </span>
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <div v-if="speckleViewerModels.length > 1" class="flex items-center gap-2">
+                        <label class="text-[11px] text-white/60 uppercase tracking-wide">Model</label>
+                        <select
+                          v-model="speckleViewerSelectedId"
+                          class="bg-slate-800 text-white text-xs rounded-lg px-3 py-1.5 border border-white/15 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        >
+                          <option
+                            v-for="model in speckleViewerModels"
+                            :key="model.id"
+                            :value="model.id"
+                          >
+                            {{ model.name }}{{ model.projectName ? ` • ${model.projectName}` : '' }}
+                          </option>
+                        </select>
+                      </div>
+                      <button
+                        @click="closeSpeckleViewer"
+                        class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors flex items-center gap-2 border border-white/15"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Close
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="relative flex-1 min-h-0 bg-slate-900 viewer-canvas-shell">
+                    <div
+                      v-if="speckleViewerFetchLoading && !selectedSpeckleModel"
+                      class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+                    >
+                      <div class="text-center space-y-2">
+                        <div class="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                        <p class="text-slate-200 text-sm">Loading models…</p>
+                      </div>
+                    </div>
+                    <div
+                      v-else-if="speckleViewerFetchError && !selectedSpeckleModel"
+                      class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+                    >
+                      <div class="text-center space-y-2">
+                        <p class="text-slate-200 text-sm">{{ speckleViewerFetchError }}</p>
+                        <button
+                          class="px-3 py-1.5 rounded-lg bg-slate-700 text-white text-sm hover:bg-slate-600 transition-colors"
+                          @click="closeSpeckleViewer"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+
+                    <SpeckleViewer
+                      v-if="selectedSpeckleModel"
+                      :model-url="selectedSpeckleModel.url"
+                      :model-name="selectedSpeckleModel.name"
+                      :visible="true"
+                      height="100%"
+                      :server-url="config.public.speckleUrl"
+                      :token="config.public.speckleToken"
+                      class="viewer-canvas"
+                      @close="closeSpeckleViewer"
+                    />
                   </div>
                 </div>
               </template>
@@ -713,89 +830,6 @@
       </div>
     </div>
 
-    <!-- Speckle Viewer Modal -->
-    <div
-      v-if="speckleViewerModalOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center px-4"
-    >
-      <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeSpeckleModal"></div>
-      <div class="relative w-full max-w-6xl max-h-[90vh] bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
-        <div class="flex items-center justify-between px-5 py-3 border-b border-slate-700 bg-slate-800/70 backdrop-blur-sm">
-          <div>
-            <p class="text-sm text-slate-300">Speckle 3D Viewer</p>
-            <p class="text-lg font-semibold text-white">
-              {{ selectedSpeckleModel?.name || 'Model' }}
-              <span v-if="selectedSpeckleModel?.projectName" class="text-sm text-slate-400 font-normal">
-                — {{ selectedSpeckleModel.projectName }}
-              </span>
-            </p>
-          </div>
-          <div class="flex items-center gap-3">
-            <div v-if="speckleViewerModels.length > 1" class="flex items-center gap-2">
-              <label class="text-xs text-slate-300 uppercase tracking-wide">Model</label>
-              <select
-                v-model="speckleViewerSelectedId"
-                class="bg-slate-700 text-white text-sm rounded-lg px-3 py-1.5 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              >
-                <option
-                  v-for="model in speckleViewerModels"
-                  :key="model.id"
-                  :value="model.id"
-                >
-                  {{ model.name }}{{ model.projectName ? ` • ${model.projectName}` : '' }}
-                </option>
-              </select>
-            </div>
-            <button
-              @click="closeSpeckleModal"
-              class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition-colors flex items-center gap-2"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Close
-            </button>
-          </div>
-        </div>
-
-        <div class="relative bg-slate-900" style="height: calc(90vh - 120px); min-height: 360px;">
-          <div
-            v-if="speckleViewerFetchLoading && !selectedSpeckleModel"
-            class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
-          >
-            <div class="text-center space-y-2">
-              <div class="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-              <p class="text-slate-200 text-sm">Loading models…</p>
-            </div>
-          </div>
-          <div
-            v-else-if="speckleViewerFetchError && !selectedSpeckleModel"
-            class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
-          >
-            <div class="text-center space-y-2">
-              <p class="text-slate-200 text-sm">{{ speckleViewerFetchError }}</p>
-              <button
-                class="px-3 py-1.5 rounded-lg bg-slate-700 text-white text-sm hover:bg-slate-600 transition-colors"
-                @click="closeSpeckleModal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-
-          <SpeckleViewer
-            v-if="selectedSpeckleModel"
-            :model-url="selectedSpeckleModel.url"
-            :model-name="selectedSpeckleModel.name"
-            :visible="true"
-            height="100%"
-            :server-url="config.public.speckleUrl"
-            :token="config.public.speckleToken"
-            @close="closeSpeckleModal"
-          />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -946,20 +980,30 @@ const dataSources = ref<DataSources>({
   code_db: true,
   coop_manual: true
 })
+const iconRailWidth = 48 // tailwind w-12 (3rem)
 const sidebarWidth = ref(224) // default 14rem
-const minSidebarWidth = 200
+const minSidebarWidth = 240
 const maxSidebarWidth = 340
 const isResizingSidebar = ref(false)
 const resizeStartX = ref(0)
 const resizeStartWidth = ref(0)
 const sidebarRailStyle = computed(() => ({
-  left: `${sidebarWidth.value + 16}px`,
+  left: `${iconRailWidth + sidebarWidth.value}px`,
   top: '50%',
-  transform: 'translateY(-50%)',
-  zIndex: 60
+  transform: 'translate(-50%, -50%)',
+  zIndex: 30
 }))
-type AgentLog = { id: string; thinking: string; timestamp: Date }
+type AgentLog = { id: string; thinking: string; timestamp: Date; type: 'thinking' | 'action' | 'result' | 'error' }
 const agentLogs = ref<AgentLog[]>([])
+const logsPanelOpen = ref(false)
+const logsPanelHeight = ref(320)
+const logsPanelBottom = ref(0)
+const logsResizeStartY = ref(0)
+const logsResizeStartHeight = ref(0)
+const logsDragStartY = ref(0)
+const logsDragStartBottom = ref(0)
+const isResizingLogs = ref(false)
+const isDraggingLogs = ref(false)
 const showScrollToBottom = ref(false)
 const contextMenu = ref<{ visible: boolean; x: number; y: number; convId: string | null }>({
   visible: false,
@@ -980,6 +1024,12 @@ const deleteDialog = ref<{ open: boolean; convId: string | null }>({
   convId: null
 })
 const titleGenerationInFlight = new Set<string>()
+const isDocsCompact = computed(() => sidebarWidth.value <= 280)
+function isRailActionFilled(id: SidebarMode) {
+  if (id === 'logs') return agentLogs.value.length > 0
+  if (id === 'docs') return docListDocs.value.length > 0
+  return false
+}
 
 // Speckle document list state (inline in sidebar)
 const docListOpen = ref(true)
@@ -989,10 +1039,18 @@ const docListSubtitle = ref('')
 
 const speckleViewerModels = ref<Array<{ id: string; url: string; name: string; projectName?: string }>>([])
 const speckleViewerSelectedId = ref('')
-const speckleViewerModalOpen = ref(false)
+const speckleViewerPanelOpen = ref(false)
 const speckleViewerFetchLoading = ref(false)
 const speckleViewerFetchError = ref('')
 const selectedSpeckleModel = computed(() => speckleViewerModels.value.find(model => model.id === speckleViewerSelectedId.value) || null)
+const viewerSplitPercent = ref(50)
+const isResizingViewer = ref(false)
+const viewerSplitContainer = ref<HTMLElement | null>(null)
+const viewerResizeStartX = ref(0)
+const viewerResizeStartPercent = ref(50)
+const showSpeckleViewer = computed(() => speckleViewerPanelOpen.value && !!selectedSpeckleModel.value)
+const chatPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}))
+const viewerPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}))
 
 const defaultConversations: Conversation[] = [
   { id: 'conv-1', title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago', section: 'Today', sessionId: 'session-1', chatLog: [] },
@@ -1038,6 +1096,7 @@ const filteredConversationSections = computed(() => {
     }))
     .filter(section => section.items.length)
 })
+
 
 function scrollToBottom(smooth = false) {
   nextTick(() => {
@@ -1127,7 +1186,15 @@ function saveMemory() {
       selectedModel: selectedModel.value,
       dataSources: dataSources.value,
       activePage: activePage.value,
-      timesheetSection: timesheetSection.value
+      timesheetSection: timesheetSection.value,
+      agentLogs: agentLogs.value,
+      logsPanelOpen: logsPanelOpen.value,
+      logsPanelHeight: logsPanelHeight.value,
+      logsPanelBottom: logsPanelBottom.value,
+      docListDocs: docListDocs.value,
+      docListTitle: docListTitle.value,
+      docListSubtitle: docListSubtitle.value,
+      docListOpen: docListOpen.value
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   } catch (error) {
@@ -1166,6 +1233,35 @@ function loadMemory() {
     if (isTimesheetSection(parsed.timesheetSection)) {
       timesheetSection.value = parsed.timesheetSection
     }
+    if (Array.isArray(parsed.agentLogs)) {
+      agentLogs.value = parsed.agentLogs.map((log: any) => ({
+        id: log.id,
+        thinking: log.thinking,
+        timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
+        type: log.type || 'thinking'
+      }))
+    }
+    if (typeof parsed.logsPanelOpen === 'boolean') {
+      logsPanelOpen.value = parsed.logsPanelOpen
+    }
+    if (typeof parsed.logsPanelHeight === 'number') {
+      logsPanelHeight.value = parsed.logsPanelHeight
+    }
+    if (typeof parsed.logsPanelBottom === 'number') {
+      logsPanelBottom.value = parsed.logsPanelBottom
+    }
+    if (Array.isArray(parsed.docListDocs)) {
+      docListDocs.value = parsed.docListDocs
+    }
+    if (typeof parsed.docListTitle === 'string') {
+      docListTitle.value = parsed.docListTitle
+    }
+    if (typeof parsed.docListSubtitle === 'string') {
+      docListSubtitle.value = parsed.docListSubtitle
+    }
+    if (typeof parsed.docListOpen === 'boolean') {
+      docListOpen.value = parsed.docListOpen
+    }
     const hasActive = conversations.value.some(conv => conv.id === activeConversationId.value)
     if (!hasActive) {
       activeConversationId.value = conversations.value[0]?.id || ''
@@ -1200,11 +1296,25 @@ onMounted(() => {
   handleChatScroll()
   document.addEventListener('click', handleGlobalClick)
   window.addEventListener('mouseup', stopSidebarResize)
+  window.addEventListener('mouseup', stopViewerResize)
   nextTick(resizePrompt)
 })
 
 watch(
-  [conversations, activeConversationId, tags, selectedModel, dataSources, activePage, timesheetSection],
+  [
+    conversations,
+    activeConversationId,
+    tags,
+    selectedModel,
+    dataSources,
+    activePage,
+    timesheetSection,
+    agentLogs,
+    docListDocs,
+    docListTitle,
+    docListSubtitle,
+    docListOpen
+  ],
   () => saveMemory(),
   { deep: true }
 )
@@ -1229,7 +1339,9 @@ onBeforeUnmount(() => {
   chatContainer.value?.removeEventListener('scroll', handleChatScroll)
   document.removeEventListener('click', handleGlobalClick)
   window.removeEventListener('mousemove', onSidebarResize)
+  window.removeEventListener('mousemove', onViewerResize)
   window.removeEventListener('mouseup', stopSidebarResize)
+  window.removeEventListener('mouseup', stopViewerResize)
 })
 
 function normalizeQueryParam(value: unknown) {
@@ -1280,6 +1392,9 @@ function setActiveRail(id: string) {
 
 function handleSidebarAction(id: SidebarMode) {
   sidebarMode.value = id
+  if (id === 'logs') {
+    logsPanelOpen.value = true
+  }
 }
 
 function startSidebarResize(e: MouseEvent) {
@@ -1288,6 +1403,44 @@ function startSidebarResize(e: MouseEvent) {
   resizeStartWidth.value = sidebarWidth.value
   window.addEventListener('mousemove', onSidebarResize)
   window.addEventListener('mouseup', stopSidebarResize)
+}
+
+function startLogsResize(e: MouseEvent) {
+  isResizingLogs.value = true
+  logsResizeStartY.value = e.clientY
+  logsResizeStartHeight.value = logsPanelHeight.value
+  window.addEventListener('mousemove', onLogsResize)
+  window.addEventListener('mouseup', stopLogsInteractions)
+}
+
+function onLogsResize(e: MouseEvent) {
+  if (!isResizingLogs.value) return
+  const delta = logsResizeStartY.value - e.clientY
+  const maxHeight = window.innerHeight - logsPanelBottom.value - 20
+  logsPanelHeight.value = Math.max(200, Math.min(maxHeight, logsResizeStartHeight.value + delta))
+}
+
+function startLogsDrag(e: MouseEvent) {
+  isDraggingLogs.value = true
+  logsDragStartY.value = e.clientY
+  logsDragStartBottom.value = logsPanelBottom.value
+  window.addEventListener('mousemove', onLogsDrag)
+  window.addEventListener('mouseup', stopLogsInteractions)
+}
+
+function onLogsDrag(e: MouseEvent) {
+  if (!isDraggingLogs.value) return
+  const delta = logsDragStartY.value - e.clientY
+  const maxBottom = Math.max(0, window.innerHeight - logsPanelHeight.value - 50)
+  logsPanelBottom.value = Math.max(0, Math.min(maxBottom, logsDragStartBottom.value + delta))
+}
+
+function stopLogsInteractions() {
+  isResizingLogs.value = false
+  isDraggingLogs.value = false
+  window.removeEventListener('mousemove', onLogsResize)
+  window.removeEventListener('mousemove', onLogsDrag)
+  window.removeEventListener('mouseup', stopLogsInteractions)
 }
 
 function onSidebarResize(e: MouseEvent) {
@@ -1302,6 +1455,35 @@ function stopSidebarResize() {
   isResizingSidebar.value = false
   window.removeEventListener('mousemove', onSidebarResize)
   window.removeEventListener('mouseup', stopSidebarResize)
+}
+
+function startViewerResize(e: MouseEvent) {
+  if (!showSpeckleViewer.value) return
+  isResizingViewer.value = true
+  viewerResizeStartX.value = e.clientX
+  viewerResizeStartPercent.value = viewerSplitPercent.value
+  window.addEventListener('mousemove', onViewerResize)
+  window.addEventListener('mouseup', stopViewerResize)
+}
+
+function onViewerResize(e: MouseEvent) {
+  if (!isResizingViewer.value) return
+  const container = viewerSplitContainer.value
+  if (!container) return
+
+  const rect = container.getBoundingClientRect()
+  const delta = e.clientX - viewerResizeStartX.value
+  const percentDelta = (delta / rect.width) * 100
+  const percent = viewerResizeStartPercent.value + percentDelta
+  const clamped = Math.min(70, Math.max(30, percent))
+  viewerSplitPercent.value = clamped
+}
+
+function stopViewerResize() {
+  if (!isResizingViewer.value) return
+  isResizingViewer.value = false
+  window.removeEventListener('mousemove', onViewerResize)
+  window.removeEventListener('mouseup', stopViewerResize)
 }
 
 function openTimesheetMenu() {
@@ -1393,10 +1575,27 @@ function formatTimestamp(ts: Date | number | string) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
-function cycleModel() {
-  const currentIndex = availableModels.indexOf(selectedModel.value)
-  const nextIndex = (currentIndex + 1) % availableModels.length
-  selectedModel.value = availableModels[nextIndex]
+function formatThinking(text: string): string {
+  if (!text) return ''
+  let html = text
+    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold text-white mt-4 mb-2">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold text-white mt-5 mb-3">$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-semibold text-white mt-6 mb-4">$1</h1>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-white">$1</strong>')
+    .replace(/^[-*] (.*$)/gim, '<li class="ml-4 mb-1 text-white/80">$1</li>')
+    .replace(/^\d+\. (.*$)/gim, '<li class="ml-4 mb-1 text-white/80">$1</li>')
+    .replace(/\n\n/g, '</p><p class="mb-3 leading-relaxed text-white/85">')
+    .replace(/\n/g, '<br>')
+
+  html = html.replace(/(<li.*<\/li>)/gs, '<ul class="list-disc list-inside space-y-1 my-3 ml-4">$1</ul>')
+
+  if (!html.startsWith('<')) {
+    html = '<p class="mb-3 leading-relaxed text-white/85">' + html + '</p>'
+  } else if (!html.includes('<p')) {
+    html = '<p class="mb-3 leading-relaxed text-white/85">' + html + '</p>'
+  }
+
+  return html
 }
 
 function startNewConversation() {
@@ -1603,10 +1802,11 @@ function handleDocumentSelect(doc: any) {
     }))
 
   if (models.length) {
-    // Ensure models are available for the modal
+    // Ensure models are available for the docked viewer
     speckleViewerModels.value = models
     speckleViewerSelectedId.value = doc.id || models[0].id
-    speckleViewerModalOpen.value = true
+    speckleViewerPanelOpen.value = true
+    viewerSplitPercent.value = 50
   }
 
   // Also open in the shared workspace viewer area
@@ -1615,15 +1815,17 @@ function handleDocumentSelect(doc: any) {
   }
 }
 
-function closeSpeckleModal() {
-  speckleViewerModalOpen.value = false
+function closeSpeckleViewer() {
+  speckleViewerPanelOpen.value = false
+  speckleViewerSelectedId.value = ''
 }
 
-function openSpeckleModalWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
+function openSpeckleViewerWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
   if (!models.length) return
   speckleViewerModels.value = models
   speckleViewerSelectedId.value = models[0].id
-  speckleViewerModalOpen.value = true
+  speckleViewerPanelOpen.value = true
+  viewerSplitPercent.value = 50
 }
 
 async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: string) {
@@ -1698,11 +1900,11 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
       name: doc.name,
       projectName: doc.metadata?.projectName as string | undefined
     }))
-    openSpeckleModalWithModels(modalModels)
+    openSpeckleViewerWithModels(modalModels)
   } else {
     speckleViewerModels.value = []
     speckleViewerSelectedId.value = ''
-    speckleViewerModalOpen.value = false
+    speckleViewerPanelOpen.value = false
   }
 
   speckleViewerFetchLoading.value = false
@@ -1725,6 +1927,20 @@ function touchConversation(convId: string) {
   conv.time = 'Just now'
   conv.section = 'Today'
   conversations.value = [conv, ...conversations.value]
+}
+
+function handleAgentLog(log: AgentLog) {
+  const entry: AgentLog = {
+    id: log.id,
+    thinking: log.thinking,
+    timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
+    type: log.type || 'thinking'
+  }
+  agentLogs.value.unshift(entry)
+  if (agentLogs.value.length > 50) {
+    agentLogs.value = agentLogs.value.slice(0, 50)
+  }
+  logsPanelOpen.value = true
 }
 
 async function handleSend() {
@@ -1771,10 +1987,11 @@ async function handleSend() {
       {
         onLog: log => {
           console.log('Thinking log:', log)
-          agentLogs.value.unshift({
+          handleAgentLog({
             id: `log-${Date.now()}`,
             thinking: log.message,
-            timestamp: new Date()
+            timestamp: new Date(),
+            type: 'thinking'
           })
         },
         onComplete: async result => {
@@ -1832,10 +2049,11 @@ async function regenerateAssistant(message: string, sessionId: string) {
       dataSources.value,
       {
         onLog: log => {
-          agentLogs.value.unshift({
+          handleAgentLog({
             id: `log-${Date.now()}`,
             thinking: log.message,
-            timestamp: new Date()
+            timestamp: new Date(),
+            type: 'thinking'
           })
         },
         onComplete: async result => {
@@ -1998,6 +2216,51 @@ function performDeleteConversation() {
   margin: 0 auto;
   height: 100%;
   max-height: 100%;
+}
+
+.chat-frame--docked {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.viewer-pane {
+  min-width: 320px;
+}
+
+.viewer-resize-handle {
+  width: 10px;
+  cursor: col-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+
+.viewer-resize-grip {
+  height: 64px;
+  width: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.viewer-canvas-shell {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+.viewer-canvas {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 0;
 }
 
 @media (max-width: 1024px) {
