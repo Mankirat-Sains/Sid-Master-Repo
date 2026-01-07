@@ -87,6 +87,8 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
+
 export interface AgentLog {
   id: string
   type: 'thinking' | 'action' | 'result' | 'error'
@@ -105,6 +107,21 @@ const props = withDefaults(defineProps<{
   panelBottom: 0,
   chatPanelWidth: 420
 })
+
+// Debug: Log when logs change
+watch(() => props.logs, (newLogs, oldLogs) => {
+  console.log('📊 AgentLogsPanel: logs changed', {
+    oldCount: oldLogs?.length || 0,
+    newCount: newLogs?.length || 0,
+    isOpen: props.isOpen,
+    latestLog: newLogs?.[0] ? {
+      id: newLogs[0].id,
+      type: newLogs[0].type,
+      thinkingPreview: newLogs[0].thinking?.substring(0, 100) + '...',
+      timestamp: newLogs[0].timestamp
+    } : null
+  })
+}, { immediate: true, deep: true })
 
 const emit = defineEmits<{
   open: []

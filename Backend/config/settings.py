@@ -102,7 +102,7 @@ MAX_CITATIONS_DISPLAY = 20     # How many citations to show in final answer
 # Smart vs Large database chunk limits
 MAX_SMART_RETRIEVAL_DOCS = 200  # More chunks for smart (concise constraints)
 MAX_LARGE_RETRIEVAL_DOCS = 50   # Fewer chunks for large (multi-constraint queries)
-MAX_CODE_RETRIEVAL_DOCS = 100   # Reasonable limit for code database
+MAX_CODE_RETRIEVAL_DOCS = 30   # Reasonable limit for code database
 MAX_COOP_RETRIEVAL_DOCS = 100   # Reasonable limit for coop database
 
 # Hybrid retrieval weights

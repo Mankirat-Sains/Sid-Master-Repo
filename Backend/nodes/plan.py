@@ -8,12 +8,21 @@ import time
 from models.rag_state import RAGState
 from prompts.router_selection_prompts import ROUTER_SELECTION_PROMPT, router_selection_llm
 from config.logging_config import log_query
+from langgraph.config import get_stream_writer
 
 
 def node_plan(state: RAGState) -> dict:
     """Planning node - selects which routers to use"""
     t_start = time.time()
     log_query.info(">>> PLAN START (Router Selection)")
+    
+    # Emit custom progress event (LangGraph best practice)
+    try:
+        writer = get_stream_writer()
+        writer({"type": "thinking", "node": "plan", "message": "🎯 Analyzing your query to determine the best approach..."})
+    except Exception:
+        # get_stream_writer only works in streaming context, ignore if not available
+        pass
 
     try:
         # Get router selection from LLM

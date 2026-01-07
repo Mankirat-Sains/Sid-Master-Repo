@@ -11,6 +11,7 @@ from utils.plan_executor import (
     requested_project_count, pick_top_n_projects, rerank_by_dimension_similarity
 )
 from synthesis.synthesizer import synthesize
+from langgraph.config import get_stream_writer
 
 
 def node_answer(state: RAGState) -> dict:
@@ -83,17 +84,56 @@ def node_answer(state: RAGState) -> dict:
                 if not project_db_enabled or not docs:
                     return None, []
                 log_query.info("Starting project synthesis...")
-                project_ans, project_cites = synthesize(
-                    state.user_query, 
-                    docs, 
-                    state.session_id, 
-                    project_metadata=pre_fetched_metadata,
-                    code_docs=None,
-                    use_code_prompt=False,
-                    coop_docs=None,
-                    use_coop_prompt=False,
-                    active_filters=getattr(state, 'active_filters', None)
-                )
+                # Try to get stream writer for token streaming
+                try:
+                    writer = get_stream_writer()
+                    has_writer = True
+                except Exception:
+                    has_writer = False
+                    writer = None
+                
+                if has_writer:
+                    # Streaming mode
+                    ans_parts = []
+                    project_cites = []
+                    stream_result = synthesize(
+                        state.user_query, 
+                        docs, 
+                        state.session_id,
+                        stream=True,
+                        project_metadata=pre_fetched_metadata,
+                        code_docs=None,
+                        use_code_prompt=False,
+                        coop_docs=None,
+                        use_coop_prompt=False,
+                        active_filters=getattr(state, 'active_filters', None)
+                    )
+                    first_chunk = True
+                    for chunk in stream_result:
+                        if first_chunk and isinstance(chunk, tuple):
+                            token_content, project_cites = chunk
+                            ans_parts.append(token_content)
+                            if writer:
+                                writer({"type": "token", "content": token_content, "node": "answer"})
+                            first_chunk = False
+                        else:
+                            ans_parts.append(chunk)
+                            if writer:
+                                writer({"type": "token", "content": chunk, "node": "answer"})
+                    project_ans = "".join(ans_parts)
+                else:
+                    # Non-streaming fallback
+                    project_ans, project_cites = synthesize(
+                        state.user_query, 
+                        docs, 
+                        state.session_id, 
+                        project_metadata=pre_fetched_metadata,
+                        code_docs=None,
+                        use_code_prompt=False,
+                        coop_docs=None,
+                        use_coop_prompt=False,
+                        active_filters=getattr(state, 'active_filters', None)
+                    )
                 return project_ans, project_cites
             
             def synthesize_code():
@@ -182,13 +222,55 @@ def node_answer(state: RAGState) -> dict:
                                       active_filters=getattr(state, 'active_filters', None))
                 return {"coop_answer": ans, "coop_citations": cites, "graded_docs": []}
             else:
-                ans, cites = synthesize(state.user_query, docs, state.session_id, 
-                                       project_metadata=pre_fetched_metadata,
-                                       code_docs=code_docs if code_docs else None,
-                                       use_code_prompt=False,
-                                       coop_docs=coop_docs if coop_docs else None,
-                                       use_coop_prompt=False,
-                                       active_filters=getattr(state, 'active_filters', None))
+                # Use streaming synthesis for real-time token delivery
+                # Stream tokens via custom events while accumulating answer
+                try:
+                    writer = get_stream_writer()
+                    has_writer = True
+                except Exception:
+                    has_writer = False
+                    writer = None
+                
+                if has_writer:
+                    # Streaming mode: emit tokens as they're generated
+                    ans_parts = []
+                    cites = []
+                    stream_result = synthesize(state.user_query, docs, state.session_id,
+                                              stream=True,  # Enable streaming
+                                              project_metadata=pre_fetched_metadata,
+                                              code_docs=code_docs if code_docs else None,
+                                              use_code_prompt=False,
+                                              coop_docs=coop_docs if coop_docs else None,
+                                              use_coop_prompt=False,
+                                              active_filters=getattr(state, 'active_filters', None))
+                    
+                    # Handle streaming generator
+                    first_chunk = True
+                    for chunk in stream_result:
+                        if first_chunk and isinstance(chunk, tuple):
+                            # First chunk contains (content, cites)
+                            token_content, cites = chunk
+                            ans_parts.append(token_content)
+                            if writer:
+                                writer({"type": "token", "content": token_content, "node": "answer"})
+                            first_chunk = False
+                        else:
+                            # Subsequent chunks are just content
+                            ans_parts.append(chunk)
+                            if writer:
+                                writer({"type": "token", "content": chunk, "node": "answer"})
+                    
+                    ans = "".join(ans_parts)
+                else:
+                    # Non-streaming fallback
+                    ans, cites = synthesize(state.user_query, docs, state.session_id, 
+                                           project_metadata=pre_fetched_metadata,
+                                           code_docs=code_docs if code_docs else None,
+                                           use_code_prompt=False,
+                                           coop_docs=coop_docs if coop_docs else None,
+                                           use_coop_prompt=False,
+                                           active_filters=getattr(state, 'active_filters', None))
+                
                 reranked = rerank_by_dimension_similarity(state.user_query, state.graded_docs)
                 
                 return {"final_answer": ans, "answer_citations": cites, "graded_docs": reranked}
