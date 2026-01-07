@@ -93,3 +93,22 @@ body {
   background: #3a3a3a;
 }
 
+/* MathJax equation bolding - bold equations and their variables */
+.math-bold {
+  font-weight: bold;
+}
+
+/* Bold all MathJax rendered output within math-bold containers */
+.math-bold .MathJax,
+.math-bold .MathJax_SVG,
+.math-bold mjx-container {
+  font-weight: bold !important;
+}
+
+/* Also bold variables within equations */
+.math-bold .MathJax *,
+.math-bold .MathJax_SVG *,
+.math-bold mjx-container * {
+  font-weight: bold !important;
+}
+

@@ -828,22 +828,24 @@ async def chat_stream_handler(request: ChatRequest):
             ):
                 # Handle LLM token streaming (messages mode)
                 if stream_mode == "messages":
-                    # chunk is a tuple: (message, metadata)
-                    # message is an AIMessage with content tokens
-                    # metadata contains node info
+                    # chunk is a tuple: (message_chunk, metadata)
+                    # message_chunk is the token or message segment from the LLM
+                    # metadata contains node info with 'langgraph_node' field (per LangGraph docs)
                     try:
                         message, metadata = chunk
                         if hasattr(message, 'content') and message.content:
-                            # Only stream tokens from the answer node (final synthesis)
-                            # Filter out tokens from other nodes (plan, router, etc.) to avoid showing reasoning in chat
-                            node_name = metadata.get('node', 'unknown') if isinstance(metadata, dict) else 'unknown'
+                            # Filter tokens by node name using 'langgraph_node' field (per LangGraph docs)
+                            # https://docs.langchain.com/oss/python/langgraph/streaming#filter-by-node
+                            node_name = metadata.get('langgraph_node', metadata.get('node', 'unknown')) if isinstance(metadata, dict) else 'unknown'
                             
-                            # Only forward tokens from answer node to main chat
+                            # Only forward tokens from the answer node (final synthesis)
                             # Other nodes' LLM outputs should only appear in Agent Thinking
                             if node_name == "answer":
+                                token_content = message.content
+                                logger.debug(f"💬 Streaming token from messages mode (node '{node_name}'): {len(token_content)} chars")
                                 token_data = {
                                     'type': 'token',
-                                    'content': message.content,
+                                    'content': token_content,
                                     'node': node_name,
                                     'timestamp': time.time()
                                 }
@@ -867,8 +869,11 @@ async def chat_stream_handler(request: ChatRequest):
                             await asyncio.sleep(0.001)
                         elif chunk.get("type") == "token":
                             # Forward token to frontend for real-time streaming
-                            yield f"data: {json.dumps({'type': 'token', 'content': chunk.get('content', ''), 'node': chunk.get('node', 'answer'), 'timestamp': time.time()})}\n\n"
-                            await asyncio.sleep(0.001)
+                            token_content = chunk.get('content', '')
+                            token_node = chunk.get('node', 'answer')
+                            logger.debug(f"💬 Streaming token from node '{token_node}': {len(token_content)} chars")
+                            yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': token_node, 'timestamp': time.time()})}\n\n"
+                            await asyncio.sleep(0.001)  # Minimal delay for proper streaming
                     continue
                 
                 # Handle state updates (updates mode)

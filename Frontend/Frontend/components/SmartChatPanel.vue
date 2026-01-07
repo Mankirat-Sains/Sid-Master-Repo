@@ -733,7 +733,7 @@ async function handleSend() {
     await sendChatMessageStream(
       userMessage,
       'default',
-      undefined,
+      imagesBase64, // Pass images to backend for VLM processing and image similarity search
       undefined, // dataSources removed - backend router now intelligently selects databases
       {
         // On thinking log received
@@ -764,30 +764,36 @@ async function handleSend() {
         
         // On token received (real-time LLM token streaming)
         onToken: async (token) => {
-          // Create or update streaming message
+          console.log('💬 Token received:', { 
+            contentLength: token.content?.length, 
+            node: token.node,
+            preview: token.content?.substring(0, 50) 
+          })
+          
+          // Create streaming message on first token if it doesn't exist
           let streamingMessage = messages.value.find(m => m.id === 'streaming-answer')
           
           if (!streamingMessage) {
-            // Create new streaming message
+            // Create new streaming message immediately when first token arrives
             stopThinking() // Stop thinking indicator when answer starts
             streamingMessage = {
               id: 'streaming-answer',
               role: 'assistant',
               content: '',
               timestamp: new Date(),
-              isTyping: false // Not using simulated typing
+              isTyping: false // Not using simulated typing - real streaming
             }
             messages.value.push(streamingMessage)
+            await nextTick() // Ensure DOM is updated
             scrollToBottom(true) // Force scroll when streaming starts
           }
           
           // Append token content in real-time
           const messageIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
           if (messageIndex !== -1) {
-            // Append raw token content
+            // Append raw token content immediately
             // Vue's reactivity will automatically trigger v-html re-render, which calls formatMessage()
             // This ensures markdown formatting (bold, headers, etc.) updates in real-time as tokens arrive
-            // Note: Markdown patterns need to be complete to format (e.g., **text** needs both **)
             messages.value[messageIndex].content += token.content
             
             // Use nextTick to ensure Vue processes the reactivity update and re-renders
@@ -795,13 +801,20 @@ async function handleSend() {
             await nextTick()
             
             // Render MathJax equations after DOM update
+            // Check if content contains math delimiters to trigger rendering
+            const content = messages.value[messageIndex].content
+            const hasMath = content.includes('$') || content.includes('$$')
+            
             const messageElement = document.querySelector(`[data-message-id="${messages.value[messageIndex].id}"]`)
-            if (messageElement) {
-              renderMathJax(messageElement as HTMLElement)
+            if (messageElement && hasMath) {
+              // Render MathJax when math is detected - small delay to ensure DOM is updated
+              setTimeout(() => {
+                renderMathJax(messageElement as HTMLElement)
+              }, 100)
             }
             
-            // Auto-scroll periodically during streaming
-            if (messages.value[messageIndex].content.length % 50 === 0) {
+            // Auto-scroll periodically during streaming (every ~50 chars)
+            if (content.length % 50 === 0) {
               scrollToBottom() // Don't force - respect user's scroll position
             }
           }
@@ -816,15 +829,32 @@ async function handleSend() {
           // Finalize streaming message if it exists
           const streamingIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
           let finalAnswer = ''
+          
           if (streamingIndex !== -1) {
-            // Update the streaming message with final answer (in case there are any differences)
-            finalAnswer = result.reply || result.message || messages.value[streamingIndex].content || 'No response generated.'
+            // Streaming message exists - use its content (already streamed in real-time)
+            // Only update if result has additional content not already streamed
+            const currentContent = messages.value[streamingIndex].content
+            const resultContent = result.reply || result.message || ''
+            
+            // Use the longer content (in case result has more complete answer)
+            finalAnswer = resultContent.length > currentContent.length ? resultContent : currentContent
             messages.value[streamingIndex].content = finalAnswer
             messages.value[streamingIndex].id = `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}` // Give it a permanent ID
+            messages.value[streamingIndex].isTyping = false // Ensure typing indicator is off
           } else {
-            // Fallback: if no streaming happened, use typed message
+            // No streaming happened - this shouldn't occur with proper streaming, but handle gracefully
+            // Create message directly without fake typing
+            console.warn('⚠️ Stream completed but no streaming message found - creating message directly')
             finalAnswer = result.reply || result.message || 'No response generated.'
-            await addTypedMessage(finalAnswer, undefined, 300)
+            const messageId = `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+            messages.value.push({
+              id: messageId,
+              role: 'assistant',
+              content: finalAnswer,
+              timestamp: new Date(),
+              isTyping: false
+            })
+            await nextTick()
           }
           
           // Extract project keys from answer text and fetch Speckle models
@@ -841,10 +871,16 @@ async function handleSend() {
           
           // Render MathJax equations after final content is set
           await nextTick()
-          if (streamingIndex !== -1) {
-            const messageElement = document.querySelector(`[data-message-id="${messages.value[streamingIndex].id}"]`)
+          const finalMessageIndex = messages.value.findIndex(m => 
+            m.id === (streamingIndex !== -1 ? messages.value[streamingIndex].id : `msg-${Date.now()}`)
+          )
+          if (finalMessageIndex !== -1) {
+            const messageElement = document.querySelector(`[data-message-id="${messages.value[finalMessageIndex].id}"]`)
             if (messageElement) {
-              renderMathJax(messageElement as HTMLElement)
+              // Wait a bit for DOM to settle, then render MathJax
+              setTimeout(() => {
+                renderMathJax(messageElement as HTMLElement)
+              }, 100)
             }
           }
           
@@ -925,25 +961,39 @@ function formatMessage(text: string): string {
   return formatMessageText(text)
 }
 
-// MathJax rendering helper
+// MathJax rendering helper - simple and effective
 function renderMathJax(element?: HTMLElement) {
   if (typeof window === 'undefined') return
   
   const MathJax = (window as any).MathJax
-  if (!MathJax) return
+  
+  if (!MathJax) {
+    // MathJax not loaded yet - retry after a delay
+    setTimeout(() => {
+      const retryMathJax = (window as any).MathJax
+      if (retryMathJax && element) {
+        retryMathJax.typesetPromise([element]).catch((err: any) => {
+          console.warn('MathJax rendering error (retry):', err)
+        })
+      }
+    }, 300)
+    return
+  }
   
   try {
     if (element) {
-      MathJax.typesetPromise([element]).catch((err: Error) => {
+      // Render math in the specific element
+      MathJax.typesetPromise([element]).catch((err: any) => {
         console.warn('MathJax rendering error:', err)
       })
     } else {
-      MathJax.typesetPromise().catch((err: Error) => {
+      // Render entire page
+      MathJax.typesetPromise().catch((err: any) => {
         console.warn('MathJax rendering error:', err)
       })
     }
   } catch (err) {
-    console.warn('MathJax not available yet:', err)
+    console.warn('MathJax rendering exception:', err)
   }
 }
 

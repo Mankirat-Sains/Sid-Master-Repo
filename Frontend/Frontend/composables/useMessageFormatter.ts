@@ -10,9 +10,9 @@ export const useMessageFormatter = () => {
     let formatted = text
     
     // Extract and preserve MathJax equations before processing
-    const mathPlaceholders: string[] = []
+    const mathPlaceholders: Array<{ type: 'block' | 'inline', equation: string }> = []
     
-    // Extract block equations $$...$$ (must be on separate lines or standalone)
+    // Extract block equations $$...$$ first (must be on separate lines or standalone)
     formatted = formatted.replace(/\$\$([\s\S]*?)\$\$/g, (match, equation) => {
       const placeholder = `__MATH_BLOCK_${mathPlaceholders.length}__`
       mathPlaceholders.push({ type: 'block', equation: equation.trim() })
@@ -20,9 +20,13 @@ export const useMessageFormatter = () => {
     })
     
     // Extract inline equations $...$ (not $$)
-    formatted = formatted.replace(/\$([^$\n]+?)\$/g, (match, equation) => {
-      // Skip if it's part of a block equation (already processed)
-      if (match.includes('__MATH_BLOCK_')) return match
+    // Simple pattern: $...$ where ... doesn't contain $ or newlines
+    // This avoids matching $$...$$ which we already processed
+    formatted = formatted.replace(/(?<!\$)\$([^$\n]+?)\$(?!\$)/g, (match, equation) => {
+      // Skip if this is part of a placeholder we already created
+      if (match.includes('__MATH_BLOCK_') || match.includes('__MATH_INLINE_')) {
+        return match
+      }
       const placeholder = `__MATH_INLINE_${mathPlaceholders.length}__`
       mathPlaceholders.push({ type: 'inline', equation: equation.trim() })
       return placeholder
@@ -65,12 +69,14 @@ export const useMessageFormatter = () => {
     formatted = formatted.replace(/^# (.*$)/gim, '<h1 class="text-xl font-bold mt-6 mb-4">$1</h1>')
     
     // Bold - format complete patterns (both ** present)
+    // Use non-greedy matching to handle multiple bold sections in one line
     // During streaming, incomplete patterns (e.g., **text without closing **) won't format until complete
     // This is correct behavior - we can't format incomplete markdown
-    formatted = formatted.replace(/\*\*([^*]+?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+    formatted = formatted.replace(/\*\*([^*\n]+?)\*\*/g, '<strong class="font-semibold">$1</strong>')
     
-    // Italic
-    formatted = formatted.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+    // Italic - be careful not to match bold patterns
+    // Only match single * that's not part of **
+    formatted = formatted.replace(/(?<!\*)\*([^*\n]+?)\*(?!\*)/g, '<em class="italic">$1</em>')
     
     // Bullet points
     formatted = formatted.replace(/^[-*] (.*$)/gim, '<li class="ml-4 mb-1">$1</li>')
@@ -88,34 +94,44 @@ export const useMessageFormatter = () => {
     
     // Restore MathJax equations with proper formatting and bolding
     mathPlaceholders.forEach((math, index) => {
-      const escapedEquation = math.equation
+      // Unescape the equation (it was escaped during HTML escaping)
+      const equation = math.equation
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'")
       
-      // Wrap equation in bold - MathJax will render the LaTeX properly
-      // Variables are part of the LaTeX syntax, so we bold the entire equation
+      // MathJax needs to see the raw delimiters ($ or $$) to process equations
+      // We wrap in a span with a class, then use CSS to bold the MathJax output
       if (math.type === 'block') {
         const placeholder = `__MATH_BLOCK_${index}__`
-        formatted = formatted.replace(placeholder, `<div class="my-4 text-center font-bold"><strong>$$${escapedEquation}$$</strong></div>`)
+        // Block equations: center and add class for bolding
+        formatted = formatted.replace(placeholder, `<div class="my-4 text-center math-bold">$$${equation}$$</div>`)
       } else {
         const placeholder = `__MATH_INLINE_${index}__`
-        formatted = formatted.replace(placeholder, `<strong class="font-bold">$${escapedEquation}$</strong>`)
+        // Inline equations: add class for bolding
+        formatted = formatted.replace(placeholder, `<span class="math-bold">$${equation}$</span>`)
       }
     })
     
-    // Line breaks
-    formatted = formatted.replace(/\n\n/g, '</p><p class="mb-2">')
+    // Line breaks - preserve spacing
+    // Double line breaks create new paragraphs
+    formatted = formatted.replace(/\n\n+/g, '</p><p class="mb-2">')
+    // Single line breaks become <br>
     formatted = formatted.replace(/\n/g, '<br>')
     
     // Wrap in paragraph if not already wrapped
-    if (!formatted.includes('<p') && !formatted.includes('<h')) {
+    if (!formatted.includes('<p') && !formatted.includes('<h') && !formatted.includes('<div')) {
       formatted = '<p class="mb-2">' + formatted + '</p>'
     } else if (!formatted.startsWith('<')) {
       formatted = '<p class="mb-2">' + formatted
     }
+    
+    // Ensure proper spacing between elements
+    formatted = formatted.replace(/<\/p><p/g, '</p>\n<p')
+    formatted = formatted.replace(/<\/h([1-6])><h/g, '</h$1>\n<h')
+    formatted = formatted.replace(/<\/strong><strong/g, '</strong><strong')
     
     return formatted
   }

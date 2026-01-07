@@ -800,7 +800,7 @@ import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
 import { useChat } from '~/composables/useChat'
-import { useSmartChat } from '~/composables/useSmartChat'
+// Removed useSmartChat - using streaming endpoint only to avoid duplication
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 import { useSpeckle } from '~/composables/useSpeckle'
 import { useWorkspace } from '~/composables/useWorkspace'
@@ -1073,7 +1073,6 @@ const fileInput = ref<HTMLInputElement | null>(null)
 const contextMenuRef = ref<HTMLElement | null>(null)
 const { formatMessageText } = useMessageFormatter()
 const { sendChatMessage, sendChatMessageStream } = useChat()
-const { sendSmartMessage } = useSmartChat()
 const { findProjectByKey, getProjectModels } = useSpeckle()
 const workspace = useWorkspace()
 const config = useRuntimeConfig()
@@ -2117,14 +2116,8 @@ async function handleSend() {
   scrollToBottom()
 
   try {
-    // Initial routing (matches legacy SmartChatPanel behavior)
-    const smartResp = await sendSmartMessage(message, {
-      sessionId: conversation.sessionId,
-      dataSources: dataSources.value,
-      images_base64: imagesBase64
-    })
-
-    let gotResponse = false
+    // Use streaming endpoint ONLY - no duplicate calls
+    let streamingMessageId: string | null = null
     let streamError: Error | null = null
 
     await sendChatMessageStream(
@@ -2142,10 +2135,43 @@ async function handleSend() {
             type: 'thinking'
           })
         },
+        onToken: token => {
+          // Create streaming message on first token
+          if (!streamingMessageId) {
+            streamingMessageId = `streaming-${Date.now()}`
+            conversation.chatLog.push({
+              role: 'assistant',
+              content: '',
+              timestamp: Date.now()
+            })
+          }
+          
+          // Append token to streaming message
+          const messageIndex = conversation.chatLog.length - 1
+          if (messageIndex >= 0) {
+            conversation.chatLog[messageIndex].content += token.content
+            scrollToBottom()
+          }
+        },
         onComplete: async result => {
           const finalAnswer = result.reply || result.message || 'No response generated.'
-          conversation.chatLog.push({ role: 'assistant', content: formatMessageText(finalAnswer), timestamp: Date.now() })
-          gotResponse = true
+          
+          // Update streaming message with final answer
+          if (streamingMessageId) {
+            const messageIndex = conversation.chatLog.length - 1
+            if (messageIndex >= 0) {
+              conversation.chatLog[messageIndex].content = formatMessageText(finalAnswer)
+              conversation.chatLog[messageIndex].timestamp = Date.now()
+            }
+          } else {
+            // Fallback: create message if streaming didn't happen
+            conversation.chatLog.push({ 
+              role: 'assistant', 
+              content: formatMessageText(finalAnswer), 
+              timestamp: Date.now() 
+            })
+          }
+          
           void maybeGenerateTitle(conversation, message, finalAnswer)
           await fetchAndDisplaySpeckleModels(finalAnswer, message)
           scrollToBottom(true)
@@ -2159,14 +2185,6 @@ async function handleSend() {
     if (streamError) {
       throw streamError
     }
-
-    if (!gotResponse) {
-      const fallback = smartResp?.message || smartResp?.reply || 'No response generated.'
-      conversation.chatLog.push({ role: 'assistant', content: formatMessageText(fallback), timestamp: Date.now() })
-      void maybeGenerateTitle(conversation, message, fallback)
-      await fetchAndDisplaySpeckleModels(fallback, message)
-      scrollToBottom(true)
-    }
   } catch (error: any) {
     console.error('Send failed', error)
     conversation.chatLog.push({ role: 'assistant', content: 'Sorry, something went wrong sending that message.' })
@@ -2179,15 +2197,12 @@ async function handleSend() {
 async function regenerateAssistant(message: string, sessionId: string) {
   if (isSending.value) return
   isSending.value = true
-  let smartResp: any = null
   try {
-    smartResp = await sendSmartMessage(message, {
-      sessionId,
-      dataSources: dataSources.value,
-      images_base64: undefined
-    })
-
-    let gotResponse = false
+    // Use streaming endpoint ONLY - no duplicate calls
+    const conversation = activeConversation.value
+    if (!conversation) return
+    
+    let streamingMessageId: string | null = null
     let streamError: Error | null = null
 
     await sendChatMessageStream(
@@ -2204,18 +2219,44 @@ async function regenerateAssistant(message: string, sessionId: string) {
             type: 'thinking'
           })
         },
+        onToken: token => {
+          // Create streaming message on first token
+          if (!streamingMessageId) {
+            streamingMessageId = `streaming-${Date.now()}`
+            conversation.chatLog.push({
+              role: 'assistant',
+              content: '',
+              timestamp: Date.now()
+            })
+          }
+          
+          // Append token to streaming message
+          const messageIndex = conversation.chatLog.length - 1
+          if (messageIndex >= 0) {
+            conversation.chatLog[messageIndex].content += token.content
+            scrollToBottom()
+          }
+        },
         onComplete: async result => {
           const finalAnswer = result.reply || result.message || 'No response generated.'
-          const conversation = activeConversation.value
-          if (conversation) {
+          
+          // Update streaming message with final answer
+          if (streamingMessageId) {
+            const messageIndex = conversation.chatLog.length - 1
+            if (messageIndex >= 0) {
+              conversation.chatLog[messageIndex].content = formatMessageText(finalAnswer)
+              conversation.chatLog[messageIndex].timestamp = Date.now()
+            }
+          } else {
+            // Fallback: create message if streaming didn't happen
             conversation.chatLog.push({
               role: 'assistant',
               content: formatMessageText(finalAnswer),
               timestamp: Date.now()
             })
-            void maybeGenerateTitle(conversation, message, finalAnswer)
           }
-          gotResponse = true
+          
+          void maybeGenerateTitle(conversation, message, finalAnswer)
           await fetchAndDisplaySpeckleModels(finalAnswer, message)
           scrollToBottom(true)
         },
@@ -2227,21 +2268,6 @@ async function regenerateAssistant(message: string, sessionId: string) {
 
     if (streamError) {
       throw streamError
-    }
-
-    if (!gotResponse) {
-      const conversation = activeConversation.value
-      const fallback = smartResp?.message || smartResp?.reply || 'No response generated.'
-      if (conversation) {
-        conversation.chatLog.push({
-          role: 'assistant',
-          content: formatMessageText(fallback),
-          timestamp: Date.now()
-        })
-        void maybeGenerateTitle(conversation, message, fallback)
-      }
-      await fetchAndDisplaySpeckleModels(fallback, message)
-      scrollToBottom(true)
     }
   } catch (error: any) {
     console.error('Regenerate failed', error)
