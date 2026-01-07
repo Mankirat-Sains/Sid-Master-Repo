@@ -2,23 +2,15 @@
   <div 
     v-if="visible"
       ref="containerRef"
-      class="speckle-viewer-container relative bg-slate-900 border border-slate-700 rounded-lg overflow-hidden shadow-2xl"
+      class="speckle-viewer-container relative bg-[#2a2a2a] border border-[#3a3a3a] rounded-lg overflow-hidden shadow-2xl"
     :style="{ width: width, height: heightStyle }"
   >
     <!-- Viewer Toolbar -->
     <div class="toolbar-rail">
       <div class="toolbar-buttons">
-        <button v-if="modelName" class="tool-pill muted" disabled>
-          {{ modelName }}
-        </button>
-
-        <div class="tool-sep"></div>
-
         <button @click="setView('top')" class="tool-pill">Top</button>
         <button @click="setView('front')" class="tool-pill">Front</button>
         <button @click="setView('3d')" class="tool-pill">3D</button>
-
-        <div class="tool-sep"></div>
 
         <button
           @click="toggleSections"
@@ -45,31 +37,30 @@
 
     <div class="zoom-dock">
       <div class="zoom-buttons">
-        <button @click="zoomFit" class="tool-btn" title="Zoom to Fit">
+        <button @click="zoomFit" class="zoom-btn" title="Zoom to Fit">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
           </svg>
         </button>
-        <button @click="zoomIn" class="tool-btn" title="Zoom In">
+        <button @click="zoomIn" class="zoom-btn" title="Zoom In">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8" />
             <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
           </svg>
         </button>
-        <button @click="zoomOut" class="tool-btn" title="Zoom Out">
+        <button @click="zoomOut" class="zoom-btn" title="Zoom Out">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8" />
             <path d="M21 21l-4.35-4.35M8 11h6" />
           </svg>
         </button>
-        <div class="tool-sep vertical"></div>
       </div>
     </div>
 
     <!-- Loading Overlay -->
     <div
       v-if="loading"
-      class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-10"
+      class="absolute inset-0 bg-[#2a2a2a]/90 backdrop-blur-sm flex items-center justify-center z-10"
     >
       <div class="text-center">
         <div class="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -82,8 +73,15 @@
     <div
       ref="viewerContainer"
       class="absolute inset-0"
-      :style="{ top: '48px', width: '100%', height: 'calc(100% - 48px)' }"
+      :style="{ top: '0px', width: '100%', height: '100%' }"
     ></div>
+
+    <div v-if="modelName" class="model-pill">
+      <div class="model-pill__title">
+        <span class="model-pill__name">{{ modelName }}</span>
+        <span v-if="modelSubtitle" class="model-pill__subtitle"> — {{ modelSubtitle }}</span>
+      </div>
+    </div>
 
     <!-- Object Info Panel (Bottom Right) -->
     <div
@@ -121,11 +119,13 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
+import { Color } from 'three'
 import { useRuntimeConfig } from '#app'
 
 interface Props {
   modelUrl?: string
   modelName?: string
+  modelSubtitle?: string
   visible?: boolean
   width?: string
   height?: string
@@ -160,6 +160,7 @@ const selectedObject = ref<any>(null)
 const sectionsEnabled = ref(false)
 const measurementsEnabled = ref(false)
 const containerRef = ref<HTMLElement | null>(null)
+const VIEWER_BACKGROUND = '#2a2a2a'
 
 let viewer: any = null
 let viewerModule: any = null
@@ -259,6 +260,24 @@ async function clearViewer() {
   }
 }
 
+function applyViewerBackground(targetViewer?: any) {
+  const activeViewer = targetViewer || viewer
+  if (!activeViewer) return
+
+  try {
+    const renderer = activeViewer.getRenderer?.()
+    if (!renderer) return
+
+    renderer.renderer?.setClearColor?.(VIEWER_BACKGROUND, 1)
+    if (renderer.scene) {
+      renderer.scene.background = new Color(VIEWER_BACKGROUND)
+    }
+    activeViewer.requestRender?.()
+  } catch (error) {
+    console.warn('⚠️ Unable to set viewer background color:', error)
+  }
+}
+
 async function loadModel(url: string) {
   if (!viewerContainer.value) {
     console.error('❌ Viewer container not found')
@@ -318,6 +337,7 @@ async function loadModel(url: string) {
 
       viewer = new Viewer(viewerContainer.value, viewerParams)
       await viewer.init()
+      applyViewerBackground(viewer)
       
       // Don't manually start render loop - the viewer handles this automatically
       // Manual render loops can cause glitchiness and performance issues
@@ -431,6 +451,7 @@ async function loadModel(url: string) {
         }
       })
     }
+    applyViewerBackground(viewer)
 
     // Load the model using SpeckleLoader
     loadingMessage.value = 'Getting resource URLs...'
@@ -814,7 +835,7 @@ onBeforeUnmount(() => {
   display: inline-flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 5px;
+  gap: 8px;
   padding: 0;
   background: transparent;
   border: 0;
@@ -829,9 +850,9 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 24px;
-  padding: 0 8px;
-  min-width: 82px;
+  height: 28px;
+  padding: 0 10px;
+  min-width: 94px;
   border-radius: 9px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(53, 64, 82, 0.9);
@@ -871,7 +892,7 @@ onBeforeUnmount(() => {
 
 .tool-sep {
   width: 100%;
-  height: 1px;
+  height: 4px;
   background: transparent;
 }
 
@@ -890,12 +911,63 @@ onBeforeUnmount(() => {
 .zoom-buttons {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  padding: 0;
+}
+
+.zoom-btn {
+  height: 36px;
+  width: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(45, 55, 72, 0.85);
+  color: #e7edf5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+  transition: all 0.15s ease;
+}
+
+.zoom-btn:hover {
+  background: rgba(59, 73, 92, 0.95);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.zoom-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.model-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  max-width: 60%;
   padding: 0;
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
   backdrop-filter: none;
+  color: rgba(231, 237, 245, 0.8);
+}
+
+.model-pill__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.model-pill__name {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.model-pill__subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
 }
 </style>

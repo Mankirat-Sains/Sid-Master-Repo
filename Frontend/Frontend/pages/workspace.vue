@@ -86,33 +86,49 @@
 
       <!-- Floating action rail (outside the sidebar, chat only) -->
       <div v-if="activePage === 'home'" class="absolute select-none pointer-events-none" :style="sidebarRailStyle">
-        <div class="group relative flex flex-col items-center gap-2 px-2 py-3 rounded-full bg-[#0b0b0b]/95 border border-white/14 shadow-[0_24px_58px_rgba(0,0,0,0.55)] backdrop-blur-[6px] pointer-events-auto transition-shadow duration-500">
+        <div
+          class="group relative flex flex-col items-center gap-2 px-2 py-3 rounded-full bg-[#0b0b0b]/95 border shadow-[0_24px_58px_rgba(0,0,0,0.55)] backdrop-blur-[6px] pointer-events-auto transition-shadow duration-500"
+          :class="isSidebarCollapsed ? 'border-[#1a1a1a] shadow-[0_18px_42px_rgba(0,0,0,0.6)]' : 'border-white/14'"
+        >
           <div class="absolute inset-[-12px] rounded-full border border-[rgba(147,51,234,0.55)] shadow-[0_0_24px_6px_rgba(147,51,234,0.4)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-out"></div>
           <div class="absolute inset-[-32px] rounded-full bg-[radial-gradient(circle_at_center,_rgba(147,51,234,0.7)_0%,_rgba(147,51,234,0.35)_35%,_rgba(147,51,234,0.1)_60%,_transparent_88%)] blur-[42px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-out"></div>
           <template v-for="(action, index) in sidebarActions" :key="action.id">
             <button
-              class="h-8 w-8 rounded-full border transition flex items-center justify-center text-white/75 hover:text-white shadow-[0_6px_14px_rgba(0,0,0,0.35)] pointer-events-auto"
+              class="h-8 w-8 rounded-full border transition flex items-center justify-center shadow-[0_6px_14px_rgba(0,0,0,0.35)] pointer-events-auto"
               :class="[
-                sidebarMode === action.id
-                  ? 'bg-white/12 border-white/30'
-                  : 'bg-white/4 border-white/10 hover:bg-white/12 hover:border-white/22',
-                isRailActionFilled(action.id) ? 'bg-white/20 border-white/40 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.2)]' : ''
+                !isSidebarCollapsed && sidebarMode === action.id
+                  ? 'bg-white/18 border-white/55 ring-1 ring-white/65 shadow-[0_10px_28px_rgba(255,255,255,0.12)] text-white'
+                  : isSidebarCollapsed
+                    ? 'bg-[#0b0b0b]/85 border-[#111] text-white/50'
+                    : 'bg-white/4 border-white/10 text-white/75 hover:text-white hover:bg-white/10 hover:border-white/20',
+                isRailActionFilled(action.id) ? 'text-purple-200' : ''
               ]"
               :title="action.label"
               :aria-label="action.label"
               @click="handleSidebarAction(action.id)"
             >
-              <component :is="action.component" class="w-4 h-4 text-current opacity-85" />
+              <component
+                :is="action.component"
+                class="w-4 h-4 opacity-85"
+                :class="[
+                  !isSidebarCollapsed && sidebarMode === action.id ? 'opacity-100' : isSidebarCollapsed ? 'opacity-75' : 'opacity-90',
+                  isRailActionFilled(action.id) ? 'text-purple-400' : !isSidebarCollapsed && sidebarMode === action.id ? 'text-white' : isSidebarCollapsed ? 'text-white/55' : 'text-current'
+                ]"
+              />
             </button>
-            <div v-if="index !== sidebarActions.length - 1" class="h-5 w-px bg-white/14"></div>
+            <div
+              v-if="index !== sidebarActions.length - 1"
+              class="h-5 w-px"
+              :class="isSidebarCollapsed ? 'bg-[#111]' : 'bg-white/14'"
+            ></div>
           </template>
         </div>
       </div>
 
       <!-- Conversation list -->
       <aside
-        v-if="activePage === 'home'"
-        class="bg-white/8 backdrop-blur-2xl border-r border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)] flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll"
+        v-if="activePage === 'home' && !isSidebarCollapsed"
+        class="bg-white/8 backdrop-blur-2xl border-r border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)] flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll transition-all duration-300 ease-out"
         :style="sidebarStyle"
         >
         <!-- Resize handle -->
@@ -394,76 +410,37 @@
                       </div>
                     </div>
                     <div class="w-full max-w-3xl">
-                      <div class="relative rounded-[14px] bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-3 space-y-2.5 text-left">
-                        <span class="absolute top-3.5 right-3.5 h-1.5 w-1.5 rounded-full border border-[#5af2cf] shadow-[0_0_0_2px_rgba(90,242,207,0.12)]"></span>
+                      <div class="relative rounded-full bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 py-2 flex items-center gap-3 text-left">
+                        <button
+                          class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center flex-shrink-0"
+                          aria-label="Attach"
+                          @click="openFilePicker"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
+                          </svg>
+                        </button>
                         <textarea
                           v-model="prompt"
                           ref="promptInput"
-                          class="w-full bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[1.6] text-white placeholder-white/55 resize-none min-h-[38px] max-h-[160px] overflow-y-hidden"
+                          class="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-[14px] leading-[1.5] text-white placeholder-white/55 resize-none min-h-[42px] max-h-[160px] overflow-y-hidden py-2"
                           placeholder="How can I help you today?"
                           aria-label="Prompt input"
                           rows="1"
                           @keydown.enter.exact.prevent="handleSend"
                           @input="resizePrompt"
                         ></textarea>
-                        <div class="flex flex-wrap items-center justify-between gap-3 text-white/75">
-                          <div class="flex flex-wrap items-center gap-2">
-                            <button
-                              class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
-                              aria-label="Attach"
-                              @click="openFilePicker"
-                            >
-                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
-                              </svg>
-                            </button>
-                            <div class="h-9 w-9 rounded-full border border-white/12 bg-white/5 flex items-center justify-center text-white/70">
-                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2.5 2.5" />
-                                <circle cx="12" cy="12" r="8.5" stroke-width="2" />
-                              </svg>
-                            </div>
-                            <div class="flex items-center gap-1.5">
-                              <button
-                                class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
-                                :class="dataSources.project_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                                type="button"
-                                @click="toggleDataSource('project_db')"
-                              >
-                                Project DB
-                              </button>
-                              <button
-                                class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
-                                :class="dataSources.code_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                                type="button"
-                                @click="toggleDataSource('code_db')"
-                              >
-                                Code DB
-                              </button>
-                              <button
-                                class="px-2 h-8 rounded-full border text-[11px] font-semibold transition"
-                                :class="dataSources.coop_manual ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                                type="button"
-                                @click="toggleDataSource('coop_manual')"
-                              >
-                                Coop Manual
-                              </button>
-                            </div>
-                          </div>
-                          <div class="flex items-center gap-3">
-                            <button
-                              class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
-                              :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
-                              aria-label="Send"
-                              @click="handleSend"
-                              :disabled="isSending || (!prompt.trim() && !attachments.length)"
-                            >
-                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
+                        <button
+                          class="h-10 w-10 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
+                          :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                          aria-label="Send"
+                          @click="handleSend"
+                          :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -594,75 +571,37 @@
                           </div>
                         </div>
 
-                        <div class="relative rounded-[12px] bg-[#1c1c1c] border border-white/10 shadow-[0_8px_18px_rgba(0,0,0,0.28)] px-3.5 py-3 space-y-2">
+                        <div class="relative rounded-full bg-[#1c1c1c] border border-white/10 shadow-[0_8px_18px_rgba(0,0,0,0.28)] px-3.5 py-2 flex items-center gap-3">
+                          <button
+                            class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center flex-shrink-0"
+                            aria-label="Attach"
+                            @click="openFilePicker"
+                          >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
+                            </svg>
+                          </button>
                           <textarea
                             v-model="prompt"
                             ref="promptInput"
-                            class="w-full bg-transparent border-0 focus:outline-none focus:ring-0 text-[13px] leading-[1.55] text-white placeholder-white/55 resize-none min-h-[34px] max-h-[150px] overflow-y-hidden"
-                          placeholder="Reply..."
-                          aria-label="Prompt input"
-                          rows="1"
-                          @keydown.enter.exact.prevent="handleSend"
-                          @input="resizePrompt"
-                        ></textarea>
-                        <div class="flex flex-wrap items-center justify-between gap-2.5 text-white/75">
-                          <div class="flex flex-wrap items-center gap-2">
-                            <button
-                              class="h-8 w-8 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center"
-                                aria-label="Attach"
-                                @click="openFilePicker"
-                              >
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
-                                </svg>
-                              </button>
-                              <div class="h-8 w-8 rounded-full border border-white/12 bg-white/5 flex items-center justify-center text-white/70">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2.5 2.5" />
-                                  <circle cx="12" cy="12" r="8.5" stroke-width="2" />
-                                </svg>
-                              </div>
-                              <div class="flex items-center gap-1.5">
-                                <button
-                                  class="px-2 h-7 rounded-full border text-[10.5px] font-semibold transition"
-                                  :class="dataSources.project_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                                  type="button"
-                                  @click="toggleDataSource('project_db')"
-                                >
-                                  Project DB
-                                </button>
-                                <button
-                                  class="px-2 h-7 rounded-full border text-[10.5px] font-semibold transition"
-                                  :class="dataSources.code_db ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                                  type="button"
-                                  @click="toggleDataSource('code_db')"
-                                >
-                                  Code DB
-                                </button>
-                                <button
-                                  class="px-2 h-7 rounded-full border text-[10.5px] font-semibold transition"
-                                  :class="dataSources.coop_manual ? 'bg-purple-700 text-white border-purple-500/60' : 'bg-white/5 border-white/12 text-white/60'"
-                                  type="button"
-                                  @click="toggleDataSource('coop_manual')"
-                                >
-                                  Coop Manual
-                                </button>
-                              </div>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                              <button
-                                class="h-8 w-8 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
-                                :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
-                                aria-label="Send"
-                                @click="handleSend"
-                                :disabled="isSending || (!prompt.trim() && !attachments.length)"
-                              >
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
+                          class="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-[13px] leading-[1.5] text-white placeholder-white/55 resize-none min-h-[40px] max-h-[150px] overflow-y-hidden py-1.5"
+                            placeholder="Reply..."
+                            aria-label="Prompt input"
+                            rows="1"
+                            @keydown.enter.exact.prevent="handleSend"
+                            @input="resizePrompt"
+                          ></textarea>
+                          <button
+                            class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
+                            :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                            aria-label="Send"
+                            @click="handleSend"
+                            :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                          >
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                          </button>
                         </div>
 
                         <div v-if="tags.length" class="flex flex-wrap items-center gap-2 text-[10px] text-white/50 pl-1">
@@ -687,51 +626,24 @@
                 </div>
 
                 <div
-                  class="flex flex-col min-h-0 viewer-pane bg-slate-950/70 border-l border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
+                  class="flex flex-col min-h-0 viewer-pane bg-[#2a2a2a] border-l border-[#3a3a3a] shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
                   :style="viewerPaneStyle"
                 >
-                  <div class="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-slate-900/80 backdrop-blur-sm">
-                    <div class="space-y-0.5">
-                      <p class="text-xs text-white/70 uppercase tracking-[0.14em]">Speckle 3D Viewer</p>
-                      <p class="text-base font-semibold text-white leading-tight">
-                        {{ selectedSpeckleModel?.name || 'Model' }}
-                        <span v-if="selectedSpeckleModel?.projectName" class="text-sm text-white/60 font-normal">
-                          — {{ selectedSpeckleModel.projectName }}
-                        </span>
-                      </p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <div v-if="speckleViewerModels.length > 1" class="flex items-center gap-2">
-                        <label class="text-[11px] text-white/60 uppercase tracking-wide">Model</label>
-                        <select
-                          v-model="speckleViewerSelectedId"
-                          class="bg-slate-800 text-white text-xs rounded-lg px-3 py-1.5 border border-white/15 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        >
-                          <option
-                            v-for="model in speckleViewerModels"
-                            :key="model.id"
-                            :value="model.id"
-                          >
-                            {{ model.name }}{{ model.projectName ? ` • ${model.projectName}` : '' }}
-                          </option>
-                        </select>
-                      </div>
-                      <button
-                        @click="closeSpeckleViewer"
-                        class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors flex items-center gap-2 border border-white/15"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Close
-                      </button>
-                    </div>
-                  </div>
+                  <div class="relative flex-1 min-h-0 bg-[#2a2a2a] viewer-canvas-shell">
+                    <button
+                      class="viewer-close"
+                      type="button"
+                      @click="closeSpeckleViewer"
+                      aria-label="Close viewer"
+                    >
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
 
-                  <div class="relative flex-1 min-h-0 bg-slate-900 viewer-canvas-shell">
                     <div
                       v-if="speckleViewerFetchLoading && !selectedSpeckleModel"
-                      class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+                      class="absolute inset-0 flex items-center justify-center bg-[#2a2a2a]/90 backdrop-blur-sm z-10"
                     >
                       <div class="text-center space-y-2">
                         <div class="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -740,7 +652,7 @@
                     </div>
                     <div
                       v-else-if="speckleViewerFetchError && !selectedSpeckleModel"
-                      class="absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+                      class="absolute inset-0 flex items-center justify-center bg-[#2a2a2a]/90 backdrop-blur-sm z-10"
                     >
                       <div class="text-center space-y-2">
                         <p class="text-slate-200 text-sm">{{ speckleViewerFetchError }}</p>
@@ -757,6 +669,7 @@
                       v-if="selectedSpeckleModel"
                       :model-url="selectedSpeckleModel.url"
                       :model-name="selectedSpeckleModel.name"
+                      :model-subtitle="selectedSpeckleModel.projectName"
                       :visible="true"
                       height="100%"
                       :server-url="config.public.speckleUrl"
@@ -981,14 +894,16 @@ const dataSources = ref<DataSources>({
   coop_manual: true
 })
 const iconRailWidth = 48 // tailwind w-12 (3rem)
+const collapsedRailOffset = 10
 const sidebarWidth = ref(224) // default 14rem
 const minSidebarWidth = 240
 const maxSidebarWidth = 340
+const isSidebarCollapsed = ref(true)
 const isResizingSidebar = ref(false)
 const resizeStartX = ref(0)
 const resizeStartWidth = ref(0)
 const sidebarRailStyle = computed(() => ({
-  left: `${iconRailWidth + sidebarWidth.value}px`,
+  left: `${iconRailWidth + (isSidebarCollapsed.value ? collapsedRailOffset : sidebarWidth.value)}px`,
   top: '50%',
   transform: 'translate(-50%, -50%)',
   zIndex: 30
@@ -1194,7 +1109,8 @@ function saveMemory() {
       docListDocs: docListDocs.value,
       docListTitle: docListTitle.value,
       docListSubtitle: docListSubtitle.value,
-      docListOpen: docListOpen.value
+      docListOpen: docListOpen.value,
+      sidebarCollapsed: isSidebarCollapsed.value
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   } catch (error) {
@@ -1262,6 +1178,9 @@ function loadMemory() {
     if (typeof parsed.docListOpen === 'boolean') {
       docListOpen.value = parsed.docListOpen
     }
+    if (typeof parsed.sidebarCollapsed === 'boolean') {
+      isSidebarCollapsed.value = parsed.sidebarCollapsed
+    }
     const hasActive = conversations.value.some(conv => conv.id === activeConversationId.value)
     if (!hasActive) {
       activeConversationId.value = conversations.value[0]?.id || ''
@@ -1313,7 +1232,8 @@ watch(
     docListDocs,
     docListTitle,
     docListSubtitle,
-    docListOpen
+    docListOpen,
+    isSidebarCollapsed
   ],
   () => saveMemory(),
   { deep: true }
@@ -1372,6 +1292,10 @@ function syncRouteToPage(page: ActivePage, section?: TimesheetSection) {
   router.replace({ query: nextQuery })
 }
 
+function toggleSidebarCollapsed(force?: boolean) {
+  isSidebarCollapsed.value = typeof force === 'boolean' ? force : !isSidebarCollapsed.value
+}
+
 function setActivePage(id: string, options?: { section?: TimesheetSection; fromRoute?: boolean }) {
   const nextPage: ActivePage = isActivePage(id) ? id : 'home'
   activePage.value = nextPage
@@ -1391,10 +1315,15 @@ function setActiveRail(id: string) {
 }
 
 function handleSidebarAction(id: SidebarMode) {
-  sidebarMode.value = id
-  if (id === 'logs') {
-    logsPanelOpen.value = true
+  const isSameAction = sidebarMode.value === id && !isSidebarCollapsed.value
+  if (isSameAction) {
+    isSidebarCollapsed.value = true
+    return
   }
+
+  sidebarMode.value = id
+  isSidebarCollapsed.value = false
+  if (id === 'logs') logsPanelOpen.value = true
 }
 
 function startSidebarResize(e: MouseEvent) {
@@ -2261,6 +2190,29 @@ function performDeleteConversation() {
   max-width: 100%;
   max-height: 100%;
   min-height: 0;
+}
+
+.viewer-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 30;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(31, 41, 55, 0.9);
+  color: #e5e7eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.viewer-close:hover {
+  background: rgba(59, 73, 92, 0.95);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 @media (max-width: 1024px) {
