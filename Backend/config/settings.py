@@ -213,4 +213,3 @@ VALID_ROLES = list(ROLE_DATABASE_PREFERENCES.keys())
 # DEBUG MODE
 # =============================================================================
 DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() in ("true", "1", "t")
-
