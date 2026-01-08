@@ -1936,8 +1936,19 @@ function closeSpeckleModal() {
 
 function openSpeckleModalWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
   if (!models.length) return
-  speckleViewerModels.value = models
-  speckleViewerSelectedId.value = models[0].id
+  // Merge with existing models so multiple model sets can stay visible
+  const existing = [...speckleViewerModels.value]
+  const incomingById = new Map(models.map(m => [m.id, m]))
+  const merged = [...existing]
+  for (const m of models) {
+    if (!merged.find(x => x.id === m.id)) merged.push(m)
+  }
+  // Preserve current selection if present; otherwise pick the first incoming model
+  speckleViewerModels.value = merged
+  if (!speckleViewerSelectedId.value || !merged.find(m => m.id === speckleViewerSelectedId.value)) {
+    const firstIncoming = models[0]
+    speckleViewerSelectedId.value = firstIncoming.id
+  }
   speckleViewerModalOpen.value = true
 }
 
@@ -2012,11 +2023,14 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
       // Create document-like objects for each model
       for (const model of models) {
         const modelUrl = `${config.public.speckleUrl}/projects/${project.id}/models/${model.id}`
+        const displayName = (model.name && model.name.toLowerCase() !== 'main')
+          ? model.name
+          : (project.name || `Project ${projectKey}`)
         modelDocuments.push({
           id: `speckle-${project.id}-${model.id}`,
-          title: model.name,
-          name: model.name,
-          description: `${project.name} - ${model.name}`,
+          title: displayName,
+          name: displayName,
+          description: `${project.name || projectKey} - ${displayName}`,
           url: modelUrl,
           metadata: {
             projectId: project.id,
@@ -2034,8 +2048,14 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
   
   // Show models in left panel if we found any
   if (modelDocuments.length > 0) {
+    // Merge with existing document list instead of replacing
+    const existingDocs = (similarDocuments?.value || []) as any[]
+    const mergedDocs = [...existingDocs]
+    for (const doc of modelDocuments) {
+      if (!mergedDocs.find(d => d.id === doc.id)) mergedDocs.push(doc)
+    }
     openDocumentsList(
-      modelDocuments,
+      mergedDocs,
       '3D Models',
       'Click on a model to view it in the viewer'
     )
@@ -2047,9 +2067,7 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
     }))
     openSpeckleModalWithModels(modalModels)
   } else {
-    speckleViewerModels.value = []
-    speckleViewerSelectedId.value = ''
-    speckleViewerModalOpen.value = false
+    // Do not clear existing models; simply leave current state
   }
 
   speckleViewerFetchLoading.value = false

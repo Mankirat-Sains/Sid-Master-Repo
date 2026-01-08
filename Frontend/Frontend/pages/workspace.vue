@@ -2233,9 +2233,17 @@ function toggleDataSource(key: keyof DataSources) {
 
 // Recreate SmartChatPanel's document list + Speckle modal wiring
 function openDocumentsList(documents: any[], title?: string, subtitle?: string) {
-  docListDocs.value = documents
-  docListTitle.value = title || 'Documents'
-  docListSubtitle.value = subtitle || ''
+  // Merge new documents with existing list so multiple sets persist
+  const merged = [...docListDocs.value]
+  for (const doc of documents) {
+    if (!merged.find(d => d.id === doc.id)) merged.push(doc)
+  }
+  docListDocs.value = merged
+  // Only override titles if provided (preserve existing if already set)
+  if (title) docListTitle.value = title
+  if (subtitle) docListSubtitle.value = subtitle
+  if (!docListTitle.value) docListTitle.value = 'Documents'
+  if (!docListSubtitle.value) docListSubtitle.value = ''
   docListOpen.value = true
 }
 
@@ -2265,8 +2273,15 @@ function closeSpeckleViewer() {
 
 function openSpeckleViewerWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
   if (!models.length) return
-  speckleViewerModels.value = models
-  speckleViewerSelectedId.value = models[0].id
+  // Merge with existing so multiple model sets can stay visible
+  const merged = [...speckleViewerModels.value]
+  for (const m of models) {
+    if (!merged.find(x => x.id === m.id)) merged.push(m)
+  }
+  speckleViewerModels.value = merged
+  if (!speckleViewerSelectedId.value || !merged.find(m => m.id === speckleViewerSelectedId.value)) {
+    speckleViewerSelectedId.value = models[0].id
+  }
   speckleViewerPanelOpen.value = true
   viewerSplitPercent.value = 50
 }
@@ -2311,11 +2326,14 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
 
       for (const model of models) {
         const modelUrl = `${config.public.speckleUrl}/projects/${project.id}/models/${model.id}`
+        const displayName = (model.name && model.name.toLowerCase() !== 'main')
+          ? model.name
+          : (project.name || projectKey)
         modelDocuments.push({
           id: `speckle-${project.id}-${model.id}`,
-          title: model.name,
-          name: model.name,
-          description: `${project.name} - ${model.name}`,
+          title: displayName,
+          name: displayName,
+          description: `${project.name || projectKey} - ${displayName}`,
           url: modelUrl,
           metadata: {
             projectId: project.id,
