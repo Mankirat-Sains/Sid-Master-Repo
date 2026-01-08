@@ -104,6 +104,16 @@ def node_rag_router(state: RAGState) -> dict:
             "coop_manual": databases.get("coop_manual", False),
             "speckle_db": databases.get("speckle_db", False)
         }
+
+        # Heuristic: if a specific project is detected and the query is structural/model-related,
+        # auto-enable speckle_db (and ensure project_db) to surface BIM/Speckle content.
+        structural_keywords = ["speckle", "model", "3d", "beam", "column", "lintel", "truss", "girder", "frame"]
+        if project_filter and not data_sources["speckle_db"]:
+            q_lower = state.user_query.lower() if state.user_query else ""
+            if any(k in q_lower for k in structural_keywords):
+                log_route.info("🛠️ Auto-enabling speckle_db based on structural query and project context")
+                data_sources["speckle_db"] = True
+                data_sources["project_db"] = True
         
         # ENFORCE CONSTRAINT: speckle_db cannot be selected alone - must have project_db
         if data_sources["speckle_db"] and not data_sources["project_db"]:
@@ -161,4 +171,3 @@ def node_rag_router(state: RAGState) -> dict:
             "data_sources": fallback_sources,
             "project_filter": detect_project_filter(state.user_query) if state.user_query else None
         }
-

@@ -7,8 +7,13 @@ import re
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from project root .env (single source of truth)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+ROOT_ENV = PROJECT_ROOT / ".env"
+if ROOT_ENV.exists():
+    load_dotenv(ROOT_ENV, override=True)
+else:
+    load_dotenv()
 
 # =============================================================================
 # PATHS
@@ -199,4 +204,3 @@ VALID_ROLES = list(ROLE_DATABASE_PREFERENCES.keys())
 # DEBUG MODE
 # =============================================================================
 DEBUG_MODE = True  # ON - Show all INFO level logs
-
