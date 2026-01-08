@@ -40,13 +40,8 @@ def _router_route(state: RAGState) -> str:
 
 
 def _rag_condition(state) -> str:
-    """Check if router needs clarification"""
-    if isinstance(state, dict):
-        needs_clarification = state.get("needs_clarification", False)
-    else:
-        needs_clarification = getattr(state, "needs_clarification", False)
-
-    return "clarification" if needs_clarification else "retrieve"
+    """Route to retrieve (clarification logic removed - router always selects databases)"""
+    return "retrieve"
 
 
 def _router_dispatcher_to_image_or_retrieve(state) -> str:
@@ -66,16 +61,12 @@ def _router_dispatcher_to_image_or_retrieve(state) -> str:
 def _rag_to_image_or_retrieve(state) -> str:
     """Route from rag to image processing or retrieve"""
     if isinstance(state, dict):
-        needs_clarification = state.get("needs_clarification", False)
         images_base64 = state.get("images_base64")
         use_image_similarity = state.get("use_image_similarity", False)
     else:
-        needs_clarification = getattr(state, "needs_clarification", False)
         images_base64 = getattr(state, "images_base64", None)
         use_image_similarity = getattr(state, "use_image_similarity", False)
     
-    if needs_clarification:
-        return "clarification"
     if images_base64 and use_image_similarity:
         return "generate_image_embeddings"
     return "retrieve"
@@ -129,12 +120,11 @@ def build_graph():
         },
     )
 
-    # RAG routes to image processing, retrieve, or END (clarification)
+    # RAG routes to image processing or retrieve
     g.add_conditional_edges(
         "rag",
         _rag_to_image_or_retrieve,
         {
-            "clarification": END,
             "generate_image_embeddings": "generate_image_embeddings",
             "retrieve": "retrieve",
         },

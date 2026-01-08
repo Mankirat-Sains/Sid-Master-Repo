@@ -70,7 +70,7 @@
       <div class="w-full h-full">
         <iframe
           title="Speckle"
-          src="http://k8s-speckle-a8a45c467f-1674783884.ca-central-1.elb.amazonaws.com/projects/1310d85aa9/models/80cbb42602?embedToken=09dbe9a6ad40cedc4ace9b4154e8cdaa8d1dab9bd3#embed=%7B%22isEnabled%22%3Atrue%7D"
+          src="http://k8s-speckle-a8a45c467f-1674783884.ca-central-1.elb.amazonaws.com/projects/0e734d62a7/models/129258f160?embedToken=857e35883203c6b4fc5d1276a069ad449022136d72#embed=%7B%22isEnabled%22%3Atrue%7D"
           width="100%"
           height="100%"
           frameborder="0"

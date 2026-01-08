@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-black text-white flex flex-col workspace-root">
     <!-- Header -->
-    <header class="h-9 flex items-center justify-between px-2.5 border-b border-white/10 bg-black">
+    <header class="h-9 flex items-center justify-between px-2.5 border-b border-purple-500/40 bg-black">
       <div class="flex items-center gap-2">
         <div class="h-6 w-6 shrink-0">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sidian logo">
@@ -22,7 +22,7 @@
 
     <div class="flex flex-1 overflow-hidden min-w-0 min-h-0 workspace-shell relative">
       <!-- Icon rail -->
-      <aside class="w-12 bg-white/5 backdrop-blur-lg border-r border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex flex-col items-center py-2 space-y-1.5 overflow-visible relative z-30">
+      <aside class="w-12 bg-white/5 backdrop-blur-lg border-r border-purple-500/40 shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex flex-col items-center py-2 space-y-1.5 overflow-visible relative z-30">
         <template v-for="icon in railIcons" :key="icon.id">
           <div
             v-if="icon.id === 'timesheet'"
@@ -44,7 +44,7 @@
               class="absolute left-full top-0 ml-3 z-20 min-w-[200px]"
             >
               <div class="bg-[#0f0f0f] border border-white/12 rounded-2xl shadow-[0_16px_36px_rgba(0,0,0,0.5)] p-3 space-y-2">
-                <div class="pb-2 border-b border-white/10 flex items-center justify-between">
+                <div class="pb-2 border-b border-purple-500/40 flex items-center justify-between">
                   <p class="text-[13px] font-semibold text-white/90">Timeline</p>
                 </div>
                 <div class="space-y-1.5">
@@ -131,7 +131,7 @@
       <!-- Conversation list -->
       <aside
         v-if="activePage === 'home' && !isSidebarCollapsed"
-        class="bg-white/8 backdrop-blur-2xl border-r border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.45)] flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll transition-all duration-300 ease-out"
+        class="bg-white/8 backdrop-blur-2xl border-r border-purple-500/40 shadow-[0_22px_70px_rgba(0,0,0,0.45)] flex flex-col relative min-w-[200px] conversation-sidebar min-h-0 overflow-y-auto custom-scroll transition-all duration-300 ease-out"
         :style="sidebarStyle"
         >
         <!-- Resize handle -->
@@ -143,7 +143,7 @@
         </div>
 
         <template v-if="sidebarMode === 'history'">
-          <div class="px-2.5 py-2 border-b border-white/10">
+          <div class="px-2.5 py-2 border-b border-purple-500/40">
             <button
               class="w-full h-8 px-3 rounded bg-white/8 border border-white/12 text-[11px] font-semibold hover:bg-white/12 transition flex items-center gap-2"
               @click="startNewConversation"
@@ -154,7 +154,7 @@
             </button>
           </div>
 
-          <div class="px-2.5 py-2.5 border-b border-white/10">
+          <div class="px-2.5 py-2.5 border-b border-purple-500/40">
             <div class="relative">
               <input
                 v-model="search"
@@ -368,7 +368,7 @@
           :style="{ top: `${contextMenu.y}px`, left: `${contextMenu.x}px` }"
         >
           <button
-            class="w-full text-left px-4 py-2 text-sm text-white/85 hover:bg-white/5 border-b border-white/10"
+            class="w-full text-left px-4 py-2 text-sm text-white/85 hover:bg-white/5 border-b border-purple-500/40"
             @click="renameConversation(contextMenu.convId)"
           >
             Rename
@@ -401,17 +401,58 @@
                 <template v-if="!activeChatLog.length">
                   <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5 -translate-y-8 md:-translate-y-10">
                     <div class="flex flex-col items-center gap-3">
-                      <div class="h-24 w-24 shrink-0 -translate-y-1">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sidian logo">
+                      <div class="h-24 w-24 shrink-0 -translate-y-1 triangle-container group cursor-pointer transition-all duration-300">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sidian logo" class="w-full h-full">
+                          <defs>
+                            <!-- Gradient for 3D depth -->
+                            <linearGradient id="triangleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                              <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1" />
+                              <stop offset="50%" style="stop-color:#7c3aed;stop-opacity:1" />
+                              <stop offset="100%" style="stop-color:#6b21a8;stop-opacity:1" />
+                            </linearGradient>
+                            <!-- Glow filter for hover effect -->
+                            <filter id="glow">
+                              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                              <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                              </feMerge>
+                            </filter>
+                            <!-- Stronger glow for hover -->
+                            <filter id="glowStrong">
+                              <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+                              <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                              </feMerge>
+                            </filter>
+                            <!-- Shadow for depth -->
+                            <filter id="shadow">
+                              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#6b21a8" flood-opacity="0.5"/>
+                            </filter>
+                          </defs>
+                          <!-- Shadow layer for depth -->
                           <polygon
                             points="12 1 3.6 23 20.4 23"
                             fill="#6b21a8"
+                            opacity="0.3"
+                            transform="translate(2, 2)"
+                            filter="url(#shadow)"
+                          />
+                          <!-- Main triangle with gradient -->
+                          <polygon
+                            points="12 1 3.6 23 20.4 23"
+                            fill="url(#triangleGradient)"
+                            class="triangle-main transition-all duration-300"
+                            style="filter: drop-shadow(0 8px 16px rgba(107, 33, 168, 0.4)) url(#glow);"
+                          />
+                          <!-- Highlight for 3D effect -->
+                          <polygon
+                            points="12 1 8 12 12 12"
+                            fill="rgba(255, 255, 255, 0.2)"
+                            opacity="0.6"
                           />
                         </svg>
-                      </div>
-                      <div class="flex items-center gap-2 text-[11px] text-white/65">
-                        <span class="px-3 py-1 rounded-full bg-white/5 border border-white/12 shadow-[0_4px_16px_rgba(0,0,0,0.35)]">Free plan</span>
-                        <button class="text-white/75 hover:text-white transition" @click="handleUpgrade">Upgrade</button>
                       </div>
                       <div class="flex items-center gap-3">
                         <span class="text-lg">✺</span>
@@ -501,13 +542,13 @@
                               />
                             </div>
                             <div
-                              class="w-auto inline-flex rounded-2xl px-3.5 py-3 leading-relaxed shadow-lg max-w-full"
+                              class="w-auto inline-flex leading-relaxed max-w-full"
                               :class="entry.role === 'user'
-                                ? 'bg-[#2a2a2a] border border-white/10'
-                                : 'bg-transparent'
+                                ? 'rounded-2xl px-3.5 py-3 bg-[#2a2a2a] border border-white/10 shadow-lg'
+                                : 'text-white'
                               "
                             >
-                              <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="entry.content"></div>
+                              <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
                               <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
                             </div>
                             <div
@@ -793,6 +834,8 @@ import ChatIcon from '~/components/icons/ChatIcon.vue'
 import GearIcon from '~/components/icons/GearIcon.vue'
 import ClockIcon from '~/components/icons/ClockIcon.vue'
 import ClipboardIcon from '~/components/icons/ClipboardIcon.vue'
+import BrainIcon from '~/components/icons/BrainIcon.vue'
+import HouseIcon from '~/components/icons/HouseIcon.vue'
 import WorkView from '~/components/views/WorkView.vue'
 import TimesheetView from '~/components/views/TimesheetView.vue'
 import TodoListView from '~/components/views/TodoListView.vue'
@@ -1023,9 +1066,9 @@ const railIcons = [
 ]
 
 const sidebarActions: Array<{ id: 'logs' | 'history' | 'docs'; label: string; component: Component }> = [
-  { id: 'logs', label: 'Logs', component: ClockIcon },
+  { id: 'logs', label: 'Logs', component: BrainIcon },
   { id: 'history', label: 'Chat History', component: ChatIcon },
-  { id: 'docs', label: 'Docs', component: ClipboardIcon }
+  { id: 'docs', label: 'Docs', component: HouseIcon }
 ]
 type SidebarMode = 'history' | 'logs' | 'docs'
 const sidebarMode = ref<SidebarMode>('history')
@@ -1036,7 +1079,7 @@ const activePage = ref<ActivePage>('home')
 const activeRail = computed(() => {
   return railIcons.some(icon => icon.id === activePage.value) ? activePage.value : 'home'
 })
-const userName = 'Zaryab'
+const userName = 'James'
 const greetingTime = computed(() => {
   const hour = new Date().getHours()
   if (hour < 12) return 'Morning'
@@ -1073,6 +1116,8 @@ const fileInput = ref<HTMLInputElement | null>(null)
 const contextMenuRef = ref<HTMLElement | null>(null)
 const { formatMessageText } = useMessageFormatter()
 const { sendChatMessage, sendChatMessageStream } = useChat()
+// Reactive counter to force Vue to detect every token update immediately
+const renderKey = ref(0)
 const { findProjectByKey, getProjectModels } = useSpeckle()
 const workspace = useWorkspace()
 const config = useRuntimeConfig()
@@ -1381,6 +1426,33 @@ function loadMemory() {
   } catch (error) {
     console.warn('Unable to load workspace memory, using defaults', error)
   }
+}
+
+// Get formatted message with reactive dependency on renderKey
+// When renderKey changes (on every token), Vue detects the change and re-computes the formatted content
+function getFormattedMessage(entry: { role: string; content: string }): string {
+  // Access renderKey.value to create a reactive dependency
+  // This ensures formatMessageText() is called on EVERY token update, not batched
+  void renderKey.value
+  const formatted = formatMessageText(entry.content)
+  
+  // Trigger MathJax rendering after DOM update
+  nextTick(() => {
+    if (typeof window !== 'undefined') {
+      const MathJax = (window as any).MathJax
+      if (MathJax && MathJax.typesetPromise) {
+        // Find the element containing this message and render MathJax
+        const chatContainer = document.querySelector('.custom-scroll')
+        if (chatContainer) {
+          MathJax.typesetPromise([chatContainer]).catch((err: Error) => {
+            console.warn('MathJax rendering error:', err)
+          })
+        }
+      }
+    }
+  })
+  
+  return formatted
 }
 
 watch(
@@ -1876,14 +1948,9 @@ async function maybeGenerateTitle(conversation: Conversation | null, latestUserM
   titleGenerationInFlight.add(conversation.id)
 
   try {
-    const prompt = buildTitlePrompt(titleQuestion, assistantReply)
-    const response = await sendChatMessage(
-      prompt,
-      `${conversation.sessionId}-title`,
-      undefined,
-      { project_db: false, code_db: false, coop_manual: false }
-    )
-    const generated = sanitizeGeneratedTitle(response.reply || response.message || '')
+    // Generate title client-side from the user message to avoid duplicate API calls
+    // Extract a meaningful title from the question itself
+    const generated = generateClientSideTitle(titleQuestion, assistantReply)
     if (!generated) return
 
     conversation.title = generated
@@ -1896,6 +1963,39 @@ async function maybeGenerateTitle(conversation: Conversation | null, latestUserM
   } finally {
     titleGenerationInFlight.delete(conversation.id)
   }
+}
+
+function generateClientSideTitle(question: string, answer?: string): string {
+  // Extract project numbers if present (e.g., "25-01-060")
+  const projectMatch = question.match(/\b\d{2}-\d{2}-\d{3}\b/) || answer?.match(/\b\d{2}-\d{2}-\d{3}\b/)
+  const projectNumber = projectMatch ? projectMatch[0] : null
+  
+  // Clean up the question text
+  let title = question
+    .replace(/^(find|show|list|get|tell me about|what|how|when|where|why)\s+/i, '') // Remove common question starters
+    .replace(/\?+$/, '') // Remove trailing question marks
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim()
+  
+  // If we have a project number, prioritize it
+  if (projectNumber) {
+    // Extract key words from the question
+    const words = title.split(' ').filter(w => w.length > 3).slice(0, 4)
+    const keyWords = words.join(' ')
+    if (keyWords) {
+      title = `${projectNumber}: ${keyWords}`
+    } else {
+      title = projectNumber
+    }
+  }
+  
+  // Limit to max length and clean up
+  if (title.length > AUTO_TITLE_MAX_LENGTH) {
+    const words = title.split(' ')
+    title = words.slice(0, 7).join(' ') // Max 7 words
+  }
+  
+  return sanitizeGeneratedTitle(title)
 }
 
 function convertFileToBase64(file: File): Promise<{ name: string; base64: string }> {
@@ -2098,6 +2198,9 @@ async function handleSend() {
   const conversation = activeConversation.value
   if (!conversation) return
 
+  // Set isSending IMMEDIATELY to prevent duplicate calls
+  isSending.value = true
+
   const message = hasMessage ? prompt.value.trim() : 'What is shown in these attachments?'
   const attachmentNames = attachments.value.map(file => file.name)
   const imagesBase64 = attachments.value.length ? attachments.value.map(file => file.base64) : undefined
@@ -2109,10 +2212,45 @@ async function handleSend() {
     timestamp: Date.now()
   })
 
+  // Add thinking indicator when user sends a question
+  const thinkingMessages = [
+    'Analyzing your question...',
+    'Processing the request...',
+    'Gathering information...',
+    'Thinking through the problem...',
+    'Preparing response...',
+    'Reviewing context...',
+    'Formulating answer...',
+    'Synthesizing information...'
+  ]
+  
+  const thinkingMessageId = `thinking-${Date.now()}`
+  let thinkingMessageIndex = 0
+  const initialThinkingMessage = thinkingMessages[thinkingMessageIndex]
+  
+  conversation.chatLog.push({
+    role: 'assistant',
+    content: `*${initialThinkingMessage}*`,
+    timestamp: Date.now(),
+    id: thinkingMessageId
+  })
+  
+  // Update thinking message every 2 seconds
+  const thinkingInterval = setInterval(() => {
+    thinkingMessageIndex = (thinkingMessageIndex + 1) % thinkingMessages.length
+    const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
+    if (thinkingIndex !== -1) {
+      conversation.chatLog.splice(thinkingIndex, 1, {
+        ...conversation.chatLog[thinkingIndex],
+        content: `*${thinkingMessages[thinkingMessageIndex]}*`
+      })
+      renderKey.value++
+    }
+  }, 2000)
+
   prompt.value = ''
   attachments.value = []
   touchConversation(conversation.id)
-  isSending.value = true
   scrollToBottom()
 
   try {
@@ -2136,8 +2274,16 @@ async function handleSend() {
           })
         },
         onToken: token => {
-          // Create streaming message on first token
+          // Remove thinking message on first token
           if (!streamingMessageId) {
+            // Clear the thinking interval
+            clearInterval(thinkingInterval)
+            // Remove the thinking message
+            const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
+            if (thinkingIndex !== -1) {
+              conversation.chatLog.splice(thinkingIndex, 1)
+            }
+            
             streamingMessageId = `streaming-${Date.now()}`
             conversation.chatLog.push({
               role: 'assistant',
@@ -2146,37 +2292,92 @@ async function handleSend() {
             })
           }
           
-          // Append token to streaming message
+          // Find the streaming message (last assistant message)
           const messageIndex = conversation.chatLog.length - 1
-          if (messageIndex >= 0) {
-            conversation.chatLog[messageIndex].content += token.content
-            scrollToBottom()
+          if (messageIndex >= 0 && conversation.chatLog[messageIndex].role === 'assistant') {
+            // Get current message content
+            const currentContent = conversation.chatLog[messageIndex].content || ''
+            
+            // Append token content
+            const newContent = currentContent + token.content
+            
+            // CRITICAL: Force Vue to detect the change immediately
+            // Increment renderKey BEFORE updating to ensure reactive dependency is set
+            // Use splice to ensure Vue's array reactivity triggers
+            renderKey.value++ // Increment first to trigger reactive dependency
+            conversation.chatLog.splice(messageIndex, 1, { 
+              ...conversation.chatLog[messageIndex],
+              content: newContent
+            }) // Use splice for guaranteed reactivity
+            
+            // Schedule scroll and MathJax rendering without blocking token stream
+            requestAnimationFrame(() => {
+              scrollToBottom()
+              // Trigger MathJax rendering on every token
+              if (typeof window !== 'undefined') {
+                const MathJax = (window as any).MathJax
+                if (MathJax && MathJax.typesetPromise) {
+                  const chatContainer = document.querySelector('.custom-scroll')
+                  if (chatContainer) {
+                    MathJax.typesetPromise([chatContainer]).catch(() => {})
+                  }
+                }
+              }
+            })
           }
         },
         onComplete: async result => {
-          const finalAnswer = result.reply || result.message || 'No response generated.'
-          
-          // Update streaming message with final answer
+          // Use the accumulated content from streaming (already formatted via getFormattedMessage)
+          // Don't overwrite with result.reply as it might be different or cause formatting to revert
           if (streamingMessageId) {
             const messageIndex = conversation.chatLog.length - 1
             if (messageIndex >= 0) {
-              conversation.chatLog[messageIndex].content = formatMessageText(finalAnswer)
-              conversation.chatLog[messageIndex].timestamp = Date.now()
+              // Keep the accumulated content from streaming - it's already formatted
+              // Only use result.reply if streaming content is empty
+              const accumulatedContent = conversation.chatLog[messageIndex].content || ''
+              const finalAnswer = accumulatedContent || result.reply || result.message || 'No response generated.'
+              
+              // Ensure content is formatted (it should already be via getFormattedMessage)
+              // Force one final render to ensure formatting sticks
+              renderKey.value++
+              conversation.chatLog.splice(messageIndex, 1, {
+                ...conversation.chatLog[messageIndex],
+                content: finalAnswer,
+                timestamp: Date.now()
+              })
             }
           } else {
             // Fallback: create message if streaming didn't happen
+            // IMPORTANT: Store RAW text, not formatted HTML
+            // Formatting happens in getFormattedMessage() which is called on render
+            const finalAnswer = result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({ 
               role: 'assistant', 
-              content: formatMessageText(finalAnswer), 
+              content: finalAnswer, // Store raw text, not formatted HTML
               timestamp: Date.now() 
             })
           }
           
+          // Final MathJax rendering after completion
+          await nextTick()
+          if (typeof window !== 'undefined') {
+            const MathJax = (window as any).MathJax
+            if (MathJax && MathJax.typesetPromise) {
+              const chatContainer = document.querySelector('.custom-scroll')
+              if (chatContainer) {
+                MathJax.typesetPromise([chatContainer]).catch(() => {})
+              }
+            }
+          }
+          
+          const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
           await fetchAndDisplaySpeckleModels(finalAnswer, message)
           scrollToBottom(true)
         },
         onError: error => {
+          // Clear thinking interval on error
+          clearInterval(thinkingInterval)
           streamError = error
         }
       }
@@ -2230,37 +2431,92 @@ async function regenerateAssistant(message: string, sessionId: string) {
             })
           }
           
-          // Append token to streaming message
+          // Find the streaming message (last assistant message)
           const messageIndex = conversation.chatLog.length - 1
-          if (messageIndex >= 0) {
-            conversation.chatLog[messageIndex].content += token.content
-            scrollToBottom()
+          if (messageIndex >= 0 && conversation.chatLog[messageIndex].role === 'assistant') {
+            // Get current message content
+            const currentContent = conversation.chatLog[messageIndex].content || ''
+            
+            // Append token content
+            const newContent = currentContent + token.content
+            
+            // CRITICAL: Force Vue to detect the change immediately
+            // Increment renderKey BEFORE updating to ensure reactive dependency is set
+            // Use splice to ensure Vue's array reactivity triggers
+            renderKey.value++ // Increment first to trigger reactive dependency
+            conversation.chatLog.splice(messageIndex, 1, { 
+              ...conversation.chatLog[messageIndex],
+              content: newContent
+            }) // Use splice for guaranteed reactivity
+            
+            // Schedule scroll and MathJax rendering without blocking token stream
+            requestAnimationFrame(() => {
+              scrollToBottom()
+              // Trigger MathJax rendering on every token
+              if (typeof window !== 'undefined') {
+                const MathJax = (window as any).MathJax
+                if (MathJax && MathJax.typesetPromise) {
+                  const chatContainer = document.querySelector('.custom-scroll')
+                  if (chatContainer) {
+                    MathJax.typesetPromise([chatContainer]).catch(() => {})
+                  }
+                }
+              }
+            })
           }
         },
         onComplete: async result => {
-          const finalAnswer = result.reply || result.message || 'No response generated.'
-          
-          // Update streaming message with final answer
+          // Use the accumulated content from streaming (already formatted via getFormattedMessage)
+          // Don't overwrite with result.reply as it might be different or cause formatting to revert
           if (streamingMessageId) {
             const messageIndex = conversation.chatLog.length - 1
             if (messageIndex >= 0) {
-              conversation.chatLog[messageIndex].content = formatMessageText(finalAnswer)
-              conversation.chatLog[messageIndex].timestamp = Date.now()
+              // Keep the accumulated content from streaming - it's already formatted
+              // Only use result.reply if streaming content is empty
+              const accumulatedContent = conversation.chatLog[messageIndex].content || ''
+              const finalAnswer = accumulatedContent || result.reply || result.message || 'No response generated.'
+              
+              // Ensure content is formatted (it should already be via getFormattedMessage)
+              // Force one final render to ensure formatting sticks
+              renderKey.value++
+              conversation.chatLog.splice(messageIndex, 1, {
+                ...conversation.chatLog[messageIndex],
+                content: finalAnswer,
+                timestamp: Date.now()
+              })
             }
           } else {
             // Fallback: create message if streaming didn't happen
+            // IMPORTANT: Store RAW text, not formatted HTML
+            // Formatting happens in getFormattedMessage() which is called on render
+            const finalAnswer = result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({
               role: 'assistant',
-              content: formatMessageText(finalAnswer),
+              content: finalAnswer, // Store raw text, not formatted HTML
               timestamp: Date.now()
             })
           }
           
+          // Final MathJax rendering after completion
+          await nextTick()
+          if (typeof window !== 'undefined') {
+            const MathJax = (window as any).MathJax
+            if (MathJax && MathJax.typesetPromise) {
+              const chatContainer = document.querySelector('.custom-scroll')
+              if (chatContainer) {
+                MathJax.typesetPromise([chatContainer]).catch(() => {})
+              }
+            }
+          }
+          
+          const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
           await fetchAndDisplaySpeckleModels(finalAnswer, message)
           scrollToBottom(true)
         },
         onError: error => {
+          // Clear thinking interval on error
+          clearInterval(thinkingInterval)
           streamError = error
         }
       }
@@ -2505,5 +2761,19 @@ function performDeleteConversation() {
   .workspace-root {
     font-size: 12px;
   }
+}
+
+/* Triangle 3D hover glow effect */
+.triangle-container:hover .triangle-main {
+  filter: drop-shadow(0 12px 32px rgba(147, 51, 234, 0.6)) url(#glowStrong) !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.triangle-container {
+  transition: transform 0.3s ease;
+}
+
+.triangle-container:hover {
+  transform: translateY(-4px);
 }
 </style>

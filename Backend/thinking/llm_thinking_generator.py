@@ -230,3 +230,5 @@ Explain how the answer was synthesized. Start with "## ✨ Generating Answer". E
             # Fallback if LLM fails
             return f"## ✨ Generating Answer\n\n**Results:**\n- Documents used: {graded_count}\n- Answer length: {answer_length} characters\n- Citations: {citations_count}"
 
+
+

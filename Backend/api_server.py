@@ -110,35 +110,36 @@ except ImportError:
     INSTRUCTIONS_CONTENT = "# Instructions\n\nInstructions content not available."
 
 # Helper function to wrap project numbers with fully-formed HTML links
-def wrap_project_links(text: str) -> str:
+def strip_asterisks_from_projects(text: str) -> str:
     """
-    Detect project numbers in format XX-XX-XXX (e.g., 25-08-001)
-    and convert them to fully-formed HTML links.
-    This is done in the backend so frontend doesn't need to rebuild executable for link changes.
+    Remove markdown asterisks (**) that wrap project numbers or project names.
+    The LLM sometimes adds **Project 25-01-002** - we want to strip these asterisks.
     """
-    # Regex pattern to match project numbers like 25-08-001
-    project_number_pattern = r'\b(\d{2}-\d{2}-\d{3})\b'
-
-    def make_folder_link(match):
-        project_number = match.group(1)
-        # Build the network path for the project folder
-        network_path = f"\\\\WADDELLNAS\\Projects\\{project_number}"
-        # HTML-escape the path for the attribute
-        escaped_path = escape(network_path, quote=True)
-        # HTML-escape the title attribute
-        title_text = "Left-click: Open in Explorer | Right-click: Open in Harmani"
-        escaped_title = escape(title_text, quote=True)
-        # Generate fully-formed HTML link
-        return f'<a href="#" class="folder-link" data-path="{escaped_path}" data-project="{escape(project_number, quote=True)}" title="{escaped_title}">{project_number}</a>'
-
-    # Replace each match with fully-formed HTML link
-    wrapped_text = re.sub(
-        project_number_pattern,
-        make_folder_link,
-        text
-    )
-
-    return wrapped_text
+    if not text:
+        return text
+    
+    # Pattern 1: **Project NUMBER** (exact match)
+    text = re.sub(r'\*\*Project\s+(\d{2}-\d{2}-\d{3})\*\*', r'Project \1', text)
+    
+    # Pattern 2: **Project NUMBER - ... (with dash after, asterisks before dash)
+    text = re.sub(r'\*\*Project\s+(\d{2}-\d{2}-\d{3})\s*-\s*', r'Project \1 - ', text)
+    
+    # Pattern 3: Just project number wrapped: **25-01-002**
+    text = re.sub(r'\*\*(\d{2}-\d{2}-\d{3})\*\*', r'\1', text)
+    
+    # Pattern 4: **Project NUMBER** with text after (space before closing **)
+    text = re.sub(r'\*\*Project\s+(\d{2}-\d{2}-\d{3})\s+\*\*', r'Project \1 ', text)
+    
+    # Pattern 5: Handle "**Details:**" or "**Project Name:**" type labels
+    text = re.sub(r'\*\*Details:\s*\*\*', 'Details:', text)
+    text = re.sub(r'\*\*Project Name:\s*\*\*', 'Project Name:', text)
+    text = re.sub(r'\*\*Details:\*\*', 'Details:', text)
+    text = re.sub(r'\*\*Project Name:\*\*', 'Project Name:', text)
+    
+    # Pattern 6: Handle any remaining **Project NUMBER** patterns with various spacing
+    text = re.sub(r'\*\*\s*Project\s+(\d{2}-\d{2}-\d{3})\s*\*\*', r'Project \1', text)
+    
+    return text
 
 
 def sanitize_file_path(file_path: str) -> str:
@@ -534,8 +535,8 @@ async def chat_handler(request: ChatRequest):
         # Process answers separately for multi-bubble display
         if multiple_enabled:
             # Multiple databases enabled - return separate answers
-            # Wrap project numbers with folder-link tags
-            processed_project_answer = wrap_project_links(answer) if has_project else None
+            # Strip asterisks from project names/numbers
+            processed_project_answer = strip_asterisks_from_projects(answer) if has_project else None
             
             # Wrap code file citations with file-link tags (shows filename)
             processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else code_answer
@@ -621,8 +622,8 @@ async def chat_handler(request: ChatRequest):
                 combined_answer = answer
                 total_citations = len(project_citations)
             
-            # Wrap project numbers with folder-link tags for clickable links
-            combined_answer = wrap_project_links(combined_answer)
+            # Strip asterisks from project names/numbers
+            combined_answer = strip_asterisks_from_projects(combined_answer)
             
             # Wrap code file citations with file-link tags for clickable links
             if code_citations:
@@ -759,6 +760,49 @@ async def chat_stream_handler(request: ChatRequest):
             if not images_to_process and request.image_base64:
                 images_to_process = [request.image_base64]
             
+            # Log image receipt status (matching chat endpoint)
+            logger.info(f"📸 IMAGE RECEIPT: images_base64={request.images_base64 is not None}, image_base64={request.image_base64 is not None}")
+            logger.info(f"📸 IMAGES TO PROCESS: count={len(images_to_process)}, has_images={len(images_to_process) > 0}")
+            if images_to_process:
+                logger.info(f"📸 Image data lengths: {[len(img) for img in images_to_process[:3]]} chars (showing first 3)")
+            
+            # Process images if provided - Convert to searchable text via VLM (matching chat endpoint)
+            # This is the key difference - chat endpoint does this before graph execution
+            image_context = ""
+            enhanced_question = request.message
+            if images_to_process and len(images_to_process) > 0:
+                from nodes.DBRetrieval.image_nodes import describe_image_for_search
+                from config.logging_config import log_vlm
+                
+                log_vlm.info("")
+                log_vlm.info("🔷" * 30)
+                log_vlm.info(f"🖼️ PROCESSING {len(images_to_process)} IMAGE(S) WITH VLM")
+                log_vlm.info(f"📝 User question: {request.message[:150] if request.message else 'General image description'}")
+                log_vlm.info("🔷" * 30)
+                
+                # Emit thinking log for VLM processing
+                yield f"data: {json.dumps({'type': 'thinking', 'message': f'Processing {len(images_to_process)} image(s) with vision model...', 'node': 'vlm_processing', 'timestamp': time.time()})}\n\n"
+                await asyncio.sleep(0.001)
+                
+                image_descriptions = []
+                for i, image_base64 in enumerate(images_to_process):
+                    log_vlm.info("")
+                    log_vlm.info(f"📸 Processing image {i+1}/{len(images_to_process)}")
+                    try:
+                        image_description = describe_image_for_search(image_base64, request.message)
+                        image_descriptions.append(f"Image {i+1}: {image_description}")
+                        log_vlm.info(f"✅ Image {i+1} description completed successfully")
+                    except Exception as e:
+                        log_vlm.error(f"❌ VLM processing failed for image {i+1}, skipping: {e}")
+                
+                if image_descriptions:
+                    image_context = "\n\n[Image Context: " + " | ".join(image_descriptions) + "]"
+                    enhanced_question = request.message + image_context
+                    log_vlm.info("")
+                    log_vlm.info(f"📊 ALL IMAGES PROCESSED - Combined context length: {len(image_context)} chars")
+                    log_vlm.info("🔷" * 30)
+                    log_vlm.info("")
+            
             # Import graph and state
             from main import graph
             from models.rag_state import RAGState
@@ -776,10 +820,10 @@ async def chat_stream_handler(request: ChatRequest):
                 use_image_similarity = intent_result.get("use_image_similarity", False)
                 query_intent = intent_result.get("intent")
             
-            # Create initial state
+            # Create initial state - use enhanced_question that includes image context
             init_state = RAGState(
                 session_id=request.session_id,
-                user_query=request.message,
+                user_query=enhanced_question,  # Use enhanced question with image context
                 query_plan=None,
                 data_route=None,
                 project_filter=None,
@@ -827,36 +871,11 @@ async def chat_stream_handler(request: ChatRequest):
                 stream_mode=["updates", "custom", "messages"]  # Add "messages" for token streaming
             ):
                 # Handle LLM token streaming (messages mode)
+                # NOTE: Tokens are handled in "custom" mode via writer() calls from nodes
+                # Messages mode is kept for other purposes but tokens are NOT forwarded here to avoid duplicates
                 if stream_mode == "messages":
-                    # chunk is a tuple: (message_chunk, metadata)
-                    # message_chunk is the token or message segment from the LLM
-                    # metadata contains node info with 'langgraph_node' field (per LangGraph docs)
-                    try:
-                        message, metadata = chunk
-                        if hasattr(message, 'content') and message.content:
-                            # Filter tokens by node name using 'langgraph_node' field (per LangGraph docs)
-                            # https://docs.langchain.com/oss/python/langgraph/streaming#filter-by-node
-                            node_name = metadata.get('langgraph_node', metadata.get('node', 'unknown')) if isinstance(metadata, dict) else 'unknown'
-                            
-                            # Only forward tokens from the answer node (final synthesis)
-                            # Other nodes' LLM outputs should only appear in Agent Thinking
-                            if node_name == "answer":
-                                token_content = message.content
-                                logger.debug(f"💬 Streaming token from messages mode (node '{node_name}'): {len(token_content)} chars")
-                                token_data = {
-                                    'type': 'token',
-                                    'content': token_content,
-                                    'node': node_name,
-                                    'timestamp': time.time()
-                                }
-                                yield f"data: {json.dumps(token_data)}\n\n"
-                                await asyncio.sleep(0.001)  # Minimal delay for proper streaming
-                            else:
-                                # Log but don't forward - these are internal reasoning, not user-facing
-                                logger.debug(f"Filtered out token from node '{node_name}' (not answer node)")
-                    except (ValueError, TypeError) as e:
-                        # If chunk format is different, log and continue
-                        logger.debug(f"Messages mode chunk format: {type(chunk)}, error: {e}")
+                    # Skip token forwarding - tokens are handled in "custom" mode
+                    # This prevents duplicate tokens being sent (once from messages mode, once from custom mode)
                     continue
                 
                 # Handle custom events (emitted directly from nodes)
@@ -871,6 +890,9 @@ async def chat_stream_handler(request: ChatRequest):
                             # Forward token to frontend for real-time streaming
                             token_content = chunk.get('content', '')
                             token_node = chunk.get('node', 'answer')
+                            # Strip asterisks from project patterns in token (helps with streaming)
+                            # Note: This won't catch split patterns, but will handle complete ones
+                            token_content = strip_asterisks_from_projects(token_content)
                             logger.debug(f"💬 Streaming token from node '{token_node}': {len(token_content)} chars")
                             yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': token_node, 'timestamp': time.time()})}\n\n"
                             await asyncio.sleep(0.001)  # Minimal delay for proper streaming
@@ -1003,39 +1025,172 @@ async def chat_stream_handler(request: ChatRequest):
                 yield f"data: {json.dumps({'type': 'error', 'message': 'No result returned from RAG'})}\n\n"
                 return
             
-            # Extract final answer
+            # Extract final answer (matching chat endpoint logic)
             answer = final_state.get("final_answer") or final_state.get("answer", "No answer generated.")
-            code_answer = final_state.get("code_answer")
-            coop_answer = final_state.get("coop_answer")
+            code_answer = final_state.get("code_answer")  # May be None if code_db not enabled
+            coop_answer = final_state.get("coop_answer")  # May be None if coop_manual not enabled
+            code_citations = final_state.get("code_citations", [])
+            coop_citations = final_state.get("coop_citations", [])
+            project_citations = final_state.get("answer_citations", [])  # Project citations
+            image_similarity_results = final_state.get("image_similarity_results", [])  # Similar images from embedding search
+            follow_up_questions = final_state.get("follow_up_questions", [])  # Follow-up questions from verifier
+            follow_up_suggestions = final_state.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
             
-            # Combine answers
-            combined_answer = answer
-            if code_answer:
-                combined_answer = f"{combined_answer}\n\n--- Code References ---\n\n{code_answer}"
-            if coop_answer:
-                combined_answer = f"{combined_answer}\n\n--- Training Manual References ---\n\n{coop_answer}"
+            # Check which databases were used (matching chat endpoint)
+            has_project = bool(answer and answer.strip())
+            has_code = bool(code_answer and code_answer.strip())
+            has_coop = bool(coop_answer and coop_answer.strip())
+            enabled_count = sum([has_project, has_code, has_coop])
+            multiple_enabled = enabled_count > 1
+            
+            # Handle empty or None answers (matching chat endpoint)
+            if not answer or answer.strip() == "":
+                # Only set error message if there's no code_answer or coop_answer (pure project_db mode)
+                if not code_answer or not code_answer.strip():
+                    if not coop_answer or not coop_answer.strip():
+                        answer = "I couldn't generate a response. Please try rephrasing your question or check that the system is properly configured."
             
             # Calculate latency
             latency_ms = (time.time() - start_time) * 1000
             
-            # Extract follow-up questions and suggestions
-            follow_up_questions = final_state.get("follow_up_questions", [])
-            follow_up_suggestions = final_state.get("follow_up_suggestions", [])
-            
-            # Build response
-            response_data = {
-                'reply': combined_answer,
-                'message': combined_answer,  # For compatibility
-                'session_id': request.session_id,
-                'timestamp': datetime.now().isoformat(),
-                'latency_ms': round(latency_ms, 2),
-                'citations': len(final_state.get("answer_citations", [])),
-                'route': final_state.get("data_route"),
-                'message_id': message_id,
-                'follow_up_questions': follow_up_questions if follow_up_questions else None,
-                'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None,
-                'image_similarity_results': final_state.get("image_similarity_results") if final_state.get("image_similarity_results") else None
-            }
+            # Process answers separately for multi-bubble display (matching chat endpoint)
+            if multiple_enabled:
+                # Multiple databases enabled - return separate answers
+                # Strip asterisks from project names/numbers
+                processed_project_answer = strip_asterisks_from_projects(answer) if has_project else None
+                
+                # Wrap code file citations with file-link tags (shows filename)
+                processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else code_answer
+                
+                # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
+                if has_code:
+                    processed_code_answer = wrap_external_links(processed_code_answer)
+                
+                # Wrap coop file citations with file-link tags (shows page number only)
+                processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else coop_answer
+                
+                # Log to Supabase (matching chat endpoint)
+                supabase_logger = get_supabase_logger()
+                if supabase_logger.enabled:
+                    user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
+                    # Build combined logging text
+                    parts = []
+                    if has_project:
+                        parts.append(answer)
+                    if has_code:
+                        parts.append(f"--- Code References ---\n\n{code_answer}")
+                    if has_coop:
+                        parts.append(f"--- Training Manual References ---\n\n{coop_answer}")
+                    combined_for_logging = "\n\n".join(parts)
+                    
+                    # Upload first image if provided (for logging)
+                    image_url = None
+                    if images_to_process and len(images_to_process) > 0:
+                        image_url = supabase_logger.upload_image(
+                            images_to_process[0],
+                            message_id,
+                            "image/png"
+                        )
+                    
+                    query_data = {
+                        "message_id": message_id,
+                        "session_id": request.session_id,
+                        "user_query": request.message,
+                        "rag_response": combined_for_logging,
+                        "route": final_state.get("data_route"),
+                        "citations_count": len(project_citations) + len(code_citations) + len(coop_citations),
+                        "latency_ms": round(latency_ms, 2),
+                        "user_identifier": user_identifier,
+                        "image_url": image_url
+                    }
+                    supabase_logger.log_user_query(query_data)
+                
+                # Build response with separate answers (matching chat endpoint)
+                response_data = {
+                    'reply': processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
+                    'session_id': request.session_id,
+                    'timestamp': datetime.now().isoformat(),
+                    'latency_ms': round(latency_ms, 2),
+                    'citations': len(project_citations) + len(code_citations) + len(coop_citations),  # Total citations
+                    'route': final_state.get("data_route"),
+                    'message_id': message_id,
+                    'project_answer': processed_project_answer,
+                    'code_answer': processed_code_answer,
+                    'coop_answer': processed_coop_answer,
+                    'project_citations': len(project_citations) if has_project else None,
+                    'code_citations': len(code_citations) if has_code else None,
+                    'coop_citations': len(coop_citations) if has_coop else None,
+                    'image_similarity_results': image_similarity_results if image_similarity_results else None,
+                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
+                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
+                }
+            else:
+                # Single answer mode (backward compatible, matching chat endpoint)
+                if code_answer and code_answer.strip():
+                    combined_answer = code_answer
+                    total_citations = len(code_citations)
+                elif coop_answer and coop_answer.strip():
+                    combined_answer = coop_answer
+                    total_citations = len(coop_citations)
+                else:
+                    combined_answer = answer
+                    total_citations = len(project_citations)
+                
+                # Strip asterisks from project names/numbers
+                combined_answer = strip_asterisks_from_projects(combined_answer)
+                
+                # Wrap code file citations with file-link tags for clickable links
+                if code_citations:
+                    combined_answer = wrap_code_file_links(combined_answer, code_citations)
+                
+                # Wrap coop file citations with file-link tags for clickable links
+                if coop_citations:
+                    combined_answer = wrap_code_file_links(combined_answer, coop_citations)
+                
+                # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
+                if code_answer and code_answer.strip():
+                    combined_answer = wrap_external_links(combined_answer)
+                
+                # Log to Supabase (matching chat endpoint)
+                supabase_logger = get_supabase_logger()
+                if supabase_logger.enabled:
+                    user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
+                    
+                    # Upload first image if provided (for logging)
+                    image_url = None
+                    if images_to_process and len(images_to_process) > 0:
+                        image_url = supabase_logger.upload_image(
+                            images_to_process[0],
+                            message_id,
+                            "image/png"
+                        )
+                    
+                    query_data = {
+                        "message_id": message_id,
+                        "session_id": request.session_id,
+                        "user_query": request.message,
+                        "rag_response": combined_answer,
+                        "route": final_state.get("data_route"),
+                        "citations_count": total_citations,
+                        "latency_ms": round(latency_ms, 2),
+                        "user_identifier": user_identifier,
+                        "image_url": image_url
+                    }
+                    supabase_logger.log_user_query(query_data)
+                
+                # Build response (matching chat endpoint)
+                response_data = {
+                    'reply': combined_answer,
+                    'session_id': request.session_id,
+                    'timestamp': datetime.now().isoformat(),
+                    'latency_ms': round(latency_ms, 2),
+                    'citations': total_citations,
+                    'route': final_state.get("data_route"),
+                    'message_id': message_id,
+                    'image_similarity_results': image_similarity_results if image_similarity_results else None,
+                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
+                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
+                }
             
             # Send completion event with final result
             yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"
