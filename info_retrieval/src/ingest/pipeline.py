@@ -9,7 +9,7 @@ from typing import Dict, List
 
 from ..embeddings.embedding_service import EmbeddingService
 from ..storage.metadata_db import MetadataDB
-from ..storage.vector_db import VectorDB
+from ..storage.vector_store import Chunk, VectorStore
 from ..utils.logger import get_logger
 from .chunking import chunk_pdf_pages, smart_chunk, tag_chunks_with_type
 from .document_parser import parse_docx, parse_pdf
@@ -27,12 +27,12 @@ class IngestionPipeline:
     def __init__(
         self,
         embedding_service: EmbeddingService,
-        vector_db: VectorDB,
+        vector_store: VectorStore,
         metadata_db: MetadataDB,
         company_id: str,
     ) -> None:
         self.embedding_service = embedding_service
-        self.vector_db = vector_db
+        self.vector_store = vector_store
         self.metadata_db = metadata_db
         self.company_id = company_id
         self.metadata_extractor = MetadataExtractor()
@@ -74,16 +74,10 @@ class IngestionPipeline:
             logger.warning("No embeddings generated for %s", file_path)
             return {"artifact_id": doc_meta["artifact_id"], "version_id": doc_meta["version_id"], "chunk_count": 0}
 
-        # ensure collections initialized
-        self.vector_db.initialize_collections(self.company_id, len(embeddings[0]))
-
-        content_chunks = []
-        content_vectors = []
-        style_chunks = []
-        style_vectors = []
-
+        chunk_records: List[Chunk] = []
         for idx, (chunk, vector) in enumerate(zip(tagged_chunks, embeddings)):
             chunk_id = f"{doc_meta['artifact_id']}_{idx}"
+            section_type = doc_meta.get("section_types", {}).get(chunk.get("section_title"))
             chunk_metadata = {
                 "chunk_id": chunk_id,
                 "artifact_id": doc_meta["artifact_id"],
@@ -91,8 +85,9 @@ class IngestionPipeline:
                 "company_id": self.company_id,
                 "source": doc_meta.get("source", "upload"),
                 "doc_type": doc_meta.get("doc_type"),
-                "section_type": doc_meta.get("section_types", {}).get(chunk.get("section_title")),
+                "section_type": section_type,
                 "chunk_type": chunk.get("chunk_type", "content"),
+                "index_type": chunk.get("chunk_type", "content"),
                 "calculation_type": doc_meta.get("calculation_type"),
                 "text": chunk.get("text"),
                 "page_number": chunk.get("page_number"),
@@ -100,19 +95,11 @@ class IngestionPipeline:
                 "schema_version": "1.0",
             }
 
-            if chunk_metadata["chunk_type"] == "style":
-                style_chunks.append(chunk_metadata)
-                style_vectors.append(vector)
-            else:
-                content_chunks.append(chunk_metadata)
-                content_vectors.append(vector)
-
             self.metadata_db.insert_chunk_metadata(chunk_metadata)
+            chunk_records.append(Chunk(id=chunk_id, text=chunk["text"], embedding=vector, metadata=chunk_metadata))
 
-        if content_chunks:
-            self.vector_db.insert_chunks(content_chunks, content_vectors, content_chunks, self.company_id)
-        if style_chunks:
-            self.vector_db.insert_chunks(style_chunks, style_vectors, style_chunks, self.company_id)
+        if chunk_records:
+            self.vector_store.upsert(chunk_records)
 
         return {
             "artifact_id": doc_meta["artifact_id"],
