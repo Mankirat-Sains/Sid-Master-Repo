@@ -830,13 +830,10 @@ async def chat_stream_handler(request: ChatRequest):
                 log_vlm.info(f"📝 User question: {request.message[:150] if request.message else 'General image description'}")
                 log_vlm.info("🔷" * 30)
                 
-<<<<<<< HEAD
                 # Emit thinking log for VLM processing
-=======
                 # Log VLM processing to terminal and send to stream for Agent Thinking panel
                 logger.info(f"🖼️ Processing {len(images_to_process)} image(s) with vision model...")
                 # Send to stream for Agent Thinking panel - frontend will route to correct panel
->>>>>>> origin/main
                 yield f"data: {json.dumps({'type': 'thinking', 'message': f'Processing {len(images_to_process)} image(s) with vision model...', 'node': 'vlm_processing', 'timestamp': time.time()})}\n\n"
                 await asyncio.sleep(0.001)
                 
@@ -943,18 +940,6 @@ async def chat_stream_handler(request: ChatRequest):
                         # Get the content from the message chunk
                         if hasattr(message_chunk, 'content') and message_chunk.content:
                             token_content = message_chunk.content
-<<<<<<< HEAD
-                            # Only stream tokens from synthesis LLM (answer node)
-                            # Check metadata for node info or just stream all tokens
-                            node_name = metadata.get('langgraph_node', 'answer') if isinstance(metadata, dict) else 'answer'
-                            
-                            # Strip asterisks from project patterns
-                            token_content = strip_asterisks_from_projects(token_content)
-                            
-                            # Stream token to frontend
-                            logger.debug(f"💬 Streaming token: {len(token_content)} chars from {node_name}")
-                            yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': node_name, 'timestamp': time.time()})}\n\n"
-=======
                             # Only stream tokens from synthesis LLM (answer node) - filter out other nodes
                             # Check metadata for node info to filter tokens
                             node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
@@ -973,7 +958,6 @@ async def chat_stream_handler(request: ChatRequest):
                             # Stream token to frontend (only answer node tokens)
                             logger.debug(f"💬 Streaming token: {len(token_content)} chars from {node_name}")
                             yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': 'answer', 'timestamp': time.time()})}\n\n"
->>>>>>> origin/main
                             await asyncio.sleep(0.001)  # Minimal delay for proper streaming
                     continue
                 
@@ -1115,7 +1099,6 @@ async def chat_stream_handler(request: ChatRequest):
                     else:
                         logger.info(f"⏭️  No thinking log generated for node '{node_name}'")
                     
-<<<<<<< HEAD
                     # STREAM ANSWER IMMEDIATELY when answer node completes
                     # Don't wait for verify/correct - stream now for instant feedback!
                     if node_name == "answer" and messages_received == 0:
@@ -1138,14 +1121,12 @@ async def chat_stream_handler(request: ChatRequest):
                                 yield f"data: {json.dumps({'type': 'token', 'content': word_chunk, 'node': 'answer', 'timestamp': time.time()})}\n\n"
                                 await asyncio.sleep(0.008)  # Small delay for visual effect
                             logger.info(f"✅ Finished streaming answer")
-=======
                     # DO NOT manually stream answer - tokens come via "messages" mode
                     # The manual word-by-word streaming causes duplication
                     # Tokens are already being streamed in real-time via messages mode (line 930)
                     # This manual streaming was causing word duplication ("Project Project", etc.)
                     if node_name == "answer":
                         logger.info(f"📤 Answer node completed - tokens streaming via messages mode (received: {messages_received})")
->>>>>>> origin/main
                     
                     # Store final state - correct node is the last one
                     final_state = state_dict.copy()
@@ -1257,11 +1238,7 @@ async def chat_stream_handler(request: ChatRequest):
                     'project_citations': len(project_citations) if has_project else None,
                     'code_citations': len(code_citations) if has_code else None,
                     'coop_citations': len(coop_citations) if has_coop else None,
-<<<<<<< HEAD
-                    'image_similarity_results': image_similarity_results if image_similarity_results else None,
-=======
                     'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
->>>>>>> origin/main
                     'follow_up_questions': follow_up_questions if follow_up_questions else None,
                     'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
                 }
@@ -1328,12 +1305,6 @@ async def chat_stream_handler(request: ChatRequest):
                     'citations': total_citations,
                     'route': final_state.get("data_route"),
                     'message_id': message_id,
-<<<<<<< HEAD
-                    'image_similarity_results': image_similarity_results if image_similarity_results else None,
-                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
-                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
-                }
-=======
                     'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
                     'follow_up_questions': follow_up_questions if follow_up_questions else None,
                     'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
@@ -1346,7 +1317,6 @@ async def chat_stream_handler(request: ChatRequest):
                     logger.info(f"🖼️   Image {i+1}: project={img.get('project_key')}, page={img.get('page_number')}, url={img.get('image_url', 'MISSING')[:50]}...")
             else:
                 logger.info(f"🖼️ No image similarity results to send (image_similarity_results is empty or None)")
->>>>>>> origin/main
             
             # Send completion event with final result
             yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"

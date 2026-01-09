@@ -180,31 +180,6 @@ def create_llm_instance(model_name: str, temperature: float = 0, **kwargs):
     Create an LLM instance using Groq if available and model is a Groq model,
     otherwise fall back to OpenAI.
     
-<<<<<<< Updated upstream
-    Groq models: llama-3.1-*, mixtral-*, gemma-*, qwen-*
-    
-    Note: Groq doesn't support response_format parameter, so it's filtered out for Groq models.
-    """
-    # Check if model is a Groq model
-    groq_models = ["llama-3.1", "mixtral", "gemma", "qwen"]
-    is_groq_model = any(model_name.startswith(prefix) for prefix in groq_models)
-    
-    if is_groq_model and GROQ_AVAILABLE and GROQ_API_KEY:
-        try:
-            # Remove response_format for Groq (not supported)
-            groq_kwargs = {k: v for k, v in kwargs.items() if k != "response_format"}
-            return ChatGroq(
-                model=model_name,
-                temperature=temperature,
-                groq_api_key=GROQ_API_KEY,
-                **groq_kwargs
-            )
-        except Exception as e:
-            log_syn.warning(f"⚠️  Failed to create Groq instance for {model_name}: {e}. Falling back to OpenAI.")
-            return ChatOpenAI(model=FAST_MODEL, temperature=temperature, **kwargs)
-    else:
-        # Use OpenAI for non-Groq models or if Groq is not available
-=======
     Groq models: llama-3.3-*, llama-3.1-*, mixtral-*, gemma-*
     
     Note: Groq doesn't support response_format parameter, so it's filtered out for Groq models.
@@ -245,7 +220,6 @@ def create_llm_instance(model_name: str, temperature: float = 0, **kwargs):
             log_syn.warning(f"⚠️  Groq SDK not available, using OpenAI for '{model_name}'")
         elif not GROQ_API_KEY:
             log_syn.warning(f"⚠️  GROQ_API_KEY not set, using OpenAI for '{model_name}'")
->>>>>>> Stashed changes
         return ChatOpenAI(model=model_name, temperature=temperature, **kwargs)
 
 
@@ -301,7 +275,6 @@ def log_model_configuration():
     log_syn.info("🤖 LLM MODEL CONFIGURATION")
     log_syn.info("=" * 80)
     
-<<<<<<< Updated upstream
     # Fast models
     log_syn.info(f"⚡ FAST_MODEL: {FAST_MODEL} ({'Groq' if any(FAST_MODEL.startswith(p) for p in ['llama-3.1', 'mixtral', 'gemma', 'qwen']) else 'OpenAI'})")
     log_syn.info(f"⚡ ROUTER_MODEL: {ROUTER_MODEL} ({'Groq' if any(ROUTER_MODEL.startswith(p) for p in ['llama-3.1', 'mixtral', 'gemma', 'qwen']) else 'OpenAI'})")
@@ -309,23 +282,6 @@ def log_model_configuration():
     log_syn.info(f"⚡ SUPPORT_MODEL: {SUPPORT_MODEL} ({'Groq' if any(SUPPORT_MODEL.startswith(p) for p in ['llama-3.1', 'mixtral', 'gemma', 'qwen']) else 'OpenAI'})")
     log_syn.info(f"⚡ RAG_PLANNER_MODEL: {RAG_PLANNER_MODEL} ({'Groq' if any(RAG_PLANNER_MODEL.startswith(p) for p in ['llama-3.1', 'mixtral', 'gemma', 'qwen']) else 'OpenAI'})")
     log_syn.info(f"⚡ VERIFY_MODEL: {VERIFY_MODEL} ({'Groq' if any(VERIFY_MODEL.startswith(p) for p in ['llama-3.1', 'mixtral', 'gemma', 'qwen']) else 'OpenAI'})")
-=======
-    # Helper function to check if model is Groq
-    def is_groq_model(model_name):
-        groq_prefixes = [
-            "llama-3.3", "llama-3.1", "mixtral", "gemma",
-            "meta-llama/", "openai/gpt-oss", "moonshotai/kimi", "qwen/qwen3"
-        ]
-        return any(model_name.startswith(p) for p in groq_prefixes)
-    
-    # Fast models
-    log_syn.info(f"⚡ FAST_MODEL: {FAST_MODEL} ({'Groq' if is_groq_model(FAST_MODEL) else 'OpenAI'})")
-    log_syn.info(f"⚡ ROUTER_MODEL: {ROUTER_MODEL} ({'Groq' if is_groq_model(ROUTER_MODEL) else 'OpenAI'})")
-    log_syn.info(f"⚡ GRADER_MODEL: {GRADER_MODEL} ({'Groq' if is_groq_model(GRADER_MODEL) else 'OpenAI'})")
-    log_syn.info(f"⚡ SUPPORT_MODEL: {SUPPORT_MODEL} ({'Groq' if is_groq_model(SUPPORT_MODEL) else 'OpenAI'})")
-    log_syn.info(f"⚡ RAG_PLANNER_MODEL: {RAG_PLANNER_MODEL} ({'Groq' if is_groq_model(RAG_PLANNER_MODEL) else 'OpenAI'})")
-    log_syn.info(f"⚡ VERIFY_MODEL: {VERIFY_MODEL} ({'Groq' if is_groq_model(VERIFY_MODEL) else 'OpenAI'})")
->>>>>>> Stashed changes
     
     # High-quality models (synthesis - keep as OpenAI/Anthropic)
     log_syn.info(f"🎯 SYNTHESIS_MODEL: {SYNTHESIS_MODEL} (OpenAI/Anthropic)")
