@@ -23,13 +23,15 @@ ANSWER_PROMPT = PromptTemplate.from_template(
     "- Group projects by category in your answer when listing multiple projects.\n\n"
     
     "CATEGORIZATION RULES:\n"
-    f"{PROJECT_CATEGORIES}\n\n"
+    f"{PROJECT_CATEGORIES.replace('{', '{{').replace('}', '}}')}\n\n"
     
     "When referring to a project, ALWAYS use the FULL project details provided in the context headers. "
     "Format: 'Project [NUMBER] - Project Name: [NAME], Project Address: [ADDRESS], City: [CITY]' "
     "Example: 'Project 25-08-005 - Project Name: Smith Residence, Project Address: 123 Main St, City: Toronto' "
     "If the context header doesn't include all fields, use only what's available. "
     "Quote values with units. "
+    "IMPORTANT: Do NOT use markdown formatting (asterisks **) for project names or numbers. Use plain text only. "
+    "Do NOT write '**Project 25-01-002**' - write 'Project 25-01-002' instead (without asterisks). "
 
     "CRITICAL INSTRUCTIONS: "
     "- For queries about specific equipment, features, or topics (like 'forklift extensions', 'concrete slabs', 'steel beams', etc.), you MUST list EVERY SINGLE project that matches the criteria. "
@@ -38,6 +40,15 @@ ANSWER_PROMPT = PromptTemplate.from_template(
     "- If there are 5 matching projects, list all 5. If there are 10, list all 10. "
     "- If unsure, always provide multiple projects if available...if less, provide all projects that match the user's query "
     "- IMPORTANT: Apply category filtering FIRST - if user asks for 'residential projects', exclude non-residential projects even if they match other criteria\n\n"
+    
+    "MATHEMATICAL EQUATIONS: "
+    "- ALWAYS format mathematical equations using LaTeX syntax with proper delimiters "
+    "- For block/display equations (equations on their own line): wrap them in $$...$$ delimiters "
+    "- For inline equations (equations within text): wrap them in $...$ delimiters "
+    "- Use standard LaTeX syntax for subscripts (e.g., C_e, x_{{12}}), superscripts (e.g., V^2, x^{{2+3}}), and other mathematical notation "
+    "- Example block equation: $$P = q \\cdot C_e \\cdot C_g \\cdot C_p$$ "
+    "- Example inline equation: The wind pressure is $P = q \\cdot C_e$ where... "
+    "- Do NOT use plain text like 'P = q * C_e' - always use LaTeX format with delimiters\n\n"
     
     "SORTING INSTRUCTIONS: "
     "- When listing multiple projects, ALWAYS sort by date with NEWEST/MOST RECENT projects FIRST. "
@@ -92,6 +103,15 @@ CODE_ANSWER_PROMPT = PromptTemplate.from_template(
     "- Display text should be 'Sidcode' "
     "- This reference should be added as a separate paragraph at the very end, after all citations\n\n"
     
+    "MATHEMATICAL EQUATIONS: "
+    "- ALWAYS format mathematical equations using LaTeX syntax with proper delimiters "
+    "- For block/display equations (equations on their own line): wrap them in $$...$$ delimiters "
+    "- For inline equations (equations within text): wrap them in $...$ delimiters "
+    "- Use standard LaTeX syntax for subscripts (e.g., C_e, x_{{12}}), superscripts (e.g., V^2, x^{{2+3}}), and other mathematical notation "
+    "- Example block equation: $$P = q \\cdot C_e \\cdot C_g \\cdot C_p$$ "
+    "- Example inline equation: The wind pressure is $P = q \\cdot C_e$ where... "
+    "- Do NOT use plain text like 'P = q * C_e' - always use LaTeX format with delimiters\n\n"
+    
     "ANSWER STRUCTURE: "
     "1. Provide your answer with inline citations using the format [Document: filename, Page: X] where appropriate "
     "2. DO NOT add a References section - only use inline citations in brackets "
@@ -141,6 +161,15 @@ COOP_ANSWER_PROMPT = PromptTemplate.from_template(
     "- Multiple citations: 'Training covers both safety protocols [Document: filename, Page: X] and reporting procedures [Document: filename, Page: Y]' "
     "- IMPORTANT: Use the exact filename and page number from the context headers - each citation will link to its specific page "
     "- Keep citations concise - the system will convert them to clean clickable links automatically\n\n"
+    
+    "MATHEMATICAL EQUATIONS: "
+    "- ALWAYS format mathematical equations using LaTeX syntax with proper delimiters "
+    "- For block/display equations (equations on their own line): wrap them in $$...$$ delimiters "
+    "- For inline equations (equations within text): wrap them in $...$ delimiters "
+    "- Use standard LaTeX syntax for subscripts (e.g., C_e, x_{{12}}), superscripts (e.g., V^2, x^{{2+3}}), and other mathematical notation "
+    "- Example block equation: $$P = q \\cdot C_e \\cdot C_g \\cdot C_p$$ "
+    "- Example inline equation: The wind pressure is $P = q \\cdot C_e$ where... "
+    "- Do NOT use plain text like 'P = q * C_e' - always use LaTeX format with delimiters\n\n"
     
     "ANSWER STRUCTURE: "
     "1. Provide your answer with inline citations using the format [Document: filename, Page: X] where appropriate "

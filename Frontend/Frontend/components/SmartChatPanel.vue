@@ -23,7 +23,7 @@
           :class="
             message.role === 'user'
               ? 'bg-gradient-to-br from-purple-600 to-purple-700 text-white shadow-lg'
-              : 'bg-white/90 backdrop-blur-sm text-gray-800 border border-gray-200 shadow-md'
+              : 'bg-red-500 border-4 border-red-700 text-white shadow-lg'
           "
         >
           <div 
@@ -32,7 +32,7 @@
             :data-message-id="message.id"
             style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;"
           >
-            <span v-html="formatMessage(message.content)"></span>
+            <span v-html="getFormattedMessage(message)"></span>
             <span v-if="message.isTyping" class="inline-block w-2 h-4 bg-gray-800 animate-pulse ml-1">|</span>
           </div>
           <p 
@@ -360,6 +360,8 @@ const inputMessage = ref('')
 const inputTextarea = ref<HTMLTextAreaElement | null>(null)
 const isLoading = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
+// Reactive counter to force Vue to detect every token update immediately
+const renderKey = ref(0)
 const thinkingMessage = ref<string>('')
 const thinkingInterval = ref<ReturnType<typeof setInterval> | null>(null)
 const imageInputRef = ref<HTMLInputElement>()
@@ -726,14 +728,12 @@ async function handleSend() {
     
     // Accumulated thinking logs for logging purposes only (not displayed in chat)
     let thinkingContent = ''
-    let gotStreamResult = false
-    let streamError: Error | null = null
     
     // Use streaming endpoint ONLY (removed duplicate sendSmartMessage call)
     await sendChatMessageStream(
       userMessage,
       'default',
-      imagesBase64, // Pass images to backend for VLM processing and image similarity search
+      undefined,
       undefined, // dataSources removed - backend router now intelligently selects databases
       {
         // On thinking log received
@@ -763,59 +763,69 @@ async function handleSend() {
         },
         
         // On token received (real-time LLM token streaming)
-        onToken: async (token) => {
-          console.log('💬 Token received:', { 
-            contentLength: token.content?.length, 
-            node: token.node,
-            preview: token.content?.substring(0, 50) 
-          })
-          
-          // Create streaming message on first token if it doesn't exist
+        onToken: (token) => {
+          // Create or update streaming message
           let streamingMessage = messages.value.find(m => m.id === 'streaming-answer')
           
           if (!streamingMessage) {
-            // Create new streaming message immediately when first token arrives
-            stopThinking() // Stop thinking indicator when answer starts
+            // Create new streaming message - answer is now streaming
+            // IMPORTANT: Stop ALL loading indicators immediately when answer starts
+            stopThinking() // Stop thinking indicator
+            thinkingMessage.value = '' // Clear any thinking message
+            isLoading.value = false // Stop loading indicator - answer is streaming!
             streamingMessage = {
               id: 'streaming-answer',
               role: 'assistant',
               content: '',
               timestamp: new Date(),
-              isTyping: false // Not using simulated typing - real streaming
+              isTyping: false // Not using simulated typing
             }
             messages.value.push(streamingMessage)
-            await nextTick() // Ensure DOM is updated
             scrollToBottom(true) // Force scroll when streaming starts
           }
           
           // Append token content in real-time
           const messageIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
           if (messageIndex !== -1) {
-            // Append raw token content immediately
-            // Vue's reactivity will automatically trigger v-html re-render, which calls formatMessage()
-            // This ensures markdown formatting (bold, headers, etc.) updates in real-time as tokens arrive
-            messages.value[messageIndex].content += token.content
+            // Get current message content
+            const currentContent = messages.value[messageIndex].content || ''
             
-            // Use nextTick to ensure Vue processes the reactivity update and re-renders
-            // This ensures formatMessage() is called with the updated content immediately
-            await nextTick()
+            // Append token content
+            const newContent = currentContent + token.content
             
-            // Render MathJax equations after DOM update
-            // Check if content contains math delimiters to trigger rendering
-            const content = messages.value[messageIndex].content
-            const hasMath = content.includes('$') || content.includes('$$')
+            // CRITICAL: Force Vue to detect the change immediately
+            // Use splice to ensure Vue's array reactivity triggers
+            // Increment renderKey BEFORE updating to ensure reactive dependency is set
+            renderKey.value++ // Increment first to trigger reactive dependency
+            messages.value.splice(messageIndex, 1, { 
+              ...messages.value[messageIndex],
+              content: newContent
+            }) // Use splice for guaranteed reactivity
             
-            const messageElement = document.querySelector(`[data-message-id="${messages.value[messageIndex].id}"]`)
-            if (messageElement && hasMath) {
-              // Render MathJax when math is detected - small delay to ensure DOM is updated
-              setTimeout(() => {
-                renderMathJax(messageElement as HTMLElement)
-              }, 100)
+            // Note: Vue's reactivity will automatically call getFormattedMessage() via v-html
+            // The optimistic formatting in formatMarkdownWithState will immediately apply
+            // formatting when opening tags like ** are detected
+            
+            // Schedule MathJax rendering periodically without blocking token stream
+            const contentLength = messages.value[messageIndex].content.length
+            if (contentLength % 20 === 0) {
+              // Use requestAnimationFrame + nextTick for non-blocking rendering
+              requestAnimationFrame(() => {
+                nextTick().then(() => {
+                  const messageElement = document.querySelector(`[data-message-id="${messages.value[messageIndex].id}"]`)
+                  if (messageElement) {
+                    renderMathJax(messageElement as HTMLElement)
+                  }
+                })
+              })
             }
             
-            // Auto-scroll periodically during streaming (every ~50 chars)
-            if (content.length % 50 === 0) {
-              scrollToBottom() // Don't force - respect user's scroll position
+            // Auto-scroll periodically during streaming (non-blocking)
+            if (contentLength % 50 === 0) {
+              // Schedule scroll without blocking
+              requestAnimationFrame(() => {
+                scrollToBottom() // Don't force - respect user's scroll position
+              })
             }
           }
         },
@@ -824,44 +834,37 @@ async function handleSend() {
         onComplete: async (result) => {
           console.log('✅ Stream complete:', result)
           stopThinking()
-          gotStreamResult = true
+          isLoading.value = false // Immediately stop loading indicator on completion
           
           // Finalize streaming message if it exists
           const streamingIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
           let finalAnswer = ''
-          
+          let finalMessageId = ''
           if (streamingIndex !== -1) {
-            // Streaming message exists - use its content (already streamed in real-time)
-            // Only update if result has additional content not already streamed
-            const currentContent = messages.value[streamingIndex].content
-            const resultContent = result.reply || result.message || ''
+            // Use the accumulated content from streaming (already formatted via getFormattedMessage)
+            // Don't overwrite with result.reply as it might be different or unformatted
+            finalAnswer = messages.value[streamingIndex].content || result.reply || result.message || 'No response generated.'
             
-            // Use the longer content (in case result has more complete answer)
-            finalAnswer = resultContent.length > currentContent.length ? resultContent : currentContent
+            // Ensure content is formatted (it should already be, but ensure it)
+            // Don't replace if it's already the same - just update the ID
             messages.value[streamingIndex].content = finalAnswer
-            messages.value[streamingIndex].id = `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}` // Give it a permanent ID
-            messages.value[streamingIndex].isTyping = false // Ensure typing indicator is off
+            finalMessageId = `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}` // Give it a permanent ID
+            messages.value[streamingIndex].id = finalMessageId
+            
+            // Force one final render to ensure formatting sticks
+            renderKey.value++
+            messages.value.splice(streamingIndex, 1, { ...messages.value[streamingIndex] })
           } else {
-            // No streaming happened - this shouldn't occur with proper streaming, but handle gracefully
-            // Create message directly without fake typing
-            console.warn('⚠️ Stream completed but no streaming message found - creating message directly')
+            // Fallback: if no streaming happened, use typed message
             finalAnswer = result.reply || result.message || 'No response generated.'
-            const messageId = `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-            messages.value.push({
-              id: messageId,
-              role: 'assistant',
-              content: finalAnswer,
-              timestamp: new Date(),
-              isTyping: false
-            })
-            await nextTick()
+            await addTypedMessage(finalAnswer, undefined, 300)
           }
           
           // Extract project keys from answer text and fetch Speckle models
           if (!finalAnswer) {
             finalAnswer = result.reply || result.message || ''
           }
-          await fetchAndDisplaySpeckleModels(finalAnswer, userMessage)
+          await fetchAndDisplaySpeckleModels(finalAnswer)
           
           // Emit response for logging
           emit('responseReceived', {
@@ -870,17 +873,19 @@ async function handleSend() {
           })
           
           // Render MathJax equations after final content is set
+          // Wait for Vue to update the DOM with the new ID
           await nextTick()
-          const finalMessageIndex = messages.value.findIndex(m => 
-            m.id === (streamingIndex !== -1 ? messages.value[streamingIndex].id : `msg-${Date.now()}`)
-          )
-          if (finalMessageIndex !== -1) {
-            const messageElement = document.querySelector(`[data-message-id="${messages.value[finalMessageIndex].id}"]`)
+          await nextTick() // Double nextTick to ensure DOM attribute is updated
+          if (finalMessageId) {
+            const messageElement = document.querySelector(`[data-message-id="${finalMessageId}"]`)
             if (messageElement) {
-              // Wait a bit for DOM to settle, then render MathJax
-              setTimeout(() => {
-                renderMathJax(messageElement as HTMLElement)
-              }, 100)
+              renderMathJax(messageElement as HTMLElement)
+            }
+          } else if (streamingIndex !== -1) {
+            // Fallback: query by array index if ID wasn't set
+            const messageElement = document.querySelector(`[data-message-id="${messages.value[streamingIndex].id}"]`)
+            if (messageElement) {
+              renderMathJax(messageElement as HTMLElement)
             }
           }
           
@@ -891,7 +896,7 @@ async function handleSend() {
         onError: async (error) => {
           console.error('❌ Stream error:', error)
           stopThinking()
-          streamError = error
+          isLoading.value = false // Immediately stop loading indicator on error
           
           // Display error message in chat
           await addTypedMessage(
@@ -902,26 +907,6 @@ async function handleSend() {
         }
       }
     )
-
-    if (streamError) {
-      // Error already surfaced to the user above, just exit early
-      return
-    }
-
-    if (!gotStreamResult) {
-      // Fallback to non-streaming response when stream finishes without a final answer
-      stopThinking()
-      const fallbackAnswer = response.message || 'No response generated.'
-      await addTypedMessage(fallbackAnswer, undefined, 300)
-      await fetchAndDisplaySpeckleModels(fallbackAnswer, userMessage)
-      
-      emit('responseReceived', {
-        ...response,
-        reply: fallbackAnswer,
-        message: fallbackAnswer,
-        thinking_log: response.thinking_log ?? (thinkingContent ? [thinkingContent] : undefined)
-      })
-    }
   } catch (error) {
     console.error('Chat error:', error)
     stopThinking()
@@ -961,34 +946,74 @@ function formatMessage(text: string): string {
   return formatMessageText(text)
 }
 
-// MathJax rendering helper - simple and effective
+// Get formatted message with reactive dependency on renderKey
+// When renderKey changes (on every token), Vue detects the change and re-computes the formatted content
+// Since this function is called from the template, Vue wraps it in an effect which tracks dependencies
+function getFormattedMessage(message: Message): string {
+  // Access renderKey.value to create a reactive dependency
+  // This ensures formatMessageText() is called on EVERY token update, not batched
+  void renderKey.value
+  return formatMessageText(message.content)
+}
+
+// MathJax rendering helper - simplified like temp folder version
+// No debouncing - render immediately on every call for real-time updates during streaming
 function renderMathJax(element?: HTMLElement) {
   if (typeof window === 'undefined') return
   
   const MathJax = (window as any).MathJax
-  
   if (!MathJax) {
-    // MathJax not loaded yet - retry after a delay
+    console.log('MathJax not available yet, will retry...')
+    // MathJax might not be loaded yet - wait a bit and try again
     setTimeout(() => {
-      const retryMathJax = (window as any).MathJax
-      if (retryMathJax && element) {
-        retryMathJax.typesetPromise([element]).catch((err: any) => {
-          console.warn('MathJax rendering error (retry):', err)
-        })
-      }
-    }, 300)
+      renderMathJax(element)
+    }, 100)
+    return
+  }
+  
+  // Wait for MathJax to be fully ready
+  if (MathJax.startup && !MathJax.startup.ready) {
+    console.log('MathJax not ready yet, waiting for startup...')
+    MathJax.startup.promise.then(() => {
+      renderMathJax(element)
+    }).catch(() => {
+      // If promise fails, try anyway after a delay
+      setTimeout(() => renderMathJax(element), 200)
+    })
     return
   }
   
   try {
     if (element) {
-      // Render math in the specific element
-      MathJax.typesetPromise([element]).catch((err: any) => {
-        console.warn('MathJax rendering error:', err)
+      // Debug: log what we're trying to render
+      const hasMath = element.innerHTML.includes('$$') || element.innerHTML.includes('\\(') || element.innerHTML.includes('\\[')
+      if (hasMath) {
+        console.log('🔢 Rendering MathJax for element with math:', {
+          hasBlockMath: element.innerHTML.includes('$$'),
+          hasInlineMath: element.innerHTML.includes('$') && !element.innerHTML.includes('$$'),
+          elementPreview: element.innerHTML.substring(0, 200)
+        })
+      }
+      
+      // Clear any existing MathJax rendering in this element first
+      try {
+        if (MathJax.typesetClear) {
+          MathJax.typesetClear([element])
+        }
+      } catch (e) {
+        // typesetClear might not be available in all versions, that's okay
+      }
+      // Direct rendering - MathJax handles updates automatically
+      MathJax.typesetPromise([element]).then(() => {
+        if (hasMath) {
+          console.log('✅ MathJax rendering completed')
+        }
+      }).catch((err: Error) => {
+        console.warn('❌ MathJax rendering error:', err)
       })
     } else {
-      // Render entire page
-      MathJax.typesetPromise().catch((err: any) => {
+      // Typeset entire document if no element specified
+      MathJax.typesetPromise().catch((err: Error) => {
         console.warn('MathJax rendering error:', err)
       })
     }

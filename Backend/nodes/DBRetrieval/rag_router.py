@@ -70,23 +70,6 @@ def node_rag_router(state: RAGState) -> dict:
             
             router_result = json.loads(json_str)
             
-            # Check if router is asking for clarification
-            if router_result.get("needs_clarification") == True:
-                clarification_question = router_result.get("clarification_question", "Which databases would you like me to search?")
-                log_route.info(f"❓ Router needs clarification: {clarification_question}")
-                
-                t_elapsed = time.time() - t_start
-                log_route.info(f"<<< RAG ROUTER DONE in {t_elapsed:.2f}s (clarification needed)")
-                
-                # Update state with clarification
-                state.needs_clarification = True
-                state.clarification_question = clarification_question
-                
-                return {
-                    "needs_clarification": True,
-                    "clarification_question": clarification_question
-                }
-                
         except json.JSONDecodeError as e:
             log_route.error(f"Failed to parse router JSON: {e}\nResponse: {router_response}")
             # Fallback to default
