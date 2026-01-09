@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 
 from ..utils.logger import get_logger
 from .document_parser import ParsedDocument, Section
+from .style_filter import StyleExemplarFilter
 
 logger = get_logger(__name__)
 
@@ -121,24 +122,36 @@ def classify_chunk_type(chunk: Dict[str, object], metadata: Optional[Dict[str, o
     """
     Determine if a chunk should be routed to content or style collection.
     """
-    text = str(chunk.get("text", "")).lower()
-    section_title = str(chunk.get("section_title", "")).lower()
     meta = metadata or {}
+    text = str(chunk.get("text", ""))
+    section_title = str(chunk.get("section_title", "")).lower()
     section_type = meta.get("section_type")
     if not section_type and isinstance(meta.get("section_types"), dict):
         section_type = meta["section_types"].get(chunk.get("section_title"))
 
-    content_keywords = ["calculation", "result", "table", "specification", "load", "kpa", "kN", "pressure"]
-    style_keywords = ["introduction", "methodology", "background", "scope", "conclusion", "summary", "purpose"]
+    style_filter = meta.get("_style_filter") or StyleExemplarFilter()
+    quality_score = style_filter.compute_quality_score(text)
 
-    if any(keyword.lower() in text for keyword in content_keywords):
-        return "content"
-    if any(keyword.lower() in section_title for keyword in content_keywords):
-        return "content"
-    if any(keyword.lower() in text for keyword in style_keywords):
+    style_meta = {
+        "section_type": section_type,
+        "heading": chunk.get("section_title"),
+        "tags": meta.get("tags", []),
+        "chunk_id": meta.get("chunk_id") or chunk.get("chunk_id"),
+    }
+
+    if style_filter.is_style_exemplar(text, style_meta, quality_score):
         return "style"
-    if section_type in {"introduction", "methodology", "conclusions"}:
+
+    content_keywords = ["calculation", "result", "table", "specification", "load", "kpa", "kn", "pressure"]
+    if any(keyword in text.lower() for keyword in content_keywords):
+        return "content"
+    if any(keyword in section_title for keyword in content_keywords):
+        return "content"
+
+    narrative_sections = {"introduction", "methodology", "conclusions", "assumptions", "limitations"}
+    if section_type in narrative_sections and quality_score > 0.7:
         return "style"
+
     return "content"
 
 
