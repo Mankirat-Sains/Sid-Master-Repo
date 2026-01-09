@@ -478,7 +478,13 @@
                             </div>
                           </div>
                         </transition>
-                        <div class="relative rounded-full bg-[#1c1c1c] border border-white/12 shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 h-16 flex items-center gap-4 text-left">
+                        <div 
+                          class="relative rounded-full bg-[#1c1c1c] border shadow-[0_8px_22px_rgba(0,0,0,0.35)] px-4 h-16 flex items-center gap-4 text-left transition-colors"
+                          :class="isDragging ? 'border-purple-500/50 bg-purple-500/10' : 'border-white/12'"
+                          @dragover.prevent="handleDragOver"
+                          @dragleave.prevent="handleDragLeave"
+                          @drop.prevent="handleDrop"
+                        >
                           <button
                             class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center flex-shrink-0"
                             aria-label="Attach"
@@ -497,6 +503,7 @@
                             rows="1"
                             @keydown.enter.exact.prevent="handleSend"
                             @input="resizePrompt"
+                            @paste="handlePaste"
                           ></textarea>
                           <button
                             class="h-10 w-10 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
@@ -550,6 +557,35 @@
                             >
                               <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
                               <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
+                            </div>
+                            <!-- Image gallery for similar images -->
+                            <div
+                              v-if="entry.role === 'assistant' && entry.images && entry.images.length > 0"
+                              class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3"
+                            >
+                              <div
+                                v-for="(img, imgIdx) in entry.images.slice(0, 6)"
+                                :key="imgIdx"
+                                class="relative group cursor-pointer rounded-lg overflow-hidden border border-white/20 hover:border-purple-500/50 transition-all"
+                                @click="openImageModal(img.url)"
+                              >
+                                <img
+                                  :src="img.url"
+                                  :alt="img.caption || 'Similar image'"
+                                  class="w-full h-32 object-cover"
+                                  loading="lazy"
+                                  @error="handleImageError"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div class="absolute bottom-0 left-0 right-0 p-2 text-white text-xs">
+                                    <div class="font-medium">{{ img.project_key }}</div>
+                                    <div class="text-white/70">Page {{ img.page_number }}</div>
+                                    <div v-if="img.similarity" class="text-purple-300 text-[10px]">
+                                      {{ (img.similarity * 100).toFixed(0) }}% similar
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                             <div
                               class="flex items-center gap-3 text-[11px] text-white/50 mt-1 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto"
@@ -639,7 +675,13 @@
                             </div>
                           </transition>
 
-                          <div class="relative rounded-full bg-[#1c1c1c] border border-white/10 shadow-[0_8px_18px_rgba(0,0,0,0.28)] px-4 h-16 flex items-center gap-4">
+                          <div 
+                            class="relative rounded-full bg-[#1c1c1c] border shadow-[0_8px_18px_rgba(0,0,0,0.28)] px-4 h-16 flex items-center gap-4 transition-colors"
+                            :class="isDragging ? 'border-purple-500/50 bg-purple-500/10' : 'border-white/10'"
+                            @dragover.prevent="handleDragOver"
+                            @dragleave.prevent="handleDragLeave"
+                            @drop.prevent="handleDrop"
+                          >
                           <button
                             class="h-9 w-9 rounded-full border border-white/12 bg-white/5 hover:bg-white/10 transition flex items-center justify-center flex-shrink-0"
                             aria-label="Attach"
@@ -658,6 +700,7 @@
                             rows="1"
                             @keydown.enter.exact.prevent="handleSend"
                             @input="resizePrompt"
+                            @paste="handlePaste"
                           ></textarea>
                           <button
                             class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
@@ -820,6 +863,55 @@
                         </div>
                         </div>
 
+    <!-- Image Modal/Lightbox -->
+    <Teleport to="body">
+      <Transition name="modal">
+        <div
+          v-if="imageModalOpen && imageModalUrl"
+          class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+          @click.self="closeImageModal"
+        >
+          <!-- Close button -->
+          <button
+            @click="closeImageModal"
+            class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-all"
+            aria-label="Close image"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          <!-- Enlarged image -->
+          <div class="relative max-w-[95vw] max-h-[95vh] flex items-center justify-center p-4">
+            <img
+              :src="imageModalUrl"
+              alt="Enlarged image"
+              class="max-w-full max-h-[95vh] object-contain rounded-lg shadow-2xl"
+              @error="handleImageError"
+            />
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
+    <!-- Drag overlay indicator -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div
+          v-if="isDragging"
+          class="fixed inset-0 z-[9998] flex items-center justify-center bg-purple-500/20 backdrop-blur-sm pointer-events-none"
+        >
+          <div class="bg-purple-600/90 border-2 border-dashed border-purple-400 rounded-2xl p-8 text-center">
+            <svg class="w-16 h-16 mx-auto mb-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p class="text-xl font-semibold text-white">Drop image here</p>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
   </div>
 </template>
 
@@ -854,6 +946,13 @@ type ChatEntry = {
   role: 'user' | 'assistant'
   content: string
   attachments?: string[]
+  images?: Array<{
+    url: string
+    project_key?: string
+    page_number?: number
+    similarity?: number
+    caption?: string
+  }>
   timestamp?: number
   liked?: boolean
   disliked?: boolean
@@ -1113,9 +1212,18 @@ const chatContainer = ref<HTMLElement | null>(null)
 const isSending = ref(false)
 const attachments = ref<{ name: string; base64: string }[]>([])
 const fileInput = ref<HTMLInputElement | null>(null)
+// Image modal state
+const imageModalOpen = ref(false)
+const imageModalUrl = ref<string | null>(null)
+// Drag and drop state
+const isDragging = ref(false)
 const contextMenuRef = ref<HTMLElement | null>(null)
 const { formatMessageText } = useMessageFormatter()
+<<<<<<< HEAD
 const { sendChatMessage, sendChatMessageStream } = useChat()
+=======
+const { sendChatMessageStream } = useChat()
+>>>>>>> origin/main
 // Reactive counter to force Vue to detect every token update immediately
 const renderKey = ref(0)
 const { findProjectByKey, getProjectModels } = useSpeckle()
@@ -1316,6 +1424,37 @@ function toggleLike(entry: ChatEntry) {
 function toggleDislike(entry: ChatEntry) {
   if (entry.liked) entry.liked = false
   entry.disliked = !entry.disliked
+}
+
+function handleEscapeKey(event: KeyboardEvent) {
+  if (event.key === 'Escape' && imageModalOpen.value) {
+    closeImageModal()
+  }
+}
+
+function openImageModal(imageUrl: string) {
+  // Show image in modal overlay
+  imageModalUrl.value = imageUrl
+  imageModalOpen.value = true
+  // Prevent body scroll when modal is open
+  document.body.style.overflow = 'hidden'
+  // Add keyboard listener for ESC key
+  window.addEventListener('keydown', handleEscapeKey)
+}
+
+function closeImageModal() {
+  imageModalOpen.value = false
+  imageModalUrl.value = null
+  // Restore body scroll
+  document.body.style.overflow = ''
+  // Remove keyboard listener
+  window.removeEventListener('keydown', handleEscapeKey)
+}
+
+function handleImageError(event: Event) {
+  const img = event.target as HTMLImageElement
+  // Replace with a placeholder image on error
+  img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMzMzMyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTk5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZSBub3QgZm91bmQ8L3RleHQ+PC9zdmc+'
 }
 
 function handleChatScroll() {
@@ -2027,6 +2166,67 @@ async function handleFileChange(event: Event) {
   }
 }
 
+// Handle paste event (Ctrl+V / Cmd+V)
+async function handlePaste(event: ClipboardEvent) {
+  const items = event.clipboardData?.items
+  if (!items) return
+
+  const imageFiles: File[] = []
+  
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]
+    // Check if it's an image
+    if (item.type.indexOf('image') !== -1) {
+      const file = item.getAsFile()
+      if (file) {
+        imageFiles.push(file)
+      }
+    }
+  }
+
+  if (imageFiles.length > 0) {
+    event.preventDefault() // Prevent pasting text if image is pasted
+    try {
+      const converted = await Promise.all(imageFiles.map(file => convertFileToBase64(file)))
+      attachments.value.push(...converted)
+    } catch (error) {
+      console.error('Failed to paste image', error)
+    }
+  }
+}
+
+// Handle drag over
+function handleDragOver(event: DragEvent) {
+  event.preventDefault()
+  isDragging.value = true
+}
+
+// Handle drag leave
+function handleDragLeave(event: DragEvent) {
+  event.preventDefault()
+  isDragging.value = false
+}
+
+// Handle drop
+async function handleDrop(event: DragEvent) {
+  event.preventDefault()
+  isDragging.value = false
+
+  const files = Array.from(event.dataTransfer?.files || [])
+  if (!files.length) return
+
+  // Filter for images only
+  const imageFiles = files.filter(file => file.type.startsWith('image/'))
+  if (!imageFiles.length) return
+
+  try {
+    const converted = await Promise.all(imageFiles.map(file => convertFileToBase64(file)))
+    attachments.value.push(...converted)
+  } catch (error) {
+    console.error('Failed to handle dropped files', error)
+  }
+}
+
 function removeAttachment(idx: number) {
   attachments.value.splice(idx, 1)
 }
@@ -2334,6 +2534,31 @@ async function handleSend() {
             conversation.chatLog.splice(thinkingIndex, 1)
           }
           
+<<<<<<< HEAD
+=======
+          // Extract image similarity results and transform for display
+          const imageResults = result.image_similarity_results || []
+          console.log('🖼️ [onComplete] Image similarity results received:', {
+            count: imageResults.length,
+            results: imageResults,
+            hasResults: imageResults.length > 0,
+            firstResult: imageResults[0] || null,
+            fullResult: result
+          })
+          const images = imageResults.map((img: any) => ({
+            url: img.image_url,
+            project_key: img.project_key,
+            page_number: img.page_number,
+            similarity: img.similarity,
+            caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
+          }))
+          console.log('🖼️ [onComplete] Transformed images for display:', {
+            count: images.length,
+            images: images,
+            willDisplay: images.length > 0
+          })
+          
+>>>>>>> origin/main
           // Use the accumulated content from streaming (already formatted via getFormattedMessage)
           // Don't overwrite with result.reply as it might be different or cause formatting to revert
           if (streamingMessageId) {
@@ -2350,6 +2575,10 @@ async function handleSend() {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
+<<<<<<< HEAD
+=======
+                images: images.length > 0 ? images : undefined, // Add images here
+>>>>>>> origin/main
                 timestamp: Date.now()
               })
             }
@@ -2361,6 +2590,10 @@ async function handleSend() {
             conversation.chatLog.push({ 
               role: 'assistant', 
               content: finalAnswer, // Store raw text, not formatted HTML
+<<<<<<< HEAD
+=======
+              images: images.length > 0 ? images : undefined, // Add images here too
+>>>>>>> origin/main
               timestamp: Date.now() 
             })
           }
@@ -2477,6 +2710,19 @@ async function regenerateAssistant(message: string, sessionId: string) {
           }
         },
         onComplete: async result => {
+<<<<<<< HEAD
+=======
+          // Extract image similarity results and transform for display
+          const imageResults = result.image_similarity_results || []
+          const images = imageResults.map((img: any) => ({
+            url: img.image_url,
+            project_key: img.project_key,
+            page_number: img.page_number,
+            similarity: img.similarity,
+            caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
+          }))
+          
+>>>>>>> origin/main
           // Use the accumulated content from streaming (already formatted via getFormattedMessage)
           // Don't overwrite with result.reply as it might be different or cause formatting to revert
           if (streamingMessageId) {
@@ -2493,6 +2739,10 @@ async function regenerateAssistant(message: string, sessionId: string) {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
+<<<<<<< HEAD
+=======
+                images: images.length > 0 ? images : undefined, // Add images here
+>>>>>>> origin/main
                 timestamp: Date.now()
               })
             }
@@ -2504,6 +2754,10 @@ async function regenerateAssistant(message: string, sessionId: string) {
             conversation.chatLog.push({
               role: 'assistant',
               content: finalAnswer, // Store raw text, not formatted HTML
+<<<<<<< HEAD
+=======
+              images: images.length > 0 ? images : undefined, // Add images here too
+>>>>>>> origin/main
               timestamp: Date.now()
             })
           }
@@ -2786,4 +3040,40 @@ function performDeleteConversation() {
 .triangle-container:hover {
   transform: translateY(-4px);
 }
+<<<<<<< HEAD
+=======
+
+/* Modal transitions */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-enter-active img,
+.modal-leave-active img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from img,
+.modal-leave-to img {
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+/* Fade transition for drag overlay */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+>>>>>>> origin/main
 </style>

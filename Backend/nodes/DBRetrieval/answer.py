@@ -12,6 +12,14 @@ from utils.plan_executor import (
 )
 from synthesis.synthesizer import synthesize
 from langgraph.config import get_stream_writer
+import re
+
+
+def strip_markdown_image_links(text: str) -> str:
+    """Remove markdown image syntax (![alt](url)) from text, keeping only the alt text."""
+    # Pattern matches ![alt text](url) and replaces with just "alt text"
+    pattern = r'!\[([^\]]*)\]\([^\)]+\)'
+    return re.sub(pattern, r'\1', text)
 
 
 def node_answer(state: RAGState) -> dict:
@@ -149,7 +157,12 @@ def node_answer(state: RAGState) -> dict:
                     use_code_prompt=False,
                     coop_docs=None,
                     use_coop_prompt=False,
+<<<<<<< HEAD
                     active_filters=getattr(state, 'active_filters', None)
+=======
+                    active_filters=getattr(state, 'active_filters', None),
+                    image_results=state.image_similarity_results  # Pass images - LLM decides whether to include
+>>>>>>> origin/main
                 )
                 first_chunk = True
                 for chunk in stream_result:
@@ -157,15 +170,25 @@ def node_answer(state: RAGState) -> dict:
                         token_content, project_cites = chunk
                         ans_parts.append(token_content)
                         token_count += 1
+<<<<<<< HEAD
                         # Also emit via custom writer if available
                         if has_writer and writer:
                             writer({"type": "token", "content": token_content, "node": "answer"})
+=======
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+                        # Emitting here causes duplication ("Project Project", etc.)
+                        # LangGraph's messages mode automatically captures and streams LLM tokens
+>>>>>>> origin/main
                         first_chunk = False
                     else:
                         ans_parts.append(chunk)
                         token_count += 1
+<<<<<<< HEAD
                         if has_writer and writer:
                             writer({"type": "token", "content": chunk, "node": "answer"})
+=======
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+>>>>>>> origin/main
                 project_ans = "".join(ans_parts)
                 log_query.info(f"✅ [ANSWER NODE MULTI-DB] Streaming synthesis complete - {token_count} tokens, {len(project_ans)} chars")
             
@@ -175,6 +198,18 @@ def node_answer(state: RAGState) -> dict:
             executor.shutdown(wait=False)  # Don't wait, we already have results
             
             reranked = rerank_by_dimension_similarity(state.user_query, state.graded_docs) if project_db_enabled else []
+            
+            # Log image results - LLM decides whether to include them in the answer
+            log_query.info(f"🖼️ [ANSWER NODE] Passed {len(state.image_similarity_results)} images to synthesis prompt")
+            log_query.info(f"🖼️ [ANSWER NODE] LLM will decide whether to include image URLs based on query intent")
+            
+            # Clean markdown image links from all answers
+            if project_ans:
+                project_ans = strip_markdown_image_links(project_ans)
+            if code_ans:
+                code_ans = strip_markdown_image_links(code_ans)
+            if coop_ans:
+                coop_ans = strip_markdown_image_links(coop_ans)
             
             result = {"graded_docs": reranked}
             if project_ans:
@@ -186,6 +221,8 @@ def node_answer(state: RAGState) -> dict:
             if coop_ans:
                 result["coop_answer"] = coop_ans
                 result["coop_citations"] = coop_cites
+            # Always return image results to frontend for rendering
+            result["image_similarity_results"] = state.image_similarity_results or []
             
             return result
         else:
@@ -200,8 +237,15 @@ def node_answer(state: RAGState) -> dict:
                                       use_code_prompt=True,
                                       coop_docs=None,
                                       use_coop_prompt=False,
-                                      active_filters=getattr(state, 'active_filters', None))
-                return {"code_answer": ans, "code_citations": cites, "graded_docs": []}
+                                      active_filters=getattr(state, 'active_filters', None),
+                                      image_results=state.image_similarity_results)  # Pass images - LLM decides
+                ans = strip_markdown_image_links(ans)  # Clean markdown image links
+                return {
+                    "code_answer": ans, 
+                    "code_citations": cites, 
+                    "graded_docs": [],
+                    "image_similarity_results": state.image_similarity_results or []
+                }
             elif coop_docs and not project_db_enabled and not code_db_enabled:
                 ans, cites = synthesize(state.user_query, [], state.session_id, 
                                       project_metadata=None,
@@ -209,8 +253,15 @@ def node_answer(state: RAGState) -> dict:
                                       use_code_prompt=False,
                                       coop_docs=coop_docs,
                                       use_coop_prompt=True,
-                                      active_filters=getattr(state, 'active_filters', None))
-                return {"coop_answer": ans, "coop_citations": cites, "graded_docs": []}
+                                      active_filters=getattr(state, 'active_filters', None),
+                                      image_results=state.image_similarity_results)  # Pass images - LLM decides
+                ans = strip_markdown_image_links(ans)  # Clean markdown image links
+                return {
+                    "coop_answer": ans, 
+                    "coop_citations": cites, 
+                    "graded_docs": [],
+                    "image_similarity_results": state.image_similarity_results or []
+                }
             else:
                 # Use streaming synthesis for real-time token delivery
                 # Stream tokens via custom events while accumulating answer
@@ -240,7 +291,12 @@ def node_answer(state: RAGState) -> dict:
                                           use_code_prompt=False,
                                           coop_docs=coop_docs if coop_docs else None,
                                           use_coop_prompt=False,
+<<<<<<< HEAD
                                           active_filters=getattr(state, 'active_filters', None))
+=======
+                                          active_filters=getattr(state, 'active_filters', None),
+                                          image_results=state.image_similarity_results)  # Pass images - LLM decides
+>>>>>>> origin/main
                 
                 # Handle streaming generator
                 first_chunk = True
@@ -250,23 +306,49 @@ def node_answer(state: RAGState) -> dict:
                         token_content, cites = chunk
                         ans_parts.append(token_content)
                         token_count += 1
+<<<<<<< HEAD
                         # Also emit via custom writer if available
                         if has_writer and writer:
                             writer({"type": "token", "content": token_content, "node": "answer"})
+=======
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+                        # Emitting here causes duplication ("Project Project", etc.)
+                        # LangGraph's messages mode automatically captures and streams LLM tokens
+>>>>>>> origin/main
                         first_chunk = False
                     else:
                         # Subsequent chunks are just content
                         ans_parts.append(chunk)
                         token_count += 1
+<<<<<<< HEAD
                         if has_writer and writer:
                             writer({"type": "token", "content": chunk, "node": "answer"})
                 
                 ans = "".join(ans_parts)
                 log_query.info(f"✅ [ANSWER NODE] Streaming synthesis complete - {token_count} tokens, {len(ans)} chars")
+=======
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+                
+                ans = "".join(ans_parts)
+                log_query.info(f"✅ [ANSWER NODE] Streaming synthesis complete - {token_count} tokens, {len(ans)} chars")
+                
+                # Clean markdown image links from answer
+                ans = strip_markdown_image_links(ans)
+>>>>>>> origin/main
                 
                 reranked = rerank_by_dimension_similarity(state.user_query, state.graded_docs)
                 
-                return {"final_answer": ans, "answer_citations": cites, "graded_docs": reranked}
+                # Log image results - LLM decides whether to include them in the answer
+                log_query.info(f"🖼️ [ANSWER NODE] Passed {len(state.image_similarity_results)} images to synthesis prompt")
+                log_query.info(f"🖼️ [ANSWER NODE] LLM will decide whether to include image URLs based on query intent")
+                
+                return {
+                    "final_answer": ans, 
+                    "answer_citations": cites, 
+                    "graded_docs": reranked,
+                    # Always return image results to frontend for rendering
+                    "image_similarity_results": state.image_similarity_results or []
+                }
     except Exception as e:
         log_syn.error(f"Answer synthesis failed: {e}")
         return {"final_answer": "Error synthesizing answer", "answer_citations": []}

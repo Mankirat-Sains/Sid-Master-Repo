@@ -8,11 +8,32 @@ from .settings import DEBUG_MODE
 # Set logging level based on DEBUG_MODE
 LOG_LEVEL = logging.INFO if DEBUG_MODE else logging.WARNING
 # Enhanced format with timestamp for VLM logs - makes it easier to track
-logging.basicConfig(
-    level=LOG_LEVEL, 
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    datefmt="%H:%M:%S"
-)
+# Configure logging - use force=True to reconfigure if already set
+try:
+    logging.basicConfig(
+        level=LOG_LEVEL, 
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        datefmt="%H:%M:%S",
+        force=True  # Force reconfiguration even if already configured (Python 3.8+)
+    )
+except TypeError:
+    # Python < 3.8 doesn't support force parameter
+    if not logging.root.handlers:
+        logging.basicConfig(
+            level=LOG_LEVEL, 
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%H:%M:%S"
+        )
+    else:
+        # If already configured, just update the level
+        logging.root.setLevel(LOG_LEVEL)
+        for handler in logging.root.handlers:
+            handler.setLevel(LOG_LEVEL)
+
+# Always ensure root logger level is set correctly
+logging.root.setLevel(LOG_LEVEL)
+for handler in logging.root.handlers:
+    handler.setLevel(LOG_LEVEL)
 
 # Create loggers for different components
 log_query = logging.getLogger("QUERY_FLOW")
@@ -33,6 +54,8 @@ if DEBUG_MODE:
     log_syn.setLevel(logging.INFO)
     log_chunks = logging.getLogger("CHUNKS")
     log_chunks.setLevel(logging.INFO)
+    # Debug message to confirm DEBUG_MODE is enabled
+    print(f"✅ DEBUG_MODE is ENABLED - All logs will be visible (LOG_LEVEL={logging.getLevelName(LOG_LEVEL)})")
 else:
     # VLM logger - ONLY logger that shows INFO level (for image processing)
     log_vlm.setLevel(logging.INFO)
@@ -44,6 +67,7 @@ else:
     log_syn.setLevel(logging.WARNING)
     log_chunks = logging.getLogger("CHUNKS")
     log_chunks.setLevel(logging.WARNING)  # Suppress chunk logs too
+    print(f"⚠️ DEBUG_MODE is DISABLED - Only WARNING and above will be visible (LOG_LEVEL={logging.getLevelName(LOG_LEVEL)})")
 
 
 def log_chunk_info(message: str):

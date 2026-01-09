@@ -104,6 +104,22 @@ export const useSpeckle = () => {
   }
 
   async function findProjectByKey(projectKey: string): Promise<Project | null> {
+    // Static overrides for known project key → Speckle project ID mappings.
+    // Add to this map as more projects become available in Speckle.
+    const projectOverrides: Record<string, Project> = {
+      // Demo fallback: maps common project keys to a known Speckle project that has models.
+      '25-01-005': { id: 'bde23c9150', name: 'Demo Project (25-01-005)', description: '' },
+      '25-01-011': { id: 'bde23c9150', name: 'Demo Project (25-01-011)', description: '' },
+      '25-01-012': { id: 'bde23c9150', name: 'Demo Project (25-01-012)', description: '' },
+      '25-01-017': { id: 'bde23c9150', name: 'Demo Project (25-01-017)', description: '' },
+      '25-01-039': { id: 'bde23c9150', name: 'Demo Project (25-01-039)', description: '' },
+      '25-01-105': { id: 'bde23c9150', name: 'Demo Project (25-01-105)', description: '' }
+    }
+
+    if (projectOverrides[projectKey]) {
+      return projectOverrides[projectKey]
+    }
+
     const graphqlQuery = `
       query FindProjectByName($projectName: String!) {
         activeUser {
@@ -161,4 +177,3 @@ export const useSpeckle = () => {
     findProjectByKey
   }
 }
-

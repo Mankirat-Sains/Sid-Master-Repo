@@ -3,26 +3,35 @@ import { readFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
-// Load .env from parent directory (Frontend/.env) and merge into process.env
+// Load env files into process.env. Prefer repo root .env, fallback to Frontend/.env.
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const parentEnvPath = resolve(__dirname, '..', '.env')
-try {
-  const envContent = readFileSync(parentEnvPath, 'utf-8')
-  envContent.split('\n').forEach(line => {
-    const trimmed = line.trim()
-    if (trimmed && !trimmed.startsWith('#')) {
-      const [key, ...valueParts] = trimmed.split('=')
-      if (key && valueParts.length > 0) {
-        const value = valueParts.join('=').replace(/^["']|["']$/g, '')
-        if (!process.env[key]) {
-          process.env[key] = value
+const envPaths = [
+  resolve(__dirname, '..', '..', '.env'), // repo root
+  resolve(__dirname, '..', '.env')        // Frontend/.env (fallback)
+]
+
+for (const envPath of envPaths) {
+  try {
+    const envContent = readFileSync(envPath, 'utf-8')
+    envContent.split('\n').forEach(line => {
+      const trimmed = line.trim()
+      if (trimmed && !trimmed.startsWith('#')) {
+        const [key, ...valueParts] = trimmed.split('=')
+        if (key && valueParts.length > 0) {
+          const value = valueParts.join('=').replace(/^["']|["']$/g, '')
+          if (!process.env[key]) {
+            process.env[key] = value
+          }
         }
       }
-    }
-  })
-} catch (error) {
-  console.warn(`Could not load .env from parent directory: ${parentEnvPath}`)
+    })
+    console.info(`Loaded env from ${envPath}`)
+    break
+  } catch (error) {
+    // Try next path
+    continue
+  }
 }
 
 export default defineNuxtConfig({

@@ -11,6 +11,8 @@ Now includes strategic planning:
 
 import os
 import json
+import logging
+from datetime import datetime
 from typing import Dict, List, Optional, Callable
 from openai import OpenAI
 from .base_agent import BaseAgent, AgentState
@@ -41,10 +43,12 @@ class TeamOrchestrator(BaseAgent):
     - etc.
     """
     
-    def __init__(self, api_key: Optional[str] = None, specialized_agents: Dict = None):
+    def __init__(self, api_key: Optional[str] = None, specialized_agents: Dict = None, demo_cache=None):
         super().__init__(name="team_orchestrator")
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.specialized_agents = specialized_agents or {}
+        self.demo_cache = demo_cache
+        self.log = logging.getLogger(__name__)
         
         if self.api_key:
             try:
@@ -289,6 +293,41 @@ Respond with JSON: {"agent_type": "...", "confidence": 0.0-1.0, "reasoning": "..
             - planning: Strategic planning information
         """
         context = context or {}
+
+        # Demo cache fast path (demo-only, bypass full pipeline)
+        if self.demo_cache:
+            cached_payload, matched_key = self.demo_cache.lookup(task)
+            if cached_payload:
+                timestamp = datetime.utcnow().isoformat()
+                self.log.info(
+                    "Demo cache hit",
+                    extra={
+                        "query": task,
+                        "cache_key": matched_key,
+                        "timestamp": timestamp,
+                        "mode": "demo_cache",
+                    },
+                )
+                results = {
+                    "answer": cached_payload.get("answer_markdown", ""),
+                    "answer_markdown": cached_payload.get("answer_markdown", ""),
+                    "citations": cached_payload.get("citations", []),
+                    "artifacts": cached_payload.get("artifacts", []),
+                    "confidence": cached_payload.get("confidence", 0.0),
+                    "metadata": {
+                        "mode": "demo_cache",
+                        "cache_key": matched_key,
+                        "timestamp": timestamp,
+                    },
+                }
+                return {
+                    "results": results,
+                    "routing": {"agent_type": "demo_cache", "confidence": 1.0},
+                    "planning": {"mode": "demo_cache"},
+                    "orchestrator": "team_orchestrator",
+                    "specialized_agent": "demo_cache",
+                    "success": True,
+                }
         
         # Initialize state
         self.state = AgentState(
@@ -375,4 +414,3 @@ Respond with JSON: {"agent_type": "...", "confidence": 0.0-1.0, "reasoning": "..
         ])
         
         return "\n".join(plan_lines)
-

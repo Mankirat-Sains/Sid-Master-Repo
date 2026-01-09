@@ -26,22 +26,25 @@ from html import escape
 import httpx
 from pathlib import Path
 
-# Load environment variables from .env file
-# Try Backend/.env first, then Frontend/.env (where Speckle credentials are)
-load_dotenv()  # Backend/.env
-
-# Also load Frontend/.env (where Speckle credentials are stored)
-frontend_env_path = Path(__file__).parent.parent / "Frontend" / ".env"
-if frontend_env_path.exists():
-    load_dotenv(dotenv_path=str(frontend_env_path), override=True)
-    print(f"✅ Loaded Speckle credentials from {frontend_env_path}")
+# Load environment variables from the root .env (single source of truth)
+root_env_path = Path(__file__).resolve().parent.parent / ".env"
+if root_env_path.exists():
+    load_dotenv(dotenv_path=str(root_env_path), override=True)
+    print(f"✅ Loaded environment from {root_env_path}")
 else:
-    print(f"⚠️ Frontend/.env not found at {frontend_env_path}")
+    load_dotenv(override=True)
+    print(f"⚠️ Root .env not found at {root_env_path}, using current environment")
 
 # Import the RAG system from new modular structure
 from main import run_agentic_rag, rag_healthcheck
 from database import test_database_connection
-from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH
+from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH, DEBUG_MODE
+
+# Import Kuzu manager
+try:
+    from database.kuzu_client import get_kuzu_manager
+except ImportError:
+    get_kuzu_manager = None
 
 # Import feedback logger from helpers folder
 try:
@@ -315,9 +318,18 @@ def wrap_external_links(text: str) -> str:
     return text
 
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging - use DEBUG_MODE from config
+from config.logging_config import LOG_LEVEL
+# Only configure if not already configured (logging_config.py already called basicConfig)
+# But ensure root logger respects DEBUG_MODE
+root_logger = logging.getLogger()
+root_logger.setLevel(LOG_LEVEL)
+# Also ensure all handlers use DEBUG_MODE level
+for handler in root_logger.handlers:
+    handler.setLevel(LOG_LEVEL)
+
 logger = logging.getLogger(__name__)
+logger.setLevel(LOG_LEVEL)  # Ensure this logger respects DEBUG_MODE
 
 # Set up enhanced logging
 setup_enhanced_logging()
@@ -347,7 +359,18 @@ class ChatRequest(BaseModel):
     image_base64: Optional[str] = None  # Single screenshot/image as base64 (backwards compatible)
     images_base64: Optional[List[str]] = None  # Multiple images as base64 array
 
-    
+class CypherRequest(BaseModel):
+    query: str
+    params: Optional[Dict[str, Any]] = None
+
+class CypherResponse(BaseModel):
+    success: bool
+    columns: Optional[List[str]] = None
+    rows: Optional[List[Any]] = None
+    row_count: Optional[int] = None
+    error: Optional[str] = None
+    query: Optional[str] = None
+
 class ChatResponse(BaseModel):
     reply: str
     session_id: str
@@ -786,7 +809,13 @@ async def chat_stream_handler(request: ChatRequest):
                 log_vlm.info(f"📝 User question: {request.message[:150] if request.message else 'General image description'}")
                 log_vlm.info("🔷" * 30)
                 
+<<<<<<< HEAD
                 # Emit thinking log for VLM processing
+=======
+                # Log VLM processing to terminal and send to stream for Agent Thinking panel
+                logger.info(f"🖼️ Processing {len(images_to_process)} image(s) with vision model...")
+                # Send to stream for Agent Thinking panel - frontend will route to correct panel
+>>>>>>> origin/main
                 yield f"data: {json.dumps({'type': 'thinking', 'message': f'Processing {len(images_to_process)} image(s) with vision model...', 'node': 'vlm_processing', 'timestamp': time.time()})}\n\n"
                 await asyncio.sleep(0.001)
                 
@@ -893,6 +922,7 @@ async def chat_stream_handler(request: ChatRequest):
                         # Get the content from the message chunk
                         if hasattr(message_chunk, 'content') and message_chunk.content:
                             token_content = message_chunk.content
+<<<<<<< HEAD
                             # Only stream tokens from synthesis LLM (answer node)
                             # Check metadata for node info or just stream all tokens
                             node_name = metadata.get('langgraph_node', 'answer') if isinstance(metadata, dict) else 'answer'
@@ -903,15 +933,37 @@ async def chat_stream_handler(request: ChatRequest):
                             # Stream token to frontend
                             logger.debug(f"💬 Streaming token: {len(token_content)} chars from {node_name}")
                             yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': node_name, 'timestamp': time.time()})}\n\n"
+=======
+                            # Only stream tokens from synthesis LLM (answer node) - filter out other nodes
+                            # Check metadata for node info to filter tokens
+                            node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
+                            
+                            # IMPORTANT: Only stream tokens from the "answer" node to main chat
+                            # Tokens from other nodes (plan, retrieve, verify, etc.) should NOT appear in main chat
+                            # They are internal processing and should only show as thinking logs in Agent Thinking panel
+                            if node_name != 'answer' and node_name != 'unknown':
+                                # Log to terminal but don't stream to main chat - these are internal processing tokens
+                                logger.debug(f"⏭️  Skipping token from node '{node_name}' (not answer node) - only answer tokens go to main chat")
+                                continue
+                            
+                            # Strip asterisks from project patterns
+                            token_content = strip_asterisks_from_projects(token_content)
+                            
+                            # Stream token to frontend (only answer node tokens)
+                            logger.debug(f"💬 Streaming token: {len(token_content)} chars from {node_name}")
+                            yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': 'answer', 'timestamp': time.time()})}\n\n"
+>>>>>>> origin/main
                             await asyncio.sleep(0.001)  # Minimal delay for proper streaming
                     continue
                 
-                # Handle custom events (emitted directly from nodes)
+                    # Handle custom events (emitted directly from nodes)
                 if stream_mode == "custom":
                     logger.debug(f"📨 Custom event received: {chunk}")
-                    # Emit custom event immediately to frontend
+                    # Handle custom events - send thinking logs to Agent Thinking panel, tokens to main chat
                     if isinstance(chunk, dict):
                         if chunk.get("type") == "thinking":
+                            # Send thinking log to stream for Agent Thinking panel
+                            logger.info(f"💭 {chunk.get('message', '')}")
                             yield f"data: {json.dumps({'type': 'thinking', 'message': chunk.get('message', ''), 'node': chunk.get('node', 'unknown'), 'timestamp': time.time()})}\n\n"
                             await asyncio.sleep(0.001)
                         elif chunk.get("type") == "token":
@@ -1032,15 +1084,17 @@ async def chat_stream_handler(request: ChatRequest):
                         logger.info(f"Skipping thinking log for node: {node_name}")
                         thinking_log = None
                     
-                    # Emit thinking log immediately (same speed as terminal logs)
+                    # Emit thinking log to stream for Agent Thinking panel (NOT displayed in main chat)
                     if thinking_log:
                         log_data = {'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()}
                         logger.info(f"📤 Streaming thinking log for node '{node_name}': {thinking_log[:100]}...")
+                        # Send to stream for Agent Thinking panel - frontend will route to correct panel
                         yield f"data: {json.dumps(log_data)}\n\n"
                         await asyncio.sleep(0.001)  # Minimal delay for proper streaming
                     else:
                         logger.info(f"⏭️  No thinking log generated for node '{node_name}'")
                     
+<<<<<<< HEAD
                     # STREAM ANSWER IMMEDIATELY when answer node completes
                     # Don't wait for verify/correct - stream now for instant feedback!
                     if node_name == "answer" and messages_received == 0:
@@ -1063,6 +1117,14 @@ async def chat_stream_handler(request: ChatRequest):
                                 yield f"data: {json.dumps({'type': 'token', 'content': word_chunk, 'node': 'answer', 'timestamp': time.time()})}\n\n"
                                 await asyncio.sleep(0.008)  # Small delay for visual effect
                             logger.info(f"✅ Finished streaming answer")
+=======
+                    # DO NOT manually stream answer - tokens come via "messages" mode
+                    # The manual word-by-word streaming causes duplication
+                    # Tokens are already being streamed in real-time via messages mode (line 930)
+                    # This manual streaming was causing word duplication ("Project Project", etc.)
+                    if node_name == "answer":
+                        logger.info(f"📤 Answer node completed - tokens streaming via messages mode (received: {messages_received})")
+>>>>>>> origin/main
                     
                     # Store final state - correct node is the last one
                     final_state = state_dict.copy()
@@ -1174,7 +1236,11 @@ async def chat_stream_handler(request: ChatRequest):
                     'project_citations': len(project_citations) if has_project else None,
                     'code_citations': len(code_citations) if has_code else None,
                     'coop_citations': len(coop_citations) if has_coop else None,
+<<<<<<< HEAD
                     'image_similarity_results': image_similarity_results if image_similarity_results else None,
+=======
+                    'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
+>>>>>>> origin/main
                     'follow_up_questions': follow_up_questions if follow_up_questions else None,
                     'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
                 }
@@ -1241,10 +1307,25 @@ async def chat_stream_handler(request: ChatRequest):
                     'citations': total_citations,
                     'route': final_state.get("data_route"),
                     'message_id': message_id,
+<<<<<<< HEAD
                     'image_similarity_results': image_similarity_results if image_similarity_results else None,
                     'follow_up_questions': follow_up_questions if follow_up_questions else None,
                     'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
                 }
+=======
+                    'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
+                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
+                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
+                }
+            
+            # Log image similarity results for debugging
+            if image_similarity_results:
+                logger.info(f"🖼️ Sending {len(image_similarity_results)} image similarity results to frontend")
+                for i, img in enumerate(image_similarity_results[:3]):  # Log first 3
+                    logger.info(f"🖼️   Image {i+1}: project={img.get('project_key')}, page={img.get('page_number')}, url={img.get('image_url', 'MISSING')[:50]}...")
+            else:
+                logger.info(f"🖼️ No image similarity results to send (image_similarity_results is empty or None)")
+>>>>>>> origin/main
             
             # Send completion event with final result
             yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"
@@ -1705,9 +1786,47 @@ async def root():
             "logs_stats": "/logs/enhanced/stats",
             "stats_interactions": "/stats/interactions",
             "stats_user": "/stats/user/{user_identifier}",
-            "stats_recent": "/stats/recent"
+            "stats_recent": "/stats/recent",
+            "graph_cypher": "/graph/cypher (DEBUG only)",
+            "graph_schema": "/graph/schema (DEBUG only)"
         }
     }
+
+# ============================================================
+# KUZU GRAPH DATABASE ENDPOINTS (DEBUG ONLY)
+# ============================================================
+@app.post("/graph/cypher", response_model=CypherResponse)
+async def execute_cypher(request: CypherRequest):
+    """Execute a Cypher query against the Kuzu graph database (Debug mode only)"""
+    if not DEBUG_MODE:
+        raise HTTPException(status_code=403, detail="Graph database access is only available in DEBUG_MODE")
+    
+    if get_kuzu_manager is None:
+        raise HTTPException(status_code=500, detail="Kuzu manager not available")
+    
+    try:
+        kuzu_manager = get_kuzu_manager()
+        result = kuzu_manager.execute(request.query, request.params)
+        return CypherResponse(**result)
+    except Exception as e:
+        logger.error(f"Cypher endpoint error: {e}")
+        return CypherResponse(success=False, error=str(e), query=request.query)
+
+@app.get("/graph/schema")
+async def get_graph_schema():
+    """Get the Kuzu graph database schema (Debug mode only)"""
+    if not DEBUG_MODE:
+        raise HTTPException(status_code=403, detail="Graph database access is only available in DEBUG_MODE")
+    
+    if get_kuzu_manager is None:
+        raise HTTPException(status_code=500, detail="Kuzu manager not available")
+    
+    try:
+        kuzu_manager = get_kuzu_manager()
+        return kuzu_manager.get_schema()
+    except Exception as e:
+        logger.error(f"Graph schema endpoint error: {e}")
+        return {"success": False, "error": str(e)}
 
 if __name__ == "__main__":
     # Check environment setup
@@ -1726,6 +1845,8 @@ if __name__ == "__main__":
     print(f"   Database status: http://0.0.0.0:{port}/db/health")
     print(f"   📊 Enhanced Debugger: http://0.0.0.0:{port}/logs/enhanced?format=html")
     print(f"   📈 Log Statistics: http://0.0.0.0:{port}/logs/enhanced/stats")
+    if DEBUG_MODE:
+        print(f"   🛠️  Kuzu Graph DB Cypher: http://0.0.0.0:{port}/graph/schema")
     print(f"\n📡 Server running on port: {port}")
     print("⚡ Ready for Electron chatbutton app!")
 
@@ -1737,4 +1858,3 @@ if __name__ == "__main__":
         log_level="info",
         access_log=True
     )
-
