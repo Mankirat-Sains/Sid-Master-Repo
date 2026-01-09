@@ -4,6 +4,12 @@ FastAPI server for Mantle RAG Chat Interface
 Connect the chatbutton Electron app to the rag.py backend
 """
 
+# Windows async event loop fix - required for proper SSE streaming on Windows
+import sys
+if sys.platform == 'win32':
+    import asyncio
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 from datetime import datetime
 import logging
 import re
@@ -865,17 +871,39 @@ async def chat_stream_handler(request: ChatRequest):
             # - "updates": State updates per node with node names {node_name: state_updates}
             # - "custom": Custom events emitted from nodes (for real-time progress)
             # - "messages": LLM tokens as they're generated (for real-time answer streaming)
+            messages_received = 0
             async for stream_mode, chunk in graph.astream(
                 asdict(init_state),
                 config=config,
                 stream_mode=["updates", "custom", "messages"]  # Add "messages" for token streaming
             ):
                 # Handle LLM token streaming (messages mode)
-                # NOTE: Tokens are handled in "custom" mode via writer() calls from nodes
-                # Messages mode is kept for other purposes but tokens are NOT forwarded here to avoid duplicates
+                # This captures tokens directly from LLM calls made within nodes
                 if stream_mode == "messages":
-                    # Skip token forwarding - tokens are handled in "custom" mode
-                    # This prevents duplicate tokens being sent (once from messages mode, once from custom mode)
+                    messages_received += 1
+                    # Log first few messages to debug
+                    if messages_received <= 3:
+                        logger.info(f"📨 Messages mode event #{messages_received}: type={type(chunk)}, chunk={str(chunk)[:200]}")
+                    
+                    # chunk is a tuple: (AIMessageChunk, metadata)
+                    if isinstance(chunk, tuple) and len(chunk) >= 2:
+                        message_chunk = chunk[0]
+                        metadata = chunk[1] if len(chunk) > 1 else {}
+                        
+                        # Get the content from the message chunk
+                        if hasattr(message_chunk, 'content') and message_chunk.content:
+                            token_content = message_chunk.content
+                            # Only stream tokens from synthesis LLM (answer node)
+                            # Check metadata for node info or just stream all tokens
+                            node_name = metadata.get('langgraph_node', 'answer') if isinstance(metadata, dict) else 'answer'
+                            
+                            # Strip asterisks from project patterns
+                            token_content = strip_asterisks_from_projects(token_content)
+                            
+                            # Stream token to frontend
+                            logger.debug(f"💬 Streaming token: {len(token_content)} chars from {node_name}")
+                            yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': node_name, 'timestamp': time.time()})}\n\n"
+                            await asyncio.sleep(0.001)  # Minimal delay for proper streaming
                     continue
                 
                 # Handle custom events (emitted directly from nodes)
@@ -1013,12 +1041,34 @@ async def chat_stream_handler(request: ChatRequest):
                     else:
                         logger.info(f"⏭️  No thinking log generated for node '{node_name}'")
                     
+                    # STREAM ANSWER IMMEDIATELY when answer node completes
+                    # Don't wait for verify/correct - stream now for instant feedback!
+                    if node_name == "answer" and messages_received == 0:
+                        answer_text = state_dict.get("final_answer") or state_dict.get("answer", "")
+                        if answer_text:
+                            logger.info(f"📤 Streaming answer immediately ({len(answer_text)} chars)...")
+                            # Split into words and stream in small groups
+                            words = answer_text.split(' ')
+                            chunk_size = 3  # Send 3 words at a time
+                            for i in range(0, len(words), chunk_size):
+                                word_chunk = ' '.join(words[i:i+chunk_size])
+                                if i + chunk_size < len(words):
+                                    word_chunk += ' '  # Add space if not last chunk
+                                # Strip asterisks from project patterns
+                                word_chunk = strip_asterisks_from_projects(word_chunk)
+                                yield f"data: {json.dumps({'type': 'token', 'content': word_chunk, 'node': 'answer', 'timestamp': time.time()})}\n\n"
+                                await asyncio.sleep(0.008)  # Small delay for visual effect
+                            logger.info(f"✅ Finished streaming answer")
+                    
                     # Store final state - correct node is the last one
                     final_state = state_dict.copy()
                     
                     # Break after correct node (last node in pipeline)
                     if node_name == "correct":
                         break
+            
+            # Log streaming stats
+            logger.info(f"📊 Streaming stats: {messages_received} LLM token events received via messages mode")
             
             # Check if we got a result
             if not final_state:

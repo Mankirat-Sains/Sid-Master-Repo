@@ -768,8 +768,11 @@ async function handleSend() {
           let streamingMessage = messages.value.find(m => m.id === 'streaming-answer')
           
           if (!streamingMessage) {
-            // Create new streaming message
-            stopThinking() // Stop thinking indicator when answer starts
+            // Create new streaming message - answer is now streaming
+            // IMPORTANT: Stop ALL loading indicators immediately when answer starts
+            stopThinking() // Stop thinking indicator
+            thinkingMessage.value = '' // Clear any thinking message
+            isLoading.value = false // Stop loading indicator - answer is streaming!
             streamingMessage = {
               id: 'streaming-answer',
               role: 'assistant',
@@ -831,6 +834,7 @@ async function handleSend() {
         onComplete: async (result) => {
           console.log('✅ Stream complete:', result)
           stopThinking()
+          isLoading.value = false // Immediately stop loading indicator on completion
           
           // Finalize streaming message if it exists
           const streamingIndex = messages.value.findIndex(m => m.id === 'streaming-answer')
@@ -892,6 +896,7 @@ async function handleSend() {
         onError: async (error) => {
           console.error('❌ Stream error:', error)
           stopThinking()
+          isLoading.value = false // Immediately stop loading indicator on error
           
           // Display error message in chat
           await addTypedMessage(

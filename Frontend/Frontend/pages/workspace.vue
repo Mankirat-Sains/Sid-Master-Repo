@@ -2327,6 +2327,13 @@ async function handleSend() {
           }
         },
         onComplete: async result => {
+          // ALWAYS clear the thinking interval and remove thinking message on completion
+          clearInterval(thinkingInterval)
+          const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
+          if (thinkingIndex !== -1) {
+            conversation.chatLog.splice(thinkingIndex, 1)
+          }
+          
           // Use the accumulated content from streaming (already formatted via getFormattedMessage)
           // Don't overwrite with result.reply as it might be different or cause formatting to revert
           if (streamingMessageId) {
@@ -2376,8 +2383,12 @@ async function handleSend() {
           scrollToBottom(true)
         },
         onError: error => {
-          // Clear thinking interval on error
+          // Clear thinking interval AND remove thinking message on error
           clearInterval(thinkingInterval)
+          const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
+          if (thinkingIndex !== -1) {
+            conversation.chatLog.splice(thinkingIndex, 1)
+          }
           streamError = error
         }
       }
@@ -2515,8 +2526,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
           scrollToBottom(true)
         },
         onError: error => {
-          // Clear thinking interval on error
-          clearInterval(thinkingInterval)
+          // No thinking message in regenerate - just capture error
           streamError = error
         }
       }
