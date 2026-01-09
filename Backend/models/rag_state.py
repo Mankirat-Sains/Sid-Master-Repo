@@ -67,8 +67,9 @@ class RAGState:
     
     # Image Similarity Search (optional - doesn't affect existing pipeline)
     images_base64: Optional[List[str]] = None  # Base64 encoded images from frontend
-    image_embeddings: Optional[List[List[float]]] = None  # ViT-H14 embeddings (one per image)
-    image_similarity_results: List[Dict] = field(default_factory=list)  # Similar images found
+    image_description: Optional[str] = None  # VLM-generated text description of uploaded image
+    image_embeddings: Optional[List[List[float]]] = None  # DEPRECATED: kept for backward compatibility
+    image_similarity_results: List[Dict] = field(default_factory=list)  # Similar images found via text semantic search
     use_image_similarity: bool = False  # Flag to enable/disable image search
     query_intent: Optional[Literal["image_similarity", "content_detail", "hybrid"]] = None
 
