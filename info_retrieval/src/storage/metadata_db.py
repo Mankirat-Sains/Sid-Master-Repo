@@ -29,20 +29,34 @@ class MetadataDB:
 
     def _ensure_schema(self) -> None:
         with self._connect() as conn:
-            conn.execute(
+            conn.executescript(
                 """
+                CREATE TABLE IF NOT EXISTS documents (
+                    artifact_id TEXT PRIMARY KEY,
+                    company_id TEXT NOT NULL,
+                    file_name TEXT NOT NULL,
+                    file_path TEXT,
+                    file_size INTEGER,
+                    latest_version_id TEXT NOT NULL,
+                    doc_type TEXT,
+                    project_name TEXT,
+                    author TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    schema_version TEXT DEFAULT '1.0'
+                );
+
                 CREATE TABLE IF NOT EXISTS chunks (
                     chunk_id TEXT PRIMARY KEY,
-                    artifact_id TEXT,
-                    version_id TEXT,
-                    company_id TEXT,
-                    source TEXT,
+                    artifact_id TEXT NOT NULL,
+                    version_id TEXT NOT NULL,
+                    company_id TEXT NOT NULL,
+                    source TEXT NOT NULL,
                     file_path TEXT,
                     doc_type TEXT,
                     section_type TEXT,
-                    chunk_type TEXT,
+                    chunk_type TEXT NOT NULL,
                     calculation_type TEXT,
-                    text TEXT,
+                    text TEXT NOT NULL,
                     page_number INTEGER,
                     section_number TEXT,
                     heading TEXT,
@@ -52,13 +66,19 @@ class MetadataDB:
                     tags TEXT,
                     parent_artifact_id TEXT,
                     related_chunks TEXT,
-                    created_at TEXT,
-                    modified_at TEXT
-                )
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    schema_version TEXT DEFAULT '1.0',
+                    FOREIGN KEY (artifact_id) REFERENCES documents(artifact_id)
+                );
+
+                CREATE INDEX IF NOT EXISTS idx_chunks_artifact ON chunks(artifact_id);
+                CREATE INDEX IF NOT EXISTS idx_chunks_company ON chunks(company_id);
+                CREATE INDEX IF NOT EXISTS idx_chunks_doc_type ON chunks(doc_type);
+                CREATE INDEX IF NOT EXISTS idx_chunks_created ON chunks(created_at);
+                CREATE INDEX IF NOT EXISTS idx_docs_company ON documents(company_id);
                 """
             )
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_chunks_artifact ON chunks(artifact_id)")
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_chunks_company ON chunks(company_id)")
             conn.commit()
 
     def insert_chunk_metadata(self, record: Dict[str, Any]) -> str:
@@ -103,6 +123,28 @@ class MetadataDB:
             )
             conn.commit()
         return chunk_id
+
+    def insert_document(self, record: Dict[str, Any]) -> None:
+        with self._connect() as conn:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO documents
+                (artifact_id, company_id, file_name, file_path, file_size, latest_version_id, doc_type, project_name, author)
+                VALUES (:artifact_id, :company_id, :file_name, :file_path, :file_size, :latest_version_id, :doc_type, :project_name, :author)
+                """,
+                {
+                    "artifact_id": record.get("artifact_id"),
+                    "company_id": record.get("company_id"),
+                    "file_name": record.get("file_name"),
+                    "file_path": record.get("file_path"),
+                    "file_size": record.get("file_size"),
+                    "latest_version_id": record.get("latest_version_id"),
+                    "doc_type": record.get("doc_type"),
+                    "project_name": record.get("project_name"),
+                    "author": record.get("author"),
+                },
+            )
+            conn.commit()
 
     def list_recent(self, limit: int = 20) -> List[Dict[str, Any]]:
         with self._connect() as conn:

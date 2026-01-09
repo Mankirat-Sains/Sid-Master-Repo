@@ -18,6 +18,12 @@ python -m venv venv
 source venv/bin/activate  # on Windows use venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env  # set keys/paths
+# optional: start infra
+docker-compose up -d
+# run tests
+pytest -q info_retrieval/tests
+# run demo (requires sample doc at info_retrieval/data/sample_docs/thermal_calculation.docx)
+python -m info_retrieval.demo
 ```
 
 ## Core Modules
@@ -29,6 +35,8 @@ cp .env.example .env  # set keys/paths
 - `src/storage/metadata_db.py`: SQLite chunk metadata schema with identity + provenance.
 - `src/retrieval/retriever.py`: High-level retrieval for content queries and style exemplars.
 - `src/utils/config.py`: Env/config loader; `logger.py`: logging helper.
+- `src/ingest/pipeline.py`: Orchestrates parse → chunk → classify → embed → store.
+- `src/ingest/style_filter.py`: Quality gating for style exemplars.
 
 ## Usage Sketch
 ```python

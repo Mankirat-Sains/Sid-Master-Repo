@@ -35,12 +35,13 @@ An AI-powered system that learns how engineering companies write technical docum
 ### Key Capabilities
 
 - **Intelligent Ingestion**: Parse .docx and .pdf files, extract structure, content, and metadata
-- **Dual-Mode Retrieval**: Separate content (factual) and style (exemplar) retrieval systems
-- **Company-Specific Learning**: Per-company collections/namespaces in a single Qdrant instance; optional style adapters later
+- **Dual-Mode Retrieval**: Separate content (factual) and style (curated exemplar) retrieval systems
+- **Company-Specific Learning**: Per-company collections/namespaces in a single Qdrant instance (one cluster, many collections)
 - **RAG-Powered Generation**: Draft new documents using retrieved examples
 - **Desktop Integration**: Bidirectional sync between web platform and local Word/Excel
 - **Version Control**: Git-like versioning for engineering documents
 - **Template Management**: Automatic extraction and management of document templates
+- **Optional Style Fine-Tuning (Tier 3+)**: LoRA adapters only when RAG/template quality is insufficient
 
 ### Success Metrics
 
@@ -91,6 +92,12 @@ An AI-powered system that learns how engineering companies write technical docum
 │ - style_*    │ - chunks     │ - processed  │ - search results │
 │              │ - templates  │ - versions   │ - sessions       │
 └──────────────┴──────────────┴──────────────┴──────────────────┘
+
+**Multi-Tenancy Model**
+- Single Qdrant cluster serves all companies
+- Isolation via collection naming: `content_{company_id}`, `style_{company_id}`
+- Payload-level filtering for additional security
+- NOT separate database deployments per company
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
@@ -206,3 +213,131 @@ An AI-powered system that learns how engineering companies write technical docum
 **Desktop Agent Sync Loop (high level)**  
 - Watch designated folders → detect new/updated files → create artifact/version IDs → upload originals to object store → update metadata DB → re-index content/style collections.  
 - Desktop execution: resolve artifact/version → open exact file in Word/Excel/Revit → maintain bidirectional updates with server indexes.
+
+### Smart Chunker and Style Exemplar Filtering
+
+```python
+def classify_chunk_type(chunk, metadata):
+    """
+    Determine if chunk is content (factual) or style (curated exemplar).
+
+    Content chunks:
+    - Calculations, results, data, specifications
+
+    Style chunks (CURATED EXEMPLARS ONLY):
+    - Section templates (how we write introductions)
+    - Approved boilerplate paragraphs
+    - Narrative transition patterns
+    - Standard phrase banks
+    - Methodology description templates
+
+    NOT style chunks:
+    - One-off narrative paragraphs
+    - Ad-hoc explanations
+    - Generic filler text
+    """
+```
+
+Style Chunk Criteria  
+✅ Section appears in 3+ documents with 85%+ similarity  
+✅ Explicitly marked as "template" or "standard language"  
+✅ User-pinned as exemplar  
+✅ High quality score (>0.8 for grammar/completeness/clarity)  
+❌ Project-specific one-offs or filler text  
+
+Add a `StyleExemplarFilter` that enforces these rules before writing to `style_{company_id}`.
+
+### Query Analyzer (Structured Outputs)
+
+```python
+class QueryAnalyzer:
+    """
+    Parse user requests into structured parameters for template selection and retrieval framing.
+    """
+
+    def analyze_query(self, user_request: str) -> dict:
+        return {
+            "doc_type": "...",              # calculation_narrative | design_report | method_statement
+            "section_type": "...",          # assumptions | methodology | results | limitations
+            "engineering_function": "...",  # justify_design | summarize_analysis | report_pass_fail | cite_codes
+            "constraints": {
+                "code_references": ["ACI 318-19"],
+                "project_context": "...",
+                "required_sections": [],
+                "calculation_type": "structural",
+            },
+        }
+```
+
+Query Analyzer Output feeds:  
+- `doc_type` → template selection  
+- `section_type` → structure definition  
+- `engineering_function` → RAG query framing  
+- `constraints` → metadata filters (codes, calculation_type, project context)
+
+### Phase-by-Phase Implementation
+- **Phase 1-2**: RAG + template matching + voice profile rules (production-ready without training)
+- **Phase 3+**: Optional LoRA fine-tuning (only if RAG quality < 80% or voice matching insufficient)
+
+### Technology Stack: Style Learning Strategy (Tiered)
+- Tier 1: RAG retrieval of style exemplars (immediate, no training)
+- Tier 2: Template matching + voice rules (deterministic patterns)
+- Tier 3+: Optional LoRA adapters (train only if needed, per-company or per-voice-family)
+  - IMPORTANT: System is production-ready after Tier 2; fine-tuning is an optimization.
+
+### Local Model Decision Tree
+- Use cloud (OpenAI/Anthropic): default, highest quality.
+- Use local models when:
+  - Company prohibits cloud API calls (data residency).
+  - Cost > $10k/month (self-hosting ROI positive).
+  - Latency < 200ms required (cannot tolerate API round-trip).
+- Local deployment requires: 2x NVIDIA A100 80GB, vLLM/TGI, and added ops complexity.
+
+### Desktop Agent Architecture (Execution + Sync Layer)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Desktop Agent Layer                           │
+├─────────────────────┬───────────────────────────────────────────┤
+│  Sync Engine        │  Execution Engine                         │
+│  • File watcher     │  • Open exact version in Word             │
+│  • Change detector  │  • Apply AI edits to local docs           │
+│  • Version creator  │  • Execute embedded calculations          │
+│  • Upload/download  │  • Launch Office automation               │
+│  • Conflict handler │                                           │
+│                     │  Platform Integrations:                   │
+│  Sync Loop:         │  • Windows: COM automation (.NET bridge)  │
+│  1. Watch folders   │  • macOS: AppleScript/JXA                 │
+│  2. Detect changes  │  • Linux: LibreOffice UNO                 │
+│  3. Create version  │                                           │
+│  4. Upload to cloud │                                           │
+│  5. Update index    │                                           │
+└─────────────────────┴───────────────────────────────────────────┘
+                              ↕
+                    (Bidirectional sync)
+                              ↕
+┌─────────────────────────────────────────────────────────────────┐
+│                      Cloud Services                              │
+│  API Gateway → Ingest/Retrieval/Generation → Storage            │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+Desktop Agent Responsibilities  
+✅ Monitor local folders, generate artifact_id/version_id on save  
+✅ Upload/download versions with metadata and conflict detection  
+✅ Open specific document versions in native apps  
+✅ Allow offline work (queue sync when online)  
+❌ No document parsing, embedding generation, or LLM generation (done in cloud)
+
+### Developer Tools Naming
+- Use **Developer CLI** / **Automation CLI** for batch ingestion, template ops, and re-indexing; keep out of the core product surface.
+
+### Schema Versioning
+- Add `schema_version: "1.0"` to data models (DocumentMetadata, ChunkMetadata, Template) for migration tracking.
+
+### Out of Scope (Explicit)
+- ❌ Real-time collaborative editing (use Office 365)
+- ❌ Project management features
+- ❌ CAD/Revit file parsing (beyond metadata stubs)
+- ❌ Email integration (unless explicitly requested)
+- ❌ Mobile apps (desktop + web only)

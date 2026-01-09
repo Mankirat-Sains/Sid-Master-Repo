@@ -1,12 +1,20 @@
 from __future__ import annotations
 
 import hashlib
-from typing import List, Optional
+import json
+import os
+from typing import List, Optional, Tuple
 
 import numpy as np
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 from ..utils.config import AppConfig
 from ..utils.logger import get_logger
+
+try:
+    import redis  # type: ignore
+except ImportError:  # pragma: no cover - optional dependency
+    redis = None
 
 logger = get_logger(__name__)
 
@@ -22,6 +30,7 @@ class EmbeddingService:
         self._openai_client = None
         self._local_model = None
         self._fallback_dim = config.embedding_dim or 128
+        self._redis = self._init_redis()
 
     def get_embedding_model(self) -> str:
         return self.model_name
@@ -44,12 +53,20 @@ class EmbeddingService:
         if not cleaned_texts:
             return []
 
-        if self._should_use_openai():
-            return self._embed_batch_with_openai(cleaned_texts)
-        if self._should_use_local_model():
-            return [self._embed_with_local(t) for t in cleaned_texts]
+        cached_vectors, missing_texts, missing_indices = self._maybe_get_cached(cleaned_texts)
 
-        return [self._debug_embed(t) for t in cleaned_texts]
+        if missing_texts:
+            if self._should_use_openai():
+                generated = self._embed_batch_with_openai(missing_texts)
+            elif self._should_use_local_model():
+                generated = [self._embed_with_local(t) for t in missing_texts]
+            else:
+                generated = [self._debug_embed(t) for t in missing_texts]
+            self._cache_results(missing_texts, generated)
+            for idx, vector in zip(missing_indices, generated):
+                cached_vectors[idx] = vector
+
+        return list(cached_vectors.values())
 
     def _should_use_openai(self) -> bool:
         return bool(self.config.openai_api_key) and not self.config.use_local_embeddings
@@ -62,6 +79,7 @@ class EmbeddingService:
         response = client.embeddings.create(model=self.model_name, input=text)
         return response.data[0].embedding
 
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
     def _embed_batch_with_openai(self, texts: List[str]) -> List[List[float]]:
         client = self._get_openai_client()
         response = client.embeddings.create(model=self.model_name, input=texts)
@@ -104,3 +122,46 @@ class EmbeddingService:
         seed = int.from_bytes(digest[:4], "big")
         rng = np.random.default_rng(seed)
         return rng.standard_normal(self._fallback_dim).astype(float).tolist()
+
+    def _init_redis(self):
+        url = os.getenv("REDIS_URL")
+        if redis is None or not url:
+            return None
+        try:
+            return redis.from_url(url)
+        except Exception:
+            return None
+
+    def _cache_key(self, text: str) -> str:
+        digest = hashlib.sha256(text.encode("utf-8")).hexdigest()[:24]
+        return f"embed:{self.model_name}:{digest}"
+
+    def _maybe_get_cached(self, texts: List[str]) -> Tuple[Dict[int, List[float]], List[str], List[int]]:
+        cached: Dict[int, List[float]] = {}
+        missing_texts: List[str] = []
+        missing_indices: List[int] = []
+        if not self._redis:
+            return {i: None for i in range(len(texts))}, texts, list(range(len(texts)))
+        for idx, text in enumerate(texts):
+            key = self._cache_key(text)
+            try:
+                cached_value = self._redis.get(key)
+                if cached_value:
+                    cached[idx] = json.loads(cached_value)
+                    continue
+            except Exception:
+                pass
+            missing_texts.append(text)
+            missing_indices.append(idx)
+            cached[idx] = None  # placeholder
+        return cached, missing_texts, missing_indices
+
+    def _cache_results(self, texts: List[str], embeddings: List[List[float]]) -> None:
+        if not self._redis:
+            return
+        for text, vector in zip(texts, embeddings):
+            key = self._cache_key(text)
+            try:
+                self._redis.setex(key, int(os.getenv("EMBEDDING_CACHE_TTL", 2592000)), json.dumps(vector))
+            except Exception:
+                continue
