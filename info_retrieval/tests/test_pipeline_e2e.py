@@ -1,13 +1,13 @@
 import sys
 from pathlib import Path
+import math
 
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
-import math
-
 from embeddings.embedding_service import EmbeddingService  # noqa: E402
-from retrieval.retriever import Retriever  # noqa: E402
-from storage.vector_store import VectorStore, Chunk, SearchResult  # noqa: E402
+from ingest.pipeline import IngestionPipeline  # noqa: E402
+from storage.metadata_db import MetadataDB  # noqa: E402
+from storage.vector_store import Chunk, SearchResult, VectorStore  # noqa: E402
 from utils.config import AppConfig  # noqa: E402
 
 
@@ -23,12 +23,11 @@ class FakeSupabaseVectorStore(VectorStore):
         index_type = filters.get("index_type")
         results = []
         for chunk in self.records:
-            meta = chunk.metadata if hasattr(chunk, "metadata") else chunk["metadata"]
+            meta = chunk.metadata
             if index_type and meta.get("index_type") != index_type:
                 continue
-            vec = chunk.embedding if hasattr(chunk, "embedding") else chunk["embedding"]
-            score = self._cosine(query_vector, vec)
-            results.append(SearchResult(id=meta.get("chunk_id", ""), score=score, text=chunk.text if hasattr(chunk, "text") else chunk["text"], metadata=meta))
+            score = self._cosine(query_vector, chunk.embedding)
+            results.append(SearchResult(id=meta.get("chunk_id", ""), score=score, text=chunk.text, metadata=meta))
         results.sort(key=lambda r: r.score, reverse=True)
         return results[:top_k]
 
@@ -42,35 +41,38 @@ class FakeSupabaseVectorStore(VectorStore):
         return dot / (na * nb) if na and nb else 0.0
 
 
-def test_in_memory_retrieval_round_trip():
+def test_ingestion_pipeline_end_to_end(tmp_path):
+    base = Path(__file__).resolve().parents[1] / "data" / "sample_docs"
+    docx_path = base / "thermal_calculation.docx"
+    if not docx_path.exists():
+        return
+
     config = AppConfig(
         openai_api_key=None,
         vector_db_path=Path("data/vector_db"),
-        metadata_db_path=Path("data/metadata.db"),
+        metadata_db_path=tmp_path / "metadata.db",
         embedding_model="debug-model",
         qdrant_collection="documents",
         use_local_embeddings=False,
-        embedding_dim=16,
+        embedding_dim=32,
         log_level="INFO",
     )
     embedding_service = EmbeddingService(config)
     vector_store = FakeSupabaseVectorStore()
-    retriever = Retriever(embedding_service, vector_store)
+    metadata_db = MetadataDB(config.metadata_db_path)
 
-    chunks = [{"text": "The foundation wall is designed for 50 kPa.", "section_title": "Results"}]
-    metadata = [
-        {
-            "chunk_id": "chunk-1",
-            "chunk_type": "content",
-            "artifact_id": "artifact-1",
-            "version_id": "v1",
-            "company_id": "acme",
-            "section_type": "results",
-            "doc_type": "calculation",
-        }
-    ]
+    pipeline = IngestionPipeline(
+        embedding_service=embedding_service,
+        vector_store=vector_store,
+        metadata_db=metadata_db,
+        company_id="acme",
+    )
 
-    retriever.index_chunks(chunks, metadata, company_id="acme")
-    results = retriever.retrieve_content("foundation", company_id="acme", top_k=1)
-    assert results
-    assert results[0]["metadata"].get("chunk_type") == "content"
+    result = pipeline.ingest(str(docx_path))
+    assert result["chunk_count"] > 0
+    assert result["content_chunks"] >= 1
+
+    # Verify retrieval through fake store
+    retriever_embedding = embedding_service.embed_text("thermal analysis")
+    matches = vector_store.search(retriever_embedding, top_k=3, filters={"index_type": "content"})
+    assert matches
