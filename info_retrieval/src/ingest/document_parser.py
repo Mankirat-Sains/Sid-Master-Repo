@@ -5,7 +5,6 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from uuid import uuid4
 
 from ..utils.logger import get_logger
 
@@ -198,11 +197,18 @@ def infer_sections_from_text(text: str) -> List[Section]:
 
 def generate_artifact_id(file_path: str | Path, company_id: Optional[str] = None) -> str:
     """
-    Generate a stable artifact identifier using company + filename + random suffix.
+    Generate a stable artifact identifier using company + filename + file timestamp.
     """
-    stem = Path(file_path).stem
+    path = Path(file_path)
+    stem = path.stem
     prefix = f"{company_id}_" if company_id else ""
-    return f"{prefix}{stem}_{uuid4().hex[:8]}"
+    try:
+        timestamp = path.stat().st_mtime
+    except FileNotFoundError:
+        timestamp = 0
+    base = f"{company_id or 'org'}:{stem}:{timestamp}"
+    digest = hashlib.sha256(base.encode("utf-8")).hexdigest()[:10]
+    return f"{prefix}{stem}_{digest}"
 
 
 def generate_version_id(document_content: str) -> str:

@@ -119,3 +119,23 @@ class RulesBasedClassifier(ClassifierProvider):
         if "scope" in lower:
             return "scope"
         return "general"
+
+
+class LLMClassifier(ClassifierProvider):
+    """
+    Optional classifier stub for future LLM-powered disambiguation.
+    """
+
+    def __init__(self, client: Any = None) -> None:
+        self.client = client
+
+    def classify_doc_type(self, document: ParsedDocument) -> str:
+        logger.warning("LLMClassifier is not fully implemented; returning 'general'.")
+        return "general"
+
+    def classify_sections(self, document: ParsedDocument) -> Dict[str, str]:
+        logger.warning("LLMClassifier is not fully implemented; returning empty mapping.")
+        return {}
+
+    def classify_calc_type(self, document: ParsedDocument) -> Optional[str]:
+        return None
