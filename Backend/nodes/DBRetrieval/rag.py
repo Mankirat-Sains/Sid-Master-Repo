@@ -30,23 +30,6 @@ def node_rag(state: RAGState) -> dict:
             plan_result = future_plan.result()
             router_result = future_router.result()
         
-        # Check if router requested clarification
-        if router_result.get("needs_clarification") == True:
-            log_query.info("❓ Router requested clarification - returning early")
-            t_elapsed = time.time() - t_start
-            log_query.info(f"<<< RAG NODE DONE in {t_elapsed:.2f}s (clarification needed)")
-            
-            # Merge results, prioritizing clarification
-            return {
-                "needs_clarification": True,
-                "clarification_question": router_result.get("clarification_question"),
-                "query_plan": plan_result.get("query_plan"),
-                "expanded_queries": plan_result.get("expanded_queries", []),
-                "data_route": router_result.get("data_route"),
-                "data_sources": router_result.get("data_sources"),
-                "project_filter": router_result.get("project_filter")
-            }
-        
         # Merge results from both nodes
         merged_result = {
             # From rag_plan
@@ -82,8 +65,7 @@ def node_rag(state: RAGState) -> dict:
                 "data_route": router_result.get("data_route"),
                 "data_sources": router_result.get("data_sources"),
                 "project_filter": router_result.get("project_filter"),
-                "needs_clarification": router_result.get("needs_clarification", False),
-                "clarification_question": router_result.get("clarification_question")
+                "needs_clarification": False
             }
         except Exception as e2:
             log_query.error(f"Sequential fallback also failed: {e2}")
