@@ -17,25 +17,21 @@ import time
 # This MUST happen before any agent imports because agents initialize Supabase at module level
 try:
     from dotenv import load_dotenv
-    # .env file is in Frontend folder (parent of backend)
-    env_path = Path(__file__).parent.parent / ".env"
+    # Always load the root project .env as the single source of truth
+    env_path = Path(__file__).resolve().parents[2] / ".env"
     if env_path.exists():
-        # Load with override=True to ensure our values take precedence
         load_dotenv(env_path, override=True)
         print(f"✓ Loaded .env from {env_path}")
-        # Verify critical env vars are loaded
-        if os.getenv("OPENAI_API_KEY"):
-            print("✓ OPENAI_API_KEY found")
-        if os.getenv("SUPABASE_URL"):
-            print("✓ SUPABASE_URL found")
-        if os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_ANON_KEY"):
-            print("✓ SUPABASE_KEY found")
     else:
-        # Try loading from current directory as fallback
         load_dotenv(override=True)
-        print(f"⚠ .env file not found at {env_path}, trying current directory")
-        if not os.getenv("OPENAI_API_KEY"):
-            print("⚠ WARNING: OPENAI_API_KEY not found in environment")
+        print(f"⚠ .env file not found at {env_path}, using current environment only")
+    # Verify critical env vars are loaded
+    if os.getenv("OPENAI_API_KEY"):
+        print("✓ OPENAI_API_KEY found")
+    if os.getenv("SUPABASE_URL"):
+        print("✓ SUPABASE_URL found")
+    if os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_ANON_KEY"):
+        print("✓ SUPABASE_KEY found")
 except ImportError:
     print("⚠ python-dotenv not installed. Install with: pip install python-dotenv")
     print("   Using system environment variables only")
@@ -50,6 +46,7 @@ if str(AGENTS_DIR) not in sys.path:
 try:
     from agents.team_orchestrator import TeamOrchestrator
     from agents.search_orchestrator import SearchOrchestrator
+    from demo_cache import load_demo_cache
     from tools import ALL_TOOLS
     HAS_AGENTS = True
 except ImportError as e:
@@ -57,6 +54,7 @@ except ImportError as e:
     try:
         from agents.agents.team_orchestrator import TeamOrchestrator
         from agents.agents.search_orchestrator import SearchOrchestrator
+        from demo_cache import load_demo_cache
         from agents.tools import ALL_TOOLS
         HAS_AGENTS = True
     except ImportError:
@@ -102,6 +100,7 @@ class ChatRequest(BaseModel):
 
 # Initialize agents system (lazy loading)
 _team_orchestrator = None
+DEMO_CACHE_ENABLED = os.getenv("DEMO_CACHE_ENABLED", "false").lower() == "true"
 
 def get_orchestrator():
     """Get or create the team orchestrator instance"""
@@ -113,12 +112,18 @@ def get_orchestrator():
         try:
             # Create specialized agents
             search_agent = SearchOrchestrator(tools=ALL_TOOLS)
+
+            # Load demo cache if enabled
+            demo_cache = load_demo_cache() if DEMO_CACHE_ENABLED else None
+            if DEMO_CACHE_ENABLED:
+                print(f"✓ Demo cache enabled: {'loaded' if demo_cache else 'not loaded'}")
             
             # Create team orchestrator
             _team_orchestrator = TeamOrchestrator(
                 specialized_agents={
                     "search": search_agent,
-                }
+                },
+                demo_cache=demo_cache
             )
             print("✓ Agents system initialized")
         except Exception as e:
@@ -327,5 +332,3 @@ async def export_to_word(request: WordExportRequest):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-

@@ -11,8 +11,14 @@ from typing import Dict, List, Optional, Any
 import logging
 from supabase import create_client, Client
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+# Load root .env as the single source of truth
+root_env = Path(__file__).resolve().parent.parent / ".env"
+if root_env.exists():
+    load_dotenv(root_env, override=True)
+else:
+    load_dotenv()
 logger = logging.getLogger(__name__)
 
 class SupabaseLogger:

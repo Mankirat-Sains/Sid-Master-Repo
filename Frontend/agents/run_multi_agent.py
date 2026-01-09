@@ -18,9 +18,9 @@ except ImportError:
 # Try to load .env
 try:
     from dotenv import load_dotenv
-    env_path = Path(__file__).parent.parent / ".env"
-    if env_path.exists():
-        load_dotenv(env_path)
+    root_env = Path(__file__).resolve().parents[2] / ".env"
+    if root_env.exists():
+        load_dotenv(root_env, override=True)
     else:
         load_dotenv()
 except ImportError:
@@ -316,4 +316,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -26,17 +26,14 @@ from html import escape
 import httpx
 from pathlib import Path
 
-# Load environment variables from .env file
-# Try Backend/.env first, then Frontend/.env (where Speckle credentials are)
-load_dotenv()  # Backend/.env
-
-# Also load Frontend/.env (where Speckle credentials are stored)
-frontend_env_path = Path(__file__).parent.parent / "Frontend" / ".env"
-if frontend_env_path.exists():
-    load_dotenv(dotenv_path=str(frontend_env_path), override=True)
-    print(f"✅ Loaded Speckle credentials from {frontend_env_path}")
+# Load environment variables from the root .env (single source of truth)
+root_env_path = Path(__file__).resolve().parent.parent / ".env"
+if root_env_path.exists():
+    load_dotenv(dotenv_path=str(root_env_path), override=True)
+    print(f"✅ Loaded environment from {root_env_path}")
 else:
-    print(f"⚠️ Frontend/.env not found at {frontend_env_path}")
+    load_dotenv(override=True)
+    print(f"⚠️ Root .env not found at {root_env_path}, using current environment")
 
 # Import the RAG system from new modular structure
 from main import run_agentic_rag, rag_healthcheck
@@ -1790,4 +1787,3 @@ if __name__ == "__main__":
         log_level="info",
         access_log=True
     )
-
