@@ -3,6 +3,8 @@
  * Similar to PROJECT_MODEL_MAP in Electron app
  */
 
+import speckleMapping from '../../../Backend/references/speckle_mapping.json'
+
 interface ProjectMapping {
   projectId: string;
   modelId: string;
@@ -10,28 +12,7 @@ interface ProjectMapping {
   commitId?: string;
 }
 
-const PROJECT_MODEL_MAP: Record<string, ProjectMapping> = {
-  "25-08-127": {
-    projectId: "b44d7945a3",
-    modelId: "1711f08980",
-    name: "Beef Barn Parlour Addition",
-  },
-  "Beef Barn Parlour Addition": {
-    projectId: "b44d7945a3",
-    modelId: "1711f08980",
-    name: "Beef Barn Parlour Addition",
-  },
-  "25-07-066": {
-    projectId: "b934667233",
-    modelId: "7a94658d86",
-    name: "Albers Layer Barn",
-  },
-  "Albers Layer Barn": {
-    projectId: "b934667233",
-    modelId: "7a94658d86",
-    name: "Albers Layer Barn",
-  },
-};
+const PROJECT_MODEL_MAP: Record<string, ProjectMapping> = speckleMapping as Record<string, ProjectMapping>;
 
 export const useProjectMapping = () => {
   function getProjectModelMapping(
@@ -65,4 +46,3 @@ export const useProjectMapping = () => {
     findProjectByName,
   };
 };
-

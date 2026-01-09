@@ -87,10 +87,6 @@ export default defineNuxtConfig({
       ],
       script: [
         {
-          src: 'https://polyfill.io/v3/polyfill.min.js?features=es6',
-          defer: true
-        },
-        {
           innerHTML: `
             window.MathJax = {
               tex: {

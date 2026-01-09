@@ -8,6 +8,7 @@ from datetime import datetime
 from config.settings import PROJECT_RE
 from config.logging_config import log_query
 from .project_utils import detect_project_filter
+from database.speckle_retriever import list_projects_with_speckle_models
 
 
 def extract_date_filters_from_query(
@@ -98,6 +99,20 @@ def extract_date_filters_from_query(
             filters['has_revit'] = True
             log_query.info(f"🏗️ REVIT DETECTION: ✅ Revit query identified!")
             break
+
+    # 6. Speckle / 3D model detection
+    speckle_patterns = [
+        r'\bspeckle\b',
+        r'\b3d\s+(?:model|design)\b',
+        r'\b3d\b.*speckle',
+        r'speckle\s+db',
+    ]
+    
+    for pattern in speckle_patterns:
+        if re.search(pattern, q_lower):
+            filters['has_speckle'] = True
+            log_query.info("🧱 SPECKLE DETECTION: ✅ Speckle/3D model query identified!")
+            break
     
     log_query.info(f"🗓️ SMART FILTER EXTRACTION: Final extracted filters: {filters}")
     return filters
@@ -135,9 +150,20 @@ def create_sql_project_filter(filters: Dict[str, Any]) -> Optional[Dict]:
     if 'has_revit' in filters and filters['has_revit']:
         conditions.append("has_revit.eq.true")
         log_query.info(f"🏗️ SQL FILTER CREATION: ✅ Revit filter condition added")
+
+    project_keys_filter = None
+    if filters.get('has_speckle'):
+        speckle_projects = list_projects_with_speckle_models()
+        project_keys_filter = [p.get("project_key") for p in speckle_projects if p.get("project_key")]
+        if project_keys_filter:
+            log_query.info(f"🧱 SQL FILTER CREATION: ✅ Speckle filter applied to {len(project_keys_filter)} projects")
+        else:
+            log_query.info("🧱 SQL FILTER CREATION: Speckle requested but mapping is empty")
     
-    if conditions:
-        return {"and": conditions}
+    if conditions or project_keys_filter:
+        out = {"and": conditions}
+        if project_keys_filter:
+            out["project_keys"] = project_keys_filter
+        return out
     
     return None
-

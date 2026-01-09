@@ -31,6 +31,7 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
             """Enhanced Supabase hybrid search with SQL pre-filtering"""
             
             log_query.info(f"🔍 HYBRID SEARCH CALLED: sql_filters={sql_filters}")
+            project_keys_filter = sql_filters.get("project_keys") if sql_filters else None
             
             # Get the selected database based on route
             if route == "smart" and vs_smart is not None:
@@ -61,53 +62,58 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
                     nonlocal _prefiltered_project_keys_cache, _total_content_count_cache
                     if _prefiltered_project_keys_cache is None:
                         log_query.info("🚀 OPTIMIZATION: Performing SQL pre-filtering ONCE for all subqueries")
+
+                        if project_keys_filter:
+                            filtered_project_keys = list(set(project_keys_filter))
+                            _prefiltered_project_keys_cache = filtered_project_keys
+                            _total_content_count_cache = len(filtered_project_keys)
+                        else:
+                            # Get filtered project keys first with pagination to bypass 1000 limit
+                            all_project_keys = []
+                            offset = 0
+                            page_size = 1000  # Supabase's max per request
+                            
+                            while True:
+                                query_builder = _supa.table(table_name).select("project_key")
+                                
+                                # Apply filters
+                                has_revit_filter = False
+                                for condition in sql_filters.get("and", []):
+                                    if "like" in condition:
+                                        key, op, value = condition.split(".", 2)
+                                        query_builder = query_builder.like(key, value)
+                                    elif "eq" in condition:
+                                        key, op, value = condition.split(".", 2)
+                                        if value.lower() == "true":
+                                            value = True
+                                        elif value.lower() == "false":
+                                            value = False
+                                        
+                                        if key == "has_revit":
+                                            has_revit_filter = True
+                                        
+                                        query_builder = query_builder.eq(key, value)
+                                
+                                result = query_builder.range(offset, offset + page_size - 1).execute()
+                                
+                                if not result.data:
+                                    break
+                                
+                                page_keys = [row["project_key"] for row in result.data]
+                                all_project_keys.extend(page_keys)
+                                
+                                if len(result.data) < page_size:
+                                    break
+                                
+                                offset += page_size
                         
-                        # Get filtered project keys first with pagination to bypass 1000 limit
-                        all_project_keys = []
-                        offset = 0
-                        page_size = 1000  # Supabase's max per request
-                        
-                        while True:
-                            query_builder = _supa.table(table_name).select("project_key")
+                            filtered_project_keys = list(set(all_project_keys))
                             
-                            # Apply filters
-                            has_revit_filter = False
-                            for condition in sql_filters.get("and", []):
-                                if "like" in condition:
-                                    key, op, value = condition.split(".", 2)
-                                    query_builder = query_builder.like(key, value)
-                                elif "eq" in condition:
-                                    key, op, value = condition.split(".", 2)
-                                    if value.lower() == "true":
-                                        value = True
-                                    elif value.lower() == "false":
-                                        value = False
-                                    
-                                    if key == "has_revit":
-                                        has_revit_filter = True
-                                    
-                                    query_builder = query_builder.eq(key, value)
+                            if not filtered_project_keys:
+                                return []
                             
-                            result = query_builder.range(offset, offset + page_size - 1).execute()
-                            
-                            if not result.data:
-                                break
-                            
-                            page_keys = [row["project_key"] for row in result.data]
-                            all_project_keys.extend(page_keys)
-                            
-                            if len(result.data) < page_size:
-                                break
-                            
-                            offset += page_size
-                    
-                        filtered_project_keys = list(set(all_project_keys))
-                        
-                        if not filtered_project_keys:
-                            return []
-                        
-                        _prefiltered_project_keys_cache = filtered_project_keys
-                        _total_content_count_cache = len(all_project_keys)
+                            _prefiltered_project_keys_cache = filtered_project_keys
+                            _total_content_count_cache = len(all_project_keys)
                     else:
                         log_query.info("🚀 OPTIMIZATION: Using cached SQL pre-filtering results")
                     
@@ -522,4 +528,3 @@ def mmr_rerank_coop(docs: List[Document], query_embedding, lambda_=0.9, k=30) ->
         selected.append(pick)
     
     return selected
-

@@ -1,3 +1,5 @@
+import speckleMapping from '../../../Backend/references/speckle_mapping.json'
+
 interface Project {
   id: string
   name: string
@@ -55,6 +57,18 @@ export const useSpeckle = () => {
   }
 
   async function getProjectModels(projectId: string): Promise<Model[]> {
+    // Fast path: serve models from static mapping if available for this projectId
+    const mappedEntries = Object.entries(speckleMapping as Record<string, any>).filter(
+      ([, meta]) => meta?.projectId === projectId && meta?.modelId
+    )
+    if (mappedEntries.length > 0) {
+      return mappedEntries.map(([, meta]) => ({
+        id: meta.modelId,
+        name: meta.name || 'Speckle Model',
+        projectId
+      }))
+    }
+
     const graphqlQuery = `
       query GetProjectModels($projectId: String!) {
         project(id: $projectId) {
@@ -104,6 +118,16 @@ export const useSpeckle = () => {
   }
 
   async function findProjectByKey(projectKey: string): Promise<Project | null> {
+    // First, check static mapping JSON for exact project key match
+    const mapped = (speckleMapping as Record<string, any>)[projectKey]
+    if (mapped?.projectId) {
+      return {
+        id: mapped.projectId,
+        name: mapped.name || projectKey,
+        description: ''
+      }
+    }
+
     // Static overrides for known project key → Speckle project ID mappings.
     // Add to this map as more projects become available in Speckle.
     const projectOverrides: Record<string, Project> = {

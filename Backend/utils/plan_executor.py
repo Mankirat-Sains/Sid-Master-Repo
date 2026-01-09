@@ -23,6 +23,7 @@ from database.retrievers import (
     make_hybrid_retriever, make_code_hybrid_retriever, make_coop_hybrid_retriever,
     mmr_rerank_supabase, mmr_rerank_code, mmr_rerank_coop
 )
+from database.speckle_retriever import get_speckle_mapping, list_projects_with_speckle_models
 from database.project_metadata import fetch_project_metadata
 from database.supabase_client import vs_code, vs_coop
 
@@ -138,6 +139,8 @@ def execute_plan(state: RAGState) -> dict:
             project_docs = []
             code_docs = []
             coop_docs = []
+            speckle_docs: List[Document] = []
+            q_lower = (state.user_query or "").lower()
             
             # PROJECT DATABASE RETRIEVAL
             if project_db_enabled:
@@ -164,6 +167,7 @@ def execute_plan(state: RAGState) -> dict:
                 )
                 sql_filters = create_sql_project_filter(smart_filters)
                 state.active_filters = smart_filters
+                speckle_requested = speckle_db_enabled or smart_filters.get("has_speckle") or ("speckle" in q_lower) or ("3d model" in q_lower) or ("3d design" in q_lower)
 
                 route = state.data_route if (hasattr(state, 'data_route') and state.data_route) else "smart"
                 retr = make_hybrid_retriever(state.project_filter, sql_filters, route)
@@ -172,6 +176,65 @@ def execute_plan(state: RAGState) -> dict:
                 if project_docs:
                     query_emb = emb.embed_query(state.user_query)
                     project_docs = mmr_rerank_supabase(project_docs, query_emb, lambda_=0.7, k=len(project_docs))
+                
+                # Filter project docs to only mapped Speckle projects when requested
+                if speckle_requested:
+                    mapping_keys = {p.get("project_key") for p in list_projects_with_speckle_models()}
+                    if mapping_keys:
+                        project_docs = [
+                            d for d in project_docs
+                            if ((d.metadata or {}).get("drawing_number") in mapping_keys)
+                            or ((d.metadata or {}).get("project_key") in mapping_keys)
+                        ]
+                    # Build Speckle context documents
+                    if state.project_filter:
+                        mapping = get_speckle_mapping(state.project_filter)
+                        if mapping:
+                            content = (
+                                f"Speckle model found for Project {state.project_filter}: "
+                                f"projectId={mapping.get('projectId')}, modelId={mapping.get('modelId')}"
+                            )
+                            if mapping.get("commitId"):
+                                content += f", commitId={mapping.get('commitId')}"
+                        else:
+                            content = f"No Speckle model found for Project {state.project_filter} under current mapping/token."
+                        speckle_docs.append(Document(
+                            page_content=content,
+                            metadata={
+                                "drawing_number": state.project_filter,
+                                "project_key": state.project_filter,
+                                "title": "Speckle model mapping"
+                            }
+                        ))
+                    else:
+                        all_mapped = list_projects_with_speckle_models()
+                        if all_mapped:
+                            lines = []
+                            for entry in all_mapped:
+                                line = (
+                                    f"Project {entry.get('project_key')} → projectId={entry.get('projectId')}, "
+                                    f"modelId={entry.get('modelId')}"
+                                )
+                                if entry.get("commitId"):
+                                    line += f", commitId={entry.get('commitId')}"
+                                lines.append(line)
+                            speckle_docs.append(Document(
+                                page_content="Speckle models available:\n" + "\n".join(lines),
+                                metadata={
+                                    "drawing_number": "SPECKLE",
+                                    "project_key": "SPECKLE",
+                                    "title": "Speckle projects with models"
+                                }
+                            ))
+                        else:
+                            speckle_docs.append(Document(
+                                page_content="No Speckle models available under current mapping/token.",
+                                metadata={
+                                    "drawing_number": "SPECKLE",
+                                    "project_key": "SPECKLE",
+                                    "title": "Speckle projects with models"
+                                }
+                            ))
             
             # CODE DATABASE RETRIEVAL
             if code_db_enabled:
@@ -199,7 +262,7 @@ def execute_plan(state: RAGState) -> dict:
                     log_query.error(f"❌ Coop database retrieve failed: {e}")
                     coop_docs = []
             
-            working = project_docs
+            working = project_docs + speckle_docs
             if code_docs:
                 state._code_docs = code_docs
             if coop_docs:
@@ -275,4 +338,3 @@ def execute_plan(state: RAGState) -> dict:
         result["retrieved_coop_docs"] = coop_docs[:MAX_GRADED_DOCS]
     
     return result
-

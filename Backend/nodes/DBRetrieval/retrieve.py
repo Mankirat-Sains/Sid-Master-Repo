@@ -4,17 +4,20 @@ Retrieves documents from vector stores based on plan or query
 """
 import time
 from models.rag_state import RAGState
+from langchain_core.documents import Document
 from config.settings import (
     MAX_SMART_RETRIEVAL_DOCS, MAX_LARGE_RETRIEVAL_DOCS,
     MAX_CODE_RETRIEVAL_DOCS
 )
 from config.logging_config import log_query
+from utils.filters import extract_date_filters_from_query, create_sql_project_filter
 from database.supabase_client import vs_smart, vs_large, vs_code, vs_coop
 from database.retrievers import (
     make_hybrid_retriever, make_code_hybrid_retriever, make_coop_hybrid_retriever,
     mmr_rerank_code, mmr_rerank_coop
 )
 from config.llm_instances import emb
+from database.speckle_retriever import get_speckle_mapping, list_projects_with_speckle_models
 from utils.plan_executor import execute_plan
 
 
@@ -101,10 +104,20 @@ def node_retrieve(state: RAGState) -> dict:
         code_db_enabled = data_sources.get("code_db", False)
         coop_db_enabled = data_sources.get("coop_manual", False)
         speckle_db_enabled = data_sources.get("speckle_db", False)
+        q_lower = (state.user_query or "").lower()
+        smart_filters = extract_date_filters_from_query(
+            state.user_query,
+            project_filter=getattr(state, "project_filter", None),
+            follow_up_context=None
+        )
+        sql_filters = create_sql_project_filter(smart_filters)
+        state.active_filters = smart_filters
+        speckle_requested = speckle_db_enabled or smart_filters.get("has_speckle") or ("speckle" in q_lower) or ("3d model" in q_lower) or ("3d design" in q_lower)
         
         project_docs = []
         code_docs = []
         coop_docs = []
+        speckle_docs = []
         
         # PROJECT DATABASE RETRIEVAL - Use hybrid retriever instead of direct similarity_search
         if project_db_enabled:
@@ -121,7 +134,7 @@ def node_retrieve(state: RAGState) -> dict:
             try:
                 print(f"🔍 Legacy retrieval: route={route}, chunk_limit={chunk_limit}")  # Diagnostic
                 # Use hybrid retriever instead of direct similarity_search to ensure RPC functions are used
-                retriever = make_hybrid_retriever(project=None, sql_filters=None, route=route)
+                retriever = make_hybrid_retriever(project=None, sql_filters=sql_filters, route=route)
                 project_docs = retriever(state.user_query, k=chunk_limit)
                 print(f"✅ Legacy retrieval got {len(project_docs)} docs")  # Diagnostic
             except Exception as e:
@@ -130,6 +143,63 @@ def node_retrieve(state: RAGState) -> dict:
                 traceback.print_exc()
                 log_query.error(f"❌ Project database retrieve failed ({route}): {e}")
                 project_docs = []
+
+            if speckle_requested:
+                mapping_keys = {p.get("project_key") for p in list_projects_with_speckle_models()}
+                if mapping_keys:
+                    project_docs = [
+                        d for d in project_docs
+                        if ((d.metadata or {}).get("drawing_number") in mapping_keys)
+                        or ((d.metadata or {}).get("project_key") in mapping_keys)
+                    ]
+                if getattr(state, "project_filter", None):
+                    mapping = get_speckle_mapping(state.project_filter)
+                    if mapping:
+                        content = (
+                            f"Speckle model found for Project {state.project_filter}: "
+                            f"projectId={mapping.get('projectId')}, modelId={mapping.get('modelId')}"
+                        )
+                        if mapping.get("commitId"):
+                            content += f", commitId={mapping.get('commitId')}"
+                    else:
+                        content = f"No Speckle model found for Project {state.project_filter} under current mapping/token."
+                    speckle_docs.append(Document(
+                        page_content=content,
+                        metadata={
+                            "drawing_number": state.project_filter,
+                            "project_key": state.project_filter,
+                            "title": "Speckle model mapping"
+                        }
+                    ))
+                else:
+                    all_mapped = list_projects_with_speckle_models()
+                    if all_mapped:
+                        lines = []
+                        for entry in all_mapped:
+                            line = (
+                                f"Project {entry.get('project_key')} → projectId={entry.get('projectId')}, "
+                                f"modelId={entry.get('modelId')}"
+                            )
+                            if entry.get("commitId"):
+                                line += f", commitId={entry.get('commitId')}"
+                            lines.append(line)
+                        speckle_docs.append(Document(
+                            page_content="Speckle models available:\n" + "\n".join(lines),
+                            metadata={
+                                "drawing_number": "SPECKLE",
+                                "project_key": "SPECKLE",
+                                "title": "Speckle projects with models"
+                            }
+                        ))
+                    else:
+                        speckle_docs.append(Document(
+                            page_content="No Speckle models available under current mapping/token.",
+                            metadata={
+                                "drawing_number": "SPECKLE",
+                                "project_key": "SPECKLE",
+                                "title": "Speckle projects with models"
+                            }
+                        ))
         
         # CODE DATABASE RETRIEVAL
         if code_db_enabled:
@@ -165,7 +235,7 @@ def node_retrieve(state: RAGState) -> dict:
             retrieved = coop_docs
             state._coop_docs = coop_docs
         else:
-            retrieved = project_docs
+            retrieved = project_docs + speckle_docs
         
         if not retrieved and not code_docs and not coop_docs:
             log_query.warning("⚠️  No documents retrieved from any enabled database")
@@ -193,4 +263,3 @@ def node_retrieve(state: RAGState) -> dict:
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< RETRIEVE DONE (with error) in {t_elapsed:.2f}s")
         return {"retrieved_docs": []}
-
