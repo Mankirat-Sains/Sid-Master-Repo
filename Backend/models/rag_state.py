@@ -1,53 +1,23 @@
 """
-RAG State Definition - DEPRECATED
-This file is kept for backward compatibility.
-Use ParentState for parent graph and DBRetrievalState for DBRetrieval subgraph.
+RAG State Definition
+
+RAGState extends the DBRetrievalState used by the DBRetrieval subgraph with
+doc-generation and desktop orchestration metadata.
 """
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Literal, Any
-from langchain_core.documents import Document
+from typing import List, Dict, Optional, Any
 
-# Import new states for backward compatibility
-from .parent_state import ParentState
 from .db_retrieval_state import DBRetrievalState
 
-# Keep RAGState as an alias to DBRetrievalState for backward compatibility
-# This allows existing code to continue working during migration
-RAGState = DBRetrievalState
 
-# Original RAGState definition (deprecated - use DBRetrievalState instead)
 @dataclass
-class _RAGState:
-    """
-    Typed state object that flows through the LangGraph pipeline.
-    Each node receives this state and returns a dict to update it.
-    """
-    # Session & Query
-    session_id: str = ""
-    user_query: str = ""  # Rewritten/enhanced query (used for retrieval)
-    original_question: Optional[str] = None  # Original user question (for storing in messages)
-    user_role: Optional[str] = None  # User role for role-based database preferences (e.g., "structural_engineer", "trainer")
-    
-    # Messages (persisted by checkpointer) - Follows LangGraph's pattern
-    # Simple format: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
-    messages: List[Dict[str, str]] = field(default_factory=list)
-    
-    # Planning / Routing
-    query_plan: Optional[Dict] = None
-    data_sources: Dict[str, bool] = field(
-        default_factory=lambda: {
-            "project_db": True,
-            "code_db": False,
-            "coop_manual": False,
-            "speckle_db": False
-        }
-    )
-    data_route: Optional[Literal["smart", "large"]] = None
-    project_filter: Optional[str] = None
-    active_filters: Optional[Dict[str, Any]] = None  # Store extracted filters for synthesis
-    needs_clarification: bool = False  # Flag indicating router needs clarification
-    clarification_question: Optional[str] = None  # Clarification question from router
-    selected_routers: List[str] = field(default_factory=list)  # List of selected routers: "rag", "web", "desktop"
+class RAGState(DBRetrievalState):
+    """Extended state that layers doc-generation metadata on top of DBRetrievalState."""
+
+    # Router selection (legacy, still used by doc classifier / desktop router)
+    selected_routers: List[str] = field(default_factory=list)
+
+    # Workflow and doc generation routing
     workflow: Optional[str] = None  # "qa" | "docgen"
     desktop_policy: Optional[str] = None  # "required" | "optional" | "never"
     task_type: Optional[str] = None  # "qa" | "doc_section" | "doc_report"
@@ -56,46 +26,14 @@ class _RAGState:
     doc_request: Optional[Dict[str, Any]] = None  # Structured query from doc analyzer
     requires_desktop_action: bool = False
     desktop_action_plan: Optional[Dict[str, Any]] = None  # What desktop should do (open/save/etc.)
+    desktop_steps: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_execution: Optional[str] = None
     output_artifact_ref: Optional[Dict[str, Any]] = None  # artifact/version/path for generated doc
-    
-    # Retrieval Artifacts
-    expanded_queries: List[str] = field(default_factory=list)
-    retrieved_docs: List[Document] = field(default_factory=list)
-    retrieved_code_docs: List[Document] = field(default_factory=list)  # Code docs (separate pipeline)
-    retrieved_coop_docs: List[Document] = field(default_factory=list)  # Coop docs (separate pipeline)
-    graded_docs: List[Document] = field(default_factory=list)
-    graded_code_docs: List[Document] = field(default_factory=list)  # Graded code docs
-    graded_coop_docs: List[Document] = field(default_factory=list)  # Graded coop docs
-    db_result: Optional[str] = None
-    
-    # Synthesis
-    final_answer: Optional[str] = None
-    answer_citations: List[Dict] = field(default_factory=list)
+
+    # Doc generation outputs
     doc_generation_result: Optional[Dict[str, Any]] = None
     doc_generation_warnings: List[str] = field(default_factory=list)
-    code_answer: Optional[str] = None  # Separate answer for code database
-    code_citations: List[Dict] = field(default_factory=list)
-    coop_answer: Optional[str] = None  # Separate answer for coop manual
-    coop_citations: List[Dict] = field(default_factory=list)
-    answer_support_score: float = 0.0
-    
-    # Control Flags
-    corrective_attempted: bool = False
-    needs_fix: bool = False
-    
-    # Project Tracking
-    selected_projects: List[str] = field(default_factory=list)  # Projects from retrieval
-    
-    # Follow-up Questions and Suggestions
-    follow_up_questions: List[str] = field(default_factory=list)  # Follow-up questions generated by verifier
-    follow_up_suggestions: List[str] = field(default_factory=list)  # Follow-up suggestions generated by verifier
-    
-    # Image Similarity Search (optional - doesn't affect existing pipeline)
-    images_base64: Optional[List[str]] = None  # Base64 encoded images from frontend
-    image_description: Optional[str] = None  # VLM-generated text description of uploaded image
-    image_embeddings: Optional[List[List[float]]] = None  # DEPRECATED: kept for backward compatibility
-    image_similarity_results: List[Dict] = field(default_factory=list)  # Similar images found via text semantic search
-    use_image_similarity: bool = False  # Flag to enable/disable image search
-    query_intent: Optional[Literal["image_similarity", "content_detail", "hybrid"]] = None
+
+    # Execution trace (optional, used for debugging/tests)
     execution_trace: List[str] = field(default_factory=list)
     execution_trace_verbose: List[Dict[str, Any]] = field(default_factory=list)

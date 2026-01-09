@@ -81,7 +81,7 @@ def _log_node_state(node_name: str, state) -> None:
 def _wrap_node(node_name: str, fn):
     def _wrapped(state: RAGState, *args, **kwargs):
         _log_node_state(node_name, state)
-        # Build trace entries
+
         def get(field, default=None):
             if isinstance(state, dict):
                 return state.get(field, default)
@@ -152,11 +152,11 @@ def build_graph():
     g.add_node("doc_task_classifier", _wrap_node("doc_task_classifier", node_doc_task_classifier))
     g.add_node("doc_plan", _wrap_node("doc_plan", node_doc_plan))
     g.add_node("desktop_execute", _wrap_node("desktop_execute", node_desktop_execute))
+    g.add_node("doc_think", _wrap_node("doc_think", node_doc_think))
+    g.add_node("doc_act", _wrap_node("doc_act", node_doc_act))
     g.add_node("doc_generate_section", _wrap_node("doc_generate_section", node_doc_generate_section))
     g.add_node("doc_generate_report", _wrap_node("doc_generate_report", node_doc_generate_report))
     g.add_node("doc_answer_adapter", _wrap_node("doc_answer_adapter", node_doc_answer_adapter))
-    g.add_node("doc_think", _wrap_node("doc_think", node_doc_think))
-    g.add_node("doc_act", _wrap_node("doc_act", node_doc_act))
 
     # RAG wrapper node
     g.add_node("rag", _wrap_node("rag", node_rag_plan_router))
@@ -192,8 +192,8 @@ def build_graph():
     )
 
     # Doc generation branch
-    g.add_edge("doc_plan", "desktop_router")
-    g.add_edge("desktop_router", "doc_think")
+    g.add_edge("doc_plan", "desktop_execute")
+    g.add_edge("desktop_execute", "doc_think")
     g.add_edge("doc_think", "doc_act")
     g.add_conditional_edges(
         "doc_act",

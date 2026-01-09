@@ -555,88 +555,8 @@
                                 : 'text-white'
                               "
                             >
-                              <!-- Interrupt message (code verification) -->
-                              <div v-if="entry.interrupt && entry.interrupt.type === 'code_verification'" class="space-y-3">
-                                <div class="text-sm text-white/90">
-                                  <p class="font-semibold mb-2">{{ entry.interrupt.question }}</p>
-                                  <p class="text-xs text-white/60 mb-2">📊 Found {{ entry.interrupt.chunk_count }} relevant chunks from {{ entry.interrupt.code_count }} building codes</p>
-                                  <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 space-y-1.5 max-h-48 overflow-y-auto">
-                                    <div v-for="(code, idx) in entry.interrupt.codes" :key="idx" class="flex items-center gap-2 text-xs text-white/80">
-                                      <span class="text-purple-400">✓</span>
-                                      <span>{{ code }}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div v-if="entry.interrupt.processing || entry.interrupt.completed" class="flex items-center gap-2 text-xs text-white/60">
-                                  <div v-if="entry.interrupt.processing" class="h-3 w-3 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
-                                  <span v-if="entry.interrupt.processing">Processing...</span>
-                                  <span v-else class="text-green-400">✓ Approved</span>
-                                </div>
-                                <div v-else class="flex gap-2">
-                                  <button
-                                    class="px-3 py-1.5 rounded-lg bg-purple-600 text-white text-xs font-semibold hover:bg-purple-700 transition"
-                                    @click="handleApproveCodesForEntry(entry)"
-                                  >
-                                    Approve
-                                  </button>
-                                  <button
-                                    class="px-3 py-1.5 rounded-lg bg-red-600/80 text-white text-xs font-semibold hover:bg-red-600 transition"
-                                    @click="handleRejectCodesForEntry(entry)"
-                                  >
-                                    Reject
-                                  </button>
-                                </div>
-                              </div>
-                              <!-- Interrupt message (code selection) -->
-                              <div v-else-if="entry.interrupt && entry.interrupt.type === 'code_selection'" class="space-y-3">
-                                <div class="text-sm text-white/90">
-                                  <p class="font-semibold mb-2">{{ entry.interrupt.question }}</p>
-                                  <div v-if="entry.interrupt.previously_retrieved?.length > 0" class="mb-3">
-                                    <p class="text-xs text-white/60 mb-1">Previously Retrieved:</p>
-                                    <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-2 space-y-1 max-h-24 overflow-y-auto">
-                                      <div v-for="(code, idx) in entry.interrupt.previously_retrieved" :key="idx" class="text-xs text-white/60">
-                                        ⚠️ {{ code }}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <p class="text-xs text-white/60 mb-2">Select codes ({{ getSelectedCodesForEntry(entry).length }} selected):</p>
-                                  <div v-if="!entry.interrupt.processing" class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 space-y-2 max-h-64 overflow-y-auto">
-                                    <div
-                                      v-for="(code, idx) in entry.interrupt.available_codes"
-                                      :key="idx"
-                                      class="flex items-center gap-2 p-1.5 rounded hover:bg-white/5 transition cursor-pointer"
-                                      @click="toggleCodeSelectionForEntry(entry, code)"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        :checked="getSelectedCodesForEntry(entry).includes(code)"
-                                        @change="toggleCodeSelectionForEntry(entry, code)"
-                                        class="w-3.5 h-3.5 rounded border-white/20 bg-white/5 text-purple-600 focus:ring-purple-500"
-                                      />
-                                      <span class="text-xs text-white/80 flex-1">{{ code }}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div v-if="entry.interrupt.processing || entry.interrupt.completed" class="flex items-center gap-2 text-xs text-white/60">
-                                  <div v-if="entry.interrupt.processing" class="h-3 w-3 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
-                                  <span v-if="entry.interrupt.processing">Processing...</span>
-                                  <span v-else class="text-green-400">✓ Submitted</span>
-                                </div>
-                                <div v-else class="flex gap-2">
-                                  <button
-                                    class="px-3 py-1.5 rounded-lg bg-purple-600 text-white text-xs font-semibold hover:bg-purple-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
-                                    :disabled="getSelectedCodesForEntry(entry).length === 0"
-                                    @click="handleSubmitCodeSelectionForEntry(entry)"
-                                  >
-                                    Submit ({{ getSelectedCodesForEntry(entry).length }})
-                                  </button>
-                                </div>
-                              </div>
-                              <!-- Regular message -->
-                              <div v-else>
-                                <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
-                                <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
-                              </div>
+                              <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
+                              <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
                             </div>
                             <!-- Image gallery for similar images -->
                             <div
@@ -812,7 +732,7 @@
                 </template>
               </div>
 
-              <template v-if="showAnyViewer">
+              <template v-if="showSpeckleViewer">
                 <div class="viewer-resize-handle" @mousedown.prevent="startViewerResize">
                   <div class="viewer-resize-grip"></div>
                 </div>
@@ -821,8 +741,7 @@
                   class="flex flex-col min-h-0 viewer-pane bg-[#2a2a2a] border-l border-[#3a3a3a] shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
                   :style="viewerPaneStyle"
                 >
-                  <!-- Speckle Viewer -->
-                  <div v-if="showSpeckleViewer" class="relative flex-1 min-h-0 bg-[#2a2a2a] viewer-canvas-shell">
+                  <div class="relative flex-1 min-h-0 bg-[#2a2a2a] viewer-canvas-shell">
                     <button
                       class="viewer-close"
                       type="button"
@@ -870,11 +789,6 @@
                       class="viewer-canvas"
                       @close="closeSpeckleViewer"
                     />
-                  </div>
-
-                  <!-- Excel Viewer -->
-                  <div v-else-if="showExcelViewer" class="relative flex-1 min-h-0 bg-[#0f0f0f]">
-                    <LiveCalculationsViewer @close="closeExcelViewer" />
                   </div>
                 </div>
               </template>
@@ -1020,7 +934,6 @@ import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
-import LiveCalculationsViewer from '~/components/LiveCalculationsViewer.vue'
 import { useChat } from '~/composables/useChat'
 // Removed useSmartChat - using streaming endpoint only to avoid duplication
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
@@ -1363,32 +1276,6 @@ const deleteDialog = ref<{ open: boolean; convId: string | null }>({
   open: false,
   convId: null
 })
-// Interrupt state for human-in-the-loop code verification
-const interruptState = ref<{
-  open: boolean
-  interrupt_id: string | null
-  interrupt_type: string | null
-  question: string
-  codes: string[]
-  code_count: number
-  chunk_count: number
-  available_codes: string[]
-  previously_retrieved: string[]
-  session_id: string | null
-  selected_codes: string[] // For code_selection type
-}>({
-  open: false,
-  interrupt_id: null,
-  interrupt_type: null,
-  question: '',
-  codes: [],
-  code_count: 0,
-  chunk_count: 0,
-  available_codes: [],
-  previously_retrieved: [],
-  session_id: null,
-  selected_codes: []
-})
 const titleGenerationInFlight = new Set<string>()
 const isDocsCompact = computed(() => sidebarWidth.value <= 280)
 function isRailActionFilled(id: SidebarMode) {
@@ -1415,15 +1302,8 @@ const viewerSplitContainer = ref<HTMLElement | null>(null)
 const viewerResizeStartX = ref(0)
 const viewerResizeStartPercent = ref(50)
 const showSpeckleViewer = computed(() => speckleViewerPanelOpen.value && !!selectedSpeckleModel.value)
-
-// Excel Viewer State
-const excelViewerPanelOpen = ref(false)
-const showExcelViewer = computed(() => excelViewerPanelOpen.value)
-
-// Combined viewer state - only one can be open at a time
-const showAnyViewer = computed(() => showSpeckleViewer.value || showExcelViewer.value)
-const chatPaneStyle = computed(() => (showAnyViewer.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}))
-const viewerPaneStyle = computed(() => (showAnyViewer.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}))
+const chatPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}))
+const viewerPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}))
 
 const defaultConversations: Conversation[] = [
   { id: 'conv-1', title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago', section: 'Today', sessionId: 'session-1', chatLog: [] },
@@ -1904,7 +1784,7 @@ function stopSidebarResize() {
 }
 
 function startViewerResize(e: MouseEvent) {
-  if (!showAnyViewer.value) return
+  if (!showSpeckleViewer.value) return
   isResizingViewer.value = true
   viewerResizeStartX.value = e.clientX
   viewerResizeStartPercent.value = viewerSplitPercent.value
@@ -2351,259 +2231,6 @@ function toggleDataSource(key: keyof DataSources) {
   dataSources.value[key] = !dataSources.value[key]
 }
 
-// Interrupt handling functions
-async function resumeFromInterrupt(resumeValue: string | boolean | string[], entry?: any) {
-  if (!interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot resume: missing interrupt_id or session_id')
-    return
-  }
-
-  try {
-    const url = `${config.public.orchestratorUrl}/chat/resume`
-    console.log('🔄 Resuming from interrupt:', { resumeValue, interrupt_id: interruptState.value.interrupt_id })
-    
-    // Mark entry as processing (remove interrupt UI, show loading)
-    if (entry) {
-      entry.interrupt = { ...entry.interrupt, processing: true }
-      renderKey.value++
-    }
-    
-    // Call resume endpoint - it will stream the continuation
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        session_id: interruptState.value.session_id,
-        response: resumeValue,  // Backend expects "response" not "resume_value"
-        interrupt_id: interruptState.value.interrupt_id
-      })
-    })
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-    }
-    
-    // Handle the streaming response from resume (same as chat/stream)
-    const reader = response.body?.getReader()
-    const decoder = new TextDecoder()
-    
-    if (!reader) {
-      throw new Error('No response body reader available')
-    }
-    
-    let buffer = ''
-    const currentConversation = conversations.value.find(c => c.sessionId === interruptState.value.session_id)
-    if (!currentConversation) {
-      console.error('❌ Cannot find conversation for session_id:', interruptState.value.session_id)
-      return
-    }
-    
-    // Find the interrupt entry and create a new message after it for the response
-    let interruptEntryIndex = -1
-    if (entry) {
-      interruptEntryIndex = currentConversation.chatLog.findIndex(e => e.id === entry.id)
-    } else {
-      // Find the last interrupt entry
-      for (let i = currentConversation.chatLog.length - 1; i >= 0; i--) {
-        if (currentConversation.chatLog[i].interrupt) {
-          interruptEntryIndex = i
-          entry = currentConversation.chatLog[i]
-          break
-        }
-      }
-    }
-    
-    // Create a new message for the response (after the interrupt message)
-    let responseMessageIndex = interruptEntryIndex + 1
-    if (responseMessageIndex >= currentConversation.chatLog.length || 
-        currentConversation.chatLog[responseMessageIndex].role !== 'assistant' ||
-        currentConversation.chatLog[responseMessageIndex].content) {
-      // Insert new message after interrupt
-      currentConversation.chatLog.splice(responseMessageIndex, 0, {
-        id: `response-${Date.now()}`,
-        role: 'assistant',
-        content: '',
-        timestamp: Date.now()
-      })
-    } else {
-      // Use existing empty assistant message
-      responseMessageIndex = interruptEntryIndex + 1
-    }
-    
-    let streamingMessageId: string | null = null
-    
-    while (true) {
-      const { done, value } = await reader.read()
-      
-      if (done) {
-        console.log('✅ Resume stream completed')
-        break
-      }
-      
-      buffer += decoder.decode(value, { stream: true })
-      
-      // Process complete SSE messages
-      const lines = buffer.split('\n')
-      buffer = lines.pop() || ''
-      
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          try {
-            const data = JSON.parse(line.slice(6))
-            
-            if (data.type === 'token') {
-              // Append token to the response message
-              if (responseMessageIndex >= 0 && responseMessageIndex < currentConversation.chatLog.length) {
-                const responseMessage = currentConversation.chatLog[responseMessageIndex]
-                if (responseMessage.role === 'assistant') {
-                  const currentContent = responseMessage.content || ''
-                  const newContent = currentContent + data.content
-                  renderKey.value++
-                  currentConversation.chatLog.splice(responseMessageIndex, 1, {
-                    ...responseMessage,
-                    content: newContent
-                  })
-                  scrollToBottom()
-                }
-              }
-            } else if (data.type === 'interrupt') {
-              // Another interrupt (e.g., code selection after rejection)
-              interruptState.value = {
-                open: true,
-                interrupt_id: data.interrupt_id,
-                interrupt_type: data.interrupt_type,
-                question: data.question || '',
-                codes: data.codes || [],
-                code_count: data.code_count || 0,
-                chunk_count: data.chunk_count || 0,
-                available_codes: data.available_codes || [],
-                previously_retrieved: data.previously_retrieved || [],
-                session_id: data.session_id || interruptState.value.session_id,
-                selected_codes: []
-              }
-              
-              // Add new interrupt message to chat
-              const interruptMessageId = `interrupt-${Date.now()}`
-              currentConversation.chatLog.push({
-                id: interruptMessageId,
-                role: 'assistant',
-                content: '',
-                interrupt: {
-                  type: data.interrupt_type,
-                  question: data.question || '',
-                  codes: data.codes || [],
-                  code_count: data.code_count || 0,
-                  chunk_count: data.chunk_count || 0,
-                  available_codes: data.available_codes || [],
-                  previously_retrieved: data.previously_retrieved || [],
-                  selected_codes: []
-                },
-                timestamp: Date.now()
-              })
-              scrollToBottom()
-            } else if (data.type === 'complete') {
-              console.log('✅ Resume completed', data.result ? 'with result' : 'without result')
-              // Mark interrupt entry as completed (hide buttons, keep the message)
-              if (entry && entry.interrupt) {
-                entry.interrupt.completed = true
-                renderKey.value++
-              }
-              
-              // Process result data if present (image similarity, citations, etc.)
-              if (data.result && responseMessageIndex >= 0 && responseMessageIndex < currentConversation.chatLog.length) {
-                const responseMessage = currentConversation.chatLog[responseMessageIndex]
-                if (responseMessage.role === 'assistant') {
-                  // Add metadata from result
-                  if (data.result.image_similarity_results) {
-                    responseMessage.images = data.result.image_similarity_results.map((img: any) => ({
-                      url: img.image_url,
-                      project_key: img.project_key,
-                      page_number: img.page_number,
-                      similarity: img.similarity,
-                      caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
-                    }))
-                  }
-                  renderKey.value++
-                }
-              }
-            } else if (data.type === 'thinking') {
-              // Handle thinking logs if needed
-              console.log('💭 Thinking:', data.message)
-            }
-          } catch (e) {
-            console.error('Error parsing resume SSE data:', e, line)
-          }
-        }
-      }
-    }
-  } catch (error: any) {
-    console.error('❌ Resume error:', error)
-    alert(`Failed to resume: ${error.message || 'Unknown error'}`)
-    // Re-enable interrupt UI on error
-    if (entry && entry.interrupt) {
-      entry.interrupt.processing = false
-      renderKey.value++
-    }
-  }
-}
-
-// Helper functions for entry-based interrupt handling
-function getSelectedCodesForEntry(entry: any): string[] {
-  if (!entry.interrupt) return []
-  return entry.interrupt.selected_codes || []
-}
-
-function setSelectedCodesForEntry(entry: any, codes: string[]) {
-  if (!entry.interrupt) return
-  if (!entry.interrupt.selected_codes) {
-    entry.interrupt.selected_codes = []
-  }
-  entry.interrupt.selected_codes = codes
-}
-
-function toggleCodeSelectionForEntry(entry: any, code: string) {
-  const selected = getSelectedCodesForEntry(entry)
-  const index = selected.indexOf(code)
-  if (index === -1) {
-    selected.push(code)
-  } else {
-    selected.splice(index, 1)
-  }
-  setSelectedCodesForEntry(entry, selected)
-  renderKey.value++ // Force reactivity
-}
-
-function handleApproveCodesForEntry(entry: any) {
-  if (!entry.interrupt || !interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot approve: missing interrupt data')
-    return
-  }
-  resumeFromInterrupt('approved', entry)
-}
-
-function handleRejectCodesForEntry(entry: any) {
-  if (!entry.interrupt || !interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot reject: missing interrupt data')
-    return
-  }
-  resumeFromInterrupt('rejected', entry)
-}
-
-function handleSubmitCodeSelectionForEntry(entry: any) {
-  const selectedCodes = getSelectedCodesForEntry(entry)
-  if (selectedCodes.length === 0) {
-    alert('Please select at least one code')
-    return
-  }
-  if (!interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot submit: missing interrupt data')
-    return
-  }
-  resumeFromInterrupt(selectedCodes, entry)
-}
-
 // Recreate SmartChatPanel's document list + Speckle modal wiring
 function openDocumentsList(documents: any[], title?: string, subtitle?: string) {
   docListDocs.value = documents
@@ -2634,19 +2261,6 @@ function handleDocumentSelect(doc: any) {
 function closeSpeckleViewer() {
   speckleViewerPanelOpen.value = false
   speckleViewerSelectedId.value = ''
-}
-
-function openExcelViewer() {
-  // Close Speckle viewer if open
-  if (showSpeckleViewer.value) {
-    closeSpeckleViewer()
-  }
-  excelViewerPanelOpen.value = true
-  viewerSplitPercent.value = 50
-}
-
-function closeExcelViewer() {
-  excelViewerPanelOpen.value = false
 }
 
 function openSpeckleViewerWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
@@ -2908,64 +2522,12 @@ async function handleSend() {
             })
           }
         },
-        onInterrupt: async (interrupt) => {
-          console.log('⏸️  Interrupt received:', interrupt)
-          // Store interrupt state and add inline message to chat
-          interruptState.value = {
-            open: true,
-            interrupt_id: interrupt.interrupt_id,
-            interrupt_type: interrupt.interrupt_type,
-            question: interrupt.question,
-            codes: interrupt.codes,
-            code_count: interrupt.code_count,
-            chunk_count: interrupt.chunk_count,
-            available_codes: interrupt.available_codes,
-            previously_retrieved: interrupt.previously_retrieved,
-            session_id: interrupt.session_id,
-            selected_codes: []
-          }
-          
-          // Add interrupt message to chat log (inline, not modal)
-          const interruptMessageId = `interrupt-${Date.now()}`
-          conversation.chatLog.push({
-            id: interruptMessageId,
-            role: 'assistant',
-            content: '',
-            interrupt: {
-              type: interrupt.interrupt_type,
-              question: interrupt.question,
-              codes: interrupt.codes,
-              code_count: interrupt.code_count,
-              chunk_count: interrupt.chunk_count,
-              available_codes: interrupt.available_codes,
-              previously_retrieved: interrupt.previously_retrieved
-            },
-            timestamp: Date.now()
-          })
-          scrollToBottom()
-        },
         onComplete: async result => {
           // ALWAYS clear the thinking interval and remove thinking message on completion
           clearInterval(thinkingInterval)
           const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
           if (thinkingIndex !== -1) {
             conversation.chatLog.splice(thinkingIndex, 1)
-          }
-          
-          // Check if user wants to see Excel data
-          const messageLower = message.toLowerCase()
-          const replyLower = (result.reply || '').toLowerCase()
-          const shouldShowExcel = messageLower.includes('show me the excel') ||
-                                  messageLower.includes('show excel') ||
-                                  messageLower.includes('excel data') ||
-                                  messageLower.includes('excel sync') ||
-                                  messageLower.includes('live calculations') ||
-                                  replyLower.includes('excel') ||
-                                  replyLower.includes('calculations')
-          
-          if (shouldShowExcel) {
-            // Open Excel viewer
-            openExcelViewer()
           }
           
           // Extract image similarity results and transform for display
