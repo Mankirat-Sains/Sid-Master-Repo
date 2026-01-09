@@ -120,3 +120,7 @@ Backend/data
 plan.txt
 questions.txt
 
+
+__pycache__/
+*.pyc
+

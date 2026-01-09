@@ -157,8 +157,12 @@ def node_answer(state: RAGState) -> dict:
                     use_code_prompt=False,
                     coop_docs=None,
                     use_coop_prompt=False,
+<<<<<<< HEAD
+                    active_filters=getattr(state, 'active_filters', None)
+=======
                     active_filters=getattr(state, 'active_filters', None),
                     image_results=state.image_similarity_results  # Pass images - LLM decides whether to include
+>>>>>>> origin/main
                 )
                 first_chunk = True
                 for chunk in stream_result:
@@ -166,14 +170,25 @@ def node_answer(state: RAGState) -> dict:
                         token_content, project_cites = chunk
                         ans_parts.append(token_content)
                         token_count += 1
+<<<<<<< HEAD
+                        # Also emit via custom writer if available
+                        if has_writer and writer:
+                            writer({"type": "token", "content": token_content, "node": "answer"})
+=======
                         # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
                         # Emitting here causes duplication ("Project Project", etc.)
                         # LangGraph's messages mode automatically captures and streams LLM tokens
+>>>>>>> origin/main
                         first_chunk = False
                     else:
                         ans_parts.append(chunk)
                         token_count += 1
+<<<<<<< HEAD
+                        if has_writer and writer:
+                            writer({"type": "token", "content": chunk, "node": "answer"})
+=======
                         # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+>>>>>>> origin/main
                 project_ans = "".join(ans_parts)
                 log_query.info(f"✅ [ANSWER NODE MULTI-DB] Streaming synthesis complete - {token_count} tokens, {len(project_ans)} chars")
             
@@ -276,8 +291,12 @@ def node_answer(state: RAGState) -> dict:
                                           use_code_prompt=False,
                                           coop_docs=coop_docs if coop_docs else None,
                                           use_coop_prompt=False,
+<<<<<<< HEAD
+                                          active_filters=getattr(state, 'active_filters', None))
+=======
                                           active_filters=getattr(state, 'active_filters', None),
                                           image_results=state.image_similarity_results)  # Pass images - LLM decides
+>>>>>>> origin/main
                 
                 # Handle streaming generator
                 first_chunk = True
@@ -287,14 +306,27 @@ def node_answer(state: RAGState) -> dict:
                         token_content, cites = chunk
                         ans_parts.append(token_content)
                         token_count += 1
+<<<<<<< HEAD
+                        # Also emit via custom writer if available
+                        if has_writer and writer:
+                            writer({"type": "token", "content": token_content, "node": "answer"})
+=======
                         # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
                         # Emitting here causes duplication ("Project Project", etc.)
                         # LangGraph's messages mode automatically captures and streams LLM tokens
+>>>>>>> origin/main
                         first_chunk = False
                     else:
                         # Subsequent chunks are just content
                         ans_parts.append(chunk)
                         token_count += 1
+<<<<<<< HEAD
+                        if has_writer and writer:
+                            writer({"type": "token", "content": chunk, "node": "answer"})
+                
+                ans = "".join(ans_parts)
+                log_query.info(f"✅ [ANSWER NODE] Streaming synthesis complete - {token_count} tokens, {len(ans)} chars")
+=======
                         # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
                 
                 ans = "".join(ans_parts)
@@ -302,6 +334,7 @@ def node_answer(state: RAGState) -> dict:
                 
                 # Clean markdown image links from answer
                 ans = strip_markdown_image_links(ans)
+>>>>>>> origin/main
                 
                 reranked = rerank_by_dimension_similarity(state.user_query, state.graded_docs)
                 

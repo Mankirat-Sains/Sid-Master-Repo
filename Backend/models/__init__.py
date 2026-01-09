@@ -5,6 +5,7 @@ from .memory import (
     FOCUS_STATES,
     update_focus_state,
     get_conversation_context,
-    intelligent_query_rewriter
+    intelligent_query_rewriter,
+    _extract_semantic_context_for_rewriter
 )
 
