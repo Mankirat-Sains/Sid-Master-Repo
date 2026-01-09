@@ -24,8 +24,8 @@ class SupabaseVectorStore(VectorStore):
         self,
         url: Optional[str] = None,
         key: Optional[str] = None,
-        table: str = "chunks",
-        rpc_function: str = "match_chunks",
+        table: Optional[str] = None,
+        rpc_function: Optional[str] = None,
     ) -> None:
         if create_client is None:
             raise ImportError("supabase-py is required for SupabaseVectorStore")
@@ -34,8 +34,8 @@ class SupabaseVectorStore(VectorStore):
         if not self.url or not self.key:
             raise ValueError("Supabase URL/KEY missing.")
         self.client = create_client(self.url, self.key)
-        self.table = table
-        self.rpc_function = rpc_function
+        self.table = table or os.getenv("SUPABASE_CHUNK_TABLE", "chunks")
+        self.rpc_function = rpc_function or os.getenv("SUPABASE_MATCH_RPC", "match_chunks")
 
     def upsert(self, chunks: List[Chunk]) -> None:
         if not chunks:

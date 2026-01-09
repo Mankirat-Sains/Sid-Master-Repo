@@ -18,6 +18,7 @@ from ingest.pipeline import IngestionPipeline  # noqa: E402
 from retrieval.retriever import Retriever  # noqa: E402
 from storage.metadata_db import MetadataDB  # noqa: E402
 from storage.qdrant_vector_store import QdrantVectorStore  # noqa: E402
+from storage.supabase_vector_store import SupabaseVectorStore  # noqa: E402
 from storage.vector_db import VectorDB  # noqa: E402
 from utils.config import load_config  # noqa: E402
 from utils.logger import get_logger  # noqa: E402
@@ -31,8 +32,14 @@ def main() -> None:
     company_id = os.getenv("DEMO_COMPANY_ID", "demo_company")
 
     embedding_service = EmbeddingService(config)
-    vector_db = VectorDB(config, use_in_memory=False)
-    vector_store = QdrantVectorStore(vector_db, company_id=company_id)
+    vector_store = None
+    try:
+        vector_store = SupabaseVectorStore()
+        logger.info("Using SupabaseVectorStore as default adapter.")
+    except Exception as exc:
+        logger.warning("SupabaseVectorStore unavailable (%s); falling back to Qdrant in-memory.", exc)
+        vector_db = VectorDB(config, use_in_memory=True)
+        vector_store = QdrantVectorStore(vector_db, company_id=company_id)
     metadata_db = MetadataDB(config.metadata_db_path)
 
     pipeline = IngestionPipeline(
