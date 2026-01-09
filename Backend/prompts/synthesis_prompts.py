@@ -58,6 +58,16 @@ ANSWER_PROMPT = PromptTemplate.from_template(
     "- Default behavior: newest first by project number. "
     "- When organizing by category, sort by date WITHIN each category.\n\n"
     
+    "IMAGE RESULTS: "
+    "- If SIMILAR IMAGES are provided below, and the user's question asks for similar images, similar details, or to find/show images, "
+    "  you MUST describe the images and their associated projects in your response using PLAIN TEXT ONLY. "
+    "- For each image, include: project key, page number, and a description of what the image shows (based on the content/description provided). "
+    "- CRITICAL: DO NOT include any URLs, DO NOT use markdown image syntax (![]()), DO NOT use any image links or formatting. "
+    "- The images will be displayed automatically by the system - your job is ONLY to describe them in plain text. "
+    "- Example format (PLAIN TEXT, NO MARKDOWN): 'Here are similar images from our database:\\n\\nProject 25-01-042, Page 1 - This detail shows a typical foundation connection with rebar reinforcement.\\n\\nProject 25-01-086, Page 3 - This section view illustrates a roof truss connection detail with diagonal bracing.' "
+    "- If the user does NOT ask for images (just asks about projects, information, etc.), do NOT mention images. "
+    "- Use your judgment based on the user's query intent.\n\n"
+    
     "CONVERSATION CONTEXT: "
     "- If this appears to be a follow-up question, use the conversation history below to understand references. "
     "- PRIORITIZE THE MOST RECENT EXCHANGE - unless the user explicitly says 'originally', 'the first question', 'earlier', assume they mean the most recent exchange. "
@@ -66,6 +76,7 @@ ANSWER_PROMPT = PromptTemplate.from_template(
     "{conversation_context}\n\n"
     "Be comprehensive and exhaustive in your response.\n\n"
     "Question: {q}\n\n"
+    "{image_context}"
     "Context (numbered):\n{ctx}\n"
 )
 
@@ -123,11 +134,22 @@ CODE_ANSWER_PROMPT = PromptTemplate.from_template(
     "- The page number appears after 'Page: ' (e.g., 'Page: 3') "
     "- Use these values in your citations - if a document appears multiple times with different page numbers, cite each page separately\n\n"
     
+    "IMAGE RESULTS: "
+    "- If SIMILAR IMAGES are provided below, and the user's question asks for similar images, similar details, or to find/show images, "
+    "  you MUST describe the images and their associated projects in your response using PLAIN TEXT ONLY. "
+    "- For each image, include: project key, page number, and a description of what the image shows (based on the content/description provided). "
+    "- CRITICAL: DO NOT include any URLs, DO NOT use markdown image syntax (![]()), DO NOT use any image links or formatting. "
+    "- The images will be displayed automatically by the system - your job is ONLY to describe them in plain text. "
+    "- Example format (PLAIN TEXT, NO MARKDOWN): 'Here are similar images from our database:\\n\\nProject 25-01-042, Page 1 - This detail shows a typical foundation connection with rebar reinforcement.\\n\\nProject 25-01-086, Page 3 - This section view illustrates a roof truss connection detail with diagonal bracing.' "
+    "- If the user does NOT ask for images (just asks about code, information, etc.), do NOT mention images. "
+    "- Use your judgment based on the user's query intent.\n\n"
+    
     "CONVERSATION CONTEXT: "
     "- If this appears to be a follow-up question, use the conversation history below to understand references. "
     "- Answer should come from the provided code references below.\n\n"
     "{conversation_context}\n\n"
     "Question: {q}\n\n"
+    "{image_context}"
     "Code References (numbered):\n{ctx}\n"
 )
 
@@ -183,11 +205,22 @@ COOP_ANSWER_PROMPT = PromptTemplate.from_template(
     "- The page number appears after 'Page: ' (e.g., 'Page: 15') "
     "- Use these values in your citations - if a document appears multiple times with different page numbers, cite each page separately\n\n"
     
+    "IMAGE RESULTS: "
+    "- If SIMILAR IMAGES are provided below, and the user's question asks for similar images, similar details, or to find/show images, "
+    "  you MUST describe the images and their associated projects in your response using PLAIN TEXT ONLY. "
+    "- For each image, include: project key, page number, and a description of what the image shows (based on the content/description provided). "
+    "- CRITICAL: DO NOT include any URLs, DO NOT use markdown image syntax (![]()), DO NOT use any image links or formatting. "
+    "- The images will be displayed automatically by the system - your job is ONLY to describe them in plain text. "
+    "- Example format (PLAIN TEXT, NO MARKDOWN): 'Here are similar images from our database:\\n\\nProject 25-01-042, Page 1 - This detail shows a typical foundation connection with rebar reinforcement.\\n\\nProject 25-01-086, Page 3 - This section view illustrates a roof truss connection detail with diagonal bracing.' "
+    "- If the user does NOT ask for images (just asks about training, information, etc.), do NOT mention images. "
+    "- Use your judgment based on the user's query intent.\n\n"
+    
     "CONVERSATION CONTEXT: "
     "- If this appears to be a follow-up question, use the conversation history below to understand references. "
     "- Answer should come from the provided training manual references below.\n\n"
     "{conversation_context}\n\n"
     "Question: {q}\n\n"
+    "{image_context}"
     "Training Manual References (numbered):\n{ctx}\n"
 )
 

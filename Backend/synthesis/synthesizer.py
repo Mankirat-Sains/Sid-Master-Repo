@@ -24,7 +24,8 @@ def synthesize(
     use_code_prompt: bool = False,
     coop_docs: Optional[List[Document]] = None,
     use_coop_prompt: bool = False,
-    active_filters: Optional[Dict[str, Any]] = None
+    active_filters: Optional[Dict[str, Any]] = None,
+    image_results: Optional[List[Dict]] = None
 ):
     """
     Group docs by project, use pre-fetched metadata (or fetch if not provided), synthesize answer.
@@ -191,6 +192,28 @@ def synthesize(
     # Get conversation context for synthesis
     conversation_context = get_conversation_context(session_id, max_exchanges=3)
     
+    # Build image context if image results are provided
+    image_context = ""
+    if image_results and len(image_results) > 0:
+        log_query.info(f"🖼️ [SYNTHESIS] Building image context with {len(image_results)} images")
+        image_lines = [
+            "SIMILAR IMAGES FOUND (if user asked for images, describe these in PLAIN TEXT only):",
+            "CRITICAL: Describe each image with project key, page number, and what it shows.",
+            "DO NOT include URLs, DO NOT use markdown syntax (![]()), DO NOT format as links.",
+            "Just describe them as plain text - the system will display images automatically.",
+            ""
+        ]
+        for i, img in enumerate(image_results[:10], 1):  # Limit to top 10
+            proj = img.get('project_key', 'Unknown')
+            page_num = img.get('page_number', '?')
+            content = img.get('content', '')  # text_verbatim description
+            similarity = img.get('similarity', 0)
+            # Include project, page, similarity, and description - but NOT the URL
+            desc = content[:200] + "..." if len(content) > 200 else content if content else "No description available"
+            image_lines.append(f"  [{i}] Project {proj}, Page {page_num} (similarity: {similarity:.2%}): {desc}")
+            log_query.info(f"🖼️ [SYNTHESIS]   Image {i}: Project {proj}, Page {page_num}, similarity={similarity:.2%}")
+        image_context = "\n".join(image_lines) + "\n\n"
+    
     # Build filter context message if filters are active
     filter_context = ""
     if active_filters:
@@ -222,13 +245,15 @@ def synthesize(
             "q": q,
             "ctx": ctx,
             "conversation_context": (conversation_context or "(No prior conversation)") + filter_context,
-            "project_categories": PROJECT_CATEGORIES
+            "project_categories": PROJECT_CATEGORIES,
+            "image_context": image_context
         }
     else:
         prompt_kwargs = {
             "q": q,
             "ctx": ctx,
-            "conversation_context": (conversation_context or "(No prior conversation)") + filter_context
+            "conversation_context": (conversation_context or "(No prior conversation)") + filter_context,
+            "image_context": image_context
         }
     
     total_chunks = len(docs) + (len(code_docs) if code_docs else 0) + (len(coop_docs) if coop_docs else 0)

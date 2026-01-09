@@ -24,7 +24,10 @@ from nodes.DBRetrieval.grade import node_grade
 from nodes.DBRetrieval.answer import node_answer
 from nodes.DBRetrieval.verify import node_verify, _verify_route
 from nodes.DBRetrieval.correct import node_correct
-from nodes.DBRetrieval.image_nodes import node_generate_image_embeddings, node_image_similarity_search
+from nodes.DBRetrieval.image_nodes import node_generate_image_description, node_image_similarity_search
+
+# Alias for backward compatibility with graph node names
+node_generate_image_embeddings = node_generate_image_description
 
 
 def _router_route(state: RAGState) -> str:
@@ -130,7 +133,8 @@ def build_graph():
         },
     )
     
-    # Image processing pipeline: embeddings → similarity search → retrieve
+    # Image processing pipeline: description → similarity search → retrieve
+    # (node generates VLM description, then text semantic search on image_descriptions table)
     g.add_edge("generate_image_embeddings", "image_similarity_search")
     g.add_edge("image_similarity_search", "retrieve")
 
