@@ -36,7 +36,7 @@ An AI-powered system that learns how engineering companies write technical docum
 
 - **Intelligent Ingestion**: Parse .docx and .pdf files, extract structure, content, and metadata
 - **Dual-Mode Retrieval**: Separate content (factual) and style (exemplar) retrieval systems
-- **Company-Specific Learning**: Per-company vector databases and style adapters
+- **Company-Specific Learning**: Per-company collections/namespaces in a single Qdrant instance; optional style adapters later
 - **RAG-Powered Generation**: Draft new documents using retrieved examples
 - **Desktop Integration**: Bidirectional sync between web platform and local Word/Excel
 - **Version Control**: Git-like versioning for engineering documents
@@ -60,7 +60,7 @@ An AI-powered system that learns how engineering companies write technical docum
 ┌─────────────────────────────────────────────────────────────────┐
 │                         User Interfaces                          │
 ├─────────────┬──────────────┬──────────────┬────────────────────┤
-│   Web App   │  Desktop App │  Word Add-in │  CLI (Claude Code) │
+│   Web App   │  Desktop App │  Word Add-in │    Developer CLI   │
 └─────────────┴──────────────┴──────────────┴────────────────────┘
                               │
                               ▼
@@ -137,6 +137,7 @@ An AI-powered system that learns how engineering companies write technical docum
 │ - Section-based chunks   │
 │ - Classify: content/style│
 │ - Preserve context       │
+│ - Style units are curated exemplars/templates (not full raw chunks) │
 └──────┬───────────────────┘
        │
        ├─────────────┬──────────────┐
@@ -178,8 +179,9 @@ An AI-powered system that learns how engineering companies write technical docum
        ▼
 ┌──────────────────────────┐
 │ Query Analyzer           │
-│ - Parse intent           │
 │ - Identify doc_type      │
+│ - Identify section_type  │
+│ - Detect engineering_function (justify/summarize/pass-fail/cite codes) │
 │ - Extract constraints    │
 └──────┬───────────────────┘
        │
@@ -200,3 +202,7 @@ An AI-powered system that learns how engineering companies write technical docum
 │ - Find refs     │    │ - Get templates  │
 └────────┬────────┘    └────────┬─────────┘
 ```
+
+**Desktop Agent Sync Loop (high level)**  
+- Watch designated folders → detect new/updated files → create artifact/version IDs → upload originals to object store → update metadata DB → re-index content/style collections.  
+- Desktop execution: resolve artifact/version → open exact file in Word/Excel/Revit → maintain bidirectional updates with server indexes.

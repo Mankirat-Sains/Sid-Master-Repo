@@ -124,6 +124,9 @@ def classify_chunk_type(chunk: Dict[str, object], metadata: Optional[Dict[str, o
     text = str(chunk.get("text", "")).lower()
     section_title = str(chunk.get("section_title", "")).lower()
     meta = metadata or {}
+    section_type = meta.get("section_type")
+    if not section_type and isinstance(meta.get("section_types"), dict):
+        section_type = meta["section_types"].get(chunk.get("section_title"))
 
     content_keywords = ["calculation", "result", "table", "specification", "load", "kpa", "kN", "pressure"]
     style_keywords = ["introduction", "methodology", "background", "scope", "conclusion", "summary", "purpose"]
@@ -134,7 +137,7 @@ def classify_chunk_type(chunk: Dict[str, object], metadata: Optional[Dict[str, o
         return "content"
     if any(keyword.lower() in text for keyword in style_keywords):
         return "style"
-    if meta.get("section_type") in {"introduction", "methodology", "conclusions"}:
+    if section_type in {"introduction", "methodology", "conclusions"}:
         return "style"
     return "content"
 
