@@ -37,6 +37,10 @@ class StyleExemplarFilter:
         if chunk_id and chunk_id in self.pinned_chunks:
             return True
 
+        persisted_freq = metadata.get("style_frequency")
+        if isinstance(persisted_freq, int) and persisted_freq >= self.min_frequency:
+            return True
+
         if self._is_frequent_pattern(chunk, metadata):
             return True
 

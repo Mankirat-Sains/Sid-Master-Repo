@@ -104,6 +104,7 @@ def parse_docx(file_path: str | Path, company_id: Optional[str] = None, source: 
 def parse_pdf(file_path: str | Path, company_id: Optional[str] = None, source: str = "upload") -> ParsedDocument:
     """
     Parse a PDF into text and inferred sections using PyMuPDF.
+    Gracefully skips unreadable pages and logs errors.
     """
     if fitz is None:
         raise ImportError("PyMuPDF (fitz) is required to parse PDF files.")
@@ -118,16 +119,20 @@ def parse_pdf(file_path: str | Path, company_id: Optional[str] = None, source: s
     text_parts: List[str] = []
 
     for page_index, page in enumerate(doc):
-        text = page.get_text("text")
-        text_parts.append(text or "")
-        blocks = page.get_text("blocks")
-        pages.append(
-            {
-                "page_number": page_index + 1,
-                "text": text,
-                "blocks": blocks,
-            }
-        )
+        try:
+            text = page.get_text("text")
+            text_parts.append(text or "")
+            blocks = page.get_text("blocks")
+            pages.append(
+                {
+                    "page_number": page_index + 1,
+                    "text": text,
+                    "blocks": blocks,
+                }
+            )
+        except Exception as exc:  # pragma: no cover - defensive
+            logger.error("Failed to parse page %s in %s: %s", page_index + 1, path, exc)
+            continue
 
     full_text = "\n".join(text_parts)
     sections = infer_sections_from_text(full_text)

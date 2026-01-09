@@ -57,6 +57,10 @@ class MetadataDB:
                     chunk_type TEXT NOT NULL,
                     calculation_type TEXT,
                     text TEXT NOT NULL,
+                    normalized_text TEXT,
+                    style_frequency INTEGER DEFAULT 0,
+                    quality_score REAL,
+                    is_pinned INTEGER DEFAULT 0,
                     page_number INTEGER,
                     section_number TEXT,
                     heading TEXT,
@@ -75,7 +79,9 @@ class MetadataDB:
                 CREATE INDEX IF NOT EXISTS idx_chunks_artifact ON chunks(artifact_id);
                 CREATE INDEX IF NOT EXISTS idx_chunks_company ON chunks(company_id);
                 CREATE INDEX IF NOT EXISTS idx_chunks_doc_type ON chunks(doc_type);
+                CREATE INDEX IF NOT EXISTS idx_chunks_section_type ON chunks(section_type);
                 CREATE INDEX IF NOT EXISTS idx_chunks_created ON chunks(created_at);
+                CREATE INDEX IF NOT EXISTS idx_chunks_norm_text ON chunks(normalized_text);
                 CREATE INDEX IF NOT EXISTS idx_docs_company ON documents(company_id);
                 """
             )
@@ -96,6 +102,10 @@ class MetadataDB:
             "chunk_type": record.get("chunk_type"),
             "calculation_type": record.get("calculation_type"),
             "text": record.get("text"),
+            "normalized_text": record.get("normalized_text"),
+            "style_frequency": int(record.get("style_frequency", 0) or 0),
+            "quality_score": record.get("quality_score"),
+            "is_pinned": int(bool(record.get("is_pinned", False))),
             "page_number": record.get("page_number"),
             "section_number": record.get("section_number"),
             "heading": record.get("heading"),
@@ -113,10 +123,11 @@ class MetadataDB:
                 """
                 INSERT OR REPLACE INTO chunks
                 (chunk_id, artifact_id, version_id, company_id, source, file_path, doc_type, section_type, chunk_type,
-                 calculation_type, text, page_number, section_number, heading, project_name, author, reviewer, tags,
+                 calculation_type, text, normalized_text, style_frequency, quality_score, is_pinned, page_number, section_number, heading, project_name, author, reviewer, tags,
                  parent_artifact_id, related_chunks, created_at, modified_at)
                 VALUES (:chunk_id, :artifact_id, :version_id, :company_id, :source, :file_path, :doc_type, :section_type,
-                        :chunk_type, :calculation_type, :text, :page_number, :section_number, :heading, :project_name,
+                        :chunk_type, :calculation_type, :text, :normalized_text, :style_frequency, :quality_score, :is_pinned,
+                        :page_number, :section_number, :heading, :project_name,
                         :author, :reviewer, :tags, :parent_artifact_id, :related_chunks, :created_at, :modified_at)
                 """,
                 payload,
@@ -163,6 +174,18 @@ class MetadataDB:
         with self._connect() as conn:
             rows = conn.execute("SELECT * FROM chunks WHERE version_id = ?", (version_id,)).fetchall()
             return [self._row_to_dict(row) for row in rows]
+
+    def get_style_frequency(self, normalized_text: str, section_type: Optional[str] = None) -> int:
+        if not normalized_text:
+            return 0
+        query = "SELECT COUNT(*) FROM chunks WHERE normalized_text = ? AND chunk_type = 'style'"
+        params: list[Any] = [normalized_text]
+        if section_type:
+            query += " AND section_type = ?"
+            params.append(section_type)
+        with self._connect() as conn:
+            row = conn.execute(query, params).fetchone()
+            return int(row[0]) if row else 0
 
     def _row_to_dict(self, row: sqlite3.Row) -> Dict[str, Any]:
         data = {key: row[key] for key in row.keys()}

@@ -11,7 +11,7 @@ from ..embeddings.embedding_service import EmbeddingService
 from ..storage.metadata_db import MetadataDB
 from ..storage.vector_store import Chunk, VectorStore
 from ..utils.logger import get_logger
-from .chunking import chunk_pdf_pages, smart_chunk, tag_chunks_with_type
+from .chunking import chunk_pdf_pages, smart_chunk
 from .document_parser import parse_docx, parse_pdf
 from .metadata_extractor import MetadataExtractor
 from .style_filter import StyleExemplarFilter
@@ -65,19 +65,39 @@ class IngestionPipeline:
             }
         )
 
-        # tag chunk types with style filter info
-        tagged_chunks = tag_chunks_with_type(chunks, {**doc_meta, "_style_filter": self.style_filter})
-
-        texts = [c["text"] for c in tagged_chunks]
+        texts = [c["text"] for c in chunks]
         embeddings = self.embedding_service.embed_batch(texts)
         if not embeddings:
             logger.warning("No embeddings generated for %s", file_path)
             return {"artifact_id": doc_meta["artifact_id"], "version_id": doc_meta["version_id"], "chunk_count": 0}
 
         chunk_records: List[Chunk] = []
-        for idx, (chunk, vector) in enumerate(zip(tagged_chunks, embeddings)):
+        content_count = 0
+        style_count = 0
+        for idx, (chunk, vector) in enumerate(zip(chunks, embeddings)):
             chunk_id = f"{doc_meta['artifact_id']}_{idx}"
             section_type = doc_meta.get("section_types", {}).get(chunk.get("section_title"))
+            text = chunk.get("text", "")
+            normalized_text = self.style_filter._normalize(text)
+            frequency_before = self.metadata_db.get_style_frequency(normalized_text, section_type)
+            quality_score = self.style_filter.compute_quality_score(text)
+
+            style_meta = {
+                "section_type": section_type,
+                "heading": chunk.get("section_title"),
+                "tags": doc_meta.get("tags", []),
+                "chunk_id": chunk_id,
+                "style_frequency": frequency_before,
+                "quality_score": quality_score,
+            }
+
+            chunk_type = "style" if self.style_filter.is_style_exemplar(text, style_meta, quality_score) else "content"
+            style_frequency = frequency_before + 1 if chunk_type == "style" else 0
+            if chunk_type == "style":
+                style_count += 1
+            else:
+                content_count += 1
+
             chunk_metadata = {
                 "chunk_id": chunk_id,
                 "artifact_id": doc_meta["artifact_id"],
@@ -86,17 +106,21 @@ class IngestionPipeline:
                 "source": doc_meta.get("source", "upload"),
                 "doc_type": doc_meta.get("doc_type"),
                 "section_type": section_type,
-                "chunk_type": chunk.get("chunk_type", "content"),
-                "index_type": chunk.get("chunk_type", "content"),
+                "chunk_type": chunk_type,
+                "index_type": chunk_type,
                 "calculation_type": doc_meta.get("calculation_type"),
-                "text": chunk.get("text"),
+                "text": text,
                 "page_number": chunk.get("page_number"),
                 "heading": chunk.get("section_title"),
                 "schema_version": "1.0",
+                "normalized_text": normalized_text,
+                "style_frequency": style_frequency,
+                "quality_score": quality_score,
+                "is_pinned": False,
             }
 
             self.metadata_db.insert_chunk_metadata(chunk_metadata)
-            chunk_records.append(Chunk(id=chunk_id, text=chunk["text"], embedding=vector, metadata=chunk_metadata))
+            chunk_records.append(Chunk(id=chunk_id, text=text, embedding=vector, metadata=chunk_metadata))
 
         if chunk_records:
             self.vector_store.upsert(chunk_records)
@@ -104,7 +128,7 @@ class IngestionPipeline:
         return {
             "artifact_id": doc_meta["artifact_id"],
             "version_id": doc_meta["version_id"],
-            "chunk_count": len(tagged_chunks),
-            "content_chunks": len(content_chunks),
-            "style_chunks": len(style_chunks),
+            "chunk_count": len(chunks),
+            "content_chunks": content_count,
+            "style_chunks": style_count,
         }
