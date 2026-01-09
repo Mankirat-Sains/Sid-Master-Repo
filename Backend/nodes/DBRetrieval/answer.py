@@ -211,37 +211,16 @@ def node_answer(state: RAGState) -> dict:
                         token_text = extract_text_from_content(token_content)
                         ans_parts.append(token_text)
                         token_count += 1
-                        
-                        # CRITICAL: Use stream writer to emit tokens in real-time
-                        # This ensures token-by-token streaming even if messages mode batches
-                        if has_writer and writer:
-                            try:
-                                writer.write({
-                                    "type": "token",
-                                    "content": token_text,
-                                    "node": "answer"
-                                })
-                            except Exception as e:
-                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
-                        
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+                        # Emitting here causes duplication ("Project Project", etc.)
+                        # LangGraph's messages mode automatically captures and streams LLM tokens
                         first_chunk = False
                     else:
                         # Extract text - handles both string and list formats (Gemini 3.0)
                         chunk_text = extract_text_from_content(chunk)
                         ans_parts.append(chunk_text)
                         token_count += 1
-                        
-                        # CRITICAL: Use stream writer to emit tokens in real-time
-                        # This ensures token-by-token streaming even if messages mode batches
-                        if has_writer and writer:
-                            try:
-                                writer.write({
-                                    "type": "token",
-                                    "content": chunk_text,
-                                    "node": "answer"
-                                })
-                            except Exception as e:
-                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
                 project_ans = "".join(ans_parts)
                 log_query.info(f"✅ [ANSWER NODE MULTI-DB] Streaming synthesis complete - {token_count} tokens, {len(project_ans)} chars")
             
@@ -357,35 +336,16 @@ def node_answer(state: RAGState) -> dict:
                         token_text = extract_text_from_content(token_content)
                         ans_parts.append(token_text)
                         token_count += 1
-                        
-                        # CRITICAL: Use stream writer to emit tokens in real-time
-                        if has_writer and writer:
-                            try:
-                                writer.write({
-                                    "type": "token",
-                                    "content": token_text,
-                                    "node": "answer"
-                                })
-                            except Exception as e:
-                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
-                        
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+                        # Emitting here causes duplication ("Project Project", etc.)
+                        # LangGraph's messages mode automatically captures and streams LLM tokens
                         first_chunk = False
                     else:
                         # Subsequent chunks are just content - extract text (handles Gemini 3.0 list format)
                         chunk_text = extract_text_from_content(chunk)
                         ans_parts.append(chunk_text)
                         token_count += 1
-                        
-                        # CRITICAL: Use stream writer to emit tokens in real-time
-                        if has_writer and writer:
-                            try:
-                                writer.write({
-                                    "type": "token",
-                                    "content": chunk_text,
-                                    "node": "answer"
-                                })
-                            except Exception as e:
-                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
+                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
                 
                 ans = "".join(ans_parts)
                 log_query.info(f"✅ [ANSWER NODE] Streaming synthesis complete - {token_count} tokens, {len(ans)} chars")
@@ -407,14 +367,5 @@ def node_answer(state: RAGState) -> dict:
                     "image_similarity_results": state.image_similarity_results or []
                 }
     except Exception as e:
-        import traceback
-        error_msg = str(e)
-        error_traceback = traceback.format_exc()
-        log_syn.error(f"Answer synthesis failed: {error_msg}")
-        log_syn.error(f"Traceback: {error_traceback}")
-        # Return error with more detail for debugging (but sanitize for user)
-        return {
-            "final_answer": f"Error synthesizing answer: {error_msg[:200]}", 
-            "answer_citations": []
-        }
-
+        log_syn.error(f"Answer synthesis failed: {e}")
+        return {"final_answer": "Error synthesizing answer", "answer_citations": []}
