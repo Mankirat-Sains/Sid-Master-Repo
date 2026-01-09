@@ -59,6 +59,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 # =============================================================================
 
 # Fast models (cheaper, faster for simple tasks)
+<<<<<<< Updated upstream
 # Use Groq models for speed optimization (llama-3.1-8b-instant for classification, llama-3.3-70b-versatile for planning)
 FAST_MODEL = os.getenv("FAST_MODEL", "llama-3.1-8b-instant")
 ROUTER_MODEL = os.getenv("ROUTER_MODEL", "llama-3.1-8b-instant")
@@ -66,6 +67,20 @@ GRADER_MODEL = os.getenv("GRADER_MODEL", "llama-3.1-8b-instant")
 SUPPORT_MODEL = os.getenv("SUPPORT_MODEL", "llama-3.1-8b-instant")
 RAG_PLANNER_MODEL = os.getenv("RAG_PLANNER_MODEL", "llama-3.1-70b")  # For query rewriting + planning (updated from decommissioned llama-3.1-70b-versatile)
 VERIFY_MODEL = os.getenv("VERIFY_MODEL", "llama-3.1-8b-instant")  # For verification tasks (updated from decommissioned mixtral-8x7b-32768)
+=======
+# Use Groq models for speed optimization
+# Available Groq models (with full paths):
+# - llama-3.3-70b-versatile (no prefix needed)
+# - meta-llama/llama-4-scout-17b-16e-instruct
+# - openai/gpt-oss-120b (for complex planning)
+# - openai/gpt-oss-20b (faster alternative)
+FAST_MODEL = os.getenv("FAST_MODEL", "llama-3.3-70b-versatile")  # Fast, reliable
+ROUTER_MODEL = os.getenv("ROUTER_MODEL", "llama-3.3-70b-versatile")
+GRADER_MODEL = os.getenv("GRADER_MODEL", "llama-3.3-70b-versatile")
+SUPPORT_MODEL = os.getenv("SUPPORT_MODEL", "llama-3.3-70b-versatile")
+RAG_PLANNER_MODEL = os.getenv("RAG_PLANNER_MODEL", "openai/gpt-oss-120b")  # Complex planning and reasoning
+VERIFY_MODEL = os.getenv("VERIFY_MODEL", "llama-3.3-70b-versatile")  # Verification tasks
+>>>>>>> Stashed changes
 
 # High-quality models (for synthesis, final answers - keep using OpenAI/Anthropic)
 SYNTHESIS_MODEL = os.getenv("SYNTHESIS_MODEL", "gpt-4o")

@@ -1044,7 +1044,11 @@ async def chat_stream_handler(request: ChatRequest):
                     # STREAM ANSWER IMMEDIATELY when answer node completes
                     # Don't wait for verify/correct - stream now for instant feedback!
                     if node_name == "answer" and messages_received == 0:
-                        answer_text = state_dict.get("final_answer") or state_dict.get("answer", "")
+                        # Check all answer types: final_answer, code_answer, coop_answer
+                        answer_text = (state_dict.get("final_answer") or 
+                                      state_dict.get("code_answer") or 
+                                      state_dict.get("coop_answer") or 
+                                      state_dict.get("answer", ""))
                         if answer_text:
                             logger.info(f"📤 Streaming answer immediately ({len(answer_text)} chars)...")
                             # Split into words and stream in small groups
