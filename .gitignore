@@ -112,4 +112,11 @@ __pycache__/
 *.png
 *.jpg
 *.csv
+Backend/data
+
+# Personal documentation - Cardoso READMEs
+**/*_Cardoso.md
+*_Cardoso.md
+plan.txt
+questions.txt
 

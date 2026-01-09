@@ -41,7 +41,13 @@ else:
 # Import the RAG system from new modular structure
 from main import run_agentic_rag, rag_healthcheck
 from database import test_database_connection
-from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH
+from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH, DEBUG_MODE
+
+# Import Kuzu manager
+try:
+    from database.kuzu_client import get_kuzu_manager
+except ImportError:
+    get_kuzu_manager = None
 
 # Import feedback logger from helpers folder
 try:
@@ -347,7 +353,18 @@ class ChatRequest(BaseModel):
     image_base64: Optional[str] = None  # Single screenshot/image as base64 (backwards compatible)
     images_base64: Optional[List[str]] = None  # Multiple images as base64 array
 
-    
+class CypherRequest(BaseModel):
+    query: str
+    params: Optional[Dict[str, Any]] = None
+
+class CypherResponse(BaseModel):
+    success: bool
+    columns: Optional[List[str]] = None
+    rows: Optional[List[Any]] = None
+    row_count: Optional[int] = None
+    error: Optional[str] = None
+    query: Optional[str] = None
+
 class ChatResponse(BaseModel):
     reply: str
     session_id: str
@@ -1701,9 +1718,47 @@ async def root():
             "logs_stats": "/logs/enhanced/stats",
             "stats_interactions": "/stats/interactions",
             "stats_user": "/stats/user/{user_identifier}",
-            "stats_recent": "/stats/recent"
+            "stats_recent": "/stats/recent",
+            "graph_cypher": "/graph/cypher (DEBUG only)",
+            "graph_schema": "/graph/schema (DEBUG only)"
         }
     }
+
+# ============================================================
+# KUZU GRAPH DATABASE ENDPOINTS (DEBUG ONLY)
+# ============================================================
+@app.post("/graph/cypher", response_model=CypherResponse)
+async def execute_cypher(request: CypherRequest):
+    """Execute a Cypher query against the Kuzu graph database (Debug mode only)"""
+    if not DEBUG_MODE:
+        raise HTTPException(status_code=403, detail="Graph database access is only available in DEBUG_MODE")
+    
+    if get_kuzu_manager is None:
+        raise HTTPException(status_code=500, detail="Kuzu manager not available")
+    
+    try:
+        kuzu_manager = get_kuzu_manager()
+        result = kuzu_manager.execute(request.query, request.params)
+        return CypherResponse(**result)
+    except Exception as e:
+        logger.error(f"Cypher endpoint error: {e}")
+        return CypherResponse(success=False, error=str(e), query=request.query)
+
+@app.get("/graph/schema")
+async def get_graph_schema():
+    """Get the Kuzu graph database schema (Debug mode only)"""
+    if not DEBUG_MODE:
+        raise HTTPException(status_code=403, detail="Graph database access is only available in DEBUG_MODE")
+    
+    if get_kuzu_manager is None:
+        raise HTTPException(status_code=500, detail="Kuzu manager not available")
+    
+    try:
+        kuzu_manager = get_kuzu_manager()
+        return kuzu_manager.get_schema()
+    except Exception as e:
+        logger.error(f"Graph schema endpoint error: {e}")
+        return {"success": False, "error": str(e)}
 
 if __name__ == "__main__":
     # Check environment setup
@@ -1722,6 +1777,8 @@ if __name__ == "__main__":
     print(f"   Database status: http://0.0.0.0:{port}/db/health")
     print(f"   📊 Enhanced Debugger: http://0.0.0.0:{port}/logs/enhanced?format=html")
     print(f"   📈 Log Statistics: http://0.0.0.0:{port}/logs/enhanced/stats")
+    if DEBUG_MODE:
+        print(f"   🛠️  Kuzu Graph DB Cypher: http://0.0.0.0:{port}/graph/schema")
     print(f"\n📡 Server running on port: {port}")
     print("⚡ Ready for Electron chatbutton app!")
 
