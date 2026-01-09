@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import uuid
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -33,7 +34,12 @@ class VectorDB:
             logger.warning("Using in-memory vector store; start Qdrant for persistence.")
             self._memory_store = InMemoryVectorStore()
         else:
-            self._client = QdrantClient(path=str(config.vector_db_path))
+            host = os.getenv("QDRANT_HOST")
+            port = int(os.getenv("QDRANT_PORT", "6333"))
+            if host:
+                self._client = QdrantClient(host=host, port=port)
+            else:
+                self._client = QdrantClient(path=str(config.vector_db_path))
 
     def initialize_collections(self, company_id: str, vector_size: int) -> Tuple[str, str]:
         """
