@@ -17,6 +17,7 @@ from embeddings.embedding_service import EmbeddingService  # noqa: E402
 from ingest.pipeline import IngestionPipeline  # noqa: E402
 from retrieval.retriever import Retriever  # noqa: E402
 from storage.metadata_db import MetadataDB  # noqa: E402
+from storage.qdrant_vector_store import QdrantVectorStore  # noqa: E402
 from storage.vector_db import VectorDB  # noqa: E402
 from utils.config import load_config  # noqa: E402
 from utils.logger import get_logger  # noqa: E402
@@ -31,11 +32,12 @@ def main() -> None:
 
     embedding_service = EmbeddingService(config)
     vector_db = VectorDB(config, use_in_memory=False)
+    vector_store = QdrantVectorStore(vector_db, company_id=company_id)
     metadata_db = MetadataDB(config.metadata_db_path)
 
     pipeline = IngestionPipeline(
         embedding_service=embedding_service,
-        vector_db=vector_db,
+        vector_store=vector_store,
         metadata_db=metadata_db,
         company_id=company_id,
     )
@@ -48,7 +50,7 @@ def main() -> None:
     result = pipeline.ingest(str(sample_doc))
     logger.info("Ingestion result: %s", result)
 
-    retriever = Retriever(embedding_service, vector_db)
+    retriever = Retriever(embedding_service, vector_store)
     content = retriever.retrieve_content("thermal analysis methodology", company_id=company_id, top_k=3)
     style = retriever.retrieve_style_examples("methodology", company_id=company_id, top_k=2)
 
