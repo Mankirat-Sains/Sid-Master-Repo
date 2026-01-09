@@ -1219,7 +1219,11 @@ const imageModalUrl = ref<string | null>(null)
 const isDragging = ref(false)
 const contextMenuRef = ref<HTMLElement | null>(null)
 const { formatMessageText } = useMessageFormatter()
+<<<<<<< HEAD
+const { sendChatMessage, sendChatMessageStream } = useChat()
+=======
 const { sendChatMessageStream } = useChat()
+>>>>>>> origin/main
 // Reactive counter to force Vue to detect every token update immediately
 const renderKey = ref(0)
 const { findProjectByKey, getProjectModels } = useSpeckle()
@@ -2537,6 +2541,8 @@ async function handleSend() {
             conversation.chatLog.splice(thinkingIndex, 1)
           }
           
+<<<<<<< HEAD
+=======
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
           console.log('🖼️ [onComplete] Image similarity results received:', {
@@ -2559,6 +2565,7 @@ async function handleSend() {
             willDisplay: images.length > 0
           })
           
+>>>>>>> origin/main
           // Use the accumulated content from streaming (already formatted via getFormattedMessage)
           // Don't overwrite with result.reply as it might be different or cause formatting to revert
           if (streamingMessageId) {
@@ -2575,7 +2582,10 @@ async function handleSend() {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
+<<<<<<< HEAD
+=======
                 images: images.length > 0 ? images : undefined, // Add images here
+>>>>>>> origin/main
                 timestamp: Date.now()
               })
             }
@@ -2587,7 +2597,10 @@ async function handleSend() {
             conversation.chatLog.push({ 
               role: 'assistant', 
               content: finalAnswer, // Store raw text, not formatted HTML
+<<<<<<< HEAD
+=======
               images: images.length > 0 ? images : undefined, // Add images here too
+>>>>>>> origin/main
               timestamp: Date.now() 
             })
           }
@@ -2704,6 +2717,8 @@ async function regenerateAssistant(message: string, sessionId: string) {
           }
         },
         onComplete: async result => {
+<<<<<<< HEAD
+=======
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
           const images = imageResults.map((img: any) => ({
@@ -2714,6 +2729,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
             caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
           }))
           
+>>>>>>> origin/main
           // Use the accumulated content from streaming (already formatted via getFormattedMessage)
           // Don't overwrite with result.reply as it might be different or cause formatting to revert
           if (streamingMessageId) {
@@ -2730,7 +2746,10 @@ async function regenerateAssistant(message: string, sessionId: string) {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
+<<<<<<< HEAD
+=======
                 images: images.length > 0 ? images : undefined, // Add images here
+>>>>>>> origin/main
                 timestamp: Date.now()
               })
             }
@@ -2742,7 +2761,10 @@ async function regenerateAssistant(message: string, sessionId: string) {
             conversation.chatLog.push({
               role: 'assistant',
               content: finalAnswer, // Store raw text, not formatted HTML
+<<<<<<< HEAD
+=======
               images: images.length > 0 ? images : undefined, // Add images here too
+>>>>>>> origin/main
               timestamp: Date.now()
             })
           }
@@ -3025,6 +3047,8 @@ function performDeleteConversation() {
 .triangle-container:hover {
   transform: translateY(-4px);
 }
+<<<<<<< HEAD
+=======
 
 /* Modal transitions */
 .modal-enter-active,
@@ -3058,4 +3082,5 @@ function performDeleteConversation() {
 .fade-leave-to {
   opacity: 0;
 }
+>>>>>>> origin/main
 </style>
