@@ -31,7 +31,10 @@ python -m info_retrieval.demo
 - `src/ingest/chunking.py`: Section-based, overlapping, and PDF page chunking; chunk type classification.
 - `src/ingest/metadata_extractor.py`: `MetadataExtractor` with rules-based classifier (pluggable).
 - `src/embeddings/embedding_service.py`: Embedding abstraction (OpenAI/local/fallback).
-- `src/storage/vector_db.py`: Dual-index Qdrant interface (`content_{company}` + `style_{company}`) with in-memory fallback.
+- `src/storage/vector_store.py`: Backend-agnostic VectorStore interface.
+- `src/storage/qdrant_vector_store.py`: Qdrant adapter implementing VectorStore.
+- `src/storage/supabase_vector_store.py`: Supabase adapter implementing VectorStore (uses RPC/table).
+- `src/storage/vector_db.py`: Legacy Qdrant helper used by the Qdrant adapter.
 - `src/storage/metadata_db.py`: SQLite chunk metadata schema with identity + provenance.
 - `src/retrieval/retriever.py`: High-level retrieval for content queries and style exemplars.
 - `src/utils/config.py`: Env/config loader; `logger.py`: logging helper.

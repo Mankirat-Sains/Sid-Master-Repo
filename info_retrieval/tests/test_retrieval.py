@@ -5,6 +5,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
 from embeddings.embedding_service import EmbeddingService  # noqa: E402
 from retrieval.retriever import Retriever  # noqa: E402
+from storage.qdrant_vector_store import QdrantVectorStore  # noqa: E402
 from storage.vector_db import VectorDB  # noqa: E402
 from utils.config import AppConfig  # noqa: E402
 
@@ -22,7 +23,8 @@ def test_in_memory_retrieval_round_trip():
     )
     embedding_service = EmbeddingService(config)
     vector_db = VectorDB(config, use_in_memory=True)
-    retriever = Retriever(embedding_service, vector_db)
+    vector_store = QdrantVectorStore(vector_db, company_id="acme")
+    retriever = Retriever(embedding_service, vector_store)
 
     chunks = [{"text": "The foundation wall is designed for 50 kPa.", "section_title": "Results"}]
     metadata = [
