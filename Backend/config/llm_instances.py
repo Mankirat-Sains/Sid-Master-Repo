@@ -4,6 +4,7 @@ Create and configure all LLM instances used throughout the system
 """
 import os
 import types
+from pathlib import Path
 
 # Compat shim for newer openai package (>=1.x) with langchain_openai expecting DefaultHttpxClient
 try:
@@ -24,7 +25,6 @@ if openai:
         openai.DefaultAsyncHttpxClient = _DummyAsyncClient  # type: ignore
     if not hasattr(openai, "AsyncOpenAI"):
         openai.AsyncOpenAI = getattr(openai, "AsyncClient", None) or getattr(openai, "OpenAI", None) or openai.DefaultAsyncHttpxClient  # type: ignore
-
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_anthropic import ChatAnthropic
 from langchain_core.caches import BaseCache  # Fix for Pydantic v2 compatibility
@@ -35,6 +35,52 @@ from .settings import (
     RAG_PLANNER_MODEL, VERIFY_MODEL, GROQ_API_KEY
 )
 from .logging_config import log_syn
+
+# Try to import Google Gemini SDKs
+GOOGLE_VERTEX_AI_AVAILABLE = False
+GOOGLE_GENAI_AVAILABLE = False
+
+# Import service_account once (needed for both)
+try:
+    from google.oauth2 import service_account
+    SERVICE_ACCOUNT_AVAILABLE = True
+except ImportError:
+    SERVICE_ACCOUNT_AVAILABLE = False
+    log_syn.warning("⚠️  google.oauth2.service_account not available. Install with: pip install google-auth google-auth-oauthlib")
+
+# Try Vertex AI SDK first (required for service account auth)
+# Note: ChatVertexAI is deprecated but necessary for service account authentication
+try:
+    from langchain_google_vertexai import ChatVertexAI
+    GOOGLE_VERTEX_AI_AVAILABLE = True
+    log_syn.info("✅ Google Vertex AI SDK available (required for service account auth)")
+except ImportError as e:
+    log_syn.warning(f"⚠️  Google Vertex AI SDK not installed. Install with: pip install langchain-google-vertexai google-cloud-aiplatform")
+    log_syn.warning(f"   Error: {e}")
+
+# Try Generative AI SDK as fallback
+try:
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    GOOGLE_GENAI_AVAILABLE = True
+    log_syn.info("✅ Google Generative AI SDK available")
+except ImportError as e:
+    log_syn.warning(f"⚠️  Google Generative AI SDK not installed. Install with: pip install langchain-google-genai")
+    log_syn.warning(f"   Error: {e}")
+
+GOOGLE_AVAILABLE = GOOGLE_VERTEX_AI_AVAILABLE or GOOGLE_GENAI_AVAILABLE
+
+# Load Google credentials from environment
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
+
+# For all Gemini models, use "global" region (all Gemini models are available in global)
+# This is the recommended region for all Gemini models on Vertex AI
+VERTEX_AI_LOCATION = os.getenv("VERTEX_AI_LOCATION", "global")
+
+# Log if using Gemini models
+SYNTHESIS_MODEL = os.getenv("SYNTHESIS_MODEL", "")
+if SYNTHESIS_MODEL.startswith("gemini"):
+    log_syn.info(f"ℹ️  Using 'global' region for Gemini models (all Gemini models are available in global region)")
 
 # Try to import Groq SDK and create custom wrapper - if not available, will fall back to OpenAI
 try:
@@ -244,10 +290,147 @@ llm_verify = create_llm_instance(
 def make_llm(model_name: str, temperature: float = 0.1):
     """
     Create an LLM instance based on the model name.
-    Supports both OpenAI and Anthropic models.
+    Supports OpenAI, Anthropic, and Google Gemini models.
     """
     try:
-        if model_name.startswith("claude"):
+        # Check for Gemini models (gemini-2.5-pro, gemini-3-pro-preview, etc.)
+        # Note: Newer models (2.5+, 3+) require ChatGoogleGenerativeAI with Vertex AI backend
+        if model_name.startswith("gemini") and GOOGLE_AVAILABLE:
+            log_syn.info(f"🔍 Detected Gemini model: {model_name}")
+            
+            # Check if service account credentials are set
+            if not GOOGLE_APPLICATION_CREDENTIALS:
+                raise ValueError(
+                    "GOOGLE_APPLICATION_CREDENTIALS not found in environment. "
+                    "Please set it to the path of your service account JSON file."
+                )
+            
+            # Verify the credentials file exists
+            creds_path = Path(GOOGLE_APPLICATION_CREDENTIALS)
+            if not creds_path.exists():
+                raise FileNotFoundError(
+                    f"Google service account credentials file not found: {GOOGLE_APPLICATION_CREDENTIALS}"
+                )
+            
+            log_syn.info(f"✅ Using Google service account credentials: {GOOGLE_APPLICATION_CREDENTIALS}")
+            
+            # Set GOOGLE_APPLICATION_CREDENTIALS environment variable if not already set
+            # This ensures the Google client libraries can find the credentials
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(creds_path.resolve())
+            
+            # Load credentials explicitly to verify they're valid (if service_account is available)
+            credentials = None
+            if SERVICE_ACCOUNT_AVAILABLE:
+                try:
+                    credentials = service_account.Credentials.from_service_account_file(
+                        str(creds_path.resolve())
+                    )
+                    log_syn.info(f"✅ Successfully loaded service account credentials for: {credentials.service_account_email}")
+                except Exception as cred_error:
+                    log_syn.error(f"❌ Failed to load service account credentials: {cred_error}")
+                    raise
+            
+            # CRITICAL: For gemini-3-pro-preview and other new models, use ChatGoogleGenerativeAI 
+            # from langchain-google-genai with Vertex AI backend (not ChatVertexAI).
+            # ChatGoogleGenerativeAI supports BOTH API keys (Generative AI API) AND service accounts (Vertex AI backend).
+            # When using service accounts, we configure it to use Vertex AI backend.
+            
+            # IMPORTANT: All Gemini models use "global" region
+            # All Gemini models (gemini-1.5, gemini-2.5, gemini-3.0, etc.) are available in global region
+            model_location = "global"
+            if not model_name.startswith("gemini"):
+                # Only use VERTEX_AI_LOCATION for non-Gemini models (if any)
+                model_location = VERTEX_AI_LOCATION
+            else:
+                log_syn.info(f"ℹ️  Gemini model detected ({model_name}) - using 'global' region (all Gemini models available in global)")
+            
+            if GOOGLE_GENAI_AVAILABLE:
+                # Check if we have service account credentials (preferred for Vertex AI)
+                if GOOGLE_CLOUD_PROJECT and GOOGLE_APPLICATION_CREDENTIALS:
+                    log_syn.info(f"✅ Using ChatGoogleGenerativeAI with Vertex AI backend (service account)")
+                    log_syn.info(f"   Project: {GOOGLE_CLOUD_PROJECT}")
+                    log_syn.info(f"   Location: {model_location} (global - all Gemini models available in global region)")
+                    log_syn.info(f"   Model: {model_name}")
+                    log_syn.info(f"   Credentials: {GOOGLE_APPLICATION_CREDENTIALS}")
+                    log_syn.info(f"   Note: ChatGoogleGenerativeAI auto-detects Vertex AI backend from service account")
+                    
+                    # Use ChatGoogleGenerativeAI with Vertex AI backend
+                    # When no API key is provided AND GOOGLE_APPLICATION_CREDENTIALS is set,
+                    # it automatically uses Vertex AI backend with service account
+                    try:
+                        # Try with project/location if supported
+                        return ChatGoogleGenerativeAI(
+                            model=model_name,
+                            temperature=temperature,
+                            google_api_key=None,  # No API key = use service account
+                            project=GOOGLE_CLOUD_PROJECT,  # Vertex AI project (may be auto-detected)
+                            location=model_location,  # Vertex AI location - always "global" for all Gemini models
+                        )
+                    except TypeError:
+                        # If project/location not supported, use without them (auto-detection)
+                        log_syn.info(f"   Using auto-detection (project/location parameters not needed)")
+                        return ChatGoogleGenerativeAI(
+                            model=model_name,
+                            temperature=temperature,
+                            google_api_key=None,  # No API key = use service account from GOOGLE_APPLICATION_CREDENTIALS
+                        )
+                
+                # Fallback: Use API key if available (Generative AI API, not Vertex AI)
+                api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+                if api_key:
+                    log_syn.info(f"✅ Using ChatGoogleGenerativeAI with Generative AI API (API key)")
+                    log_syn.info(f"   Model: {model_name}")
+                    return ChatGoogleGenerativeAI(
+                        model=model_name,
+                        temperature=temperature,
+                        google_api_key=api_key
+                    )
+                else:
+                    raise ValueError(
+                        f"For Gemini model '{model_name}', you need either:\n"
+                        f"  1. Service account with GOOGLE_APPLICATION_CREDENTIALS, GOOGLE_CLOUD_PROJECT set (recommended for Vertex AI)\n"
+                        f"  2. API key with GOOGLE_API_KEY or GEMINI_API_KEY set (for Generative AI API)"
+                    )
+            
+            # Fallback: Try deprecated ChatVertexAI if GenAI SDK not available
+            # NOTE: ChatVertexAI doesn't support gemini-3-* models, but we'll try anyway as fallback
+            if GOOGLE_VERTEX_AI_AVAILABLE and GOOGLE_CLOUD_PROJECT:
+                import warnings
+                log_syn.warning("⚠️  ChatGoogleGenerativeAI not available, falling back to deprecated ChatVertexAI")
+                log_syn.warning(f"   Note: ChatVertexAI may not support {model_name} - install langchain-google-genai instead")
+                
+                # Use "global" region for all Gemini models (all Gemini models are available in global)
+                fallback_location = "global" if model_name.startswith("gemini") else VERTEX_AI_LOCATION
+                if model_name.startswith("gemini"):
+                    log_syn.warning(f"   ⚠️  Using 'global' region for Gemini model - ChatVertexAI may not support {model_name}")
+                
+                with warnings.catch_warnings():
+                    warnings.filterwarnings("ignore", message=".*ChatVertexAI.*deprecated.*")
+                    warnings.filterwarnings("ignore", category=DeprecationWarning, module="langchain_google_vertexai")
+                    if credentials:
+                        return ChatVertexAI(
+                            model_name=model_name,
+                            temperature=temperature,
+                            project=GOOGLE_CLOUD_PROJECT,
+                            location=fallback_location,
+                            credentials=credentials
+                        )
+                    else:
+                        return ChatVertexAI(
+                            model_name=model_name,
+                            temperature=temperature,
+                            project=GOOGLE_CLOUD_PROJECT,
+                            location=fallback_location
+                        )
+            
+            # If neither SDK is available
+            raise ImportError(
+                "langchain-google-genai is required for gemini-3-pro-preview and other new Gemini models. "
+                "Install with: pip install langchain-google-genai google-auth google-auth-oauthlib"
+            )
+        
+        # Check for Anthropic Claude models
+        elif model_name.startswith("claude"):
             api_key = os.getenv("ANTHROPIC_API_KEY")
             if not api_key:
                 raise ValueError("ANTHROPIC_API_KEY not found in environment")
@@ -256,10 +439,16 @@ def make_llm(model_name: str, temperature: float = 0.1):
                 temperature=temperature,
                 anthropic_api_key=api_key
             )
+        
+        # Default to OpenAI for other models
         else:
+            log_syn.info(f"🔍 Using OpenAI for model: {model_name}")
             return ChatOpenAI(model=model_name, temperature=temperature)
+            
     except Exception as e:
         log_syn.error(f"Failed to create LLM for {model_name}: {e}")
+        import traceback
+        log_syn.error(f"Traceback: {traceback.format_exc()}")
         raise
 
 
@@ -283,9 +472,21 @@ def log_model_configuration():
     log_syn.info(f"⚡ RAG_PLANNER_MODEL: {RAG_PLANNER_MODEL} ({'Groq' if any(RAG_PLANNER_MODEL.startswith(p) for p in ['llama-3.1', 'mixtral', 'gemma', 'qwen']) else 'OpenAI'})")
     log_syn.info(f"⚡ VERIFY_MODEL: {VERIFY_MODEL} ({'Groq' if any(VERIFY_MODEL.startswith(p) for p in ['llama-3.1', 'mixtral', 'gemma', 'qwen']) else 'OpenAI'})")
     
-    # High-quality models (synthesis - keep as OpenAI/Anthropic)
-    log_syn.info(f"🎯 SYNTHESIS_MODEL: {SYNTHESIS_MODEL} (OpenAI/Anthropic)")
-    log_syn.info(f"🎯 CORRECTIVE_MODEL: {CORRECTIVE_MODEL} (OpenAI/Anthropic)")
+    # High-quality models (synthesis - check for Gemini/OpenAI/Anthropic)
+    synthesis_provider = "OpenAI"
+    if SYNTHESIS_MODEL.startswith("gemini"):
+        synthesis_provider = "Google Gemini"
+    elif SYNTHESIS_MODEL.startswith("claude"):
+        synthesis_provider = "Anthropic"
+    
+    corrective_provider = "OpenAI"
+    if CORRECTIVE_MODEL.startswith("gemini"):
+        corrective_provider = "Google Gemini"
+    elif CORRECTIVE_MODEL.startswith("claude"):
+        corrective_provider = "Anthropic"
+    
+    log_syn.info(f"🎯 SYNTHESIS_MODEL: {SYNTHESIS_MODEL} ({synthesis_provider})")
+    log_syn.info(f"🎯 CORRECTIVE_MODEL: {CORRECTIVE_MODEL} ({corrective_provider})")
     
     # Groq status
     if GROQ_AVAILABLE:
@@ -294,7 +495,32 @@ def log_model_configuration():
         else:
             log_syn.warning(f"⚠️  Groq API: Key not found (GROQ_API_KEY)")
     else:
-        log_syn.warning(f"⚠️  Groq: Not available (install with: pip install langchain-groq)")
+        log_syn.warning(f"⚠️  Groq: Not available (install with: pip install groq)")
+    
+    # Google Gemini/Vertex AI status
+    if GOOGLE_AVAILABLE:
+        if GOOGLE_APPLICATION_CREDENTIALS:
+            creds_path = Path(GOOGLE_APPLICATION_CREDENTIALS)
+            if creds_path.exists():
+                log_syn.info(f"✅ Google Service Account: {GOOGLE_APPLICATION_CREDENTIALS}")
+                if GOOGLE_CLOUD_PROJECT:
+                    log_syn.info(f"✅ Google Cloud Project: {GOOGLE_CLOUD_PROJECT}")
+                if VERTEX_AI_LOCATION:
+                    log_syn.info(f"✅ Vertex AI Location: {VERTEX_AI_LOCATION}")
+                if GOOGLE_GENAI_AVAILABLE:
+                    log_syn.info(f"✅ Using Generative AI SDK (ChatGoogleGenerativeAI - recommended)")
+                    log_syn.info(f"   ChatGoogleGenerativeAI supports both service accounts (Vertex AI backend) and API keys")
+                elif GOOGLE_VERTEX_AI_AVAILABLE:
+                    log_syn.warning(f"⚠️  Using deprecated Vertex AI SDK (ChatVertexAI)")
+                    log_syn.info(f"   Install langchain-google-genai for better Gemini model support")
+            else:
+                log_syn.warning(f"⚠️  Google credentials file not found: {GOOGLE_APPLICATION_CREDENTIALS}")
+        else:
+            log_syn.warning(f"⚠️  GOOGLE_APPLICATION_CREDENTIALS not set")
+    else:
+        if SYNTHESIS_MODEL.startswith("gemini") or CORRECTIVE_MODEL.startswith("gemini"):
+            log_syn.warning(f"⚠️  Google Gemini SDK not available but Gemini model configured")
+            log_syn.warning(f"   Install with: pip install langchain-google-genai google-auth google-auth-oauthlib")
     
     log_syn.info("=" * 80)
 
