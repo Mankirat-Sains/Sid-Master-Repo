@@ -113,10 +113,10 @@ __pycache__/
 *.jpg
 *.csv
 Backend/data
+info_retrieval/data/*.db
 
 # Personal documentation - Cardoso READMEs
 **/*_Cardoso.md
 *_Cardoso.md
 plan.txt
 questions.txt
-

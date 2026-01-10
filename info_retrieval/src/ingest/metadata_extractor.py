@@ -4,9 +4,9 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
-from ..utils.classifier_provider import ClassifierProvider
-from ..utils.logger import get_logger
-from .document_parser import ParsedDocument, generate_artifact_id, generate_version_id
+from utils.classifier_provider import ClassifierProvider
+from utils.logger import get_logger
+from ingest.document_parser import ParsedDocument, generate_artifact_id, generate_version_id
 
 logger = get_logger(__name__)
 
@@ -94,6 +94,12 @@ class RulesBasedClassifier(ClassifierProvider):
         for section in document.sections:
             section_type = self._detect_section_type(section.title)
             mapping[section.title] = section_type
+            normalized = self._normalize_heading(section.title)
+            if normalized != section.title:
+                mapping[normalized] = section_type
+            # Anticipate chunked titles like "Heading (part 3)" so downstream lookups still resolve.
+            for idx in range(1, 11):
+                mapping[f"{section.title} (part {idx})"] = section_type
         return mapping
 
     def classify_calc_type(self, document: ParsedDocument) -> Optional[str]:
@@ -108,17 +114,29 @@ class RulesBasedClassifier(ClassifierProvider):
 
     def _detect_section_type(self, title: str) -> str:
         lower = title.lower()
-        if "introduction" in lower or lower.startswith("1."):
+        if "introduction" in lower or "overview" in lower or "background" in lower or lower.startswith("1."):
             return "introduction"
-        if "method" in lower or "approach" in lower:
+        if "method" in lower or "approach" in lower or "procedure" in lower:
             return "methodology"
-        if "result" in lower:
-            return "results"
-        if "conclusion" in lower or "summary" in lower:
-            return "conclusions"
-        if "scope" in lower:
+        if "scope" in lower or "limitations" in lower or "assumptions" in lower:
             return "scope"
+        if "result" in lower or "finding" in lower or "observation" in lower or "inspection" in lower:
+            return "results"
+        if "recommendation" in lower or "action plan" in lower or "maintenance plan" in lower or "repair plan" in lower:
+            return "recommendations"
+        if "conclusion" in lower or "summary" in lower or "closing" in lower:
+            return "conclusions"
+        if "appendix" in lower or "references" in lower:
+            return "appendix"
         return "general"
+
+    def _normalize_heading(self, title: str) -> str:
+        """
+        Strip numbering and part suffixes so chunked headings still map to section types.
+        """
+        cleaned = re.sub(r"\(part\s+\d+\)\s*$", "", title, flags=re.IGNORECASE).strip()
+        cleaned = re.sub(r"^\d+[\.\)]\s*", "", cleaned)
+        return cleaned
 
 
 class LLMClassifier(ClassifierProvider):

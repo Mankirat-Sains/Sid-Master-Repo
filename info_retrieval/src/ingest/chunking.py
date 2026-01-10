@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
-from ..utils.logger import get_logger
-from .document_parser import ParsedDocument, Section
-from .style_filter import StyleExemplarFilter
+from utils.logger import get_logger
+from ingest.document_parser import ParsedDocument, Section
+from ingest.style_filter import StyleExemplarFilter
 
 logger = get_logger(__name__)
 

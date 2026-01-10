@@ -8,8 +8,8 @@ from typing import List, Optional, Tuple
 import numpy as np
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from ..utils.config import AppConfig
-from ..utils.logger import get_logger
+from utils.config import AppConfig
+from utils.logger import get_logger
 
 try:
     import redis  # type: ignore

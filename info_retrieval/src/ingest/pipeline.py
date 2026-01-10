@@ -7,10 +7,10 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
-from ..embeddings.embedding_service import EmbeddingService
-from ..storage.metadata_db import MetadataDB
-from ..storage.vector_store import Chunk, VectorStore
-from ..utils.logger import get_logger
+from embeddings.embedding_service import EmbeddingService
+from storage.metadata_db import MetadataDB
+from storage.vector_store import Chunk, VectorStore
+from utils.logger import get_logger
 from .chunking import chunk_pdf_pages, smart_chunk
 from .document_parser import parse_docx, parse_pdf
 from .metadata_extractor import MetadataExtractor

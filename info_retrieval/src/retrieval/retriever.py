@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from ..embeddings.embedding_service import EmbeddingService
-from ..storage.vector_store import VectorStore
-from ..utils.logger import get_logger
+from embeddings.embedding_service import EmbeddingService
+from storage.vector_store import VectorStore
+from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
