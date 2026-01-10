@@ -42,12 +42,12 @@ else:
 
 # Import the RAG system from new modular structure
 from main import run_agentic_rag, rag_healthcheck
-from database import test_database_connection
+from nodes.DBRetrieval.KGdb import test_database_connection
 from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH, DEBUG_MODE
 
 # Import Kuzu manager
 try:
-    from database.kuzu_client import get_kuzu_manager
+    from nodes.DBRetrieval.KGdb.kuzu_client import get_kuzu_manager
 except ImportError:
     get_kuzu_manager = None
 
@@ -865,7 +865,7 @@ async def chat_stream_handler(request: ChatRequest):
             image_context = ""
             enhanced_question = request.message
             if images_to_process and len(images_to_process) > 0:
-                from nodes.DBRetrieval.image_nodes import describe_image_for_search
+                from nodes.DBRetrieval.SQLdb.image_nodes import describe_image_for_search
                 from config.logging_config import log_vlm
                 
                 log_vlm.info("")
@@ -912,7 +912,7 @@ async def chat_stream_handler(request: ChatRequest):
             use_image_similarity = False
             query_intent = None
             if images_to_process:
-                from nodes.DBRetrieval.image_nodes import classify_image_query_intent
+                from nodes.DBRetrieval.SQLdb.image_nodes import classify_image_query_intent
                 intent_result = classify_image_query_intent(request.message, images_to_process[0])
                 use_image_similarity = intent_result.get("use_image_similarity", False)
                 query_intent = intent_result.get("intent")
@@ -1660,7 +1660,7 @@ async def debug_routing():
             MAX_SMART_RETRIEVAL_DOCS, MAX_LARGE_RETRIEVAL_DOCS, 
             MAX_HYBRID_RETRIEVAL_DOCS, SUPA_SMART_TABLE, SUPA_LARGE_TABLE
         )
-        from database.supabase_client import vs_smart, vs_large
+        from nodes.DBRetrieval.KGdb.supabase_client import vs_smart, vs_large
         
         return {
             "supabase_configured": bool(os.getenv("SUPABASE_URL") and os.getenv("SUPABASE_ANON_KEY")),

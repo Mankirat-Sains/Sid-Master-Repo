@@ -192,8 +192,13 @@ def node_rag_plan(state: RAGState) -> dict:
 
     log_query.info(f"🎯 QUERY INPUT: '{state.user_query[:500]}...' (truncated)" if len(state.user_query) > 500 else f"🎯 QUERY INPUT: '{state.user_query}'")
     
-    # Get conversation context
-    conversation_context = get_conversation_context(state.session_id, max_exchanges=2)
+    # Get conversation context from state (persisted by checkpointer) or fallback to SESSION_MEMORY
+    conversation_history = getattr(state, 'conversation_history', None)
+    conversation_context = get_conversation_context(
+        state.session_id, 
+        max_exchanges=2,
+        conversation_history=conversation_history
+    )
     if conversation_context:
         log_query.info("📖 Using conversation context")
 

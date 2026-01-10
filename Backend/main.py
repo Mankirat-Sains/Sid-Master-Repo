@@ -6,8 +6,9 @@ import os
 import re
 import time
 from dataclasses import asdict
+from pathlib import Path
 from typing import Dict, List, Optional
-from models.rag_state import RAGState
+from models.parent_state import ParentState
 from models.memory import (
     SESSION_MEMORY, MAX_CONVERSATION_HISTORY, MAX_SEMANTIC_HISTORY,
     intelligent_query_rewriter, update_focus_state, FOCUS_STATES
@@ -15,8 +16,8 @@ from models.memory import (
 from graph.builder import build_graph
 from config.settings import MAX_CITATIONS_DISPLAY, MAX_ROUTER_DOCS
 from config.logging_config import log_query, log_vlm
-from database import test_database_connection
-from database.supabase_client import vs_smart, vs_large
+from nodes.DBRetrieval.KGdb import test_database_connection
+from nodes.DBRetrieval.KGdb.supabase_client import vs_smart, vs_large
 from utils.csv_logger import append_draft_csv
 
 # Build graph once at module load and expose it for streaming
@@ -76,7 +77,7 @@ def run_agentic_rag(
     # Process images if provided - Convert to searchable text via VLM
     image_context = ""
     if images_base64 and len(images_base64) > 0:
-        from nodes.DBRetrieval.image_nodes import describe_image_for_search
+        from nodes.DBRetrieval.SQLdb.image_nodes import describe_image_for_search
         log_vlm.info("")
         log_vlm.info("🔷" * 30)
         log_vlm.info(f"🖼️ PROCESSING {len(images_base64)} IMAGE(S) WITH VLM")
@@ -100,12 +101,35 @@ def run_agentic_rag(
             log_vlm.info("🔷" * 30)
             log_vlm.info("")
 
+    # Load previous state from checkpointer (if exists) to get conversation history
+    # This allows us to maintain conversation context across invocations
+    previous_state = None
+    try:
+        # Get the latest checkpoint state for this thread
+        state_snapshot = graph.get_state({"configurable": {"thread_id": session_id}})
+        if state_snapshot and state_snapshot.values:
+            previous_state = state_snapshot.values
+            log_query.info(f"📖 Loaded previous state from checkpointer for thread_id={session_id}")
+            if previous_state.get("conversation_history"):
+                log_query.info(f"📖 Found {len(previous_state['conversation_history'])} previous exchanges")
+    except Exception as e:
+        # No previous state exists (first invocation) - this is fine
+        log_query.info(f"📖 No previous state found (first invocation): {e}")
+        previous_state = None
+    
+    # Get conversation history from previous state for query rewriting
+    conversation_history_for_rewriter = previous_state.get("conversation_history", []) if previous_state else []
+
     # Combine question with image context for enhanced search
     enhanced_question = question + image_context if image_context else question
 
-    # Intelligent query rewriting
+    # Intelligent query rewriting - NOW WITH CONVERSATION HISTORY
     log_query.info(f"🎯 QUERY REWRITING INPUT: '{enhanced_question[:500]}...' (truncated)" if len(enhanced_question) > 500 else f"🎯 QUERY REWRITING INPUT: '{enhanced_question}'")
-    rewritten_query, query_filters = intelligent_query_rewriter(enhanced_question, session_id)
+    rewritten_query, query_filters = intelligent_query_rewriter(
+        enhanced_question, 
+        session_id,
+        conversation_history=conversation_history_for_rewriter
+    )
     log_query.info(f"🎯 QUERY REWRITING OUTPUT: '{rewritten_query}'")
     log_query.info(f"🎯 QUERY FILTERS: {query_filters}")
     
@@ -118,75 +142,20 @@ def run_agentic_rag(
     base_query = rewritten_query
     log_query.info(f"🎯 FINAL QUERY FOR RAG: '{base_query}'")
 
-    # Initialize RAGState - if data_sources is None, let the router decide
-    # RAGState has a default_factory that provides fallback defaults, but router will override
-    # We pass data_sources=None explicitly when we want router to decide
-    if data_sources is None:
-        # Don't set a default - let the router intelligently select based on query and user role
-        # The router (in rag_router or route node) will set state.data_sources
-        pass
-    
-    init = RAGState(
+    init = ParentState(
         session_id=session_id,
         user_query=base_query,
-        query_plan=None, data_route=None,
+        original_question=question,
         project_filter=project_filter,
-        expanded_queries=[], retrieved_docs=[], graded_docs=[],
-        db_result=None, final_answer=None,
-        answer_citations=[], code_answer=None, code_citations=[],
-        coop_answer=None, coop_citations=[],
-        answer_support_score=0.0,
-        corrective_attempted=False,
-        data_sources=data_sources,  # None is OK - router will set it, or will use RAGState default
         images_base64=images_base64 if images_base64 else None,
-        use_image_similarity=False,  # Image embedding disabled - using VLM description only
-        query_intent=None
     )
 
-    # Convert dataclass to dict - graph.invoke expects a dict, not a dataclass
     final = graph.invoke(asdict(init), config={"configurable": {"thread_id": session_id}})
 
-    # Normalize dict vs. object - LangGraph can return either
     if isinstance(final, dict):
-        final_state = RAGState(
-            session_id=final.get("session_id", session_id),
-            user_query=final.get("user_query", base_query),
-            query_plan=final.get("query_plan"),
-            data_route=final.get("data_route"),
-            project_filter=final.get("project_filter"),
-            expanded_queries=final.get("expanded_queries", []),
-            retrieved_docs=final.get("retrieved_docs", []),
-            graded_docs=final.get("graded_docs", []),
-            db_result=final.get("db_result"),
-            final_answer=final.get("final_answer"),
-            answer_citations=final.get("answer_citations", []),
-            code_answer=final.get("code_answer"),
-            code_citations=final.get("code_citations", []),
-            coop_answer=final.get("coop_answer"),
-            coop_citations=final.get("coop_citations", []),
-            answer_support_score=final.get("answer_support_score", 0.0),
-            corrective_attempted=final.get("corrective_attempted", False),
-            needs_fix=final.get("needs_fix", False),
-            selected_projects=final.get("selected_projects", []),
-            needs_clarification=final.get("needs_clarification", False),
-            clarification_question=final.get("clarification_question"),
-            images_base64=final.get("images_base64"),
-            image_embeddings=final.get("image_embeddings"),
-            image_similarity_results=final.get("image_similarity_results", []),
-            use_image_similarity=final.get("use_image_similarity", False),
-            query_intent=final.get("query_intent"),
-            follow_up_questions=final.get("follow_up_questions", []),
-            follow_up_suggestions=final.get("follow_up_suggestions", []),
-            workflow=final.get("workflow"),
-            desktop_policy=final.get("desktop_policy"),
-            task_type=final.get("task_type"),
-            doc_type=final.get("doc_type"),
-            section_type=final.get("section_type"),
-            doc_generation_result=final.get("doc_generation_result"),
-            doc_generation_warnings=final.get("doc_generation_warnings", []),
-            execution_trace=final.get("execution_trace", []),
-            execution_trace_verbose=final.get("execution_trace_verbose", []),
-        )
+        final_state = ParentState(**asdict(init))
+        for k, v in final.items():
+            setattr(final_state, k, v)
     else:
         final_state = final
 
@@ -246,40 +215,19 @@ def run_agentic_rag(
 
     log_query.info(f"📋 Result items for entity resolution: {[r['project'] for r in result_items]}")
 
-    # Update conversation memory with sliding window
-    session_data = SESSION_MEMORY.get(session_id, {})
-    conversation_history = session_data.get("conversation_history", [])
-
-    log_query.info("💾 UPDATING CONVERSATION MEMORY:")
-    log_query.info(f"   Current history size: {len(conversation_history)} exchanges")
-
-    # Append new exchange to conversation history
-    answer_text = final_state.final_answer or ""
-    if final_state.code_answer:
-        answer_text = f"{answer_text}\n\n--- Code References ---\n\n{final_state.code_answer}"
-    if final_state.coop_answer:
-        answer_text = f"{answer_text}\n\n--- Training Manual References ---\n\n{final_state.coop_answer}"
+    # NOTE: Conversation history is updated by the 'correct' node (which runs last in the graph)
+    # The correct node already adds the exchange to conversation_history and persists it via checkpointer
+    # We don't need to update it here again - that would cause duplication!
+    # The conversation_history in final_state is already updated by correct.py
     
-    new_exchange = {
-        "question": question,
-        "answer": answer_text,
-        "timestamp": time.time(),
-        "projects": projects_in_answer
-    }
-    conversation_history.append(new_exchange)
-
-    log_query.info(f"   Added new exchange:")
-    log_query.info(f"      Q: {question[:100]}...")
-    log_query.info(f"      A: {(answer_text or '')[:100]}...")
-    log_query.info(f"      Projects in answer: {projects_in_answer}")
-
-    # Maintain sliding window
-    if len(conversation_history) > MAX_CONVERSATION_HISTORY:
-        dropped = len(conversation_history) - MAX_CONVERSATION_HISTORY
-        conversation_history = conversation_history[-MAX_CONVERSATION_HISTORY:]
-        log_query.info(f"   ⚠️  Sliding window: Dropped {dropped} oldest exchange(s), keeping last {MAX_CONVERSATION_HISTORY}")
-
-    log_query.info(f"   Final history size: {len(conversation_history)} exchanges")
+    conversation_history = list(final_state.conversation_history or [])
+    log_query.info(f"💾 Conversation history from correct node: {len(conversation_history)} exchanges")
+    
+    # Verify the conversation_history was updated correctly by correct node
+    if conversation_history:
+        last_exchange = conversation_history[-1]
+        log_query.info(f"   Last exchange Q: {last_exchange.get('question', '')[:100]}...")
+        log_query.info(f"   Last exchange projects: {last_exchange.get('projects', [])}")
 
     # SEMANTIC INTELLIGENCE: Gather semantic data from graph execution
     current_semantic = {}
@@ -310,7 +258,9 @@ def run_agentic_rag(
     
     log_query.info(f"   🧠 Semantic history size: {len(semantic_history)} records")
 
-    # Update session memory
+    # NOTE: Conversation history is now stored in state (persisted by checkpointer)
+    # We keep SESSION_MEMORY for backward compatibility with existing code that reads from it
+    # TODO: Migrate all code to use state.conversation_history instead of SESSION_MEMORY
     SESSION_MEMORY[session_id] = {
         "conversation_history": conversation_history,
         "project_filter": final_state.project_filter,
@@ -322,7 +272,8 @@ def run_agentic_rag(
         "last_semantic": current_semantic
     }
 
-    log_query.info("   ✅ Session memory updated successfully")
+    log_query.info("   ✅ Session memory updated (backward compatibility)")
+    log_query.info("   ✅ Conversation history stored in state (persisted by checkpointer)")
     
     # Update focus state for intelligent query rewriting
     update_focus_state(

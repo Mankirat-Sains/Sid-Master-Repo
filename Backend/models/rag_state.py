@@ -1,9 +1,7 @@
 """
 RAG State Definition
 
-RAGState extends the DBRetrievalState used by the DBRetrieval subgraph with
-doc-generation and desktop orchestration metadata. It keeps backward
-compatibility for nodes that import RAGState directly.
+RAGState extends DBRetrievalState with doc-generation and desktop orchestration metadata.
 """
 from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Any
@@ -14,7 +12,7 @@ from .db_retrieval_state import DBRetrievalState
 @dataclass
 class RAGState(DBRetrievalState):
     """
-    Extended state that layers doc-generation metadata on top of DBRetrievalState.
+    Extended state layering doc-generation metadata on top of DBRetrievalState.
     """
     # Router selection (legacy, still used by doc classifier / desktop router)
     selected_routers: List[str] = field(default_factory=list)

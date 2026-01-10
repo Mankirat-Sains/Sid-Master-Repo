@@ -10,7 +10,7 @@ from config.logging_config import log_query
 from config.llm_instances import llm_synthesis
 from prompts.synthesis_prompts import ANSWER_PROMPT, CODE_ANSWER_PROMPT, COOP_ANSWER_PROMPT
 from models.memory import get_conversation_context
-from database.project_metadata import fetch_project_metadata
+from nodes.DBRetrieval.KGdb.project_metadata import fetch_project_metadata
 from utils.project_utils import date_from_project_id
 
 

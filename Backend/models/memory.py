@@ -133,7 +133,11 @@ def _extract_semantic_context_for_rewriter(session_data: dict) -> dict:
 # INTELLIGENT QUERY REWRITING
 # =============================================================================
 
-def intelligent_query_rewriter(user_query: str, session_id: str) -> Tuple[str, dict]:
+def intelligent_query_rewriter(
+    user_query: str, 
+    session_id: str,
+    conversation_history: Optional[List[Dict]] = None
+) -> Tuple[str, dict]:
     """
     Use LLM to intelligently rewrite queries and detect follow-ups.
     Handles pronoun resolution, follow-up detection, and context expansion.
@@ -141,6 +145,7 @@ def intelligent_query_rewriter(user_query: str, session_id: str) -> Tuple[str, d
     Args:
         user_query: The user's raw query
         session_id: Session identifier for context retrieval
+        conversation_history: Optional conversation history from state (preferred over SESSION_MEMORY)
     
     Returns:
         Tuple of (rewritten_query, filters_dict)
@@ -151,15 +156,49 @@ def intelligent_query_rewriter(user_query: str, session_id: str) -> Tuple[str, d
         log_query.info(f"🎯 EXPLICIT IDs DETECTED: {explicit_ids}")
         return user_query, {"project_keys": explicit_ids}
     
-    # Get focus state
-    focus_state = FOCUS_STATES.get(session_id, {
-        "recent_projects": [],
-        "last_answer_projects": [],
-        "last_results_projects": [],
-        "last_query_text": ""
-    })
+    # Use conversation_history from state if provided (preferred), otherwise fall back to SESSION_MEMORY
+    if conversation_history is None:
+        session_data = SESSION_MEMORY.get(session_id, {})
+        conversation_history = session_data.get("conversation_history", [])
+        log_query.info(f"💭 Using conversation_history from SESSION_MEMORY ({len(conversation_history)} exchanges)")
+    else:
+        log_query.info(f"💭 Using conversation_history from state ({len(conversation_history)} exchanges)")
     
-    # SEMANTIC INTELLIGENCE: Get semantic context from session memory
+    # Extract projects from conversation history for focus state
+    recent_projects = []
+    last_answer_projects = []
+    last_query_text = ""
+    
+    if conversation_history:
+        # Get projects from all recent exchanges
+        for exchange in conversation_history[-5:]:  # Last 5 exchanges
+            projects = exchange.get("projects", [])
+            recent_projects.extend(projects)
+        
+        # Get projects from the most recent answer
+        if conversation_history:
+            last_exchange = conversation_history[-1]
+            last_answer_projects = last_exchange.get("projects", [])
+            last_query_text = last_exchange.get("question", "")
+    
+    # Deduplicate recent_projects (keep order, most recent first)
+    seen = set()
+    deduped_recent = []
+    for proj in reversed(recent_projects):
+        if proj not in seen:
+            seen.add(proj)
+            deduped_recent.insert(0, proj)
+    recent_projects = deduped_recent[:10]  # Keep max 10
+    
+    # Build focus state from conversation_history
+    focus_state = {
+        "recent_projects": recent_projects,
+        "last_answer_projects": last_answer_projects,
+        "last_results_projects": last_answer_projects,  # Use same as last_answer_projects
+        "last_query_text": last_query_text
+    }
+    
+    # SEMANTIC INTELLIGENCE: Get semantic context from session memory (still needed for semantic patterns)
     session_data = SESSION_MEMORY.get(session_id, {})
     semantic_context = _extract_semantic_context_for_rewriter(session_data)
     
@@ -178,11 +217,26 @@ def intelligent_query_rewriter(user_query: str, session_id: str) -> Tuple[str, d
     
     log_query.info(f"🎯 FOCUS CONTEXT FOR REWRITER: {focus_context}")
     
+    # Format conversation history for the prompt
+    conversation_context_str = ""
+    if conversation_history:
+        conversation_context_str = "\n\nRECENT CONVERSATION HISTORY:\n"
+        for i, exchange in enumerate(conversation_history[-3:], 1):  # Last 3 exchanges
+            q = exchange.get("question", "")
+            a = exchange.get("answer", "")[:200]  # Truncate answer
+            projects = exchange.get("projects", [])
+            conversation_context_str += f"\nExchange {i}:\n"
+            conversation_context_str += f"  Q: {q}\n"
+            conversation_context_str += f"  A: {a}...\n"
+            if projects:
+                conversation_context_str += f"  Projects mentioned: {', '.join(projects)}\n"
+    
     prompt = f"""You are a classifier for an engineering-drawings RAG system. Your job is to determine if a query is a follow-up to previous conversation.
 
 CURRENT QUERY: "{user_query}"
+{conversation_context_str}
 
-CONVERSATION CONTEXT:
+FOCUS CONTEXT (extracted from conversation):
 {json.dumps(focus_context, indent=2)}
 
 SEMANTIC INTELLIGENCE:
@@ -324,20 +378,27 @@ OUTPUT STRICT JSON (no markdown, no code fences):
 # CONVERSATION CONTEXT FORMATTING
 # =============================================================================
 
-def get_conversation_context(session_id: str, max_exchanges: int = 3) -> str:
+def get_conversation_context(session_id: str, max_exchanges: int = 3, conversation_history: Optional[List[Dict]] = None) -> str:
     """
     Format recent conversation history for inclusion in prompts.
     Returns a formatted string with the last N question-answer pairs, prioritizing most recent.
     
     Args:
-        session_id: Session identifier
+        session_id: Session identifier (for backward compatibility)
         max_exchanges: Maximum number of exchanges to include (default: 3)
+        conversation_history: Optional conversation history from state (preferred over SESSION_MEMORY)
     
     Returns:
         Formatted conversation history string
     """
-    session = SESSION_MEMORY.get(session_id, {})
-    history = session.get("conversation_history", [])
+    # Use state conversation_history if provided (from checkpointer), otherwise fall back to SESSION_MEMORY
+    if conversation_history is not None:
+        history = conversation_history
+        log_query.info(f"💭 Using conversation_history from state ({len(history)} exchanges)")
+    else:
+        session = SESSION_MEMORY.get(session_id, {})
+        history = session.get("conversation_history", [])
+        log_query.info(f"💭 Using conversation_history from SESSION_MEMORY ({len(history)} exchanges)")
 
     if not history:
         log_query.info("💭 CONVERSATION CONTEXT: No prior history found")

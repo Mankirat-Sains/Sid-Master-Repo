@@ -7,7 +7,7 @@ Note: Requires Python 3.11+ for proper async streaming support with LangGraph
 from concurrent.futures import ThreadPoolExecutor
 from langchain_core.documents import Document
 from models.rag_state import RAGState
-from config.settings import MAX_SYNTHESIS_DOCS
+from config.settings import MAX_SYNTHESIS_DOCS, MAX_CONVERSATION_HISTORY
 from config.logging_config import log_query, log_syn
 from utils.plan_executor import (
     requested_project_count, pick_top_n_projects, rerank_by_dimension_similarity
@@ -15,6 +15,7 @@ from utils.plan_executor import (
 from synthesis.synthesizer import synthesize
 from langgraph.config import get_stream_writer
 import re
+import time
 
 
 def extract_text_from_content(content) -> str:

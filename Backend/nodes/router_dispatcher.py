@@ -6,7 +6,7 @@ Runs selected routers in parallel
 import time
 from concurrent.futures import ThreadPoolExecutor
 from models.rag_state import RAGState
-from nodes.DBRetrieval.rag import node_rag
+from nodes.DBRetrieval.SQLdb.rag import node_rag
 from nodes.WebCalcs.web_router import node_web_router
 from nodes.DesktopAgent.desktop_router import node_desktop_router
 from config.logging_config import log_route

@@ -5,7 +5,6 @@ Initializes and manages connections to Supabase vector stores
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
 from supabase import create_client, Client
-from langgraph.checkpoint.memory import MemorySaver
 from config.settings import (
     SUPABASE_URL, SUPABASE_KEY, SUPA_SMART_TABLE,
     SUPA_LARGE_TABLE, SUPA_CODE_TABLE, SUPA_COOP_TABLE,
@@ -13,15 +12,15 @@ from config.settings import (
 )
 from config.llm_instances import emb
 
+# Import persistent checkpointer (replaces in-memory MemorySaver)
+from .checkpointer import checkpointer as memory
+
 # Global vector store instances
 vs_smart = None
 vs_large = None
 vs_code = None
 vs_coop = None
 vs_drawings = None  # legacy placeholder
-
-# Memory (LangGraph built-in in-memory checkpoint)
-memory = MemorySaver()
 
 
 def initialize_vector_stores():
