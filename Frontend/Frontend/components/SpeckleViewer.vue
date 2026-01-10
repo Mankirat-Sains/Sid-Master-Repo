@@ -605,6 +605,12 @@ async function loadModel(url: string) {
       }
       
       console.log('✅ All objects loaded successfully')
+      // Fallback: clear loading UI even if the viewer event fails to fire
+      loading.value = false
+      loadingProgress.value = 100
+      loadingMessage.value = 'Model loaded'
+      setupResizeObserver()
+      emit('loaded', url)
       
       // Like the Electron app: just ensure resize, let the viewer handle rendering
       // Don't do extra zoom or render operations - loadObject already handled it
