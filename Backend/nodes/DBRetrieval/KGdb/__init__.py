@@ -1,4 +1,4 @@
-"""Database operations for RAG system"""
+"""KGdb operations for RAG system (Supabase + Knowledge Graph)"""
 from .supabase_client import (
     vs_smart, vs_large, vs_code, vs_coop,
     memory, initialize_vector_stores

@@ -12,7 +12,7 @@ from config.settings import (
 )
 from config.llm_instances import emb
 from config.logging_config import log_query
-from database.supabase_client import vs_smart, vs_large, vs_code, vs_coop
+from .supabase_client import vs_smart, vs_large, vs_code, vs_coop
 
 # This is a large file - functions extracted from rag.py
 # See the original file for full implementation details

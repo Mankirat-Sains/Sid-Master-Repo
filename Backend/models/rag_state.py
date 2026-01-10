@@ -15,8 +15,13 @@ class RAGState:
     """
     # Session & Query
     session_id: str = ""
-    user_query: str = ""
+    user_query: str = ""  # Rewritten/enhanced query (used for retrieval)
+    original_question: Optional[str] = None  # Original user question (for conversation history)
     user_role: Optional[str] = None  # User role for role-based database preferences (e.g., "structural_engineer", "trainer")
+    
+    # Conversation History (persisted by checkpointer)
+    conversation_history: List[Dict] = field(default_factory=list)
+    # Each entry: {"question": str, "answer": str, "projects": List[str], "timestamp": float}
     
     # Planning / Routing
     query_plan: Optional[Dict] = None

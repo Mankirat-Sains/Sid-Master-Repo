@@ -4,27 +4,27 @@ Constructs the RAG workflow graph
 """
 from langgraph.graph import StateGraph, END
 from models.rag_state import RAGState
-from database import memory
+from nodes.DBRetrieval.KGdb import memory
 
 from nodes.plan import node_plan
 
 # RAG node - wrapper that runs rag_plan and rag_router in parallel
-from nodes.DBRetrieval.rag import node_rag
+from nodes.DBRetrieval.SQLdb.rag import node_rag
 
 # Optional: sub-nodes used internally by node_rag (imports harmless if unused here)
-from nodes.DBRetrieval.rag_plan import node_rag_plan  # noqa: F401
-from nodes.DBRetrieval.rag_router import node_rag_router  # noqa: F401
+from nodes.DBRetrieval.SQLdb.rag_plan import node_rag_plan  # noqa: F401
+from nodes.DBRetrieval.SQLdb.rag_router import node_rag_router  # noqa: F401
 
 from nodes.WebCalcs.web_router import node_web_router
 from nodes.DesktopAgent.desktop_router import node_desktop_router
 from nodes.router_dispatcher import node_router_dispatcher
 
-from nodes.DBRetrieval.retrieve import node_retrieve
-from nodes.DBRetrieval.grade import node_grade
-from nodes.DBRetrieval.answer import node_answer
-from nodes.DBRetrieval.verify import node_verify, _verify_route
-from nodes.DBRetrieval.correct import node_correct
-from nodes.DBRetrieval.image_nodes import node_generate_image_description, node_image_similarity_search
+from nodes.DBRetrieval.SQLdb.retrieve import node_retrieve
+from nodes.DBRetrieval.SQLdb.grade import node_grade
+from nodes.DBRetrieval.SQLdb.answer import node_answer
+from nodes.DBRetrieval.SQLdb.verify import node_verify, _verify_route
+from nodes.DBRetrieval.SQLdb.correct import node_correct
+from nodes.DBRetrieval.SQLdb.image_nodes import node_generate_image_description, node_image_similarity_search
 
 # Alias for backward compatibility with graph node names
 node_generate_image_embeddings = node_generate_image_description

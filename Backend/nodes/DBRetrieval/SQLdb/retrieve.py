@@ -9,8 +9,8 @@ from config.settings import (
     MAX_CODE_RETRIEVAL_DOCS
 )
 from config.logging_config import log_query
-from database.supabase_client import vs_smart, vs_large, vs_code, vs_coop
-from database.retrievers import (
+from nodes.DBRetrieval.KGdb.supabase_client import vs_smart, vs_large, vs_code, vs_coop
+from nodes.DBRetrieval.KGdb.retrievers import (
     make_hybrid_retriever, make_code_hybrid_retriever, make_coop_hybrid_retriever,
     mmr_rerank_code, mmr_rerank_coop
 )
