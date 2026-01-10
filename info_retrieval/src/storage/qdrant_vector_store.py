@@ -3,9 +3,9 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Dict, List, Optional
 
-from ..utils.logger import get_logger
-from .vector_db import VectorDB
-from .vector_store import Chunk, SearchResult, VectorStore
+from utils.logger import get_logger
+from storage.vector_db import VectorDB
+from storage.vector_store import Chunk, SearchResult, VectorStore
 
 logger = get_logger(__name__)
 

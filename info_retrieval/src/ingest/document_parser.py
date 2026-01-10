@@ -6,14 +6,16 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from ..utils.logger import get_logger
+from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 try:
     import docx  # type: ignore
+    from docx.opc.constants import RELATIONSHIP_TYPE  # type: ignore
 except ImportError:  # pragma: no cover - exercised when dependency is missing
     docx = None
+    RELATIONSHIP_TYPE = None
 
 try:
     import fitz  # PyMuPDF # type: ignore
@@ -26,6 +28,7 @@ class Section:
     title: str
     content: str
     level: int = 1
+    children: List["Section"] = field(default_factory=list)
 
 
 @dataclass
@@ -56,11 +59,17 @@ def parse_docx(file_path: str | Path, company_id: Optional[str] = None, source: 
         raise FileNotFoundError(f"File not found: {file_path}")
 
     logger.info("Parsing DOCX file %s", path)
-    document = docx.Document(path)  # type: ignore
+    try:
+        document = docx.Document(path)  # type: ignore
+    except Exception as exc:
+        logger.error("Failed to open DOCX %s: %s", path, exc)
+        raise
 
     text_parts: List[str] = []
     sections: List[Section] = []
     tables: List[TableData] = []
+
+    stack: List[Section] = []
 
     for para in document.paragraphs:
         paragraph_text = para.text.strip()
@@ -71,16 +80,33 @@ def parse_docx(file_path: str | Path, company_id: Optional[str] = None, source: 
         style_name = para.style.name if para.style else ""
         heading_level = _extract_heading_level(style_name)
         if heading_level is not None:
-            sections.append(Section(title=paragraph_text, content="", level=heading_level))
-        elif sections:
-            # Attach paragraph content to the last seen section.
-            sections[-1].content = _append_paragraph(sections[-1].content, paragraph_text)
+            new_section = Section(title=paragraph_text, content="", level=heading_level)
+            while stack and stack[-1].level >= heading_level:
+                stack.pop()
+            if stack:
+                stack[-1].children.append(new_section)
+            else:
+                sections.append(new_section)
+            stack.append(new_section)
+        elif stack:
+            stack[-1].content = _append_paragraph(stack[-1].content, paragraph_text)
+        else:
+            # No heading encountered yet; start a default section
+            default_section = Section(title="Introduction", content=paragraph_text, level=1)
+            sections.append(default_section)
+            stack.append(default_section)
 
     for table in document.tables:
         rows: List[List[str]] = []
         for row in table.rows:
             rows.append([cell.text.strip() for cell in row.cells])
         tables.append(TableData(rows=rows))
+
+    headers = _extract_header_footer(document, header=True)
+    footers = _extract_header_footer(document, header=False)
+    core_props = _extract_core_properties(document)
+    images = _extract_image_rels(document)
+    hyperlinks = _extract_hyperlinks(document)
 
     full_text = "\n".join(text_parts)
     artifact_id = generate_artifact_id(path, company_id) if company_id else None
@@ -90,6 +116,11 @@ def parse_docx(file_path: str | Path, company_id: Optional[str] = None, source: 
         "company_id": company_id,
         "source": source,
         "page_count": None,
+        "headers": headers,
+        "footers": footers,
+        "core_properties": core_props,
+        "image_count": images,
+        "hyperlinks": hyperlinks,
     }
     return ParsedDocument(
         text=full_text,
@@ -232,6 +263,58 @@ def _extract_heading_level(style_name: str) -> int | None:
     if match:
         return int(match.group(1))
     return None
+
+
+def _extract_header_footer(document: Any, header: bool = True) -> List[str]:
+    texts: List[str] = []
+    try:
+        for sect in document.sections:  # type: ignore
+            hf = sect.header if header else sect.footer
+            for para in hf.paragraphs:
+                if para.text.strip():
+                    texts.append(para.text.strip())
+    except Exception:
+        return []
+    return texts
+
+
+def _extract_core_properties(document: Any) -> Dict[str, Any]:
+    props: Dict[str, Any] = {}
+    try:
+        cp = document.core_properties  # type: ignore
+        props = {
+            "author": cp.author,
+            "created": getattr(cp, "created", None),
+            "modified": getattr(cp, "modified", None),
+            "title": cp.title,
+            "subject": cp.subject,
+            "comments": cp.comments,
+        }
+    except Exception:
+        return {}
+    return props
+
+
+def _extract_image_rels(document: Any) -> int:
+    try:
+        rels = document.part.related_parts.values()  # type: ignore
+        return sum(1 for rel in rels if getattr(rel, "content_type", "").startswith("image/"))
+    except Exception:
+        return 0
+
+
+def _extract_hyperlinks(document: Any) -> List[str]:
+    links: List[str] = []
+    if RELATIONSHIP_TYPE is None:
+        return links
+    try:
+        rels = document.part.rels  # type: ignore
+        for rel in rels.values():
+            if rel.reltype == RELATIONSHIP_TYPE.HYPERLINK:
+                links.append(rel.target_ref)
+    except Exception:
+        return []
+    return links
 
 
 def _infer_level_from_heading(heading: str) -> int:
