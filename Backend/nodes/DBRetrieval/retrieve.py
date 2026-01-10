@@ -16,6 +16,8 @@ from database.retrievers import (
 )
 from config.llm_instances import emb
 from utils.plan_executor import execute_plan
+from database.project_resolver import resolve_project, extract_project_keys
+from langchain_core.documents import Document
 
 
 def _log_docs_summary(docs, logger, prefix: str = "Documents"):
@@ -78,6 +80,38 @@ def node_retrieve(state: RAGState) -> dict:
                 _log_retrieved_chunks_detailed(code_docs, log_query)
             if coop_docs:
                 _log_retrieved_chunks_detailed(coop_docs, log_query)
+
+            # Always try to resolve project existence so we can acknowledge even when docs are unrelated/empty
+            candidates = extract_project_keys(state.user_query)
+            for candidate in candidates:
+                meta = resolve_project(candidate)
+                if meta:
+                    # If no docs, inject stub; if docs exist, prepend stub so downstream can mention existence.
+                    log_query.info(f"✅ Project resolved from metadata/mapping (plan path): {meta}")
+                    stub = Document(
+                        page_content=f"Project exists: {meta.get('project_key') or meta.get('project_name')}",
+                        metadata=meta,
+                    )
+                    if not docs:
+                        result["retrieved_docs"] = [stub]
+                    else:
+                        result["retrieved_docs"] = [stub] + docs
+                    result["project_resolved"] = True
+                    docs = result["retrieved_docs"]
+                    break
+
+            # If plan returned nothing at all, try project resolver before giving up
+            if not docs and not code_docs and not coop_docs:
+                candidates = extract_project_keys(state.user_query)
+                for candidate in candidates:
+                    meta = resolve_project(candidate)
+                    if meta:
+                        log_query.info(f"✅ Project resolved from metadata/mapping (plan path): {meta}")
+                        stub = Document(
+                            page_content=f"Project exists: {meta.get('project_key') or meta.get('project_name')}",
+                            metadata=meta,
+                        )
+                        return {"retrieved_docs": [stub], "project_resolved": True}
 
             data_sources = state.data_sources or {"project_db": True, "code_db": False}
             project_db_enabled = data_sources.get("project_db", True)
@@ -169,6 +203,18 @@ def node_retrieve(state: RAGState) -> dict:
         
         if not retrieved and not code_docs and not coop_docs:
             log_query.warning("⚠️  No documents retrieved from any enabled database")
+            # Try to resolve project existence so we can give a better answer
+            candidates = extract_project_keys(state.user_query)
+            for candidate in candidates:
+                meta = resolve_project(candidate)
+                if meta:
+                    log_query.info(f"✅ Project resolved from metadata/mapping: {meta}")
+                    # Create a minimal stub doc to signal existence
+                    stub = Document(
+                        page_content=f"Project exists: {meta.get('project_key') or meta.get('project_name')}",
+                        metadata=meta,
+                    )
+                    return {"retrieved_docs": [stub], "project_resolved": True}
             return {"retrieved_docs": [], "retrieved_code_docs": [], "retrieved_coop_docs": []}
         
         log_query.info(f"📊 TOTAL RETRIEVED: {len(project_docs)} project docs, {len(code_docs)} code docs, {len(coop_docs)} coop docs")
@@ -178,6 +224,21 @@ def node_retrieve(state: RAGState) -> dict:
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< RETRIEVE DONE in {t_elapsed:.2f}s")
         
+        # Ensure we acknowledge project existence even when docs exist but might not match query exactly
+        candidates = extract_project_keys(state.user_query)
+        for candidate in candidates:
+            meta = resolve_project(candidate)
+            if meta:
+                stub = Document(
+                    page_content=f"Project exists: {meta.get('project_key') or meta.get('project_name')}",
+                    metadata=meta,
+                )
+                if retrieved:
+                    retrieved = [stub] + retrieved
+                else:
+                    retrieved = [stub]
+                break
+
         result = {"retrieved_docs": retrieved}
         if code_docs and project_db_enabled:
             result["retrieved_code_docs"] = code_docs
@@ -193,4 +254,3 @@ def node_retrieve(state: RAGState) -> dict:
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< RETRIEVE DONE (with error) in {t_elapsed:.2f}s")
         return {"retrieved_docs": []}
-
