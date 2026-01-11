@@ -65,8 +65,8 @@ def run_agentic_rag(
     
     log_query.info(f"=== SESSION MEMORY (session_id={session_id}) ===")
     if prior:
-        conv_history = prior.get('conversation_history', [])
-        log_query.info(f"  conversation_history: {len(conv_history)} exchanges")
+        messages = prior.get('messages', [])
+        log_query.info(f"  messages: {len(messages)} messages ({len(messages) // 2} exchanges)")
         log_query.info(f"  last_query: {prior.get('last_query')}")
         log_query.info(f"  project_filter: {prior.get('project_filter')}")
         log_query.info(f"  selected_projects: {prior.get('selected_projects')}")
@@ -101,7 +101,7 @@ def run_agentic_rag(
             log_vlm.info("🔷" * 30)
             log_vlm.info("")
 
-    # Load previous state from checkpointer (if exists) to get conversation history
+    # Load previous state from checkpointer (if exists) to get messages
     # This allows us to maintain conversation context across invocations
     previous_state = None
     try:
@@ -110,25 +110,25 @@ def run_agentic_rag(
         if state_snapshot and state_snapshot.values:
             previous_state = state_snapshot.values
             log_query.info(f"📖 Loaded previous state from checkpointer for thread_id={session_id}")
-            if previous_state.get("conversation_history"):
-                log_query.info(f"📖 Found {len(previous_state['conversation_history'])} previous exchanges")
+            if previous_state.get("messages"):
+                log_query.info(f"📖 Found {len(previous_state['messages'])} previous messages")
     except Exception as e:
         # No previous state exists (first invocation) - this is fine
         log_query.info(f"📖 No previous state found (first invocation): {e}")
         previous_state = None
     
-    # Get conversation history from previous state for query rewriting
-    conversation_history_for_rewriter = previous_state.get("conversation_history", []) if previous_state else []
+    # Get messages from previous state for query rewriting
+    previous_messages = previous_state.get("messages", []) if previous_state else []
 
     # Combine question with image context for enhanced search
     enhanced_question = question + image_context if image_context else question
 
-    # Intelligent query rewriting - NOW WITH CONVERSATION HISTORY
+    # Intelligent query rewriting - NOW WITH MESSAGES
     log_query.info(f"🎯 QUERY REWRITING INPUT: '{enhanced_question[:500]}...' (truncated)" if len(enhanced_question) > 500 else f"🎯 QUERY REWRITING INPUT: '{enhanced_question}'")
     rewritten_query, query_filters = intelligent_query_rewriter(
         enhanced_question, 
         session_id,
-        conversation_history=conversation_history_for_rewriter
+        messages=previous_messages
     )
     log_query.info(f"🎯 QUERY REWRITING OUTPUT: '{rewritten_query}'")
     log_query.info(f"🎯 QUERY FILTERS: {query_filters}")
@@ -142,12 +142,17 @@ def run_agentic_rag(
     base_query = rewritten_query
     log_query.info(f"🎯 FINAL QUERY FOR RAG: '{base_query}'")
 
+    # Initialize messages from previous state if available and add current user message
+    init_messages = list(previous_messages) if previous_messages else []
+    init_messages.append({"role": "user", "content": question})
+
     init = ParentState(
         session_id=session_id,
         user_query=base_query,
         original_question=question,
         project_filter=project_filter,
         images_base64=images_base64 if images_base64 else None,
+        messages=init_messages,
     )
 
     final = graph.invoke(asdict(init), config={"configurable": {"thread_id": session_id}})
@@ -193,6 +198,45 @@ def run_agentic_rag(
             log_query.info(f"DOCGEN CSV append ok at {csv_path}")
         except Exception as exc:
             log_query.error(f"DOCGEN CSV append failed: {exc}")
+=======
+        final_state = RAGState(
+            session_id=final.get("session_id", session_id),
+            user_query=final.get("user_query", base_query),
+            original_question=final.get("original_question", question),  # Preserve original question
+            query_plan=final.get("query_plan"),
+            data_route=final.get("data_route"),
+            project_filter=final.get("project_filter"),
+            expanded_queries=final.get("expanded_queries", []),
+            retrieved_docs=final.get("retrieved_docs", []),
+            graded_docs=final.get("graded_docs", []),
+            db_result=final.get("db_result"),
+            final_answer=final.get("final_answer"),
+            answer_citations=final.get("answer_citations", []),
+            code_answer=final.get("code_answer"),
+            code_citations=final.get("code_citations", []),
+            coop_answer=final.get("coop_answer"),
+            coop_citations=final.get("coop_citations", []),
+            answer_support_score=final.get("answer_support_score", 0.0),
+            corrective_attempted=final.get("corrective_attempted", False),
+            needs_fix=final.get("needs_fix", False),
+            selected_projects=final.get("selected_projects", []),
+            needs_clarification=final.get("needs_clarification", False),
+            clarification_question=final.get("clarification_question"),
+            images_base64=final.get("images_base64"),
+            image_embeddings=final.get("image_embeddings"),
+            image_similarity_results=final.get("image_similarity_results", []),
+            use_image_similarity=final.get("use_image_similarity", False),
+            query_intent=final.get("query_intent"),
+            follow_up_questions=final.get("follow_up_questions", []),
+            follow_up_suggestions=final.get("follow_up_suggestions", []),
+            messages=final.get("messages", init.messages if hasattr(init, 'messages') else [])
+        )
+    else:
+        final_state = final
+        # Ensure messages is set
+        if not hasattr(final_state, 'messages') or not final_state.messages:
+            final_state.messages = init.messages if hasattr(init, 'messages') else []
+>>>>>>> 893f3d7 (2025-01-011 Supabase Connect)
 
     # Extract projects from answer text
     answer_text = final_state.final_answer or ""
@@ -215,19 +259,19 @@ def run_agentic_rag(
 
     log_query.info(f"📋 Result items for entity resolution: {[r['project'] for r in result_items]}")
 
-    # NOTE: Conversation history is updated by the 'correct' node (which runs last in the graph)
-    # The correct node already adds the exchange to conversation_history and persists it via checkpointer
+    # NOTE: Messages are updated by the 'correct' node (which runs last in the graph)
+    # The correct node already adds the new messages and persists them via checkpointer
     # We don't need to update it here again - that would cause duplication!
-    # The conversation_history in final_state is already updated by correct.py
+    # The messages in final_state are already updated by correct.py
     
-    conversation_history = list(final_state.conversation_history or [])
-    log_query.info(f"💾 Conversation history from correct node: {len(conversation_history)} exchanges")
+    messages = list(final_state.messages or [])
+    log_query.info(f"💾 Messages from correct node: {len(messages)} messages")
     
-    # Verify the conversation_history was updated correctly by correct node
-    if conversation_history:
-        last_exchange = conversation_history[-1]
-        log_query.info(f"   Last exchange Q: {last_exchange.get('question', '')[:100]}...")
-        log_query.info(f"   Last exchange projects: {last_exchange.get('projects', [])}")
+    # Verify the messages were updated correctly by correct node
+    if messages:
+        last_message = messages[-1]
+        log_query.info(f"   Last message role: {last_message.get('role', '')}")
+        log_query.info(f"   Last message content: {last_message.get('content', '')[:100]}...")
 
     # SEMANTIC INTELLIGENCE: Gather semantic data from graph execution
     current_semantic = {}
@@ -258,11 +302,11 @@ def run_agentic_rag(
     
     log_query.info(f"   🧠 Semantic history size: {len(semantic_history)} records")
 
-    # NOTE: Conversation history is now stored in state (persisted by checkpointer)
+    # NOTE: Messages are now stored in state (persisted by checkpointer)
     # We keep SESSION_MEMORY for backward compatibility with existing code that reads from it
-    # TODO: Migrate all code to use state.conversation_history instead of SESSION_MEMORY
+    # TODO: Migrate all code to use state.messages instead of SESSION_MEMORY
     SESSION_MEMORY[session_id] = {
-        "conversation_history": conversation_history,
+        "messages": messages,  # Store messages in SESSION_MEMORY for backward compatibility
         "project_filter": final_state.project_filter,
         "last_query": question,
         "last_answer": final_state.final_answer,
@@ -273,7 +317,7 @@ def run_agentic_rag(
     }
 
     log_query.info("   ✅ Session memory updated (backward compatibility)")
-    log_query.info("   ✅ Conversation history stored in state (persisted by checkpointer)")
+    log_query.info("   ✅ Messages stored in state (persisted by checkpointer)")
     
     # Update focus state for intelligent query rewriting
     update_focus_state(
@@ -290,8 +334,15 @@ def run_agentic_rag(
     # Log final memory state summary
     log_query.info("📊 FINAL MEMORY STATE:")
     log_query.info(f"   Session ID: {session_id}")
-    log_query.info(f"   Total exchanges stored: {len(conversation_history)}")
-    log_query.info(f"   Total unique projects in memory: {len(set(p for ex in conversation_history for p in ex.get('projects', [])))}")
+    log_query.info(f"   Total messages stored: {len(messages)} ({len(messages) // 2} exchanges)")
+    # Extract projects from messages for logging
+    all_projects = set()
+    for msg in messages:
+        if msg.get("role") == "assistant":
+            content = msg.get("content", "")
+            for match in PROJECT_RE.finditer(content):
+                all_projects.add(match.group(0))
+    log_query.info(f"   Total unique projects in memory: {len(all_projects)}")
     log_query.info(f"   Current project filter: {final_state.project_filter or 'None'}")
 
     latency = round(time.time() - t0, 2)
