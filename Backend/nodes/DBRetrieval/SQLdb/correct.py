@@ -52,9 +52,11 @@ def node_correct(state: RAGState, max_hops: int = 1, min_score: float = 0.6) -> 
         "corrective_attempted": True
     })
     
-    # Update conversation history (persisted by checkpointer)
+    # Update messages (persisted by checkpointer) - Follows LangGraph's simple pattern
     # This node runs last, so we have access to final_answer, code_answer, coop_answer
-    conversation_history = list(state.conversation_history or [])
+    # CRITICAL: The user message is already in state.messages (added in main.py before graph.invoke)
+    # We only need to add the assistant message here
+    messages = list(state.messages or [])
     
     # Build full answer text
     answer_text = state.final_answer or ""
@@ -63,34 +65,36 @@ def node_correct(state: RAGState, max_hops: int = 1, min_score: float = 0.6) -> 
     if state.coop_answer:
         answer_text = f"{answer_text}\n\n--- Training Manual References ---\n\n{state.coop_answer}"
     
-    # Extract projects from answer text
-    projects_in_answer = []
-    seen = set()
-    for match in PROJECT_RE.finditer(answer_text):
-        proj_id = match.group(0)
-        if proj_id not in seen:
-            projects_in_answer.append(proj_id)
-            seen.add(proj_id)
-    
-    # Add new exchange to conversation history
-    # Use original_question if available (user's actual question), otherwise fall back to user_query (rewritten)
-    question_to_store = getattr(state, 'original_question', None) or state.user_query
-    if question_to_store and answer_text:
-        new_exchange = {
-            "question": question_to_store,
-            "answer": answer_text,
-            "timestamp": time.time(),
-            "projects": projects_in_answer
-        }
-        conversation_history.append(new_exchange)
+    # Add assistant message (user message is already in state from main.py)
+    if answer_text:
+        # Check if the last message is already an assistant message (shouldn't happen, but safety check)
+        if messages and messages[-1].get("role") == "assistant":
+            # Replace the last assistant message (in case this is a retry)
+            messages[-1] = {
+                "role": "assistant",
+                "content": answer_text
+            }
+            log_enh.info("💾 Replaced existing assistant message")
+        else:
+            # Add new assistant message
+            messages.append({
+                "role": "assistant",
+                "content": answer_text
+            })
+            log_enh.info("💾 Added new assistant message")
         
-        # Maintain sliding window
-        if len(conversation_history) > MAX_CONVERSATION_HISTORY:
-            conversation_history = conversation_history[-MAX_CONVERSATION_HISTORY:]
-            log_enh.info(f"💾 Conversation history sliding window: kept last {MAX_CONVERSATION_HISTORY} exchanges")
+        # Maintain sliding window (keep last MAX_CONVERSATION_HISTORY * 2 messages since each exchange is 2 messages)
+        max_messages = MAX_CONVERSATION_HISTORY * 2
+        if len(messages) > max_messages:
+            messages = messages[-max_messages:]
+            log_enh.info(f"💾 Messages sliding window: kept last {max_messages} messages ({MAX_CONVERSATION_HISTORY} exchanges)")
         
-        result["conversation_history"] = conversation_history
-        log_enh.info(f"💾 Updated conversation_history: {len(conversation_history)} exchanges")
+        result["messages"] = messages
+        log_enh.info(f"💾 Updated messages: {len(messages)} messages ({len(messages) // 2} exchanges)")
+    else:
+        # No answer yet, just preserve existing messages
+        result["messages"] = messages
+        log_enh.info(f"💾 No answer yet, preserving {len(messages)} messages")
 
     t_elapsed = time.time() - t_start
     log_enh.info(f"<<< CORRECT DONE in {t_elapsed:.2f}s")
