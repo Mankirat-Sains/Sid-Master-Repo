@@ -23,7 +23,10 @@ class SectionProfileLoader:
         self, company_id: str, doc_type: Optional[str], section_type: Optional[str]
     ) -> Dict[str, int | None]:
         min_default, max_default = DEFAULTS.get(section_type or "general", DEFAULTS["general"])
-        profile = self.metadata_db.get_section_profile(company_id, doc_type, section_type) if section_type else None
+        try:
+            profile = self.metadata_db.get_section_profile(company_id, doc_type, section_type) if section_type else None
+        except Exception:
+            profile = None
         if not profile or not profile.get("avg_chars"):
             return {
                 "min_chars": min_default,

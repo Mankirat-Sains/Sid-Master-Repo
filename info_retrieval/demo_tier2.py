@@ -9,14 +9,14 @@ import os
 import sys
 
 from dotenv import load_dotenv
-from supabase import create_client
-from openai import OpenAI
 
 from embeddings.embedding_service import EmbeddingService
 from retrieval.retriever import Retriever
+from storage.qdrant_vector_store import QdrantVectorStore
 from storage.supabase_vector_store import SupabaseVectorStore
-from tier2.drafter import DocumentDrafter
-from tier2.template_store import TemplateStore
+from storage.vector_db import VectorDB
+from storage.metadata_db import MetadataDB
+from tier2.generator import Tier2Generator
 from utils.config import load_config
 from utils.logger import get_logger
 
@@ -28,38 +28,31 @@ def main() -> None:
     user_request = (
         sys.argv[1]
         if len(sys.argv) > 1
-        else "Draft methodology section for structural beam design per ACI 318-19"
+        else "Draft methodology section for structural design report"
     )
 
-    supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_ANON_KEY")
-    if not supabase_url or not supabase_key:
-        raise ValueError("SUPABASE_URL and SUPABASE_KEY/ANON_KEY are required.")
-
-    openai_key = os.getenv("OPENAI_API_KEY")
-    if not openai_key:
-        raise ValueError("OPENAI_API_KEY is required for generation.")
-
+    config = load_config()
     company_id = os.getenv("DEMO_COMPANY_ID", "demo_company")
 
-    # Initialize dependencies
-    config = load_config()
     embedding_service = EmbeddingService(config)
-    vector_store = SupabaseVectorStore()
-    retriever = Retriever(embedding_service, vector_store)
-    supabase_client = create_client(supabase_url, supabase_key)
-    template_store = TemplateStore(supabase_client)
-    llm_client = OpenAI(api_key=openai_key)
+    vector_store = None
+    try:
+        vector_store = SupabaseVectorStore()
+        logger.info("Using SupabaseVectorStore.")
+    except Exception as exc:
+        logger.warning("SupabaseVectorStore unavailable (%s); using in-memory Qdrant fallback.", exc)
+        vector_db = VectorDB(config, use_in_memory=True)
+        vector_store = QdrantVectorStore(vector_db, company_id=company_id)
 
-    drafter = DocumentDrafter(template_store, retriever, llm_client)
+    retriever = Retriever(embedding_service, vector_store)
+    metadata_db = MetadataDB(config.metadata_db_path)
+    generator = Tier2Generator(retriever=retriever, metadata_db=metadata_db)
 
     logger.info("Drafting section for request: %s", user_request)
-    result = drafter.draft_section(company_id=company_id, user_request=user_request)
+    result = generator.draft_section(company_id=company_id, user_request=user_request)
 
     print("\n=== Drafted Text ===\n")
     print(result["draft_text"])
-    print("\n=== Used Template ===")
-    print(result["used_template"])
     print("\n=== Citations ===")
     for cite in result["citations"]:
         print(cite)
