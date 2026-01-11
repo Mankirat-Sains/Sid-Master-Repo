@@ -89,6 +89,9 @@ coverage/
 # local secrets
 .env
 Backend/.env
+# Google service account credentials (cursor-connect JSON files)
+**/cursor-connect-*.json
+Backend/cursor-connect-*.json
 
 # python junk
 __pycache__/

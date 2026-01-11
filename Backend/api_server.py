@@ -985,10 +985,11 @@ async def chat_stream_handler(request: ChatRequest):
                             # Strip asterisks from project patterns
                             token_content = strip_asterisks_from_projects(token_content)
                             
-                            # Stream token to frontend (only answer node tokens)
+                            # Stream token to frontend immediately (no delay for real-time streaming)
                             logger.debug(f"💬 Streaming token: {len(token_content)} chars from {node_name}")
                             yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': 'answer', 'timestamp': time.time()})}\n\n"
-                            await asyncio.sleep(0.001)  # Minimal delay for proper streaming
+                            # REMOVED: await asyncio.sleep(0.001) - this was causing delays
+                            # Yield immediately for real-time token-by-token streaming
                     continue
                 
                     # Handle custom events (emitted directly from nodes)
@@ -1000,17 +1001,18 @@ async def chat_stream_handler(request: ChatRequest):
                             # Send thinking log to stream for Agent Thinking panel
                             logger.info(f"💭 {chunk.get('message', '')}")
                             yield f"data: {json.dumps({'type': 'thinking', 'message': chunk.get('message', ''), 'node': chunk.get('node', 'unknown'), 'timestamp': time.time()})}\n\n"
-                            await asyncio.sleep(0.001)
+                            # REMOVED: await asyncio.sleep(0.001) - unnecessary delay
                         elif chunk.get("type") == "token":
-                            # Forward token to frontend for real-time streaming
+                            # Forward token to frontend for real-time streaming (from stream writer)
                             token_content = chunk.get('content', '')
                             token_node = chunk.get('node', 'answer')
-                            # Strip asterisks from project patterns in token (helps with streaming)
-                            # Note: This won't catch split patterns, but will handle complete ones
+                            # Strip asterisks from project patterns in token
                             token_content = strip_asterisks_from_projects(token_content)
-                            logger.debug(f"💬 Streaming token from node '{token_node}': {len(token_content)} chars")
+                            
+                            # Stream immediately - no delay for real-time token-by-token
+                            logger.debug(f"💬 Streaming token from stream writer (node '{token_node}'): {len(token_content)} chars")
                             yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': token_node, 'timestamp': time.time()})}\n\n"
-                            await asyncio.sleep(0.001)  # Minimal delay for proper streaming
+                            # REMOVED: await asyncio.sleep(0.001) - unnecessary delay
                     continue
                 
                 # Handle state updates (updates mode)
@@ -1364,7 +1366,8 @@ async def chat_stream_handler(request: ChatRequest):
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
             "X-Accel-Buffering": "no",  # Disable nginx buffering
-            "Access-Control-Allow-Origin": "*"  # CORS for streaming
+            "Access-Control-Allow-Origin": "*",  # CORS for streaming
+            "X-Content-Type-Options": "nosniff",  # Prevent MIME sniffing
         }
     )
 
