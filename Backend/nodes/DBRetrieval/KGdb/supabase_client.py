@@ -12,8 +12,8 @@ from config.settings import (
 )
 from config.llm_instances import emb
 
-# Import persistent checkpointer (replaces in-memory MemorySaver)
-from .checkpointer import checkpointer as memory
+# Note: Checkpointer is now imported from checkpointer.py module
+# This import was moved to __init__.py to avoid circular dependencies
 
 # Global vector store instances
 vs_smart = None

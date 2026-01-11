@@ -16,12 +16,12 @@ class RAGState:
     # Session & Query
     session_id: str = ""
     user_query: str = ""  # Rewritten/enhanced query (used for retrieval)
-    original_question: Optional[str] = None  # Original user question (for conversation history)
+    original_question: Optional[str] = None  # Original user question (for storing in messages)
     user_role: Optional[str] = None  # User role for role-based database preferences (e.g., "structural_engineer", "trainer")
     
-    # Conversation History (persisted by checkpointer)
-    conversation_history: List[Dict] = field(default_factory=list)
-    # Each entry: {"question": str, "answer": str, "projects": List[str], "timestamp": float}
+    # Messages (persisted by checkpointer) - Follows LangGraph's pattern
+    # Simple format: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
+    messages: List[Dict[str, str]] = field(default_factory=list)
     
     # Planning / Routing
     query_plan: Optional[Dict] = None

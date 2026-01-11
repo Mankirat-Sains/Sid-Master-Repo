@@ -4,7 +4,7 @@ Constructs the RAG workflow graph
 """
 from langgraph.graph import StateGraph, END
 from models.rag_state import RAGState
-from nodes.DBRetrieval.KGdb import memory
+# Import checkpointer dynamically in build_graph() to get the latest initialized version
 
 from nodes.plan import node_plan
 
@@ -152,4 +152,7 @@ def build_graph():
 
     g.add_edge("correct", END)
 
-    return g.compile(checkpointer=memory)
+    # Import checkpointer here to get the latest initialized version
+    # (not at module level, since it may be initialized during FastAPI startup)
+    from graph.checkpointer import checkpointer
+    return g.compile(checkpointer=checkpointer)

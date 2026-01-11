@@ -62,8 +62,8 @@ def run_agentic_rag(
     
     log_query.info(f"=== SESSION MEMORY (session_id={session_id}) ===")
     if prior:
-        conv_history = prior.get('conversation_history', [])
-        log_query.info(f"  conversation_history: {len(conv_history)} exchanges")
+        messages = prior.get('messages', [])
+        log_query.info(f"  messages: {len(messages)} messages ({len(messages) // 2} exchanges)")
         log_query.info(f"  last_query: {prior.get('last_query')}")
         log_query.info(f"  project_filter: {prior.get('project_filter')}")
         log_query.info(f"  selected_projects: {prior.get('selected_projects')}")
@@ -98,7 +98,7 @@ def run_agentic_rag(
             log_vlm.info("🔷" * 30)
             log_vlm.info("")
 
-    # Load previous state from checkpointer (if exists) to get conversation history
+    # Load previous state from checkpointer (if exists) to get messages
     # This allows us to maintain conversation context across invocations
     previous_state = None
     try:
@@ -107,25 +107,25 @@ def run_agentic_rag(
         if state_snapshot and state_snapshot.values:
             previous_state = state_snapshot.values
             log_query.info(f"📖 Loaded previous state from checkpointer for thread_id={session_id}")
-            if previous_state.get("conversation_history"):
-                log_query.info(f"📖 Found {len(previous_state['conversation_history'])} previous exchanges")
+            if previous_state.get("messages"):
+                log_query.info(f"📖 Found {len(previous_state['messages'])} previous messages")
     except Exception as e:
         # No previous state exists (first invocation) - this is fine
         log_query.info(f"📖 No previous state found (first invocation): {e}")
         previous_state = None
     
-    # Get conversation history from previous state for query rewriting
-    conversation_history_for_rewriter = previous_state.get("conversation_history", []) if previous_state else []
+    # Get messages from previous state for query rewriting
+    previous_messages = previous_state.get("messages", []) if previous_state else []
 
     # Combine question with image context for enhanced search
     enhanced_question = question + image_context if image_context else question
 
-    # Intelligent query rewriting - NOW WITH CONVERSATION HISTORY
+    # Intelligent query rewriting - NOW WITH MESSAGES
     log_query.info(f"🎯 QUERY REWRITING INPUT: '{enhanced_question[:500]}...' (truncated)" if len(enhanced_question) > 500 else f"🎯 QUERY REWRITING INPUT: '{enhanced_question}'")
     rewritten_query, query_filters = intelligent_query_rewriter(
         enhanced_question, 
         session_id,
-        conversation_history=conversation_history_for_rewriter
+        messages=previous_messages
     )
     log_query.info(f"🎯 QUERY REWRITING OUTPUT: '{rewritten_query}'")
     log_query.info(f"🎯 QUERY FILTERS: {query_filters}")
@@ -147,13 +147,22 @@ def run_agentic_rag(
         # The router (in rag_router or route node) will set state.data_sources
         pass
     
-    # Initialize conversation_history from previous state if available
-    init_conversation_history = conversation_history_for_rewriter if conversation_history_for_rewriter else []
+    # Initialize messages from previous state if available
+    # CRITICAL: Add the NEW user message to the state BEFORE invoking the graph
+    # This ensures nodes like rag_plan can see the current user question in the conversation context
+    init_messages = list(previous_messages) if previous_messages else []
+    
+    # Add the current user message to the conversation history
+    # This is what LangGraph expects - the new message should be in state before processing
+    init_messages.append({
+        "role": "user",
+        "content": question  # Use original question, not rewritten query
+    })
     
     init = RAGState(
         session_id=session_id,
         user_query=base_query,  # Rewritten query for retrieval
-        original_question=question,  # Original question for conversation history
+        original_question=question,  # Original question (already added to messages above)
         query_plan=None, data_route=None,
         project_filter=project_filter,
         expanded_queries=[], retrieved_docs=[], graded_docs=[],
@@ -166,11 +175,10 @@ def run_agentic_rag(
         images_base64=images_base64 if images_base64 else None,
         use_image_similarity=False,  # Image embedding disabled - using VLM description only
         query_intent=None,
-        conversation_history=init_conversation_history  # Initialize with loaded history
+        messages=init_messages  # Includes previous messages + new user message
     )
     
-    if init_conversation_history:
-        log_query.info(f"📖 Initialized conversation_history with {len(init_conversation_history)} exchanges")
+    log_query.info(f"📖 Initialized messages: {len(previous_messages) if previous_messages else 0} previous + 1 new = {len(init_messages)} total")
     
     # Convert dataclass to dict - graph.invoke expects a dict, not a dataclass
     final = graph.invoke(asdict(init), config={"configurable": {"thread_id": session_id}})
@@ -207,13 +215,13 @@ def run_agentic_rag(
             query_intent=final.get("query_intent"),
             follow_up_questions=final.get("follow_up_questions", []),
             follow_up_suggestions=final.get("follow_up_suggestions", []),
-            conversation_history=final.get("conversation_history", init.conversation_history if hasattr(init, 'conversation_history') else [])
+            messages=final.get("messages", init.messages if hasattr(init, 'messages') else [])
         )
     else:
         final_state = final
-        # Ensure conversation_history is set
-        if not hasattr(final_state, 'conversation_history') or not final_state.conversation_history:
-            final_state.conversation_history = init.conversation_history if hasattr(init, 'conversation_history') else []
+        # Ensure messages is set
+        if not hasattr(final_state, 'messages') or not final_state.messages:
+            final_state.messages = init.messages if hasattr(init, 'messages') else []
 
     # Extract projects from answer text
     answer_text = final_state.final_answer or ""
@@ -236,19 +244,19 @@ def run_agentic_rag(
 
     log_query.info(f"📋 Result items for entity resolution: {[r['project'] for r in result_items]}")
 
-    # NOTE: Conversation history is updated by the 'correct' node (which runs last in the graph)
-    # The correct node already adds the exchange to conversation_history and persists it via checkpointer
+    # NOTE: Messages are updated by the 'correct' node (which runs last in the graph)
+    # The correct node already adds the new messages and persists them via checkpointer
     # We don't need to update it here again - that would cause duplication!
-    # The conversation_history in final_state is already updated by correct.py
+    # The messages in final_state are already updated by correct.py
     
-    conversation_history = list(final_state.conversation_history or [])
-    log_query.info(f"💾 Conversation history from correct node: {len(conversation_history)} exchanges")
+    messages = list(final_state.messages or [])
+    log_query.info(f"💾 Messages from correct node: {len(messages)} messages")
     
-    # Verify the conversation_history was updated correctly by correct node
-    if conversation_history:
-        last_exchange = conversation_history[-1]
-        log_query.info(f"   Last exchange Q: {last_exchange.get('question', '')[:100]}...")
-        log_query.info(f"   Last exchange projects: {last_exchange.get('projects', [])}")
+    # Verify the messages were updated correctly by correct node
+    if messages:
+        last_message = messages[-1]
+        log_query.info(f"   Last message role: {last_message.get('role', '')}")
+        log_query.info(f"   Last message content: {last_message.get('content', '')[:100]}...")
 
     # SEMANTIC INTELLIGENCE: Gather semantic data from graph execution
     current_semantic = {}
@@ -279,11 +287,11 @@ def run_agentic_rag(
     
     log_query.info(f"   🧠 Semantic history size: {len(semantic_history)} records")
 
-    # NOTE: Conversation history is now stored in state (persisted by checkpointer)
+    # NOTE: Messages are now stored in state (persisted by checkpointer)
     # We keep SESSION_MEMORY for backward compatibility with existing code that reads from it
-    # TODO: Migrate all code to use state.conversation_history instead of SESSION_MEMORY
+    # TODO: Migrate all code to use state.messages instead of SESSION_MEMORY
     SESSION_MEMORY[session_id] = {
-        "conversation_history": conversation_history,
+        "messages": messages,  # Store messages in SESSION_MEMORY for backward compatibility
         "project_filter": final_state.project_filter,
         "last_query": question,
         "last_answer": final_state.final_answer,
@@ -294,7 +302,7 @@ def run_agentic_rag(
     }
 
     log_query.info("   ✅ Session memory updated (backward compatibility)")
-    log_query.info("   ✅ Conversation history stored in state (persisted by checkpointer)")
+    log_query.info("   ✅ Messages stored in state (persisted by checkpointer)")
     
     # Update focus state for intelligent query rewriting
     update_focus_state(
@@ -311,8 +319,15 @@ def run_agentic_rag(
     # Log final memory state summary
     log_query.info("📊 FINAL MEMORY STATE:")
     log_query.info(f"   Session ID: {session_id}")
-    log_query.info(f"   Total exchanges stored: {len(conversation_history)}")
-    log_query.info(f"   Total unique projects in memory: {len(set(p for ex in conversation_history for p in ex.get('projects', [])))}")
+    log_query.info(f"   Total messages stored: {len(messages)} ({len(messages) // 2} exchanges)")
+    # Extract projects from messages for logging
+    all_projects = set()
+    for msg in messages:
+        if msg.get("role") == "assistant":
+            content = msg.get("content", "")
+            for match in PROJECT_RE.finditer(content):
+                all_projects.add(match.group(0))
+    log_query.info(f"   Total unique projects in memory: {len(all_projects)}")
     log_query.info(f"   Current project filter: {final_state.project_filter or 'None'}")
 
     latency = round(time.time() - t0, 2)
