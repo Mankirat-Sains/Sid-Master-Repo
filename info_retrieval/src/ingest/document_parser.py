@@ -207,7 +207,8 @@ def infer_sections_from_text(text: str) -> List[Section]:
     Heuristic section detection from raw text.
     Treat numbered headings or fully capitalized lines as section titles.
     """
-    heading_pattern = re.compile(r"^(\d+(?:\.\d+)*\s+.+|[A-Z][A-Z\s]{3,})$")
+    # Accept headings like "1. Introduction", "2.1 Scope", or fully capitalized lines.
+    heading_pattern = re.compile(r"^(\d+(?:\.\d+)*\.?\s+.+|[A-Z][A-Z\s]{3,})$")
     sections: List[Section] = []
     current_section: Section | None = None
 

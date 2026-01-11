@@ -30,7 +30,7 @@ class Retriever:
             logger.warning("No vectors generated; skipping index.")
             return
 
-        from ..storage.vector_store import Chunk as VSChunk
+        from storage.vector_store import Chunk as VSChunk
 
         chunk_payloads: List[VSChunk] = []
         for chunk, meta, vector in zip(chunks, metadata_list, vectors):

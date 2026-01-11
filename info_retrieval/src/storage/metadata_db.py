@@ -187,6 +187,55 @@ class MetadataDB:
             row = conn.execute(query, params).fetchone()
             return int(row[0]) if row else 0
 
+    def get_section_profile(self, company_id: str, doc_type: Optional[str], section_type: Optional[str]) -> Optional[Dict[str, Any]]:
+        """
+        Aggregate length statistics for a given company/doc_type/section_type.
+        Returns None when no matching chunks are found.
+        """
+        if not company_id or not section_type:
+            return None
+        conditions = ["company_id = ?", "chunk_type = 'content'", "text_length_chars IS NOT NULL"]
+        params: list[Any] = [company_id]
+        if doc_type:
+            conditions.append("doc_type = ?")
+            params.append(doc_type)
+        conditions.append("section_type = ?")
+        params.append(section_type)
+        where_clause = " AND ".join(conditions)
+
+        query = f"""
+            SELECT
+                COUNT(*) as count,
+                AVG(text_length_chars) as avg_chars,
+                MIN(text_length_chars) as min_chars,
+                MAX(text_length_chars) as max_chars,
+                AVG(sentence_count) as avg_sentences,
+                AVG(text_length_words) as avg_words,
+                AVG(paragraph_count) as avg_paragraphs
+            FROM chunks
+            WHERE {where_clause}
+        """
+        with self._connect() as conn:
+            row = conn.execute(query, params).fetchone()
+            if not row or not row["count"]:
+                return None
+            avg_chars = int(round(row["avg_chars"])) if row["avg_chars"] is not None else None
+            min_chars = int(round(row["min_chars"])) if row["min_chars"] is not None else None
+            max_chars = int(round(row["max_chars"])) if row["max_chars"] is not None else None
+            avg_sentences = int(round(row["avg_sentences"])) if row["avg_sentences"] is not None else 0
+            avg_words = row["avg_words"] or 0
+            avg_sentence_length = avg_words / avg_sentences if avg_sentences else None
+            avg_paragraphs = int(round(row["avg_paragraphs"])) if row["avg_paragraphs"] is not None else None
+            return {
+                "count": int(row["count"]),
+                "avg_chars": avg_chars,
+                "min_chars": min_chars,
+                "max_chars": max_chars,
+                "avg_sentences": avg_sentences,
+                "avg_sentence_length": avg_sentence_length,
+                "avg_paragraphs": avg_paragraphs,
+            }
+
     def _row_to_dict(self, row: sqlite3.Row) -> Dict[str, Any]:
         data = {key: row[key] for key in row.keys()}
         data["tags"] = json.loads(data.get("tags") or "[]")

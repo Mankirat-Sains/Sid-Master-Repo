@@ -142,15 +142,23 @@ def classify_chunk_type(chunk: Dict[str, object], metadata: Optional[Dict[str, o
     if style_filter.is_style_exemplar(text, style_meta, quality_score):
         return "style"
 
+    narrative_sections = {
+        "introduction",
+        "methodology",
+        "assumptions",
+        "limitations",
+        "conclusions",
+        "scope",
+        "references",
+    }
+    if section_type in narrative_sections or section_title in narrative_sections:
+        return "style"
+
     content_keywords = ["calculation", "result", "table", "specification", "load", "kpa", "kn", "pressure"]
     if any(keyword in text.lower() for keyword in content_keywords):
         return "content"
     if any(keyword in section_title for keyword in content_keywords):
         return "content"
-
-    narrative_sections = {"introduction", "methodology", "conclusions", "assumptions", "limitations"}
-    if section_type in narrative_sections and quality_score > 0.7:
-        return "style"
 
     return "content"
 
