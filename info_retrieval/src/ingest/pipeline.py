@@ -4,6 +4,7 @@ End-to-end ingestion pipeline: parse -> metadata -> chunk -> classify -> embed -
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 from typing import Dict, List
 
@@ -17,6 +18,17 @@ from .metadata_extractor import MetadataExtractor
 from .style_filter import StyleExemplarFilter
 
 logger = get_logger(__name__)
+
+
+def _length_metrics(text: str) -> Dict[str, int | str]:
+    paragraphs = [p for p in text.splitlines() if p.strip()]
+    sentence_count = len(re.findall(r"[.!?]", text))
+    return {
+        "length_chars": len(text),
+        "length_words": len(text.split()),
+        "paragraph_count": len(paragraphs),
+        "sentence_count": sentence_count,
+    }
 
 
 class IngestionPipeline:
@@ -50,6 +62,24 @@ class IngestionPipeline:
             parsed = parse_docx(path, company_id=self.company_id)
             chunks = smart_chunk(parsed)
 
+        # Pre-compute section-level length metrics so every chunk carries its parent section stats.
+        section_stats: Dict[str, Dict[str, int]] = {}
+        if parsed.sections:
+            for section in parsed.sections:
+                section_stats[section.title] = _length_metrics(section.content)
+        else:
+            # Fallback: aggregate by chunk section title
+            for chunk in chunks:
+                title = chunk.get("section_title") or "unknown"
+                existing = section_stats.get(title, {"length_chars": 0, "length_words": 0, "paragraph_count": 0, "sentence_count": 0})
+                metrics = _length_metrics(chunk.get("text", ""))
+                section_stats[title] = {
+                    "length_chars": existing["length_chars"] + metrics["length_chars"],
+                    "length_words": existing["length_words"] + metrics["length_words"],
+                    "paragraph_count": existing["paragraph_count"] + metrics["paragraph_count"],
+                    "sentence_count": existing["sentence_count"] + metrics["sentence_count"],
+                }
+
         doc_meta = self.metadata_extractor.extract_metadata(parsed, company_id=self.company_id)
         self.metadata_db.insert_document(
             {
@@ -81,6 +111,12 @@ class IngestionPipeline:
             normalized_text = self.style_filter._normalize(text)
             frequency_before = self.metadata_db.get_style_frequency(normalized_text, section_type)
             quality_score = self.style_filter.compute_quality_score(text)
+            text_length_chars = len(text)
+            text_length_words = len(text.split())
+            paragraph_count = len([p for p in text.splitlines() if p.strip()])
+            sentence_count = len(re.findall(r"[.!?]", text))
+            format_hint = "bullet" if any(re.match(r"^\\s*[-*•]\\s", line) for line in text.splitlines()) else "paragraph"
+            section_length = section_stats.get(chunk.get("section_title"), {})
 
             style_meta = {
                 "section_type": section_type,
@@ -117,6 +153,15 @@ class IngestionPipeline:
                 "style_frequency": style_frequency,
                 "quality_score": quality_score,
                 "is_pinned": False,
+                "text_length_chars": text_length_chars,
+                "text_length_words": text_length_words,
+                "paragraph_count": paragraph_count,
+                "sentence_count": sentence_count,
+                "format_hint": format_hint,
+                "section_length_chars": section_length.get("length_chars"),
+                "section_length_words": section_length.get("length_words"),
+                "section_paragraph_count": section_length.get("paragraph_count"),
+                "section_sentence_count": section_length.get("sentence_count"),
             }
 
             self.metadata_db.insert_chunk_metadata(chunk_metadata)

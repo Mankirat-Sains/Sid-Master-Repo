@@ -21,6 +21,8 @@ class AppConfig:
     use_local_embeddings: bool
     embedding_dim: Optional[int]
     log_level: str
+    use_csv_vector_store: bool = False
+    csv_vector_store_path: Path = DATA_DIR / "vector_store.csv"
 
 
 def load_config() -> AppConfig:
@@ -40,6 +42,8 @@ def load_config() -> AppConfig:
         use_local_embeddings=_as_bool(os.getenv("USE_LOCAL_EMBEDDINGS", "false")),
         embedding_dim=_parse_optional_int(os.getenv("EMBEDDING_DIM")),
         log_level=os.getenv("LOG_LEVEL", "INFO"),
+        use_csv_vector_store=_as_bool(os.getenv("USE_CSV_VECTOR_STORE", "false")),
+        csv_vector_store_path=_coerce_path(os.getenv("CSV_VECTOR_STORE_PATH", DATA_DIR / "vector_store.csv")),
     )
 
 
