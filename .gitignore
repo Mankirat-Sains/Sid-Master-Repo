@@ -116,6 +116,7 @@ __pycache__/
 *.jpg
 *.csv
 Backend/data
+info_retrieval/data/*.csv
 info_retrieval/data/*.db
 
 # Personal documentation - Cardoso READMEs

@@ -33,13 +33,20 @@ def main() -> None:
 
     embedding_service = EmbeddingService(config)
     vector_store = None
-    try:
-        vector_store = SupabaseVectorStore()
-        logger.info("Using SupabaseVectorStore as default adapter.")
-    except Exception as exc:
-        logger.warning("SupabaseVectorStore unavailable (%s); falling back to Qdrant in-memory.", exc)
-        vector_db = VectorDB(config, use_in_memory=True)
-        vector_store = QdrantVectorStore(vector_db, company_id=company_id)
+    if config.use_csv_vector_store:
+        from storage.csv_vector_store import CSVVectorStore
+
+        csv_path = config.csv_vector_store_path
+        logger.info("Using CSVVectorStore at %s for local testing.", csv_path)
+        vector_store = CSVVectorStore(csv_path)
+    else:
+        try:
+            vector_store = SupabaseVectorStore()
+            logger.info("Using SupabaseVectorStore as default adapter.")
+        except Exception as exc:
+            logger.warning("SupabaseVectorStore unavailable (%s); falling back to Qdrant in-memory.", exc)
+            vector_db = VectorDB(config, use_in_memory=True)
+            vector_store = QdrantVectorStore(vector_db, company_id=company_id)
     metadata_db = MetadataDB(config.metadata_db_path)
 
     pipeline = IngestionPipeline(
@@ -49,7 +56,7 @@ def main() -> None:
         company_id=company_id,
     )
 
-    sample_doc = Path("info_retrieval/data/sample_docs/thermal_calculation.docx")
+    sample_doc = Path(__file__).resolve().parent.parent / "2025-0534-10_HHS_ Juravinski Concession Garage PT Investigation and 5 Year Plan - Draft.docx"
     if not sample_doc.exists():
         logger.error("Sample doc missing at %s", sample_doc)
         return

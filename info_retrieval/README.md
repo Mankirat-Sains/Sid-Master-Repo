@@ -26,6 +26,7 @@ pytest -q info_retrieval/tests
 python -m info_retrieval.demo
 # sample docs live in info_retrieval/data/sample_docs/
 ```
+**CSV-only testing**: set `USE_CSV_VECTOR_STORE=true` in `.env` (optionally set `CSV_VECTOR_STORE_PATH`) to write/read embeddings to a CSV file during the demo; handy for local inspection without Supabase/Qdrant.
 
 ## Core Modules
 - `src/ingest/document_parser.py`: DOCX/PDF parsing, section inference, artifact/version IDs.
@@ -37,6 +38,7 @@ python -m info_retrieval.demo
 - `src/storage/qdrant_vector_store.py`: Qdrant adapter implementing VectorStore (optional fallback).
 - `src/storage/vector_db.py`: Legacy Qdrant helper used by the Qdrant adapter.
 - `src/storage/metadata_db.py`: SQLite chunk metadata schema with identity + provenance.
+- `src/storage/csv_vector_store.py`: CSV-backed VectorStore for local testing only (no locking/concurrency).
 - `src/retrieval/retriever.py`: High-level retrieval for content queries and style exemplars.
 - `src/utils/config.py`: Env/config loader; `logger.py`: logging helper.
 - `src/ingest/pipeline.py`: Orchestrates parse → chunk → classify → embed → store.
