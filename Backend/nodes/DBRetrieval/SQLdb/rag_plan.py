@@ -76,42 +76,31 @@ def _extract_complexity_from_reasoning(reasoning: str) -> str:
         return "general_query"
 
 
-def _combined_rewrite_and_plan(user_query: str, session_id: str, conversation_context: str) -> tuple[str, dict, dict]:
+def _combined_rewrite_and_plan(user_query: str, session_id: str, conversation_context: str, messages: list = None) -> tuple[str, dict, dict]:
     """
     Combined query rewriting and planning in a single LLM call.
+    Uses full conversation history (messages) for intelligent context understanding.
     Returns (rewritten_query, query_filters, plan_dict)
     """
     # Guardrail: Extract explicit project IDs with regex
-    explicit_ids = re.findall(r'\b\d{2}-\d{2}-\d{3}\b', user_query)
+    explicit_ids = re.findall(r'\b\d{2}-\d{2}-\d{3,4}\b', user_query)
     if explicit_ids:
         log_query.info(f"🎯 EXPLICIT IDs DETECTED: {explicit_ids}")
-    
-    # Get focus state and semantic context
-    focus_state = FOCUS_STATES.get(session_id, {
-        "recent_projects": [],
-        "last_answer_projects": [],
-        "last_results_projects": [],
-        "last_query_text": ""
-    })
+        # If explicit IDs found, skip rewriting and create simple plan
+        return user_query, {"project_keys": explicit_ids}, {
+            "reasoning": f"Explicit project IDs detected: {explicit_ids}",
+            "steps": [{"op": "RETRIEVE", "args": {"queries": [user_query], "k": 20}}],
+            "subqueries": [user_query]
+        }
     
     session_data = SESSION_MEMORY.get(session_id, {})
     semantic_context = _extract_semantic_context_for_rewriter(session_data)
     
-    focus_context = {
-        "recent_projects": focus_state["recent_projects"][-5:],
-        "last_answer_projects": focus_state["last_answer_projects"],
-        "last_results_projects": focus_state["last_results_projects"],
-        "last_query": focus_state["last_query_text"],
-        "recent_topics": semantic_context["recent_topics"],
-        "recent_complexity": semantic_context["recent_complexity_patterns"],
-        "last_route_preference": semantic_context["last_route"],
-        "last_scope_pattern": semantic_context["last_scope"]
-    }
-    
     # Format prompt using the template from prompts folder
+    # Pass conversation_context (formatted string) AND ensure it includes full history
     combined_prompt = RAG_PLANNER_PROMPT.format(
         user_query=user_query,
-        focus_context_json=json.dumps(focus_context, indent=2),
+        focus_context_json=json.dumps({}, indent=2),  # Deprecated - using conversation_context instead
         recent_topics=semantic_context["recent_topics"],
         recent_complexity_patterns=semantic_context["recent_complexity_patterns"],
         last_route=semantic_context["last_route"],
@@ -141,21 +130,17 @@ def _combined_rewrite_and_plan(user_query: str, session_id: str, conversation_co
         confidence = rewriting.get("confidence", 0.0)
         is_followup = rewriting.get("is_followup", False)
         
-        has_context_projects = bool(focus_state["last_answer_projects"] or focus_state["recent_projects"])
-        confidence_threshold = 0.85 if has_context_projects else 0.95
+        # Trust LLM's judgment - it has the full conversation context
+        confidence_threshold = 0.85
         
         if is_followup and confidence >= confidence_threshold:
             rewritten_query = rewriting.get("rewritten_query", user_query)
             filters = rewriting.get("filters", {})
-            project_keys = filters.get("project_keys", [])
             
-            if not project_keys:
-                if focus_state["last_answer_projects"]:
-                    project_keys = [focus_state["last_answer_projects"][-1]]
-                elif focus_state["recent_projects"]:
-                    project_keys = [focus_state["recent_projects"][-1]]
-                if project_keys:
-                    filters["project_keys"] = project_keys
+            # Trust LLM's project_keys extraction - it read the conversation history
+            project_keys = filters.get("project_keys", [])
+            if project_keys:
+                log_query.info(f"🎯 LLM EXTRACTED PROJECTS FROM CONVERSATION: {project_keys}")
             
             log_query.info(f"🎯 FOLLOW-UP DETECTED: '{user_query}' → '{rewritten_query}'")
         else:
@@ -190,23 +175,54 @@ def node_rag_plan(state: RAGState) -> dict:
     t_start = time.time()
     log_query.info(">>> RAG PLAN START (Combined Rewrite + Planning)")
 
-    log_query.info(f"🎯 QUERY INPUT: '{state.user_query[:500]}...' (truncated)" if len(state.user_query) > 500 else f"🎯 QUERY INPUT: '{state.user_query}'")
+    # CRITICAL: Use original_question for rewriting, not user_query
+    # user_query is already rewritten by main.py, but we need to rewrite the ORIGINAL question
+    # with full conversation context to properly understand follow-ups
+    query_to_rewrite = getattr(state, 'original_question', None) or state.user_query
+    log_query.info(f"🎯 QUERY INPUT (original): '{query_to_rewrite[:500]}...' (truncated)" if len(query_to_rewrite) > 500 else f"🎯 QUERY INPUT (original): '{query_to_rewrite}'")
+    log_query.info(f"🎯 QUERY INPUT (already rewritten): '{state.user_query[:500]}...' (truncated)" if len(state.user_query) > 500 else f"🎯 QUERY INPUT (already rewritten): '{state.user_query}'")
     
-    # Get conversation context from state (persisted by checkpointer) or fallback to SESSION_MEMORY
-    conversation_history = getattr(state, 'conversation_history', None)
+    # Get conversation context - try state.messages first, then load from checkpointer if needed
+    # CRITICAL: state.messages might be empty if state wasn't properly initialized with previous messages
+    # We need to load from checkpointer to get the full conversation history
+    messages = getattr(state, 'messages', None) or []
+    
+    # If state.messages is empty, try to load from checkpointer directly
+    # This ensures we have conversation history even if state wasn't properly initialized
+    if not messages:
+        try:
+            # Access the graph instance that's already built (from main.py)
+            # This is safe because the graph is built at module level
+            import sys
+            main_module = sys.modules.get('main')
+            if main_module and hasattr(main_module, 'graph'):
+                graph_instance = main_module.graph
+                state_snapshot = graph_instance.get_state({"configurable": {"thread_id": state.session_id}})
+                if state_snapshot and state_snapshot.values:
+                    messages = state_snapshot.values.get("messages", [])
+                    if messages:
+                        log_query.info(f"📖 Loaded {len(messages)} messages from checkpointer for rag_plan")
+        except Exception as e:
+            log_query.info(f"📖 Could not load messages from checkpointer: {e}")
+    
     conversation_context = get_conversation_context(
         state.session_id, 
-        max_exchanges=2,
-        conversation_history=conversation_history
+        max_exchanges=10,  # Show more exchanges for better context
+        messages=messages if messages else None
     )
     if conversation_context:
         log_query.info("📖 Using conversation context")
+    else:
+        log_query.info("📖 No conversation context available")
 
     # Combined rewrite + planning in one LLM call
+    # CRITICAL: Rewrite the ORIGINAL question with full conversation context
+    # This ensures follow-up detection works properly
     rewritten_query, query_filters, plan_dict = _combined_rewrite_and_plan(
-        state.user_query, 
+        query_to_rewrite,  # Use original question, not already-rewritten user_query
         state.session_id, 
-        conversation_context or "(No prior conversation)"
+        conversation_context or "(No prior conversation)",
+        messages=messages if messages else None
     )
     
     log_query.info(f"🎯 QUERY REWRITING OUTPUT: '{rewritten_query}'")

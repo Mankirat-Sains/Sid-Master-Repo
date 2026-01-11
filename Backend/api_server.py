@@ -350,6 +350,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Initialize async checkpointer on FastAPI startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize async checkpointer when FastAPI starts"""
+    from graph.checkpointer import init_checkpointer_async, checkpointer, CHECKPOINTER_TYPE
+    import logging
+    logger = logging.getLogger(__name__)
+    try:
+        # Initialize the async checkpointer
+        initialized_checkpointer = await init_checkpointer_async()
+        logger.info(f"✅ Checkpointer initialized: {type(initialized_checkpointer).__name__}")
+        
+        # Rebuild graph with proper checkpointer
+        # This is critical - build_graph() will now import the updated checkpointer
+        from graph.builder import build_graph
+        import main
+        main.graph = build_graph()
+        logger.info("✅ Graph rebuilt with async checkpointer")
+        
+        # Verify checkpointer is being used
+        if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
+            logger.info(f"✅ Using {CHECKPOINTER_TYPE} checkpointer (persistent)")
+            logger.info("💾 State will be automatically saved to Supabase after each node execution")
+            # Verify the graph is actually using the async checkpointer
+            if hasattr(main.graph, 'checkpointer'):
+                logger.info(f"✅ Graph checkpointer verified: {type(main.graph.checkpointer).__name__}")
+        else:
+            logger.info(f"✅ Using {CHECKPOINTER_TYPE} checkpointer")
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize checkpointer on startup: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+
 # Request/Response Models
 class ChatRequest(BaseModel):
     message: str
@@ -860,8 +893,52 @@ async def chat_stream_handler(request: ChatRequest):
             from models.rag_state import RAGState
             from dataclasses import asdict
             from thinking.intelligent_log_generator import IntelligentLogGenerator
+            from models.memory import intelligent_query_rewriter
             
             log_generator = IntelligentLogGenerator()
+            
+            # CRITICAL: Load previous state from checkpointer to get messages
+            # This follows LangGraph best practices for short-term memory
+            # Messages are persisted by checkpointer and loaded here for conversation context
+            previous_state = None
+            try:
+                # Get the latest checkpoint state for this thread
+                # For async checkpointers, use aget_state() instead of get_state()
+                from graph.checkpointer import CHECKPOINTER_TYPE
+                if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
+                    # Async checkpointer - use async method
+                    state_snapshot = await graph.aget_state({"configurable": {"thread_id": request.session_id}})
+                else:
+                    # Sync checkpointer - use sync method
+                    state_snapshot = graph.get_state({"configurable": {"thread_id": request.session_id}})
+                
+                if state_snapshot and state_snapshot.values:
+                    previous_state = state_snapshot.values
+                    logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
+                    if previous_state.get("messages"):
+                        logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+            except Exception as e:
+                # No previous state exists (first invocation) - this is fine
+                logger.info(f"📖 No previous state found (first invocation): {e}")
+                previous_state = None
+            
+            # Get messages from previous state for query rewriting and context
+            previous_messages = previous_state.get("messages", []) if previous_state else []
+            
+            # Intelligent query rewriting with conversation context
+            # This helps with follow-up detection and pronoun resolution
+            rewritten_query, query_filters = intelligent_query_rewriter(
+                enhanced_question,
+                request.session_id,
+                messages=previous_messages
+            )
+            logger.info(f"🎯 QUERY REWRITING: '{enhanced_question[:100]}...' → '{rewritten_query[:100]}...'" if len(enhanced_question) > 100 or len(rewritten_query) > 100 else f"🎯 QUERY REWRITING: '{enhanced_question}' → '{rewritten_query}'")
+            
+            # Extract project filter from query_filters if present
+            project_filter = None
+            if query_filters.get("project_keys"):
+                project_filter = query_filters["project_keys"][0]
+                logger.info(f"🎯 PROJECT FILTER FROM REWRITER: {project_filter}")
             
             # Determine if image similarity should be enabled
             use_image_similarity = False
@@ -872,13 +949,29 @@ async def chat_stream_handler(request: ChatRequest):
                 use_image_similarity = intent_result.get("use_image_similarity", False)
                 query_intent = intent_result.get("intent")
             
-            # Create initial state - use enhanced_question that includes image context
+            # CRITICAL: Initialize messages from previous state and add new user message
+            # This follows LangGraph's pattern: messages flow through the graph state
+            # The checkpointer automatically persists messages after each node execution
+            init_messages = list(previous_messages) if previous_messages else []
+            
+            # Add the current user message to the conversation history
+            # This ensures nodes like rag_plan can see the full conversation context
+            init_messages.append({
+                "role": "user",
+                "content": request.message  # Use original question, not rewritten query
+            })
+            
+            logger.info(f"📖 Initialized messages: {len(previous_messages) if previous_messages else 0} previous + 1 new = {len(init_messages)} total")
+            
+            # Create initial state with messages and original question
+            # This follows LangGraph best practices for short-term memory
             init_state = RAGState(
                 session_id=request.session_id,
-                user_query=enhanced_question,  # Use enhanced question with image context
+                user_query=rewritten_query,  # Rewritten query for retrieval (with context)
+                original_question=request.message,  # Original question (for storing in messages)
                 query_plan=None,
                 data_route=None,
-                project_filter=None,
+                project_filter=project_filter,
                 expanded_queries=[],
                 retrieved_docs=[],
                 graded_docs=[],
@@ -894,7 +987,8 @@ async def chat_stream_handler(request: ChatRequest):
                 data_sources=request.data_sources,
                 images_base64=images_to_process if images_to_process else None,
                 use_image_similarity=use_image_similarity,
-                query_intent=query_intent
+                query_intent=query_intent,
+                messages=init_messages  # CRITICAL: Includes previous messages + new user message
             )
             
             # Track state as we go to detect which node ran
@@ -912,11 +1006,16 @@ async def chat_stream_handler(request: ChatRequest):
             final_state = None
             
             logger.info(f"🔄 Starting graph.astream with stream_mode=['updates', 'custom', 'messages']")
+            logger.info(f"💾 Checkpointer: State will be automatically saved after each node (thread_id={request.session_id})")
             node_count = 0
             # Use multiple stream modes per LangGraph best practices:
             # - "updates": State updates per node with node names {node_name: state_updates}
             # - "custom": Custom events emitted from nodes (for real-time progress)
             # - "messages": LLM tokens as they're generated (for real-time answer streaming)
+            # NOTE: LangGraph automatically saves state to checkpointer after each node when:
+            #       1. Graph is compiled with checkpointer
+            #       2. Config includes thread_id
+            #       3. Using graph.astream() or graph.ainvoke()
             messages_received = 0
             async for stream_mode, chunk in graph.astream(
                 asdict(init_state),
