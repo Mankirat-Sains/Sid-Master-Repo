@@ -73,14 +73,16 @@ GOOGLE_AVAILABLE = GOOGLE_VERTEX_AI_AVAILABLE or GOOGLE_GENAI_AVAILABLE
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
 
-# For all Gemini models, use "global" region (all Gemini models are available in global)
-# This is the recommended region for all Gemini models on Vertex AI
-VERTEX_AI_LOCATION = os.getenv("VERTEX_AI_LOCATION", "global")
+# Default location: us-east4 (Northern Virginia) for most models
+# Gemini 3 models use "global" region
+VERTEX_AI_LOCATION = os.getenv("VERTEX_AI_LOCATION", "us-east4")
 
 # Log if using Gemini models
 SYNTHESIS_MODEL = os.getenv("SYNTHESIS_MODEL", "")
-if SYNTHESIS_MODEL.startswith("gemini"):
-    log_syn.info(f"ℹ️  Using 'global' region for Gemini models (all Gemini models are available in global region)")
+if SYNTHESIS_MODEL.startswith("gemini-3"):
+    log_syn.info(f"ℹ️  Using 'global' region for Gemini 3 models")
+elif SYNTHESIS_MODEL.startswith("gemini"):
+    log_syn.info(f"ℹ️  Using 'us-east4' region for Gemini models (non-Gemini 3)")
 
 # Try to import Groq SDK and create custom wrapper - if not available, will fall back to OpenAI
 try:
@@ -335,21 +337,24 @@ def make_llm(model_name: str, temperature: float = 0.1):
             # ChatGoogleGenerativeAI supports BOTH API keys (Generative AI API) AND service accounts (Vertex AI backend).
             # When using service accounts, we configure it to use Vertex AI backend.
             
-            # IMPORTANT: All Gemini models use "global" region
-            # All Gemini models (gemini-1.5, gemini-2.5, gemini-3.0, etc.) are available in global region
-            model_location = "global"
-            if not model_name.startswith("gemini"):
-                # Only use VERTEX_AI_LOCATION for non-Gemini models (if any)
-                model_location = VERTEX_AI_LOCATION
+            # IMPORTANT: Gemini 3 models use "global" region, others use "us-east4"
+            # Only gemini-3-* models are available in global region
+            if model_name.startswith("gemini-3"):
+                model_location = "global"
+                log_syn.info(f"ℹ️  Gemini 3 model detected ({model_name}) - using 'global' region")
+            elif model_name.startswith("gemini"):
+                model_location = "us-east4"
+                log_syn.info(f"ℹ️  Gemini model detected ({model_name}) - using 'us-east4' region (Northern Virginia)")
             else:
-                log_syn.info(f"ℹ️  Gemini model detected ({model_name}) - using 'global' region (all Gemini models available in global)")
+                # Use VERTEX_AI_LOCATION for non-Gemini models
+                model_location = VERTEX_AI_LOCATION
             
             if GOOGLE_GENAI_AVAILABLE:
                 # Check if we have service account credentials (preferred for Vertex AI)
                 if GOOGLE_CLOUD_PROJECT and GOOGLE_APPLICATION_CREDENTIALS:
                     log_syn.info(f"✅ Using ChatGoogleGenerativeAI with Vertex AI backend (service account)")
                     log_syn.info(f"   Project: {GOOGLE_CLOUD_PROJECT}")
-                    log_syn.info(f"   Location: {model_location} (global - all Gemini models available in global region)")
+                    log_syn.info(f"   Location: {model_location} ({'global' if model_location == 'global' else 'us-east4 (Northern Virginia)'})")
                     log_syn.info(f"   Model: {model_name}")
                     log_syn.info(f"   Credentials: {GOOGLE_APPLICATION_CREDENTIALS}")
                     log_syn.info(f"   Note: ChatGoogleGenerativeAI auto-detects Vertex AI backend from service account")
@@ -364,7 +369,7 @@ def make_llm(model_name: str, temperature: float = 0.1):
                             temperature=temperature,
                             google_api_key=None,  # No API key = use service account
                             project=GOOGLE_CLOUD_PROJECT,  # Vertex AI project (may be auto-detected)
-                            location=model_location,  # Vertex AI location - always "global" for all Gemini models
+                            location=model_location,  # Vertex AI location - "global" for Gemini 3, "us-east4" for others
                         )
                     except TypeError:
                         # If project/location not supported, use without them (auto-detection)
@@ -399,10 +404,15 @@ def make_llm(model_name: str, temperature: float = 0.1):
                 log_syn.warning("⚠️  ChatGoogleGenerativeAI not available, falling back to deprecated ChatVertexAI")
                 log_syn.warning(f"   Note: ChatVertexAI may not support {model_name} - install langchain-google-genai instead")
                 
-                # Use "global" region for all Gemini models (all Gemini models are available in global)
-                fallback_location = "global" if model_name.startswith("gemini") else VERTEX_AI_LOCATION
-                if model_name.startswith("gemini"):
-                    log_syn.warning(f"   ⚠️  Using 'global' region for Gemini model - ChatVertexAI may not support {model_name}")
+                # Use "global" region for Gemini 3 models, "us-east4" for other Gemini models
+                if model_name.startswith("gemini-3"):
+                    fallback_location = "global"
+                    log_syn.warning(f"   ⚠️  Using 'global' region for Gemini 3 model - ChatVertexAI may not support {model_name}")
+                elif model_name.startswith("gemini"):
+                    fallback_location = "us-east4"
+                    log_syn.warning(f"   ⚠️  Using 'us-east4' region for Gemini model - ChatVertexAI may not support {model_name}")
+                else:
+                    fallback_location = VERTEX_AI_LOCATION
                 
                 with warnings.catch_warnings():
                     warnings.filterwarnings("ignore", message=".*ChatVertexAI.*deprecated.*")
