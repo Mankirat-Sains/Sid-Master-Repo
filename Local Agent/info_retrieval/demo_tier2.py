@@ -1,7 +1,7 @@
 """
 Tier 2 Demo: Document generation end-to-end.
 Run:
-  PYTHONPATH=Backend/desktop_agent/info_retrieval/src .venv/bin/python -m info_retrieval.demo_tier2 "Draft methodology for structural beam design per ACI 318-19"
+  PYTHONPATH=\"Local Agent\"/info_retrieval/src .venv/bin/python -m info_retrieval.demo_tier2 "Draft methodology for structural beam design per ACI 318-19"
 """
 from __future__ import annotations
 
