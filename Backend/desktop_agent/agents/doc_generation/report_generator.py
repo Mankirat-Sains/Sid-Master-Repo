@@ -21,7 +21,7 @@ def _load_services() -> Dict[str, Any]:
 
     from dotenv import load_dotenv
 
-    load_dotenv(Path(__file__).resolve().parents[5] / ".env", override=True)
+    load_dotenv(Path(__file__).resolve().parents[4] / ".env", override=True)
 
     from ir_utils.config import load_config
     from embeddings.embedding_service import EmbeddingService

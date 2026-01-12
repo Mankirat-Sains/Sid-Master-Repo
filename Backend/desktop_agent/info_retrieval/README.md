@@ -13,7 +13,7 @@ This package provides a retrieval-first foundation for engineering documents wit
 
 ## Quickstart
 ```bash
-cd info_retrieval
+cd Backend/desktop_agent/info_retrieval
 python -m venv venv
 source venv/bin/activate  # on Windows use venv\Scripts\activate
 pip install -r requirements.txt
