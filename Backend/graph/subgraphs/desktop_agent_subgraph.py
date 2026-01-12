@@ -3,6 +3,7 @@ DesktopAgent Subgraph
 Handles desktop application interactions and delegates doc generation when requested.
 """
 from langgraph.graph import StateGraph, END
+
 from models.parent_state import ParentState
 from config.logging_config import log_route
 from nodes.DesktopAgent.desktop_router import node_desktop_router
@@ -32,7 +33,6 @@ def build_desktop_agent_subgraph():
     g.add_node("finish", lambda state: {})
 
     g.set_entry_point("desktop_router")
-
     g.add_conditional_edges(
         "desktop_router",
         _desktop_to_next,
@@ -69,6 +69,7 @@ def call_desktop_agent_subgraph(state: ParentState) -> dict:
     except Exception as e:
         log_route.error(f"❌ DesktopAgent subgraph failed: {e}")
         import traceback
+
         traceback.print_exc()
         return {
             "desktop_tools": [],
