@@ -8,6 +8,10 @@ import time
 from dataclasses import asdict
 from pathlib import Path
 from typing import Dict, List, Optional
+
+from utils.path_setup import ensure_info_retrieval_on_path
+
+ensure_info_retrieval_on_path()
 from models.parent_state import ParentState
 from models.memory import (
     SESSION_MEMORY, MAX_CONVERSATION_HISTORY, MAX_SEMANTIC_HISTORY,

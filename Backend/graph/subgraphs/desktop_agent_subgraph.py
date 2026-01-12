@@ -7,7 +7,7 @@ from langgraph.graph import StateGraph, END
 from models.parent_state import ParentState
 from config.logging_config import log_route
 from nodes.DesktopAgent.desktop_router import node_desktop_router
-from graph.subgraphs.doc_generation_subgraph import call_doc_generation_subgraph
+from graph.subgraphs.desktop.docgen_subgraph import call_doc_generation_subgraph
 
 
 def _desktop_to_next(state: ParentState) -> str:

@@ -31,6 +31,9 @@ class QueryAnalyzer:
         "calculation_narrative": ["calculation", "calc narrative", "calc report", "design calc"],
         "method_statement": ["method statement", "construction method"],
         "technical_memo": ["memo", "technical memorandum"],
+        "status_email": ["status email", "status update", "client email", "update email"],
+        "checklist": ["checklist", "to-do list", "punch list"],
+        "bom_table": ["bom", "bill of materials", "bill-of-materials", "material takeoff", "take-off"],
     }
 
     # Section type patterns
@@ -89,13 +92,13 @@ class QueryAnalyzer:
         for doc_type, patterns in self.DOC_TYPE_PATTERNS.items():
             if any(pattern in text for pattern in patterns):
                 return doc_type
-        return "design_report"
+        return ""
 
     def _detect_section_type(self, text: str) -> str:
         for section_type, patterns in self.SECTION_PATTERNS.items():
             if any(pattern in text for pattern in patterns):
                 return section_type
-        return "methodology"
+        return ""
 
     def _detect_function(self, text: str) -> str:
         for function, patterns in self.FUNCTION_PATTERNS.items():

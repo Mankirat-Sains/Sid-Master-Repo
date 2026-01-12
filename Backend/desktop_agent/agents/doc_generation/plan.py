@@ -4,30 +4,10 @@ Runs Tier2 QueryAnalyzer to produce a structured doc_request and determines if d
 """
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any, Dict
 
 from models.rag_state import RAGState
 from config.logging_config import log_query
-
-
-def _ensure_info_retrieval_path() -> None:
-    """Ensure info_retrieval/src is on sys.path for imports."""
-    here = Path(__file__).resolve()
-    candidates = set()
-    if len(here.parents) >= 3:
-        candidates.add(here.parents[3])
-    if len(here.parents) >= 2:
-        candidates.add(here.parents[2])
-    if len(here.parents) >= 4:
-        candidates.add(here.parents[4])
-    candidates.add((here.parent / "../../../info_retrieval/src").resolve())
-
-    for base in candidates:
-        ir_src = Path(base) / "info_retrieval" / "src"
-        if ir_src.exists() and str(ir_src) not in sys.path:
-            sys.path.insert(0, str(ir_src))
 
 
 def _detect_desktop_request(text: str) -> bool:
@@ -38,7 +18,6 @@ def _detect_desktop_request(text: str) -> bool:
 def node_doc_plan(state: RAGState) -> dict:
     """Produce doc_request using Tier2 QueryAnalyzer and flag desktop actions."""
     log_query.info("DOCGEN: entered node_doc_plan")
-    _ensure_info_retrieval_path()
     try:
         from tier2.query_analyzer import QueryAnalyzer
     except Exception as exc:
