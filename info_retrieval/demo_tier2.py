@@ -5,8 +5,11 @@ Run:
 """
 from __future__ import annotations
 
+import csv
+import json
 import os
 import sys
+from datetime import datetime
 
 from dotenv import load_dotenv
 
@@ -19,6 +22,43 @@ from storage.metadata_db import MetadataDB
 from tier2.generator import Tier2Generator
 from utils.config import load_config
 from utils.logger import get_logger
+
+
+def _append_output_csv(path: str, user_request: str, result: dict) -> None:
+    """
+    Append the drafted output to a CSV so the user can inspect generation results.
+    """
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    fieldnames = [
+        "timestamp",
+        "request",
+        "doc_type",
+        "section_type",
+        "min_chars",
+        "max_chars",
+        "length_actual",
+        "draft_text",
+        "citations_json",
+    ]
+    write_header = not os.path.exists(path)
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        if write_header:
+            writer.writeheader()
+        length_target = result.get("length_target", {}) or {}
+        writer.writerow(
+            {
+                "timestamp": datetime.utcnow().isoformat(),
+                "request": user_request,
+                "doc_type": result.get("doc_type"),
+                "section_type": result.get("section_type"),
+                "min_chars": length_target.get("min_chars"),
+                "max_chars": length_target.get("max_chars"),
+                "length_actual": len(result.get("draft_text", "")),
+                "draft_text": result.get("draft_text"),
+                "citations_json": json.dumps(result.get("citations", [])),
+            }
+        )
 
 
 def main() -> None:
@@ -56,6 +96,10 @@ def main() -> None:
     print("\n=== Citations ===")
     for cite in result["citations"]:
         print(cite)
+
+    output_path = os.getenv("DRAFT_OUTPUT_CSV", "./data/drafted_sections.csv")
+    _append_output_csv(output_path, user_request, result)
+    logger.info("Draft saved to %s (length=%s chars)", output_path, len(result.get("draft_text", "")))
 
 
 if __name__ == "__main__":
