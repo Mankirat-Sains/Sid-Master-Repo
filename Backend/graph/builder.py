@@ -3,6 +3,7 @@ LangGraph Builder
 Constructs the parent graph that orchestrates subgraphs (DBRetrieval, DesktopAgent/DocGeneration, WebCalcs, etc.)
 """
 from langgraph.graph import StateGraph, END
+
 from models.parent_state import ParentState
 from config.logging_config import log_query
 from nodes.plan import node_plan
@@ -53,6 +54,7 @@ def _log_node_state(node_name: str, state) -> None:
 def _wrap_node(node_name: str, fn):
     def _wrapped(state: ParentState, *args, **kwargs):
         _log_node_state(node_name, state)
+
         def get(field, default=None):
             if isinstance(state, dict):
                 return state.get(field, default)
@@ -114,4 +116,5 @@ def build_graph():
     g.add_edge("db_retrieval", END)
 
     from graph.checkpointer import checkpointer
+
     return g.compile(checkpointer=checkpointer)

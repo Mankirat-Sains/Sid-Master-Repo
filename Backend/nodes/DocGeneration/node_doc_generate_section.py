@@ -39,6 +39,7 @@ def _load_services() -> Dict[str, Any]:
 
     _ensure_info_retrieval_path()
     from dotenv import load_dotenv
+
     load_dotenv(Path(__file__).resolve().parents[3] / ".env", override=True)
 
     from utils.config import load_config
