@@ -14,10 +14,24 @@ from config.logging_config import log_query
 
 def _ensure_info_retrieval_path() -> None:
     """Ensure info_retrieval/src is on sys.path for imports."""
-    root = Path(__file__).resolve().parents[3]
-    ir_src = root / "info_retrieval" / "src"
-    if ir_src.exists() and str(ir_src) not in sys.path:
-        sys.path.append(str(ir_src))
+    here = Path(__file__).resolve()
+    candidates = set()
+    # Repo root (Backend/../..)
+    if len(here.parents) >= 3:
+        candidates.add(here.parents[3])
+    # Backend directory
+    if len(here.parents) >= 2:
+        candidates.add(here.parents[2])
+    # One level above repo root (just in case)
+    if len(here.parents) >= 4:
+        candidates.add(here.parents[4])
+    # Explicit relative fallback
+    candidates.add((here.parent / "../../../info_retrieval/src").resolve())
+
+    for base in candidates:
+        ir_src = Path(base) / "info_retrieval" / "src"
+        if ir_src.exists() and str(ir_src) not in sys.path:
+            sys.path.insert(0, str(ir_src))
 
 
 def _detect_desktop_request(text: str) -> bool:

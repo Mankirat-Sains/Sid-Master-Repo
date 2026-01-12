@@ -15,10 +15,20 @@ _DOC_SERVICES: Dict[str, Any] | None = None
 
 
 def _ensure_info_retrieval_path() -> None:
-    root = Path(__file__).resolve().parents[3]
-    ir_src = root / "info_retrieval" / "src"
-    if ir_src.exists() and str(ir_src) not in sys.path:
-        sys.path.append(str(ir_src))
+    here = Path(__file__).resolve()
+    candidates = set()
+    if len(here.parents) >= 3:
+        candidates.add(here.parents[3])
+    if len(here.parents) >= 2:
+        candidates.add(here.parents[2])
+    if len(here.parents) >= 4:
+        candidates.add(here.parents[4])
+    candidates.add((here.parent / "../../../info_retrieval/src").resolve())
+
+    for base in candidates:
+        ir_src = Path(base) / "info_retrieval" / "src"
+        if ir_src.exists() and str(ir_src) not in sys.path:
+            sys.path.insert(0, str(ir_src))
 
 
 def _load_services() -> Dict[str, Any]:

@@ -2,6 +2,7 @@
 Main Entry Point for RAG System
 Provides run_agentic_rag function and healthcheck
 """
+import os
 import re
 import time
 from dataclasses import asdict
@@ -16,6 +17,7 @@ from config.settings import MAX_CITATIONS_DISPLAY, MAX_ROUTER_DOCS
 from config.logging_config import log_query, log_vlm
 from database import test_database_connection
 from database.supabase_client import vs_smart, vs_large
+from utils.csv_logger import append_draft_csv
 
 # Build graph once at module load and expose it for streaming
 graph = build_graph()
@@ -180,12 +182,48 @@ def run_agentic_rag(
             task_type=final.get("task_type"),
             doc_type=final.get("doc_type"),
             section_type=final.get("section_type"),
+            doc_generation_result=final.get("doc_generation_result"),
+            doc_generation_warnings=final.get("doc_generation_warnings", []),
+            execution_trace=final.get("execution_trace", []),
+            execution_trace_verbose=final.get("execution_trace_verbose", []),
         )
     else:
         final_state = final
 
     branch = "docgen" if (final_state.workflow == "docgen" or final_state.task_type in {"doc_section", "doc_report"}) else "qa"
     log_query.info(f"ROUTE SUMMARY | workflow={final_state.workflow} | task_type={final_state.task_type} | branch={branch} | desktop_policy={getattr(final_state, 'desktop_policy', None)}")
+
+    # CSV logging for docgen runs
+    if branch == "docgen":
+        csv_path = os.getenv("DOCGEN_CSV_PATH")
+        if not csv_path:
+            base = Path(__file__).resolve().parent.parent
+            csv_path = base / "info_retrieval" / "data" / "drafted_sections.csv"
+        result = final_state.doc_generation_result or {}
+        length_target = result.get("length_target") or {}
+        min_chars = length_target.get("min_chars")
+        max_chars = length_target.get("max_chars")
+        draft_text = final_state.final_answer or ""
+        citations = result.get("citations") or final_state.answer_citations or []
+        warnings = final_state.doc_generation_warnings or result.get("warnings", []) or []
+        length_actual = len(draft_text or "")
+        try:
+            append_draft_csv(
+                csv_path=str(csv_path),
+                request=question,
+                doc_type=final_state.doc_type,
+                section_type=final_state.section_type,
+                min_chars=min_chars,
+                max_chars=max_chars,
+                length_actual=length_actual,
+                draft_text=draft_text,
+                citations=citations,
+                execution_trace=final_state.execution_trace or [],
+                warnings=warnings,
+            )
+            log_query.info(f"DOCGEN CSV append ok at {csv_path}")
+        except Exception as exc:
+            log_query.error(f"DOCGEN CSV append failed: {exc}")
 
     # Extract projects from answer text
     answer_text = final_state.final_answer or ""
@@ -356,6 +394,12 @@ def run_agentic_rag(
         "image_similarity_results": final_state.image_similarity_results or [],
         "follow_up_questions": final_state.follow_up_questions or [],
         "follow_up_suggestions": final_state.follow_up_suggestions or [],
+        "execution_trace": final_state.execution_trace or [],
+        "workflow": final_state.workflow,
+        "task_type": final_state.task_type,
+        "doc_type": final_state.doc_type,
+        "section_type": final_state.section_type,
+        "doc_generation_warnings": final_state.doc_generation_warnings or [],
     }
 
 

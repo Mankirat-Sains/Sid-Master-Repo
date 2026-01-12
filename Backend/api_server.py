@@ -369,6 +369,13 @@ class ChatResponse(BaseModel):
     latency_ms: float
     citations: int
     route: Optional[str] = None
+    execution_trace: Optional[List[str]] = None
+    node_path: Optional[str] = None
+    workflow: Optional[str] = None
+    task_type: Optional[str] = None
+    doc_type: Optional[str] = None
+    section_type: Optional[str] = None
+    warnings: Optional[List[str]] = None
     message_id: Optional[str] = None
     project_answer: Optional[str] = None  # Separate project answer when multiple databases enabled
     code_answer: Optional[str] = None  # Separate code answer when code database enabled
@@ -628,7 +635,14 @@ async def chat_handler(request: ChatRequest):
                 image_similarity_results=image_similarity_results if image_similarity_results else None,
                 thinking_log=thinking_log if thinking_log else None,
                 follow_up_questions=follow_up_questions if follow_up_questions else None,
-                follow_up_suggestions=follow_up_suggestions if follow_up_suggestions else None
+                follow_up_suggestions=follow_up_suggestions if follow_up_suggestions else None,
+                execution_trace=rag_result.get("execution_trace"),
+                node_path=" → ".join(rag_result.get("execution_trace", []) or []),
+                workflow=rag_result.get("workflow"),
+                task_type=rag_result.get("task_type"),
+                doc_type=rag_result.get("doc_type"),
+                section_type=rag_result.get("section_type"),
+                warnings=rag_result.get("doc_generation_warnings"),
             )
         else:
             # Single answer mode (backward compatible)
@@ -702,7 +716,14 @@ async def chat_handler(request: ChatRequest):
                 image_similarity_results=image_similarity_results if image_similarity_results else None,
                 thinking_log=thinking_log if thinking_log else None,
                 follow_up_questions=follow_up_questions if follow_up_questions else None,
-                follow_up_suggestions=follow_up_suggestions if follow_up_suggestions else None
+                follow_up_suggestions=follow_up_suggestions if follow_up_suggestions else None,
+                execution_trace=rag_result.get("execution_trace"),
+                node_path=" → ".join(rag_result.get("execution_trace", []) or []),
+                workflow=rag_result.get("workflow"),
+                task_type=rag_result.get("task_type"),
+                doc_type=rag_result.get("doc_type"),
+                section_type=rag_result.get("section_type"),
+                warnings=rag_result.get("doc_generation_warnings"),
             )
 
         logger.info(f"Successfully processed request in {latency_ms:.2f}ms [ID: {message_id}]")
