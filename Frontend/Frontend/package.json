@@ -4,10 +4,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "nuxt dev",
-        "build": "nuxt build",
-        "generate": "nuxt generate",
-        "preview": "nuxt preview",
+        "dev": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt dev",
+        "build": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt build",
+        "generate": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt generate",
+        "preview": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt preview",
         "postinstall": "nuxt prepare",
         "lint": "eslint .",
         "typecheck": "vue-tsc --noEmit"
@@ -18,9 +18,12 @@
         "@speckle/viewer": "^2.20.2",
         "@vue/apollo-composable": "^4.2.2",
         "apollo-upload-client": "^18.0.1",
+        "docx": "^8.5.0",
         "echo": "^0.1.9",
         "graphql": "^16.6.0",
         "nuxt": "^4.0.3",
+        "pdf-lib": "^1.17.1",
+        "pdfjs-dist": "^4.10.38",
         "vue": "^3.5.13",
         "vue-router": "^4.4.5"
     },
