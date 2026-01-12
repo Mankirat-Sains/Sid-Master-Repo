@@ -18,6 +18,7 @@ class ParentState:
     user_query: str = ""  # User's query
     original_question: Optional[str] = None  # Original user question
     user_role: Optional[str] = None  # User role for preferences
+    data_sources: Optional[Dict[str, bool]] = None  # Database selection flags
 
     # Messages (persisted by checkpointer) - LangGraph pattern
     messages: List[Dict[str, str]] = field(default_factory=list)
@@ -34,6 +35,8 @@ class ParentState:
     query_intent: Optional[str] = None
     project_filter: Optional[str] = None
     selected_projects: List[str] = field(default_factory=list)
+    needs_clarification: bool = False
+    clarification_question: Optional[str] = None
 
     # Results from subgraphs (aggregated outputs)
     db_retrieval_result: Optional[str] = None  # final_answer from DBRetrieval subgraph

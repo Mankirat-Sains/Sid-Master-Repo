@@ -3,7 +3,8 @@ DBRetrieval State Definition
 Specialized state object for the DBRetrieval subgraph.
 """
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Literal, Any
+from typing import Any, Dict, List, Literal, Optional
+
 from langchain_core.documents import Document
 
 

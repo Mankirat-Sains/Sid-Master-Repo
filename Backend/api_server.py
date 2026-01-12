@@ -1006,7 +1006,16 @@ async def chat_stream_handler(request: ChatRequest):
             final_state = None
             
             logger.info(f"🔄 Starting graph.astream with stream_mode=['updates', 'custom', 'messages']")
-            logger.info(f"💾 Checkpointer: State will be automatically saved after each node (thread_id={request.session_id})")
+            
+            # Use "exit" durability mode to only save final state (not after each node)
+            # This dramatically reduces storage costs - only 1 checkpoint per query instead of 7+
+            # Trade-off: Can't resume from intermediate nodes, but you only need final state for memory
+            durability_mode = os.getenv("CHECKPOINTER_DURABILITY", "exit").lower()  # "exit", "async", or "sync"
+            if durability_mode == "exit":
+                logger.info(f"💾 Checkpointer: Will save ONLY final state (exit mode) - reduces storage by ~85%")
+            else:
+                logger.info(f"💾 Checkpointer: Will save state after each node ({durability_mode} mode)")
+            
             node_count = 0
             # Use multiple stream modes per LangGraph best practices:
             # - "updates": State updates per node with node names {node_name: state_updates}
@@ -1016,11 +1025,14 @@ async def chat_stream_handler(request: ChatRequest):
             #       1. Graph is compiled with checkpointer
             #       2. Config includes thread_id
             #       3. Using graph.astream() or graph.ainvoke()
+            #       4. Durability mode controls WHEN it saves (exit = only at end, async/sync = after each node)
+            # CRITICAL: durability is a DIRECT parameter, not in config dict!
             messages_received = 0
             async for stream_mode, chunk in graph.astream(
                 asdict(init_state),
                 config=config,
-                stream_mode=["updates", "custom", "messages"]  # Add "messages" for token streaming
+                stream_mode=["updates", "custom", "messages"],  # Add "messages" for token streaming
+                durability=durability_mode  # Pass durability as direct parameter, not in config
             ):
                 # Handle LLM token streaming (messages mode)
                 # This captures tokens directly from LLM calls made within nodes

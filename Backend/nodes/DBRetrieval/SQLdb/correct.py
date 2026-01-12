@@ -5,7 +5,7 @@ Also updates conversation history (runs last, has access to final answers)
 """
 import time
 import re
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from config.settings import MAX_CONVERSATION_HISTORY
 from config.logging_config import log_enh
 
@@ -15,7 +15,7 @@ USE_SUPPORT_SCORING = False  # Disable support scoring for performance
 PROJECT_RE = re.compile(r'\d{2}-\d{2}-\d{3,4}')
 
 
-def node_correct(state: RAGState, max_hops: int = 1, min_score: float = 0.6) -> dict:
+def node_correct(state: DBRetrievalState, max_hops: int = 1, min_score: float = 0.6) -> dict:
     """Simplified corrective step - optionally calculate support score"""
     t_start = time.time()
     log_enh.info(">>> CORRECT START")

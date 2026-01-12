@@ -410,4 +410,3 @@ def node_answer(state: DBRetrievalState) -> dict:
     except Exception as e:
         log_syn.error(f"Answer synthesis failed: {e}")
         return {"final_answer": "Error synthesizing answer", "answer_citations": []}
-

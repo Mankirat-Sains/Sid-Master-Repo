@@ -44,7 +44,7 @@ except Exception as e:
 print("\n4. Testing node imports...")
 try:
     from nodes.plan import node_plan
-    from nodes.DBRetrieval.SQLdb.rag import node_rag
+    from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
     from nodes.DBRetrieval.SQLdb.retrieve import node_retrieve
     print("   ✓ Nodes imported")
 except Exception as e:

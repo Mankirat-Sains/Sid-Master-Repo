@@ -22,95 +22,72 @@ from nodes.DBRetrieval.SQLdb.image_nodes import node_generate_image_description,
 
 
 def node_rag_plan_router(state: DBRetrievalState) -> dict:
-    """
-    RAG Plan & Router Node - Runs rag_plan and rag_router in parallel.
-    This replaces the functionality from nodes/DBRetrieval/SQLdb/rag.py
-    """
+    """Run rag_plan and rag_router in parallel and merge results."""
     t_start = time.time()
     log_query.info(">>> RAG PLAN & ROUTER START (running in parallel)")
 
     try:
-        # Run rag_plan and rag_router in parallel
         with ThreadPoolExecutor(max_workers=2) as executor:
             future_plan = executor.submit(node_rag_plan, state)
             future_router = executor.submit(node_rag_router, state)
-
-            # Get results from both
             plan_result = future_plan.result()
             router_result = future_router.result()
 
-        # Merge results from both nodes
         merged_result = {
-            # From rag_plan
             "query_plan": plan_result.get("query_plan"),
             "expanded_queries": plan_result.get("expanded_queries", []),
-            # From rag_router
             "data_route": router_result.get("data_route"),
             "data_sources": router_result.get("data_sources"),
             "project_filter": router_result.get("project_filter"),
-            "needs_clarification": False
+            "needs_clarification": False,
         }
 
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< RAG PLAN & ROUTER DONE in {t_elapsed:.2f}s")
         log_query.info(f"   Merged results: plan steps={len(plan_result.get('query_plan', {}).get('steps', []))}, databases={router_result.get('data_sources', {})}")
-
         return merged_result
 
     except Exception as e:
         log_query.error(f"RAG plan & router node failed: {e}")
         import traceback
         traceback.print_exc()
-
-        # Fallback: try to run them sequentially if parallel execution fails
         log_query.warning("⚠️ Parallel execution failed, falling back to sequential")
         try:
             plan_result = node_rag_plan(state)
             router_result = node_rag_router(state)
-
             return {
                 "query_plan": plan_result.get("query_plan"),
                 "expanded_queries": plan_result.get("expanded_queries", []),
                 "data_route": router_result.get("data_route"),
                 "data_sources": router_result.get("data_sources"),
                 "project_filter": router_result.get("project_filter"),
-                "needs_clarification": False
+                "needs_clarification": False,
             }
         except Exception as e2:
             log_query.error(f"Sequential fallback also failed: {e2}")
-            # Ultimate fallback
             return {
                 "query_plan": None,
                 "expanded_queries": [state.user_query],
                 "data_route": "smart",
                 "data_sources": {"project_db": True, "code_db": False, "coop_manual": False, "speckle_db": False},
                 "project_filter": None,
-                "needs_clarification": False
+                "needs_clarification": False,
             }
 
 
 def _rag_plan_router_to_image_or_retrieve(state: DBRetrievalState) -> str:
-    """Route from rag_plan_router to image processing or retrieve"""
-    if isinstance(state, dict):
-        images_base64 = state.get("images_base64")
-        use_image_similarity = state.get("use_image_similarity", False)
-    else:
-        images_base64 = getattr(state, "images_base64", None)
-        use_image_similarity = getattr(state, "use_image_similarity", False)
-
+    """Route from rag_plan_router to image processing or retrieve."""
+    images_base64 = state.get("images_base64") if isinstance(state, dict) else getattr(state, "images_base64", None)
+    use_image_similarity = state.get("use_image_similarity", False) if isinstance(state, dict) else getattr(state, "use_image_similarity", False)
     if images_base64 and use_image_similarity:
         return "generate_image_embeddings"
     return "retrieve"
 
 
 def build_db_retrieval_subgraph():
-    """
-    Build the DBRetrieval subgraph.
-    Handles planning, image processing, retrieval, grading, answer, verification, correction.
-    """
+    """Build the DBRetrieval subgraph."""
     g = StateGraph(DBRetrievalState)
 
-    # Add nodes
     g.add_node("rag_plan_router", node_rag_plan_router)
     g.add_node("generate_image_embeddings", node_generate_image_description)
     g.add_node("image_similarity_search", node_image_similarity_search)
@@ -120,10 +97,8 @@ def build_db_retrieval_subgraph():
     g.add_node("verify", node_verify)
     g.add_node("correct", node_correct)
 
-    # Set entry point
     g.set_entry_point("rag_plan_router")
 
-    # rag_plan_router routes to image processing or retrieve
     g.add_conditional_edges(
         "rag_plan_router",
         _rag_plan_router_to_image_or_retrieve,
@@ -132,27 +107,14 @@ def build_db_retrieval_subgraph():
             "retrieve": "retrieve",
         },
     )
-
-    # Image processing pipeline: description → similarity search → retrieve
     g.add_edge("generate_image_embeddings", "image_similarity_search")
     g.add_edge("image_similarity_search", "retrieve")
-
-    # Main RAG pipeline: retrieve → grade → answer → verify
     g.add_edge("retrieve", "grade")
     g.add_edge("grade", "answer")
     g.add_edge("answer", "verify")
-
-    # Conditional branch from verify: fix → retrieve (loop), ok → correct → END
-    g.add_conditional_edges(
-        "verify",
-        _verify_route,
-        {"fix": "retrieve", "ok": "correct"},
-    )
-
-    # Final step: correct → END
+    g.add_conditional_edges("verify", _verify_route, {"fix": "retrieve", "ok": "correct"})
     g.add_edge("correct", END)
 
-    # Compile subgraph
     return g.compile()
 
 
@@ -177,6 +139,8 @@ def call_db_retrieval_subgraph(state: ParentState) -> dict:
         original_question=state.original_question,
         user_role=state.user_role,
         messages=state.messages,
+        data_sources=getattr(state, "data_sources", None),
+        project_filter=getattr(state, "project_filter", None),
         images_base64=state.images_base64,
         conversation_history=getattr(state, "conversation_history", []),
     )

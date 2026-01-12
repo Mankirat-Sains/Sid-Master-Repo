@@ -8,7 +8,7 @@ import time
 from dataclasses import asdict
 from pathlib import Path
 from typing import Dict, List, Optional
-from models.rag_state import RAGState
+from models.parent_state import ParentState
 from models.memory import (
     SESSION_MEMORY, MAX_CONVERSATION_HISTORY, MAX_SEMANTIC_HISTORY,
     intelligent_query_rewriter, update_focus_state, FOCUS_STATES
@@ -142,7 +142,7 @@ def run_agentic_rag(
     base_query = rewritten_query
     log_query.info(f"🎯 FINAL QUERY FOR RAG: '{base_query}'")
 
-    init_state = RAGState(
+    init_state = ParentState(
         session_id=session_id,
         user_query=base_query,
         original_question=question,
@@ -156,7 +156,7 @@ def run_agentic_rag(
     final = graph.invoke(asdict(init_state), config={"configurable": {"thread_id": session_id}})
 
     if isinstance(final, dict):
-        final_state = RAGState(**asdict(init_state))
+        final_state = ParentState(**asdict(init_state))
         for k, v in final.items():
             setattr(final_state, k, v)
     else:
@@ -201,7 +201,11 @@ def run_agentic_rag(
             log_query.error(f"DOCGEN CSV append failed: {exc}")
 
     # Extract projects from answer text
-    answer_text = final_state.final_answer or ""
+    answer_text = (
+        getattr(final_state, "final_answer", None)
+        or getattr(final_state, "db_retrieval_result", "")
+        or ""
+    )
     projects_in_answer = []
     seen_in_answer = set()
 
@@ -269,13 +273,13 @@ def run_agentic_rag(
     # TODO: Migrate all code to use state.conversation_history instead of SESSION_MEMORY
     SESSION_MEMORY[session_id] = {
         "conversation_history": conversation_history,
-        "project_filter": final_state.project_filter,
+        "project_filter": getattr(final_state, "project_filter", project_filter),
         "last_query": question,
-        "last_answer": final_state.final_answer,
+        "last_answer": answer_text,
         "last_results": [r for r in result_items if r.get("project")],
-        "selected_projects": final_state.selected_projects,
+        "selected_projects": getattr(final_state, "selected_projects", []) or getattr(final_state, "db_retrieval_selected_projects", []),
         "semantic_history": semantic_history,
-        "last_semantic": current_semantic
+        "last_semantic": current_semantic,
     }
 
     log_query.info("   ✅ Session memory updated (backward compatibility)")
@@ -286,7 +290,7 @@ def run_agentic_rag(
         session_id=session_id,
         query=question,
         projects=projects_in_answer,
-        results_projects=final_state.selected_projects
+        results_projects=getattr(final_state, "selected_projects", []) or getattr(final_state, "db_retrieval_selected_projects", [])
     )
     
     if session_id in FOCUS_STATES:
@@ -303,7 +307,8 @@ def run_agentic_rag(
     latency = round(time.time() - t0, 2)
 
     graded_preview = []
-    for d in (final_state.graded_docs or [])[:MAX_CITATIONS_DISPLAY]:
+    graded_docs = getattr(final_state, "graded_docs", None) or []
+    for d in graded_docs[:MAX_CITATIONS_DISPLAY]:
         md = d.metadata or {}
         graded_preview.append({
             "project": md.get("drawing_number") or md.get("project_key"),
@@ -329,18 +334,30 @@ def run_agentic_rag(
         }
     
     plan_for_ui = final_state.query_plan if isinstance(final_state.query_plan, dict) else {}
+    expanded_queries = getattr(final_state, "expanded_queries", []) or getattr(final_state, "db_retrieval_expanded_queries", [])
+    code_answer = getattr(final_state, "code_answer", None) or getattr(final_state, "db_retrieval_code_answer", None)
+    coop_answer = getattr(final_state, "coop_answer", None) or getattr(final_state, "db_retrieval_coop_answer", None)
+    citations = getattr(final_state, "answer_citations", []) or getattr(final_state, "db_retrieval_citations", [])
+    code_citations = getattr(final_state, "code_citations", []) or getattr(final_state, "db_retrieval_code_citations", [])
+    coop_citations = getattr(final_state, "coop_citations", []) or getattr(final_state, "db_retrieval_coop_citations", [])
+    route = getattr(final_state, "data_route", None) or getattr(final_state, "db_retrieval_route", None)
+    follow_up_questions = getattr(final_state, "follow_up_questions", []) or getattr(final_state, "db_retrieval_follow_up_questions", [])
+    follow_up_suggestions = getattr(final_state, "follow_up_suggestions", []) or getattr(final_state, "db_retrieval_follow_up_suggestions", [])
+    image_similarity_results = getattr(final_state, "image_similarity_results", []) or getattr(final_state, "db_retrieval_image_similarity_results", [])
+    support_score = getattr(final_state, "answer_support_score", 0.0) or getattr(final_state, "db_retrieval_support_score", 0.0)
+
     return {
-        "answer": final_state.final_answer,
-        "code_answer": final_state.code_answer,
-        "coop_answer": final_state.coop_answer,
-        "support": round(final_state.answer_support_score, 3),
-        "citations": final_state.answer_citations,
-        "code_citations": final_state.code_citations,
-        "coop_citations": final_state.coop_citations,
-        "route": final_state.data_route,
-        "project_filter": final_state.project_filter,
+        "answer": answer_text or None,
+        "code_answer": code_answer,
+        "coop_answer": coop_answer,
+        "support": round(support_score, 3),
+        "citations": citations,
+        "code_citations": code_citations,
+        "coop_citations": coop_citations,
+        "route": route,
+        "project_filter": getattr(final_state, "project_filter", project_filter),
         "needs_clarification": False,
-        "expanded_queries": final_state.expanded_queries[:MAX_ROUTER_DOCS],
+        "expanded_queries": expanded_queries[:MAX_ROUTER_DOCS] if expanded_queries else [],
         "latency_s": latency,
         "graded_preview": graded_preview,
         "plan": {
@@ -348,15 +365,15 @@ def run_agentic_rag(
             "steps": plan_for_ui.get("steps", []),
             "subqueries": plan_for_ui.get("subqueries", []),
         },
-        "image_similarity_results": final_state.image_similarity_results or [],
-        "follow_up_questions": final_state.follow_up_questions or [],
-        "follow_up_suggestions": final_state.follow_up_suggestions or [],
-        "execution_trace": final_state.execution_trace or [],
-        "workflow": final_state.workflow,
-        "task_type": final_state.task_type,
-        "doc_type": final_state.doc_type,
-        "section_type": final_state.section_type,
-        "doc_generation_warnings": final_state.doc_generation_warnings or [],
+        "image_similarity_results": image_similarity_results,
+        "follow_up_questions": follow_up_questions,
+        "follow_up_suggestions": follow_up_suggestions,
+        "execution_trace": getattr(final_state, "execution_trace", []) or [],
+        "workflow": getattr(final_state, "workflow", None),
+        "task_type": getattr(final_state, "task_type", None),
+        "doc_type": getattr(final_state, "doc_type", None),
+        "section_type": getattr(final_state, "section_type", None),
+        "doc_generation_warnings": getattr(final_state, "doc_generation_warnings", []) or [],
     }
 
 

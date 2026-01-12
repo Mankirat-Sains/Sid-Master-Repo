@@ -6,7 +6,7 @@ Also handles query rewriting (follow-up detection, pronoun resolution, context e
 import json
 import re
 import time
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from models.memory import (
     get_conversation_context, 
     SESSION_MEMORY, 
@@ -167,7 +167,7 @@ def _combined_rewrite_and_plan(user_query: str, session_id: str, conversation_co
         return user_query, {}, {"reasoning": "Error", "steps": [{"op": "RETRIEVE", "args": {"queries": [user_query]}}], "subqueries": [user_query]}
 
 
-def node_rag_plan(state: RAGState) -> dict:
+def node_rag_plan(state: DBRetrievalState) -> dict:
     """
     RAG Planning node - rewrites query and decomposes into executable plan in a SINGLE LLM call.
     This runs in parallel with node_rag_router (both are sub-nodes called by the top-level plan node).
