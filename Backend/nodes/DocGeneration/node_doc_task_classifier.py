@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 from typing import Dict
+
 from models.rag_state import RAGState
 from config.logging_config import log_query
 
@@ -27,6 +28,8 @@ _DOCGEN_RULES = [
     ("report", r"\b(draft|generate|create|write|prepare) (a )?(design )?(report|rp|rfp|proposal)\b"),
     ("section", r"\b(draft|generate|create|write|prepare) (the )?(?P<section>\w+ )?section\b"),
     ("section_named", r"\b(methodology|introduction|findings|results|recommendations|conclusion|scope) section\b"),
+    ("generate_section", r"\bgenerate (an? )?(?P<section>\w+ )?(section|methodology|introduction|findings|results|recommendations|conclusion)\b"),
+    ("create_document", r"\b(create|compose|prepare) (a )?(report|document)\b"),
     ("desktop_request", r"\bopen .*word\b"),
 ]
 

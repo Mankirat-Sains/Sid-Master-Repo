@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
 from models.rag_state import RAGState
 from config.logging_config import log_query
@@ -16,16 +16,12 @@ def _ensure_info_retrieval_path() -> None:
     """Ensure info_retrieval/src is on sys.path for imports."""
     here = Path(__file__).resolve()
     candidates = set()
-    # Repo root (Backend/../..)
     if len(here.parents) >= 3:
         candidates.add(here.parents[3])
-    # Backend directory
     if len(here.parents) >= 2:
         candidates.add(here.parents[2])
-    # One level above repo root (just in case)
     if len(here.parents) >= 4:
         candidates.add(here.parents[4])
-    # Explicit relative fallback
     candidates.add((here.parent / "../../../info_retrieval/src").resolve())
 
     for base in candidates:
