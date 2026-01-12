@@ -47,17 +47,31 @@ class DocumentDrafter:
         style_rules = self.template_store.get_style_rules(company_id)
 
         # Step 3: Retrieve content chunks
+        primary_filters = {**{"doc_type": query["doc_type"], "section_type": query["section_type"]}, **query["constraints"]}
         content_chunks = self.retriever.retrieve_content(
             query_text=user_request,
             company_id=company_id,
-            filters={**{"doc_type": query["doc_type"], "section_type": query["section_type"]}, **query["constraints"]},
+            filters=primary_filters,
             top_k=8,
         )
+        if not content_chunks:
+            # Relax filters to allow any section/doc_type for this company
+            fallback_filters = {"company_id": company_id}
+            content_chunks = self.retriever.retrieve_content(
+                query_text=user_request,
+                company_id=company_id,
+                filters=fallback_filters,
+                top_k=8,
+            )
 
         # Step 4: Retrieve style exemplars
         style_chunks = self.retriever.retrieve_style_examples(
             section_type=query["section_type"], company_id=company_id, top_k=3
         )
+        if not style_chunks:
+            style_chunks = self.retriever.retrieve_style_examples(
+                section_type=None, company_id=company_id, top_k=3
+            )
 
         # Step 5: Build LLM prompt
         prompt = self._build_prompt(
