@@ -6,11 +6,14 @@ from langgraph.graph import StateGraph, END
 
 from models.parent_state import ParentState
 from config.logging_config import log_query
+from utils.path_setup import ensure_info_retrieval_on_path
+
+ensure_info_retrieval_on_path()
 from nodes.plan import node_plan
 from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
 from graph.subgraphs.desktop_agent_subgraph import call_desktop_agent_subgraph
 from nodes.router_dispatcher import node_router_dispatcher
-from nodes.DocGeneration.node_doc_task_classifier import node_doc_task_classifier
+from desktop_agent.agents.doc_generation.task_classifier import node_doc_task_classifier
 
 
 def _router_route(state: ParentState) -> str:

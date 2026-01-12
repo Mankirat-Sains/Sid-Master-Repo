@@ -9,10 +9,10 @@ from langgraph.graph import StateGraph, END
 from models.parent_state import ParentState
 from models.rag_state import RAGState
 from config.logging_config import log_query
-from nodes.DocGeneration.node_doc_plan import node_doc_plan
-from nodes.DocGeneration.node_doc_generate_section import node_doc_generate_section
-from nodes.DocGeneration.node_doc_generate_report import node_doc_generate_report
-from nodes.DocGeneration.node_doc_answer_adapter import node_doc_answer_adapter
+from desktop_agent.agents.doc_generation.plan import node_doc_plan
+from desktop_agent.agents.doc_generation.section_generator import node_doc_generate_section
+from desktop_agent.agents.doc_generation.report_generator import node_doc_generate_report
+from desktop_agent.agents.doc_generation.answer_adapter import node_doc_answer_adapter
 
 
 def _doc_generate_route(state: RAGState) -> str:

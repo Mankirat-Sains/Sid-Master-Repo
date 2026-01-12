@@ -1,0 +1,14 @@
+# Document generation configuration
+# Tweak these values to point to real templates/output locations for your environment.
+templates:
+  default_template: "standard_report"
+  output_format: "docx"
+
+generation:
+  max_sections: 10
+  default_font: "Calibri"
+  default_font_size: 11
+
+paths:
+  templates_dir: "./templates"
+  output_dir: "./output"

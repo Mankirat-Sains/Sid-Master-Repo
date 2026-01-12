@@ -4,7 +4,6 @@ DOCGEN: Generate a single section via Tier2Generator.
 from __future__ import annotations
 
 import os
-import sys
 from pathlib import Path
 from typing import Any, Dict
 
@@ -14,33 +13,15 @@ from config.logging_config import log_query
 _DOC_SERVICES: Dict[str, Any] | None = None
 
 
-def _ensure_info_retrieval_path() -> None:
-    here = Path(__file__).resolve()
-    candidates = set()
-    if len(here.parents) >= 3:
-        candidates.add(here.parents[3])
-    if len(here.parents) >= 2:
-        candidates.add(here.parents[2])
-    if len(here.parents) >= 4:
-        candidates.add(here.parents[4])
-    candidates.add((here.parent / "../../../info_retrieval/src").resolve())
-
-    for base in candidates:
-        ir_src = Path(base) / "info_retrieval" / "src"
-        if ir_src.exists() and str(ir_src) not in sys.path:
-            sys.path.insert(0, str(ir_src))
-
-
 def _load_services() -> Dict[str, Any]:
     """Lazy-load Tier2 services (config, generator, metadata)."""
     global _DOC_SERVICES
     if _DOC_SERVICES is not None:
         return _DOC_SERVICES
 
-    _ensure_info_retrieval_path()
     from dotenv import load_dotenv
 
-    load_dotenv(Path(__file__).resolve().parents[3] / ".env", override=True)
+    load_dotenv(Path(__file__).resolve().parents[5] / ".env", override=True)
 
     from ir_utils.config import load_config
     from embeddings.embedding_service import EmbeddingService
@@ -78,7 +59,13 @@ def _load_services() -> Dict[str, Any]:
 
 def node_doc_generate_section(state: RAGState) -> dict:
     """Generate a section draft and stash in state."""
-    log_query.info(f"DOCGEN: entered node_doc_generate_section (task_type={state.task_type})")
+    log_query.info(
+        "DOCGEN: entered node_doc_generate_section | task_type=%s | doc_type=%s | section_type=%s | doc_request=%s",
+        state.task_type,
+        state.doc_type,
+        state.section_type,
+        state.doc_request,
+    )
     try:
         services = _load_services()
         generator = services["generator"]
@@ -130,6 +117,18 @@ def node_doc_generate_section(state: RAGState) -> dict:
             result = relaxed_result
             warnings = relaxed_result.get("warnings", []) or warnings
             draft_text = relaxed_result.get("draft_text", draft_text)
+
+    # Diagnostics: log which sources were used
+    cite_sources = []
+    for cite in result.get("citations") or []:
+        cite_sources.append(
+            {
+                "artifact_id": cite.get("artifact_id"),
+                "chunk_id": cite.get("chunk_id"),
+                "score": cite.get("score"),
+            }
+        )
+    log_query.info("DOCGEN: citations used=%s", cite_sources)
 
     return {
         "doc_generation_result": result,
