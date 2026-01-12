@@ -42,7 +42,7 @@ def _load_services() -> Dict[str, Any]:
 
     load_dotenv(Path(__file__).resolve().parents[3] / ".env", override=True)
 
-    from utils.config import load_config
+    from ir_utils.config import load_config
     from embeddings.embedding_service import EmbeddingService
     from retrieval.retriever import Retriever
     from storage.metadata_db import MetadataDB

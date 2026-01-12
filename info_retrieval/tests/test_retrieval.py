@@ -8,7 +8,7 @@ import math
 from embeddings.embedding_service import EmbeddingService  # noqa: E402
 from retrieval.retriever import Retriever  # noqa: E402
 from storage.vector_store import VectorStore, Chunk, SearchResult  # noqa: E402
-from utils.config import AppConfig  # noqa: E402
+from ir_utils.config import AppConfig  # noqa: E402
 
 
 class FakeSupabaseVectorStore(VectorStore):

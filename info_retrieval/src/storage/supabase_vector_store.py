@@ -5,7 +5,7 @@ import uuid
 import re
 from typing import Dict, List, Optional
 
-from utils.logger import get_logger
+from ir_utils.logger import get_logger
 from storage.vector_store import Chunk, SearchResult, VectorStore
 
 logger = get_logger(__name__)

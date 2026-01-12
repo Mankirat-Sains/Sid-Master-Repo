@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-from utils.logger import get_logger
+from ir_utils.logger import get_logger
 
 logger = get_logger(__name__)
 

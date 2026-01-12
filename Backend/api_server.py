@@ -15,6 +15,11 @@ if sys.platform == 'win32':
     # Only set policy if we need to override (not necessary in Python 3.11+)
     # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # Commented: use default in 3.11+
 
+import os
+import json
+from html import escape
+import httpx
+from pathlib import Path
 from datetime import datetime
 import logging
 import re
@@ -25,11 +30,11 @@ from fastapi.responses import StreamingResponse, FileResponse
 from pydantic import BaseModel
 import uvicorn
 from dotenv import load_dotenv
-import os
-import json
-from html import escape
-import httpx
-from pathlib import Path
+
+# Ensure docgen deps (info_retrieval/src) are importable before other modules load
+DOCGEN_SRC = (Path(__file__).resolve().parent.parent / "info_retrieval" / "src").resolve()
+if DOCGEN_SRC.exists() and str(DOCGEN_SRC) not in sys.path:
+    sys.path.insert(0, str(DOCGEN_SRC))
 
 # Load environment variables from the root .env (single source of truth)
 root_env_path = Path(__file__).resolve().parent.parent / ".env"
