@@ -6,8 +6,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
-from utils.config import AppConfig
-from utils.logger import get_logger
+from ir_utils.config import AppConfig
+from ir_utils.logger import get_logger
 
 logger = get_logger(__name__)
 

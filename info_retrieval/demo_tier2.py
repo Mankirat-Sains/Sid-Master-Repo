@@ -20,8 +20,8 @@ from retrieval.retriever import Retriever
 from storage.supabase_vector_store import SupabaseVectorStore
 from tier2.drafter import DocumentDrafter
 from tier2.template_store import TemplateStore
-from utils.config import load_config
-from utils.logger import get_logger
+from ir_utils.config import load_config
+from ir_utils.logger import get_logger
 
 
 def _append_output_csv(path: str, user_request: str, result: dict) -> None:

@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Dict, List, Optional
 
-from utils.logger import get_logger
+from ir_utils.logger import get_logger
 from storage.vector_db import VectorDB
 from storage.vector_store import Chunk, SearchResult, VectorStore
 
