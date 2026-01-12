@@ -81,7 +81,36 @@ def _log_node_state(node_name: str, state) -> None:
 def _wrap_node(node_name: str, fn):
     def _wrapped(state: RAGState, *args, **kwargs):
         _log_node_state(node_name, state)
-        return fn(state, *args, **kwargs)
+        # Build trace entries
+        def get(field, default=None):
+            if isinstance(state, dict):
+                return state.get(field, default)
+            return getattr(state, field, default)
+
+        trace = list(get("execution_trace", []) or [])
+        trace.append(node_name)
+        verbose = list(get("execution_trace_verbose", []) or [])
+        verbose.append(
+            {
+                "node": node_name,
+                "task_type": get("task_type"),
+                "workflow": get("workflow"),
+                "desktop_policy": get("desktop_policy"),
+                "requires_desktop_action": get("requires_desktop_action"),
+                "doc_type": get("doc_type"),
+                "section_type": get("section_type"),
+                "has_desktop_plan": bool(get("desktop_action_plan")),
+            }
+        )
+
+        result = fn(state, *args, **kwargs)
+        if isinstance(result, dict):
+            result = {
+                **result,
+                "execution_trace": trace,
+                "execution_trace_verbose": verbose,
+            }
+        return result
 
     return _wrapped
 

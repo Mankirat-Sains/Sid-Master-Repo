@@ -4,6 +4,27 @@ Create and configure all LLM instances used throughout the system
 """
 import os
 from pathlib import Path
+
+# Compat shim for newer openai package (>=1.x) with langchain_openai expecting DefaultHttpxClient
+try:
+    import openai  # type: ignore
+except Exception:  # pragma: no cover
+    openai = None
+
+if openai:
+    if not hasattr(openai, "DefaultHttpxClient"):
+        class _DummyClient:
+            def __init__(self, *args, **kwargs):
+                pass
+        openai.DefaultHttpxClient = _DummyClient  # type: ignore
+    if not hasattr(openai, "DefaultAsyncHttpxClient"):
+        class _DummyAsyncClient:
+            def __init__(self, *args, **kwargs):
+                pass
+        openai.DefaultAsyncHttpxClient = _DummyAsyncClient  # type: ignore
+    if not hasattr(openai, "AsyncOpenAI"):
+        openai.AsyncOpenAI = getattr(openai, "AsyncClient", None) or getattr(openai, "OpenAI", None) or openai.DefaultAsyncHttpxClient  # type: ignore
+
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_anthropic import ChatAnthropic
 from langchain_core.caches import BaseCache  # Fix for Pydantic v2 compatibility
