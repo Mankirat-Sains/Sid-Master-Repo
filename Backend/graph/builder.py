@@ -90,20 +90,15 @@ def build_graph():
     """Build the parent LangGraph workflow."""
     g = StateGraph(ParentState)
 
-    # Add nodes
     g.add_node("plan", _wrap_node("plan", node_plan))
     g.add_node("doc_task_classifier", _wrap_node("doc_task_classifier", node_doc_task_classifier))
     g.add_node("desktop_agent", _wrap_node("desktop_agent", call_desktop_agent_subgraph))
     g.add_node("db_retrieval", call_db_retrieval_subgraph)
     g.add_node("router_dispatcher", node_router_dispatcher)
 
-    # Entry point
     g.set_entry_point("plan")
 
-    # Plan -> doc classifier (decides doc branch vs existing)
     g.add_edge("plan", "doc_task_classifier")
-
-    # Doc classifier routes to desktop/docgen or router/db_retrieval
     g.add_conditional_edges(
         "doc_task_classifier",
         _doc_or_router,
@@ -114,11 +109,9 @@ def build_graph():
         },
     )
 
-    # Terminal edges for subgraphs
     g.add_edge("desktop_agent", END)
     g.add_edge("router_dispatcher", END)
     g.add_edge("db_retrieval", END)
 
-    # Import checkpointer dynamically
     from graph.checkpointer import checkpointer
     return g.compile(checkpointer=checkpointer)

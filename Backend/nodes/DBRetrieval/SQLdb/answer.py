@@ -6,7 +6,7 @@ Note: Requires Python 3.11+ for proper async streaming support with LangGraph
 """
 from concurrent.futures import ThreadPoolExecutor
 from langchain_core.documents import Document
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from config.settings import MAX_SYNTHESIS_DOCS, MAX_CONVERSATION_HISTORY
 from config.logging_config import log_query, log_syn
 from utils.plan_executor import (
@@ -60,13 +60,8 @@ def strip_markdown_image_links(text: str) -> str:
     return re.sub(pattern, r'\1', text)
 
 
-def node_answer(state: RAGState) -> dict:
-    """
-    Synthesize an answer with guardrails.
-    
-    Note: This function uses get_stream_writer() which requires Python 3.11+
-    for proper async streaming support in LangGraph.
-    """
+def node_answer(state: DBRetrievalState) -> dict:
+    """Synthesize an answer with guardrails"""
     try:
         docs = list(state.graded_docs or [])
 
@@ -410,4 +405,3 @@ def node_answer(state: RAGState) -> dict:
     except Exception as e:
         log_syn.error(f"Answer synthesis failed: {e}")
         return {"final_answer": "Error synthesizing answer", "answer_citations": []}
-

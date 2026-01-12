@@ -7,7 +7,7 @@ import re
 import time
 from typing import List
 from langchain_core.documents import Document
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from config.settings import MAX_SYNTHESIS_DOCS
 from config.logging_config import log_enh
 from config.llm_instances import llm_verify
@@ -59,7 +59,7 @@ def _json_from_text(s: str) -> dict | None:
         return None
 
 
-def node_verify(state: RAGState) -> dict:
+def node_verify(state: DBRetrievalState) -> dict:
     """Verify answer quality and fix if needed"""
     t_start = time.time()
     log_enh.info(">>> VERIFY START")
@@ -320,7 +320,7 @@ def node_verify(state: RAGState) -> dict:
         return {"needs_fix": False, "follow_up_questions": follow_up_questions, "follow_up_suggestions": follow_up_suggestions}
 
 
-def _verify_route(state: RAGState) -> str:
+def _verify_route(state: DBRetrievalState) -> str:
     """Route based on whether verification flagged issues"""
     return "fix" if getattr(state, "needs_fix", False) else "ok"
 

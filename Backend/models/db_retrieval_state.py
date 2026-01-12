@@ -3,7 +3,8 @@ DBRetrieval State Definition
 Specialized state object for the DBRetrieval subgraph.
 """
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Literal, Any
+from typing import Any, Dict, List, Literal, Optional
+
 from langchain_core.documents import Document
 
 
@@ -28,7 +29,7 @@ class DBRetrievalState:
             "project_db": True,
             "code_db": False,
             "coop_manual": False,
-            "speckle_db": False
+            "speckle_db": False,
         }
     )
     data_route: Optional[Literal["smart", "large"]] = None

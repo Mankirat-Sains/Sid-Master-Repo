@@ -4,7 +4,7 @@ Handle image description and text-based semantic search on image_descriptions ta
 """
 import time
 from typing import Optional, Dict, Any, List
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from config.logging_config import log_query, log_vlm
 from config.settings import SUPABASE_URL, SUPABASE_KEY
 from config.llm_instances import emb  # Text embedding model (text-embedding-3-small)
@@ -254,7 +254,7 @@ def classify_image_query_intent(user_query: str, image_base64: Optional[str] = N
     }
 
 
-def node_generate_image_description(state: RAGState) -> dict:
+def node_generate_image_description(state: DBRetrievalState) -> dict:
     """
     Generate text description of uploaded image using VLM.
     This description will be used for text-based semantic search.
@@ -286,7 +286,7 @@ def node_generate_image_description(state: RAGState) -> dict:
         return {"use_image_similarity": False}
 
 
-def node_image_similarity_search(state: RAGState) -> dict:
+def node_image_similarity_search(state: DBRetrievalState) -> dict:
     """
     Search for similar images using TEXT semantic search on image_descriptions table.
     

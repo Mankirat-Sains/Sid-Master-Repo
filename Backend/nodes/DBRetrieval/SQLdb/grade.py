@@ -3,7 +3,7 @@ Grading Node
 Grades documents for relevance to the query
 """
 import time
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from config.settings import MAX_GRADED_DOCS
 from config.logging_config import log_enh
 from utils.plan_executor import self_grade
@@ -25,7 +25,7 @@ def _log_docs_summary(docs, logger, prefix: str = "Documents"):
     logger.info(f"{prefix}: {len(docs)} docs from {len(projects)} projects")
 
 
-def node_grade(state: RAGState) -> dict:
+def node_grade(state: DBRetrievalState) -> dict:
     """Grade documents - handles both project docs and code docs separately"""
     t_start = time.time()
     try:

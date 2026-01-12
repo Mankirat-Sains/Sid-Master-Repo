@@ -34,6 +34,8 @@ class ParentState:
     query_intent: Optional[str] = None
     project_filter: Optional[str] = None
     selected_projects: List[str] = field(default_factory=list)
+    needs_clarification: bool = False
+    clarification_question: Optional[str] = None
 
     # Results from subgraphs (aggregated outputs)
     db_retrieval_result: Optional[str] = None  # final_answer from DBRetrieval subgraph
