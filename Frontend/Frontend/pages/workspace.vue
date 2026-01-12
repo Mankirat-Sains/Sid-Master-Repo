@@ -391,12 +391,12 @@
             <div
               ref="viewerSplitContainer"
               class="flex flex-1 min-h-0"
-              :class="showSpeckleViewer ? '' : 'justify-center'"
+              :class="showSpeckleViewer || showDocumentPreview ? '' : 'justify-center'"
             >
               <div
                 class="h-full w-full chat-frame overflow-hidden flex flex-col"
-                :class="{ 'chat-frame--docked': showSpeckleViewer }"
-                :style="showSpeckleViewer ? chatPaneStyle : undefined"
+                :class="{ 'chat-frame--docked': showSpeckleViewer || showDocumentPreview }"
+                :style="showSpeckleViewer || showDocumentPreview ? chatPaneStyle : undefined"
               >
                 <template v-if="!activeChatLog.length">
                   <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5 -translate-y-8 md:-translate-y-10">
@@ -732,7 +732,31 @@
                 </template>
               </div>
 
-              <template v-if="showSpeckleViewer">
+              <template v-if="showDocumentPreview">
+                <div class="viewer-resize-handle" @mousedown.prevent="startViewerResize">
+                  <div class="viewer-resize-grip"></div>
+                </div>
+
+                <div
+                  class="flex flex-col min-h-0 viewer-pane bg-[#13131b] border-l border-[#242436] shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
+                  :style="viewerPaneStyle"
+                >
+                  <div class="relative flex-1 min-h-0">
+                    <button
+                      class="viewer-close"
+                      type="button"
+                      @click="closeDocumentPreview"
+                      aria-label="Close document preview"
+                    >
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                    <DocumentPreviewPanel class="flex-1 min-h-0" />
+                  </div>
+                </div>
+              </template>
+              <template v-else-if="showSpeckleViewer">
                 <div class="viewer-resize-handle" @mousedown.prevent="startViewerResize">
                   <div class="viewer-resize-grip"></div>
                 </div>
@@ -934,13 +958,16 @@ import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
+import DocumentPreviewPanel from '~/components/DocumentPreviewPanel.vue'
 import { useChat } from '~/composables/useChat'
 // Removed useSmartChat - using streaming endpoint only to avoid duplication
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 import { useSpeckle } from '~/composables/useSpeckle'
 import { useWorkspace } from '~/composables/useWorkspace'
+import { useDocumentWorkflow, normalizeWorkflow, cloneDocumentState } from '~/composables/useDocumentWorkflow'
 import { useRuntimeConfig } from '#app'
 import type { Component } from 'vue'
+import type { StructuredDocument, WorkflowMode } from '~/composables/useDocumentWorkflow'
 
 type ChatEntry = {
   role: 'user' | 'assistant'
@@ -956,6 +983,7 @@ type ChatEntry = {
   timestamp?: number
   liked?: boolean
   disliked?: boolean
+  id?: string
 }
 
 type Conversation = {
@@ -968,6 +996,8 @@ type Conversation = {
   chatLog: ChatEntry[]
   autoTitleGenerated?: boolean
   userRenamed?: boolean
+  workflowMode?: WorkflowMode
+  documentState?: StructuredDocument | null
 }
 
 const PAGE_IDS = ['home', 'settings', 'work', 'timesheet', 'todo', 'discussion'] as const
@@ -1225,6 +1255,16 @@ const renderKey = ref(0)
 const { findProjectByKey, getProjectModels } = useSpeckle()
 const workspace = useWorkspace()
 const config = useRuntimeConfig()
+const {
+  activeWorkflowMode,
+  documentState,
+  isDocumentWorkflow,
+  setWorkflowMode,
+  setDocumentState,
+  applyDocumentPatch,
+  ensureDocumentState,
+  resetDocumentWorkflow
+} = useDocumentWorkflow()
 type DataSources = { project_db: boolean; code_db: boolean; coop_manual: boolean }
 const dataSources = ref<DataSources>({
   project_db: true,
@@ -1293,6 +1333,8 @@ const docListSubtitle = ref('')
 const speckleViewerModels = ref<Array<{ id: string; url: string; name: string; projectName?: string }>>([])
 const speckleViewerSelectedId = ref('')
 const speckleViewerPanelOpen = ref(false)
+const docPreviewPanelOpen = ref(false)
+const docPreviewUserClosed = ref(false)
 const speckleViewerFetchLoading = ref(false)
 const speckleViewerFetchError = ref('')
 const selectedSpeckleModel = computed(() => speckleViewerModels.value.find(model => model.id === speckleViewerSelectedId.value) || null)
@@ -1301,9 +1343,24 @@ const isResizingViewer = ref(false)
 const viewerSplitContainer = ref<HTMLElement | null>(null)
 const viewerResizeStartX = ref(0)
 const viewerResizeStartPercent = ref(50)
-const showSpeckleViewer = computed(() => speckleViewerPanelOpen.value && !!selectedSpeckleModel.value)
-const chatPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}))
-const viewerPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}))
+const showSpeckleViewer = computed(
+  () => !isDocumentWorkflow.value && speckleViewerPanelOpen.value && !!selectedSpeckleModel.value
+)
+const showDocumentPreview = computed(() => isDocumentWorkflow.value && docPreviewPanelOpen.value)
+const chatPaneStyle = computed(() =>
+  showSpeckleViewer.value || showDocumentPreview.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}
+)
+const viewerPaneStyle = computed(() =>
+  showSpeckleViewer.value || showDocumentPreview.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}
+)
+
+function withConversationDefaults(conv: Conversation): Conversation {
+  return {
+    ...conv,
+    workflowMode: conv.workflowMode || 'default',
+    documentState: conv.documentState ?? null
+  }
+}
 
 const defaultConversations: Conversation[] = [
   { id: 'conv-1', title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago', section: 'Today', sessionId: 'session-1', chatLog: [] },
@@ -1322,7 +1379,7 @@ const defaultConversations: Conversation[] = [
   { id: 'conv-14', title: 'Mesh Refinement Zone Design', short: 'Refinement zone', time: 'Nov 19', section: 'This Month', sessionId: 'session-14', chatLog: [] }
 ]
 
-const conversations = ref<Conversation[]>([...defaultConversations])
+const conversations = ref<Conversation[]>(defaultConversations.map(withConversationDefaults))
 
 const sectionOrder = ['Today', 'Yesterday', 'This Month']
 const activeConversationId = ref(conversations.value[0]?.id || '')
@@ -1349,6 +1406,23 @@ const filteredConversationSections = computed(() => {
     }))
     .filter(section => section.items.length)
 })
+
+function syncWorkflowFromConversation(conversation: Conversation | null) {
+  setWorkflowMode(conversation?.workflowMode || 'default')
+  setDocumentState(conversation?.documentState || null)
+  if ((conversation?.workflowMode || 'default') !== 'default') {
+    speckleViewerPanelOpen.value = false
+    docPreviewUserClosed.value = false
+    docPreviewPanelOpen.value = true
+  }
+}
+
+function persistDocumentStateToConversation() {
+  const convo = activeConversation.value
+  if (!convo) return
+  convo.workflowMode = activeWorkflowMode.value
+  convo.documentState = cloneDocumentState(documentState.value)
+}
 
 
 function scrollToBottom(smooth = false) {
@@ -1494,7 +1568,7 @@ function loadMemory() {
   try {
     const parsed = JSON.parse(raw)
     if (Array.isArray(parsed.conversations)) {
-      conversations.value = parsed.conversations
+      conversations.value = parsed.conversations.map((conv: Conversation) => withConversationDefaults(conv))
     }
     if (parsed.activeConversationId) {
       activeConversationId.value = parsed.activeConversationId
@@ -1555,9 +1629,10 @@ function loadMemory() {
       activeConversationId.value = conversations.value[0]?.id || ''
     }
     if (!conversations.value.length) {
-      conversations.value = [...defaultConversations]
+      conversations.value = defaultConversations.map(withConversationDefaults)
       activeConversationId.value = conversations.value[0]?.id || ''
     }
+    syncWorkflowFromConversation(activeConversation.value)
   } catch (error) {
     console.warn('Unable to load workspace memory, using defaults', error)
   }
@@ -1602,6 +1677,7 @@ watch(activeConversationId, () => {
   attachments.value = []
   nextTick(resizePrompt)
   scrollToBottom()
+  syncWorkflowFromConversation(activeConversation.value)
 })
 
 onMounted(() => {
@@ -1645,6 +1721,22 @@ watch(
   newLen => {
     if (newLen > 0) docListOpen.value = true
   }
+)
+
+watch(
+  [documentState, activeWorkflowMode],
+  () => {
+    persistDocumentStateToConversation()
+    if (activeWorkflowMode.value === 'default') {
+      docPreviewPanelOpen.value = false
+      docPreviewUserClosed.value = false
+    } else {
+      if (!docPreviewUserClosed.value) {
+        docPreviewPanelOpen.value = true
+      }
+    }
+  },
+  { deep: true }
 )
 
 watch(
@@ -1784,7 +1876,7 @@ function stopSidebarResize() {
 }
 
 function startViewerResize(e: MouseEvent) {
-  if (!showSpeckleViewer.value) return
+  if (!showSpeckleViewer.value && !showDocumentPreview.value) return
   isResizingViewer.value = true
   viewerResizeStartX.value = e.clientX
   viewerResizeStartPercent.value = viewerSplitPercent.value
@@ -1936,13 +2028,18 @@ function startNewConversation() {
     sessionId: newId,
     chatLog: [],
     autoTitleGenerated: false,
-    userRenamed: false
+    userRenamed: false,
+    workflowMode: 'default',
+    documentState: null
   }
-  conversations.value = [newConversation, ...conversations.value]
+  conversations.value = [withConversationDefaults(newConversation), ...conversations.value]
   activeConversationId.value = newId
   setActivePage('home')
   prompt.value = ''
   attachments.value = []
+  resetDocumentWorkflow()
+  docPreviewPanelOpen.value = false
+  docPreviewUserClosed.value = false
 }
 
 function ensureLandingNewConversation() {
@@ -2240,6 +2337,44 @@ function openDocumentsList(documents: any[], title?: string, subtitle?: string) 
 }
 
 function handleDocumentSelect(doc: any) {
+  const isPdfDoc = (d: any) => {
+    const url = d?.url || d?.filePath
+    return typeof url === 'string' && url.toLowerCase().endsWith('.pdf')
+  }
+  const isDocxDoc = (d: any) => {
+    const url = d?.url || d?.filePath
+    return typeof url === 'string' && url.toLowerCase().endsWith('.docx')
+  }
+
+  // If this looks like a document and doc workflows are active, show in preview
+  if (isDocumentWorkflow.value || isPdfDoc(doc) || isDocxDoc(doc) || doc.document_state || doc.doc_generation_result) {
+    const documentPayload =
+      doc.document_state ||
+      doc.doc_generation_result ||
+      doc.doc ||
+      doc.document ||
+      doc.document_patch ||
+      (isPdfDoc(doc)
+        ? {
+            title: doc.title || doc.name,
+            docType: 'pdf',
+            pdf: { url: doc.url || doc.filePath, page: 1 }
+          }
+        : undefined)
+
+    if (documentPayload) {
+      applyDocumentPatch(documentPayload)
+      const targetMode =
+        detectWorkflowFromPayload(documentPayload) ||
+        (activeWorkflowMode.value !== 'default' ? activeWorkflowMode.value : 'docgen')
+      setWorkflowMode(targetMode)
+      docPreviewUserClosed.value = false
+      docPreviewPanelOpen.value = true
+      viewerSplitPercent.value = 50
+      return
+    }
+  }
+
   const models = docListDocs.value
     .filter(d => d.url)
     .map(d => ({
@@ -2261,6 +2396,11 @@ function handleDocumentSelect(doc: any) {
 function closeSpeckleViewer() {
   speckleViewerPanelOpen.value = false
   speckleViewerSelectedId.value = ''
+}
+
+function closeDocumentPreview() {
+  docPreviewPanelOpen.value = false
+  docPreviewUserClosed.value = true
 }
 
 function openSpeckleViewerWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
@@ -2353,6 +2493,44 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
   speckleViewerFetchLoading.value = false
 }
 
+function detectWorkflowFromPayload(payload: any): WorkflowMode | null {
+  if (!payload) return null
+  const workflow = typeof payload === 'string'
+    ? payload
+    : payload.workflow || payload.task_type || payload.node
+  if (!workflow) return null
+  const normalized = normalizeWorkflow(workflow)
+  return normalized === 'default' ? null : normalized
+}
+
+function handleWorkflowSignal(payload: any) {
+  const detected = detectWorkflowFromPayload(payload)
+  if (!detected) return
+  setWorkflowMode(detected)
+  speckleViewerPanelOpen.value = false
+  docPreviewUserClosed.value = false
+  docPreviewPanelOpen.value = true
+  viewerSplitPercent.value = 50
+  persistDocumentStateToConversation()
+}
+
+function handleDocumentUpdate(payload: any) {
+  const updated = applyDocumentPatch(payload)
+  if (updated) {
+    const detected = detectWorkflowFromPayload(payload)
+    if (detected) {
+      setWorkflowMode(detected)
+    } else if (activeWorkflowMode.value === 'default') {
+      setWorkflowMode('docgen')
+    }
+    speckleViewerPanelOpen.value = false
+    docPreviewUserClosed.value = false
+    docPreviewPanelOpen.value = true
+    viewerSplitPercent.value = 50
+    persistDocumentStateToConversation()
+  }
+}
+
 function resizePrompt() {
   const el = promptInput.value
   if (!el) return
@@ -2393,6 +2571,7 @@ async function handleSend() {
 
   const conversation = activeConversation.value
   if (!conversation) return
+  const documentContext = isDocumentWorkflow.value ? cloneDocumentState(ensureDocumentState()) : null
 
   // Set isSending IMMEDIATELY to prevent duplicate calls
   isSending.value = true
@@ -2468,8 +2647,10 @@ async function handleSend() {
             timestamp: new Date(),
             type: 'thinking'
           })
+          handleWorkflowSignal(log)
         },
         onToken: token => {
+          handleWorkflowSignal(token)
           // Remove thinking message on first token
           if (!streamingMessageId) {
             // Clear the thinking interval
@@ -2522,12 +2703,18 @@ async function handleSend() {
             })
           }
         },
+        onWorkflow: handleWorkflowSignal,
+        onDocument: handleDocumentUpdate,
         onComplete: async result => {
           // ALWAYS clear the thinking interval and remove thinking message on completion
           clearInterval(thinkingInterval)
           const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
           if (thinkingIndex !== -1) {
             conversation.chatLog.splice(thinkingIndex, 1)
+          }
+          handleWorkflowSignal(result)
+          if (result.doc_generation_result || result.document_state || result.document_patch) {
+            handleDocumentUpdate(result.doc_generation_result || result.document_state || result.document_patch)
           }
           
           // Extract image similarity results and transform for display
@@ -2599,7 +2786,9 @@ async function handleSend() {
           
           const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
-          await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          if (!isDocumentWorkflow.value) {
+            await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          }
           scrollToBottom(true)
         },
         onError: error => {
@@ -2611,6 +2800,11 @@ async function handleSend() {
           }
           streamError = error
         }
+      },
+      {
+        documentContext: documentContext || undefined,
+        workflowHint: activeWorkflowMode.value,
+        selection: null
       }
     )
 
@@ -2633,6 +2827,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
     // Use streaming endpoint ONLY - no duplicate calls
     const conversation = activeConversation.value
     if (!conversation) return
+    const documentContext = isDocumentWorkflow.value ? cloneDocumentState(ensureDocumentState()) : null
     
     let streamingMessageId: string | null = null
     let streamError: Error | null = null
@@ -2650,8 +2845,10 @@ async function regenerateAssistant(message: string, sessionId: string) {
             timestamp: new Date(),
             type: 'thinking'
           })
+          handleWorkflowSignal(log)
         },
         onToken: token => {
+          handleWorkflowSignal(token)
           // Create streaming message on first token
           if (!streamingMessageId) {
             streamingMessageId = `streaming-${Date.now()}`
@@ -2696,7 +2893,13 @@ async function regenerateAssistant(message: string, sessionId: string) {
             })
           }
         },
+        onWorkflow: handleWorkflowSignal,
+        onDocument: handleDocumentUpdate,
         onComplete: async result => {
+          handleWorkflowSignal(result)
+          if (result.doc_generation_result || result.document_state || result.document_patch) {
+            handleDocumentUpdate(result.doc_generation_result || result.document_state || result.document_patch)
+          }
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
           const images = imageResults.map((img: any) => ({
@@ -2754,13 +2957,20 @@ async function regenerateAssistant(message: string, sessionId: string) {
           
           const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
-          await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          if (!isDocumentWorkflow.value) {
+            await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          }
           scrollToBottom(true)
         },
         onError: error => {
           // No thinking message in regenerate - just capture error
           streamError = error
         }
+      },
+      {
+        documentContext: documentContext || undefined,
+        workflowHint: activeWorkflowMode.value,
+        selection: null
       }
     )
 

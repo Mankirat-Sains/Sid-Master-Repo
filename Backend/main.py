@@ -397,11 +397,13 @@ def run_agentic_rag(
         if hasattr(final_state, "follow_up_suggestions")
         else [],
         "execution_trace": final_state.execution_trace if hasattr(final_state, "execution_trace") else [],
+        # Doc generation payloads so the frontend can render the document preview
+        "doc_generation_result": getattr(final_state, "doc_generation_result", None),
+        "doc_generation_warnings": getattr(final_state, "doc_generation_warnings", []),
         "workflow": getattr(final_state, "workflow", None),
         "task_type": getattr(final_state, "task_type", None),
         "doc_type": getattr(final_state, "doc_type", None),
         "section_type": getattr(final_state, "section_type", None),
-        "doc_generation_warnings": final_state.doc_generation_warnings if hasattr(final_state, "doc_generation_warnings") else [],
     }
 
 

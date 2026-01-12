@@ -10,6 +10,14 @@ interface ChatResponse {
   code_citations?: number
   coop_citations?: number
   image_similarity_results?: Array<Record<string, unknown>>
+  workflow?: string
+  task_type?: string
+  doc_type?: string
+  section_type?: string
+  execution_trace?: Record<string, unknown>
+  doc_generation_result?: Record<string, unknown>
+  document_state?: Record<string, unknown>
+  document_patch?: Record<string, unknown>
   message_id?: string
   latency_ms?: number
   timestamp?: string
@@ -29,8 +37,16 @@ interface StreamCallbacks {
   onLog?: (log: { type: string; message: string; timestamp: number; node?: string }) => void
   onToken?: (token: { content: string; node: string; timestamp: number }) => void
   onChunk?: (chunk: string) => void
+  onWorkflow?: (workflow: string) => void
+  onDocument?: (payload: Record<string, unknown>) => void
   onComplete?: (result: ChatResponse) => void
   onError?: (error: Error) => void
+}
+
+interface StreamOptions {
+  documentContext?: Record<string, unknown> | null
+  workflowHint?: string
+  selection?: Record<string, unknown> | null
 }
 
 export const useChat = () => {
@@ -44,7 +60,8 @@ export const useChat = () => {
       project_db?: boolean
       code_db?: boolean
       coop_manual?: boolean
-    } | undefined  // Keep for backwards compatibility but don't use
+    } | undefined,  // Keep for backwards compatibility but don't use
+    options?: StreamOptions
   ): Promise<ChatResponse> {
     const url = `${config.public.orchestratorUrl}/chat`
     console.log('📤 Sending chat message to:', url)
@@ -57,7 +74,10 @@ export const useChat = () => {
       const requestBody: any = {
         message,
         session_id: sessionId,
-        images_base64: images
+        images_base64: images,
+        workflow: options?.workflowHint,
+        document_context: options?.documentContext || undefined,
+        document_cursor: options?.selection || undefined
         // data_sources removed - backend router now intelligently selects databases automatically
       }
       
@@ -104,7 +124,8 @@ export const useChat = () => {
       code_db?: boolean
       coop_manual?: boolean
     },
-    callbacks?: StreamCallbacks
+    callbacks?: StreamCallbacks,
+    options?: StreamOptions
   ): Promise<void> {
     const url = `${config.public.orchestratorUrl}/chat/stream`
     console.log('📤 Starting streaming chat to:', url)
@@ -126,7 +147,10 @@ export const useChat = () => {
         body: JSON.stringify({
           message,
           session_id: sessionId,
-          images_base64: images
+          images_base64: images,
+          workflow: options?.workflowHint,
+          document_context: options?.documentContext || undefined,
+          document_cursor: options?.selection || undefined
           // data_sources removed - backend router now intelligently selects databases automatically
         })
       })
@@ -162,6 +186,15 @@ export const useChat = () => {
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6))
+              const workflowSignal = data.workflow || data.task_type || data.node
+              const documentPayload = data.doc_generation_result || data.document_state || data.document_patch || data.document
+
+              if (workflowSignal && callbacks?.onWorkflow) {
+                callbacks.onWorkflow(workflowSignal)
+              }
+              if (documentPayload && callbacks?.onDocument) {
+                callbacks.onDocument(documentPayload)
+              }
               
               if (data.type === 'connected') {
                 console.log('✅ SSE stream connected:', data.message_id)
@@ -196,6 +229,12 @@ export const useChat = () => {
               } else if (data.type === 'complete') {
                 // Final result
                 console.log('✅ Stream complete, got result')
+                if (callbacks?.onWorkflow && (data.result?.workflow || data.result?.task_type)) {
+                  callbacks.onWorkflow(data.result.workflow || data.result.task_type)
+                }
+                if (callbacks?.onDocument && (data.result?.doc_generation_result || data.result?.document_state || data.result?.document_patch)) {
+                  callbacks.onDocument(data.result.doc_generation_result || data.result.document_state || data.result.document_patch)
+                }
                 callbacks?.onComplete?.(data.result as ChatResponse)
               } else if (data.type === 'error') {
                 console.error('❌ Stream error:', data.message)
@@ -219,5 +258,3 @@ export const useChat = () => {
     sendChatMessageStream
   }
 }
-
-
