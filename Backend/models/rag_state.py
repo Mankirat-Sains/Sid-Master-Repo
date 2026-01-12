@@ -97,3 +97,5 @@ class _RAGState:
     image_similarity_results: List[Dict] = field(default_factory=list)  # Similar images found via text semantic search
     use_image_similarity: bool = False  # Flag to enable/disable image search
     query_intent: Optional[Literal["image_similarity", "content_detail", "hybrid"]] = None
+    execution_trace: List[str] = field(default_factory=list)
+    execution_trace_verbose: List[Dict[str, Any]] = field(default_factory=list)

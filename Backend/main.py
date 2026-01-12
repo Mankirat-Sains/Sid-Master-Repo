@@ -5,6 +5,7 @@ Provides run_agentic_rag function and healthcheck
 import os
 import re
 import time
+from pathlib import Path
 from types import SimpleNamespace
 from typing import Dict, List, Optional
 
@@ -18,10 +19,11 @@ from models.memory import (
     FOCUS_STATES,
 )
 from graph.builder import build_graph
-from config.settings import MAX_CITATIONS_DISPLAY
+from config.settings import MAX_CITATIONS_DISPLAY, MAX_ROUTER_DOCS
 from config.logging_config import log_query, log_vlm
 from nodes.DBRetrieval.KGdb import test_database_connection
 from nodes.DBRetrieval.KGdb.supabase_client import vs_smart, vs_large
+from utils.csv_logger import append_draft_csv
 
 # Build graph once at module load and expose it for streaming
 graph = build_graph()
@@ -193,6 +195,39 @@ def run_agentic_rag(
         f"ROUTE SUMMARY | workflow={workflow} | task_type={task_type} | branch={branch} | desktop_policy={getattr(final_state, 'desktop_policy', None)}"
     )
 
+    # CSV logging for docgen runs
+    if branch == "docgen":
+        csv_path = os.getenv("DOCGEN_CSV_PATH")
+        if not csv_path:
+            base = Path(__file__).resolve().parent.parent
+            csv_path = base / "info_retrieval" / "data" / "drafted_sections.csv"
+        result = final_state.doc_generation_result or {}
+        length_target = result.get("length_target") or {}
+        min_chars = length_target.get("min_chars")
+        max_chars = length_target.get("max_chars")
+        draft_text = getattr(final_state, "final_answer", "") or ""
+        citations = result.get("citations") or getattr(final_state, "answer_citations", []) or []
+        warnings = getattr(final_state, "doc_generation_warnings", []) or result.get("warnings", []) or []
+        length_actual = len(draft_text or "")
+        try:
+            append_draft_csv(
+                csv_path=str(csv_path),
+                request=question,
+                doc_type=final_state.doc_type,
+                section_type=final_state.section_type,
+                min_chars=min_chars,
+                max_chars=max_chars,
+                length_actual=length_actual,
+                draft_text=draft_text,
+                citations=citations,
+                execution_trace=getattr(final_state, "execution_trace", []) or [],
+                warnings=warnings,
+            )
+            log_query.info(f"DOCGEN CSV append ok at {csv_path}")
+        except Exception as exc:
+            log_query.error(f"DOCGEN CSV append failed: {exc}")
+
+    # Extract projects from answer text
     answer_text = getattr(final_state, "final_answer", "") or ""
     projects_in_answer = []
     seen_in_answer = set()
@@ -310,6 +345,15 @@ def run_agentic_rag(
             }
         )
 
+    plan_for_ui = final_state.query_plan if isinstance(getattr(final_state, "query_plan", None), dict) else {}
+    expanded_queries = (
+        getattr(final_state, "expanded_queries", [])
+        or getattr(final_state, "db_retrieval_expanded_queries", [])
+        or []
+    )
+    if expanded_queries:
+        expanded_queries = expanded_queries[:MAX_ROUTER_DOCS]
+
     if getattr(final_state, "needs_clarification", False):
         log_query.info(f"❓ Router requested clarification: {getattr(final_state, 'clarification_question', None)}")
         return {
@@ -321,7 +365,7 @@ def run_agentic_rag(
             "code_citations": [],
             "coop_citations": [],
             "route": None,
-            "project_filter": None,
+            "project_filter": getattr(final_state, "project_filter", None),
             "needs_clarification": True,
         }
 
@@ -345,9 +389,6 @@ def run_agentic_rag(
     support_score = getattr(final_state, "answer_support_score", 0.0) or getattr(
         final_state, "db_retrieval_support_score", 0.0
     )
-    expanded_queries = getattr(final_state, "expanded_queries", []) or getattr(
-        final_state, "db_retrieval_expanded_queries", []
-    )
     image_similarity_results = getattr(final_state, "image_similarity_results", []) or getattr(
         final_state, "db_retrieval_image_similarity_results", []
     )
@@ -366,7 +407,7 @@ def run_agentic_rag(
         "coop_answer": coop_answer,
         "desktop_answer": desktop_result,
         "webcalcs_answer": webcalcs_result,
-        "support": support_score,
+        "support": round(support_score, 3),
         "citations": answer_citations,
         "code_citations": code_citations,
         "coop_citations": coop_citations,
@@ -376,10 +417,20 @@ def run_agentic_rag(
         "expanded_queries": expanded_queries,
         "latency_s": latency,
         "graded_preview": graded_preview,
-        "plan": {"reasoning": "", "steps": [], "subqueries": []},
+        "plan": {
+            "reasoning": plan_for_ui.get("reasoning", ""),
+            "steps": plan_for_ui.get("steps", []),
+            "subqueries": plan_for_ui.get("subqueries", []),
+        },
         "image_similarity_results": image_similarity_results,
-        "follow_up_questions": follow_up_questions,
-        "follow_up_suggestions": follow_up_suggestions,
+        "follow_up_questions": follow_up_questions or [],
+        "follow_up_suggestions": follow_up_suggestions or [],
+        "execution_trace": getattr(final_state, "execution_trace", []) or [],
+        "workflow": getattr(final_state, "workflow", None),
+        "task_type": getattr(final_state, "task_type", None),
+        "doc_type": getattr(final_state, "doc_type", None),
+        "section_type": getattr(final_state, "section_type", None),
+        "doc_generation_warnings": getattr(final_state, "doc_generation_warnings", []) or [],
     }
 
 
