@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from storage.vector_store import Chunk, SearchResult, VectorStore
-from utils.logger import get_logger
+from ir_utils.logger import get_logger
 
 logger = get_logger(__name__)
 

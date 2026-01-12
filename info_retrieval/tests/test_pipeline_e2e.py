@@ -8,7 +8,7 @@ from embeddings.embedding_service import EmbeddingService  # noqa: E402
 from ingest.pipeline import IngestionPipeline  # noqa: E402
 from storage.metadata_db import MetadataDB  # noqa: E402
 from storage.vector_store import Chunk, SearchResult, VectorStore  # noqa: E402
-from utils.config import AppConfig  # noqa: E402
+from ir_utils.config import AppConfig  # noqa: E402
 
 
 class FakeSupabaseVectorStore(VectorStore):

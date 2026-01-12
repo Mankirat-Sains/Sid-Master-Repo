@@ -17,8 +17,8 @@ from storage.supabase_vector_store import SupabaseVectorStore
 from storage.vector_db import VectorDB
 from tier2.generator import Tier2Generator
 from tier2.report_drafter import ReportDrafter
-from utils.config import load_config
-from utils.logger import get_logger
+from ir_utils.config import load_config
+from ir_utils.logger import get_logger
 
 
 def build_args() -> argparse.Namespace:

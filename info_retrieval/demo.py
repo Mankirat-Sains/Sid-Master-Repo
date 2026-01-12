@@ -20,8 +20,8 @@ from storage.metadata_db import MetadataDB  # noqa: E402
 from storage.qdrant_vector_store import QdrantVectorStore  # noqa: E402
 from storage.supabase_vector_store import SupabaseVectorStore  # noqa: E402
 from storage.vector_db import VectorDB  # noqa: E402
-from utils.config import load_config  # noqa: E402
-from utils.logger import get_logger  # noqa: E402
+from ir_utils.config import load_config  # noqa: E402
+from ir_utils.logger import get_logger  # noqa: E402
 
 logger = get_logger(__name__)
 

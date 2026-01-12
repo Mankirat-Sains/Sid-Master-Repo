@@ -40,7 +40,7 @@ python -m info_retrieval.demo
 - `src/storage/metadata_db.py`: SQLite chunk metadata schema with identity + provenance.
 - `src/storage/csv_vector_store.py`: CSV-backed VectorStore for local testing only (no locking/concurrency).
 - `src/retrieval/retriever.py`: High-level retrieval for content queries and style exemplars.
-- `src/utils/config.py`: Env/config loader; `logger.py`: logging helper.
+- `src/ir_utils/config.py`: Env/config loader; `logger.py`: logging helper.
 - `src/ingest/pipeline.py`: Orchestrates parse → chunk → classify → embed → store.
 - `src/ingest/style_filter.py`: Quality gating for style exemplars.
 
@@ -52,7 +52,7 @@ from ingest.metadata_extractor import MetadataExtractor, RulesBasedClassifier
 from embeddings.embedding_service import EmbeddingService
 from storage.supabase_vector_store import SupabaseVectorStore
 from retrieval.retriever import Retriever
-from utils.config import load_config
+from ir_utils.config import load_config
 
 config = load_config()
 doc = parse_docx("data/sample_docs/thermal_calculation.docx", company_id="acme", source="upload")

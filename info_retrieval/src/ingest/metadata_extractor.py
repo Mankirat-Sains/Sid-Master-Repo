@@ -4,8 +4,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
-from utils.classifier_provider import ClassifierProvider
-from utils.logger import get_logger
+from ir_utils.classifier_provider import ClassifierProvider
+from ir_utils.logger import get_logger
 from ingest.document_parser import ParsedDocument, generate_artifact_id, generate_version_id
 
 logger = get_logger(__name__)
