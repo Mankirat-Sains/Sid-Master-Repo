@@ -34,6 +34,13 @@ class RAGState:
     needs_clarification: bool = False  # Flag indicating router needs clarification
     clarification_question: Optional[str] = None  # Clarification question from router
     selected_routers: List[str] = field(default_factory=list)  # List of selected routers: "rag", "web", "desktop"
+    task_type: Optional[str] = None  # "qa" | "doc_section" | "doc_report"
+    doc_type: Optional[str] = None
+    section_type: Optional[str] = None
+    doc_request: Optional[Dict[str, Any]] = None  # Structured query from doc analyzer
+    requires_desktop_action: bool = False
+    desktop_action_plan: Optional[Dict[str, Any]] = None  # What desktop should do (open/save/etc.)
+    output_artifact_ref: Optional[Dict[str, Any]] = None  # artifact/version/path for generated doc
     
     # Retrieval Artifacts
     expanded_queries: List[str] = field(default_factory=list)
@@ -48,6 +55,8 @@ class RAGState:
     # Synthesis
     final_answer: Optional[str] = None
     answer_citations: List[Dict] = field(default_factory=list)
+    doc_generation_result: Optional[Dict[str, Any]] = None
+    doc_generation_warnings: List[str] = field(default_factory=list)
     code_answer: Optional[str] = None  # Separate answer for code database
     code_citations: List[Dict] = field(default_factory=list)
     coop_answer: Optional[str] = None  # Separate answer for coop manual
@@ -71,4 +80,3 @@ class RAGState:
     image_similarity_results: List[Dict] = field(default_factory=list)  # Similar images found
     use_image_similarity: bool = False  # Flag to enable/disable image search
     query_intent: Optional[Literal["image_similarity", "content_detail", "hybrid"]] = None
-
