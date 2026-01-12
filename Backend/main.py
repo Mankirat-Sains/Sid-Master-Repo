@@ -8,7 +8,7 @@ import time
 from dataclasses import asdict
 from pathlib import Path
 from typing import Dict, List, Optional
-from models.rag_state import RAGState
+from models.parent_state import ParentState
 from models.memory import (
     SESSION_MEMORY, MAX_CONVERSATION_HISTORY, MAX_SEMANTIC_HISTORY,
     intelligent_query_rewriter, update_focus_state, FOCUS_STATES
@@ -142,7 +142,7 @@ def run_agentic_rag(
     base_query = rewritten_query
     log_query.info(f"🎯 FINAL QUERY FOR RAG: '{base_query}'")
 
-    init_state = RAGState(
+    init_state = ParentState(
         session_id=session_id,
         user_query=base_query,
         original_question=question,
@@ -156,7 +156,7 @@ def run_agentic_rag(
     final = graph.invoke(asdict(init_state), config={"configurable": {"thread_id": session_id}})
 
     if isinstance(final, dict):
-        final_state = RAGState(**asdict(init_state))
+        final_state = ParentState(**asdict(init_state))
         for k, v in final.items():
             setattr(final_state, k, v)
     else:
@@ -201,7 +201,11 @@ def run_agentic_rag(
             log_query.error(f"DOCGEN CSV append failed: {exc}")
 
     # Extract projects from answer text
-    answer_text = final_state.final_answer or ""
+    answer_text = (
+        getattr(final_state, "final_answer", None)
+        or getattr(final_state, "db_retrieval_result", "")
+        or ""
+    )
     projects_in_answer = []
     seen_in_answer = set()
 
@@ -269,13 +273,13 @@ def run_agentic_rag(
     # TODO: Migrate all code to use state.conversation_history instead of SESSION_MEMORY
     SESSION_MEMORY[session_id] = {
         "conversation_history": conversation_history,
-        "project_filter": final_state.project_filter,
+        "project_filter": getattr(final_state, "project_filter", project_filter),
         "last_query": question,
-        "last_answer": final_state.final_answer,
+        "last_answer": answer_text,
         "last_results": [r for r in result_items if r.get("project")],
-        "selected_projects": final_state.selected_projects,
+        "selected_projects": getattr(final_state, "selected_projects", []) or getattr(final_state, "db_retrieval_selected_projects", []),
         "semantic_history": semantic_history,
-        "last_semantic": current_semantic
+        "last_semantic": current_semantic,
     }
 
     log_query.info("   ✅ Session memory updated (backward compatibility)")
@@ -286,7 +290,7 @@ def run_agentic_rag(
         session_id=session_id,
         query=question,
         projects=projects_in_answer,
-        results_projects=final_state.selected_projects
+        results_projects=getattr(final_state, "selected_projects", []) or getattr(final_state, "db_retrieval_selected_projects", [])
     )
     
     if session_id in FOCUS_STATES:

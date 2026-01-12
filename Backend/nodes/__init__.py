@@ -3,14 +3,11 @@
 from .plan import node_plan
 from .router_dispatcher import node_router_dispatcher
 
-# RAG node - wrapper that runs rag_plan and rag_router in parallel
-from .DBRetrieval.SQLdb.rag import node_rag
-
-# RAG sub-nodes (run in parallel internally by node_rag)
+# RAG sub-nodes (used internally by DBRetrieval subgraph)
 from .DBRetrieval.SQLdb.rag_plan import node_rag_plan
 from .DBRetrieval.SQLdb.rag_router import node_rag_router
 
-# DBRetrieval pipeline nodes
+# DBRetrieval pipeline nodes (used internally by DBRetrieval subgraph)
 from .DBRetrieval.SQLdb.retrieve import node_retrieve
 from .DBRetrieval.SQLdb.grade import node_grade
 from .DBRetrieval.SQLdb.answer import node_answer

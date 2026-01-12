@@ -4,7 +4,7 @@ RAG State Definition
 RAGState extends DBRetrievalState with doc-generation and desktop orchestration metadata.
 """
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional
 
 from .db_retrieval_state import DBRetrievalState
 
