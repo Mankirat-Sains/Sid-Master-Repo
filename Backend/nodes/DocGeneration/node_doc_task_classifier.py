@@ -24,10 +24,9 @@ SECTION_KEYWORDS: Dict[str, str] = {
 
 
 _DOCGEN_RULES = [
-    ("report", r"\bdraft (a )?(design )?(report|rp|rfp)\b"),
-    ("section", r"\bdraft (the )?(?P<section>\w+ )?section\b"),
-    ("generate_section", r"\bgenerate (an? )?(?P<section>\w+ )?(section|methodology|introduction|findings|results|recommendations|conclusion)\b"),
-    ("create_document", r"\b(create|compose|prepare) (a )?(report|document)\b"),
+    ("report", r"\b(draft|generate|create|write|prepare) (a )?(design )?(report|rp|rfp|proposal)\b"),
+    ("section", r"\b(draft|generate|create|write|prepare) (the )?(?P<section>\w+ )?section\b"),
+    ("section_named", r"\b(methodology|introduction|findings|results|recommendations|conclusion|scope) section\b"),
     ("desktop_request", r"\bopen .*word\b"),
 ]
 
@@ -76,10 +75,16 @@ def node_doc_task_classifier(state: RAGState) -> dict:
     section_type = state.section_type or section_hint or _detect_section(state.user_query or "")
     if task_type:
         log_query.info(f"DOCGEN: classifier routed to {task_type} (rule={rule})")
+        workflow = "docgen"
+        desktop_policy = "required"
     else:
         log_query.info("DOCGEN: classifier defaulted to QA")
+        workflow = "qa"
+        desktop_policy = "never"
     return {
         "task_type": task_type or state.task_type or "qa",
         "doc_type": doc_type,
         "section_type": section_type,
+        "workflow": workflow,
+        "desktop_policy": desktop_policy,
     }
