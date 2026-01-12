@@ -197,7 +197,7 @@ def run_agentic_rag(
     if branch == "docgen":
         csv_path = os.getenv("DOCGEN_CSV_PATH")
         if not csv_path:
-            base = Path(__file__).resolve().parent / "desktop_agent" / "info_retrieval"
+            base = Path(__file__).resolve().parents[2] / "Local Agent" / "info_retrieval"
             csv_path = base / "data" / "drafted_sections.csv"
         result = final_state.doc_generation_result or {}
         length_target = result.get("length_target") or {}
