@@ -98,17 +98,38 @@ def node_doc_generate_section(state: RAGState) -> dict:
     if state.section_type:
         overrides["section_type"] = state.section_type
 
-    result = generator.draft_section(
-        company_id=company_id,
-        user_request=state.user_query or "",
-        overrides=overrides or None,
-    )
+    def _draft_with_overrides(extra: Dict[str, Any]) -> Dict[str, Any]:
+        merged = dict(overrides)
+        for key, val in extra.items():
+            if val is None:
+                merged.pop(key, None)
+            else:
+                merged[key] = val
+        log_query.info("DOCGEN: calling generator with overrides=%s", {k: merged[k] for k in merged})
+        return generator.draft_section(
+            company_id=company_id,
+            user_request=state.user_query or "",
+            overrides=merged or None,
+        )
+
+    result = _draft_with_overrides({})
 
     warnings = result.get("warnings", []) or []
     draft_text = result.get("draft_text", "") or ""
     debug = result.get("debug", {}) or {}
     if draft_text.strip().startswith("[TBD") or debug.get("content_chunks_used", 1) == 0:
         warnings.append("No grounding content for this section; draft is template-like or TBD.")
+
+    # If we failed to ground (no citations) try a relaxed pass without doc/section filters
+    citations = result.get("citations") or []
+    if not citations:
+        log_query.info("DOCGEN: no citations found; retrying without doc_type/section_type filters")
+        relaxed_result = _draft_with_overrides({"doc_type": None, "section_type": None})
+        relaxed_citations = relaxed_result.get("citations") or []
+        if relaxed_citations:
+            result = relaxed_result
+            warnings = relaxed_result.get("warnings", []) or warnings
+            draft_text = relaxed_result.get("draft_text", draft_text)
 
     return {
         "doc_generation_result": result,

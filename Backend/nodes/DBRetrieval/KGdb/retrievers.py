@@ -51,6 +51,8 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
 
             # Log which table is being used based on route
             log_query.info(f"🎯 ROUTE-BASED TABLE SELECTION: route='{route}' → table='{table_name}'")
+            # Table-specific primary key column
+            key_column = "project_key" if table_name == SUPA_SMART_TABLE else "project_id"
 
             # Apply SQL pre-filtering if provided
             _supa = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -68,11 +70,16 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
                         page_size = 1000  # Supabase's max per request
                         
                         while True:
-                            query_builder = _supa.table(table_name).select("project_key")
+                            query_builder = _supa.table(table_name).select(key_column)
                             
                             # Apply filters
                             has_revit_filter = False
-                            for condition in sql_filters.get("and", []):
+                            conditions = sql_filters.get("and", [])
+                            # Adjust column name for tables that use project_id instead of project_key
+                            if key_column != "project_key":
+                                conditions = [cond.replace("project_key.", f"{key_column}.") for cond in conditions]
+
+                            for condition in conditions:
                                 if "like" in condition:
                                     key, op, value = condition.split(".", 2)
                                     query_builder = query_builder.like(key, value)
@@ -93,7 +100,7 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
                             if not result.data:
                                 break
                             
-                            page_keys = [row["project_key"] for row in result.data]
+                            page_keys = [row.get(key_column) for row in result.data if row.get(key_column)]
                             all_project_keys.extend(page_keys)
                             
                             if len(result.data) < page_size:
@@ -522,4 +529,3 @@ def mmr_rerank_coop(docs: List[Document], query_embedding, lambda_=0.9, k=30) ->
         selected.append(pick)
     
     return selected
-

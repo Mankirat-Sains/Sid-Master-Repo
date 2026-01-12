@@ -64,18 +64,13 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 # =============================================================================
 
 # Fast models (cheaper, faster for simple tasks)
-# Use Groq models for speed optimization
-# Available Groq models (with full paths):
-# - llama-3.3-70b-versatile (no prefix needed)
-# - meta-llama/llama-4-scout-17b-16e-instruct
-# - openai/gpt-oss-120b (for complex planning)
-# - openai/gpt-oss-20b (faster alternative)
-FAST_MODEL = os.getenv("FAST_MODEL", "llama-3.3-70b-versatile")  # Fast, reliable
-ROUTER_MODEL = os.getenv("ROUTER_MODEL", "llama-3.3-70b-versatile")
-GRADER_MODEL = os.getenv("GRADER_MODEL", "llama-3.3-70b-versatile")
-SUPPORT_MODEL = os.getenv("SUPPORT_MODEL", "llama-3.3-70b-versatile")
-RAG_PLANNER_MODEL = os.getenv("RAG_PLANNER_MODEL", "openai/gpt-oss-120b")  # Complex planning and reasoning
-VERIFY_MODEL = os.getenv("VERIFY_MODEL", "llama-3.3-70b-versatile")  # Verification tasks
+# Default to OpenAI to avoid Groq dependency unless explicitly overridden
+FAST_MODEL = os.getenv("FAST_MODEL", "gpt-4o-mini")  # Fast, reliable
+ROUTER_MODEL = os.getenv("ROUTER_MODEL", "gpt-4o-mini")
+GRADER_MODEL = os.getenv("GRADER_MODEL", "gpt-4o-mini")
+SUPPORT_MODEL = os.getenv("SUPPORT_MODEL", "gpt-4o-mini")
+RAG_PLANNER_MODEL = os.getenv("RAG_PLANNER_MODEL", "gpt-4o")  # Complex planning and reasoning
+VERIFY_MODEL = os.getenv("VERIFY_MODEL", "gpt-4o-mini")  # Verification tasks
 
 # High-quality models (for synthesis, final answers - keep using OpenAI/Anthropic)
 SYNTHESIS_MODEL = os.getenv("SYNTHESIS_MODEL", "gpt-4o")
@@ -213,4 +208,3 @@ VALID_ROLES = list(ROLE_DATABASE_PREFERENCES.keys())
 # DEBUG MODE
 # =============================================================================
 DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() in ("true", "1", "t")
-

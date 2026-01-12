@@ -78,7 +78,6 @@ GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
 VERTEX_AI_LOCATION = os.getenv("VERTEX_AI_LOCATION", "us-east4")
 
 # Log if using Gemini models
-SYNTHESIS_MODEL = os.getenv("SYNTHESIS_MODEL", "")
 if SYNTHESIS_MODEL.startswith("gemini-3"):
     log_syn.info(f"ℹ️  Using 'global' region for Gemini 3 models")
 elif SYNTHESIS_MODEL.startswith("gemini"):
@@ -263,7 +262,7 @@ def create_llm_instance(model_name: str, temperature: float = 0, **kwargs):
     else:
         # Use OpenAI for non-Groq models or if Groq is not available
         if not is_groq_model:
-            log_syn.warning(f"⚠️  Model '{model_name}' not recognized as Groq model, using OpenAI")
+            log_syn.info(f"ℹ️  Using OpenAI model: {model_name}")
         elif not GROQ_AVAILABLE:
             log_syn.warning(f"⚠️  Groq SDK not available, using OpenAI for '{model_name}'")
         elif not GROQ_API_KEY:
@@ -272,7 +271,7 @@ def create_llm_instance(model_name: str, temperature: float = 0, **kwargs):
 
 
 # =============================================================================
-# FAST MODELS (cheaper, faster) - Using Groq for speed
+# FAST MODELS (cheaper, faster) - defaults to OpenAI, uses Groq if configured
 # =============================================================================
 llm_fast = create_llm_instance(FAST_MODEL, temperature=0)
 llm_router = create_llm_instance(ROUTER_MODEL, temperature=0)
