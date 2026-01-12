@@ -3,7 +3,7 @@ Retrieval Node
 Retrieves documents from vector stores based on plan or query
 """
 import time
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from config.settings import (
     MAX_SMART_RETRIEVAL_DOCS, MAX_LARGE_RETRIEVAL_DOCS,
     MAX_CODE_RETRIEVAL_DOCS
@@ -51,7 +51,7 @@ def _log_retrieved_chunks_detailed(docs, logger):
     print(f"📦 RETRIEVED CHUNKS: {len(docs)} total from {len(unique_projects)} projects: {', '.join(unique_projects[:5])}{'...' if len(unique_projects) > 5 else ''}")
 
 
-def node_retrieve(state: RAGState) -> dict:
+def node_retrieve(state: DBRetrievalState) -> dict:
     """Retrieve documents based on plan or direct query"""
     print("🔍 node_retrieve called")  # Diagnostic - always visible
     t_start = time.time()

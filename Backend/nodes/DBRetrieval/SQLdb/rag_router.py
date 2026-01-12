@@ -12,7 +12,7 @@ Handles selection among 4 databases:
 import json
 import re
 import time
-from models.rag_state import RAGState
+from models.db_retrieval_state import DBRetrievalState
 from prompts.router_prompts import ROUTER_PROMPT, router_llm
 from config.logging_config import log_route
 from utils.project_utils import detect_project_filter
@@ -29,7 +29,7 @@ def _get_route_reasoning(data_route: str) -> str:
     return route_reasoning.get(data_route, "default_routing")
 
 
-def node_rag_router(state: RAGState) -> dict:
+def node_rag_router(state: DBRetrievalState) -> dict:
     """
     RAG Router - Routes query to appropriate databases and determines smart/large chunk selection for project_db.
     This runs in parallel with node_rag_plan (both are sub-nodes called by the top-level plan node).
