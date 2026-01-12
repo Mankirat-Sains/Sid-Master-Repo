@@ -33,6 +33,8 @@ from nodes.DocGeneration.node_desktop_execute import node_desktop_execute
 from nodes.DocGeneration.node_doc_generate_section import node_doc_generate_section
 from nodes.DocGeneration.node_doc_generate_report import node_doc_generate_report
 from nodes.DocGeneration.node_doc_answer_adapter import node_doc_answer_adapter
+from nodes.DocGeneration.node_doc_think import node_doc_think
+from nodes.DocGeneration.node_doc_act import node_doc_act
 
 
 def _router_route(state: RAGState) -> str:
@@ -51,7 +53,7 @@ def _doc_or_router(state: RAGState) -> str:
     """
     Route to doc generation when requested; otherwise follow existing router/rag flow.
     """
-    if getattr(state, "task_type", None) in {"doc_section", "doc_report"}:
+    if getattr(state, "workflow", None) == "docgen" or getattr(state, "task_type", None) in {"doc_section", "doc_report"}:
         return "doc_plan"
     return _router_route(state)
 
@@ -133,6 +135,8 @@ def build_graph():
     g.add_node("doc_generate_section", _wrap_node("doc_generate_section", node_doc_generate_section))
     g.add_node("doc_generate_report", _wrap_node("doc_generate_report", node_doc_generate_report))
     g.add_node("doc_answer_adapter", _wrap_node("doc_answer_adapter", node_doc_answer_adapter))
+    g.add_node("doc_think", _wrap_node("doc_think", node_doc_think))
+    g.add_node("doc_act", _wrap_node("doc_act", node_doc_act))
 
     # RAG wrapper node
     g.add_node("rag", _wrap_node("rag", node_rag))
@@ -170,9 +174,11 @@ def build_graph():
     )
 
     # Doc generation branch
-    g.add_edge("doc_plan", "desktop_execute")
+    g.add_edge("doc_plan", "desktop_router")
+    g.add_edge("desktop_router", "doc_think")
+    g.add_edge("doc_think", "doc_act")
     g.add_conditional_edges(
-        "desktop_execute",
+        "doc_act",
         _doc_generate_route,
         {
             "doc_generate_section": "doc_generate_section",

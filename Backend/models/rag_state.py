@@ -34,6 +34,8 @@ class RAGState:
     needs_clarification: bool = False  # Flag indicating router needs clarification
     clarification_question: Optional[str] = None  # Clarification question from router
     selected_routers: List[str] = field(default_factory=list)  # List of selected routers: "rag", "web", "desktop"
+    workflow: Optional[str] = None  # "qa" | "docgen"
+    desktop_policy: Optional[str] = None  # "required" | "optional" | "never"
     task_type: Optional[str] = None  # "qa" | "doc_section" | "doc_report"
     doc_type: Optional[str] = None
     section_type: Optional[str] = None

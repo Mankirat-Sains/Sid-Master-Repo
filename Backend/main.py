@@ -174,10 +174,18 @@ def run_agentic_rag(
             use_image_similarity=final.get("use_image_similarity", False),
             query_intent=final.get("query_intent"),
             follow_up_questions=final.get("follow_up_questions", []),
-            follow_up_suggestions=final.get("follow_up_suggestions", [])
+            follow_up_suggestions=final.get("follow_up_suggestions", []),
+            workflow=final.get("workflow"),
+            desktop_policy=final.get("desktop_policy"),
+            task_type=final.get("task_type"),
+            doc_type=final.get("doc_type"),
+            section_type=final.get("section_type"),
         )
     else:
         final_state = final
+
+    branch = "docgen" if (final_state.workflow == "docgen" or final_state.task_type in {"doc_section", "doc_report"}) else "qa"
+    log_query.info(f"ROUTE SUMMARY | workflow={final_state.workflow} | task_type={final_state.task_type} | branch={branch} | desktop_policy={getattr(final_state, 'desktop_policy', None)}")
 
     # Extract projects from answer text
     answer_text = final_state.final_answer or ""
@@ -365,4 +373,3 @@ def rag_healthcheck() -> Dict:
         "status": "healthy" if project_db_status else "degraded",
         "supabase": supabase_status,
     }
-
