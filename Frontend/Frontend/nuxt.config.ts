@@ -53,7 +53,12 @@ export default defineNuxtConfig({
       // Use public Speckle.systems instance (has CORS configured for browsers)
       // Can override with SPECKLE_URL env var if you want to use a different server
       speckleUrl: process.env.SPECKLE_URL || process.env.SPECKLE_SERVER_URL || 'https://app.speckle.systems',
-      speckleToken: process.env.SPECKLE_TOKEN || ''
+      speckleToken: process.env.SPECKLE_TOKEN || '',
+      onlyofficeServerUrl: process.env.ONLYOFFICE_SERVER_URL || '',
+      onlyofficeDocumentUrl: process.env.ONLYOFFICE_DOCUMENT_URL || '',
+      onlyofficeCallbackUrl: process.env.ONLYOFFICE_CALLBACK_URL || '',
+      onlyofficeUserName: process.env.ONLYOFFICE_USER_NAME || '',
+      onlyofficeUserId: process.env.ONLYOFFICE_USER_ID || ''
     }
   },
 
