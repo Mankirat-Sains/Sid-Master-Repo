@@ -5,6 +5,7 @@ Complete RAG pipeline for database retrieval as a subgraph
 import time
 from concurrent.futures import ThreadPoolExecutor
 from langgraph.graph import StateGraph, START, END
+from langgraph.errors import GraphInterrupt
 from models.db_retrieval_state import DBRetrievalState
 from models.parent_state import ParentState
 from config.logging_config import log_query, log_route
@@ -198,14 +199,26 @@ def call_db_retrieval_subgraph(state: ParentState) -> dict:
         db_result = _db_retrieval_subgraph.invoke(asdict(db_input))
         
         # Transform DBRetrievalState result → ParentState update
-        # Extract only what parent needs
+        # Extract all fields that parent or UI might need
         return {
             "db_retrieval_result": db_result.get("final_answer"),
             "db_retrieval_citations": db_result.get("answer_citations", []),
+            "db_retrieval_code_answer": db_result.get("code_answer"),
+            "db_retrieval_code_citations": db_result.get("code_citations", []),
+            "db_retrieval_coop_answer": db_result.get("coop_answer"),
+            "db_retrieval_coop_citations": db_result.get("coop_citations", []),
             "db_retrieval_follow_up_questions": db_result.get("follow_up_questions", []),
             "db_retrieval_follow_up_suggestions": db_result.get("follow_up_suggestions", []),
             "db_retrieval_selected_projects": db_result.get("selected_projects", []),
+            "db_retrieval_route": db_result.get("data_route"),
+            "db_retrieval_image_similarity_results": db_result.get("image_similarity_results", []),
+            "db_retrieval_expanded_queries": db_result.get("expanded_queries", []),
+            "db_retrieval_support_score": db_result.get("answer_support_score", 0.0),
         }
+    except GraphInterrupt:
+        # CRITICAL: Re-raise GraphInterrupt to propagate to parent graph
+        # This allows the interrupt to be handled at the API level
+        raise
     except Exception as e:
         log_query.error(f"❌ DBRetrieval subgraph failed: {e}")
         import traceback

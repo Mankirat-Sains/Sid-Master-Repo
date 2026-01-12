@@ -343,19 +343,19 @@ def run_agentic_rag(
             "needs_clarification": True
         }
     
-    # Extract DBRetrieval results (most fields are now in db_retrieval_* fields)
+    # Extract DBRetrieval results (all fields are now in db_retrieval_* fields)
     return {
         "answer": final_state.db_retrieval_result,
-        "code_answer": None,  # Would need to be passed from subgraph if needed
-        "coop_answer": None,  # Would need to be passed from subgraph if needed
-        "support": 0.0,  # Would need to be passed from subgraph if needed
+        "code_answer": final_state.db_retrieval_code_answer,
+        "coop_answer": final_state.db_retrieval_coop_answer,
+        "support": final_state.db_retrieval_support_score,
         "citations": final_state.db_retrieval_citations,
-        "code_citations": [],  # Would need to be passed from subgraph if needed
-        "coop_citations": [],  # Would need to be passed from subgraph if needed
-        "route": None,  # Would need to be passed from subgraph if needed
-        "project_filter": None,  # No longer in ParentState
+        "code_citations": final_state.db_retrieval_code_citations,
+        "coop_citations": final_state.db_retrieval_coop_citations,
+        "route": final_state.db_retrieval_route,
+        "project_filter": None,  # No longer in ParentState (would need to be passed if needed)
         "needs_clarification": False,
-        "expanded_queries": [],  # Would need to be passed from subgraph if needed
+        "expanded_queries": final_state.db_retrieval_expanded_queries,
         "latency_s": latency,
         "graded_preview": graded_preview,
         "plan": {
@@ -363,7 +363,7 @@ def run_agentic_rag(
             "steps": [],
             "subqueries": [],
         },
-        "image_similarity_results": [],  # Would need to be passed from subgraph if needed
+        "image_similarity_results": final_state.db_retrieval_image_similarity_results,
         "follow_up_questions": final_state.db_retrieval_follow_up_questions,
         "follow_up_suggestions": final_state.db_retrieval_follow_up_suggestions,
     }

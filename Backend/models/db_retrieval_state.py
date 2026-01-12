@@ -73,3 +73,10 @@ class DBRetrievalState:
     image_similarity_results: List[Dict] = field(default_factory=list)  # Similar images found via text semantic search
     use_image_similarity: bool = False  # Flag to enable/disable image search
     query_intent: Optional[Literal["image_similarity", "content_detail", "hybrid"]] = None
+    
+    # Code Verification (Human-in-the-loop)
+    pending_code_verification: bool = False  # Flag indicating code verification is pending
+    retrieved_code_filenames: List[str] = field(default_factory=list)  # Filenames from retrieved code docs
+    approved_code_filenames: Optional[List[str]] = None  # Human-approved code filenames (None = not yet verified)
+    code_verification_response: Optional[Literal["approved", "rejected"]] = None  # Human's response
+    all_available_code_filenames: List[str] = field(default_factory=list)  # All available codes for selection

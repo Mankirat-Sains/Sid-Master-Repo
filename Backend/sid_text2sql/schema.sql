@@ -388,6 +388,40 @@ END; $$;
 
 
 --
+-- Name: match_code_documents_filtered(public.vector, integer, text[]); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.match_code_documents_filtered(query_embedding public.vector, match_count integer DEFAULT 1000, filename_filter text[] DEFAULT NULL::text[]) RETURNS TABLE(id text, content text, metadata jsonb, similarity double precision)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  effective_ef int;
+BEGIN
+  -- Set HNSW search efficiency parameter
+  effective_ef := LEAST(GREATEST(match_count, 100), 1000);
+  PERFORM set_config('hnsw.ef_search', effective_ef::text, true);
+
+  RETURN QUERY
+  SELECT
+    c.id,
+    c.content,
+    jsonb_build_object(
+      'content', c.content,
+      'filename', c.filename,
+      'page_number', c.page_number,
+      'file_path', c.file_path,
+      'created_at', c.created_at
+    ) AS metadata,
+    1 - (c.embedding <=> query_embedding) AS similarity
+  FROM public.code_chunks c
+  WHERE c.embedding IS NOT NULL
+    AND (filename_filter IS NULL OR c.filename = ANY(filename_filter))
+  ORDER BY c.embedding <=> query_embedding
+  LIMIT match_count;
+END; $$;
+
+
+--
 -- Name: match_coop_documents(public.vector, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 

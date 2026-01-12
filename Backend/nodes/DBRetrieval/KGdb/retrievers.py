@@ -14,6 +14,58 @@ from config.llm_instances import emb
 from config.logging_config import log_query
 from .supabase_client import vs_smart, vs_large, vs_code, vs_coop
 
+
+def extract_code_filenames_from_docs(code_docs: List[Document]) -> List[str]:
+    """Extract unique filenames from retrieved code documents"""
+    filenames = set()
+    for doc in code_docs:
+        filename = doc.metadata.get('filename')
+        if filename:
+            filenames.add(filename)
+    return sorted(list(filenames))
+
+
+def get_all_available_code_filenames() -> List[str]:
+    """Query all distinct filenames from code_chunks table, filtering out project documents"""
+    try:
+        _supa = create_client(SUPABASE_URL, SUPABASE_KEY)
+        result = _supa.table(SUPA_CODE_TABLE).select("filename").execute()
+        
+        filenames = set()
+        for row in result.data:
+            filename = row.get('filename')
+            if filename:
+                # Filter out project documents - these typically have patterns like:
+                # - Project keys (e.g., "10711-103")
+                # - Drawing numbers
+                # - Project names with dates
+                # Building codes typically have names like "AISC", "CSA", "NDS", "ASCE", etc.
+                
+                # Skip if it looks like a project document
+                # Project documents often have patterns like: "10711-103 - Demolition Report"
+                # or contain project keys, drawing numbers, etc.
+                is_project_doc = (
+                    # Pattern: "number-number - Description" (e.g., "10711-103 - Demolition Report")
+                    re.match(r'^\d+-\d+\s*-', filename) or
+                    # Pattern: "number-number Description" (e.g., "10711-103 Demolition")
+                    re.match(r'^\d+-\d+\s+', filename) or
+                    # Contains common project document keywords
+                    any(keyword in filename.lower() for keyword in [
+                        'demolition report', 'architectural drawings', 'construction drawings',
+                        'stamped drawings', 'analysis', 'ocean container', 'water storage tank',
+                        'table of contents', 'index', 'home hardware'
+                    ])
+                )
+                
+                if not is_project_doc:
+                    filenames.add(filename)
+        
+        log_query.info(f"📋 Found {len(filenames)} building code filenames (filtered out project documents)")
+        return sorted(list(filenames))
+    except Exception as e:
+        log_query.error(f"Failed to get available code filenames: {e}")
+        return []
+
 # This is a large file - functions extracted from rag.py
 # See the original file for full implementation details
 
@@ -277,8 +329,13 @@ def make_hybrid_retriever(project: Optional[str] = None, sql_filters: Optional[D
     return hybrid_search_with_filter
 
 
-def make_code_hybrid_retriever():
-    """Create hybrid retriever (dense + keyword) for code database"""
+def make_code_hybrid_retriever(filename_filter: Optional[List[str]] = None):
+    """Create hybrid retriever (dense + keyword) for code database
+    
+    Args:
+        filename_filter: Optional list of filenames to filter by. If provided, only chunks
+                        from these filenames will be returned.
+    """
     
     if SUPABASE_URL and SUPABASE_KEY and vs_code is not None:
         def supabase_code_hybrid_search(query: str, k: int = 8, keyword_weight: float = None) -> List[Document]:
@@ -287,22 +344,38 @@ def make_code_hybrid_retriever():
             try:
                 _supa = create_client(SUPABASE_URL, SUPABASE_KEY)
                 query_embedding = emb.embed_query(query)
-                match_count = min(1000, k * 5)
+                match_count = min(1000, k * 5)  # Standard fetch count
                 
-                result = _supa.rpc("match_code_documents", {
-                    'query_embedding': query_embedding,
-                    'match_count': match_count
-                }).execute()
+                # Use filtered RPC function if filename_filter is provided, otherwise use standard function
+                if filename_filter:
+                    log_query.info(f"🔍 Code retrieval with filename filter: searching only in {len(filename_filter)} selected codes")
+                    log_query.debug(f"📋 Filtered codes: {', '.join(filename_filter[:5])}{'...' if len(filename_filter) > 5 else ''}")
+                    
+                    # Use the new filtered RPC function that filters at database level
+                    result = _supa.rpc("match_code_documents_filtered", {
+                        'query_embedding': query_embedding,
+                        'match_count': match_count,
+                        'filename_filter': filename_filter  # Pass as array to SQL function
+                    }).execute()
+                else:
+                    # Use standard RPC function (no filtering)
+                    result = _supa.rpc("match_code_documents", {
+                        'query_embedding': query_embedding,
+                        'match_count': match_count
+                    }).execute()
                 
                 dense_rows = result.data or []
-                fused_rows = dense_rows[:k]
+                fused_rows = dense_rows[:k]  # Take top k results
                 
                 code_docs = []
                 for i, row in enumerate(fused_rows):
                     metadata = row.get('metadata', {}).copy() if isinstance(row.get('metadata'), dict) else {}
                     
-                    if 'filename' in row:
-                        metadata['filename'] = row['filename']
+                    # Extract filename from row (top-level or metadata)
+                    filename = row.get('filename') or metadata.get('filename')
+                    
+                    if filename:
+                        metadata['filename'] = filename
                     if 'page_number' in row:
                         metadata['page_number'] = row['page_number']
                         metadata['page'] = row['page_number']
@@ -319,12 +392,29 @@ def make_code_hybrid_retriever():
                     )
                     code_docs.append(doc)
                 
+                if filename_filter:
+                    # Log which codes actually contributed documents
+                    actual_codes = extract_code_filenames_from_docs(code_docs)
+                    log_query.info(f"✅ Code retrieval: fetched {len(code_docs)} chunks from {len(actual_codes)} of {len(filename_filter)} selected codes")
+                    if actual_codes:
+                        log_query.debug(f"📋 Codes with results: {', '.join(actual_codes[:5])}{'...' if len(actual_codes) > 5 else ''}")
+                else:
+                    log_query.info(f"✅ Code retrieval: fetched {len(code_docs)} docs")
+                
                 return code_docs
                 
             except Exception as e:
                 log_query.error(f"Code hybrid search failed: {e}")
                 try:
-                    return vs_code.similarity_search(query, k=k)
+                    # Fallback: use similarity search and filter by filename
+                    docs = vs_code.similarity_search(query, k=k * 2)  # Get more to account for filtering
+                    if filename_filter:
+                        filtered_docs = [
+                            doc for doc in docs 
+                            if doc.metadata.get('filename') in filename_filter
+                        ]
+                        return filtered_docs[:k]
+                    return docs[:k]
                 except Exception as e2:
                     log_query.error(f"Fallback also failed: {e2}")
                     return []

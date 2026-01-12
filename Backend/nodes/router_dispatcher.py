@@ -5,6 +5,7 @@ Runs selected routers in parallel
 """
 import time
 from concurrent.futures import ThreadPoolExecutor
+from langgraph.errors import GraphInterrupt
 from models.parent_state import ParentState
 from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
 from graph.subgraphs.webcalcs_subgraph import call_webcalcs_subgraph
@@ -22,31 +23,45 @@ def node_router_dispatcher(state: ParentState) -> dict:
     
     results = {}
     
-    # Run selected routers in parallel
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        futures = {}
-        
-        if "rag" in selected_routers:
-            log_route.info("🚀 Dispatching to DBRetrieval subgraph")
-            futures["rag"] = executor.submit(call_db_retrieval_subgraph, state)
-        
-        if "web" in selected_routers:
-            log_route.info("🚀 Dispatching to WebCalcs subgraph")
-            futures["web"] = executor.submit(call_webcalcs_subgraph, state)
-        
-        if "desktop" in selected_routers:
-            log_route.info("🚀 Dispatching to DesktopAgent subgraph")
-            futures["desktop"] = executor.submit(call_desktop_agent_subgraph, state)
-        
-        # Collect results
-        for router_name, future in futures.items():
-            try:
-                result = future.result()
-                results[router_name] = result
-                log_route.info(f"✅ {router_name.upper()} router completed")
-            except Exception as e:
-                log_route.error(f"❌ {router_name.upper()} router failed: {e}")
-                results[router_name] = {}
+    # CRITICAL: RAG subgraph must be called directly (not in ThreadPoolExecutor)
+    # to allow GraphInterrupt exceptions to propagate correctly to the parent graph
+    if "rag" in selected_routers:
+        log_route.info("🚀 Dispatching to DBRetrieval subgraph")
+        try:
+            rag_result = call_db_retrieval_subgraph(state)
+            results["rag"] = rag_result
+            log_route.info("✅ RAG router completed")
+        except GraphInterrupt:
+            # CRITICAL: Re-raise GraphInterrupt to propagate to parent graph
+            # This allows the interrupt to be handled at the API level
+            raise
+        except Exception as e:
+            log_route.error(f"❌ RAG router failed: {e}")
+            results["rag"] = {}
+    
+    # Other routers can run in parallel (they don't use interrupts)
+    other_routers = [r for r in selected_routers if r != "rag"]
+    if other_routers:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = {}
+            
+            if "web" in other_routers:
+                log_route.info("🚀 Dispatching to WebCalcs subgraph")
+                futures["web"] = executor.submit(call_webcalcs_subgraph, state)
+            
+            if "desktop" in other_routers:
+                log_route.info("🚀 Dispatching to DesktopAgent subgraph")
+                futures["desktop"] = executor.submit(call_desktop_agent_subgraph, state)
+            
+            # Collect results from other routers
+            for router_name, future in futures.items():
+                try:
+                    result = future.result()
+                    results[router_name] = result
+                    log_route.info(f"✅ {router_name.upper()} router completed")
+                except Exception as e:
+                    log_route.error(f"❌ {router_name.upper()} router failed: {e}")
+                    results[router_name] = {}
     
     # Merge results into state updates
     state_updates = {}
