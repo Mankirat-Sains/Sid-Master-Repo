@@ -31,6 +31,18 @@ interface StreamCallbacks {
   onChunk?: (chunk: string) => void
   onComplete?: (result: ChatResponse) => void
   onError?: (error: Error) => void
+  onInterrupt?: (interrupt: {
+    interrupt_id: string | null
+    interrupt_type: string
+    question: string
+    codes: string[]
+    code_count: number
+    chunk_count: number
+    available_codes: string[]
+    previously_retrieved: string[]
+    session_id: string
+    thread_id: string
+  }) => void
 }
 
 export const useChat = () => {
@@ -197,6 +209,30 @@ export const useChat = () => {
                 // Final result
                 console.log('✅ Stream complete, got result')
                 callbacks?.onComplete?.(data.result as ChatResponse)
+              } else if (data.type === 'interrupt') {
+                // Human-in-the-loop interrupt - requires user input
+                console.log('⏸️  Interrupt received from stream:', {
+                  interrupt_type: data.interrupt_type,
+                  codes: data.codes?.length || 0,
+                  available_codes: data.available_codes?.length || 0,
+                  question: data.question
+                })
+                if (callbacks?.onInterrupt) {
+                  callbacks.onInterrupt({
+                    interrupt_id: data.interrupt_id,
+                    interrupt_type: data.interrupt_type,
+                    question: data.question || '',
+                    codes: data.codes || [],
+                    code_count: data.code_count || 0,
+                    chunk_count: data.chunk_count || 0,
+                    available_codes: data.available_codes || [],
+                    previously_retrieved: data.previously_retrieved || [],
+                    session_id: data.session_id || sessionId,
+                    thread_id: data.thread_id || sessionId
+                  })
+                } else {
+                  console.warn('⚠️ No onInterrupt callback provided - interrupt will not be handled')
+                }
               } else if (data.type === 'error') {
                 console.error('❌ Stream error:', data.message)
                 callbacks?.onError?.(new Error(data.message || 'Unknown error'))

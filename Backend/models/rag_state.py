@@ -1,22 +1,36 @@
 """
-RAG State Definition
-The typed state object passed between all LangGraph nodes
+RAG State Definition - DEPRECATED
+This file is kept for backward compatibility.
+Use ParentState for parent graph and DBRetrievalState for DBRetrieval subgraph.
 """
 from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Literal, Any
 from langchain_core.documents import Document
 
+# Import new states for backward compatibility
+from .parent_state import ParentState
+from .db_retrieval_state import DBRetrievalState
 
+# Keep RAGState as an alias to DBRetrievalState for backward compatibility
+# This allows existing code to continue working during migration
+RAGState = DBRetrievalState
+
+# Original RAGState definition (deprecated - use DBRetrievalState instead)
 @dataclass
-class RAGState:
+class _RAGState:
     """
     Typed state object that flows through the LangGraph pipeline.
     Each node receives this state and returns a dict to update it.
     """
     # Session & Query
     session_id: str = ""
-    user_query: str = ""
+    user_query: str = ""  # Rewritten/enhanced query (used for retrieval)
+    original_question: Optional[str] = None  # Original user question (for storing in messages)
     user_role: Optional[str] = None  # User role for role-based database preferences (e.g., "structural_engineer", "trainer")
+    
+    # Messages (persisted by checkpointer) - Follows LangGraph's pattern
+    # Simple format: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
+    messages: List[Dict[str, str]] = field(default_factory=list)
     
     # Planning / Routing
     query_plan: Optional[Dict] = None

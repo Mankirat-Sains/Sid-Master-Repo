@@ -133,7 +133,11 @@ def _extract_semantic_context_for_rewriter(session_data: dict) -> dict:
 # INTELLIGENT QUERY REWRITING
 # =============================================================================
 
-def intelligent_query_rewriter(user_query: str, session_id: str) -> Tuple[str, dict]:
+def intelligent_query_rewriter(
+    user_query: str, 
+    session_id: str,
+    messages: Optional[List[Dict[str, str]]] = None
+) -> Tuple[str, dict]:
     """
     Use LLM to intelligently rewrite queries and detect follow-ups.
     Handles pronoun resolution, follow-up detection, and context expansion.
@@ -141,49 +145,73 @@ def intelligent_query_rewriter(user_query: str, session_id: str) -> Tuple[str, d
     Args:
         user_query: The user's raw query
         session_id: Session identifier for context retrieval
+        messages: Optional messages from state (preferred over SESSION_MEMORY)
+                  Format: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
     
     Returns:
         Tuple of (rewritten_query, filters_dict)
     """
-    # Guardrail 1: Extract explicit project IDs with regex
-    explicit_ids = re.findall(r'\b\d{2}-\d{2}-\d{3}\b', user_query)
+    # Guardrail: Only extract explicit project IDs if user explicitly types them in the query
+    # This is fine - user is being explicit, not a follow-up
+    explicit_ids = re.findall(r'\b\d{2}-\d{2}-\d{3,4}\b', user_query)
     if explicit_ids:
-        log_query.info(f"🎯 EXPLICIT IDs DETECTED: {explicit_ids}")
+        log_query.info(f"🎯 EXPLICIT IDs DETECTED IN QUERY: {explicit_ids}")
         return user_query, {"project_keys": explicit_ids}
     
-    # Get focus state
-    focus_state = FOCUS_STATES.get(session_id, {
-        "recent_projects": [],
-        "last_answer_projects": [],
-        "last_results_projects": [],
-        "last_query_text": ""
-    })
+    # Use messages from state if provided (preferred), otherwise fall back to SESSION_MEMORY
+    if messages is None:
+        session_data = SESSION_MEMORY.get(session_id, {})
+        # Try to get messages, fallback to conversation_history for backward compatibility
+        messages = session_data.get("messages", [])
+        if not messages and session_data.get("conversation_history"):
+            # Convert old format to new format for backward compatibility
+            messages = []
+            for exchange in session_data["conversation_history"]:
+                messages.append({"role": "user", "content": exchange.get("question", "")})
+                messages.append({"role": "assistant", "content": exchange.get("answer", "")})
+        log_query.info(f"💭 Using messages from SESSION_MEMORY ({len(messages)} messages)")
+    else:
+        log_query.info(f"💭 Using messages from state ({len(messages)} messages)")
     
-    # SEMANTIC INTELLIGENCE: Get semantic context from session memory
+    # SEMANTIC INTELLIGENCE: Get semantic context from session memory (for semantic patterns)
     session_data = SESSION_MEMORY.get(session_id, {})
     semantic_context = _extract_semantic_context_for_rewriter(session_data)
     
-    # Enhanced LLM-based rewriting with semantic intelligence
-    focus_context = {
-        "recent_projects": focus_state["recent_projects"][-5:],  # Last 5 recent
-        "last_answer_projects": focus_state["last_answer_projects"],
-        "last_results_projects": focus_state["last_results_projects"],
-        "last_query": focus_state["last_query_text"],
-        # NEW: Semantic intelligence
-        "recent_topics": semantic_context["recent_topics"],
-        "recent_complexity": semantic_context["recent_complexity_patterns"],
-        "last_route_preference": semantic_context["last_route"],
-        "last_scope_pattern": semantic_context["last_scope"]
-    }
+    # Format FULL conversation history for LLM (user sees this, so LLM should see it too)
+    # Show complete messages - this is what the user actually sees
+    conversation_context_str = ""
+    if messages:
+        conversation_context_str = "\n\nFULL CONVERSATION HISTORY (what the user sees):\n"
+        # Show all messages (or last 10 exchanges if too long)
+        max_exchanges = 10
+        max_messages = max_exchanges * 2
+        recent_messages = messages[-max_messages:] if len(messages) > max_messages else messages
+        
+        exchange_num = 1
+        for i in range(0, len(recent_messages), 2):
+            if i + 1 < len(recent_messages):
+                user_msg = recent_messages[i]
+                assistant_msg = recent_messages[i + 1]
+                if user_msg.get("role") == "user" and assistant_msg.get("role") == "assistant":
+                    q = user_msg.get("content", "")
+                    a = assistant_msg.get("content", "")  # Full answer - user sees this!
+                    conversation_context_str += f"\n--- Exchange {exchange_num} ---\n"
+                    conversation_context_str += f"USER: {q}\n"
+                    conversation_context_str += f"ASSISTANT: {a}\n"
+                    exchange_num += 1
+            elif i < len(recent_messages):
+                # Handle case where we have a user message but no assistant response yet
+                user_msg = recent_messages[i]
+                if user_msg.get("role") == "user":
+                    q = user_msg.get("content", "")
+                    conversation_context_str += f"\n--- Exchange {exchange_num} (in progress) ---\n"
+                    conversation_context_str += f"USER: {q}\n"
+                    exchange_num += 1
     
-    log_query.info(f"🎯 FOCUS CONTEXT FOR REWRITER: {focus_context}")
-    
-    prompt = f"""You are a classifier for an engineering-drawings RAG system. Your job is to determine if a query is a follow-up to previous conversation.
+    prompt = f"""You are an intelligent query processor for an engineering-drawings RAG system. Your job is to understand the FULL SEMANTIC CONTEXT of the conversation and rewrite queries to be self-contained and complete.
 
 CURRENT QUERY: "{user_query}"
-
-CONVERSATION CONTEXT:
-{json.dumps(focus_context, indent=2)}
+{conversation_context_str}
 
 SEMANTIC INTELLIGENCE:
 - Recent topics explored: {semantic_context["recent_topics"]}
@@ -191,57 +219,86 @@ SEMANTIC INTELLIGENCE:
 - Last route preference: {semantic_context["last_route"]}
 - Last scope pattern: {semantic_context["last_scope"]}
 
-TASK: Analyze if this query is a follow-up to previous conversation context.
+CRITICAL: The conversation history above is EXACTLY what the user sees. Use it to understand the full context of what was discussed.
 
-FOLLOW-UP INDICATORS (clear signals that indicate follow-up):
-- Explicit references to prior context:
-  * Pronouns: "it", "that one", "those", "the project", "the one you mentioned"
-  * Positional references: "the first one", "the second project", "the last one", "the second one"
-  * Explicit references: "the project I asked about", "the same one", "that project", "the project I pulled before", "the previous project", "the one we just discussed"
-  * Requests for more info: "tell me more about it", "give me more info on the second one", "what about the gravity system", "how does the [aspect] work"
-- Query is incomplete without prior context (unclear what "it", "that", "the second one" refers to)
-- Query continues previous topic: "also", "additionally", "furthermore" (when clearly continuing same topic)
-- Query asks for different perspective on same topic from prior conversation
-- Query asks about a specific aspect/feature of something mentioned before (e.g., "gravity system", "foundation", "roof structure" when a project was just discussed)
+YOUR TASK: Understand the semantic context and rewrite the query intelligently.
 
-NON-FOLLOW-UP INDICATORS (clear signals that indicate NEW query):
-- Complete, self-contained questions that make sense without context
+STEP 1: CONTEXT UNDERSTANDING
+Read the conversation history and understand:
+- What topics were discussed?
+- What projects were mentioned? (Project IDs are in format "25-XX-XXX" or "25-XX-XXXX")
+- What specific aspects were covered? (foundations, structural systems, materials, etc.)
+- What was the user's original intent?
+- What information was provided in the assistant's responses?
+
+STEP 2: FOLLOW-UP DETECTION
+Determine if the current query is a follow-up to previous conversation.
+
+FOLLOW-UP EXAMPLES (not exhaustive - be intelligent):
+- "tell me more" → wants more detail about what was just discussed
+- "find me more samples" → wants more examples of what was just discussed
+- "why do you think that is" → asking for reasoning about previous answer
+- "what about the foundation" → asking about a specific aspect mentioned before
+- "can you elaborate" → wants more detail on previous answer
+- "the last project" → referring to a project from previous response
+- "the first one" → referring to first item from previous response
+- "it", "that", "those" → referring to something from previous conversation
+- Any query that is incomplete or unclear without prior context
+
+NON-FOLLOW-UP EXAMPLES:
+- Complete, self-contained questions that make sense independently
 - New topics unrelated to recent conversation
-- Explicit project IDs mentioned (25-XX-XXX format) - these are explicit, not follow-ups
-- Specific dates/locations that weren't discussed recently
-- Questions that clearly introduce new information or shift focus to unrelated topic
-- General questions about engineering concepts (not referencing prior results)
-- Questions that could be answered independently without prior context
+- Explicit project IDs in current query (user is being explicit, not referencing)
 
-CLASSIFICATION RULES:
-- If query contains pronouns/positional references ("it", "the second one", "that project"), it's likely a follow-up
-- If query is self-contained and makes sense without context, it's likely NOT a follow-up
-- BE CONSERVATIVE: When genuinely ambiguous, classify as "new" (not follow-up)
-- Only classify as follow-up if you can identify what prior context is being referenced
+STEP 3: INTELLIGENT QUERY REWRITING
+If this is a follow-up, rewrite the query to be SELF-CONTAINED with all necessary context:
+
+EXAMPLES:
+- User: "tell me more" (after discussing floating slabs)
+  → Rewritten: "Provide detailed information about floating slab foundation systems, including design specifications, reinforcement details, and construction methods"
+
+- User: "the last project" (after listing 3 projects: 25-01-064, 25-01-070, 25-01-028)
+  → Rewritten: "Provide comprehensive details about project 25-01-028 including all structural systems, foundation details, and design specifications"
+
+- User: "why do you think that is" (after discussing foundation types)
+  → Rewritten: "Explain the reasoning and engineering principles behind the foundation type recommendations and design decisions discussed"
+
+- User: "find me more samples" (after showing floating slab projects)
+  → Rewritten: "Find additional engineering projects with floating slab foundation systems, including design details and specifications"
+
+KEY PRINCIPLES:
+1. The rewritten query should be COMPLETE and SELF-CONTAINED - someone reading only the rewritten query should understand what to search for
+2. Include ALL relevant context from the conversation (topics, projects, aspects discussed)
+3. Resolve all pronouns and vague references to concrete entities
+4. If the user asks "tell me more", expand it to include what "more" means based on context
+5. If the user asks "why", expand it to include what they're asking "why" about
+
+STEP 4: FILTER EXTRACTION
+As part of understanding context, extract any filters that would help narrow the search:
+- project_keys: Project IDs mentioned in conversation that are relevant to this query
+- keywords: Important terms from the conversation that should be emphasized
+
+IMPORTANT:
+- Only extract project_keys if they are clearly relevant to what the user is asking about
+- If the user says "tell me more" about a specific project, include that project ID
+- If the user asks a general follow-up, you may not need project_keys (let the rewritten query handle it)
+- Keywords should capture the semantic essence of what was discussed
 
 CONFIDENCE GUIDELINES:
-- 0.95-1.0: Strong evidence (pronouns, "the second one", "tell me more about it", "the project I pulled before", etc.)
-- 0.85-0.94: Clear evidence but some ambiguity - STILL TREAT AS FOLLOW-UP if context projects exist
+- 0.95-1.0: Strong evidence of follow-up (pronouns, "tell me more", "why", etc.)
+- 0.85-0.94: Clear evidence but some ambiguity
 - 0.70-0.84: Ambiguous - classify as "new" unless very clear follow-up indicators
 - 0.0-0.69: Clear standalone question - classify as "new"
-
-IMPORTANT: If confidence >= 0.85 AND there are recent projects in context, treat as follow-up and use the MOST RECENT project from last_answer_projects.
-
-REWRITING STRATEGY:
-1. If follow-up: Expand query with specific terms from context
-2. If follow-up: Resolve vague references to concrete entities
-3. If follow-up: Include relevant project IDs from recent context
-4. If not follow-up: Pass through unchanged
 
 OUTPUT STRICT JSON (no markdown, no code fences):
 {{
   "is_followup": boolean,
   "confidence": 0.0-1.0,
-  "reasoning": "Why this is/isn't a follow-up based on context analysis",
-  "rewritten_query": "Enhanced query with context or original if not followup",
+  "reasoning": "Your analysis of the context and why this is/isn't a follow-up",
+  "rewritten_query": "A complete, self-contained query that includes all necessary context. Should be intelligible without reading the conversation history.",
   "filters": {{
-    "project_keys": ["ID1", "ID2"],
-    "keywords": ["term1", "term2"]
+    "project_keys": ["25-XX-XXX"],  // Only if clearly relevant to the query
+    "keywords": ["term1", "term2"]  // Important semantic terms from context
   }},
   "semantic_enrichment": ["topic1", "topic2"]
 }}"""
@@ -274,33 +331,20 @@ OUTPUT STRICT JSON (no markdown, no code fences):
             log_query.info(f"🧠 SEMANTIC ENRICHMENT: {semantic_enrichment}")
         
         # Process based on LLM's follow-up determination
-        # Lower threshold: 0.85+ if we have context projects, otherwise 0.95+
-        has_context_projects = bool(focus_state["last_answer_projects"] or focus_state["recent_projects"])
-        confidence_threshold = 0.85 if has_context_projects else 0.95
+        # Trust the LLM's judgment - it has the full conversation context
+        confidence_threshold = 0.85
         
         if is_followup and confidence >= confidence_threshold:
             rewritten_query = result.get("rewritten_query", user_query)
             filters = result.get("filters", {})
             
-            # Enhanced: Handle project keys from filters
+            # Trust LLM's project_keys extraction - it read the conversation history
             project_keys = filters.get("project_keys", [])
             
-            # Fallback logic if LLM didn't identify specific projects
-            if not project_keys:
-                # CRITICAL FIX: Use MOST RECENT project from last_answer_projects (the immediately previous exchange)
-                # Only fall back to recent_projects if last_answer_projects is empty
-                if focus_state["last_answer_projects"]:
-                    # Use the MOST RECENT project (last in list = most recent)
-                    project_keys = [focus_state["last_answer_projects"][-1]]
-                    log_query.info(f"🎯 USING MOST RECENT PROJECT FROM LAST ANSWER: {project_keys}")
-                elif focus_state["recent_projects"]:
-                    # Fallback to most recent from recent_projects
-                    project_keys = [focus_state["recent_projects"][-1]]
-                    log_query.info(f"🎯 FALLBACK TO MOST RECENT PROJECT: {project_keys}")
-                
-                if project_keys:
-                    filters["project_keys"] = project_keys
-                    log_query.info(f"🎯 FALLBACK TO CONTEXT PROJECTS: {project_keys}")
+            if project_keys:
+                log_query.info(f"🎯 LLM EXTRACTED PROJECTS FROM CONVERSATION: {project_keys}")
+            else:
+                log_query.info(f"🎯 LLM DETECTED FOLLOW-UP BUT NO PROJECTS IDENTIFIED (may be ambiguous reference)")
             
             log_query.info(f"🎯 FOLLOW-UP DETECTED: '{user_query}' → '{rewritten_query}'")
             log_query.info(f"🎯 ENRICHED WITH: projects={project_keys}, topics={semantic_enrichment}")
@@ -324,63 +368,97 @@ OUTPUT STRICT JSON (no markdown, no code fences):
 # CONVERSATION CONTEXT FORMATTING
 # =============================================================================
 
-def get_conversation_context(session_id: str, max_exchanges: int = 3) -> str:
+def get_conversation_context(session_id: str, max_exchanges: int = 3, messages: Optional[List[Dict[str, str]]] = None) -> str:
     """
-    Format recent conversation history for inclusion in prompts.
+    Format recent messages for inclusion in prompts.
     Returns a formatted string with the last N question-answer pairs, prioritizing most recent.
     
     Args:
-        session_id: Session identifier
+        session_id: Session identifier (for backward compatibility)
         max_exchanges: Maximum number of exchanges to include (default: 3)
+        messages: Optional messages from state (preferred over SESSION_MEMORY)
+                  Format: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
     
     Returns:
         Formatted conversation history string
     """
-    session = SESSION_MEMORY.get(session_id, {})
-    history = session.get("conversation_history", [])
+    # Use state messages if provided (from checkpointer), otherwise fall back to SESSION_MEMORY
+    if messages is not None:
+        msg_list = messages
+        log_query.info(f"💭 Using messages from state ({len(msg_list)} messages)")
+    else:
+        session = SESSION_MEMORY.get(session_id, {})
+        # Try messages first, fallback to conversation_history for backward compatibility
+        msg_list = session.get("messages", [])
+        if not msg_list and session.get("conversation_history"):
+            # Convert old format to new format
+            msg_list = []
+            for exchange in session["conversation_history"]:
+                msg_list.append({"role": "user", "content": exchange.get("question", "")})
+                msg_list.append({"role": "assistant", "content": exchange.get("answer", "")})
+        log_query.info(f"💭 Using messages from SESSION_MEMORY ({len(msg_list)} messages)")
 
-    if not history:
-        log_query.info("💭 CONVERSATION CONTEXT: No prior history found")
+    if not msg_list:
+        log_query.info("💭 CONVERSATION CONTEXT: No prior messages found")
         return ""
 
-    # Get last N exchanges (most recent first internally, but we'll format oldest-to-newest for clarity)
-    recent = history[-max_exchanges:]
+    # Get last N exchanges (each exchange = 2 messages: user + assistant)
+    max_messages = max_exchanges * 2
+    recent_messages = msg_list[-max_messages:]
 
     # Log what we're retrieving
+    num_exchanges = len(recent_messages) // 2
     log_query.info(
-        f"💭 CONVERSATION CONTEXT: Retrieving {len(recent)} of {len(history)} total exchanges "
+        f"💭 CONVERSATION CONTEXT: Retrieving {num_exchanges} exchanges from {len(msg_list)} total messages "
         f"(prioritizing most recent)"
     )
-    for i, exchange in enumerate(recent, 1):
-        q = exchange.get("question", "")[:80]  # First 80 chars
-        projects = exchange.get("projects", [])
-        log_query.info(f"   Exchange {i}: Q: {q}... | Projects: {projects[:3]}")
-
+    
+    # Format messages as exchanges
+    # Show FULL conversation history - user sees this, so LLM should see it too
     lines = [
-        "RECENT CONVERSATION HISTORY (last 3 exchanges, ordered oldest to newest):",
+        f"FULL CONVERSATION HISTORY (what the user sees, showing last {max_exchanges} exchanges, ordered oldest to newest):",
         "IMPORTANT: When the user asks a follow-up question, DEFAULT to the MOST RECENT exchange "
         "(the last one below) unless they EXPLICITLY reference an older one.",
         "Examples of explicit references: 'the first question', 'originally', 'earlier we discussed', 'back to...'",
-        "If no explicit reference → assume MOST RECENT exchange."
+        "If no explicit reference → assume MOST RECENT exchange.",
+        "CRITICAL: Read the FULL conversation to understand what 'this', 'it', 'the third project', etc. refers to."
     ]
-
-    for i, exchange in enumerate(recent, 1):
-        q = exchange.get("question", "")
-        a = exchange.get("answer", "")
-        projects = exchange.get("projects", [])
-
-        # Truncate long answers to keep context manageable
-        a_truncated = a[:300] + "..." if len(a) > 300 else a
-
-        # Mark the most recent exchange
-        is_most_recent = (i == len(recent))
-        exchange_label = f"Exchange {i}" + (" (MOST RECENT - DEFAULT CONTEXT)" if is_most_recent else "")
-
-        lines.append(f"\n{exchange_label}:")
-        lines.append(f"Q: {q}")
-        lines.append(f"A: {a_truncated}")
-        if projects:
-            lines.append(f"Projects mentioned: {', '.join(projects[:5])}")
-
+    
+    exchange_num = 1
+    for i in range(0, len(recent_messages), 2):
+        if i + 1 < len(recent_messages):
+            user_msg = recent_messages[i]
+            assistant_msg = recent_messages[i + 1]
+            if user_msg.get("role") == "user" and assistant_msg.get("role") == "assistant":
+                q = user_msg.get("content", "")
+                a = assistant_msg.get("content", "")
+                
+                # Extract projects from answer using regex
+                PROJECT_RE = re.compile(r'\d{2}-\d{2}-\d{3,4}')
+                projects = []
+                for match in PROJECT_RE.finditer(a):
+                    proj_id = match.group(0)
+                    if proj_id not in projects:
+                        projects.append(proj_id)
+                
+                # Show full answer - user sees this, so LLM should see it too
+                # Don't truncate - we need full context for intelligent understanding
+                a_truncated = a
+                
+                # Mark the most recent exchange
+                is_most_recent = (exchange_num == num_exchanges)
+                exchange_label = f"Exchange {exchange_num}" + (" (MOST RECENT - DEFAULT CONTEXT)" if is_most_recent else "")
+                
+                lines.append(f"\n{exchange_label}:")
+                lines.append(f"Q: {q}")
+                lines.append(f"A: {a_truncated}")
+                if projects:
+                    lines.append(f"Projects mentioned: {', '.join(projects[:5])}")
+                
+                # Log what we're retrieving
+                log_query.info(f"   Exchange {exchange_num}: Q: {q[:80]}... | Projects: {projects[:3]}")
+                
+                exchange_num += 1
+    
     return "\n".join(lines)
 

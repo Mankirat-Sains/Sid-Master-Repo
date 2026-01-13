@@ -6,7 +6,7 @@ import re
 import time
 from dataclasses import asdict
 from typing import Dict, List, Optional
-from models.rag_state import RAGState
+from models.parent_state import ParentState
 from models.memory import (
     SESSION_MEMORY, MAX_CONVERSATION_HISTORY, MAX_SEMANTIC_HISTORY,
     intelligent_query_rewriter, update_focus_state, FOCUS_STATES
@@ -14,8 +14,8 @@ from models.memory import (
 from graph.builder import build_graph
 from config.settings import MAX_CITATIONS_DISPLAY, MAX_ROUTER_DOCS
 from config.logging_config import log_query, log_vlm
-from database import test_database_connection
-from database.supabase_client import vs_smart, vs_large
+from nodes.DBRetrieval.KGdb import test_database_connection
+from nodes.DBRetrieval.KGdb.supabase_client import vs_smart, vs_large
 
 # Build graph once at module load and expose it for streaming
 graph = build_graph()
@@ -62,8 +62,8 @@ def run_agentic_rag(
     
     log_query.info(f"=== SESSION MEMORY (session_id={session_id}) ===")
     if prior:
-        conv_history = prior.get('conversation_history', [])
-        log_query.info(f"  conversation_history: {len(conv_history)} exchanges")
+        messages = prior.get('messages', [])
+        log_query.info(f"  messages: {len(messages)} messages ({len(messages) // 2} exchanges)")
         log_query.info(f"  last_query: {prior.get('last_query')}")
         log_query.info(f"  project_filter: {prior.get('project_filter')}")
         log_query.info(f"  selected_projects: {prior.get('selected_projects')}")
@@ -74,7 +74,7 @@ def run_agentic_rag(
     # Process images if provided - Convert to searchable text via VLM
     image_context = ""
     if images_base64 and len(images_base64) > 0:
-        from nodes.DBRetrieval.image_nodes import describe_image_for_search
+        from nodes.DBRetrieval.SQLdb.image_nodes import describe_image_for_search
         log_vlm.info("")
         log_vlm.info("🔷" * 30)
         log_vlm.info(f"🖼️ PROCESSING {len(images_base64)} IMAGE(S) WITH VLM")
@@ -98,12 +98,35 @@ def run_agentic_rag(
             log_vlm.info("🔷" * 30)
             log_vlm.info("")
 
+    # Load previous state from checkpointer (if exists) to get messages
+    # This allows us to maintain conversation context across invocations
+    previous_state = None
+    try:
+        # Get the latest checkpoint state for this thread
+        state_snapshot = graph.get_state({"configurable": {"thread_id": session_id}})
+        if state_snapshot and state_snapshot.values:
+            previous_state = state_snapshot.values
+            log_query.info(f"📖 Loaded previous state from checkpointer for thread_id={session_id}")
+            if previous_state.get("messages"):
+                log_query.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+    except Exception as e:
+        # No previous state exists (first invocation) - this is fine
+        log_query.info(f"📖 No previous state found (first invocation): {e}")
+        previous_state = None
+    
+    # Get messages from previous state for query rewriting
+    previous_messages = previous_state.get("messages", []) if previous_state else []
+
     # Combine question with image context for enhanced search
     enhanced_question = question + image_context if image_context else question
 
-    # Intelligent query rewriting
+    # Intelligent query rewriting - NOW WITH MESSAGES
     log_query.info(f"🎯 QUERY REWRITING INPUT: '{enhanced_question[:500]}...' (truncated)" if len(enhanced_question) > 500 else f"🎯 QUERY REWRITING INPUT: '{enhanced_question}'")
-    rewritten_query, query_filters = intelligent_query_rewriter(enhanced_question, session_id)
+    rewritten_query, query_filters = intelligent_query_rewriter(
+        enhanced_question, 
+        session_id,
+        messages=previous_messages
+    )
     log_query.info(f"🎯 QUERY REWRITING OUTPUT: '{rewritten_query}'")
     log_query.info(f"🎯 QUERY FILTERS: {query_filters}")
     
@@ -124,63 +147,69 @@ def run_agentic_rag(
         # The router (in rag_router or route node) will set state.data_sources
         pass
     
-    init = RAGState(
+    # Initialize messages from previous state if available
+    # CRITICAL: Add the NEW user message to the state BEFORE invoking the graph
+    # This ensures nodes like rag_plan can see the current user question in the conversation context
+    init_messages = list(previous_messages) if previous_messages else []
+    
+    # Add the current user message to the conversation history
+    # This is what LangGraph expects - the new message should be in state before processing
+    init_messages.append({
+        "role": "user",
+        "content": question  # Use original question, not rewritten query
+    })
+    
+    init = ParentState(
         session_id=session_id,
-        user_query=base_query,
-        query_plan=None, data_route=None,
-        project_filter=project_filter,
-        expanded_queries=[], retrieved_docs=[], graded_docs=[],
-        db_result=None, final_answer=None,
-        answer_citations=[], code_answer=None, code_citations=[],
-        coop_answer=None, coop_citations=[],
-        answer_support_score=0.0,
-        corrective_attempted=False,
-        data_sources=data_sources,  # None is OK - router will set it, or will use RAGState default
+        user_query=base_query,  # Rewritten query for retrieval
+        original_question=question,  # Original question (already added to messages above)
         images_base64=images_base64 if images_base64 else None,
-        use_image_similarity=False,  # Image embedding disabled - using VLM description only
-        query_intent=None
+        messages=init_messages,  # Includes previous messages + new user message
+        selected_routers=[],  # Will be set by plan node
+        # Results will be populated by subgraphs
+        db_retrieval_result=None,
+        webcalcs_result=None,
+        desktop_result=None,
+        build_model_result=None,
     )
-
+    
+    log_query.info(f"📖 Initialized messages: {len(previous_messages) if previous_messages else 0} previous + 1 new = {len(init_messages)} total")
+    
     # Convert dataclass to dict - graph.invoke expects a dict, not a dataclass
-    final = graph.invoke(asdict(init), config={"configurable": {"thread_id": session_id}})
+    # Use "exit" durability mode to only save final state (not after each node)
+    # This reduces storage by ~85% - only 1 checkpoint per query instead of 7+
+    import os
+    durability_mode = os.getenv("CHECKPOINTER_DURABILITY", "exit").lower()
+    # CRITICAL: durability is a DIRECT parameter, not in config dict!
+    final = graph.invoke(
+        asdict(init), 
+        config={"configurable": {"thread_id": session_id}},
+        durability=durability_mode  # "exit" = only save at end, "async"/"sync" = save after each node
+    )
 
     # Normalize dict vs. object - LangGraph can return either
     if isinstance(final, dict):
-        final_state = RAGState(
+        final_state = ParentState(
             session_id=final.get("session_id", session_id),
             user_query=final.get("user_query", base_query),
-            query_plan=final.get("query_plan"),
-            data_route=final.get("data_route"),
-            project_filter=final.get("project_filter"),
-            expanded_queries=final.get("expanded_queries", []),
-            retrieved_docs=final.get("retrieved_docs", []),
-            graded_docs=final.get("graded_docs", []),
-            db_result=final.get("db_result"),
-            final_answer=final.get("final_answer"),
-            answer_citations=final.get("answer_citations", []),
-            code_answer=final.get("code_answer"),
-            code_citations=final.get("code_citations", []),
-            coop_answer=final.get("coop_answer"),
-            coop_citations=final.get("coop_citations", []),
-            answer_support_score=final.get("answer_support_score", 0.0),
-            corrective_attempted=final.get("corrective_attempted", False),
-            needs_fix=final.get("needs_fix", False),
-            selected_projects=final.get("selected_projects", []),
-            needs_clarification=final.get("needs_clarification", False),
-            clarification_question=final.get("clarification_question"),
+            original_question=final.get("original_question", question),
+            messages=final.get("messages", init.messages if hasattr(init, 'messages') else []),
+            selected_routers=final.get("selected_routers", []),
             images_base64=final.get("images_base64"),
-            image_embeddings=final.get("image_embeddings"),
-            image_similarity_results=final.get("image_similarity_results", []),
-            use_image_similarity=final.get("use_image_similarity", False),
-            query_intent=final.get("query_intent"),
-            follow_up_questions=final.get("follow_up_questions", []),
-            follow_up_suggestions=final.get("follow_up_suggestions", [])
+            db_retrieval_result=final.get("db_retrieval_result"),
+            webcalcs_result=final.get("webcalcs_result"),
+            desktop_result=final.get("desktop_result"),
+            build_model_result=final.get("build_model_result"),
         )
     else:
         final_state = final
+        # Ensure messages is set
+        if not hasattr(final_state, 'messages') or not final_state.messages:
+            final_state.messages = init.messages if hasattr(init, 'messages') else []
 
     # Extract projects from answer text
-    answer_text = final_state.final_answer or ""
+    # Get answer from db_retrieval_result (which contains final_answer from DBRetrieval subgraph)
+    answer_text = final_state.db_retrieval_result or ""
     projects_in_answer = []
     seen_in_answer = set()
 
@@ -200,40 +229,19 @@ def run_agentic_rag(
 
     log_query.info(f"📋 Result items for entity resolution: {[r['project'] for r in result_items]}")
 
-    # Update conversation memory with sliding window
-    session_data = SESSION_MEMORY.get(session_id, {})
-    conversation_history = session_data.get("conversation_history", [])
-
-    log_query.info("💾 UPDATING CONVERSATION MEMORY:")
-    log_query.info(f"   Current history size: {len(conversation_history)} exchanges")
-
-    # Append new exchange to conversation history
-    answer_text = final_state.final_answer or ""
-    if final_state.code_answer:
-        answer_text = f"{answer_text}\n\n--- Code References ---\n\n{final_state.code_answer}"
-    if final_state.coop_answer:
-        answer_text = f"{answer_text}\n\n--- Training Manual References ---\n\n{final_state.coop_answer}"
+    # NOTE: Messages are updated by the 'correct' node (which runs last in the graph)
+    # The correct node already adds the new messages and persists them via checkpointer
+    # We don't need to update it here again - that would cause duplication!
+    # The messages in final_state are already updated by correct.py
     
-    new_exchange = {
-        "question": question,
-        "answer": answer_text,
-        "timestamp": time.time(),
-        "projects": projects_in_answer
-    }
-    conversation_history.append(new_exchange)
-
-    log_query.info(f"   Added new exchange:")
-    log_query.info(f"      Q: {question[:100]}...")
-    log_query.info(f"      A: {(answer_text or '')[:100]}...")
-    log_query.info(f"      Projects in answer: {projects_in_answer}")
-
-    # Maintain sliding window
-    if len(conversation_history) > MAX_CONVERSATION_HISTORY:
-        dropped = len(conversation_history) - MAX_CONVERSATION_HISTORY
-        conversation_history = conversation_history[-MAX_CONVERSATION_HISTORY:]
-        log_query.info(f"   ⚠️  Sliding window: Dropped {dropped} oldest exchange(s), keeping last {MAX_CONVERSATION_HISTORY}")
-
-    log_query.info(f"   Final history size: {len(conversation_history)} exchanges")
+    messages = list(final_state.messages or [])
+    log_query.info(f"💾 Messages from correct node: {len(messages)} messages")
+    
+    # Verify the messages were updated correctly by correct node
+    if messages:
+        last_message = messages[-1]
+        log_query.info(f"   Last message role: {last_message.get('role', '')}")
+        log_query.info(f"   Last message content: {last_message.get('content', '')[:100]}...")
 
     # SEMANTIC INTELLIGENCE: Gather semantic data from graph execution
     current_semantic = {}
@@ -264,26 +272,29 @@ def run_agentic_rag(
     
     log_query.info(f"   🧠 Semantic history size: {len(semantic_history)} records")
 
-    # Update session memory
+    # NOTE: Messages are now stored in state (persisted by checkpointer)
+    # We keep SESSION_MEMORY for backward compatibility with existing code that reads from it
+    # TODO: Migrate all code to use state.messages instead of SESSION_MEMORY
     SESSION_MEMORY[session_id] = {
-        "conversation_history": conversation_history,
-        "project_filter": final_state.project_filter,
+        "messages": messages,  # Store messages in SESSION_MEMORY for backward compatibility
+        "project_filter": None,  # No longer in ParentState, would need to be passed if needed
         "last_query": question,
-        "last_answer": final_state.final_answer,
+        "last_answer": final_state.db_retrieval_result,
         "last_results": [r for r in result_items if r.get("project")],
-        "selected_projects": final_state.selected_projects,
+        "selected_projects": final_state.db_retrieval_selected_projects,
         "semantic_history": semantic_history,
         "last_semantic": current_semantic
     }
 
-    log_query.info("   ✅ Session memory updated successfully")
+    log_query.info("   ✅ Session memory updated (backward compatibility)")
+    log_query.info("   ✅ Messages stored in state (persisted by checkpointer)")
     
     # Update focus state for intelligent query rewriting
     update_focus_state(
         session_id=session_id,
         query=question,
         projects=projects_in_answer,
-        results_projects=final_state.selected_projects
+        results_projects=final_state.db_retrieval_selected_projects
     )
     
     if session_id in FOCUS_STATES:
@@ -293,8 +304,15 @@ def run_agentic_rag(
     # Log final memory state summary
     log_query.info("📊 FINAL MEMORY STATE:")
     log_query.info(f"   Session ID: {session_id}")
-    log_query.info(f"   Total exchanges stored: {len(conversation_history)}")
-    log_query.info(f"   Total unique projects in memory: {len(set(p for ex in conversation_history for p in ex.get('projects', [])))}")
+    log_query.info(f"   Total messages stored: {len(messages)} ({len(messages) // 2} exchanges)")
+    # Extract projects from messages for logging
+    all_projects = set()
+    for msg in messages:
+        if msg.get("role") == "assistant":
+            content = msg.get("content", "")
+            for match in PROJECT_RE.finditer(content):
+                all_projects.add(match.group(0))
+    log_query.info(f"   Total unique projects in memory: {len(all_projects)}")
     log_query.info(f"   Current project filter: {final_state.project_filter or 'None'}")
 
     latency = round(time.time() - t0, 2)
@@ -321,33 +339,33 @@ def run_agentic_rag(
             "code_citations": [],
             "coop_citations": [],
             "route": None,
-            "project_filter": final_state.project_filter,
+            "project_filter": None,  # No longer in ParentState
             "needs_clarification": True
         }
     
-    plan_for_ui = final_state.query_plan if isinstance(final_state.query_plan, dict) else {}
+    # Extract DBRetrieval results (all fields are now in db_retrieval_* fields)
     return {
-        "answer": final_state.final_answer,
-        "code_answer": final_state.code_answer,
-        "coop_answer": final_state.coop_answer,
-        "support": round(final_state.answer_support_score, 3),
-        "citations": final_state.answer_citations,
-        "code_citations": final_state.code_citations,
-        "coop_citations": final_state.coop_citations,
-        "route": final_state.data_route,
-        "project_filter": final_state.project_filter,
+        "answer": final_state.db_retrieval_result,
+        "code_answer": final_state.db_retrieval_code_answer,
+        "coop_answer": final_state.db_retrieval_coop_answer,
+        "support": final_state.db_retrieval_support_score,
+        "citations": final_state.db_retrieval_citations,
+        "code_citations": final_state.db_retrieval_code_citations,
+        "coop_citations": final_state.db_retrieval_coop_citations,
+        "route": final_state.db_retrieval_route,
+        "project_filter": None,  # No longer in ParentState (would need to be passed if needed)
         "needs_clarification": False,
-        "expanded_queries": final_state.expanded_queries[:MAX_ROUTER_DOCS],
+        "expanded_queries": final_state.db_retrieval_expanded_queries,
         "latency_s": latency,
         "graded_preview": graded_preview,
         "plan": {
-            "reasoning": plan_for_ui.get("reasoning", ""),
-            "steps": plan_for_ui.get("steps", []),
-            "subqueries": plan_for_ui.get("subqueries", []),
+            "reasoning": "",
+            "steps": [],
+            "subqueries": [],
         },
-        "image_similarity_results": final_state.image_similarity_results or [],
-        "follow_up_questions": final_state.follow_up_questions or [],
-        "follow_up_suggestions": final_state.follow_up_suggestions or [],
+        "image_similarity_results": final_state.db_retrieval_image_similarity_results,
+        "follow_up_questions": final_state.db_retrieval_follow_up_questions,
+        "follow_up_suggestions": final_state.db_retrieval_follow_up_suggestions,
     }
 
 

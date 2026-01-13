@@ -19,12 +19,12 @@ from .filters import extract_date_filters_from_query, create_sql_project_filter
 from .project_utils import (
     _group_by_project_all, requested_project_count, _infer_n_from_q
 )
-from database.retrievers import (
+from nodes.DBRetrieval.KGdb.retrievers import (
     make_hybrid_retriever, make_code_hybrid_retriever, make_coop_hybrid_retriever,
     mmr_rerank_supabase, mmr_rerank_code, mmr_rerank_coop
 )
-from database.project_metadata import fetch_project_metadata
-from database.supabase_client import vs_code, vs_coop
+from nodes.DBRetrieval.KGdb.project_metadata import fetch_project_metadata
+from nodes.DBRetrieval.KGdb.supabase_client import vs_code, vs_coop
 
 # Dimension matching regex
 DIM_Q_RE = re.compile(r'(\d{1,4})(?:\s*(?:\'|\u2019|ft)?)\s*[x×]\s*(\d{1,4})(?:\s*(?:\'|\u2019|ft)?)', re.I)

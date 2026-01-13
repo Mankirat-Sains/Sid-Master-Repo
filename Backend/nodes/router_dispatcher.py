@@ -5,14 +5,15 @@ Runs selected routers in parallel
 """
 import time
 from concurrent.futures import ThreadPoolExecutor
-from models.rag_state import RAGState
-from nodes.DBRetrieval.rag import node_rag
-from nodes.WebCalcs.web_router import node_web_router
-from nodes.DesktopAgent.desktop_router import node_desktop_router
+from langgraph.errors import GraphInterrupt
+from models.parent_state import ParentState
+from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
+from graph.subgraphs.webcalcs_subgraph import call_webcalcs_subgraph
+from graph.subgraphs.desktop_agent_subgraph import call_desktop_agent_subgraph
 from config.logging_config import log_route
 
 
-def node_router_dispatcher(state: RAGState) -> dict:
+def node_router_dispatcher(state: ParentState) -> dict:
     """Dispatch to appropriate router nodes in parallel"""
     t_start = time.time()
     log_route.info(">>> ROUTER DISPATCHER START")
@@ -22,31 +23,45 @@ def node_router_dispatcher(state: RAGState) -> dict:
     
     results = {}
     
-    # Run selected routers in parallel
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        futures = {}
-        
-        if "rag" in selected_routers:
-            log_route.info("🚀 Dispatching to RAG router")
-            futures["rag"] = executor.submit(node_rag, state)
-        
-        if "web" in selected_routers:
-            log_route.info("🚀 Dispatching to Web router")
-            futures["web"] = executor.submit(node_web_router, state)
-        
-        if "desktop" in selected_routers:
-            log_route.info("🚀 Dispatching to Desktop router")
-            futures["desktop"] = executor.submit(node_desktop_router, state)
-        
-        # Collect results
-        for router_name, future in futures.items():
-            try:
-                result = future.result()
-                results[router_name] = result
-                log_route.info(f"✅ {router_name.upper()} router completed")
-            except Exception as e:
-                log_route.error(f"❌ {router_name.upper()} router failed: {e}")
-                results[router_name] = {}
+    # CRITICAL: RAG subgraph must be called directly (not in ThreadPoolExecutor)
+    # to allow GraphInterrupt exceptions to propagate correctly to the parent graph
+    if "rag" in selected_routers:
+        log_route.info("🚀 Dispatching to DBRetrieval subgraph")
+        try:
+            rag_result = call_db_retrieval_subgraph(state)
+            results["rag"] = rag_result
+            log_route.info("✅ RAG router completed")
+        except GraphInterrupt:
+            # CRITICAL: Re-raise GraphInterrupt to propagate to parent graph
+            # This allows the interrupt to be handled at the API level
+            raise
+        except Exception as e:
+            log_route.error(f"❌ RAG router failed: {e}")
+            results["rag"] = {}
+    
+    # Other routers can run in parallel (they don't use interrupts)
+    other_routers = [r for r in selected_routers if r != "rag"]
+    if other_routers:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = {}
+            
+            if "web" in other_routers:
+                log_route.info("🚀 Dispatching to WebCalcs subgraph")
+                futures["web"] = executor.submit(call_webcalcs_subgraph, state)
+            
+            if "desktop" in other_routers:
+                log_route.info("🚀 Dispatching to DesktopAgent subgraph")
+                futures["desktop"] = executor.submit(call_desktop_agent_subgraph, state)
+            
+            # Collect results from other routers
+            for router_name, future in futures.items():
+                try:
+                    result = future.result()
+                    results[router_name] = result
+                    log_route.info(f"✅ {router_name.upper()} router completed")
+                except Exception as e:
+                    log_route.error(f"❌ {router_name.upper()} router failed: {e}")
+                    results[router_name] = {}
     
     # Merge results into state updates
     state_updates = {}

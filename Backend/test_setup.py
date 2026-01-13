@@ -32,8 +32,8 @@ except Exception as e:
 
 print("\n3. Testing database imports...")
 try:
-    from database import test_database_connection
-    from database.supabase_client import vs_smart, vs_large
+    from nodes.DBRetrieval.KGdb import test_database_connection
+    from nodes.DBRetrieval.KGdb.supabase_client import vs_smart, vs_large
     print("   ✓ Database imports successful")
     print(f"   ✓ vs_smart initialized: {vs_smart is not None}")
     print(f"   ✓ vs_large initialized: {vs_large is not None}")
@@ -44,8 +44,8 @@ except Exception as e:
 print("\n4. Testing node imports...")
 try:
     from nodes.plan import node_plan
-    from nodes.DBRetrieval.rag import node_rag
-    from nodes.DBRetrieval.retrieve import node_retrieve
+    from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
+    from nodes.DBRetrieval.SQLdb.retrieve import node_retrieve
     print("   ✓ Nodes imported")
 except Exception as e:
     print(f"   ✗ Node import failed: {e}")

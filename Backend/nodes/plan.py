@@ -5,13 +5,13 @@ Determines which routers (rag, web, desktop) should handle the query
 import json
 import re
 import time
-from models.rag_state import RAGState
+from models.parent_state import ParentState
 from prompts.router_selection_prompts import ROUTER_SELECTION_PROMPT, router_selection_llm
 from config.logging_config import log_query
 from langgraph.config import get_stream_writer
 
 
-def node_plan(state: RAGState) -> dict:
+def node_plan(state: ParentState) -> dict:
     """Planning node - selects which routers to use"""
     t_start = time.time()
     log_query.info(">>> PLAN START (Router Selection)")

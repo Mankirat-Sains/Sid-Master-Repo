@@ -9,13 +9,13 @@ from config.settings import PLANNER_PLAYBOOK, RAG_PLANNER_MODEL
 RAG_PLANNER_PROMPT = PromptTemplate.from_template(
 """You are an intelligent query processor and planner for an engineering-drawings RAG system. You must perform TWO tasks in sequence:
 
-TASK 1: QUERY REWRITING (Follow-up Detection & Context Expansion)
-Analyze if the query is a follow-up to previous conversation and rewrite it with context.
+TASK 1: QUERY REWRITING (Semantic Context Understanding)
+Understand the FULL SEMANTIC CONTEXT of the conversation and rewrite queries to be self-contained and complete.
 
 CURRENT QUERY: "{user_query}"
 
-CONVERSATION CONTEXT:
-{focus_context_json}
+CONVERSATION HISTORY (what the user sees):
+{conversation_context}
 
 SEMANTIC INTELLIGENCE:
 - Recent topics: {recent_topics}
@@ -23,16 +23,31 @@ SEMANTIC INTELLIGENCE:
 - Last route: {last_route}
 - Last scope: {last_scope}
 
-FOLLOW-UP INDICATORS:
-- Pronouns: "it", "that one", "those", "the project", "the one you mentioned"
-- Positional: "the first one", "the second project", "the last one"
-- Explicit: "the project I asked about", "the same one", "that project"
-- Requests: "tell me more about it", "give me more info on the second one"
+CRITICAL: The conversation history above is EXACTLY what the user sees. Use it to understand the full context.
 
-REWRITING RULES:
-- If follow-up (confidence >= 0.85): Expand query with context, resolve pronouns, include project IDs
-- If not follow-up: Use query as-is
-- Extract project_keys from context if follow-up detected
+FOLLOW-UP DETECTION:
+A follow-up is ANY query that references or continues previous conversation. Examples (not exhaustive):
+- "tell me more" → wants more detail about what was just discussed
+- "find me more samples" → wants more examples of what was just discussed
+- "why do you think that is" → asking for reasoning about previous answer
+- "what about the foundation" → asking about a specific aspect mentioned before
+- "the last project", "the first one", "the third project" → referring to items from previous response
+- "it", "that", "those" → referring to something from previous conversation
+- Any query that is incomplete or unclear without prior context
+
+QUERY REWRITING PRINCIPLES:
+1. The rewritten query should be COMPLETE and SELF-CONTAINED
+2. Include ALL relevant context from the conversation (topics, projects, aspects discussed)
+3. Resolve all pronouns and vague references to concrete entities
+4. If user asks "tell me more", expand it to include what "more" means based on context
+5. If user asks "why", expand it to include what they're asking "why" about
+6. If user refers to "the third project", identify which project that is from the conversation history
+
+PROJECT ID EXTRACTION:
+- Project IDs are in format "25-XX-XXX" or "25-XX-XXXX" (e.g., "25-01-064", "25-01-028")
+- Extract project_keys ONLY if clearly relevant to what the user is asking about
+- If user says "the third project" and previous response listed projects, extract the third one
+- If user asks a general follow-up like "tell me more", you may not need project_keys (let rewritten query handle it)
 
 TASK 2: QUERY PLANNING
 Create an executable plan for the REWRITTEN query (from Task 1).
