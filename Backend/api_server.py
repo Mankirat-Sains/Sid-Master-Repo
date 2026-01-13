@@ -327,12 +327,27 @@ def wrap_external_links(text: str) -> str:
 # --- Document rendering helpers (OnlyOffice) ---
 DOCUMENTS_DIR = Path(__file__).resolve().parent / "documents"
 DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
+SESSION_DOC_FILES: Dict[str, str] = {}
 
 
 def get_public_base_url() -> str:
     """Return the public base URL for serving generated documents."""
     base = os.getenv("ORCHESTRATOR_PUBLIC_URL") or os.getenv("ORCHESTRATOR_URL") or os.getenv("RAG_API_URL") or "http://localhost:8000"
     return base.rstrip("/")
+
+
+def ensure_blank_document() -> Path:
+    """Create a blank docx used as default/fallback."""
+    blank_path = DOCUMENTS_DIR / "blank.docx"
+    if blank_path.exists():
+        return blank_path
+    doc = DocxDocument()
+    doc.add_paragraph("")  # empty paragraph to keep the file valid
+    doc.save(blank_path)
+    return blank_path
+
+
+_ = ensure_blank_document()
 
 
 def _safe_filename_component(value: str) -> str:
@@ -527,9 +542,10 @@ def materialize_onlyoffice_document(
         )
 
         base_session = _safe_filename_component(session_id)
-        base_message = _safe_filename_component(message_id)
-        filename = f"{base_session}-{base_message}.docx"
+        # Reuse the same doc per session so OnlyOffice keeps one open file
+        filename = SESSION_DOC_FILES.get(session_id, f"{base_session}.docx")
         render_docx_to_file(title, blocks, filename)
+        SESSION_DOC_FILES[session_id] = filename
 
         base_url = get_public_base_url()
         doc_url = f"{base_url}/documents/{filename}"
