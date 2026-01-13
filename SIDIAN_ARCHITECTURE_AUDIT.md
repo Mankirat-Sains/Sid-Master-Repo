@@ -18,6 +18,12 @@ User → FastAPI (/chat or /chat/stream)
   → Response assembly + Supabase logging + optional OnlyOffice doc build
 ```
 
+# Phase 3 Deep Agent Updates (Implemented)
+- Builder now runs on `RAGState` with trace merging for subgraphs; desktop subgraph routes to deep loop when `DEEP_AGENT_ENABLED`.
+- Deep desktop loop added with think–act–observe cycles, workspace management, and interrupt gating for destructive actions.
+- API layer exposes `/approve-action` and streams `interrupt` SSE payloads for approvals; state compatibility helpers normalize desktop fields.
+- Workspace retention/interrupt/config flags documented in `.env.example` and deep-agent docs (`Docs/Deep_Agent_Architecture.md`, `Docs/Deep_Agent_Usage.md`, `Docs/Interrupt_Handling.md`).
+
 # 2) Repo Structure + Key Modules
 - Backend logic lives in `Backend/` (FastAPI server, LangGraph, nodes, state models, prompts, helpers).
 - Frontend lives in `Frontend/Frontend/` (not analyzed in depth here).
