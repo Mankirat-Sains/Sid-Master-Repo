@@ -61,6 +61,12 @@ interface StreamOptions {
   selection?: Record<string, unknown> | null
 }
 
+interface StreamOptions {
+  documentContext?: Record<string, unknown> | null
+  workflowHint?: string
+  selection?: Record<string, unknown> | null
+}
+
 export const useChat = () => {
   const config = useRuntimeConfig()
 
