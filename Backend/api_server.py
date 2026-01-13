@@ -376,7 +376,13 @@ SESSION_DOC_FILES: Dict[str, str] = {}
 
 def get_public_base_url() -> str:
     """Return the public base URL for serving generated documents."""
-    base = os.getenv("ORCHESTRATOR_PUBLIC_URL") or os.getenv("ORCHESTRATOR_URL") or os.getenv("RAG_API_URL") or "http://localhost:8000"
+    base = (
+        os.getenv("ONLYOFFICE_DOCUMENT_BASE_URL")
+        or os.getenv("ORCHESTRATOR_PUBLIC_URL")
+        or os.getenv("ORCHESTRATOR_URL")
+        or os.getenv("RAG_API_URL")
+        or "http://localhost:8000"
+    )
     return base.rstrip("/")
 
 

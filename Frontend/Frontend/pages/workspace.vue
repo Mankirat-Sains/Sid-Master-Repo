@@ -1278,7 +1278,8 @@ const {
   setDocumentState,
   applyDocumentPatch,
   ensureDocumentState,
-  resetDocumentWorkflow
+  resetDocumentWorkflow,
+  resetToBlankDocument
 } = useDocumentWorkflow()
 type DataSources = { project_db: boolean; code_db: boolean; coop_manual: boolean }
 const dataSources = ref<DataSources>({
@@ -1308,6 +1309,7 @@ const logsPanelHeight = ref(320)
 const logsPanelBottom = ref(0)
 const logsResizeStartY = ref(0)
 const logsResizeStartHeight = ref(0)
+const docWorkflowPrimed = ref(false)
 const logsDragStartY = ref(0)
 const logsDragStartBottom = ref(0)
 const isResizingLogs = ref(false)
@@ -2057,6 +2059,7 @@ function startNewConversation() {
   resetDocumentWorkflow()
   docPreviewPanelOpen.value = false
   docPreviewUserClosed.value = false
+  docWorkflowPrimed.value = false
 }
 
 function ensureLandingNewConversation() {
@@ -2534,6 +2537,10 @@ function detectWorkflowFromPayload(payload: any): WorkflowMode | null {
 function handleWorkflowSignal(payload: any) {
   const detected = detectWorkflowFromPayload(payload)
   if (!detected) return
+  if (!docWorkflowPrimed.value) {
+    resetToBlankDocument()
+    docWorkflowPrimed.value = true
+  }
   setWorkflowMode(detected)
   speckleViewerPanelOpen.value = false
   docPreviewUserClosed.value = false
@@ -2597,6 +2604,7 @@ async function handleSend() {
   const hasMessage = prompt.value.trim().length > 0
   const hasAttachments = attachments.value.length > 0
   if ((!hasMessage && !hasAttachments) || isSending.value) return
+  docWorkflowPrimed.value = false
 
   const conversation = activeConversation.value
   if (!conversation) return
