@@ -600,6 +600,143 @@ MEMORY_RETENTION_DAYS=30
 7. **Add structured logging** - Low risk, additive
 8. **Integrate interrupts** - Medium risk, mirror existing code verification pattern
 
+## Desktop Deep Agent Implementation Tracker
+
+### Phase 1: Foundation & Low-Risk Improvements
+- **Conversation History & State Alignment**  
+  - Purpose: Keep `messages` and `conversation_history` synchronized with sliding windows for persistence and rewriting context.  
+  - Files: `Backend/nodes/DBRetrieval/SQLdb/correct.py`, `Backend/api_server.py`, `Backend/models/rag_state.py`, `Backend/graph/builder.py`, `Backend/graph/subgraphs/db_retrieval_subgraph.py`, `Backend/graph/subgraphs/desktop_agent_subgraph.py`.  
+  - Implementation: Normalize legacy history, sync user/assistant turns, enforce windowing, propagate execution trace from subgraphs, widen trace typing.  
+  - Status: ✅ Completed.  
+  - Evidence: `correct.py` updates both lists with shared windows; API seeds both lists; subgraphs wrapped for tracing; traces merged upward; `rag_state` trace typing widened.  
+  - Dependencies: Baseline LangGraph state flow. Later phases rely on consistent state/tracing.
+- **Execution Tracing Extension to Subgraphs**  
+  - Purpose: Capture per-node execution across subgraphs for observability.  
+  - Files: Above plus `Backend/graph/tracing.py`.  
+  - Implementation: Wrapper decorator records entry/exit, snapshots, result keys; traces merged back to parent.  
+  - Status: ✅ Completed.  
+  - Evidence: `graph/tracing.py` added; subgraph nodes wrapped; trace merge in wrappers.  
+  - Dependencies: Used by later deep agent tracing.
+
+### Phase 2: Enable Quality Gates
+- **Verifier with Bounded Scope**  
+  - Purpose: Lightweight answer checks with token caps and simple heuristics.  
+  - Files: `Backend/nodes/DBRetrieval/SQLdb/verify.py`, `Backend/utils/token_counter.py`, `Backend/config/settings.py`, `.env.example`.  
+  - Implementation: Env-flagged verifier, MAX_VERIFIER_TOKENS, citation/grounding/hallucination checks, skips on long answers.  
+  - Status: ✅ Completed.  
+  - Evidence: `USE_VERIFIER` defaults true; token counter added; verify returns `verification_checks/issues`.  
+  - Dependencies: Token counter; settings.
+- **Grader with Limits and Fallback**  
+  - Purpose: Token-aware document grading with heuristic fallback when over budget.  
+  - Files: `Backend/nodes/DBRetrieval/SQLdb/grade.py`, `Backend/utils/token_counter.py`, `Backend/config/settings.py`, `.env.example`.  
+  - Implementation: Env-flagged grader, doc/token limits, heuristic keyword overlap fallback, preserves code/coop handling.  
+  - Status: ✅ Completed.  
+  - Evidence: `USE_GRADER` defaults true; MAX_DOCS_TO_GRADE/MAX_GRADER_TOKENS enforced; heuristic path logs selection.  
+  - Dependencies: Token counter; settings.
+
+### Phase 3A: State & Workspace Foundation
+- **Workspace Manager & State Extensions**  
+  - Purpose: Provide per-thread ephemeral storage and deep agent state fields.  
+  - Files: `Backend/persistence/workspace_manager.py`, `Backend/models/rag_state.py`, `Backend/config/settings.py`, `.env.example`, `Backend/persistence/__init__.py`.  
+  - Implementation: Workspace CRUD/retention/snapshots; RAGState extended with deep desktop fields; settings/env defaults for workspace/iteration/interrupt thresholds.  
+  - Status: ✅ Completed.  
+  - Evidence: Workspace manager class; new RAGState fields; settings/env entries for workspace/interrupt/tool result limits.  
+  - Dependencies: Required by deep loop.
+
+### Phase 3B: Deep Desktop Loop Core
+- **Think-Act-Observe Loop**  
+  - Purpose: Replace single-shot desktop actions with iterative deep loop, planning, execution, observation.  
+  - Files: `Backend/nodes/DesktopAgent/deep_desktop_loop.py`.  
+  - Implementation: Plans via LLM, iterates up to MAX_DEEP_AGENT_ITERATIONS, basic tools (read/write/list), packages results/artifacts.  
+  - Status: ✅ Completed.  
+  - Evidence: DeepDesktopLoop class with planning, execution, observation, artifact packaging; compiled successfully.  
+  - Dependencies: Workspace manager; settings; RAGState fields.
+
+### Phase 3C: Interrupt Integration
+- **Destructive Action Interrupts**  
+  - Purpose: Gate destructive actions with approval via GraphInterrupt.  
+  - Files: `Backend/nodes/DesktopAgent/deep_desktop_loop.py`.  
+  - Implementation: Detects destructive actions, raises GraphInterrupt with context unless approved; edit/delete tools added; action_ids tracked.  
+  - Status: ✅ Completed.  
+  - Evidence: Interrupt gating in `_execute_step`, `_is_destructive_action`, `_create_interrupt_data`; edit/delete tools implemented.  
+  - Dependencies: Interrupt-aware router; RAGState approval lists; to be wired via API.
+
+### Phase 3D: DocGen Tool Wrapper & Output Eviction
+- **DocGen as Tool with Eviction**  
+  - Purpose: Make docgen callable as a tool and evict large outputs to workspace.  
+  - Files: `Backend/nodes/DesktopAgent/tools/docgen_tool.py`, `Backend/nodes/DesktopAgent/tools/__init__.py`, `Backend/utils/tool_eviction.py`, `Backend/nodes/DesktopAgent/deep_desktop_loop.py`.  
+  - Implementation: DocGen tool wrapper calls section_generator (fallback mock), prepares context, evicts large drafts, integrates evictor; deep loop updated to use tool list and evict large outputs.  
+  - Status: ✅ Completed.  
+  - Evidence: Docgen tool class; tool eviction utility; deep loop uses docgen_tool/get_evictor and includes generate_document in tools.  
+  - Dependencies: Workspace manager; settings MAX_INLINE_TOOL_RESULT.
+
+### Phase 3E: Integration
+- **Deep Desktop Subgraph**  
+  - Purpose: Wrap deep desktop loop in a LangGraph subgraph.  
+  - Files: `Backend/graph/subgraphs/deep_desktop_subgraph.py`.  
+  - Implementation: StateGraph(RAGState) with single node deep_desktop_loop → END; call wrapper.  
+  - Status: ✅ Completed.  
+  - Evidence: File added; compiled subgraph with invoke wrapper.  
+  - Dependencies: DeepDesktopLoop; RAGState.
+- **Feature-Flag Routing in Desktop Agent Subgraph**  
+  - Purpose: Route desktop flows to deep loop when enabled, fallback to docgen otherwise.  
+  - Files: `Backend/graph/subgraphs/desktop_agent_subgraph.py`.  
+  - Implementation: StateGraph now uses RAGState; conditional edges include deep_desktop when DEEP_AGENT_ENABLED; state normalized to RAGState with defaults; traces merged.  
+  - Status: ✅ Completed.  
+  - Evidence: Imports DEEP_AGENT_ENABLED and deep_desktop_subgraph; routing updated; RAGState conversion helper.  
+  - Dependencies: deep_desktop_subgraph; RAGState extensions.
+- **Main Graph Builder Wiring**  
+  - Purpose: Wire deep desktop into parent graph build; avoid circular imports.  
+  - Files: `Backend/graph/builder.py`.  
+  - Implementation: Not yet done; import deep desktop subgraph inside build_graph and ensure desktop path uses updated subgraph.  
+  - Status: ⬜ Not Started.  
+  - Evidence: N/A.  
+  - Dependencies: desktop_agent_subgraph updates; deep_desktop_subgraph.
+- **Integration Helper Utilities**  
+  - Purpose: Helper for feature flag checks, interrupt handling, resume-after-approval, action summaries.  
+  - Files: `Backend/utils/deep_agent_integration.py`.  
+  - Implementation: Not yet done; utility functions for API and flow orchestration.  
+  - Status: ⬜ Not Started.  
+  - Evidence: N/A.  
+  - Dependencies: Interrupt data from deep loop.
+- **API Interrupt Approval Endpoint**  
+  - Purpose: Allow user to approve destructive actions and resume execution.  
+  - Files: `Backend/api_server.py`.  
+  - Implementation: Not yet done; `/approve-action` endpoint to add action_id to `desktop_approved_actions` and resume graph.  
+  - Status: ⬜ Not Started.  
+  - Evidence: N/A.  
+  - Dependencies: Interrupt data; integration helper; builder wiring.
+- **Resume-After-Approval Flow**  
+  - Purpose: Resume graph execution after approval with updated state.  
+  - Files: `Backend/api_server.py`, integration helper.  
+  - Implementation: Not yet done; load checkpoint, update approvals, re-invoke graph.  
+  - Status: ⬜ Not Started.  
+  - Evidence: N/A.  
+  - Dependencies: Approval endpoint; builder wiring; deep agent state fields.
+- **Documentation & Rollout Updates**  
+  - Purpose: Document deep agent behavior, interrupts, workspace, feature flag usage.  
+  - Files: `.env.example`, docs (TBD).  
+  - Implementation: Partially done via env additions; narrative docs pending.  
+  - Status: 🟡 Partially Completed.  
+  - Evidence: Env example updated with deep agent settings; no narrative docs yet.  
+  - Dependencies: Final wiring and API behavior.
+
+### Progress Summary
+- Completion: ~70% of desktop deep agent implementation done (core loop, interrupts, docgen tool, eviction, subgraph, feature-flag routing).
+- Deep agent capabilities already present: iterative think–act–observe loop; workspace-backed tools; docgen as tool with eviction; destructive action interrupts; feature-flagged routing to deep path.
+- Remaining for production readiness: main builder wiring; integration helpers; approval/resume API flow; full docs/rollout guidance; end-to-end testing of both flag paths and interrupt/approval lifecycle.
+
+### Current Status & Testing Notes (Source: this implementation log)
+- Completed: Phase 1, Phase 2, Phase 3A–3D, and Phase 3E (deep_desktop_subgraph + feature-flag routing in desktop_agent_subgraph). These components compile and are integrated under the feature flag.
+- Pending: Builder wiring, integration helper utilities, approval/resume API endpoint, resume-after-approval flow, full documentation/rollout narrative.
+- Testing performed: Module-level `py_compile` on new/modified Python files; no end-to-end or runtime desktop deep-agent flows executed yet due to pending wiring/API resume.
+- Testing needed:
+  - Feature flag toggle: deep path vs. legacy docgen.
+  - Interrupt flow: destructive action triggers GraphInterrupt; approve via API and resume.
+  - Resume-after-approval: checkpoint/load, add approved action_ids, re-invoke graph.
+  - Workspace behavior: per-thread file writes and retention cleanup.
+  - Eviction behavior: large docgen outputs (>MAX_INLINE_TOOL_RESULT) produce file refs with summaries.
+
 ## Testing Strategy
 
 1. **Unit tests** for each new component (workspace manager, evictor, tracer)

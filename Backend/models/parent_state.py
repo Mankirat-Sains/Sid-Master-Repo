@@ -68,6 +68,19 @@ class ParentState:
     desktop_steps: List[Dict[str, Any]] = field(default_factory=list)
     desktop_execution: Optional[str] = None
     output_artifact_ref: Optional[Dict[str, Any]] = None
+    desktop_plan_steps: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_current_step: int = 0
+    desktop_iteration_count: int = 0
+    desktop_workspace_dir: Optional[str] = None
+    desktop_workspace_files: List[str] = field(default_factory=list)
+    desktop_memories: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_context: Dict[str, Any] = field(default_factory=dict)
+    desktop_interrupt_pending: bool = False
+    desktop_approved_actions: List[str] = field(default_factory=list)
+    desktop_interrupt_data: Optional[Dict[str, Any]] = None
+    tool_execution_log: List[Dict[str, Any]] = field(default_factory=list)
+    large_output_refs: Dict[str, str] = field(default_factory=dict)
+    desktop_loop_result: Optional[Dict[str, Any]] = None
 
     # Doc generation outputs
     doc_generation_result: Optional[Dict[str, Any]] = None
