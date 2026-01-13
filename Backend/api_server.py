@@ -18,10 +18,13 @@ from pathlib import Path
 from datetime import datetime
 import logging
 import re
+import uuid
 from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+from docx import Document as DocxDocument
 from pydantic import BaseModel
 import uvicorn
 from dotenv import load_dotenv
@@ -321,6 +324,223 @@ def wrap_external_links(text: str) -> str:
     return text
 
 
+# --- Document rendering helpers (OnlyOffice) ---
+DOCUMENTS_DIR = Path(__file__).resolve().parent / "documents"
+DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def get_public_base_url() -> str:
+    """Return the public base URL for serving generated documents."""
+    base = os.getenv("ORCHESTRATOR_PUBLIC_URL") or os.getenv("ORCHESTRATOR_URL") or os.getenv("RAG_API_URL") or "http://localhost:8000"
+    return base.rstrip("/")
+
+
+def _safe_filename_component(value: str) -> str:
+    """Make a value safe for filenames (OnlyOffice doc URLs)."""
+    cleaned = re.sub(r"[^0-9A-Za-z._-]", "_", value or "")
+    return cleaned or "doc"
+
+
+def _normalize_doc_blocks(doc_result: Dict[str, Any], answer_text: Optional[str]) -> List[Dict[str, Any]]:
+    """Convert doc_generation_result or plain text into a normalized block list."""
+    blocks: List[Dict[str, Any]] = []
+    sections = doc_result.get("sections") if isinstance(doc_result, dict) else None
+
+    if isinstance(sections, list) and sections:
+        for section in sections:
+            heading = None
+            if isinstance(section, dict):
+                heading = section.get("title") or section.get("heading") or section.get("section_type")
+            text = ""
+            if isinstance(section, dict):
+                text = section.get("text") or section.get("draft_text") or section.get("content") or section.get("body") or ""
+            items = section.get("bullets") or section.get("items") if isinstance(section, dict) else None
+            table = section.get("table") if isinstance(section, dict) else None
+
+            if heading:
+                blocks.append({"type": "heading", "level": section.get("level") or 1, "text": str(heading)})
+            if items:
+                blocks.append(
+                    {
+                        "type": "list",
+                        "style": section.get("style") or "bullet",
+                        "items": [str(item) for item in items if item],
+                    }
+                )
+            if isinstance(table, dict):
+                headers = table.get("headers") or []
+                rows = table.get("rows") or []
+                if headers and rows:
+                    blocks.append(
+                        {
+                            "type": "table",
+                            "headers": [str(h) for h in headers],
+                            "rows": [[str(cell) for cell in row] for row in rows],
+                        }
+                    )
+            if text:
+                blocks.append({"type": "paragraph", "text": str(text)})
+
+    if not blocks and answer_text:
+        text = str(answer_text)
+        paragraphs = [para.strip() for para in text.split("\n\n") if para.strip()]
+        if not paragraphs:
+            blocks.append({"type": "paragraph", "text": text})
+        else:
+            for para in paragraphs:
+                lines = [ln.strip() for ln in para.splitlines() if ln.strip()]
+                if lines and all(re.match(r"^[-*]\s+", ln) for ln in lines):
+                    blocks.append(
+                        {
+                            "type": "list",
+                            "style": "bullet",
+                            "items": [re.sub(r"^[-*]\s+", "", ln) or ln for ln in lines],
+                        }
+                    )
+                elif lines and all(re.match(r"^\d+[.)]\s+", ln) for ln in lines):
+                    blocks.append(
+                        {
+                            "type": "list",
+                            "style": "numbered",
+                            "items": [re.sub(r"^\d+[.)]\s+", "", ln) or ln for ln in lines],
+                        }
+                    )
+                else:
+                    blocks.append({"type": "paragraph", "text": " ".join(lines)})
+
+    return blocks
+
+
+def render_docx_to_file(title: str, blocks: List[Dict[str, Any]], filename: str) -> Path:
+    """Materialize normalized blocks into a docx file."""
+    DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
+    doc = DocxDocument()
+    clean_title = title or "Generated Document"
+    doc.add_heading(clean_title, level=0)
+
+    for block in blocks:
+        btype = block.get("type")
+        if btype == "heading":
+            level = block.get("level") or 1
+            try:
+                level_int = int(level)
+            except (TypeError, ValueError):
+                level_int = 1
+            level_int = max(0, min(4, level_int - 1))  # docx headings are 0-based where 0 is title
+            doc.add_heading(block.get("text", ""), level=level_int)
+        elif btype == "list":
+            items = block.get("items") or []
+            for item in items:
+                p = doc.add_paragraph(str(item))
+                p.style = "List Number" if (block.get("style") == "numbered") else "List Bullet"
+        elif btype == "table":
+            headers = block.get("headers") or []
+            rows = block.get("rows") or []
+            if headers and rows:
+                table = doc.add_table(rows=1, cols=len(headers))
+                hdr_cells = table.rows[0].cells
+                for i, header in enumerate(headers):
+                    if i < len(hdr_cells):
+                        hdr_cells[i].text = str(header)
+                for row in rows:
+                    row_cells = table.add_row().cells
+                    for i, cell in enumerate(row):
+                        if i < len(row_cells):
+                            row_cells[i].text = str(cell)
+        else:
+            doc.add_paragraph(block.get("text", ""))
+
+    output_path = DOCUMENTS_DIR / filename
+    doc.save(output_path)
+    return output_path
+
+
+def build_document_state(doc_url: str, title: str, blocks: List[Dict[str, Any]], doc_key: str) -> Dict[str, Any]:
+    """Build a frontend-friendly document payload pointing to the OnlyOffice doc."""
+    block_payloads = []
+    for idx, block in enumerate(blocks):
+        block_payloads.append(
+            {
+                "id": f"block-{idx + 1}",
+                "type": block.get("type") or "paragraph",
+                "text": block.get("text"),
+                "level": block.get("level"),
+                "items": block.get("items"),
+                "rows": block.get("rows"),
+                "style": block.get("style"),
+            }
+        )
+
+    section_payload = {
+        "id": f"section-{uuid.uuid4().hex[:8]}",
+        "title": title or "Generated Document",
+        "blocks": block_payloads,
+    }
+
+    return {
+        "title": title or "Generated Document",
+        "sections": [section_payload],
+        "docUrl": doc_url,
+        "documentKey": doc_key,
+        "onlyoffice": {
+            "docUrl": doc_url,
+            "documentKey": doc_key,
+        },
+        "metadata": {
+            "docUrl": doc_url,
+            "documentKey": doc_key,
+        },
+        "docType": "docx",
+        "viewMode": "edit",
+    }
+
+
+def should_materialize_doc(workflow: Optional[str], task_type: Optional[str], doc_result: Optional[Dict[str, Any]]) -> bool:
+    """Determine if we should build an OnlyOffice doc for this response."""
+    if workflow and str(workflow).lower().startswith("doc"):
+        return True
+    if task_type and str(task_type).startswith("doc"):
+        return True
+    return bool(doc_result)
+
+
+def materialize_onlyoffice_document(
+    doc_result: Optional[Dict[str, Any]],
+    answer_text: Optional[str],
+    session_id: str,
+    message_id: str,
+) -> Optional[Dict[str, Any]]:
+    """
+    Convert doc generation output into a docx file and return a document_state payload.
+    """
+    try:
+        doc_result = doc_result or {}
+        blocks = _normalize_doc_blocks(doc_result, answer_text)
+        if not blocks:
+            return None
+
+        title = (
+            doc_result.get("title")
+            or doc_result.get("doc_title")
+            or doc_result.get("document_title")
+            or "Generated Document"
+        )
+
+        base_session = _safe_filename_component(session_id)
+        base_message = _safe_filename_component(message_id)
+        filename = f"{base_session}-{base_message}.docx"
+        render_docx_to_file(title, blocks, filename)
+
+        base_url = get_public_base_url()
+        doc_url = f"{base_url}/documents/{filename}"
+        doc_key = f"{Path(filename).stem}-{int(datetime.now().timestamp())}"
+
+        return build_document_state(doc_url, title, blocks, doc_key)
+    except Exception as exc:  # noqa: BLE001
+        logging.getLogger(__name__).error(f"❌ Failed to materialize OnlyOffice document: {exc}")
+        return None
+
+
 # Configure logging - use DEBUG_MODE from config
 from config.logging_config import LOG_LEVEL
 # Only configure if not already configured (logging_config.py already called basicConfig)
@@ -343,6 +563,9 @@ app = FastAPI(
     description="API for Mantle RAG Chat System",
     version="1.0.0"
 )
+
+# Serve generated OnlyOffice documents
+app.mount("/documents", StaticFiles(directory=str(DOCUMENTS_DIR)), name="documents")
 
 # Enable CORS for the Electron desktop app
 app.add_middleware(
@@ -434,6 +657,7 @@ class ChatResponse(BaseModel):
     follow_up_suggestions: Optional[List[str]] = None  # Follow-up suggestions generated by verifier
     doc_generation_result: Optional[Dict[str, Any]] = None  # Structured document payload for doc preview
     doc_generation_warnings: Optional[List[str]] = None  # Doc generation warnings to show in UI
+    document_state: Optional[Dict[str, Any]] = None  # OnlyOffice document patch
 
 class FeedbackRequest(BaseModel):
     message_id: str
@@ -588,6 +812,7 @@ async def chat_handler(request: ChatRequest):
         image_similarity_results = rag_result.get("image_similarity_results", [])  # Similar images from embedding search
         follow_up_questions = rag_result.get("follow_up_questions", [])  # Follow-up questions from verifier
         follow_up_suggestions = rag_result.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
+        doc_answer_text = None
         
         # Check which databases were used
         has_project = bool(answer and answer.strip())
@@ -665,6 +890,7 @@ async def chat_handler(request: ChatRequest):
             thinking_log = rag_result.get("thinking_log", [])
             
             # Return separate answers
+            doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
             response = ChatResponse(
                 reply=processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
                 session_id=request.session_id,
@@ -754,6 +980,7 @@ async def chat_handler(request: ChatRequest):
             thinking_log = rag_result.get("thinking_log", [])
             
             # Prepare response
+            doc_answer_text = combined_answer
             response = ChatResponse(
                 reply=combined_answer,
                 session_id=request.session_id,
@@ -776,6 +1003,17 @@ async def chat_handler(request: ChatRequest):
                 doc_generation_result=rag_result.get("doc_generation_result"),
                 doc_generation_warnings=rag_result.get("doc_generation_warnings"),
             )
+
+        if should_materialize_doc(rag_result.get("workflow"), rag_result.get("task_type"), rag_result.get("doc_generation_result")):
+            document_state = materialize_onlyoffice_document(
+                rag_result.get("doc_generation_result"),
+                doc_answer_text or answer,
+                request.session_id,
+                message_id,
+            )
+            if document_state:
+                response.document_state = document_state
+                response.reply = "✅ Please refer to the document"
 
         logger.info(f"Successfully processed request in {latency_ms:.2f}ms [ID: {message_id}]")
         return response
@@ -816,6 +1054,7 @@ async def chat_stream_handler(request: ChatRequest):
     import time
     import uuid
     import asyncio
+    doc_workflow_detected = False
     
     def _extract_projects(docs):
         """Extract project keys from documents"""
@@ -839,6 +1078,7 @@ async def chat_stream_handler(request: ChatRequest):
     
     async def generate_stream():
         """Generate SSE stream of thinking logs and final result"""
+        nonlocal doc_workflow_detected
         start_time = time.time()
         message_id = f"msg_{int(time.time())}_{uuid.uuid4().hex[:8]}"
         
@@ -1063,6 +1303,10 @@ async def chat_stream_handler(request: ChatRequest):
                             # Check metadata for node info to filter tokens
                             node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
                             
+                            if doc_workflow_detected:
+                                logger.info("📝 Doc workflow detected - suppressing token stream to chat.")
+                                continue
+                            
                             # IMPORTANT: Only stream tokens from the "answer" node to main chat
                             # Tokens from other nodes (plan, retrieve, verify, etc.) should NOT appear in main chat
                             # They are internal processing and should only show as thinking logs in Agent Thinking panel
@@ -1094,6 +1338,9 @@ async def chat_stream_handler(request: ChatRequest):
                             # Forward token to frontend for real-time streaming
                             token_content = chunk.get('content', '')
                             token_node = chunk.get('node', 'answer')
+                            if doc_workflow_detected:
+                                logger.info("📝 Doc workflow detected - suppressing custom token stream to chat.")
+                                continue
                             # Strip asterisks from project patterns in token (helps with streaming)
                             # Note: This won't catch split patterns, but will handle complete ones
                             token_content = strip_asterisks_from_projects(token_content)
@@ -1122,6 +1369,12 @@ async def chat_stream_handler(request: ChatRequest):
                     # (updates mode gives us only the changes, not full state)
                     accumulated_state.update(state_updates)
                     state_dict = accumulated_state.copy()
+                    workflow_hint = state_dict.get("workflow") or state_updates.get("workflow")
+                    task_type_hint = state_dict.get("task_type") or state_updates.get("task_type")
+                    if (workflow_hint and str(workflow_hint).lower().startswith("doc")) or (
+                        task_type_hint and str(task_type_hint).startswith("doc")
+                    ) or node_name.startswith("doc_"):
+                        doc_workflow_detected = True
                     
                     # Generate thinking log based on node using intelligent_log_generator and RAG state data
                     thinking_log = None
@@ -1239,6 +1492,10 @@ async def chat_stream_handler(request: ChatRequest):
             if not final_state:
                 yield f"data: {json.dumps({'type': 'error', 'message': 'No result returned from RAG'})}\n\n"
                 return
+            if not doc_workflow_detected and should_materialize_doc(
+                final_state.get("workflow"), final_state.get("task_type"), final_state.get("doc_generation_result")
+            ):
+                doc_workflow_detected = True
             
             # Extract final answer (matching chat endpoint logic)
             answer = final_state.get("final_answer") or final_state.get("answer", "No answer generated.")
@@ -1250,6 +1507,7 @@ async def chat_stream_handler(request: ChatRequest):
             image_similarity_results = final_state.get("image_similarity_results", [])  # Similar images from embedding search
             follow_up_questions = final_state.get("follow_up_questions", [])  # Follow-up questions from verifier
             follow_up_suggestions = final_state.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
+            doc_answer_text = None
             
             # Check which databases were used (matching chat endpoint)
             has_project = bool(answer and answer.strip())
@@ -1273,17 +1531,17 @@ async def chat_stream_handler(request: ChatRequest):
                 # Multiple databases enabled - return separate answers
                 # Strip asterisks from project names/numbers
                 processed_project_answer = strip_asterisks_from_projects(answer) if has_project else None
-                
+
                 # Wrap code file citations with file-link tags (shows filename)
                 processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else code_answer
-                
+
                 # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
                 if has_code:
                     processed_code_answer = wrap_external_links(processed_code_answer)
-                
+
                 # Wrap coop file citations with file-link tags (shows page number only)
                 processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else coop_answer
-                
+
                 # Log to Supabase (matching chat endpoint)
                 supabase_logger = get_supabase_logger()
                 if supabase_logger.enabled:
@@ -1297,7 +1555,7 @@ async def chat_stream_handler(request: ChatRequest):
                     if has_coop:
                         parts.append(f"--- Training Manual References ---\n\n{coop_answer}")
                     combined_for_logging = "\n\n".join(parts)
-                    
+
                     # Upload first image if provided (for logging)
                     image_url = None
                     if images_to_process and len(images_to_process) > 0:
@@ -1306,7 +1564,7 @@ async def chat_stream_handler(request: ChatRequest):
                             message_id,
                             "image/png"
                         )
-                    
+
                     query_data = {
                         "message_id": message_id,
                         "session_id": request.session_id,
@@ -1319,8 +1577,9 @@ async def chat_stream_handler(request: ChatRequest):
                         "image_url": image_url
                     }
                     supabase_logger.log_user_query(query_data)
-                
+
                 # Build response with separate answers (matching chat endpoint)
+                doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
                 response_data = {
                     'reply': processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
                     'session_id': request.session_id,
@@ -1357,27 +1616,27 @@ async def chat_stream_handler(request: ChatRequest):
                 else:
                     combined_answer = answer
                     total_citations = len(project_citations)
-                
+
                 # Strip asterisks from project names/numbers
                 combined_answer = strip_asterisks_from_projects(combined_answer)
-                
+
                 # Wrap code file citations with file-link tags for clickable links
                 if code_citations:
                     combined_answer = wrap_code_file_links(combined_answer, code_citations)
-                
+
                 # Wrap coop file citations with file-link tags for clickable links
                 if coop_citations:
                     combined_answer = wrap_code_file_links(combined_answer, coop_citations)
-                
+
                 # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
                 if code_answer and code_answer.strip():
                     combined_answer = wrap_external_links(combined_answer)
-                
+
                 # Log to Supabase (matching chat endpoint)
                 supabase_logger = get_supabase_logger()
                 if supabase_logger.enabled:
                     user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
-                    
+
                     # Upload first image if provided (for logging)
                     image_url = None
                     if images_to_process and len(images_to_process) > 0:
@@ -1386,7 +1645,7 @@ async def chat_stream_handler(request: ChatRequest):
                             message_id,
                             "image/png"
                         )
-                    
+
                     query_data = {
                         "message_id": message_id,
                         "session_id": request.session_id,
@@ -1399,8 +1658,9 @@ async def chat_stream_handler(request: ChatRequest):
                         "image_url": image_url
                     }
                     supabase_logger.log_user_query(query_data)
-                
+
                 # Build response (matching chat endpoint)
+                doc_answer_text = combined_answer
                 response_data = {
                     'reply': combined_answer,
                     'session_id': request.session_id,
@@ -1420,6 +1680,19 @@ async def chat_stream_handler(request: ChatRequest):
                     'doc_generation_result': final_state.get("doc_generation_result"),
                     'doc_generation_warnings': final_state.get("doc_generation_warnings"),
                 }
+
+            if should_materialize_doc(
+                final_state.get("workflow"), final_state.get("task_type"), final_state.get("doc_generation_result")
+            ):
+                document_state = materialize_onlyoffice_document(
+                    final_state.get("doc_generation_result"),
+                    doc_answer_text or answer,
+                    request.session_id,
+                    message_id,
+                )
+                if document_state:
+                    response_data["document_state"] = document_state
+                    response_data["reply"] = "✅ Please refer to the document"
             
             # Log image similarity results for debugging
             if image_similarity_results:
