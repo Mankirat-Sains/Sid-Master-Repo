@@ -9,6 +9,7 @@ from langgraph.graph import StateGraph, END
 from models.db_retrieval_state import DBRetrievalState
 from models.parent_state import ParentState
 from config.logging_config import log_query, log_route
+from graph.tracing import wrap_subgraph_node
 
 # Import all DBRetrieval nodes
 from nodes.DBRetrieval.SQLdb.rag_plan import node_rag_plan
@@ -88,14 +89,14 @@ def build_db_retrieval_subgraph():
     """Build the DBRetrieval subgraph."""
     g = StateGraph(DBRetrievalState)
 
-    g.add_node("rag_plan_router", node_rag_plan_router)
-    g.add_node("generate_image_embeddings", node_generate_image_description)
-    g.add_node("image_similarity_search", node_image_similarity_search)
-    g.add_node("retrieve", node_retrieve)
-    g.add_node("grade", node_grade)
-    g.add_node("answer", node_answer)
-    g.add_node("verify", node_verify)
-    g.add_node("correct", node_correct)
+    g.add_node("rag_plan_router", wrap_subgraph_node("rag_plan_router")(node_rag_plan_router))
+    g.add_node("generate_image_embeddings", wrap_subgraph_node("generate_image_embeddings")(node_generate_image_description))
+    g.add_node("image_similarity_search", wrap_subgraph_node("image_similarity_search")(node_image_similarity_search))
+    g.add_node("retrieve", wrap_subgraph_node("retrieve")(node_retrieve))
+    g.add_node("grade", wrap_subgraph_node("grade")(node_grade))
+    g.add_node("answer", wrap_subgraph_node("answer")(node_answer))
+    g.add_node("verify", wrap_subgraph_node("verify")(node_verify))
+    g.add_node("correct", wrap_subgraph_node("correct")(node_correct))
 
     g.set_entry_point("rag_plan_router")
 
@@ -145,6 +146,9 @@ def call_db_retrieval_subgraph(state: ParentState) -> dict:
         conversation_history=getattr(state, "conversation_history", []),
     )
 
+    parent_trace = getattr(state, "execution_trace", []) or []
+    parent_verbose = getattr(state, "execution_trace_verbose", []) or []
+
     try:
         db_result = _db_retrieval_subgraph.invoke(asdict(db_input))
         return {
@@ -164,6 +168,8 @@ def call_db_retrieval_subgraph(state: ParentState) -> dict:
             "conversation_history": db_result.get("conversation_history", []),
             "messages": db_result.get("messages", []),
             "project_filter": db_result.get("project_filter"),
+            "execution_trace": parent_trace + (db_result.get("execution_trace", []) or []),
+            "execution_trace_verbose": parent_verbose + (db_result.get("execution_trace_verbose", []) or []),
         }
     except Exception as e:
         log_query.error(f"❌ DBRetrieval subgraph failed: {e}")

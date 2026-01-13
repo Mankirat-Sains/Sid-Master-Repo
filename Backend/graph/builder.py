@@ -10,8 +10,6 @@ from utils.path_setup import ensure_info_retrieval_on_path
 
 ensure_info_retrieval_on_path()
 from nodes.plan import node_plan
-from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
-from graph.subgraphs.desktop_agent_subgraph import call_desktop_agent_subgraph
 from nodes.router_dispatcher import node_router_dispatcher
 from desktop_agent.agents.doc_generation.task_classifier import node_doc_task_classifier
 
@@ -93,6 +91,9 @@ def _wrap_node(node_name: str, fn):
 
 def build_graph():
     """Build the parent LangGraph workflow."""
+    from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
+    from graph.subgraphs.desktop_agent_subgraph import call_desktop_agent_subgraph
+
     g = StateGraph(ParentState)
 
     g.add_node("plan", _wrap_node("plan", node_plan))
