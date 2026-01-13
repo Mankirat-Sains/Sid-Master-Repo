@@ -1,28 +1,5 @@
 <template>
   <div class="doc-panel">
-    <header class="doc-header">
-      <div class="doc-header__left">
-        <div class="doc-badge" :class="badgeClass">
-          <span class="dot" />
-          <span>{{ workflowLabel }}</span>
-        </div>
-        <div>
-          <p class="doc-title">{{ docTitle }}</p>
-          <p class="doc-subtitle">
-            <span v-if="serverUrl">OnlyOffice server · {{ serverUrl }}</span>
-            <span v-else>Configure ONLYOFFICE_SERVER_URL to enable live editing</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="doc-header__actions">
-        <span class="doc-status" :class="statusClass">{{ statusLabel }}</span>
-        <button v-if="documentUrl" class="ghost" type="button" @click="openDocumentUrl">
-          Open source
-        </button>
-      </div>
-    </header>
-
     <ClientOnly>
       <div class="doc-body">
         <div v-if="!serverUrl" class="doc-state">
@@ -127,7 +104,7 @@ function loadOnlyOfficeApi(serverUrl: string) {
   return apiLoader
 }
 
-const { documentState, activeWorkflowMode, ensureDocumentState } = useDocumentWorkflow()
+const { documentState, ensureDocumentState } = useDocumentWorkflow()
 const config = useRuntimeConfig()
 
 const containerId = `onlyoffice-editor-${Math.random().toString(36).slice(2, 10)}`
@@ -135,6 +112,11 @@ const loadState = ref<'idle' | 'loading' | 'ready' | 'error'>('idle')
 const errorMessage = ref('')
 const editorRef = shallowRef<OnlyOfficeEditorInstance | null>(null)
 const lastLoadedKey = ref<string>('')
+
+function makeDocumentKey(source: string) {
+  const cleaned = source.replace(/[^0-9A-Za-z_.=-]/g, '_')
+  return cleaned.slice(0, 127) || `doc-${Date.now()}`
+}
 
 const docTitle = computed(() => documentState.value?.title || 'Untitled Document')
 const serverUrl = computed(() => (config.public.onlyofficeServerUrl as string | undefined)?.replace(/\/$/, '') || '')
@@ -160,12 +142,12 @@ const callbackUrl = computed(() => {
 })
 const documentKey = computed(() => {
   const doc = documentState.value || undefined
-  return (
+  const base =
     doc?.documentKey ||
     doc?.onlyoffice?.documentKey ||
     (doc?.metadata?.documentKey as string | undefined) ||
     (documentUrl.value ? `${documentUrl.value}-${doc?.version || 'v1'}` : `${docTitle.value}-v${doc?.version || 1}`)
-  )
+  return makeDocumentKey(base || `doc-${Date.now()}`)
 })
 const editorUser = computed<OnlyOfficeUser>(() => {
   const doc = documentState.value || undefined
@@ -183,35 +165,11 @@ const permissions = computed<OnlyOfficePermissions>(() => {
   }
 })
 
-const workflowLabel = computed(() => {
-  if (activeWorkflowMode.value === 'desktop_agent') return 'Desktop Agent'
-  if (activeWorkflowMode.value === 'docgen') return 'Doc Generation'
-  return 'Document Editor'
-})
-const badgeClass = computed(() => (activeWorkflowMode.value === 'desktop_agent' ? 'desktop' : 'docgen'))
-const statusLabel = computed(() => {
-  if (!serverUrl.value) return 'Server missing'
-  if (loadState.value === 'loading') return 'Connecting…'
-  if (loadState.value === 'ready') return 'Editing live'
-  if (loadState.value === 'error') return 'Load failed'
-  return 'Idle'
-})
-const statusClass = computed(() => {
-  if (!serverUrl.value || loadState.value === 'error') return 'state-error'
-  if (loadState.value === 'ready') return 'state-ready'
-  if (loadState.value === 'loading') return 'state-warn'
-  return 'state-muted'
-})
 const overlayTitle = computed(() => {
   if (loadState.value === 'loading') return 'Launching Word editor…'
   if (loadState.value === 'error') return 'Unable to load the document'
   return 'Preparing editor…'
 })
-
-function openDocumentUrl() {
-  if (!documentUrl.value || typeof window === 'undefined') return
-  window.open(documentUrl.value, '_blank', 'noopener,noreferrer')
-}
 
 function destroyEditor() {
   if (editorRef.value?.destroyEditor) {
@@ -319,142 +277,19 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: radial-gradient(140% 140% at 20% 20%, rgba(89, 64, 255, 0.12), transparent),
-    linear-gradient(180deg, #0b0c12 0%, #05060a 100%);
+  background: #05060a;
   color: #f5f6fb;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.doc-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 14px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(11, 12, 18, 0.75);
-  backdrop-filter: blur(10px);
-}
-
-.doc-header__left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.doc-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.doc-badge .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  display: inline-block;
-  background: currentColor;
-  box-shadow: 0 0 10px currentColor;
-}
-
-.doc-badge.desktop {
-  color: #c7f9cc;
-  background: rgba(69, 180, 112, 0.15);
-  border-color: rgba(69, 180, 112, 0.35);
-}
-
-.doc-badge.docgen {
-  color: #d3c7ff;
-  background: rgba(117, 90, 255, 0.18);
-  border-color: rgba(117, 90, 255, 0.35);
-}
-
-.doc-title {
-  font-size: 17px;
-  font-weight: 800;
-  margin: 0;
-}
-
-.doc-subtitle {
-  margin: 2px 0 0 0;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 12px;
-}
-
-.doc-header__actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.doc-status {
-  padding: 6px 10px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  border: 1px solid transparent;
-}
-
-.doc-status.state-ready {
-  color: #b5ffcf;
-  background: rgba(69, 180, 112, 0.14);
-  border-color: rgba(69, 180, 112, 0.35);
-}
-
-.doc-status.state-warn {
-  color: #ffe7b2;
-  background: rgba(255, 193, 79, 0.16);
-  border-color: rgba(255, 193, 79, 0.35);
-}
-
-.doc-status.state-error {
-  color: #ffc9c9;
-  background: rgba(255, 99, 110, 0.18);
-  border-color: rgba(255, 99, 110, 0.4);
-}
-
-.doc-status.state-muted {
-  color: #d5ddff;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.ghost {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #f5f5f7;
-  border-radius: 9999px;
-  padding: 7px 12px;
-  font-size: 12px;
-  transition: all 0.15s ease;
-}
-
-.ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
 }
 
 .doc-body {
   flex: 1;
   position: relative;
-  padding: 14px;
 }
 
 .doc-editor {
   position: relative;
   height: 100%;
-  border-radius: 18px;
   overflow: hidden;
-  background: linear-gradient(145deg, rgba(25, 27, 37, 0.95), rgba(12, 14, 20, 0.95));
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 14px 48px rgba(0, 0, 0, 0.45);
 }
 
 .doc-editor__frame {

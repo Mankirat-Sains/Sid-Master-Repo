@@ -20,6 +20,15 @@
       </div>
     </header>
 
+    <transition name="toast-fade">
+      <div
+        v-if="documentUpdateToast"
+        class="fixed top-14 right-4 z-50 px-4 py-3 rounded-xl bg-emerald-500/90 text-white text-sm shadow-lg border border-white/10 backdrop-blur"
+      >
+        {{ documentUpdateToast }}
+      </div>
+    </transition>
+
     <div class="flex flex-1 overflow-hidden min-w-0 min-h-0 workspace-shell relative">
       <!-- Icon rail -->
       <aside class="w-12 bg-white/5 backdrop-blur-lg border-r border-purple-500/40 shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex flex-col items-center py-2 space-y-1.5 overflow-visible relative z-30">
@@ -384,6 +393,12 @@
 
       <!-- Main content -->
       <main class="flex-1 bg-black flex overflow-hidden min-w-0 workspace-main">
+        <div
+          v-if="isResizingViewer"
+          class="viewer-resize-overlay"
+          @mousemove="onViewerResize"
+          @mouseup="stopViewerResize"
+        ></div>
         <div class="flex flex-col flex-1 min-h-0 w-full max-w-4xl max-w-full mx-auto py-4 px-3 gap-4 min-w-0">
           <div class="flex items-center justify-between flex-wrap gap-3"></div>
 
@@ -1353,6 +1368,8 @@ const chatPaneStyle = computed(() =>
 const viewerPaneStyle = computed(() =>
   showSpeckleViewer.value || showDocumentPreview.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}
 )
+const documentUpdateToast = ref('')
+let documentUpdateTimer: ReturnType<typeof setTimeout> | null = null
 
 function withConversationDefaults(conv: Conversation): Conversation {
   return {
@@ -2493,6 +2510,17 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
   speckleViewerFetchLoading.value = false
 }
 
+function notifyDocumentUpdate(message: string) {
+  documentUpdateToast.value = message
+  if (documentUpdateTimer) {
+    clearTimeout(documentUpdateTimer)
+  }
+  documentUpdateTimer = setTimeout(() => {
+    documentUpdateToast.value = ''
+    documentUpdateTimer = null
+  }, 3000)
+}
+
 function detectWorkflowFromPayload(payload: any): WorkflowMode | null {
   if (!payload) return null
   const workflow = typeof payload === 'string'
@@ -2527,6 +2555,7 @@ function handleDocumentUpdate(payload: any) {
     docPreviewUserClosed.value = false
     docPreviewPanelOpen.value = true
     viewerSplitPercent.value = 50
+    notifyDocumentUpdate('📄 Document updated! Check the OnlyOffice panel.')
     persistDocumentStateToConversation()
   }
 }
@@ -2712,11 +2741,14 @@ async function handleSend() {
           if (thinkingIndex !== -1) {
             conversation.chatLog.splice(thinkingIndex, 1)
           }
+          const documentPayload = result.doc_generation_result || result.document_state || result.document_patch
+          const isDocumentResponse = Boolean(documentPayload)
+          const redirectMessage = '✅ Please refer to the document'
           handleWorkflowSignal(result)
-          if (result.doc_generation_result || result.document_state || result.document_patch) {
-            handleDocumentUpdate(result.doc_generation_result || result.document_state || result.document_patch)
+          if (documentPayload) {
+            handleDocumentUpdate(documentPayload)
           }
-          
+
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
           console.log('🖼️ [onComplete] Image similarity results received:', {
@@ -2726,13 +2758,15 @@ async function handleSend() {
             firstResult: imageResults[0] || null,
             fullResult: result
           })
-          const images = imageResults.map((img: any) => ({
-            url: img.image_url,
-            project_key: img.project_key,
-            page_number: img.page_number,
-            similarity: img.similarity,
-            caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
-          }))
+          const images = !isDocumentResponse
+            ? imageResults.map((img: any) => ({
+              url: img.image_url,
+              project_key: img.project_key,
+              page_number: img.page_number,
+              similarity: img.similarity,
+              caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
+            }))
+            : []
           console.log('🖼️ [onComplete] Transformed images for display:', {
             count: images.length,
             images: images,
@@ -2747,7 +2781,9 @@ async function handleSend() {
               // Keep the accumulated content from streaming - it's already formatted
               // Only use result.reply if streaming content is empty
               const accumulatedContent = conversation.chatLog[messageIndex].content || ''
-              const finalAnswer = accumulatedContent || result.reply || result.message || 'No response generated.'
+              const finalAnswer = isDocumentResponse
+                ? redirectMessage
+                : accumulatedContent || result.reply || result.message || 'No response generated.'
               
               // Ensure content is formatted (it should already be via getFormattedMessage)
               // Force one final render to ensure formatting sticks
@@ -2755,7 +2791,7 @@ async function handleSend() {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
-                images: images.length > 0 ? images : undefined, // Add images here
+                images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here
                 timestamp: Date.now()
               })
             }
@@ -2763,11 +2799,11 @@ async function handleSend() {
             // Fallback: create message if streaming didn't happen
             // IMPORTANT: Store RAW text, not formatted HTML
             // Formatting happens in getFormattedMessage() which is called on render
-            const finalAnswer = result.reply || result.message || 'No response generated.'
+            const finalAnswer = isDocumentResponse ? redirectMessage : result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({ 
               role: 'assistant', 
               content: finalAnswer, // Store raw text, not formatted HTML
-              images: images.length > 0 ? images : undefined, // Add images here too
+              images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here too
               timestamp: Date.now() 
             })
           }
@@ -2784,9 +2820,11 @@ async function handleSend() {
             }
           }
           
-          const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
+          const finalAnswer = isDocumentResponse
+            ? redirectMessage
+            : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
-          if (!isDocumentWorkflow.value) {
+          if (!isDocumentResponse && !isDocumentWorkflow.value) {
             await fetchAndDisplaySpeckleModels(finalAnswer, message)
           }
           scrollToBottom(true)
@@ -2896,19 +2934,24 @@ async function regenerateAssistant(message: string, sessionId: string) {
         onWorkflow: handleWorkflowSignal,
         onDocument: handleDocumentUpdate,
         onComplete: async result => {
+          const documentPayload = result.doc_generation_result || result.document_state || result.document_patch
+          const isDocumentResponse = Boolean(documentPayload)
+          const redirectMessage = '✅ Please refer to the document'
           handleWorkflowSignal(result)
-          if (result.doc_generation_result || result.document_state || result.document_patch) {
-            handleDocumentUpdate(result.doc_generation_result || result.document_state || result.document_patch)
+          if (documentPayload) {
+            handleDocumentUpdate(documentPayload)
           }
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
-          const images = imageResults.map((img: any) => ({
-            url: img.image_url,
-            project_key: img.project_key,
-            page_number: img.page_number,
-            similarity: img.similarity,
-            caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
-          }))
+          const images = !isDocumentResponse
+            ? imageResults.map((img: any) => ({
+              url: img.image_url,
+              project_key: img.project_key,
+              page_number: img.page_number,
+              similarity: img.similarity,
+              caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
+            }))
+            : []
           
           // Use the accumulated content from streaming (already formatted via getFormattedMessage)
           // Don't overwrite with result.reply as it might be different or cause formatting to revert
@@ -2918,7 +2961,9 @@ async function regenerateAssistant(message: string, sessionId: string) {
               // Keep the accumulated content from streaming - it's already formatted
               // Only use result.reply if streaming content is empty
               const accumulatedContent = conversation.chatLog[messageIndex].content || ''
-              const finalAnswer = accumulatedContent || result.reply || result.message || 'No response generated.'
+              const finalAnswer = isDocumentResponse
+                ? redirectMessage
+                : accumulatedContent || result.reply || result.message || 'No response generated.'
               
               // Ensure content is formatted (it should already be via getFormattedMessage)
               // Force one final render to ensure formatting sticks
@@ -2926,7 +2971,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
-                images: images.length > 0 ? images : undefined, // Add images here
+                images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here
                 timestamp: Date.now()
               })
             }
@@ -2934,11 +2979,11 @@ async function regenerateAssistant(message: string, sessionId: string) {
             // Fallback: create message if streaming didn't happen
             // IMPORTANT: Store RAW text, not formatted HTML
             // Formatting happens in getFormattedMessage() which is called on render
-            const finalAnswer = result.reply || result.message || 'No response generated.'
+            const finalAnswer = isDocumentResponse ? redirectMessage : result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({
               role: 'assistant',
               content: finalAnswer, // Store raw text, not formatted HTML
-              images: images.length > 0 ? images : undefined, // Add images here too
+              images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here too
               timestamp: Date.now()
             })
           }
@@ -2955,9 +3000,11 @@ async function regenerateAssistant(message: string, sessionId: string) {
             }
           }
           
-          const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
+          const finalAnswer = isDocumentResponse
+            ? redirectMessage
+            : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
-          if (!isDocumentWorkflow.value) {
+          if (!isDocumentResponse && !isDocumentWorkflow.value) {
             await fetchAndDisplaySpeckleModels(finalAnswer, message)
           }
           scrollToBottom(true)
@@ -3125,6 +3172,15 @@ function performDeleteConversation() {
   min-width: 320px;
 }
 
+.viewer-resize-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  cursor: col-resize;
+  z-index: 60;
+  user-select: none;
+}
+
 .viewer-resize-handle {
   width: 10px;
   cursor: col-resize;
@@ -3259,6 +3315,15 @@ function performDeleteConversation() {
 
 .fade-enter-from,
 .fade-leave-to {
+  opacity: 0;
+}
+
+.toast-fade-enter-active,
+.toast-fade-leave-active {
+  transition: opacity 0.18s ease;
+}
+.toast-fade-enter-from,
+.toast-fade-leave-to {
   opacity: 0;
 }
 </style>
