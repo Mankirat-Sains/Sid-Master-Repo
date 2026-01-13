@@ -16,9 +16,18 @@ class WorkspaceManager:
     """Manages ephemeral workspace files for deep agent operations."""
 
     def __init__(self, base_path: Optional[str] = None):
-        self.base = Path(base_path or os.getenv("WORKSPACE_BASE_PATH", "/workspace"))
+        preferred = Path(base_path or os.getenv("WORKSPACE_BASE_PATH", "/workspace"))
+        fallback = Path(__file__).resolve().parents[2] / "workspace"
         self.retention_hours = int(os.getenv("WORKSPACE_RETENTION_HOURS", "24"))
-        self.base.mkdir(parents=True, exist_ok=True)
+
+        self.base = preferred
+        try:
+            self.base.mkdir(parents=True, exist_ok=True)
+        except OSError as exc:
+            logger.warning(f"Workspace base '{preferred}' not writable ({exc}), falling back to '{fallback}'")
+            self.base = fallback
+            self.base.mkdir(parents=True, exist_ok=True)
+
         logger.info(f"WorkspaceManager initialized at {self.base}")
 
     def get_thread_workspace(self, thread_id: str) -> Path:

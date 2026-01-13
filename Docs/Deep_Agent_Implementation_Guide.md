@@ -737,6 +737,170 @@ MEMORY_RETENTION_DAYS=30
   - Workspace behavior: per-thread file writes and retention cleanup.
   - Eviction behavior: large docgen outputs (>MAX_INLINE_TOOL_RESULT) produce file refs with summaries.
 
+## **Phase 4: Implement Middleware Features (Week 5)**
+
+### **4.1: Workspace vs Memories Strategy**  
+- **Purpose**: Separate ephemeral workspace (per-thread) from durable memories (cross-thread) to manage state bloat and enable long-term context.  
+- **Files**: `Backend/persistence/memory_store.py` (new), `Backend/persistence/workspace_manager.py` (exists), `Backend/models/rag_state.py` (update), `Backend/config/settings.py` (update), `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (update).  
+- **Implementation**:  
+  - Create `MemoryStore` class for durable storage (Supabase/Postgres/SQLite) with methods `store_memory`, `retrieve_memories`, `delete_memory`.  
+  - Update `WorkspaceManager` to focus purely on ephemeral storage (already done).  
+  - Add `memory_store` instance to `DeepDesktopLoop` for storing durable project notes and preferences.  
+  - Update state schema to track `durable_memory_refs` and `ephemeral_workspace_files`.  
+  - Add environment variables: `MEMORY_STORE_BACKEND`, `MEMORY_RETENTION_DAYS`.  
+- **Status**: ⏳ Partially Complete (workspace done, memories pending).  
+- **Dependencies**: Existing workspace manager; state schema from Phase 3A.
+
+### **4.2: Tool Result Eviction & Summarization**  
+- **Purpose**: Automatically evict large tool outputs (>3000 chars) to workspace files with intelligent summaries.  
+- **Files**: `Backend/utils/tool_eviction.py` (exists), `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (integrated), `Backend/nodes/DesktopAgent/tools/docgen_tool.py` (integrated).  
+- **Implementation**:  
+  - Created `ToolResultEvictor` class with token-aware eviction and summarization.  
+  - Integrated with docgen tool wrapper to handle large document drafts.  
+  - Deep desktop loop uses evictor for all tool outputs exceeding `MAX_INLINE_TOOL_RESULT`.  
+- **Status**: ✅ Completed in Phase 3D.  
+- **Evidence**: `tool_eviction.py` with summarization; deep loop calls evictor; docgen tool includes eviction logic.
+
+### **4.3: Enhanced Logging & Observability**  
+- **Purpose**: Capture structured logs of deep agent decisions, tool calls, and state changes for debugging and monitoring.  
+- **Files**: `Backend/observability/structured_logger.py` (new), `Backend/observability/__init__.py`, `Backend/graph/tracing.py` (update), `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (update).  
+- **Implementation**:  
+  - Create `StructuredLogger` class that logs to file, stdout, or external service (LangSmith).  
+  - Log deep agent steps: plan generation, tool execution (args/results), interrupts, iterations.  
+  - Integrate with existing `execution_trace` and `execution_trace_verbose`.  
+- **Status**: ⏳ Pending.  
+- **Dependencies**: Existing tracing (`tracing.py`); deep desktop loop.
+
+### **4.4: Structured Tracing Integration**  
+- **Purpose**: Unify execution traces across graph nodes, subgraphs, and deep agent loops for complete observability.  
+- **Files**: `Backend/graph/tracing.py` (exists), `Backend/observability/trace_aggregator.py` (new), `Backend/api_server.py` (update).  
+- **Implementation**:  
+  - Create `TraceAggregator` that merges traces from main graph, subgraphs, and deep loops.  
+  - Add trace visualization helpers (timeline view, dependency graph).  
+  - Update API to return aggregated trace in response metadata.  
+  - Add configuration: `TRACE_SAMPLING_RATE`, `TRACE_STORAGE_BACKEND`.  
+- **Status**: ⏳ Pending.  
+- **Dependencies**: Enhanced logging; existing trace wrapping.
+
+---
+
+## **Phase 5: Integration & Testing (Week 6)**
+
+### **5.1: Update API Layer for Deep Agent**  
+- **Purpose**: Expose deep agent capabilities through API and handle new response formats (interrupts, workspace refs).  
+- **Files**: `Backend/api_server.py` (already updated in 3E.5), `Backend/models/chat_models.py` (update), `Frontend/` (if applicable).  
+- **Implementation**:  
+  - Ensure `/chat` and `/chat/stream` endpoints handle deep agent interrupts and return appropriate responses (done).  
+  - Update response models to include `workspace_files`, `desktop_loop_result`, `tool_execution_log`.  
+  - Add endpoint to fetch workspace file contents: `/workspace/{session_id}/{filename}`.  
+- **Status**: ✅ Partially Complete (interrupt handling done).  
+- **Evidence**: `/approve-action` endpoint; interrupt SSE events; state resumption logic.
+
+### **5.2: Create Configuration & Environment Updates**  
+- **Purpose**: Consolidate all configuration options with sensible production defaults.  
+- **Files**: `Backend/config/settings.py` (update), `.env.example` (already updated), `Backend/config/validation.py` (new).  
+- **Implementation**:  
+  - Review and organize all environment variables added in Phases 1-3.  
+  - Set production defaults (e.g., `DEEP_AGENT_ENABLED=true`).  
+  - Add configuration validation script that checks required settings on startup.  
+- **Status**: ⏳ Pending (`.env.example` updated, validation pending).  
+- **Dependencies**: All previous phases' configuration.
+
+### **5.3: Comprehensive Testing Suite**  
+- **Purpose**: Ensure deep agent features work correctly and reliably.  
+- **Files**: `tests/test_deep_agent.py` (new), `tests/test_interrupts.py` (new), `tests/test_workspace.py` (new), `pytest.ini` (new).  
+- **Implementation**:  
+  - Unit tests for `deep_desktop_loop.py`, `docgen_tool.py`, `tool_eviction.py`.  
+  - Integration tests for full deep agent flow (planning, execution, interrupts).  
+  - End-to-end tests simulating user sessions with multiple turns.  
+  - Mock external dependencies (LLM, vector stores) for reliable tests.  
+- **Status**: ⏳ Pending.  
+- **Dependencies**: Deep agent components.
+
+### **5.4: Feature Flag Validation & Rollback Plan**  
+- **Purpose**: Safely roll out deep agent features with ability to revert.  
+- **Files**: `Backend/config/settings.py` (feature flags), `Backend/graph/subgraphs/desktop_agent_subgraph.py` (already has flag), deployment scripts.  
+- **Implementation**:  
+  - Ensure all deep agent features behind `DEEP_AGENT_ENABLED` flag.  
+  - Create rollout plan: internal users → beta → production.  
+  - Monitor performance and error rates; set up alerts.  
+  - Prepare rollback procedure (set `DEEP_AGENT_ENABLED=false`).  
+- **Status**: ✅ Partially Complete (flag exists, rollout plan pending).  
+- **Evidence**: `DEEP_AGENT_ENABLED` used in desktop agent subgraph routing.
+
+---
+
+## **Phase 6: Polish & Rollout (Week 7-8)**
+
+### **6.1: Performance Optimization**  
+- **Purpose**: Improve deep agent response times and resource usage.  
+- **Files**: `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (optimize), `Backend/persistence/workspace_manager.py` (optimize), `Backend/utils/tool_eviction.py` (optimize).  
+- **Implementation**:  
+  - Profile deep agent execution to identify bottlenecks (LLM calls, file I/O).  
+  - Cache expensive operations (plan generation for similar requests).  
+  - Limit workspace file reads/writes (batch operations).  
+  - Optimize token usage in prompts (planning, tool calls).  
+- **Status**: ⏳ Pending.  
+- **Dependencies**: Deep agent components.
+
+### **6.2: Documentation Updates**  
+- **Purpose**: Provide comprehensive documentation for users and developers.  
+- **Files**: `Docs/Deep_Agent_Architecture.md` (from 3E.6), `Docs/Deep_Agent_Usage.md` (from 3E.6), `Docs/API_Reference.md` (update), `README.md` (update).  
+- **Implementation**:  
+  - Update architecture diagram to include deep agent components.  
+  - Add API examples for interrupt handling and workspace management.  
+  - Create troubleshooting guide for common deep agent issues.  
+  - Document all configuration options and their effects.  
+- **Status**: ⏳ Pending (Phase 3E.6 documentation pending).  
+- **Dependencies**: Completed implementation.
+
+### **6.3: Rollback Testing**  
+- **Purpose**: Ensure system can revert to old desktop agent behavior without issues.  
+- **Files**: `Backend/graph/subgraphs/desktop_agent_subgraph.py` (feature flag), `Backend/config/settings.py` (feature flag), deployment scripts.  
+- **Implementation**:  
+  - Test with `DEEP_AGENT_ENABLED=false` to verify old docgen subgraph used.  
+  - Verify state schema changes (RAGState) don't break old flow.  
+  - Test rollback in staging environment mimicking production.  
+  - Ensure no data loss (workspace files may remain, acceptable).  
+- **Status**: ⏳ Pending.  
+- **Dependencies**: Feature flag and state compatibility.
+
+### **6.4: Production Deployment**  
+- **Purpose**: Deploy deep agent features to production with monitoring and alerting.  
+- **Files**: Deployment scripts, monitoring configuration (Prometheus/Grafana), alerting rules.  
+- **Implementation**:  
+  - Deploy to production in stages (canary → full).  
+  - Monitor metrics: deep agent success rate, interrupt frequency, approval rate, response times.  
+  - Set up alerts for critical failures (deep agent failing >5% requests).  
+  - Gather user feedback and iterate.  
+- **Status**: ⏳ Pending.  
+- **Dependencies**: All previous phases.
+
+---
+
+## **Summary of Remaining Work**
+
+### **Immediate Next (Week 5):**
+1. **4.1 Workspace vs Memories** - Complete memory store implementation
+2. **4.3 Enhanced Logging** - Add structured logging
+3. **4.4 Structured Tracing** - Implement trace aggregation
+
+### **Week 6:**
+4. **5.2 Configuration Validation** - Add startup validation
+5. **5.3 Testing Suite** - Create comprehensive tests
+6. **5.4 Rollout Plan** - Finalize feature flag strategy
+
+### **Week 7-8:**
+7. **6.1 Performance Optimization** - Profile and optimize
+8. **6.2 Documentation** - Complete all documentation
+9. **6.3 Rollback Testing** - Validate fallback paths
+10. **6.4 Production Deployment** - Gradual rollout with monitoring
+
+**Current Progress**: 13/26 steps complete (50%)  
+**Estimated Completion**: 3-4 weeks remaining  
+
+**Ready to proceed with Phase 4.1 (Workspace vs Memories Strategy)?**
+
 ## Testing Strategy
 
 1. **Unit tests** for each new component (workspace manager, evictor, tracer)
