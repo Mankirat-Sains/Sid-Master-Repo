@@ -28,3 +28,20 @@ class RAGState(DBRetrievalState):
     doc_generation_warnings: List[str] = field(default_factory=list)
     execution_trace: List[Any] = field(default_factory=list)
     execution_trace_verbose: List[Dict[str, Any]] = field(default_factory=list)
+
+    # =========================================================================
+    # Deep Desktop Agent Fields (Phase 3)
+    # =========================================================================
+    desktop_plan_steps: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_current_step: int = field(default=0)
+    desktop_iteration_count: int = field(default=0)
+    desktop_workspace_dir: Optional[str] = field(default=None)
+    desktop_workspace_files: List[str] = field(default_factory=list)
+    desktop_memories: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_context: Dict[str, Any] = field(default_factory=dict)
+    desktop_interrupt_pending: bool = field(default=False)
+    desktop_approved_actions: List[str] = field(default_factory=list)
+    desktop_interrupt_data: Optional[Dict[str, Any]] = field(default=None)
+    tool_execution_log: List[Dict[str, Any]] = field(default_factory=list)
+    large_output_refs: Dict[str, str] = field(default_factory=dict)
+    desktop_loop_result: Optional[Dict[str, Any]] = field(default=None)
