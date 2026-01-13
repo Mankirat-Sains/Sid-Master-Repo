@@ -1,0 +1,145 @@
+The Excel Agentic System is a two-mode AI workflow that enables natural-language interaction with complex engineering Excel workbooks used by structural and civil engineering firms. It sits inside the Mantle environment as a LangGraph-based multi-agent pipeline that can both reason about spreadsheets and perform verified updates on them.
+
+⚙️ 1. Dual-Mode Architecture
+Mode: Chat Mode (“Planner”)	Purpose: Plans and explains what needs to be done	Model Behaviour: Generates reasoning steps, identifies which spreadsheet and parameters are relevant		Output: Text or JSON plan (no side effects)
+Mode: Agent Mode (“Executor”)	Purpose: Executes the approved plan	    Model Behaviour: Converts plan into deterministic Excel actions and runs them via Python		Output: Execution logs with updated workbook
+
+This split keeps the system safe and transparent: engineers review logic in Chat Mode, then allow execution in Agent Mode.
+
+🧩 2. Pipeline Components
+
+ExcelPlannerNode – large-context LLM (e.g., phi-3-mini-128k or GPT-4) that reads project scope, Revit exports, or proposal text and outputs a structured plan:
+
+{"target_sheet": "BeamDesign.xlsx", "inputs": {"Fy":400,"L":6.0,"w":25}, "reasoning":"Check phiMn ≥ Mu"}
+
+
+ActionParserNode – converts the plan into low-level actions:
+
+[{"cell":"B12","parameter":"Fy","value":400}]
+
+
+ExcelExecutorNode – applies those actions in a sandbox using openpyxl or xlwings, recalculates formulas, and streams progress:
+
+[1/3] Updating B12 = 400
+[2/3] Recalculating formulas
+[3/3] φMn = 228.7 → OK
+
+
+ValidatorNode – checks for formula errors, constraint violations, and ensures results meet building-code thresholds.
+
+All interactions and results are logged in Supabase for audit and later fine-tuning.
+
+🧩 3. Training and Evolution
+
+Phase 1: Use general LLMs (GPT-4, Claude, Phi-3) to populate reasoning and action logs.
+
+Phase 2: Convert logs into structured JSONL datasets for supervised fine-tuning on Hugging Face using QLoRA / PEFT on AWS.
+
+Phase 3: Deploy a smaller fine-tuned model (phi-3-mini-excel-agent) as the default reasoning head inside Mantle.
+
+This staged approach ensures the system learns from real engineering workflows, supports safe automation, and builds toward a fully offline, specialized “Sidian Excel Agent.”
+
+
+IN our Chat panel, we will have an ask option and an "agent" option...just like cursor. The ask option can plan and view everything and answer user questions in detail, but does not actually make changes to anything. The agent option actually interacts and changes different tools (For this example we will be talking about excel as that is what we want to focus on for now). We will first get the chatoption working properly and then move to the agent option.  
+
+This will enable us to verify how the system thinks before moving on to allow it to act... 
+
+Example: 
+
+User (In chat mode): HEere is a new scope of work...what should I do to complete the design? 
+Agent: Provides full step by step break down to go from idea to final design 
+
+User (In chat mode): great, now go deeper into step 1, how do I fill out the excel sheet and what inputs are required. Which excel sheet should I be using? 
+Agent: Use the beam design spreadsheet to check loads. Check the worst case loads. Worst case is determined by finding the beams with the longest span and load applied. Generalize beams into a few sub sets to expedite workflow. Once you have determined the beams, check which size to use in excel. Update cell XX with worst case span, XX with worst case load, XX with (ADDITIONAL REQUIREMENTS). Iterate size until you have a beam that meets your desired threshold under given loading conditions 
+
+USer (Toggles to agent mode): Great! Now please go ahead and run these calculatins for me 
+Agent: Completes workon the users behalf and outputs what it is doing the entire time. 
+
+1. Frontend Toggle Implementation
+Q1: Where in the UI should the Ask/Agent toggle be placed?
+Top of the chat interface (near the input box)?
+In a settings menu?
+As a prominent switch above the message input?
+Q2: Visual design preferences?
+Simple toggle switch (like iOS style)?
+Button group (two buttons: "Ask Mode" | "Agent Mode")?
+Radio buttons with labels?
+Should it have a visual indicator showing which mode is active (e.g., different colors)?
+Q3: Default mode when app starts?
+Should it default to "Ask Mode" (safer, planning only)?
+Or remember the last selected mode per session?
+Q4: Should there be a confirmation when switching to Agent Mode?
+E.g., "⚠️ Agent Mode will execute actions. Continue?"
+Or just switch seamlessly?
+2. Orchestrator Routing Logic
+Q5: When in Ask Mode, what should the orchestrator do?
+Route to Excel Agent's planning capabilities ONLY (no execution)?
+Should the Excel Agent return a detailed plan/explanation without making changes?
+Should it still route to RAG agent normally for document queries?
+Q6: When in Agent Mode, what should change?
+Excel Agent can execute operations?
+Should there be any safety checks or confirmations before execution?
+Should it log all actions for audit purposes?
+Q7: How should the mode be communicated from frontend to backend?
+Add a mode field to the ChatRequest model? (e.g., {"message": "...", "session_id": "...", "mode": "ask"})
+Or use a separate endpoint for each mode?
+3. Excel Agent Behavior in Ask Mode
+Q8: In Ask Mode, should the Excel Agent:
+Generate a detailed step-by-step plan (like the readme example)?
+Explain which Excel files to use and what cells to modify?
+Provide reasoning about engineering decisions?
+Show example values but NOT execute?
+Q9: Should Ask Mode responses include:
+A "Execute This Plan" button that switches to Agent Mode and runs it?
+A preview of what would be changed?
+Estimated time to execute?
+Q10: For hybrid queries (RAG + Excel), should Ask Mode:
+Still retrieve documents from RAG (read-only)?
+But only PLAN the Excel operations without executing?
+4. Session & State Management
+Q11: Should the mode be:
+Per-session (remembered for that user's session)?
+Per-query (user can toggle for each question)?
+Global (affects all users)?
+Q12: Should conversation memory track which mode was used for each exchange?
+This could help with follow-ups (e.g., "Now execute that plan" after Ask Mode)
+5. Safety & User Experience
+Q13: Should there be visual indicators in the response showing:
+"🔍 Ask Mode - No actions taken"
+"⚡ Agent Mode - Actions executed"
+Q14: For Agent Mode execution, should the response show:
+Real-time progress updates?
+A summary of what was changed?
+Links to the modified files?
+📝 MY RECOMMENDATIONS (based on the readme)
+Based on the readme file, here's what I think makes sense:
+Frontend Toggle: Prominent switch above input box, defaults to Ask Mode
+Mode Communication: Add mode: "ask" | "agent" to ChatRequest
+Ask Mode Behavior:
+RAG agent works normally (read-only anyway)
+Excel agent generates detailed plans WITHOUT execution
+Returns step-by-step breakdown like readme example
+Agent Mode Behavior:
+Excel agent executes approved operations
+Shows progress and results
+Logs all actions
+Orchestrator: Routes based on mode + query type
+Safety: Visual indicators showing which mode is active
+Does this align with your vision? Please confirm or adjust before I proceed! 🚀
+
+
+q1: The chat button should be in the top left
+Q2:It should be a simple toggle switch that is either purple when ask or green when agent
+q3: Default is on ask mode and is like that for the session until user changes t agent. It should stay like that until user switches back. 
+4) No cinfirmation
+q5) It should oly plan and answer questions and not act. Yes the agent sshiuld give detailed plans. Yes routing to rag is always fine cause this doesnt change anything
+q6) Agents can execute commands and act on the users behalf
+q7) the agents should act and then the user should be able to see what the agent has done and then be able to cinfirm or deny...it should be traceable logic for all thngs done and changed. Always log all actions
+q7)Yes....mode is good..or whatever you think will make the smartest strongest app
+q8)Yes... a detailed plan. Be able to say what it wpuld do and change and why. Be able to still see and read excels....this can deal with multiplle levels of possible user questions
+q9)No...iut should just give a plan and then if the users likes it they can switch to agent mode and then tell the system to execuyte the plan discussed...this is why memory is crucial. No execution time is needed, but streaming should be applied.
+q10) RAG is always fine since it doesnt actually change anything. Excel agents must be planned
+q11) It should be per question...so the user toggles to ask and aplans for four questions and then switches to agent...it will then conduct agent work
+q12) yes
+q13)No thiere is no need
+q14) Yes real time progress....yes a summary of what was changer. Links to the modified files and it should also open the files that it makes adjustments to
