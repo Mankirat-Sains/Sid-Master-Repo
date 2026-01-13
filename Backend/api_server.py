@@ -2399,6 +2399,217 @@ async def get_instructions():
     }
 
 # ============================================================
+# EXCEL SYNC AGENT ENDPOINTS
+# ============================================================
+# These endpoints proxy requests to the Excel Sync Agent service.
+# The agent service should be running on AGENT_API_URL (default: http://localhost:8001)
+
+AGENT_API_URL = os.getenv("AGENT_API_URL", "http://localhost:8001")
+AGENT_API_TIMEOUT = 30  # seconds
+
+class AgentSyncRequest(BaseModel):
+    project_id: Optional[str] = None
+    force: bool = False
+
+class AgentSyncResponse(BaseModel):
+    success: bool
+    project_id: str
+    message: str
+    data: Optional[Dict[str, Any]] = None
+    timestamp: str
+
+@app.get("/api/agent/status")
+async def get_agent_status():
+    """Get status of the Excel Sync Agent"""
+    try:
+        async with httpx.AsyncClient(timeout=AGENT_API_TIMEOUT) as client:
+            response = await client.get(f"{AGENT_API_URL}/api/agent/status")
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=f"Agent service returned {response.status_code}"
+                )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent service timeout - agent may not be running"
+        )
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Agent service not reachable at {AGENT_API_URL}. Is the agent running?"
+        )
+    except Exception as e:
+        logger.error(f"Error getting agent status: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error connecting to agent service: {str(e)}"
+        )
+
+@app.get("/api/agent/projects")
+async def get_agent_projects():
+    """Get list of all projects configured in the Excel Sync Agent"""
+    try:
+        async with httpx.AsyncClient(timeout=AGENT_API_TIMEOUT) as client:
+            response = await client.get(f"{AGENT_API_URL}/api/agent/projects")
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=f"Agent service returned {response.status_code}"
+                )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent service timeout"
+        )
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Agent service not reachable at {AGENT_API_URL}"
+        )
+    except Exception as e:
+        logger.error(f"Error getting agent projects: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error connecting to agent service: {str(e)}"
+        )
+
+@app.post("/api/agent/sync", response_model=AgentSyncResponse)
+async def trigger_agent_sync(request: AgentSyncRequest):
+    """Trigger a sync for a specific project or all projects"""
+    try:
+        async with httpx.AsyncClient(timeout=AGENT_API_TIMEOUT) as client:
+            response = await client.post(
+                f"{AGENT_API_URL}/api/agent/sync",
+                json=request.dict()
+            )
+            if response.status_code == 200:
+                return response.json()
+            else:
+                error_detail = response.text if response.text else f"Agent service returned {response.status_code}"
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=error_detail
+                )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent service timeout"
+        )
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Agent service not reachable at {AGENT_API_URL}. Is the agent running?"
+        )
+    except Exception as e:
+        logger.error(f"Error triggering agent sync: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error connecting to agent service: {str(e)}"
+        )
+
+@app.get("/api/agent/history")
+async def get_agent_history(limit: int = 50):
+    """Get sync history from the Excel Sync Agent"""
+    try:
+        async with httpx.AsyncClient(timeout=AGENT_API_TIMEOUT) as client:
+            response = await client.get(
+                f"{AGENT_API_URL}/api/agent/history",
+                params={"limit": limit}
+            )
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=f"Agent service returned {response.status_code}"
+                )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent service timeout"
+        )
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Agent service not reachable at {AGENT_API_URL}"
+        )
+    except Exception as e:
+        logger.error(f"Error getting agent history: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error connecting to agent service: {str(e)}"
+        )
+
+@app.get("/api/agent/project/{project_id}/data")
+async def get_agent_project_data(project_id: str):
+    """Get current data from a project's Excel file without syncing"""
+    try:
+        async with httpx.AsyncClient(timeout=AGENT_API_TIMEOUT) as client:
+            response = await client.get(f"{AGENT_API_URL}/api/agent/project/{project_id}/data")
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=f"Agent service returned {response.status_code}"
+                )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent service timeout"
+        )
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Agent service not reachable at {AGENT_API_URL}"
+        )
+    except Exception as e:
+        logger.error(f"Error getting agent project data: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error connecting to agent service: {str(e)}"
+        )
+
+@app.post("/api/agent/configure")
+async def configure_agent(config: Dict[str, Any]):
+    """Configure the Excel Sync Agent (proxies to agent service)"""
+    try:
+        async with httpx.AsyncClient(timeout=AGENT_API_TIMEOUT) as client:
+            response = await client.post(
+                f"{AGENT_API_URL}/api/agent/configure",
+                json=config
+            )
+            if response.status_code == 200:
+                return response.json()
+            else:
+                error_detail = response.text if response.text else f"Agent service returned {response.status_code}"
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=error_detail
+                )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent service timeout"
+        )
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Agent service not reachable at {AGENT_API_URL}"
+        )
+    except Exception as e:
+        logger.error(f"Error configuring agent: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error connecting to agent service: {str(e)}"
+        )
+
+# ============================================================
 # RENDERER AUTO-UPDATE ENDPOINTS
 # ============================================================
 # These endpoints serve the renderer files for the Electron app auto-update system.
@@ -2474,7 +2685,11 @@ async def root():
             "stats_user": "/stats/user/{user_identifier}",
             "stats_recent": "/stats/recent",
             "graph_cypher": "/graph/cypher (DEBUG only)",
-            "graph_schema": "/graph/schema (DEBUG only)"
+            "graph_schema": "/graph/schema (DEBUG only)",
+            "agent_status": "/api/agent/status",
+            "agent_projects": "/api/agent/projects",
+            "agent_sync": "/api/agent/sync",
+            "agent_history": "/api/agent/history"
         }
     }
 

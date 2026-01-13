@@ -1,0 +1,1132 @@
+{
+  "_metadata": {
+    "version": "2.0",
+    "enhanced_with_building_codes": true,
+    "generation_timestamp": "1766006954.5249372",
+    "description": "Semantic knowledge base enhanced with building code understanding"
+  },
+  "Glulam Column.xlsx": {
+    "file_name": "Glulam Column.xlsx",
+    "file_path": "/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Sidian/SidOS/Glulam Column.xlsx",
+    "total_sheets": 2,
+    "sheet_names": [
+      "Axial",
+      "Guidance Tables"
+    ],
+    "workbook_legend": {
+      "legend_found": true,
+      "legend_cells": [
+        {
+          "cell": "S8",
+          "text": "Input",
+          "fill_color": "FFF2F2F2",
+          "semantic_category": "user_input",
+          "description": "Cells users should modify"
+        },
+        {
+          "cell": "S9",
+          "text": "Output",
+          "fill_color": "FFF2F2F2",
+          "semantic_category": "output_results",
+          "description": "Cells containing results or values to review"
+        },
+        {
+          "cell": "S11",
+          "text": "Override",
+          "fill_color": "FFF2C1BC",
+          "semantic_category": "override",
+          "description": "Cells where default values can be overridden"
+        }
+      ],
+      "color_mappings": {
+        "FFF2F2F2": {
+          "category": "user_input",
+          "description": "Editable input cells",
+          "confidence": 0.95
+        },
+        "FFF2C1BC": {
+          "category": "override",
+          "description": "Cells where default values can be overridden",
+          "confidence": 0.9
+        }
+      },
+      "legend_sheet": "Axial",
+      "applies_to_all_sheets": true
+    },
+    "sheets": {
+      "Axial": {
+        "sheet_name": "Axial",
+        "dimensions": "128 rows x 38 columns",
+        "labeled_cells": {
+          "Axial Load": "D24",
+          "Factored Axial Load": "D25",
+          "Load Duration Factor,": "D32",
+          "Effective Length Factor Strong Axis,": "D34",
+          "Effective Length Factor Weak Axis,": "D35",
+          "Column Length": "E46",
+          "Unbraced length, strong-axis,": "E47",
+          "Unbraced length, weak-axis,": "E48",
+          "Beam width,": "E49",
+          "Comp. strength parallel to grain,": "E61",
+          "Strength in tension parallel to grain at net section, ": "E62",
+          "Strength in tension parallel to grain at gross section, ": "E63",
+          "Strength in bending": "E65",
+          "Compressive strength parallel to grain,": "E83",
+          "Strength in tension parallel to grain at gross section,": "E84",
+          "Strength in tension parallel to grain at net section,": "E85",
+          "Strength in compression parallel combined with bending,": "E86",
+          "Strength in Bending.": "E87",
+          "Effective Length, Strong Axis,": "E92",
+          "Effective Length, Weak Axis,": "E93"
+        },
+        "color_legend": {
+          "legend_found": true,
+          "legend_cells": [
+            {
+              "cell": "S8",
+              "text": "Input",
+              "fill_color": "FFF2F2F2",
+              "semantic_category": "user_input",
+              "description": "Cells users should modify"
+            },
+            {
+              "cell": "S9",
+              "text": "Output",
+              "fill_color": "FFF2F2F2",
+              "semantic_category": "output_results",
+              "description": "Cells containing results or values to review"
+            },
+            {
+              "cell": "S11",
+              "text": "Override",
+              "fill_color": "FFF2C1BC",
+              "semantic_category": "override",
+              "description": "Cells where default values can be overridden"
+            }
+          ],
+          "color_mappings": {
+            "FFF2F2F2": {
+              "category": "user_input",
+              "description": "Editable input cells",
+              "confidence": 0.95
+            },
+            "FFF2C1BC": {
+              "category": "override",
+              "description": "Cells where default values can be overridden",
+              "confidence": 0.9
+            }
+          },
+          "applied_from_sheet": "Axial",
+          "applied_to_sheet": "Axial"
+        },
+        "classified_cells": {
+          "inputs": [
+            {
+              "cell": "E8",
+              "value": "Template",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Project Name",
+              "has_formula": false,
+              "parameter_name": "project_name",
+              "unit": null,
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "S8",
+              "value": "Input",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Input value for engineering calculations",
+              "has_formula": false,
+              "parameter_name": "input_value",
+              "unit": "unknown",
+              "context_confidence": 0.3
+            },
+            {
+              "cell": "S9",
+              "value": "Output",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Input value for calculation",
+              "has_formula": false,
+              "parameter_name": "input_value",
+              "unit": "N/A",
+              "context_confidence": 0.3
+            },
+            {
+              "cell": "F16",
+              "value": "Axial-Bending",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Live load in kPa",
+              "has_formula": false,
+              "parameter_name": "live_load",
+              "unit": "kPa",
+              "context_confidence": 0.95
+            },
+            {
+              "cell": "F18",
+              "value": "2",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Live load in kPa",
+              "has_formula": false,
+              "parameter_name": "live_load",
+              "unit": "kPa",
+              "context_confidence": 0.95
+            },
+            {
+              "cell": "N18",
+              "value": "=IF(F16=\"Compression\",F25/MIN(G97:G97),\"N/A\")",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Compression and Tension Utilization",
+              "has_formula": true,
+              "parameter_name": "utilization",
+              "unit": "N/A",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F19",
+              "value": "3.25",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Live load in kPa",
+              "has_formula": false,
+              "parameter_name": "live_load",
+              "unit": "kPa",
+              "context_confidence": 0.95
+            },
+            {
+              "cell": "N20",
+              "value": "=IF(F16=\"Tension\",F25/G105,\"N/A\")",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Utilization based on compression or tension",
+              "has_formula": true,
+              "parameter_name": "utilization",
+              "unit": "N/A",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F21",
+              "value": "9",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Axial load based on tributary width and length",
+              "has_formula": false,
+              "parameter_name": "axial_load",
+              "unit": "kPa",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F22",
+              "value": "9",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Axial Load in kPa",
+              "has_formula": false,
+              "parameter_name": "axial_load",
+              "unit": "kPa",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "F27",
+              "value": "D.F.L",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Axial Load",
+              "has_formula": false,
+              "parameter_name": "factored_axial_load",
+              "unit": "N",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F28",
+              "value": "20f-E",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Axial Load in kN",
+              "has_formula": false,
+              "parameter_name": "factored_axial_load",
+              "unit": "kN",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "F30",
+              "value": "Wet",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Load Duration Factor",
+              "has_formula": false,
+              "parameter_name": "load_duration_factor",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F32",
+              "value": "1",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Load Duration Factor",
+              "has_formula": false,
+              "parameter_name": "load_duration_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F33",
+              "value": "1.15",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Load Duration Factor",
+              "has_formula": false,
+              "parameter_name": "load_duration_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F34",
+              "value": "0.8",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Effective Length Factor Strong Axis",
+              "has_formula": false,
+              "parameter_name": "effective_length_factor_strong_axis",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F35",
+              "value": "0.65",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Effective Length Factor for Strong Axis",
+              "has_formula": false,
+              "parameter_name": "effective_length_factor_strong_axis",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F37",
+              "value": "50",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Moment",
+              "has_formula": false,
+              "parameter_name": "factored_moment",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F38",
+              "value": "Strong-Axis",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Moment",
+              "has_formula": false,
+              "parameter_name": "factored_moment",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "F39",
+              "value": "Compression",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Moment in kN\u00b7m",
+              "has_formula": false,
+              "parameter_name": "factored_moment",
+              "unit": "kN\u00b7m",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "F40",
+              "value": "Yes",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Moment in unspecified units",
+              "has_formula": false,
+              "parameter_name": "factored_moment",
+              "unit": "",
+              "context_confidence": 0.4
+            },
+            {
+              "cell": "F41",
+              "value": "50",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Intermediate support spacing in mm",
+              "has_formula": false,
+              "parameter_name": "intermediate_support_spacing",
+              "unit": "mm",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G46",
+              "value": "9000",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Unbraced length in strong-axis direction",
+              "has_formula": false,
+              "parameter_name": "unbraced_length_strong_axis",
+              "unit": "mm",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "G47",
+              "value": "9000",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Unbraced length in strong-axis direction",
+              "has_formula": false,
+              "parameter_name": "unbraced_length_strong_axis",
+              "unit": "L",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G48",
+              "value": "4000",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Unbraced length in strong-axis direction",
+              "has_formula": false,
+              "parameter_name": "unbraced_length_strong_axis",
+              "unit": "units",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G49",
+              "value": "175",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Unbraced length in weak-axis direction",
+              "has_formula": false,
+              "parameter_name": "unbraced_length_weak_axis",
+              "unit": "Lb",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G50",
+              "value": "380",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Beam width in unspecified units",
+              "has_formula": false,
+              "parameter_name": "beam_width",
+              "unit": "",
+              "context_confidence": 0.4
+            },
+            {
+              "cell": "G51",
+              "value": "=G49*G50",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Beam width in unspecified units",
+              "has_formula": true,
+              "parameter_name": "beam_width",
+              "unit": null,
+              "context_confidence": 0.4
+            },
+            {
+              "cell": "G53",
+              "value": "=(G49/1000)*(G50/1000)*(G46/1000)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Net cross-sectional area in square units",
+              "has_formula": true,
+              "parameter_name": "net_cross_sectional_area",
+              "unit": "unknown",
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "G54",
+              "value": "=IF(F38=\"Strong-Axis\", G49*(G50^3)/12,G50*(G49^3)/12)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Beam volume",
+              "has_formula": true,
+              "parameter_name": "beam_volume",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G55",
+              "value": "=IF(F38=\"Strong-Axis\",G50/2,G49/2)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Moment of inertia of the beam",
+              "has_formula": true,
+              "parameter_name": "moment_of_inertia",
+              "unit": "unknown",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G56",
+              "value": "=G54/G55",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Section modulus in cubic meters",
+              "has_formula": true,
+              "parameter_name": "section_modulus",
+              "unit": "m^3",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "G61",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,5,0),IF($F$27='Guidance ",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Compression parallel combined with bending",
+              "has_formula": true,
+              "parameter_name": "compression_parallel_combined_with_bending",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G62",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,7,0),IF($F$27='Guidance ",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in tension parallel to grain at net section",
+              "has_formula": true,
+              "parameter_name": "tension_strength_net",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G63",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,8,0),IF($F$27='Guidance ",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in tension parallel to grain at net section",
+              "has_formula": true,
+              "parameter_name": "strength_tension_net",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G64",
+              "value": "=G61",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in tension parallel to grain at gross section",
+              "has_formula": true,
+              "parameter_name": "tension_strength_gross",
+              "unit": "unknown",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G65",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,3,0),IF($F$27='Guidance ",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in tension parallel to grain at gross section",
+              "has_formula": true,
+              "parameter_name": "tension_strength_gross",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G67",
+              "value": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,9,0),IF($F$27='Guidance ",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in bending",
+              "has_formula": true,
+              "parameter_name": "strength_in_bending",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G68",
+              "value": "=0.87*G67",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Modulus of elasticity in unspecified units",
+              "has_formula": true,
+              "parameter_name": "modulus_of_elasticity",
+              "unit": "E",
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "G69",
+              "value": "0.8",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Compression Resistance factor",
+              "has_formula": false,
+              "parameter_name": "compression_resistance_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G70",
+              "value": "0.9",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Compression Resistance factor",
+              "has_formula": false,
+              "parameter_name": "compression_resistance_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G72",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E72,'Guidance Tables'!$F$",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Resistance factor",
+              "has_formula": true,
+              "parameter_name": "resistance_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G73",
+              "value": "1",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Treatment factor",
+              "has_formula": false,
+              "parameter_name": "treatment_factor",
+              "unit": null,
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "G74",
+              "value": "=MIN(0.68*G53^(-0.13),1)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Modulus of elasticity",
+              "has_formula": true,
+              "parameter_name": "modulus_of_elasticity",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G75",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E75,'Guidance Tables'!$F$",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Treatment factor",
+              "has_formula": true,
+              "parameter_name": "treatment_factor",
+              "unit": null,
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "G76",
+              "value": "=(1+(G83*G74*MAX(G94:G95)^3)/(35*G68*G75*G73))^-1",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Modulus of elasticity",
+              "has_formula": true,
+              "parameter_name": "modulus_of_elasticity",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G77",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E77,'Guidance Tables'!$F$",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Slenderness Factor",
+              "has_formula": true,
+              "parameter_name": "slenderness_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G78",
+              "value": "=IF($F$30=\"Dry\",VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E78,'Guidance Tables'!$F$",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Tension parallel to grain",
+              "has_formula": true,
+              "parameter_name": "tension_parallel_to_grain",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G79",
+              "value": "1",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Bending parameter",
+              "has_formula": false,
+              "parameter_name": "bending",
+              "unit": null,
+              "context_confidence": 0.4
+            },
+            {
+              "cell": "G80",
+              "value": "=IF(G115>50,\"ERROR\",IF(G115<10,1,IF(G115<G116,(1-(1/3)*((G115/G116)^4)),IF(G116<G115,0.65*G67*G75*G7",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Curvature factor in engineering",
+              "has_formula": true,
+              "parameter_name": "curvature_factor",
+              "unit": null,
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "G81",
+              "value": "=MIN(((130/G47)^(1/10))*((610/G50)^(1/10))*((9100/G49)^(1/10)),1.3)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Lateral stability factor",
+              "has_formula": true,
+              "parameter_name": "lateral_stability_factor",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G83",
+              "value": "=G61*F32*F33*G72*G73",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Compressive strength parallel to grain",
+              "has_formula": true,
+              "parameter_name": "compressive_strength_parallel_to_grain",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G84",
+              "value": "=G63*F32*F33*G72*G73",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in tension parallel to grain at gross section",
+              "has_formula": true,
+              "parameter_name": "strength_tension_parallel_grain",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G85",
+              "value": "=G62*F32*F33*G72*G73",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in tension parallel to grain at gross section",
+              "has_formula": true,
+              "parameter_name": "strength_tension_gross",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G86",
+              "value": "=G64*F32*F33*G72*G73",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in tension parallel to grain at net section",
+              "has_formula": true,
+              "parameter_name": "strength_tension_net",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G87",
+              "value": "=G65*F32*F33*G78*G73",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Strength in Bending",
+              "has_formula": true,
+              "parameter_name": "strength_in_bending",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G92",
+              "value": "=G47*F34",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Effective Length in unspecified units",
+              "has_formula": true,
+              "parameter_name": "effective_length",
+              "unit": "unspecified",
+              "context_confidence": 0.4
+            },
+            {
+              "cell": "G93",
+              "value": "=G48*F35",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Effective Length in units of Le,b",
+              "has_formula": true,
+              "parameter_name": "effective_length_weak_axis",
+              "unit": "Le,b",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G94",
+              "value": "=IF(G92/G50>50,\"Error\",G92/G50)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Effective Length in Weak Axis",
+              "has_formula": true,
+              "parameter_name": "effective_length_weak_axis",
+              "unit": null,
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G95",
+              "value": "=IF(G93/G49>50,\"Error\",G93/G49)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Slenderness Ratio, Strong Axis",
+              "has_formula": true,
+              "parameter_name": "slenderness_ratio_strong_axis",
+              "unit": "",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G97",
+              "value": "=G69*G83*G51*G74*G76/1000",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Compressive Resistance",
+              "has_formula": true,
+              "parameter_name": "factored_compressive_resistance",
+              "unit": "kN",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G102",
+              "value": "=G70*G84*G51/1000",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Tensile resistance in kN",
+              "has_formula": true,
+              "parameter_name": "tensile_resistance",
+              "unit": "kN",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G103",
+              "value": "=G70*G85*G52/1000",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Tensile resistance in kN",
+              "has_formula": true,
+              "parameter_name": "tensile_resistance",
+              "unit": "kN",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G105",
+              "value": "=IF(G103=0,G102,MIN(G102,G103))",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Tensile resistance in kN",
+              "has_formula": true,
+              "parameter_name": "tensile_resistance",
+              "unit": "kN",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G110",
+              "value": "=G69*G86*G51*G74*G76/1000",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Factored Compressive Resistance in kN",
+              "has_formula": true,
+              "parameter_name": "factored_compressive_resistance",
+              "unit": "kN",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G112",
+              "value": "=G105",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Tensile resistance in kN",
+              "has_formula": true,
+              "parameter_name": "tensile_resistance",
+              "unit": "kN",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "G114",
+              "value": "=IF(F40=\"Yes\",0,1.92*F41)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Tensile resistance based on effective length and slenderness ratio",
+              "has_formula": true,
+              "parameter_name": "tensile_resistance",
+              "unit": "N/mm\u00b2",
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "G115",
+              "value": "=SQRT(G114*G50/(G49^2))",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Effective length in unspecified units",
+              "has_formula": true,
+              "parameter_name": "effective_length",
+              "unit": null,
+              "context_confidence": 0.4
+            },
+            {
+              "cell": "G116",
+              "value": "=SQRT((0.97*G67*G75*G73)/(G87))",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Slenderness ratio",
+              "has_formula": true,
+              "parameter_name": "slenderness_ratio",
+              "unit": "",
+              "context_confidence": 0.7
+            },
+            {
+              "cell": "G118",
+              "value": "=G70*G87*G56*G79*G81/(1000^2)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Moment Resistance 1 in unspecified units",
+              "has_formula": true,
+              "parameter_name": "moment_resistance_1",
+              "unit": "unspecified",
+              "context_confidence": 0.6
+            },
+            {
+              "cell": "G119",
+              "value": "=G70*G87*G56*G79*G80/(1000^2)",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Moment resistance in kN-m",
+              "has_formula": true,
+              "parameter_name": "moment_resistance",
+              "unit": "kN-m",
+              "context_confidence": 0.9
+            },
+            {
+              "cell": "G124",
+              "value": "=IF(F38=\"Strong-Axis\",(PI()^2)*G68*G75*G73*G54/(1000*G92^2),(PI()^2)*G68*G75*G73*G54/(1000*G93^2))",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Euler Buckling Load for Compression-Bending and Tensile-Bending",
+              "has_formula": true,
+              "parameter_name": "euler_buckling_load",
+              "unit": "kN",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "G125",
+              "value": "=((F25/G97)^2) + ((F37/MIN(G118:G119))*(1/(1-(F25/G124))))",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Euler Buckling Load for Compression-Bending",
+              "has_formula": true,
+              "parameter_name": "euler_buckling_load",
+              "unit": "kN",
+              "context_confidence": 0.85
+            },
+            {
+              "cell": "G127",
+              "value": "=(F25/G112)+(F37/MIN(G118:G119))",
+              "color": "FFF2F2F2",
+              "category": "user_input",
+              "description": "Euler Buckling Load in kN",
+              "has_formula": true,
+              "parameter_name": "euler_buckling_load",
+              "unit": "kN",
+              "context_confidence": 0.85
+            }
+          ],
+          "outputs": [],
+          "calculations": [
+            {
+              "cell": "N22",
+              "value": "=IF(F16=\"Axial-Bending\",IF(F39=\"Compression\",G125,G127),\"N/A\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "F24",
+              "value": "=F21*F22*(F18+F19)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "M24",
+              "value": "=IF(F16=\"Compression\",IF(G94=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "F25",
+              "value": "=MAX(1.4*F18,1.25*F18+1.5*F19)*(F21*F22)",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "M25",
+              "value": "=IF(F16=\"Compression\",IF(G95=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "M26",
+              "value": "=IF(F16=\"Axial-Bending\",IF(G115>50,\"Too slender, increase member size\",\"\"),\"\")",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "H27",
+              "value": "=IF(F16=\"Compression\",\"DFL: 24f-E, 24F-EX, 20f-E ,20f-EX\",IF(F16=\"Tension\",\"DFL: 24f-E, 20f-E\",\"DFL:",
+              "formula": true,
+              "category": "formula_detected"
+            },
+            {
+              "cell": "H28",
+              "value": "=IF(F16=\"Compression\", \"SPF: 20f-E ,20f-EX\",IF(F16=\"Tension\",\"SPF: 20f-E\",\"SPF: 20f-E\"))",
+              "formula": true,
+              "category": "formula_detected"
+            }
+          ],
+          "capacity_ratios": [],
+          "member_sizes": []
+        },
+        "semantics": {
+          "purpose": "Engineering calculations for Axial",
+          "domain": "Structural Engineering",
+          "input_parameters": [],
+          "output_results": [],
+          "workflow": [
+            "Input parameters",
+            "Calculate results",
+            "Review outputs"
+          ],
+          "dependencies": []
+        }
+      },
+      "Guidance Tables": {
+        "sheet_name": "Guidance Tables",
+        "dimensions": "73 rows x 24 columns",
+        "labeled_cells": {},
+        "color_legend": {
+          "legend_found": true,
+          "legend_cells": [
+            {
+              "cell": "S8",
+              "text": "Input",
+              "fill_color": "FFF2F2F2",
+              "semantic_category": "user_input",
+              "description": "Cells users should modify"
+            },
+            {
+              "cell": "S9",
+              "text": "Output",
+              "fill_color": "FFF2F2F2",
+              "semantic_category": "output_results",
+              "description": "Cells containing results or values to review"
+            },
+            {
+              "cell": "S11",
+              "text": "Override",
+              "fill_color": "FFF2C1BC",
+              "semantic_category": "override",
+              "description": "Cells where default values can be overridden"
+            }
+          ],
+          "color_mappings": {
+            "FFF2F2F2": {
+              "category": "user_input",
+              "description": "Editable input cells",
+              "confidence": 0.95
+            },
+            "FFF2C1BC": {
+              "category": "override",
+              "description": "Cells where default values can be overridden",
+              "confidence": 0.9
+            }
+          },
+          "applied_from_sheet": "Axial",
+          "applied_to_sheet": "Guidance Tables"
+        },
+        "classified_cells": {
+          "inputs": [],
+          "outputs": [],
+          "calculations": [],
+          "capacity_ratios": [],
+          "member_sizes": []
+        },
+        "semantics": {
+          "purpose": "Engineering calculations for Guidance Tables",
+          "domain": "Structural Engineering",
+          "input_parameters": [],
+          "output_results": [],
+          "workflow": [
+            "Input parameters",
+            "Calculate results",
+            "Review outputs"
+          ],
+          "dependencies": []
+        }
+      }
+    },
+    "workflow_analysis": {
+      "overall_purpose": "The workbook is designed to assist structural engineers in performing calculations related to glulam columns, specifically focusing on axial loads and guidance tables for design and analysis.",
+      "primary_use_case": "The workbook solves the problem of determining the structural adequacy of glulam columns under axial loads, providing engineers with necessary calculations and guidance for safe and efficient design.",
+      "user_workflow": [
+        {
+          "step": 1,
+          "action": "Open the workbook",
+          "sheet": "Axial",
+          "description": "The user opens the workbook to access the Axial sheet for performing calculations related to axial loads on glulam columns."
+        },
+        {
+          "step": 2,
+          "action": "Review guidance",
+          "sheet": "Guidance Tables",
+          "description": "The user reviews the Guidance Tables sheet to understand the parameters and recommendations for designing glulam columns."
+        },
+        {
+          "step": 3,
+          "action": "Perform calculations",
+          "sheet": "Axial",
+          "description": "The user performs necessary calculations on the Axial sheet to determine the load-bearing capacity of the glulam columns."
+        },
+        {
+          "step": 4,
+          "action": "Verify results",
+          "sheet": "Guidance Tables",
+          "description": "The user verifies the results of the calculations against the guidance provided in the Guidance Tables to ensure compliance with design standards."
+        }
+      ],
+      "action_templates": [
+        {
+          "action": "calculate_axial_load",
+          "description": "Calculate the axial load capacity of a glulam column",
+          "steps": [
+            "open_axial_sheet",
+            "input_column_parameters",
+            "run_calculations",
+            "review_results"
+          ],
+          "required_inputs": [
+            "column_dimensions",
+            "material_properties",
+            "load_conditions"
+          ]
+        },
+        {
+          "action": "consult_guidance",
+          "description": "Consult guidance tables for design recommendations",
+          "steps": [
+            "open_guidance_tables_sheet",
+            "identify_relevant_tables",
+            "compare_with_calculations"
+          ],
+          "required_inputs": [
+            "design_parameters",
+            "calculated_results"
+          ]
+        }
+      ]
+    }
+  }
+}

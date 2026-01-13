@@ -812,7 +812,7 @@
                 </template>
               </div>
 
-              <template v-if="showSpeckleViewer">
+              <template v-if="showAnyViewer">
                 <div class="viewer-resize-handle" @mousedown.prevent="startViewerResize">
                   <div class="viewer-resize-grip"></div>
                 </div>
@@ -821,7 +821,8 @@
                   class="flex flex-col min-h-0 viewer-pane bg-[#2a2a2a] border-l border-[#3a3a3a] shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
                   :style="viewerPaneStyle"
                 >
-                  <div class="relative flex-1 min-h-0 bg-[#2a2a2a] viewer-canvas-shell">
+                  <!-- Speckle Viewer -->
+                  <div v-if="showSpeckleViewer" class="relative flex-1 min-h-0 bg-[#2a2a2a] viewer-canvas-shell">
                     <button
                       class="viewer-close"
                       type="button"
@@ -869,6 +870,11 @@
                       class="viewer-canvas"
                       @close="closeSpeckleViewer"
                     />
+                  </div>
+
+                  <!-- Excel Viewer -->
+                  <div v-else-if="showExcelViewer" class="relative flex-1 min-h-0 bg-[#0f0f0f]">
+                    <LiveCalculationsViewer @close="closeExcelViewer" />
                   </div>
                 </div>
               </template>
@@ -1014,6 +1020,7 @@ import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
+import LiveCalculationsViewer from '~/components/LiveCalculationsViewer.vue'
 import { useChat } from '~/composables/useChat'
 // Removed useSmartChat - using streaming endpoint only to avoid duplication
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
@@ -1408,8 +1415,15 @@ const viewerSplitContainer = ref<HTMLElement | null>(null)
 const viewerResizeStartX = ref(0)
 const viewerResizeStartPercent = ref(50)
 const showSpeckleViewer = computed(() => speckleViewerPanelOpen.value && !!selectedSpeckleModel.value)
-const chatPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}))
-const viewerPaneStyle = computed(() => (showSpeckleViewer.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}))
+
+// Excel Viewer State
+const excelViewerPanelOpen = ref(false)
+const showExcelViewer = computed(() => excelViewerPanelOpen.value)
+
+// Combined viewer state - only one can be open at a time
+const showAnyViewer = computed(() => showSpeckleViewer.value || showExcelViewer.value)
+const chatPaneStyle = computed(() => (showAnyViewer.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}))
+const viewerPaneStyle = computed(() => (showAnyViewer.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}))
 
 const defaultConversations: Conversation[] = [
   { id: 'conv-1', title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago', section: 'Today', sessionId: 'session-1', chatLog: [] },
@@ -1890,7 +1904,7 @@ function stopSidebarResize() {
 }
 
 function startViewerResize(e: MouseEvent) {
-  if (!showSpeckleViewer.value) return
+  if (!showAnyViewer.value) return
   isResizingViewer.value = true
   viewerResizeStartX.value = e.clientX
   viewerResizeStartPercent.value = viewerSplitPercent.value
@@ -2622,6 +2636,19 @@ function closeSpeckleViewer() {
   speckleViewerSelectedId.value = ''
 }
 
+function openExcelViewer() {
+  // Close Speckle viewer if open
+  if (showSpeckleViewer.value) {
+    closeSpeckleViewer()
+  }
+  excelViewerPanelOpen.value = true
+  viewerSplitPercent.value = 50
+}
+
+function closeExcelViewer() {
+  excelViewerPanelOpen.value = false
+}
+
 function openSpeckleViewerWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
   if (!models.length) return
   speckleViewerModels.value = models
@@ -2923,6 +2950,22 @@ async function handleSend() {
           const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
           if (thinkingIndex !== -1) {
             conversation.chatLog.splice(thinkingIndex, 1)
+          }
+          
+          // Check if user wants to see Excel data
+          const messageLower = message.toLowerCase()
+          const replyLower = (result.reply || '').toLowerCase()
+          const shouldShowExcel = messageLower.includes('show me the excel') ||
+                                  messageLower.includes('show excel') ||
+                                  messageLower.includes('excel data') ||
+                                  messageLower.includes('excel sync') ||
+                                  messageLower.includes('live calculations') ||
+                                  replyLower.includes('excel') ||
+                                  replyLower.includes('calculations')
+          
+          if (shouldShowExcel) {
+            // Open Excel viewer
+            openExcelViewer()
           }
           
           // Extract image similarity results and transform for display
