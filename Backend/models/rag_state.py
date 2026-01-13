@@ -26,5 +26,5 @@ class RAGState(DBRetrievalState):
     output_artifact_ref: Optional[Dict[str, Any]] = None
     doc_generation_result: Optional[Dict[str, Any]] = None
     doc_generation_warnings: List[str] = field(default_factory=list)
-    execution_trace: List[str] = field(default_factory=list)
+    execution_trace: List[Any] = field(default_factory=list)
     execution_trace_verbose: List[Dict[str, Any]] = field(default_factory=list)

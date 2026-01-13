@@ -44,7 +44,7 @@ else:
 # Import the RAG system from new modular structure
 from main import run_agentic_rag, rag_healthcheck
 from nodes.DBRetrieval.KGdb import test_database_connection
-from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH, DEBUG_MODE
+from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH, DEBUG_MODE, MAX_CONVERSATION_HISTORY
 
 # Import Kuzu manager
 try:
@@ -287,6 +287,53 @@ def wrap_coop_file_links(text: str, coop_citations: List[Dict]) -> str:
         text = re.sub(citation_pattern, make_citation_replacer(escaped_file_path), text, flags=re.IGNORECASE)
     
     return text
+
+
+def _history_to_messages(history: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Normalize legacy conversation_history entries into message format.
+    """
+    messages: List[Dict[str, Any]] = []
+    for entry in history or []:
+        if isinstance(entry, dict) and entry.get("role"):
+            msg = {
+                "role": entry.get("role"),
+                "content": entry.get("content", ""),
+            }
+            if entry.get("projects") is not None:
+                msg["projects"] = entry.get("projects")
+            meta = dict(entry.get("metadata") or {})
+            ts = entry.get("timestamp")
+            if ts is not None and "timestamp" not in meta:
+                meta["timestamp"] = ts
+            if meta:
+                msg["metadata"] = meta
+            messages.append(msg)
+            continue
+
+        if isinstance(entry, dict):
+            ts = entry.get("timestamp")
+            meta = dict(entry.get("metadata") or {})
+            q = entry.get("question")
+            a = entry.get("answer")
+
+            if q:
+                user_msg = {"role": "user", "content": q}
+                if ts is not None:
+                    user_msg["metadata"] = {"timestamp": ts}
+                messages.append(user_msg)
+
+            if a:
+                if ts is not None and "timestamp" not in meta:
+                    meta["timestamp"] = ts
+                assistant_msg = {"role": "assistant", "content": a}
+                if entry.get("projects") is not None:
+                    assistant_msg["projects"] = entry.get("projects")
+                if meta:
+                    assistant_msg["metadata"] = meta
+                messages.append(assistant_msg)
+
+    return messages
 
 
 def wrap_external_links(text: str) -> str:
@@ -1242,14 +1289,45 @@ async def chat_stream_handler(request: ChatRequest):
             # Get messages/conversation history from previous state for query rewriting and context
             previous_messages = previous_state.get("messages", []) if previous_state else []
             previous_history = previous_state.get("conversation_history", []) if previous_state else []
-            
+            history_messages = _history_to_messages(previous_history)
+
+            # Sync messages/history and append current user turn
+            synced_messages = list(previous_messages or history_messages)
+            synced_history = list(previous_history or [])
+
+            max_msgs = MAX_CONVERSATION_HISTORY * 2
+            if len(synced_messages) > max_msgs:
+                synced_messages = synced_messages[-max_msgs:]
+            if len(synced_history) > MAX_CONVERSATION_HISTORY:
+                synced_history = synced_history[-MAX_CONVERSATION_HISTORY:]
+
+            user_turn_ts = time.time()
+            user_turn = {
+                "role": "user",
+                "content": request.message,  # Use original question, not rewritten query
+                "metadata": {"timestamp": user_turn_ts},
+            }
+            synced_messages.append(user_turn)
+            if len(synced_messages) > max_msgs:
+                synced_messages = synced_messages[-max_msgs:]
+
+            synced_history.append(
+                {
+                    "question": request.message,
+                    "answer": None,
+                    "timestamp": user_turn_ts,
+                }
+            )
+            if len(synced_history) > MAX_CONVERSATION_HISTORY:
+                synced_history = synced_history[-MAX_CONVERSATION_HISTORY:]
+
             # Intelligent query rewriting with conversation context
             # This helps with follow-up detection and pronoun resolution
             rewritten_query, query_filters = intelligent_query_rewriter(
                 enhanced_question,
                 request.session_id,
-                messages=previous_messages,
-                conversation_history=previous_history,
+                messages=synced_messages,
+                conversation_history=synced_history,
             )
             logger.info(f"🎯 QUERY REWRITING: '{enhanced_question[:100]}...' → '{rewritten_query[:100]}...'" if len(enhanced_question) > 100 or len(rewritten_query) > 100 else f"🎯 QUERY REWRITING: '{enhanced_question}' → '{rewritten_query}'")
             
@@ -1268,19 +1346,7 @@ async def chat_stream_handler(request: ChatRequest):
                 use_image_similarity = intent_result.get("use_image_similarity", False)
                 query_intent = intent_result.get("intent")
             
-            # CRITICAL: Initialize messages from previous state and add new user message
-            # This follows LangGraph's pattern: messages flow through the graph state
-            # The checkpointer automatically persists messages after each node execution
-            init_messages = list(previous_messages) if previous_messages else []
-            
-            # Add the current user message to the conversation history
-            # This ensures nodes like rag_plan can see the full conversation context
-            init_messages.append({
-                "role": "user",
-                "content": request.message  # Use original question, not rewritten query
-            })
-            
-            logger.info(f"📖 Initialized messages: {len(previous_messages) if previous_messages else 0} previous + 1 new = {len(init_messages)} total")
+            logger.info(f"📖 Initialized messages: {len(synced_messages)} total (windowed)")
             
             # Create initial state with messages and original question
             # This follows LangGraph best practices for short-term memory
@@ -1293,8 +1359,8 @@ async def chat_stream_handler(request: ChatRequest):
                 images_base64=images_to_process if images_to_process else None,
                 use_image_similarity=use_image_similarity,
                 query_intent=query_intent,
-                conversation_history=previous_history,
-                messages=init_messages,  # CRITICAL: Includes previous messages + new user message
+                conversation_history=synced_history,
+                messages=synced_messages,  # CRITICAL: Includes previous messages + new user message
             )
             
             # Track state as we go to detect which node ran
