@@ -162,6 +162,7 @@ def call_db_retrieval_subgraph(state: ParentState) -> dict:
             "db_retrieval_expanded_queries": db_result.get("expanded_queries", []),
             "db_retrieval_support_score": db_result.get("answer_support_score", 0.0),
             "conversation_history": db_result.get("conversation_history", []),
+            "messages": db_result.get("messages", []),
             "project_filter": db_result.get("project_filter"),
         }
     except Exception as e:

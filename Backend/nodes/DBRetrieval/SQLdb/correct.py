@@ -57,6 +57,9 @@ def node_correct(state: DBRetrievalState, max_hops: int = 1, min_score: float = 
     # CRITICAL: The user message is already in state.messages (added in main.py before graph.invoke)
     # We only need to add the assistant message here
     messages = list(state.messages or [])
+    # Ensure the latest user message is present (main flow appends before graph.invoke)
+    if state.original_question and (not messages or messages[-1].get("role") != "user"):
+        messages.append({"role": "user", "content": state.original_question})
     
     # Build full answer text
     answer_text = state.final_answer or ""
@@ -96,8 +99,29 @@ def node_correct(state: DBRetrievalState, max_hops: int = 1, min_score: float = 
         result["messages"] = messages
         log_enh.info(f"💾 No answer yet, preserving {len(messages)} messages")
 
+    # Update structured conversation_history for checkpointer persistence
+    history = list(state.conversation_history or [])
+    projects_in_answer = []
+    for match in PROJECT_RE.finditer(answer_text):
+        proj_id = match.group(0)
+        if proj_id not in projects_in_answer:
+            projects_in_answer.append(proj_id)
+
+    if state.original_question or answer_text:
+        history.append(
+            {
+                "question": state.original_question or state.user_query,
+                "answer": answer_text,
+                "timestamp": time.time(),
+                "projects": projects_in_answer,
+            }
+        )
+        if len(history) > MAX_CONVERSATION_HISTORY:
+            history = history[-MAX_CONVERSATION_HISTORY:]
+        result["conversation_history"] = history
+        log_enh.info(f"💾 Conversation history updated: {len(history)} exchanges")
+
     t_elapsed = time.time() - t_start
     log_enh.info(f"<<< CORRECT DONE in {t_elapsed:.2f}s")
 
     return result
-

@@ -86,7 +86,7 @@ def test_docgen_csv_logging(monkeypatch, tmp_path):
         called.update(kwargs)
 
     monkeypatch.setattr("Backend.main.append_draft_csv", lambda *args, **kwargs: stub_append(**kwargs))
-    monkeypatch.setattr(mem, "intelligent_query_rewriter", lambda q, s: (q, {}))
+    monkeypatch.setattr(mem, "intelligent_query_rewriter", lambda q, s, **kwargs: (q, {}))
 
     result = run_agentic_rag("Draft section", session_id="s1")
     assert result["workflow"] == "docgen"
@@ -107,7 +107,7 @@ def test_qa_skips_csv(monkeypatch, tmp_path):
     monkeypatch.setattr(main, "graph", _StubGraph(payload))
     called = {"count": 0}
     monkeypatch.setattr("Backend.main.append_draft_csv", lambda *args, **kwargs: called.__setitem__("count", called["count"] + 1))
-    monkeypatch.setattr(mem, "intelligent_query_rewriter", lambda q, s: (q, {}))
+    monkeypatch.setattr(mem, "intelligent_query_rewriter", lambda q, s, **kwargs: (q, {}))
     result = run_agentic_rag("What is beam size?", session_id="s2")
     assert result["workflow"] == "qa"
     assert called["count"] == 0
