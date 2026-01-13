@@ -21,6 +21,7 @@ import shutil
 import re
 import uuid
 from typing import Dict, Any, Optional, List
+from langgraph.errors import GraphInterrupt
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
@@ -31,6 +32,22 @@ from dotenv import load_dotenv
 from utils.path_setup import ensure_info_retrieval_on_path
 
 ensure_info_retrieval_on_path()
+try:
+    from utils.deep_agent_integration import (
+        extract_interrupt_data,
+        create_approval_payload,
+        validate_action_approval,
+        ensure_rag_state_compatibility,
+        get_deep_agent_state_summary,
+    )
+except ImportError:  # pragma: no cover - fallback for alternative module paths
+    from Backend.utils.deep_agent_integration import (  # type: ignore
+        extract_interrupt_data,
+        create_approval_payload,
+        validate_action_approval,
+        ensure_rag_state_compatibility,
+        get_deep_agent_state_summary,
+    )
 
 # Load environment variables from the root .env (single source of truth)
 root_env_path = Path(__file__).resolve().parent.parent / ".env"
@@ -772,6 +789,20 @@ class ChatResponse(BaseModel):
     doc_generation_warnings: Optional[List[str]] = None  # Doc generation warnings to show in UI
     document_state: Optional[Dict[str, Any]] = None  # OnlyOffice document patch
 
+
+class ActionApprovalRequest(BaseModel):
+    action_id: str
+    approved: bool
+    reason: Optional[str] = None
+    session_id: str
+
+
+class ActionApprovalResponse(BaseModel):
+    success: bool
+    message: str
+    resumed: bool
+    next_state: Optional[dict] = None
+
 class FeedbackRequest(BaseModel):
     message_id: str
     rating: str  # 'positive' or 'negative'
@@ -852,6 +883,59 @@ async def debug_categories():
             },
             "error": str(e)
         }
+
+
+# ---------------------------------------------------------------------------
+# Deep agent interrupt helpers
+# ---------------------------------------------------------------------------
+async def _load_thread_state(graph, session_id: str) -> Dict[str, Any]:
+    """Load latest state for a thread from the graph checkpointer."""
+    from graph.checkpointer import CHECKPOINTER_TYPE
+
+    try:
+        if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
+            snapshot = await graph.aget_state({"configurable": {"thread_id": session_id}})
+        else:
+            snapshot = graph.get_state({"configurable": {"thread_id": session_id}})
+        if snapshot and getattr(snapshot, "values", None):
+            return dict(snapshot.values)
+    except Exception as exc:  # pragma: no cover - defensive
+        logger.error(f"Failed to load state for session {session_id}: {exc}")
+    return {}
+
+
+async def _update_thread_state(graph, session_id: str, values: Dict[str, Any]):
+    """Persist state updates to the graph checkpointer."""
+    from graph.checkpointer import CHECKPOINTER_TYPE
+
+    if not values:
+        return None
+
+    config = {"configurable": {"thread_id": session_id}}
+    try:
+        if CHECKPOINTER_TYPE in ["postgres", "supabase"] and hasattr(graph, "aupdate_state"):
+            return await graph.aupdate_state(config=config, values=values)
+        if hasattr(graph, "update_state"):
+            return graph.update_state(config=config, values=values)
+    except Exception as exc:  # pragma: no cover - defensive
+        logger.error(f"Failed to update state for session {session_id}: {exc}")
+    return None
+
+
+async def _resume_graph(graph, session_id: str):
+    """Resume graph execution after approval."""
+    config = {"configurable": {"thread_id": session_id}}
+    try:
+        if hasattr(graph, "ainvoke"):
+            return await graph.ainvoke(None, config=config)
+        return graph.invoke(None, config=config)
+    except GraphInterrupt:
+        # Propagate further interrupts to caller
+        raise
+    except Exception as exc:  # pragma: no cover - defensive
+        logger.error(f"Failed to resume graph for session {session_id}: {exc}")
+        return None
+
 
 # Main chat endpoint
 # NOTE: This endpoint should ideally not be called if /chat/stream is being used.
@@ -1835,6 +1919,27 @@ async def chat_stream_handler(request: ChatRequest):
             
             logger.info(f"✅ Streaming completed in {latency_ms:.2f}ms [ID: {message_id}]")
             
+        except GraphInterrupt as interrupt:
+            interrupt_payload = extract_interrupt_data(interrupt)
+            try:
+                state_snapshot = await _load_thread_state(graph, request.session_id)
+                safe_state = ensure_rag_state_compatibility(state_snapshot)
+                safe_state["desktop_interrupt_pending"] = True
+                safe_state["desktop_interrupt_data"] = interrupt_payload
+                await _update_thread_state(
+                    graph,
+                    request.session_id,
+                    {
+                        "desktop_interrupt_pending": True,
+                        "desktop_interrupt_data": interrupt_payload,
+                        "desktop_approved_actions": safe_state.get("desktop_approved_actions", []),
+                    },
+                )
+                interrupt_payload["state_summary"] = get_deep_agent_state_summary(safe_state)
+            except Exception as exc:  # pragma: no cover - defensive
+                logger.error(f"Failed to persist interrupt state: {exc}")
+            yield f"data: {json.dumps({'type': 'interrupt', 'message': 'Action requires approval', 'interrupt': interrupt_payload, 'session_id': request.session_id})}\n\n"
+            return
         except Exception as e:
             logger.error(f"❌ Streaming error: {e}")
             yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
@@ -1849,6 +1954,76 @@ async def chat_stream_handler(request: ChatRequest):
             "Access-Control-Allow-Origin": "*"  # CORS for streaming
         }
     )
+
+
+# Deep agent approval endpoint
+@app.post("/approve-action", response_model=ActionApprovalResponse)
+async def approve_action(request: ActionApprovalRequest):
+    """
+    Approve or reject a pending desktop action after a GraphInterrupt.
+    Updates state with approval and resumes the graph when approved.
+    """
+    from main import graph
+
+    try:
+        state_snapshot = await _load_thread_state(graph, request.session_id)
+        if not state_snapshot:
+            return ActionApprovalResponse(
+                success=False,
+                message=f"No state found for session {request.session_id}",
+                resumed=False,
+                next_state=None,
+            )
+
+        safe_state = ensure_rag_state_compatibility(state_snapshot)
+        approved_actions = list(safe_state.get("desktop_approved_actions", []) or [])
+        if request.approved and request.action_id not in approved_actions:
+            approved_actions.append(request.action_id)
+
+        update_values = {
+            "desktop_approved_actions": approved_actions,
+            "desktop_interrupt_pending": False,
+            "desktop_interrupt_data": None,
+        }
+
+        await _update_thread_state(graph, request.session_id, update_values)
+        logger.info(
+            f"Action '{request.action_id}' approval={request.approved} recorded for session {request.session_id} (reason={request.reason})"
+        )
+
+        resumed_state = None
+        resumed = False
+        if request.approved:
+            try:
+                resumed_state = await _resume_graph(graph, request.session_id)
+                resumed = True if resumed_state is not None else False
+            except GraphInterrupt as interrupt:
+                interrupt_payload = extract_interrupt_data(interrupt)
+                await _update_thread_state(
+                    graph,
+                    request.session_id,
+                    {
+                        "desktop_interrupt_pending": True,
+                        "desktop_interrupt_data": interrupt_payload,
+                        "desktop_approved_actions": approved_actions,
+                    },
+                )
+                return ActionApprovalResponse(
+                    success=True,
+                    message="Approval recorded, but another interrupt occurred.",
+                    resumed=False,
+                    next_state=interrupt_payload,
+                )
+
+        return ActionApprovalResponse(
+            success=True,
+            message="Action processed",
+            resumed=resumed,
+            next_state=resumed_state if isinstance(resumed_state, dict) else state_snapshot,
+        )
+    except Exception as exc:
+        logger.error(f"Failed to process action approval: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 # Additional endpoint for compatibility with different response formats

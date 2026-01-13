@@ -12,6 +12,25 @@ from .db_retrieval_state import DBRetrievalState
 @dataclass
 class RAGState(DBRetrievalState):
     """Extended state layering doc-generation metadata on top of DBRetrievalState."""
+    # Aggregated subgraph results (parity with ParentState)
+    db_retrieval_result: Optional[str] = None
+    db_retrieval_citations: List[Dict[str, Any]] = field(default_factory=list)
+    db_retrieval_code_answer: Optional[str] = None
+    db_retrieval_code_citations: List[Dict[str, Any]] = field(default_factory=list)
+    db_retrieval_coop_answer: Optional[str] = None
+    db_retrieval_coop_citations: List[Dict[str, Any]] = field(default_factory=list)
+    db_retrieval_follow_up_questions: List[str] = field(default_factory=list)
+    db_retrieval_follow_up_suggestions: List[str] = field(default_factory=list)
+    db_retrieval_selected_projects: List[str] = field(default_factory=list)
+    db_retrieval_route: Optional[str] = None
+    db_retrieval_image_similarity_results: List[Dict[str, Any]] = field(default_factory=list)
+    db_retrieval_expanded_queries: List[str] = field(default_factory=list)
+    db_retrieval_support_score: float = 0.0
+    webcalcs_result: Optional[Dict[str, Any]] = None
+    desktop_result: Optional[Dict[str, Any]] = None
+    build_model_result: Optional[Dict[str, Any]] = None
+
+    # Routing metadata
     selected_routers: List[str] = field(default_factory=list)
     workflow: Optional[str] = None  # "qa" | "docgen"
     desktop_policy: Optional[str] = None  # "required" | "optional" | "never"
