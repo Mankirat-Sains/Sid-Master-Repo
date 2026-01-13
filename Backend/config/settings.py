@@ -123,6 +123,26 @@ MAX_HYBRID_RETRIEVAL_DOCS = 100  # Total docs for hybrid retrieval
 MAX_CONVERSATION_HISTORY = 5  # Keep last 5 Q&A exchanges
 MAX_SEMANTIC_HISTORY = 5      # Keep semantic intelligence for last 5 exchanges
 
+# ============================================================================
+# QUALITY GATES (Phase 2)
+# ============================================================================
+USE_VERIFIER = os.getenv("USE_VERIFIER", "true").lower() == "true"
+MAX_VERIFIER_TOKENS = int(os.getenv("MAX_VERIFIER_TOKENS", "2000"))
+USE_GRADER = os.getenv("USE_GRADER", "true").lower() == "true"
+MAX_DOCS_TO_GRADE = int(os.getenv("MAX_DOCS_TO_GRADE", "10"))
+MAX_GRADER_TOKENS = int(os.getenv("MAX_GRADER_TOKENS", "4000"))
+
+# ============================================================================
+# DEEP DESKTOP AGENT (Phase 3)
+# ============================================================================
+WORKSPACE_BASE_PATH = os.getenv("WORKSPACE_BASE_PATH", "/workspace")
+WORKSPACE_RETENTION_HOURS = int(os.getenv("WORKSPACE_RETENTION_HOURS", "24"))
+MAX_DEEP_AGENT_ITERATIONS = int(os.getenv("MAX_DEEP_AGENT_ITERATIONS", "10"))
+DEEP_AGENT_ENABLED = os.getenv("DEEP_AGENT_ENABLED", "true").lower() == "true"
+INTERRUPT_DESTRUCTIVE_ACTIONS = os.getenv("INTERRUPT_DESTRUCTIVE_ACTIONS", "true").lower() == "true"
+INTERRUPT_APPROVAL_TIMEOUT = int(os.getenv("INTERRUPT_APPROVAL_TIMEOUT", "300"))
+MAX_INLINE_TOOL_RESULT = int(os.getenv("MAX_INLINE_TOOL_RESULT", "3000"))
+
 # =============================================================================
 # ROLE-BASED DATABASE PREFERENCES
 # =============================================================================
