@@ -1205,14 +1205,14 @@ async def chat_stream_handler(request: ChatRequest):
             
             # Import graph and state
             from main import graph
-            from models.rag_state import RAGState
+            from models.parent_state import ParentState
             from dataclasses import asdict
             from thinking.intelligent_log_generator import IntelligentLogGenerator
             from models.memory import intelligent_query_rewriter
             
             log_generator = IntelligentLogGenerator()
             
-            # CRITICAL: Load previous state from checkpointer to get messages
+            # CRITICAL: Load previous state from checkpointer to get messages/conversation history
             # This follows LangGraph best practices for short-term memory
             # Messages are persisted by checkpointer and loaded here for conversation context
             previous_state = None
@@ -1232,20 +1232,24 @@ async def chat_stream_handler(request: ChatRequest):
                     logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
                     if previous_state.get("messages"):
                         logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+                    if previous_state.get("conversation_history"):
+                        logger.info(f"📖 Found {len(previous_state['conversation_history'])} prior exchanges")
             except Exception as e:
                 # No previous state exists (first invocation) - this is fine
                 logger.info(f"📖 No previous state found (first invocation): {e}")
                 previous_state = None
             
-            # Get messages from previous state for query rewriting and context
+            # Get messages/conversation history from previous state for query rewriting and context
             previous_messages = previous_state.get("messages", []) if previous_state else []
+            previous_history = previous_state.get("conversation_history", []) if previous_state else []
             
             # Intelligent query rewriting with conversation context
             # This helps with follow-up detection and pronoun resolution
             rewritten_query, query_filters = intelligent_query_rewriter(
                 enhanced_question,
                 request.session_id,
-                messages=previous_messages
+                messages=previous_messages,
+                conversation_history=previous_history,
             )
             logger.info(f"🎯 QUERY REWRITING: '{enhanced_question[:100]}...' → '{rewritten_query[:100]}...'" if len(enhanced_question) > 100 or len(rewritten_query) > 100 else f"🎯 QUERY REWRITING: '{enhanced_question}' → '{rewritten_query}'")
             
@@ -1280,30 +1284,17 @@ async def chat_stream_handler(request: ChatRequest):
             
             # Create initial state with messages and original question
             # This follows LangGraph best practices for short-term memory
-            init_state = RAGState(
+            init_state = ParentState(
                 session_id=request.session_id,
                 user_query=rewritten_query,  # Rewritten query for retrieval (with context)
                 original_question=request.message,  # Original question (for storing in messages)
-                query_plan=None,
-                data_route=None,
                 project_filter=project_filter,
-                expanded_queries=[],
-                retrieved_docs=[],
-                graded_docs=[],
-                db_result=None,
-                final_answer=None,
-                answer_citations=[],
-                code_answer=None,
-                code_citations=[],
-                coop_answer=None,
-                coop_citations=[],
-                answer_support_score=0.0,
-                corrective_attempted=False,
                 data_sources=request.data_sources,
                 images_base64=images_to_process if images_to_process else None,
                 use_image_similarity=use_image_similarity,
                 query_intent=query_intent,
-                messages=init_messages  # CRITICAL: Includes previous messages + new user message
+                conversation_history=previous_history,
+                messages=init_messages,  # CRITICAL: Includes previous messages + new user message
             )
             
             # Track state as we go to detect which node ran
@@ -1368,10 +1359,6 @@ async def chat_stream_handler(request: ChatRequest):
                             # Only stream tokens from synthesis LLM (answer node) - filter out other nodes
                             # Check metadata for node info to filter tokens
                             node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
-                            
-                            if doc_workflow_detected:
-                                logger.info("📝 Doc workflow detected - suppressing token stream to chat.")
-                                continue
                             
                             # IMPORTANT: Only stream tokens from the "answer" node to main chat
                             # Tokens from other nodes (plan, retrieve, verify, etc.) should NOT appear in main chat
@@ -1564,17 +1551,24 @@ async def chat_stream_handler(request: ChatRequest):
                 doc_workflow_detected = True
             
             # Extract final answer (matching chat endpoint logic)
-            answer = final_state.get("final_answer") or final_state.get("answer", "No answer generated.")
-            code_answer = final_state.get("code_answer")  # May be None if code_db not enabled
-            coop_answer = final_state.get("coop_answer")  # May be None if coop_manual not enabled
-            code_citations = final_state.get("code_citations", [])
-            coop_citations = final_state.get("coop_citations", [])
-            project_citations = final_state.get("answer_citations", [])  # Project citations
-            image_similarity_results = final_state.get("image_similarity_results", [])  # Similar images from embedding search
-            follow_up_questions = final_state.get("follow_up_questions", [])  # Follow-up questions from verifier
-            follow_up_suggestions = final_state.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
+            answer = (
+                final_state.get("final_answer")
+                or final_state.get("db_retrieval_result")
+                or final_state.get("answer", "No answer generated.")
+            )
+            code_answer = final_state.get("code_answer") or final_state.get("db_retrieval_code_answer")
+            coop_answer = final_state.get("coop_answer") or final_state.get("db_retrieval_coop_answer")
+            code_citations = final_state.get("code_citations", []) or final_state.get("db_retrieval_code_citations", [])
+            coop_citations = final_state.get("coop_citations", []) or final_state.get("db_retrieval_coop_citations", [])
+            project_citations = final_state.get("answer_citations", []) or final_state.get("db_retrieval_citations", [])
+            image_similarity_results = final_state.get("image_similarity_results", []) or final_state.get("db_retrieval_image_similarity_results", [])
+            follow_up_questions = final_state.get("follow_up_questions", []) or final_state.get("db_retrieval_follow_up_questions", [])
+            follow_up_suggestions = final_state.get("follow_up_suggestions", []) or final_state.get("db_retrieval_follow_up_suggestions", [])
             doc_answer_text = None
             
+            route_value = final_state.get("data_route") or final_state.get("db_retrieval_route")
+            execution_trace = final_state.get("execution_trace") or []
+
             # Check which databases were used (matching chat endpoint)
             has_project = bool(answer and answer.strip())
             has_code = bool(code_answer and code_answer.strip())
@@ -1636,7 +1630,7 @@ async def chat_stream_handler(request: ChatRequest):
                         "session_id": request.session_id,
                         "user_query": request.message,
                         "rag_response": combined_for_logging,
-                        "route": final_state.get("data_route"),
+                        "route": route_value,
                         "citations_count": len(project_citations) + len(code_citations) + len(coop_citations),
                         "latency_ms": round(latency_ms, 2),
                         "user_identifier": user_identifier,
@@ -1652,7 +1646,7 @@ async def chat_stream_handler(request: ChatRequest):
                     'timestamp': datetime.now().isoformat(),
                     'latency_ms': round(latency_ms, 2),
                     'citations': len(project_citations) + len(code_citations) + len(coop_citations),  # Total citations
-                    'route': final_state.get("data_route"),
+                    'route': route_value,
                     'message_id': message_id,
                     'project_answer': processed_project_answer,
                     'code_answer': processed_code_answer,
@@ -1667,7 +1661,8 @@ async def chat_stream_handler(request: ChatRequest):
                     'task_type': final_state.get("task_type"),
                     'doc_type': final_state.get("doc_type"),
                     'section_type': final_state.get("section_type"),
-                    'execution_trace': final_state.get("execution_trace"),
+                    'execution_trace': execution_trace,
+                    'node_path': " → ".join(execution_trace) if execution_trace else None,
                     'doc_generation_result': final_state.get("doc_generation_result"),
                     'doc_generation_warnings': final_state.get("doc_generation_warnings"),
                 }
@@ -1717,7 +1712,7 @@ async def chat_stream_handler(request: ChatRequest):
                         "session_id": request.session_id,
                         "user_query": request.message,
                         "rag_response": combined_answer,
-                        "route": final_state.get("data_route"),
+                        "route": route_value,
                         "citations_count": total_citations,
                         "latency_ms": round(latency_ms, 2),
                         "user_identifier": user_identifier,
@@ -1733,7 +1728,7 @@ async def chat_stream_handler(request: ChatRequest):
                     'timestamp': datetime.now().isoformat(),
                     'latency_ms': round(latency_ms, 2),
                     'citations': total_citations,
-                    'route': final_state.get("data_route"),
+                    'route': route_value,
                     'message_id': message_id,
                     'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
                     'follow_up_questions': follow_up_questions if follow_up_questions else None,
@@ -1742,7 +1737,8 @@ async def chat_stream_handler(request: ChatRequest):
                     'task_type': final_state.get("task_type"),
                     'doc_type': final_state.get("doc_type"),
                     'section_type': final_state.get("section_type"),
-                    'execution_trace': final_state.get("execution_trace"),
+                    'execution_trace': execution_trace,
+                    'node_path': " → ".join(execution_trace) if execution_trace else None,
                     'doc_generation_result': final_state.get("doc_generation_result"),
                     'doc_generation_warnings': final_state.get("doc_generation_warnings"),
                 }

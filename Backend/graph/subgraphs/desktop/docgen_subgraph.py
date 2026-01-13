@@ -2,12 +2,14 @@
 Doc Generation Subgraph
 Runs the document generation pipeline (plan → generation → answer adaptation).
 """
+import time
 from dataclasses import asdict
 
 from langgraph.graph import StateGraph, END
 
 from models.parent_state import ParentState
 from models.rag_state import RAGState
+from config.settings import MAX_CONVERSATION_HISTORY
 from config.logging_config import log_query
 from desktop_agent.agents.doc_generation.plan import node_doc_plan
 from desktop_agent.agents.doc_generation.section_generator import node_doc_generate_section
@@ -35,11 +37,43 @@ def _doc_verify(state: RAGState) -> dict:
 def _doc_correct(state: RAGState) -> dict:
     """Finalize doc generation answer; ensure fields propagate to parent."""
     log_query.info("DOCGEN: correct (pass-through)")
+    messages = list(getattr(state, "messages", []) or [])
+    answer_text = getattr(state, "final_answer", None) or ""
+
+    # Ensure the user turn is present, then append assistant turn
+    if state.original_question and (not messages or messages[-1].get("role") != "user"):
+        messages.append({"role": "user", "content": state.original_question})
+    if answer_text:
+        if messages and messages[-1].get("role") == "assistant":
+            messages[-1] = {"role": "assistant", "content": answer_text}
+        else:
+            messages.append({"role": "assistant", "content": answer_text})
+        max_messages = MAX_CONVERSATION_HISTORY * 2
+        if len(messages) > max_messages:
+            messages = messages[-max_messages:]
+
+    history = list(getattr(state, "conversation_history", []) or [])
+    if state.original_question or answer_text:
+        history.append(
+            {
+                "question": state.original_question or state.user_query,
+                "answer": answer_text,
+                "timestamp": time.time(),
+                "projects": [],
+                "doc_type": getattr(state, "doc_type", None),
+                "section_type": getattr(state, "section_type", None),
+            }
+        )
+        if len(history) > MAX_CONVERSATION_HISTORY:
+            history = history[-MAX_CONVERSATION_HISTORY:]
+
     return {
         "final_answer": getattr(state, "final_answer", None),
         "answer_citations": getattr(state, "answer_citations", []),
         "doc_generation_result": getattr(state, "doc_generation_result", None),
         "doc_generation_warnings": getattr(state, "doc_generation_warnings", []),
+        "messages": messages,
+        "conversation_history": history,
     }
 
 
@@ -94,6 +128,7 @@ def call_doc_generation_subgraph(state: ParentState) -> dict:
         original_question=state.original_question,
         user_role=state.user_role,
         messages=state.messages,
+        conversation_history=getattr(state, "conversation_history", []),
         selected_routers=getattr(state, "selected_routers", []),
         workflow=getattr(state, "workflow", None) or "docgen",
         desktop_policy=getattr(state, "desktop_policy", None),
@@ -127,4 +162,6 @@ def call_doc_generation_subgraph(state: ParentState) -> dict:
         "answer_citations": result.get("answer_citations", []),
         "execution_trace": result.get("execution_trace", []),
         "execution_trace_verbose": result.get("execution_trace_verbose", []),
+        "messages": result.get("messages", []),
+        "conversation_history": result.get("conversation_history", []),
     }

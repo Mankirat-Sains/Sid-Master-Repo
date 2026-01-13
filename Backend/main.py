@@ -14,7 +14,7 @@ from utils.path_setup import ensure_info_retrieval_on_path
 ensure_info_retrieval_on_path()
 from models.parent_state import ParentState
 from models.memory import (
-    SESSION_MEMORY, MAX_CONVERSATION_HISTORY, MAX_SEMANTIC_HISTORY,
+    SESSION_MEMORY, MAX_SEMANTIC_HISTORY,
     intelligent_query_rewriter, update_focus_state, FOCUS_STATES
 )
 from graph.builder import build_graph
@@ -121,8 +121,9 @@ def run_agentic_rag(
         log_query.info(f"📖 No previous state found (first invocation): {e}")
         previous_state = None
     
-    # Get conversation history from previous state for query rewriting
+    # Get conversation history/messages from previous state for query rewriting
     conversation_history_for_rewriter = previous_state.get("conversation_history", []) if previous_state else []
+    previous_messages = previous_state.get("messages", []) if previous_state else []
 
     # Combine question with image context for enhanced search
     enhanced_question = question + image_context if image_context else question
@@ -130,9 +131,10 @@ def run_agentic_rag(
     # Intelligent query rewriting - NOW WITH CONVERSATION HISTORY
     log_query.info(f"🎯 QUERY REWRITING INPUT: '{enhanced_question[:500]}...' (truncated)" if len(enhanced_question) > 500 else f"🎯 QUERY REWRITING INPUT: '{enhanced_question}'")
     rewritten_query, query_filters = intelligent_query_rewriter(
-        enhanced_question, 
+        enhanced_question,
         session_id,
-        conversation_history=conversation_history_for_rewriter
+        messages=previous_messages,
+        conversation_history=conversation_history_for_rewriter,
     )
     log_query.info(f"🎯 QUERY REWRITING OUTPUT: '{rewritten_query}'")
     log_query.info(f"🎯 QUERY FILTERS: {query_filters}")
@@ -146,6 +148,10 @@ def run_agentic_rag(
     base_query = rewritten_query
     log_query.info(f"🎯 FINAL QUERY FOR RAG: '{base_query}'")
 
+    # Seed messages with previous exchanges and add current user message for checkpointer persistence
+    init_messages = list(previous_messages or [])
+    init_messages.append({"role": "user", "content": question})
+
     init_state = ParentState(
         session_id=session_id,
         user_query=base_query,
@@ -154,7 +160,7 @@ def run_agentic_rag(
         data_sources=data_sources,
         images_base64=images_base64 if images_base64 else None,
         conversation_history=conversation_history_for_rewriter,
-        messages=previous_state.get("messages", []) if previous_state else [],
+        messages=init_messages,
     )
 
     final = graph.invoke(asdict(init_state), config={"configurable": {"thread_id": session_id}})
