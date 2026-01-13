@@ -1279,7 +1279,8 @@ const {
   applyDocumentPatch,
   ensureDocumentState,
   resetDocumentWorkflow,
-  resetToBlankDocument
+  resetToBlankDocument,
+  createDocumentFromAnswer
 } = useDocumentWorkflow()
 type DataSources = { project_db: boolean; code_db: boolean; coop_manual: boolean }
 const dataSources = ref<DataSources>({
@@ -2574,6 +2575,20 @@ function handleDocumentUpdate(payload: any) {
   }
 }
 
+function shouldCreateDocumentFromResult(payload: any, isDocumentResponse: boolean) {
+  if (isDocumentResponse) return false
+  const workflow = detectWorkflowFromPayload(payload)
+  if (workflow) return true
+
+  const route = typeof payload?.route === 'string' ? payload.route.toLowerCase() : ''
+  if (route.includes('doc')) return true
+
+  const docType = typeof payload?.doc_type === 'string' ? payload.doc_type.toLowerCase() : ''
+  if (docType.includes('doc')) return true
+
+  return Boolean(payload?.create_document || payload?.workflow_type === 'document')
+}
+
 function resizePrompt() {
   const el = promptInput.value
   if (!el) return
@@ -2758,11 +2773,14 @@ async function handleSend() {
           }
           const documentPayload = result.doc_generation_result || result.document_state || result.document_patch
           const isDocumentResponse = Boolean(documentPayload)
+          const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
           const redirectMessage = '✅ Please refer to the document'
           handleWorkflowSignal(result)
           if (documentPayload) {
             handleDocumentUpdate(documentPayload)
           }
+          const shouldMakeDocument = shouldCreateDocumentFromResult(result, isDocumentResponse)
+          const answerForDocument = streamedContent || result.reply || result.message || ''
 
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
@@ -2839,6 +2857,17 @@ async function handleSend() {
             ? redirectMessage
             : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
+          if (shouldMakeDocument) {
+            const docContent = answerForDocument || finalAnswer
+            createDocumentFromAnswer(result?.session_id || conversation.sessionId || conversation.id, docContent)
+            setWorkflowMode('docgen')
+            docWorkflowPrimed.value = true
+            speckleViewerPanelOpen.value = false
+            docPreviewUserClosed.value = false
+            docPreviewPanelOpen.value = true
+            viewerSplitPercent.value = 50
+            persistDocumentStateToConversation()
+          }
           if (!isDocumentResponse && !isDocumentWorkflow.value) {
             await fetchAndDisplaySpeckleModels(finalAnswer, message)
           }
@@ -2951,11 +2980,14 @@ async function regenerateAssistant(message: string, sessionId: string) {
         onComplete: async result => {
           const documentPayload = result.doc_generation_result || result.document_state || result.document_patch
           const isDocumentResponse = Boolean(documentPayload)
+          const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
           const redirectMessage = '✅ Please refer to the document'
           handleWorkflowSignal(result)
           if (documentPayload) {
             handleDocumentUpdate(documentPayload)
           }
+          const shouldMakeDocument = shouldCreateDocumentFromResult(result, isDocumentResponse)
+          const answerForDocument = streamedContent || result.reply || result.message || ''
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
           const images = !isDocumentResponse
@@ -3019,6 +3051,17 @@ async function regenerateAssistant(message: string, sessionId: string) {
             ? redirectMessage
             : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
+          if (shouldMakeDocument) {
+            const docContent = answerForDocument || finalAnswer
+            createDocumentFromAnswer(result?.session_id || conversation.sessionId || conversation.id, docContent)
+            setWorkflowMode('docgen')
+            docWorkflowPrimed.value = true
+            speckleViewerPanelOpen.value = false
+            docPreviewUserClosed.value = false
+            docPreviewPanelOpen.value = true
+            viewerSplitPercent.value = 50
+            persistDocumentStateToConversation()
+          }
           if (!isDocumentResponse && !isDocumentWorkflow.value) {
             await fetchAndDisplaySpeckleModels(finalAnswer, message)
           }

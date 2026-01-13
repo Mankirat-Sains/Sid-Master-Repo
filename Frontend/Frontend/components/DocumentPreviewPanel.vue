@@ -198,6 +198,13 @@ async function bootEditor() {
   errorMessage.value = ''
 
   try {
+    console.log('📄 [OnlyOffice] Boot editor with:', {
+      serverUrl: serverUrl.value,
+      documentUrl: documentUrl.value,
+      documentKey: documentKey.value,
+      callbackUrl: callbackUrl.value,
+      title: docTitle.value
+    })
     await loadOnlyOfficeApi(serverUrl.value)
     destroyEditor()
 
@@ -236,7 +243,14 @@ async function bootEditor() {
           loadState.value = 'ready'
         },
         onError: (event: OnlyOfficeErrorEvent) => {
-          console.error('OnlyOffice editor error', event)
+          console.error('📄 [OnlyOffice] Editor error', {
+            event,
+            serverUrl: serverUrl.value,
+            documentUrl: documentUrl.value,
+            documentKey: documentKey.value,
+            callbackUrl: callbackUrl.value,
+            title: docTitle.value
+          })
           errorMessage.value = event?.data || 'OnlyOffice editor error'
           loadState.value = 'error'
         }
@@ -254,6 +268,24 @@ async function bootEditor() {
     loadState.value = 'error'
   }
 }
+
+watch(
+  documentUrl,
+  next => {
+    if (!next) return
+    console.log('📄 [OnlyOffice] documentUrl changed:', next)
+    if (typeof window !== 'undefined') {
+      ;(window as any).__onlyofficeDoc = {
+        url: next,
+        key: documentKey.value,
+        serverUrl: serverUrl.value,
+        callbackUrl: callbackUrl.value,
+        title: docTitle.value
+      }
+    }
+  },
+  { immediate: true }
+)
 
 onMounted(() => {
   ensureDocumentState()

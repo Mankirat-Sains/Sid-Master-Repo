@@ -17,13 +17,13 @@ import httpx
 from pathlib import Path
 from datetime import datetime
 import logging
+import shutil
 import re
 import uuid
 from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
 from docx import Document as DocxDocument
 from pydantic import BaseModel
 import uvicorn
@@ -554,10 +554,22 @@ def materialize_onlyoffice_document(
         SESSION_DOC_FILES[session_id] = filename
 
         base_url = get_public_base_url()
-        doc_url = f"{base_url}/documents/{filename}"
-        doc_key = f"{Path(filename).stem}-{int(datetime.now().timestamp())}"
+        timestamp_ms = int(datetime.now().timestamp() * 1000)
+        doc_url = f"{base_url}/documents/{filename}?t={timestamp_ms}"
+        doc_key = f"{Path(filename).stem}-{timestamp_ms}"
 
-        return build_document_state(doc_url, title, blocks, doc_key)
+        payload = build_document_state(doc_url, title, blocks, doc_key)
+        logger.info(
+            "📄 Built OnlyOffice doc",
+            extra={
+                "session_id": session_id,
+                "message_id": message_id,
+                "doc_url": doc_url,
+                "doc_key": doc_key,
+                "filename": filename,
+            },
+        )
+        return payload
     except Exception as exc:  # noqa: BLE001
         logging.getLogger(__name__).error(f"❌ Failed to materialize OnlyOffice document: {exc}")
         return None
@@ -586,9 +598,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Serve generated OnlyOffice documents
-app.mount("/documents", StaticFiles(directory=str(DOCUMENTS_DIR)), name="documents")
-
 # Enable CORS for the Electron desktop app
 app.add_middleware(
     CORSMiddleware,
@@ -597,6 +606,41 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.api_route("/documents/{document_name}", methods=["GET", "HEAD"])
+async def get_document(document_name: str):
+    """Serve OnlyOffice documents with cache-busting headers and on-demand creation."""
+    if ".." in document_name or "/" in document_name or "\\" in document_name:
+        raise HTTPException(status_code=400, detail="Invalid document name")
+
+    clean_name = document_name.split("?")[0]
+    document_path = DOCUMENTS_DIR / clean_name
+    msg = f"Document requested: {clean_name} -> {document_path} (exists={document_path.exists()})"
+    logger.info(msg)
+    print(f"[documents] {msg}")
+
+    if clean_name.startswith("conv-") and not document_path.exists():
+        try:
+            blank_path = ensure_blank_document()
+            shutil.copy(blank_path, document_path)
+            logger.info(f"Created new document: {clean_name}")
+        except Exception as exc:  # noqa: BLE001
+            logger.error(f"Failed to create conversation document {clean_name}: {exc}")
+            raise HTTPException(status_code=500, detail="Failed to create conversation document") from exc
+
+    if not document_path.exists():
+        raise HTTPException(status_code=404, detail=f"Document not found: {clean_name}")
+
+    return FileResponse(
+        document_path,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        filename=clean_name,
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
+    )
 
 # Initialize async checkpointer on FastAPI startup
 @app.on_event("startup")

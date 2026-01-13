@@ -75,6 +75,26 @@ function createId(prefix: string) {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}-${Date.now()}`
 }
 
+function getDocumentBaseUrl() {
+  const config = useRuntimeConfig()
+  const configuredBase = (config.public.onlyofficeDocumentBaseUrl as string | undefined)?.trim()
+  if (configuredBase) {
+    return configuredBase.replace(/\/$/, '')
+  }
+  const configuredDocUrl = (config.public.onlyofficeDocumentUrl as string | undefined)?.trim()
+  if (configuredDocUrl && configuredDocUrl.includes('/documents/')) {
+    return configuredDocUrl.split('/documents/')[0]?.replace(/\/$/, '') || ''
+  }
+  const orchestrator = (config.public.orchestratorUrl as string | undefined) || 'http://localhost:8000'
+  return orchestrator.replace(/\/$/, '')
+}
+
+function buildDocumentIdentifiers(prefix: string) {
+  const timestamp = Date.now()
+  const randomId = Math.random().toString(36).slice(2, 8)
+  return { timestamp, randomId, key: `${prefix}-${timestamp}-${randomId}` }
+}
+
 function normalizeSection(section: Partial<DocumentSection>, index: number): DocumentSection {
   const blocks = Array.isArray(section.blocks) ? section.blocks : []
   return {
@@ -132,16 +152,16 @@ function normalizeDocument(doc: StructuredDocument): StructuredDocument {
 }
 
 function createEmptyDocument(): StructuredDocument {
-  const config = useRuntimeConfig()
-  const defaultDocUrl =
-    (config.public.onlyofficeDocumentUrl as string | undefined) ||
-    `${((config.public.orchestratorUrl as string | undefined) || 'http://localhost:8000').replace(/\/$/, '')}/documents/blank.docx`
+  const { timestamp, randomId, key } = buildDocumentIdentifiers('blank')
+  const baseUrl = getDocumentBaseUrl()
+  const defaultDocUrl = `${baseUrl}/documents/blank.docx?t=${timestamp}&id=${randomId}`
 
   return normalizeDocument({
     title: 'Blank Document',
     docUrl: defaultDocUrl,
-    metadata: { docUrl: defaultDocUrl },
-    onlyoffice: { docUrl: defaultDocUrl },
+    documentKey: key,
+    metadata: { docUrl: defaultDocUrl, documentKey: key },
+    onlyoffice: { docUrl: defaultDocUrl, documentKey: key },
     sections: [
       {
         id: createId('section'),
@@ -224,6 +244,48 @@ function setDocumentState(next: StructuredDocument | null) {
   documentState.value = next ? normalizeDocument(next) : null
 }
 
+function createDocumentFromAnswer(conversationId: string, answer: string) {
+  const baseUrl = getDocumentBaseUrl()
+  const { timestamp, randomId } = buildDocumentIdentifiers('conv')
+  const safeConversationId = (conversationId || 'conversation').replace(/[^0-9A-Za-z_-]/g, '') || 'conversation'
+  const docId = `conv-${safeConversationId}-${timestamp}`
+  const docUrl = `${baseUrl}/documents/${docId}.docx?t=${timestamp}&id=${randomId}`
+  const docKey = `${docId}-${randomId}`
+
+  const doc = normalizeDocument({
+    title: `Document ${safeConversationId}`,
+    docUrl,
+    documentKey: docKey,
+    metadata: { docUrl, documentKey: docKey },
+    onlyoffice: { docUrl, documentKey: docKey },
+    sections: [
+      {
+        id: createId('section'),
+        title: '',
+        blocks: [
+          {
+            id: createId('block'),
+            type: 'paragraph',
+            text: answer || ''
+          }
+        ]
+      }
+    ],
+    version: 1,
+    viewMode: 'edit'
+  })
+
+  documentState.value = doc
+  console.log('📄 [DocWorkflow] Created document from answer:', {
+    conversationId: safeConversationId,
+    url: docUrl,
+    key: docKey,
+    timestamp,
+    randomId
+  })
+  return doc
+}
+
 function applyDocumentPatch(patchInput: any): StructuredDocument | null {
   const patch = unwrapDocumentPayload(patchInput)
   if (!patch) return documentState.value
@@ -287,6 +349,7 @@ export function useDocumentWorkflow() {
     ensureDocumentState,
     resetDocumentWorkflow,
     resetToBlankDocument,
+    createDocumentFromAnswer,
     updateZoom,
     updateViewMode,
     updatePdfPage,

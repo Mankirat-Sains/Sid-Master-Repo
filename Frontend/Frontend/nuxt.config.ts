@@ -55,6 +55,7 @@ export default defineNuxtConfig({
       speckleUrl: process.env.SPECKLE_URL || process.env.SPECKLE_SERVER_URL || 'https://app.speckle.systems',
       speckleToken: process.env.SPECKLE_TOKEN || '',
       onlyofficeServerUrl: process.env.ONLYOFFICE_SERVER_URL || '',
+      onlyofficeDocumentBaseUrl: process.env.ONLYOFFICE_DOCUMENT_BASE_URL || '',
       onlyofficeDocumentUrl: process.env.ONLYOFFICE_DOCUMENT_URL || '',
       onlyofficeCallbackUrl: process.env.ONLYOFFICE_CALLBACK_URL || '',
       onlyofficeUserName: process.env.ONLYOFFICE_USER_NAME || '',
