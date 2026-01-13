@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import { useRuntimeConfig } from '#app'
 
 export type WorkflowMode = 'default' | 'desktop_agent' | 'docgen'
 
@@ -131,23 +132,32 @@ function normalizeDocument(doc: StructuredDocument): StructuredDocument {
 }
 
 function createEmptyDocument(): StructuredDocument {
+  const config = useRuntimeConfig()
+  const defaultDocUrl =
+    (config.public.onlyofficeDocumentUrl as string | undefined) ||
+    `${((config.public.orchestratorUrl as string | undefined) || 'http://localhost:8000').replace(/\/$/, '')}/documents/blank.docx`
+
   return normalizeDocument({
-    title: 'Untitled Document',
+    title: 'Blank Document',
+    docUrl: defaultDocUrl,
+    metadata: { docUrl: defaultDocUrl },
+    onlyoffice: { docUrl: defaultDocUrl },
     sections: [
       {
         id: createId('section'),
-        title: 'Overview',
+        title: '',
         blocks: [
           {
             id: createId('block'),
             type: 'paragraph',
-            text: 'Desktop Agent / DocGen mode is active. Ask the assistant to edit or format this draft.'
+            text: ''
           }
         ]
       }
     ],
     version: 1,
-    zoom: 1
+    zoom: 1,
+    viewMode: 'edit'
   })
 }
 
@@ -260,6 +270,10 @@ function resetDocumentWorkflow() {
   documentState.value = null
 }
 
+function resetToBlankDocument() {
+  documentState.value = createEmptyDocument()
+}
+
 const isDocumentWorkflow = computed(() => ['desktop_agent', 'docgen'].includes(activeWorkflowMode.value))
 
 export function useDocumentWorkflow() {
@@ -272,6 +286,7 @@ export function useDocumentWorkflow() {
     applyDocumentPatch,
     ensureDocumentState,
     resetDocumentWorkflow,
+    resetToBlankDocument,
     updateZoom,
     updateViewMode,
     updatePdfPage,
