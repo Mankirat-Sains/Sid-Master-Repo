@@ -14,6 +14,41 @@ from nodes.DBRetrieval.KGdb.project_metadata import fetch_project_metadata
 from utils.project_utils import date_from_project_id
 
 
+def extract_text_from_content(content) -> str:
+    """
+    Extract text content from AIMessageChunk.content.
+    Handles both string format (OpenAI, Anthropic) and list format (Gemini 3.0).
+    
+    Gemini 3.0 returns: [{'type': 'text', 'text': "..."}]
+    Other models return: "text content"
+    """
+    if not content:
+        return ""
+    
+    # Handle list format (Gemini 3.0)
+    if isinstance(content, list):
+        text_parts = []
+        for item in content:
+            if isinstance(item, dict):
+                # Extract text from dict items (e.g., {'type': 'text', 'text': "..."})
+                if item.get('type') == 'text' and 'text' in item:
+                    text_parts.append(str(item['text']))
+                elif 'text' in item:
+                    # Fallback: just try 'text' key
+                    text_parts.append(str(item['text']))
+            elif isinstance(item, str):
+                # If list contains strings directly
+                text_parts.append(item)
+        return ''.join(text_parts)
+    
+    # Handle string format (OpenAI, Anthropic, etc.)
+    if isinstance(content, str):
+        return content
+    
+    # Fallback: try to convert to string
+    return str(content)
+
+
 def synthesize(
     q: str,
     docs: List[Document],
@@ -265,14 +300,18 @@ def synthesize(
             first_chunk = True
             for chunk in llm_synthesis.stream(prompt_template.format(**prompt_kwargs)):
                 if chunk.content:
+                    # Extract text - handles both string and list formats (Gemini 3.0)
+                    text_content = extract_text_from_content(chunk.content)
                     if first_chunk:
-                        yield (chunk.content, cites)
+                        yield (text_content, cites)
                         first_chunk = False
                     else:
-                        yield chunk.content
+                        yield text_content
         return stream_generator()
     else:
         formatted_prompt = prompt_template.format(**prompt_kwargs)
-        ans = llm_synthesis.invoke(formatted_prompt).content.strip()
+        response = llm_synthesis.invoke(formatted_prompt)
+        # Extract text - handles both string and list formats (Gemini 3.0)
+        ans = extract_text_from_content(response.content).strip()
         return ans, cites
 

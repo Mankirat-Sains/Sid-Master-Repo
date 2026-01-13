@@ -1,6 +1,8 @@
 """
 Answer Synthesis Node
 Synthesizes final answers from graded documents
+
+Note: Requires Python 3.11+ for proper async streaming support with LangGraph
 """
 from concurrent.futures import ThreadPoolExecutor
 from langchain_core.documents import Document
@@ -16,6 +18,41 @@ import re
 import time
 
 
+def extract_text_from_content(content) -> str:
+    """
+    Extract text content from AIMessageChunk.content or streaming chunk.
+    Handles both string format (OpenAI, Anthropic) and list format (Gemini 3.0).
+    
+    Gemini 3.0 returns: [{'type': 'text', 'text': "..."}]
+    Other models return: "text content"
+    """
+    if not content:
+        return ""
+    
+    # Handle list format (Gemini 3.0)
+    if isinstance(content, list):
+        text_parts = []
+        for item in content:
+            if isinstance(item, dict):
+                # Extract text from dict items (e.g., {'type': 'text', 'text': "..."})
+                if item.get('type') == 'text' and 'text' in item:
+                    text_parts.append(str(item['text']))
+                elif 'text' in item:
+                    # Fallback: just try 'text' key
+                    text_parts.append(str(item['text']))
+            elif isinstance(item, str):
+                # If list contains strings directly
+                text_parts.append(item)
+        return ''.join(text_parts)
+    
+    # Handle string format (OpenAI, Anthropic, etc.)
+    if isinstance(content, str):
+        return content
+    
+    # Fallback: try to convert to string
+    return str(content)
+
+
 def strip_markdown_image_links(text: str) -> str:
     """Remove markdown image syntax (![alt](url)) from text, keeping only the alt text."""
     # Pattern matches ![alt text](url) and replaces with just "alt text"
@@ -24,7 +61,12 @@ def strip_markdown_image_links(text: str) -> str:
 
 
 def node_answer(state: DBRetrievalState) -> dict:
-    """Synthesize an answer with guardrails"""
+    """
+    Synthesize an answer with guardrails.
+    
+    Note: This function uses get_stream_writer() which requires Python 3.11+
+    for proper async streaming support in LangGraph.
+    """
     try:
         docs = list(state.graded_docs or [])
 
@@ -89,15 +131,16 @@ def node_answer(state: DBRetrievalState) -> dict:
             
             pre_fetched_metadata = getattr(state, '_project_metadata', None)
             
-            # Try to get stream writer for token streaming (must be in main context)
+            # Try to get stream writer for token streaming (works with Python 3.11+)
+            # LangGraph's messages mode will automatically capture LLM tokens
             try:
                 writer = get_stream_writer()
                 has_writer = True
-                log_query.info("✅ Stream writer obtained for token streaming")
+                log_query.debug("✅ Stream writer obtained for token streaming")
             except Exception as e:
                 has_writer = False
                 writer = None
-                log_query.info(f"⚠️ Stream writer not available: {e}")
+                log_query.debug(f"⚠️ Stream writer not available: {e} (this is OK for non-streaming contexts)")
             
             def synthesize_code():
                 if not code_db_enabled or not code_docs:
@@ -165,16 +208,41 @@ def node_answer(state: DBRetrievalState) -> dict:
                 for chunk in stream_result:
                     if first_chunk and isinstance(chunk, tuple):
                         token_content, project_cites = chunk
-                        ans_parts.append(token_content)
+                        # Extract text - handles both string and list formats (Gemini 3.0)
+                        token_text = extract_text_from_content(token_content)
+                        ans_parts.append(token_text)
                         token_count += 1
-                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
-                        # Emitting here causes duplication ("Project Project", etc.)
-                        # LangGraph's messages mode automatically captures and streams LLM tokens
+                        
+                        # CRITICAL: Use stream writer to emit tokens in real-time
+                        # This ensures token-by-token streaming even if messages mode batches
+                        if has_writer and writer:
+                            try:
+                                writer.write({
+                                    "type": "token",
+                                    "content": token_text,
+                                    "node": "answer"
+                                })
+                            except Exception as e:
+                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
+                        
                         first_chunk = False
                     else:
-                        ans_parts.append(chunk)
+                        # Extract text - handles both string and list formats (Gemini 3.0)
+                        chunk_text = extract_text_from_content(chunk)
+                        ans_parts.append(chunk_text)
                         token_count += 1
-                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+                        
+                        # CRITICAL: Use stream writer to emit tokens in real-time
+                        # This ensures token-by-token streaming even if messages mode batches
+                        if has_writer and writer:
+                            try:
+                                writer.write({
+                                    "type": "token",
+                                    "content": chunk_text,
+                                    "node": "answer"
+                                })
+                            except Exception as e:
+                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
                 project_ans = "".join(ans_parts)
                 log_query.info(f"✅ [ANSWER NODE MULTI-DB] Streaming synthesis complete - {token_count} tokens, {len(project_ans)} chars")
             
@@ -250,7 +318,7 @@ def node_answer(state: DBRetrievalState) -> dict:
                 }
             else:
                 # Use streaming synthesis for real-time token delivery
-                # Stream tokens via custom events while accumulating answer
+                # LangGraph's messages mode will automatically capture LLM tokens
                 log_query.info("🔍 [ANSWER NODE] Attempting to get stream writer...")
                 writer = None
                 has_writer = False
@@ -260,9 +328,9 @@ def node_answer(state: DBRetrievalState) -> dict:
                     log_query.info("✅ [ANSWER NODE] Stream writer obtained successfully!")
                 except RuntimeError as e:
                     # RuntimeError is thrown when not in streaming context
-                    log_query.warning(f"⚠️ [ANSWER NODE] Stream writer RuntimeError: {e}")
+                    log_query.debug(f"⚠️ [ANSWER NODE] Stream writer RuntimeError: {e} (this is OK for non-streaming contexts)")
                 except Exception as e:
-                    log_query.warning(f"⚠️ [ANSWER NODE] Stream writer failed with {type(e).__name__}: {e}")
+                    log_query.debug(f"⚠️ [ANSWER NODE] Stream writer failed with {type(e).__name__}: {e} (this is OK for non-streaming contexts)")
                 
                 # ALWAYS use streaming synthesis so LangGraph's messages mode can capture tokens
                 # Even without the custom writer, tokens will be streamed via messages mode
@@ -286,17 +354,39 @@ def node_answer(state: DBRetrievalState) -> dict:
                     if first_chunk and isinstance(chunk, tuple):
                         # First chunk contains (content, cites)
                         token_content, cites = chunk
-                        ans_parts.append(token_content)
+                        # Extract text - handles both string and list formats (Gemini 3.0)
+                        token_text = extract_text_from_content(token_content)
+                        ans_parts.append(token_text)
                         token_count += 1
-                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
-                        # Emitting here causes duplication ("Project Project", etc.)
-                        # LangGraph's messages mode automatically captures and streams LLM tokens
+                        
+                        # CRITICAL: Use stream writer to emit tokens in real-time
+                        if has_writer and writer:
+                            try:
+                                writer.write({
+                                    "type": "token",
+                                    "content": token_text,
+                                    "node": "answer"
+                                })
+                            except Exception as e:
+                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
+                        
                         first_chunk = False
                     else:
-                        # Subsequent chunks are just content
-                        ans_parts.append(chunk)
+                        # Subsequent chunks are just content - extract text (handles Gemini 3.0 list format)
+                        chunk_text = extract_text_from_content(chunk)
+                        ans_parts.append(chunk_text)
                         token_count += 1
-                        # DO NOT emit via custom writer - tokens are already streamed via "messages" mode
+                        
+                        # CRITICAL: Use stream writer to emit tokens in real-time
+                        if has_writer and writer:
+                            try:
+                                writer.write({
+                                    "type": "token",
+                                    "content": chunk_text,
+                                    "node": "answer"
+                                })
+                            except Exception as e:
+                                log_query.debug(f"⚠️ Stream writer emit failed (non-critical): {e}")
                 
                 ans = "".join(ans_parts)
                 log_query.info(f"✅ [ANSWER NODE] Streaming synthesis complete - {token_count} tokens, {len(ans)} chars")

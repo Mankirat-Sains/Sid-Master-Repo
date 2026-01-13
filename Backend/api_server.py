@@ -4,11 +4,16 @@ FastAPI server for Mantle RAG Chat Interface
 Connect the chatbutton Electron app to the rag.py backend
 """
 
-# Windows async event loop fix - required for proper SSE streaming on Windows
+# Windows async event loop configuration
+# Python 3.11+ defaults to ProactorEventLoopPolicy which works well for async I/O
+# WindowsSelectorEventLoopPolicy still works but is slower for Windows file I/O
 import sys
 if sys.platform == 'win32':
     import asyncio
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # Python 3.11+ has better async support - ProactorEventLoopPolicy is default and recommended
+    # WindowsSelectorEventLoopPolicy still works but is less efficient
+    # Only set policy if we need to override (not necessary in Python 3.11+)
+    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # Commented: use default in 3.11+
 
 from datetime import datetime
 import logging
@@ -128,6 +133,41 @@ except ImportError:
     INSTRUCTIONS_CONTENT = "# Instructions\n\nInstructions content not available."
 
 # Helper function to wrap project numbers with fully-formed HTML links
+def extract_text_from_content(content) -> str:
+    """
+    Extract text content from AIMessageChunk.content.
+    Handles both string format (OpenAI, Anthropic) and list format (Gemini 3.0).
+    
+    Gemini 3.0 returns: [{'type': 'text', 'text': "..."}]
+    Other models return: "text content"
+    """
+    if not content:
+        return ""
+    
+    # Handle list format (Gemini 3.0)
+    if isinstance(content, list):
+        text_parts = []
+        for item in content:
+            if isinstance(item, dict):
+                # Extract text from dict items (e.g., {'type': 'text', 'text': "..."})
+                if item.get('type') == 'text' and 'text' in item:
+                    text_parts.append(str(item['text']))
+                elif 'text' in item:
+                    # Fallback: just try 'text' key
+                    text_parts.append(str(item['text']))
+            elif isinstance(item, str):
+                # If list contains strings directly
+                text_parts.append(item)
+        return ''.join(text_parts)
+    
+    # Handle string format (OpenAI, Anthropic, etc.)
+    if isinstance(content, str):
+        return content
+    
+    # Fallback: try to convert to string
+    return str(content)
+
+
 def strip_asterisks_from_projects(text: str) -> str:
     """
     Remove markdown asterisks (**) that wrap project numbers or project names.
@@ -135,6 +175,10 @@ def strip_asterisks_from_projects(text: str) -> str:
     """
     if not text:
         return text
+    
+    # Ensure text is a string (in case content was passed directly)
+    if not isinstance(text, str):
+        text = extract_text_from_content(text)
     
     # Pattern 1: **Project NUMBER** (exact match)
     text = re.sub(r'\*\*Project\s+(\d{2}-\d{2}-\d{3})\*\*', r'Project \1', text)
@@ -1055,7 +1099,14 @@ async def chat_stream_handler(request: ChatRequest):
                             
                             # Get the content from the message chunk
                             if hasattr(message_chunk, 'content') and message_chunk.content:
-                                token_content = message_chunk.content
+                                # Extract text content - handles both string (OpenAI/Anthropic) and list (Gemini 3.0) formats
+                                raw_content = message_chunk.content
+                                token_content = extract_text_from_content(raw_content)
+                                
+                                # Skip if no text content extracted
+                                if not token_content:
+                                    continue
+                                
                                 # Check metadata for node info to filter tokens
                                 node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
                                 
@@ -1089,7 +1140,7 @@ async def chat_stream_handler(request: ChatRequest):
                                 if messages_received <= 10:  # Log first 10 tokens for debugging
                                     logger.info(f"💬 Streaming token #{messages_received}: {len(token_content)} chars from node '{node_name}'")
                                 yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': node_name, 'timestamp': time.time()})}\n\n"
-                                await asyncio.sleep(0.001)  # Minimal delay for proper streaming
+                                # REMOVED: await asyncio.sleep(0.001) - unnecessary delay for real-time streaming
                         continue
                 
                     # Handle custom events (emitted directly from nodes)
@@ -1101,17 +1152,18 @@ async def chat_stream_handler(request: ChatRequest):
                                 # Send thinking log to stream for Agent Thinking panel
                                 logger.info(f"💭 {chunk.get('message', '')}")
                                 yield f"data: {json.dumps({'type': 'thinking', 'message': chunk.get('message', ''), 'node': chunk.get('node', 'unknown'), 'timestamp': time.time()})}\n\n"
-                                await asyncio.sleep(0.001)
+                                # REMOVED: await asyncio.sleep(0.001) - unnecessary delay
                             elif chunk.get("type") == "token":
-                                # Forward token to frontend for real-time streaming
+                                # Forward token to frontend for real-time streaming (from stream writer)
                                 token_content = chunk.get('content', '')
                                 token_node = chunk.get('node', 'answer')
-                                # Strip asterisks from project patterns in token (helps with streaming)
-                                # Note: This won't catch split patterns, but will handle complete ones
+                                # Strip asterisks from project patterns in token
                                 token_content = strip_asterisks_from_projects(token_content)
-                                logger.debug(f"💬 Streaming token from node '{token_node}': {len(token_content)} chars")
+                                
+                                # Stream immediately - no delay for real-time token-by-token
+                                logger.debug(f"💬 Streaming token from stream writer (node '{token_node}'): {len(token_content)} chars")
                                 yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': token_node, 'timestamp': time.time()})}\n\n"
-                                await asyncio.sleep(0.001)  # Minimal delay for proper streaming
+                                # REMOVED: await asyncio.sleep(0.001) - unnecessary delay
                         continue
                 
                     # Handle state updates (updates mode)
@@ -1602,7 +1654,8 @@ async def chat_stream_handler(request: ChatRequest):
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
             "X-Accel-Buffering": "no",  # Disable nginx buffering
-            "Access-Control-Allow-Origin": "*"  # CORS for streaming
+            "Access-Control-Allow-Origin": "*",  # CORS for streaming
+            "X-Content-Type-Options": "nosniff",  # Prevent MIME sniffing
         }
     )
 

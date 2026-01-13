@@ -13,12 +13,24 @@ langchain-openai>=0.0.5
 langchain-community>=0.0.20
 langchain-anthropic>=0.1.0
 
+# Google Vertex AI (for Gemini models with service account authentication)
+# Note: ChatVertexAI is deprecated but required for service account auth
+# ChatGoogleGenerativeAI only supports API key authentication
+langchain-google-vertexai>=1.0.0
+google-cloud-aiplatform>=1.38.0
+google-auth>=2.23.0
+google-auth-oauthlib>=1.1.0
+
+# Alternative: Google Generative AI SDK (API key only, not service accounts)
+# langchain-google-genai>=1.0.0
+
 # Database & Vector Store
 supabase>=2.0.0
 psycopg2-binary>=2.9.9
 
 # AI/LLM
 openai>=1.0.0
+groq>=0.4.0
 
 # Environment & Configuration
 python-dotenv>=1.0.0

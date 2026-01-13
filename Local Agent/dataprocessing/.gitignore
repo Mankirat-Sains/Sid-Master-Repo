@@ -63,6 +63,7 @@ venv.bak/
 !.gitignore
 !florence_embedding/
 !yolo_model/
+!google/
 
 # Large data directories
 output/
@@ -88,6 +89,9 @@ logs/
 # Supabase keys (if stored locally)
 supabase_keys.txt
 *.key
+
+# Google service account credentials (sensitive - do not commit)
+google/ocr-key.json
 
 # OS
 Thumbs.db
