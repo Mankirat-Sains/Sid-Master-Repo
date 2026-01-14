@@ -34,16 +34,9 @@ SECTION_KEYWORDS: Dict[str, str] = {
 
 # Simple vs complex generation cues
 _SIMPLE_GENERATION_PATTERNS = [
-    "generate a paragraph",
-    "write a paragraph",
-    "create a paragraph",
-    "generate a simple",
-    "write a simple",
-    "create a short",
-    "draft a brief",
-    "make a quick",
-    "write something about",
-    "create some text",
+    "generate a random paragraph",
+    "write something creative",
+    "make up a story",
 ]
 
 _COMPLEX_GENERATION_PATTERNS = [
@@ -51,14 +44,19 @@ _COMPLEX_GENERATION_PATTERNS = [
     "analysis",
     "summary",
     "project",
-    "status",
-    "overview",
-    "comparison",
+    "design",
+    "documentation",
+    "specification",
+    "plan",
     "assessment",
-    "evaluation",
-    "based on our data",
-    "from our projects",
-    "using our information",
+    "using our",
+    "from our",
+    "based on our",
+    "garage",
+    "beam",
+    "structural",
+    "engineering",
+    "building",
 ]
 
 
@@ -210,7 +208,8 @@ def _classify_generation_complexity(text: str) -> Tuple[Optional[str], Optional[
         return "simple_generation", False, True
     if is_complex:
         return "complex_generation", True, False
-    return None, None, None
+    # Default to retrieval for ambiguous queries
+    return None, True, False
 
 
 def node_doc_task_classifier(state: RAGState) -> dict:
