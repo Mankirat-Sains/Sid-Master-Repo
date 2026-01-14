@@ -63,6 +63,9 @@ from main import run_agentic_rag, rag_healthcheck
 from nodes.DBRetrieval.KGdb import test_database_connection
 from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH, DEBUG_MODE, MAX_CONVERSATION_HISTORY
 
+DOC_API_URL = os.getenv("DOC_API_URL", "http://localhost:8002").rstrip("/")
+DOC_API_TIMEOUT = float(os.getenv("DOC_API_TIMEOUT", "20"))
+
 # Import Kuzu manager
 try:
     from nodes.DBRetrieval.KGdb.kuzu_client import get_kuzu_manager
@@ -2024,6 +2027,51 @@ async def approve_action(request: ActionApprovalRequest):
     except Exception as exc:
         logger.error(f"Failed to process action approval: {exc}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+# ============================================================================
+# DOC AGENT PROXY ENDPOINTS (mirrors Excel agent pattern)
+# ============================================================================
+
+
+async def _doc_agent_request(method: str, path: str, json_body: Optional[Dict[str, Any]] = None, params: Optional[Dict[str, Any]] = None):
+    url = f"{DOC_API_URL}{path}"
+    try:
+        async with httpx.AsyncClient(timeout=DOC_API_TIMEOUT) as client:
+            resp = await client.request(method, url, json=json_body, params=params)
+            resp.raise_for_status()
+            return resp.json()
+    except httpx.HTTPStatusError as exc:
+        logger.error(f"Doc agent HTTP error: {exc.response.text}")
+        raise HTTPException(status_code=exc.response.status_code, detail=f"Doc agent error: {exc.response.text}")
+    except Exception as exc:  # pragma: no cover - defensive
+        logger.error(f"Doc agent unreachable at {url}: {exc}")
+        raise HTTPException(status_code=502, detail=f"Doc agent unavailable at {DOC_API_URL}: {exc}")
+
+
+@app.get("/api/doc/health")
+async def doc_agent_health():
+    return await _doc_agent_request("get", "/health")
+
+
+@app.post("/api/doc/open")
+async def doc_agent_open(payload: Dict[str, Any]):
+    return await _doc_agent_request("post", "/api/doc/open", json_body=payload)
+
+
+@app.post("/api/doc/apply")
+async def doc_agent_apply(payload: Dict[str, Any]):
+    return await _doc_agent_request("post", "/api/doc/apply", json_body=payload)
+
+
+@app.post("/api/doc/export")
+async def doc_agent_export(payload: Dict[str, Any]):
+    return await _doc_agent_request("post", "/api/doc/export", json_body=payload)
+
+
+@app.get("/api/doc/history")
+async def doc_agent_history(doc_id: str, limit: int = 100):
+    return await _doc_agent_request("get", "/api/doc/history", params={"doc_id": doc_id, "limit": limit})
 
 
 # Additional endpoint for compatibility with different response formats
