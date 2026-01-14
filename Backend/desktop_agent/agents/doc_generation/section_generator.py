@@ -4,6 +4,7 @@ DOCGEN: Generate a single section via Tier2Generator.
 from __future__ import annotations
 
 import os
+import json
 from pathlib import Path
 from typing import Any, Dict
 
@@ -134,3 +135,71 @@ def node_doc_generate_section(state: RAGState) -> dict:
         "doc_generation_result": result,
         "doc_generation_warnings": warnings,
     }
+
+
+class SectionGenerator:
+    """
+    Lightweight wrapper to mirror the legacy docgen interface expected by deep agent tools.
+    Provides a .generate(doc_request, context_path, output_dir) method.
+    """
+
+    def __init__(self) -> None:
+        self._services: Dict[str, Any] | None = None
+
+    def _get_generator(self):
+        if self._services is None:
+            self._services = _load_services()
+        return self._services["generator"]
+
+    def generate(self, doc_request: Dict[str, Any], context_path: str, output_dir: str) -> Dict[str, Any]:
+        """
+        Generate a document section, using context file when available.
+
+        Args:
+            doc_request: Dictionary of doc generation parameters.
+            context_path: Path to a JSON context file (optional).
+            output_dir: Directory for any outputs (kept for parity; not used directly here).
+        """
+        try:
+            ctx = {}
+            if context_path and Path(context_path).exists():
+                try:
+                    ctx = json.loads(Path(context_path).read_text())
+                except Exception:
+                    pass
+
+            user_request = ""
+            if doc_request:
+                user_request = doc_request.get("user_query") or doc_request.get("title") or ""
+            if not user_request and isinstance(ctx, dict):
+                user_request = (
+                    ctx.get("doc_request", {}).get("title")
+                    or ctx.get("user_context", {}).get("user_query")
+                    or ""
+                )
+
+            overrides: Dict[str, Any] = {}
+            if doc_request:
+                overrides.update({k: v for k, v in doc_request.items() if v is not None})
+
+            generator = self._get_generator()
+            company_id = os.getenv("DEMO_COMPANY_ID", "demo_company")
+            result = generator.draft_section(
+                company_id=company_id,
+                user_request=user_request,
+                overrides=overrides or None,
+            )
+            result = result or {}
+            # Ensure a metadata block is always present
+            metadata = result.get("metadata") or {}
+            metadata["used_context_file"] = bool(context_path and Path(context_path).exists())
+            result["metadata"] = metadata
+            return result
+        except Exception as exc:  # pragma: no cover - defensive fallback
+            log_query.error(f"DOCGEN: SectionGenerator.generate failed: {exc}")
+            return {
+                "draft_text": f"# Document\n\nGenerated content for: {doc_request.get('title', 'Untitled') if doc_request else 'Untitled'}",
+                "sections": [],
+                "warnings": [f"SectionGenerator fallback used: {exc}"],
+                "metadata": {"fallback": True, "reason": str(exc)},
+            }
