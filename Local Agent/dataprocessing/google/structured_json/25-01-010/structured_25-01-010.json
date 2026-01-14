@@ -1,0 +1,530 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "East wall elevation of stacked log structure",
+      "level": "Unknown",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Stacked Log Wall Elevation",
+      "element_callouts": [
+        "JD1",
+        "JU1",
+        "J3",
+        "J5"
+      ],
+      "key_components": [
+        "Stacked Log Wall",
+        "Window",
+        "Roof Framing",
+        "Foundation"
+      ],
+      "summary": "This elevation view depicts the east face of a stacked log structure, likely a wall assembly. The primary construction is a \"2x6 TONGUE & GROOVE STACKED WALL (TYP.)\", indicated by the numerous horizontal log courses. The overall height of the wall is annotated as 134.910. A central window opening is shown, with dimensions of 54.250 in width and 37.375 in height. The text \"MAINTAIN MINIMUM 2 (UNNOTCHED) ROWS OF WALL ABOVE OPENINGS (TYP.)\" and \"*ROWS ACT AS SUPPORTING LINTEL\" specifies a critical structural requirement for load transfer above the window. The foundation is noted as \"FOUNDATION BY OTHERS (TYP.)\", indicating it is detailed elsewhere. The roof structure is visible at the top, with dimensions like 36.909 and 96.000 indicating roof spans or lengths, and a pitch of 23 degrees. Various element tags such as \"JD1\", \"JU1\", \"J3\", and \"J5\" are present, likely referencing specific log types, framing members, or connection details found on other drawings or schedules. The dimension \"48.125\" appears multiple times, possibly indicating spacing or offsets related to the window or wall construction. The dimension \"139.000\" and \"147.250\" likely represent overall building lengths or foundation dimensions.",
+      "project_id": "25-01-010",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "PARTIAL BOARD\n(2) FULL BOARDS\nHE WINDOWS\n-3.010\n375\n12\n28J5\n27 J5\n26 J5\n25 J5\n24 J5\n23 J5\nMAINTAIN MINIMUM 2\n(UNNOTCHED) ROWS OF WALL\nABOVE OPENINGS (TYP.)\n*ROWS ACT AS SUPPORTING\nLINTEL\n22 J5\n21 J5\n2015\n30\n19J5\n18\nJ5\n17\nJ5\n16\nJ5\n15\nJ3\n14\nJ3\n13\nJ3\n12\nJ3\n10\nJ3\n9\nJ3\n8\nJ5\n7\nJ5\n6\nJ5\n15\nJ5\n4\nJ5\nFOUNDATION BY OTHERS\n3\nJ5\n(TYP.)\n2\nJ5\n1\nJ5\n4.125-\n4.500-\n9.500-\n48.125\n23\n34\n32\nJU1\nJD1\n-54.250-\n2x6 TONGUE & GROOVE\nSTACKED WALL (TYP.)\n139.000-\n-147.250-\n36.909\n96.000\n36.847\n23°\nJ3\nJ3\n134,910\nJ3\n37.375\nJ3\n48.125-\nJ3\nJ3\nFOUNDATION BY OTHERS\n(TYP.)"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "East wall elevation",
+      "level": "Ground Floor",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Elevation",
+      "element_callouts": [
+        "J1",
+        "J2",
+        "J4",
+        "J6",
+        "JM3",
+        "JM4",
+        "JT1"
+      ],
+      "key_components": [
+        "Wood Siding",
+        "Windows",
+        "Doors",
+        "Lintel",
+        "Foundation"
+      ],
+      "summary": "This is an elevation view of the east wall of a structure, likely a shed or small building, with a total height of 172.646 inches. The wall is constructed with horizontal wood siding, indicated by the numerous horizontal lines and associated tags like 'J1', 'J2', and 'J6'. The drawing shows two windows and a double door opening. A significant annotation states 'MAINTAIN MINIMUM 2 (UNNOTCHED) ROWS OF WALL ABOVE OPENINGS (TYP.)' and '*ROWS ACT AS SUPPORTING LINTEL', indicating that the wood siding rows themselves are designed to function as a lintel to support the structure above the openings. The overall width of the structure is indicated by dimensions such as 189.000 inches at the top and 173.250 inches at the base. The foundation is noted as 'FOUNDATION BY OTHERS (TYP.)', meaning it is not detailed in this drawing. The dimension '20.768 typ.' likely refers to the typical height of a section of the wall construction. The annotation 'THIS IS A PARTIAL BOARD WE NEED (2) FULL BOARDS ABOVE THE WINDOWS' suggests a specific construction detail for the upper portion of the wall, emphasizing the need for continuous boards for structural integrity or weatherproofing above window openings.",
+      "project_id": "25-01-010",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "O.A=Overall\ntyp.=Typical\n*All Dimensions in inches.\n-189.000-\nWINDOW UP HERE\nTHIS IS A PARTIAL BOARD\nWE NEED (2) FULL BOARDS\nABOVE THE WINDOWS\n-3.010\n51.000\n55.625\n-55.625-\nگال\n27\n7.875\nJ6\nJ6\nJ6\n26\n7.875\n25\n24\nJ6\nJM4\nJM3\nD\n23\n-1-\n+\n22\n--\n+\n-11-\n21\nJ6\n120\nMAINTAIN MINIMUM 2\nJ6\n-28.250-\n19\n(UNNOTCHED) ROWS OF WALL\nJ6\n51.250\n18\nABOVE OPENINGS (TYP.)\n*ROWS ACT AS SUPPORTING\nJ2\nJ1\nJ1\nJ2\n17\nLINTEL\nJ2\nJ1\nJ1\nJ2\n16\nA Height=172.646\nJ2\nJ1\nJ1\nJ2\n15\nJ2\nJ1\nJ1\nJ2\n14\nJ2\nJ1\nJ1\nJ2\n13\nJ2\nJ1\nJ1\nJ2\n12\nJ2\nJ1\nJ1\nJ2\n11\nJ2\nJ1\nJ1\nJ2\n10\nJ2\nJ1\nJ1\nJ2\n9\nJ2\nJ1\nJ1\nJ2\n28\nJ2\nJ1\nJ1\nJ2\n37\nJ2\nJ1\nJ1\nJ2\n6\n20.768 typ\nJ2\nJ1\nJ1\nJ2\nJ4\nJ4\n4\nJ4\n66.500-\nJ4\nهل\nهل\n3\nJ4\nFOUNDATION BY OTHERS\n(TYP.)\nJ11\n1.375\n-165.000-\n-173.250\n4.125-\n4.125"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Front and side elevations of a timber-framed structure",
+      "level": "Unknown",
+      "orientation": "Front elevation and right side elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [
+        "JD1",
+        "JT1",
+        "J1",
+        "J2",
+        "J3",
+        "J4",
+        "J5",
+        "J6",
+        "JM3",
+        "JM4",
+        "JD1"
+      ],
+      "key_components": [
+        "Stacked Timber Wall",
+        "Window",
+        "Door",
+        "Roof Rafters",
+        "Foundation (by others)"
+      ],
+      "summary": "This image displays two elevations of a timber-framed structure: a front elevation on the left and a right side elevation on the right. The front elevation shows a double door and two windows, with overall dimensions indicating a width of 173.250 inches and a height of approximately 66.500 inches to the top of the wall. The side elevation reveals a pitched roof with rafters and a window. The walls are constructed from a \"2x6 TONGUE & GROOVE STACKED WALL (TYP.)\". Annotations indicate that the \"FOUNDATION BY OTHERS (TYP.)\". A note specifies \"MAINTAIN MINIMUM 2 (UNNOTCHED) ROWS OF WALL ABOVE OPENINGS (TYP.)\" which \"ACT AS SUPPORTING LINTEL\". Another note states \"THIS IS A PARTIAL BOARD WE NEED (2) FULL BOARDS ABOVE THE WINDOWS\". The overall dimensions for the side elevation are approximately 147.250 inches in length and 36.909 inches to the peak of the roof. Various element tags such as J1, J2, J3, J4, J5, J6, JM3, JM4, JD1, and JT1 are present, likely referencing specific components or details within a larger set of drawings.",
+      "project_id": "25-01-010",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "Overall\nTypical\nimensions in inches.\nJ6\nJ6\nJM4\nJM3\nJ6\n-189.000-\n51.000\n55 625\n−55.625\n+\n+\n+\nALTERNATIVELY YOU COULD\nJUST TELL THEM THEY WOULD\nNEED TO PURCHASE A\nLARGER MODEL TO ADD A\nWINDOW UP HERE\n-28.250-\nTHIS IS A PARTIAL BOARD\nWE NEED (2) FULL BOARDS\nABOVE THE WINDOWS\n7.875\n25\n3.010\n+\nMAINTAIN MINIMUM 2\n(UNNOTCHED) ROWS OF WALL\nABOVE OPENINGS (TYP.)\n*ROWS ACT AS SUPPORTING\n-51.250\nJ2\nJ1\nJ1\nJ2\nLINTEL\nJ2\nJ1\nJ1\nJ2\n16\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\n14\nJ1\nJ1\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\n11\nJ2\nJ1\nJ1\nJ2\nJ1\nJ1\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\nJ4\n66.500-\nJT1\n1.375\n-165.000-\n-173.250-\n4.125\n12\n28 J5\n26 J5\n25 J5\n24 J5\n23 J5\n22 J5\n21 J5\n19 J5\n16\nJ5\n15\nJ3\nJ3\n13\nJ3\n12\nJ3\n10\nJ3\nJ3\nJ5\nJ5\nFOUNDATION BY OTHERS\nJ5\n(TYP.)\nJ5\nJ5\n4.125-\n909\n4.500-\n96.000\n34\n9.500-\n48.125\nJD1\n36.847\n54.250-\n2x6 TONGUE & GROOVE\nSTACKED WALL (TYP.)\n139.000-\n-147.250-\nJ3\nJ3\n37.375\n48.125\nJ3\nJ3\n23°"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Building elevation/section showing roof framing and wall construction",
+      "level": "Unknown",
+      "orientation": "Transverse section looking North",
+      "grid_references": [],
+      "section_callouts": [
+        "S2.0"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [
+        "JE3",
+        "JE4",
+        "JE5",
+        "J9",
+        "J10"
+      ],
+      "key_components": [
+        "Log Walls",
+        "Roof Framing",
+        "Blocking Pieces",
+        "Windows",
+        "Foundation"
+      ],
+      "summary": "This image displays a transverse section of a log building, likely a bunkie, showing the roof framing and wall construction. The roof structure is composed of distinct framing elements labeled JE3, JE4, and JE5, with dimensions indicating lengths of 112.000, 4.500, 29.545, 30.507, and 30.179. The text \"2X10 Blocking Pieces (Middle of the Bunkie)\" and \"See S2.0 for more detail\" indicates specific blocking elements within the roof structure and references another drawing (S2.0) for further information. The walls are constructed of horizontal logs, with individual log courses numbered from 1 to 32 on the left side and indicated by labels J9 and J10 on the right. The window assembly is centrally located within the wall structure. A dimension of 171.000 is shown horizontally across the base of the structure, and the text \"FOUNDATION BY OTHERS (TYP.)\" along with dimensions -173.750 and -182.000 suggest the foundation is external to this drawing's scope and provides vertical control. The overall geometry suggests a pitched roof with a central peak.",
+      "project_id": "25-01-010",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "32\nen\n31 J9\n30 MJ9\n29 J9\n28 M J9\n27\nJ9\n26 J9\n22\n25\nм\nJ9\n24 J9\n23 J9\n22 J9\n21 J9\n20\n290\nJ9\n19 J9\n18\n17\nn\n9999\nJ9\nJ9\n16 J9\nJE3\n15m\nJ10\n14m\nJ10\n13m\nJ10\n12\nn\nJ10\n11\nin\nJ10\n10m\nJ10\n6\nJ10\n8\nJ9\n7\nJ9\nCO\n6\nMJ9\nLO\n5\nJ9\n+\nJ9\n3\nJ9\n2\nJ9\n1\nMJ9\n+\n112.000\n12\nJE4\n2X10 Blocking Pieces\n(Middle of the Bunkie)\nSee S2.0 for more detail\n4.500\nJE5\n29.545\n171.000\nFOUNDATION BY OTHERS (TYP.)\n173.750-\n182.000-\n30.507\n30.179\nw\nn\nw\nM\nn\nJ10\nen\nJ10\nm\nJ10\nin\nJ10\nn\nJ10\nJ10\nin\nJ10\nm\nin\nn\nм"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Exterior wall elevation, likely north or south face",
+      "level": "Unknown",
+      "orientation": "Elevation looking towards the structure",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Exterior Wall Elevation",
+      "element_callouts": [
+        "J1",
+        "J2",
+        "J4",
+        "J6",
+        "J7",
+        "J8",
+        "J9",
+        "JM10",
+        "JM11",
+        "JM12",
+        "JT1",
+        "J17",
+        "J18"
+      ],
+      "key_components": [
+        "Stacked Wall",
+        "Tongue & Groove Siding",
+        "Fascia Board",
+        "Windows",
+        "Doors",
+        "Framing Members"
+      ],
+      "summary": "This image displays an elevation view of a building's exterior wall, characterized by a stacked tongue and groove wall system. The overall height (O.A Height) is noted as 187.169 units. The wall is constructed from multiple horizontal members, identified by tags such as J1, J2, J4, and J6, indicating a layered construction. A 1x4 fascia board is specified to run around the entire perimeter. The elevation clearly shows the placement and configuration of windows and a double door assembly. Dimensions such as 7.875, 20.768 (typical), 66.500, 162.250, 165.000, and 173.250 provide critical measurements for the wall's width and height segments. The notation '2x6 TONGUE & GROOVE STACKED WALL (TYP.)' confirms the construction method. The presence of numerous element callouts (J1 through J18, JM10-JM12, JT1) suggests a detailed framing or assembly plan referenced elsewhere. The 'WINDOW POSITION LOOKS OKAY' annotation provides a qualitative assessment of the window placement.",
+      "project_id": "25-01-010",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "189.000-\n32\nJ8\nJ7\nm31\n30\nen\nड्ड\n7.875\nह\n1x4 FASCIA BOARD, ALL AROUND.\nJ6\nJ6\nJ6\nJ6\nJ6\n29\n3\n28\n27\nm26\n66\nWINDOW POSITION\nLOOKS OKAY\n25\nJ6\nм\n24\nJ6\nJ6\n23\n22\nJM12\nJM11\nJM10\nJ6\nJ6\n{ J17 } J18\n{ J9 J15\nin\n{ J9 J15\n{ J9 ¾ J15\n{ J9 \\ J15\nJ9 J15\nin\n≥ №9 ¾ J15\n{ J9 J15\n3 J9 $ J15\n21\n20\n19\n18\nJ2\nJ2\nJ1\nJ1\nJ1\nJ2\nM17\nJ1\nJ2\nM16\nJ2\nJ1\nJ1\nJ2\n15\nJ2\nJ1\nJ1\nJ2\nм\n3\n14\nJ2\nJ1\nJ1\nJ2\n13\nn\n3\nJ2\nJ1\nJ1\nJ2\n12\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nJ2\nJ2\nJ1\nJ1\nO.A Height=187.169\nJ2\nJ1\nJ1\n222222\nM11\n10\n3\n9\n8\nJ2\nM7\nJ2\nm6\n20.768 typ.\nJ2\nJ1\nJ1\nJ2\n50\nJ4\n3\nJ4\n4\nཙྭ ཙྭ།ཙྭ\n3\nJ4\n2x6 TONGUE & GROOVE\n66.500-\nJ4 3\nJ4\nSTACKED WALL (TYP.)\nJ4 M2\nJ4\nJT1\n1.375\nJ4 1\nJT1\n162.250\n165.000\n173.250\n-4.125"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Overall building footprint, likely a roof or upper floor framing plan",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Framing Plan",
+      "element_callouts": [
+        "KG0",
+        "KG1",
+        "KG2",
+        "KG3",
+        "KG4",
+        "KG5",
+        "KG6",
+        "KG7",
+        "KG8",
+        "KG9",
+        "K4",
+        "K9(2 X 8)",
+        "K10(2 X 10)"
+      ],
+      "key_components": [
+        "Framing Members",
+        "Fascia Boards",
+        "Foundation (by others)"
+      ],
+      "summary": "This image displays a framing plan, likely for a roof or upper floor, with overall dimensions and framing member callouts. The note \"*All Dimensions in inches.\" clarifies the unit of measurement. The plan shows a symmetrical structure with a total width of 138.250 inches and a length of 130.000 inches. Key framing elements are identified with tags such as 'KG0' through 'KG9' and 'K4'. Specific members like 'K9(2 X 8)' and 'K10(2 X 10)' are noted, indicating lumber dimensions. The overall length of the structure is indicated as 120.000 inches, with various segments like 25.213, 24.029, and 20.770 inches contributing to the total span. The height is indicated by a dimension of 56.000 inches. A note specifies \"Fascia Boards - All around\". The foundation is noted as \"FOUNDATION BY OTHERS (TYP.)\", indicating it is not detailed in this drawing. The drawing also includes angular dimensions, such as 23 degrees and 14 degrees, likely related to roof slopes or member angles. The dimension 139.405 and 136.715 likely represent overall heights or lengths of specific sections of the structure. The dimension 3.500 appears multiple times, possibly indicating standard offsets or member depths. The dimension 0.750 is also frequently noted, potentially representing material thickness or spacing.",
+      "project_id": "25-01-010",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "3.500\n139.405\nNote:\nO.A=Overall\ntyp.=Typical\n*All Dimensions in inches.\n3.010-\nFascia Boards\n- All around\n3.500-\n12\n5\n120.000\n20.770\n25.213\n24.029\n-0.750\n12\nKG9\n3\nKG8 M37\nKG7\n36\nKG6\n35\n56.000\nKG5\nm 34\n23.337\n23°\nKG4\n{\n4.500\nKG3\n/32\nKG2\nK10(2 X 10)\nK9(2 X 8)\n2.781\n14°\n-3.500\nм\n0.750-\nFOUNDATION BY OTHERS\n(TYP.)\n+ KG1\nK4\nK4\nKGO\nм\nK4\nм\nK4\nK4\nK4\nK4\nK4\nм\nK4\n20.500\n29\n28\n0.750\nM27\nм\n26\n-14.149\n25\nм\n24\n23\nM22\nи\n24\n21\nM20\nм\nм\nK4\nK4\nm19\n18\nn\nK4\nм\n17\nen\nK4\nм\n16\nK4\nK4\nм\nK4\n15\n14\n136.715\n13\nм\nK4\nK4\nn\nM12\n11\nм\n10\nn\nK4\nn\nK4\nK4\nK4\nK4\nK4\nn\nK4\nn\nм\nM\nK4\nK4\nK4\n138.250\n130.000-\nm9\nм\n8\n7\nм\n00\n6\nн\nLO\n5\nm\n4\nw\nм\n3\n2\nм\n1\n-4.125"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Main building area, likely a floor plan",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Framing Plan",
+      "element_callouts": [
+        "K7R",
+        "K6",
+        "K5",
+        "KM4",
+        "KM3",
+        "KT2"
+      ],
+      "key_components": [
+        "Wall Studs",
+        "Framing Members",
+        "Windows",
+        "Fascia Board"
+      ],
+      "summary": "This image is a plan view, likely a wall framing plan for a section of a building. It depicts a series of vertical framing members, indicated by the numerous horizontal lines and associated labels such as 'K5', 'KM4', 'KM3', and 'KT2'. The overall width of the framed area is dimensioned at 192.500 units. A prominent feature is a double window assembly, with an annotation \"WINDOW POSITION LOOKS OKAY\" indicating its placement. The vertical dimensioning on the right side shows an overall height (O.A Height) of 189.367 units. A 1x4 fascia board is noted as being installed all around the perimeter. The dimension \"4.125typ.\" suggests a typical thickness or spacing related to the framing elements. The horizontal dimensioning at the bottom shows a total length of 185.250 units, with a segment of 177.000 units and a smaller segment of 1.375 units, and another dimension of -4.125. The labels 'K7R' and 'K6' appear at the top of the framing sequence. The drawing indicates a structured framing system with repeated elements, typical of wall construction.",
+      "project_id": "25-01-010",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "4.125typ.\nK7R\nK6\n28\nK5\n27M\nK5\n26m\nK5\n225\n22\nn\n22\nen\nK5\n24M\nK5\n23M\nK5\nKM4\n21 mm KM3\n20\n20\nK5\nK5\n19\n18\n17\nn\nK5\n15\nK5\n16\n3\nK5\n15m\nK5\n14M\n13\n12m\n11\n3\nK5\nin\nK5\nK5\nནཱ ན ན ན\nK5\n10m\nK5\n9\nK5\n8 m\nK5\n7\n3\nK5\n6\nin\nK5\n5M\nK5\n4M\nK5\n3m\nK5\n2M\nK5\n1 m\nKT2\nK5\n192.500\n177.000-\n185.250\nnew\nWINDOW POSITION\nLOOKS OKAY\n1.375\nin\nn\nn\nn\nn\nin\nin\nм\nen\nn\nn\nin\n-4.125\n1x4 FASCIA BOARD, ALL AROUND.\nO.A Height=189.367"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Building elevation showing roof structure and wall framing",
+      "level": "Unknown",
+      "orientation": "Elevation looking towards the gable end",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation / Roof Framing",
+      "element_callouts": [
+        "K11",
+        "Gable"
+      ],
+      "key_components": [
+        "Roof Framing",
+        "Wall Framing",
+        "Gable End",
+        "Foundation"
+      ],
+      "summary": "This image is a section view or elevation depicting the framing of a building's roof and walls. The overall height is noted as 188.149 inches. The roof structure appears to be a gable roof, with framing members labeled 'K11' stacked vertically from level 1 to level 30. Dimensions such as 33.432, 150.000, 32.172, 26.132, and 56.854 indicate lengths and spans of the roof framing elements. The note \"All Dimensions in inches.\" clarifies the unit of measurement. The foundation is indicated as \"FOUNDATION BY OTHERS (TYP.)\", suggesting it is not detailed in this drawing. The framing elements are identified by the callout 'K11', which likely refers to a specific structural member type or connection detail found elsewhere in the drawing set. The vertical stacking of 'K11' elements suggests a layered wall construction or a series of horizontal framing members. The presence of a 'Gable' label at the top indicates the type of roof end. The dimensions 159.250, 162.000, and 170.250 at the base likely represent overall building dimensions or foundation offsets.",
+      "project_id": "25-01-010",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "+\n30\n29\nGable\n28 MK11\n27K11\n26\nK11\n25\nK11\n24\nK11\n23 MK11\n22K11\nK11\n21\n20 MK11\n19 MK11\n18\nK11\n17 K11\n16 K11\n15K11\n14K11\n13K11\n12\nK11\n11\nK11\n10K11\n9K11\n8\nMK11\n7\nMK11\n6\nK11\n5\nK11\n4\nMK11\n3\nK11\n2\nK11\n1\nK11\n12\nNote:\nO.A=Overall\ntyp.=Typical\n*All Dimensions in inches.\n33.432\n150.000\n32.172\n32.172\n159.250-\n162.000-\n170.250-\n26.132\n38\n37\nм\n36\n35\n34\n12\n3\nKo\n33\n32\n56.854\n28\n27\nen\n26\n25\n24\n23\nM22\n22\n21\n20\nO.A Height 188.149\n19\n18\n17\n16\n3\n15\n14\n13\n12\n11\n10\nм\n9\nm8\nm7\nm6\n5\n3\n4\n3\n3\nm2\nm 1\nFOUNDATION BY OTHERS\n(TYP.)"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor - Main area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Main Building Plan",
+      "element_callouts": [
+        "K12R",
+        "K5",
+        "KM10",
+        "KM9",
+        "KM8",
+        "KT2",
+        "K11",
+        "K15"
+      ],
+      "key_components": [
+        "Wall System",
+        "Window Openings",
+        "Structural Grid",
+        "Foundation (by others)"
+      ],
+      "summary": "This is a ground floor plan view of a building structure. The overall length of the structure is indicated as 192.500. The plan shows a grid of vertical elements labeled 'K5' which appear to be columns or studs, spaced closely together, forming walls. There are also specific elements labeled 'KM10', 'KM9', 'KM8', and 'KT2' which likely represent different types of structural members or framing. The labels 'K11 K15' appear repeatedly, possibly indicating a specific connection or framing detail for these members. A central area features two large window openings, with a note indicating 'WINDOW POSITION LOOKS OKAY'. The overall height of the structure is noted as 188.149. A significant annotation states 'FOUNDATION BY OTHERS (TYP.)', indicating that the foundation design and construction are not part of this drawing set. Dimensions such as 51.000 and 61.625 define the spacing and layout of elements within the plan. The dimension 1.375 is shown at the right edge, and 4.125 at the bottom left, likely representing offsets or wall thicknesses. The presence of 'Fascia Bo - All arou...' suggests details related to the roof edge or fascia are also included or referenced.",
+      "project_id": "25-01-010",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "en\n30\n29\nм\nK12R\n28\nen\nK5\n24\n27\nK5\n26\nK5\n25\n222\n25\nK5\n61.625\n24\nK5\n23\nK5\n22\nKM10\n21\n3\nKM9\nK11 \\ K15\n20 KM8\nht 188.149\nK5\n19\n18\nK5\n17\nK5\n16 M\nK5\n15\nK5\n14m\nནཱ ནྲ།ནྲ། ནྲནྲ\nK5\n13\nK5\n12\nin\nK5\n11\nK5\n10\nK5\n9\nK5\n8\nK5\nA Heigth 188.149\n7 m\nK5\n6\nནྲ།ནྲ\nK5\n5\nK5\nFOUNDATION BY OTHERS\n(TYP.)\n4.125\n+\nen\nK5\n3\nм\nK5\n2\n1\nen\nKT2\nK5\nK5\nK11K15\nK11 K15\nn\n174.250\n177.000\n185.250\n§ K11 § K15\nм\n51.000\n§ K11 K15 |\n192.500\n§ K11 K15\nWINDOW POSITION LOOKS\nOKAY\n61.625\nм\nn\nм\nм\nK11 K15\nм\nK11 K15\nм\n1.375\nм\nn\nFascia Bo\n- All arou"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Rear and side view of the Rockwood 199 Full Loft",
+      "level": "Unknown",
+      "orientation": "Rear and Side",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Loft",
+        "Window"
+      ],
+      "summary": "This image displays an elevation view of the 'Rockwood 199 Full Loft' structure, specifically showing the rear and side perspectives. The title indicates the presence of a loft area and a loft window located in the rear of the loft. This view is likely intended to illustrate the overall form and fenestration of the lofted section of the building.",
+      "project_id": "25-01-010",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "Rockwood 199 Full Loft - Rear and Side View\nWith loft window in loft rear"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Left side of the building, showing multiple levels",
+      "level": "Unknown",
+      "orientation": "Looking East",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Wall",
+        "Floor Joists",
+        "Slab",
+        "Roof Structure"
+      ],
+      "summary": "This image is a section view of a building, labeled \"Left Side\". It depicts a vertical cut through the structure, illustrating multiple levels indicated by horizontal lines numbered from 1 to 25. The \"Loft Floor\" is explicitly labeled at level 20, supported by floor joists shown between levels 19 and 20. The section shows a primary vertical element, likely a wall or structural frame, running along the left edge, with numbering from 1 to 25. The top portion of the drawing displays a detailed representation of a roof structure, possibly showing rafters or trusses. The base of the section shows a thick horizontal element, likely a foundation slab or ground floor, colored in dark red. The various numbered levels suggest a multi-story building, with the loft floor being a distinct intermediate level. The presence of \"M\" next to some level numbers (e.g., 18M, 17M, 10M) might indicate metric measurements or specific construction details for those levels, though their exact meaning is not visually discernible without further context or a legend. The overall view provides a cross-section of the building's vertical construction and roof system.",
+      "project_id": "25-01-010",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "25\n24\n23M\n22M\n21\nLoft Floor-\n20\n19\n18 M\n17 M\n16 m\n15 M\n14\n13 m\n12\n11 m\n10\n9\n8 m\n7 m\n6\nLQ\n4\n3\n2 M\n1 m\nLeft Side"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "Back wall elevation",
+      "level": "Unknown",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Log Wall",
+        "Window",
+        "Roof Rafters",
+        "Loft Floor"
+      ],
+      "summary": "This image is a west elevation of a log building, showing the back wall. The elevation is detailed with horizontal lines representing the logs, numbered from 1 to 37 from bottom to top. Two window openings are visible: one on the lower level and another on the upper level, designated as the 'Loft Floor'. A note indicates 'WINDOW POSITION LOOKS OKAY' for the upper window. The roof structure is depicted with rafters and purlins. The 'Loft Floor' is explicitly labeled, indicating a distinct level within the structure. The overall construction appears to be timber log construction with visible joinery details at the corners. The numbering system from 1 to 37 likely denotes log courses or vertical increments.",
+      "project_id": "25-01-010",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "27\n26M\n25M\n24\n23\n22m\n21M\n20M\n19\n18 M\n17M\n16M\n15M\n14M\n13M\n12M\n11M\n10M\n9\n8\n7\n5\n3\n2\n28\n29\nWINDOW POSITION LOOKS\nOKAY\n30\n31\n32\nBack\n34\n33\n35\n5\n37\n36\nLoft Floor"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Front facade of the building",
+      "level": "Ground Floor",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Log Walls",
+        "Windows",
+        "Door",
+        "Roof Rafters",
+        "Loft Floor Framing"
+      ],
+      "summary": "This image displays the front elevation of a log cabin structure. The elevation is divided into multiple levels, indicated by horizontal lines and numbered markers from 1 to 37 along the left and right sides, suggesting a system for tracking vertical progress or component placement. The main level features a central door and two windows on either side. Above this, a loft level is indicated by the text 'Loft Floor' and features two additional windows. The roof structure is a gable roof, with rafters clearly depicted. The OCR text 'WINDOW POSITION LOOKS OKAY' provides a qualitative assessment of the window placement. The numbered markers, such as 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, and 37, likely correspond to specific construction stages or elements within the elevation, particularly in the roof area. The overall structure appears to be a timber-framed building with distinct log wall construction.",
+      "project_id": "25-01-010",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "Front\nм\n27\n26M\n25M\n24M\n23M\n22M\n21 M\n20\n19\n18\n17m\n16\n15\n14M\n13M\n12M\n11m\n10\n9\n8\n7\n6\n5\n4\n3\n28\n29\n30\nWINDOW POSITION LOOKS\nOKAY\n31\n32\n34\n33\n35\nLoft Floor\n37\n36"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Section",
+      "location": "Right side elevation showing wall construction and loft floor",
+      "level": "Ground Floor",
+      "orientation": "Right side elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Section with Windows",
+      "element_callouts": [],
+      "key_components": [
+        "Log Wall",
+        "Windows",
+        "Loft Floor Joists",
+        "Roof Sheathing",
+        "Foundation"
+      ],
+      "summary": "This image is a section view, specifically an elevation of the right side of the structure, detailing the wall construction and the placement of the loft floor. The title 'Right Side' clearly indicates the orientation. The wall is constructed of stacked logs, with horizontal lines representing the log courses, numbered from 1 to 25 on the right edge. The OCR text indicates 'Extra Windows' and 'Loft Floor', which are visually represented. The 'Loft Floor' is shown supported by joists spanning across the log walls. Two large windows are depicted in the wall, with blue infill representing glazing and black elements representing hardware or frames. The numbering from 1 to 25 likely represents vertical increments or levels within the wall structure. The top portion of the drawing shows a detailed pattern representing roof sheathing or shingles. The bottom shows a foundation element, indicated by hatching and a dark red band.",
+      "project_id": "25-01-010",
+      "page_number": 5,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "Extra Windows\nRight Side\neven\nLoft Floor-\n25\n24\n23\n22\n21\n20\n19\n18\nM17\nM 16\n15\n14\n13\nm 12\nM 11\n10\n9\n8\n№ 7\n6\n5\nm4\nm3\n2\nin 1"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "Side elevation of the building structure",
+      "level": "Unknown",
+      "orientation": "Side elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Side Elevation",
+      "element_callouts": [
+        "K11",
+        "K10(2 X 10)",
+        "K9(28)"
+      ],
+      "key_components": [
+        "Rafters",
+        "Joists",
+        "Fascia Boards",
+        "Wood Framing",
+        "Foundation"
+      ],
+      "summary": "This image displays a side elevation of a building's structural framing. The elevation shows a pitched roof system supported by rafters and joists, with multiple horizontal elements labeled 'K11' which likely represent ceiling joists or purlins, spaced at regular intervals. The overall length of the structure is indicated by dimensions such as 159.250 and 170.250. The roof framing includes elements labeled 'K10(2 X 10)' and 'K9(28)', suggesting specific beam or rafter types. Fascia boards are noted as being installed 'All around' the perimeter. The text 'Ripped 2X6' indicates a specific lumber cut used in the construction. Vertical dimensions are provided, such as 94.079 and 101.540, relating to the overall height or specific member elevations. The foundation is explicitly noted as 'FOUNDATION BY OTHERS (TYP.)', indicating it is not detailed in this drawing. The drawing also includes various numerical labels (e.g., 20, 21, 22, 23, 24, 25, 26, 27, 28, 29) which likely correspond to specific framing members or connection points, and are associated with the 'K11' elements. Dimensions like 3.500, 28.672, 123.950, and 150.000 define the lengths and spans of various roof sections. The dimension 14.153 indicates a vertical height, and 4.125 indicates a horizontal offset. The overall height is indicated by 144.500, 91.339, and 97.844.",
+      "project_id": "25-01-010",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "Ripped 2X6\n101.540\n94.079\n31.685\n12\n4\n150.000\n123.950\n28.672\n27\n26\n28.672\n25\n21\n20\n3.500 19K11\n22\n23\nFOUNDATION BY OTHERS\n(TYP.)\n18 K11\n17K11\n16K11\n15K11\n14K11\n13K11\n12K11\n11K11\n10K11\n9\nK11\n8\nK11\n7\nK11\nco\n6\nK11\nLO\n5\nK11\n4 K11\n3\n2\nK11\nK11\n1\nK11\n-159.250-\n-170.250-\nSIDE ELEVATION\nFascia Boards\n- All around\n24.435\n28\n29\n-0.750\nK10(2 X 10)\n-3.500\n12\n3\n57.604\n14.153\n4.125\nFascia Boards\n- All around\n-3.500\n91.339\n97.844\n144,500\nFOUNDATION BY O"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "East side of the structure, showing wall and roof profile",
+      "level": "Ground Floor",
+      "orientation": "East elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "S6.0",
+        "S2.0"
+      ],
+      "element_type": "Side Elevation",
+      "element_callouts": [
+        "KB1",
+        "KB2",
+        "KB3",
+        "KB4",
+        "KB5",
+        "K11"
+      ],
+      "key_components": [
+        "Stacked Wall",
+        "Tongue & Groove Sheathing",
+        "Blocking",
+        "Fascia Boards",
+        "Ripped 2x6",
+        "Foundation"
+      ],
+      "summary": "This image displays the SIDE ELEVATION of a structure, likely a bunkie, showing its exterior profile and wall construction. The primary wall system is a \"2x6 TONGUE & GROOVE STACKED WALL (TYP.)\". The elevation indicates various dimensions, including a total length of 170.250 units and a height of 162.000 units at the peak. The roof structure is detailed with angled lines and labeled components like \"KB1\" through \"KB5\", suggesting roof framing or bracing points. Dimensions such as 56.000, 23.938, 27.672, and 31.182 are shown along the roofline, defining its geometry. The wall is noted to have \"Fascia Boards - All around\" and \"Ripped 2X6\" elements. Blocking pieces, specifically \"2x10 Blocking Pieces (Middle of the Bunkie)\", are called out and referenced to \"See S2.0 for more detail\". The foundation is indicated as \"FOUNDATION BY OTHERS (TYP.)\" with a grade line and a dimension of 4.125 units. Notes regarding window allowances state, \"WE CAN ALLOW (3) WINDOWS TOTAL, ONE IN EACH SIDE IN THE USUAL CONFIGURATION FOR THIS BUNKIE. UNFORTUNATELY WE CANNOT ADD ADDITIONAL OPENING.\" The elevation also references \"SEE S6.0\" and \"SEE S2.0\", indicating further details are available on those sheets. The stacked wall construction is further detailed with horizontal lines representing the 2x6 boards, and individual levels are marked with \"K11\" tags from 1 to 19, indicating vertical stacking or framing elements.",
+      "project_id": "25-01-010",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "WALL\nING\n3\n12\n3.500-\n0.750\n14.153-\n144.500\n97.844 91.333\nERS\nRipped 2X6\n56.000\n-2.781\n14.0°\nKB1\nGRADE\n4.125\nFascia Boards\n- All around\n4.500\n29\nSIDE ELEVATION\n12\n4\n23.938\n150.000\n28\n123.950\n27.672\nKB3\n27\n26\n27.672\nKB4\n25\n24\n31.182\nKB4\n23\n22\nKB5\n-3.500\n21\n20\nB\n19\nE_\n18\n0.750\nRipped 2X6\nKB2\nSEE S6.0\n2x10 Blocking Pieces\n(Middle of the Bunkie)\nSee S2.0 for more detail\n2x6 TONGUE & GROOVE\nSTACKED WALL (TYP.)\n162.000-\n170.250-\nK11\nK11\nK11 M17\nK11\n16 لس\n2X10 Blocking Pieces\nK11\n15\n(Middle of the Bunkie )\nSee S2.0 for more detail\nK11\n14\nK11\nडू\n13 101.540\nK11\n12\nK11\n11\nWE CAN ALLOW (3) WINDOWS\nTOTAL, ONE IN EACH SIDE IN\nK11\nTHE USUAL CONFIGURATION\nFOR THIS BUNKIE.\n10\n10\nK11\n9\nUNFORTUNATELY WE\nCANNOT ADD ADDITIONAL\nOPENING\nK11\n8\nK11\n7\nK11\n6\nK11\n5\nK11\n4 لس\nK11\n№ 3\nK11\n2\nFOUNDATION BY OTHERS\n(TYP.)\nK11\nw 1\n94.079"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "Rear of building",
+      "level": "Unknown",
+      "orientation": "Rear elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Roofing",
+        "Stacked Wall",
+        "Fascia Board",
+        "Grade"
+      ],
+      "summary": "This image displays the REAR ELEVATION of a structure. The overall height (O.A Height) is noted as 144.500. The elevation shows a stacked wall system constructed from 2x6 TONGUE & GROOVE lumber, indicated as typical (TYP.). Above the stacked wall, the ROOFING is shown, specified as 'PER OWNER'. A 1x4 FASCIA BOARD is detailed to be installed ALL AROUND the perimeter. Dimensions indicate the overall width of the elevation is 191.000, with a wall width of 177.000 and a further dimension of 185.250. The elevation is marked with horizontal lines numbered 1 through 19, likely representing levels or courses. The base of the structure is at GRADE, with a thickness of 1.375 shown below the stacked wall. Additional dimensions of 4.125typ. and -4.125 are present, likely indicating material thicknesses or offsets.",
+      "project_id": "25-01-010",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "N BY OTHERS\n(TYP.)\n4.125typ.-\n-\n19\n18\n17 m\n16\n15\n14\n13\n12m\n11m\n10\n9\n8\n7rr\n6\n5\n4m\n3\n2m\n191.000\nROOFING (PER OWNER)\n2x6 TONGUE & GROOVE\nSTACKED WALL (TYP.)\n177.000-\n185.250-\nREAR ELEVATION\n-4.125\n1x4 FASCIA BOARD, ALL AROUND.\nO.A Height=144.500\n1.375\nGRADE"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "Front of building",
+      "level": "Ground Floor",
+      "orientation": "Front elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Front Elevation",
+      "element_callouts": [
+        "K1",
+        "K2",
+        "K3",
+        "K5",
+        "K6",
+        "KT1",
+        "K12M"
+      ],
+      "key_components": [
+        "Stacked Wall",
+        "Tongue & Groove",
+        "Fascia Board",
+        "Roofing",
+        "Windows",
+        "Doors",
+        "Foundation"
+      ],
+      "summary": "This image displays the FRONT ELEVATION of a structure, identified as 'ckwood 199sqft'. The overall height (O.A Height) is noted as 144.500. The elevation shows a stacked wall construction, described as '2x6 TONGUE & GROOVE STACKED WALL (TYP.)', with various callouts (K1, K2, K3, K5, K6, KT1, K12M) indicating different components or zones. The main wall system appears to be constructed from stacked wood elements. The elevation features multiple windows, identified by K2 and K3 callouts, and two doors, associated with K1 callouts. A fascia board, specified as '1x4 FASCIA BOARD, ALL AROUND.', is present at the top. The roofing is indicated as 'ROOFING (PER OWNER)'. Dimensions are provided, including a total width of 191.000 and a height of 144.500. A detail note specifies to 'MAINTAIN MINIMUM 2 (UNNOTCHED) ROWS OF WALL ABOVE OPENINGS (TYP.)' and clarifies that these 'ROWS ACT AS SUPPORTING LINTEL'. The foundation is noted as 'FOUNDATION BY OTHERS (TYP.)'. A small detail at the top right shows a window assembly with dimensions 51.000 wide by 34.125 high, with an overall dimension of 54.250 wide by 37.37 high, and is labeled '4 x 34.125'.",
+      "project_id": "25-01-010",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "ckwood 199sqft\n1x4 FASCIA BOARD, ALL AROUND.\nK2\n7.000-\nK2\nK2\nK2\nK2\nK2\nK2\nми\nK2\nK2\nO.A Height=144.500\nGRADE\nK2\nK2\nK2\nK2\n2 2 2\nK2\nK2\nK2\nK2\nKT1\nFRONT ELEVATION\nK2\nK2\n5555\nK2\nK2\nK3\n۵۵\nK3\nK3\nK3\n-1.375\n191.000-\nROOFING (PER OWNER)\n4 x\n34.125\nK12M 27\nK3\nK2\nK3\nK2\n3\nK3\nK2\nK3\nK2\nK5\n22\n26\n25\n24\n23\n22\n51.000-\n54.250-\n37.37\nΣ Ε Σ Σ Σ Σ Σ Σ Σ Σ Σ Σ Σ Σ Σ Σ Σ\nK1\nK1\nK1\nK2\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\nK2\nK1\nK1\n2x6 TONGUE & GROOVE\nK1\nK1\nSTACKED WALL (TYP.)\nK1\nK1\nK1\nK1\nK1\nK1\nK1\nK1\nK2\n5555555555555555555\nK6\n19\nK5\n18\n17\n65\n14\nMAINTAIN MINIMUM 2\n(UNNOTCHED) ROWS OF WALL\nABOVE OPENINGS (TYP.)\n13\n*ROWS ACT AS SUPPORTING\n12\nLINTEL\n11\n144.50\n10\n9\n8\n7\nK2\n6\nK2\nm5\nK2\n4\nK2\n3\nK2\nm2\nFOUNDATION BY OTHERS\n(TYP.)\n1\nKT1\n4.125typ.\n177.000-\n185.250-"
+    }
+  ]
+}

@@ -93,6 +93,9 @@ supabase_keys.txt
 # Google service account credentials (sensitive - do not commit)
 google/ocr-key.json
 
+# Google input images (large files - do not commit)
+google/input_images/
+
 # OS
 Thumbs.db
 .DS_Store

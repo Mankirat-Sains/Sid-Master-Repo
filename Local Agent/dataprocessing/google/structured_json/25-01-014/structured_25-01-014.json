@@ -1,0 +1,86 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation - thickened edge detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1",
+        "3/S"
+      ],
+      "element_type": "Thickened Edge Foundation Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Slab",
+        "Footing",
+        "Reinforcing Steel",
+        "Insulation",
+        "Vapour Barrier",
+        "Granular Fill",
+        "Anchor Bolts",
+        "Sill Plate"
+      ],
+      "summary": "This detail illustrates a thickened edge foundation system for a concrete slab. The foundation includes a footing with a minimum width of 1'-0\" and a depth of 2\" below the slab, supporting a slab that is 6\" thick. The slab has a thickened edge extending downwards. The detail specifies (4) 15M rebar for reinforcement within the slab, with a note to refer to other notes for cover requirements. The sill plate is secured with \\\"Ø anchor bolts spaced at 48\" on center, with provisions to leave openings for doors. The exterior grade slopes away at 2% and may include insulation. Beneath the slab, a 6mil poly vapour barrier is optional, laid over compacted granular 'A' fill. A minimum of 2\" (R10) of extruded polystyrene insulation with a minimum compressive strength of 30 psi is specified below the slab. Reinforcement options for the slab include 6x6x% WWM, 16\" x 16\" 10M grid, or fibre mesh. The overall scale of the detail is 1/2\"=1'-0\". The section callouts '2/S1' and '3/S' indicate this detail is part of a larger drawing set and references other sections or sheets.",
+      "project_id": "25-01-014",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "2\nSECTION\nS1 THICKENED EDGE\nSLOPE GRADE AWAY 2%, &\nINSULATION (IF PRESENT)\n6'-0\"\n2\"\nSILL PLATE\nc/w 2\" ANCHOR BOLTS @ 48\" o.c.\n(LEAVE OPENINGS IN SILL PLATE @\nDOOR LOCATIONS)\n(4) 15M REBAR\n(SEE NOTES FOR COVER)\n6x6x% WWM\nOR\n16\" x 16\" 10M GRID\nOR\nFIBRE MESH\n1'-0\"\n6mil POLY VAPOUR\nBARRIER (OPTIONAL)\nCOMPACTED\nGRANULAR 'A'\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE\nMIN. COMPRESSIVE STRENGTH OF 30 psi\n1/2\"-1'-0\"\n3\nS"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Intermediate thickened strip footing",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S1"
+      ],
+      "element_type": "Intermediate Thickened Strip Footing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete",
+        "Reinforcing Steel",
+        "Extruded Polystyrene",
+        "Polyethylene Vapor Barrier",
+        "Compacted Granular Fill"
+      ],
+      "summary": "This detail illustrates an intermediate thickened strip footing. The footing consists of concrete with a thickened section in the center, measuring 1'-0\" wide. It is reinforced with (2) 15M rebar bars that are continuous. Below the concrete slab, there is a layer of MIN. 2\" (R10) extruded polystyrene insulation with a MIN. compressive strength of 30 psi, which is installed c/w (covered with) a 6 mil polyethylene vapor barrier. The footing is supported by a MIN. 6\" layer of compacted granular 'A' fill. The overall scale of the drawing is 1/2\"=1'-0\". The section callout '3/S1' indicates this detail is Section 3 on Sheet S1, providing a specific view of the footing construction.",
+      "project_id": "25-01-014",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "MIN. 2\" (R10) OF EXTRUDED POLYSTYRENE\nMIN. COMPRESSIVE STRENGTH OF 30 psi\nc/w 6 mil POLY.\n3\nSECTION\n$1 INTERMEDIATE THICKENED STRIP FOOTING\n1/2\" =1'-0\"\n1\n1'-0\"\n2\n(2) 15M REBAR CONT.\nCOMPACTED\nGRANULAR 'A'\n6\"\n'NIW'\n6\""
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor - Main slab area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1",
+        "3/S1"
+      ],
+      "element_type": "Floating Slab Plan",
+      "element_callouts": [
+        "S1"
+      ],
+      "key_components": [
+        "Floating Slab",
+        "Anchor Bolts"
+      ],
+      "summary": "This is a ground floor plan view showing a floating slab. The overall dimensions of the slab are 60'-0\" in length and 52'-0\" in width, as indicated by the dimension lines. The slab is identified as 'S1 FLOATING SLAB'. The plan also indicates the presence of \\\"Ø ANCHOR BOLTS @ 48\\\" o.c.\\\" (anchor bolts with a diameter, spaced at 48 inches on center), which are critical for connecting any elements to the slab. Several section callouts, labeled '2/S1' and '3/S1', are visible, indicating where detailed sections of this slab are shown on sheet S1. The scale of the drawing is 1/8\"=1'-0\".",
+      "project_id": "25-01-014",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "52'-0\"\nPLAN\nS1 FLOATING SLAB\nPLATE\n\"Ø ANCHOR BOLTS @ 48\" o.c.\n3\nS1\n1/8\" 1'-0\"\nS1\n60'-0\"\n2\nS1\n2\nS1"
+    }
+  ]
+}

@@ -1,0 +1,504 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation - Retaining wall and footing detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Detail",
+      "element_callouts": [
+        "FW2"
+      ],
+      "key_components": [
+        "Retaining Wall",
+        "Footing",
+        "Concrete Slab",
+        "Reinforcing Steel",
+        "Undisturbed Soil"
+      ],
+      "summary": "This detail illustrates a foundation system for a retaining wall. The retaining wall itself is 8 inches thick and constructed of 25 MPa concrete. It is reinforced with 15M rebar, including two 15M bars at the top perimeter of the wall, and continuous 15M horizontal and vertical bars spaced at 16 inches on center. The footing supporting the retaining wall is 3'-6\" wide and 12\" thick, identified as R/W. The footing contains (6) 15M continuous rebar and 15M bent dowels that are 36\" long vertically. Additionally, 15M horizontal bars are spaced at 16\" on center, with 3\" bottom cover to the rebar. The detail shows the footing bearing on undisturbed soil. A 6\" concrete slab is shown adjacent to the foundation. The overall height from the top of the footing to the top of the retaining wall is indicated as 3'-10\". A steel lid is referenced as per D3. The detail is labeled FW2 and is noted as Not To Scale (N.T.S.).",
+      "project_id": "25-01-004",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "STEEL LID AS PER D3-\nA\nFW2\nCONC. SLAB\nFOUNDATION\nDETAIL N.T.S.\nRETAINING WALL FTG.\n3'-6\" WIDE x 12\" THICK R/W\n(6) 15M REBAR CONT.\n15M BENT DOWEL 36\" VERT. 4\n24\" HORIZ. 16\" O.C.\n15M x 36\" LONG\nTRANSVERSAL BAR ® 16\" O.C.\n3\" BOTTOM COVER\nUNDISTURBED SOIL\nGRADE\nTOP OF FOUNDATION\n8\" RETAINING WALL\n25 MPa CONCRETE\n2 15M TOP PERIMITER\nOF WALL\n15M HORIZ. 16\" O.C.\n15M VERT. 16\" O.C.\n3'-10\"\nTOP OF FOOTING"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation wall and footing",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Detail",
+      "element_callouts": [
+        "FW1"
+      ],
+      "key_components": [
+        "Concrete Wall",
+        "Footing",
+        "Concrete Slab",
+        "Anchor Bolts",
+        "Rebar",
+        "Sill Gasket"
+      ],
+      "summary": "This detail illustrates a foundation wall (FW1) and its supporting footing. The concrete wall is 8 inches thick with a compressive strength of 25 MPa. It sits on a 6-inch concrete slab. The foundation footing is 8 inches wide and 24 inches deep, with a compressive strength of 20 MPa. Reinforcement includes two 15M continuous bars within the footing and two 15M continuous bars at the top of the foundation wall, similar to other door openings. Vertical reinforcement in the footing consists of 15M bars spaced at 36 inches on center, with 48 inches of cover. Horizontal reinforcement in the footing is 1-15M bar at grade. Dowels of 15M x 24\" are also provided at 36 inches on center. The detail shows anchor bolts of 1/2\" diameter spaced at 48 inches on center, securing a sill plate on a 1/4\" sill gasket to the top of the foundation wall. The overall height from the top of the footing to the top of the foundation is indicated as 6'-6\", and the height of the concrete wall above the slab is 3'-2\". The footing has a 3-inch cover below and the wall has a 4-inch cover below.",
+      "project_id": "25-01-004",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "REVISIONS\nBUMP OUT SIZE\nNO.\nDATE\n117-03-25\n1/2\" DIA. ANCHOR BOLTS\n48\" o.c. SILL PLATE ON\n14\" SILL GASKET\n2 15M CONT AT TOP\n-(SIMILAR AT ALL DOOR\nOPENINGS)\nTOP OF FOUNDATION\n6\" CONC. SLAB\n3'-2\"\n8\" 25 MPa\nCONCRETE WALL\nFW1\n8\"x 24\" 20 MPa FTG\n2 15M CONT\nFOUNDATION\nDETAIL N.T.S.\nGRADE\n1 - 15M HORIZ ®\nGRADE\n15M VERT ®\n36\" o.c.\n48\" COVER\n19-9\n15M x24\" DOWELS\n36\" O.C.\nTOP OF FOOTING\nCOVER"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – main building area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A/P5"
+      ],
+      "element_type": "Foundation and Floor Plan",
+      "element_callouts": [
+        "FW1",
+        "FW2",
+        "FW3",
+        "FW4",
+        "C1",
+        "C2",
+        "L1"
+      ],
+      "key_components": [
+        "Foundation Walls",
+        "Concrete Floor",
+        "Compacted Granular Fill",
+        "Reinforcing Steel",
+        "Steel Plate",
+        "Steel Beams"
+      ],
+      "summary": "This is a ground floor plan view showing foundation walls (FW1, FW2, FW3, FW4), columns (C1, C2), and a lintel (L1). The plan indicates a 6\" concrete floor with a minimum of 6\" compacted granular 'A' fill on undisturbed soil. Dimensions are provided for various sections of the foundation walls and overall building layout, with a total length of 140'-0\". A detail callout is present for an 11'-0\" section. A note specifies a 3/8\" plate welded to (3) 10M bars, with rebar to be anchored to the wall, and 60mmx6mm beams welded with a 1/4\" fillet, noted as typical. The inset detail shows reinforcement for a concrete element, including 10M stirrups at 6\" on center, 2-10M bars, 2-15M bars, and 2-15M x 30\" diagonal bars on both sides, with 2\" spacing between bars and 12\" between other elements. The section callout 'A/P5' indicates a reference to another drawing or section.",
+      "project_id": "25-01-004",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "10'-8\nA\n25'-0\"\nP5,\n-140'-0\".\n61-1\"\n104'-4\"\n1'-0\"-\n40'-0\".\n-3'-3\"\nFW4\n3'-3\"\n3'-3\"\n5'-9\")\nFW4\nFW2\n8'-0\"\nSEE DETAIL '6'-0'\n11'-0\"\nFW3\nFW1\nTilcz\n8'-8\"\n20'-0'\nCl\nLI\nFW3\nC2\n-06-0\" 18'-0\" \"18'-0\" \"18'-0\"\n8'-0\" 18'-\n8'-0'\n3/8\" PLATE WELDED TO (3) 10M x 12\" lg.\n·REBAR TO BE ANCHORED TO WALL\n60mmx6mm BEAMS WELDED ¼\" FILLET (TYP)||\n20'-0\"\n18'-8\"\n2'-0\"\n60'-0\"\n6\" CONCRETE FLOOR 32 MPa\nMIN 6\" COMPACTED GRANULAR 'A'\n58'-0\" 20'-0\"\nON UNDISTURBED SOIL\n2'-0\" MIN\n61'-4\"\n12\" BETWEEN\n10 M STIRRUFS • 6\" o.c.\n2 15M x 30\" DIAG\nBOTH SIDES\nBETWEEN BARS\n- IOM BARS\n-15M BARS\n2'-0\" MIN\nFWI\n2'-0\"\n20'-0\" 68'-0\""
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor - Main building area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "SECTION"
+      ],
+      "element_type": "Ground Floor Plan",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "LB",
+        "STL",
+        "LID",
+        "L2",
+        "L3",
+        "L5",
+        "P5"
+      ],
+      "key_components": [
+        "Concrete Floor",
+        "Granular Fill",
+        "Foundation Wall",
+        "Suspended Slab",
+        "Roll Door",
+        "Rebar Grid"
+      ],
+      "summary": "This is a ground floor plan view showing the layout of a large agricultural or commercial building. The primary structural system includes a 6\" concrete floor with a minimum of 6\" of compacted Granular 'A' fill on undisturbed soil. Several large roll doors are indicated, with dimensions such as 20'-0\" x 18'-0\". Wall types are designated as W1 and W2, and various labeled zones or areas are marked with L2, L3, L5, and P5. A suspended slab above is noted, with a callout to 'SEE SECTION'. The plan also details reinforcement for specific areas, such as a 4'-0\" x 4'-0\" top layer rebar grid with 10M bars spaced at 8\" on center (10M @ 8\" o.c.) with 2\" cover, typical for concave corners of the slab. Vertical reinforcement is indicated as 4 - 15M VERT bars. A detail inset shows reinforcement for a wall opening near a door, specifying 2-15M bars and 2-15M x 30\" diagonal bars on both sides, with a note to bend the rebar 90 degrees with a 24\" hook due to the door's proximity. The overall dimensions of the building are significant, with a length of 140'-0\" and a width of 62'-8 1/2\" in the main area. Other dimensions like 41'-7 1/2\" and 61'-4\" define specific sections of the building. The plan also references other details and sections for lintels and stairs/guards as per OBC.",
+      "project_id": "25-01-004",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "Blueprints for Residential, Agricultural & Commercial Projects\n5'-7\"\n5'-0½'\n-BTM BARS THIS DIRECTION\n140'-0\"\nP5\n25'-0\"\n-4 - 15M VERT\n62'-815\"\n164\"\n-STAIRS AND GUARD AS PER OBC\n00\n6\" CONC. SUSPENDED\nSLAB ABOVE SEE\nSECTION\n-LINTEL AS PER DETAIL\n10'-0\"\n-HAY DRYING EQUIP.\n,2'-0\"\nLB\n3'-0\"\nSTL\nLID\n6'-0\"\n4'-0\"x 4'-0\" TOP LAYER REBAR GRID\n-(TYPICAL EA CONCAVE CORNER OF SLAB)\nIOM 8\"o.c. EA WAY W/ 2\" COVER\n200\"\n164\"\nWI\n164\"\n20'-0\" (L3\n2'-0\"\n68'-0\" 20'-0\"\n2'-0\"\nL2\nE\n20'-0\"x 18'-0\"\nROLL DOOR\n20'-0\"x 18'-0'\nDOOR\n18'-8\"\nW2\n60'-0'\nAS PER DI\n6\" CONCRETE FLOOR 32 MPa\nMIN 6\" COMPACTED GRANULAR 'A'\nON UNDISTURBED SOIL\n£2'-0\" MIN.\n41'-7\"\n3'-0\"\n200\"\nL5\nTOP OF WALL\n61'-4\"\n2-15M x 30\" DIAG\nBOTH SIDES\nBETWEEN BARS\nOPENING AS PER PLAN\n-2-15M VERT\n215M VERT-\n1½\" COVER\nBEND THE REBAR 90 DEG MIN\n24\" HOOK SINCE THE DOOR IS\nLOCATED RIGHT NEXT TO THE WALL\n-2 15M BARS\n2'-OMIN\n20'-0\"x 18'-0\"\n_ROLL DOOR\n20'-0\"x 18'-0\"\nROLL DOOR\nL3\nL2\nW1"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation – Retaining wall and footing details",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Detail",
+      "element_callouts": [
+        "FW3",
+        "FW4"
+      ],
+      "key_components": [
+        "Retaining Wall",
+        "Footing",
+        "Concrete",
+        "Rebar",
+        "Slab-on-Grade",
+        "Undisturbed Soil"
+      ],
+      "summary": "This image contains two foundation details, labeled FW3 and FW4, illustrating retaining walls and their footings. The details show an 8-inch thick retaining wall constructed with 25 MPa concrete. Reinforcement for the wall includes 15M rebar bars at 16 inches on center both horizontally and vertically, with two 15M bars at the top perimeter of the wall. The retaining wall footing is 3'-6\" wide and 12\" thick, with (6) 15M continuous rebar. Additional reinforcement includes 15M bent dowels, 36\" vertical and 24\" horizontal at 12\" on center, and 15M transversal bars at 16\" on center. A 6\" concrete slab is shown at the top of the footing. The detail also indicates 3\" bottom cover for the rebar and shows the interface with undisturbed soil. One detail references a 'Suspended Slab as per Section', indicating a connection to other drawing elements. The overall height of the wall shown in one detail is 8'-0\", and the footing depth is approximately 1'-5\" below the slab. The date '18-03-25' is noted, along with 'FW4 ADDED'.",
+      "project_id": "25-01-004",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "FW4 ADDED\n1 18-03-25\nRETAINING WALL FTG.\n3'-6\" WIDE x 12\" THICK R/W\n(6)-15M REBAR CONT.\n15M BENT DOWEL 36\" VERT. &\n24\" HORIZ. 12\" O.C.\n15M x 36\" LONG\nTRANSVERSAL BAR ® 16\" O.C.\n3\" BOTTOM COVER\nUNDISTURBED SOIL\n6) CONG, SLAB A'\nTOP OF FOUNDATION\n8\" RETAINING WALL\n25 MPa CONCRETE\n2 15M TOP PERIMITER\nOF WALL\n15M HORIZ. 16\" O.C.\n15M VERT. 16\" O.C.\nFW3\nFOUNDATION\nDETAIL N.T.S.\nTOP OF FOUNDATION\n8\" WALL\n25 MPa CONCRETE\n215M TOP PERIMITER\nOF WALL\n15M HORIZ. € 16\" O.C.\n15M VERT. € 16\" O.C.\nRETAINING WALL FTG.\n3'-6\" WIDE x 12\" THICK R/W\n(6) 15M REBAR CONT.\n15M BENT DOWEL 36\" VERT.\n24\" HORIZ. 12\" O.C.\n15M x 36\" LONG\nTRANSVERSAL BAR 16\" O.C.\n3\" BOTTOM COVER\nUNDISTURBED SOIL\nFW4\nFOUNDATION\nDETAIL N.T.S.\n1'-0'\n1'-5\"\n3'-6\"\n6\" CONC. SLAB\nΔΙΑ\nTOP. OF FOOTING\nSUSPENDED\nSLAB AS PER\nSECTION\n6\" CONC. SLAB\nAA\nTOP. OF FOOTING"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation level, front view",
+      "level": "Foundation",
+      "orientation": "Front view",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation and Steel Platform Detail",
+      "element_callouts": [
+        "FW3"
+      ],
+      "key_components": [
+        "Concrete Foundation Wall",
+        "Concrete Floor",
+        "Steel Base Plate",
+        "HSS Columns",
+        "HSS Beams",
+        "Wedge Bolts"
+      ],
+      "summary": "This detail drawing, identified as a 'FRONT VIEW' with a scale of 1/4\" = 1'-0\", illustrates a foundation wall and a steel platform structure. The foundation wall is noted as being 'REINFORCED AS PER FW3' and is constructed as per the plan. Below the steel platform, a 6\" concrete floor is depicted. The steel platform itself is supported by HSS columns (3\"x3\"x1/4\") spaced at 12' o.c. and horizontal HSS beams (3\"x3\"x1/4\") also spaced at 12' o.c. These members are welded to a steel base plate, which is 8\"x8\"x1/2\". The base plate is anchored to the footing with two POWERS 5/8\"x4\" wedge bolts. Another set of HSS beams, 60mm x 6mm, are shown with spacing of 5\" o.c. and are also reinforced as per FW3. A note indicates that HSS 60mm x 6mm beams are spaced at 11\" o.c. unless otherwise noted on the plan. The detail also includes notes regarding venting, lighting, and access to a pit below the steel platform as per code, and specifies that all steel is welded to each other unless otherwise noted (U.N.O.). The dimensions shown are 1'-0\", 3'-0\", and 3'-0\" for various sections of the foundation and platform structure.",
+      "project_id": "25-01-004",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "HSS 60mm x 6mm\nBEAMS 11\"o.c. UNLESS\nNOTED ON PLAN]\n|FOUNDATION WALL AS\nPER PLAN\nREINFORCED AS PER FW3\n13-HSS 60mm x 6mm\nBEAMS 5\"o.c.\nREINFORCED AS PER FW3\nTYP\nPOST WELDED TO\nPLATE\npoo --\n8\"x 8\"x1\"\n&\n0\nSTL BASE\nPLATE\nCONCRETE FLOOR °\n1'-0\"\n3'-0\"\nNOTE:\n3'-0\"\n1'-0\"\nо\n0\nHORIZ. 3\"x 3\"x 1/4\"\nHSS BEAM 12' o.c.\nVERT. 3\"x 3\"x 1/4\"\nHSS COLUMN 12' 0.c.\n12- POWERS 5/8\"x 4\"\nWEDGE BOLTS\nFOOTING AS PER PLAN\nFRONT VIEW\nSCALE: 4\" 1'-0\"\n-VENTING, LIGHTING AND ACCESS TO PIT\nBELOW STEEL PLATFORM AS PER CODE\n-ALL STEEL WELDED TO EA. OTHER U.N.O."
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Base Plate Detail",
+      "element_callouts": [
+        "BP1"
+      ],
+      "key_components": [
+        "Steel Column",
+        "Base Plate",
+        "Wedge Bolts",
+        "Concrete Foundation"
+      ],
+      "summary": "This detail illustrates the base connection for a steel column, identified as BP1. The main view shows a steel post supported by a base plate, with a note indicating \"POST PER PLAN\", meaning the column's specific dimensions and type are detailed elsewhere. The inset provides a plan view of the base plate assembly. The base plate is designed to accommodate the column's width plus an additional 1 inch, as indicated by the notation 'y = MAX WIDTH OF COLUMN + 1\"'. The base plate itself is shown to be 0.5 inches thick. It is secured to the foundation using two \"POWERS 5/8\"x 4\" WEDGE BOLTS\". Dimensions of 3 inches are shown from the edge of the base plate to the center of the bolts, and 1.5 inches from the edge of the base plate to the anchor bolts. A \"TYP 1/4\"\" notation, likely referring to a weld or chamfer, is also present. The dashed lines below the base plate suggest a concrete foundation or footing.",
+      "project_id": "25-01-004",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "POST PER PLAN\nTYP 1/4\"\n||\ny=MAX WIDTH OF\nBP1 COLUMN+1\"\n3\"\n3\"\n0%\"\n1½\"\nBASE PLATE C/W\n2 POWERS 5/8\"x 4\"\nWEDGE BOLTS\n1½\""
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Slatted floor detail for tractor support",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Slatted Floor Detail",
+      "element_callouts": [],
+      "key_components": [
+        "HSS beams",
+        "Steel anchors",
+        "Concrete"
+      ],
+      "summary": "This detail illustrates a \"DI SLAT FLOOR DETAIL\" designed to support a tractor. The primary structural elements are HSS (Hollow Structural Section) beams. The notes specify that tractor tires must be supported by 3-HSS 60mm x 6mm beams spaced at 5 inches on center. All other HSS 60mm x 6mm beams are to be spaced at a maximum of 11 inches on center. These HSS beams are required to be a minimum of 16 feet long, potentially spanning continuously over HSS 3\"x3\"x1/4\" beams. The detail also indicates a maximum storage load capacity of 100 PSF for straw bales and specifies a minimum of 300W steel for construction. Steel anchors are to be hot-dip galvanized (HDG). The dimensions provided for the \"5460 MASSEY FERGUSON\" tractor include a wheelbase of 100.5\", length of 169.3\", width of 79.3\", cab height of 109.1\", and tire width of 16\", with a maximum weight of 4524 kg. The visual representation shows a plan view of the tractor positioned on the slatted floor system, with the HSS beams forming the slatted surface. The scale of the detail is indicated as 1/4\" = 1'-0\".",
+      "project_id": "25-01-004",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "„O-8\n8½\" 5\" 5\" 7\" 11\"\nיון\nREVISIONS\nNO.\nDATE\nWALL AS PER PLAN\nMIN. 16' LONG HSS 60mm x 6mm TYP.\nTRACTOR\nWALL AS PER PLAN\n5460 MASSEY FERGUSON DIMENSIONS & SPECIFICATIONS\n-\nWHEELBASE:\n-\nLENGTH:\n-\nWIDTH:\n-\n100.5\"\n169.3\"\n79.3\"\nHIEGHT (CAB): 109.1\"\n-\nTIRE WIDTH:\n- WIEGHT:\n16\"\n4524 kg. (MAX.)\nDI SLAT FLOOR DETAIL\nSCALE: 4\" 1'-0\"\nNOTES:\n-TRACTOR TIRES MUST BE SUPPORTED\nBY 3-HSS 60mm x 6mm 5\"o.c.\n-ALL OTHER HSS 60mm x 6mm 11\"o.c. (MAX.)\n-ALL HSS 60mm x 6mm BEAMS SHALL BE MIN. 16' LONG\n(I.E. 2 SPAN CONTINUOUS OVER HSS 3\"x3\"x4\" BEAMS)\n-MAX. STORAGE LOAD FOR STRAW BALES 100 PSF\n-MIN. 300W STEEL\n-STEEL ANCHORS TO BE HDG"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Roof",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Roof Framing Plan",
+      "element_callouts": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "key_components": [
+        "Roof Framing",
+        "Roof Slope Indicators"
+      ],
+      "summary": "This image is a roof plan, indicating the framing layout and slope. The scale is 1/16\" = 1'-0\". The plan shows a central horizontal line, likely representing a ridge or valley, with diagonal lines indicating rafters or framing members. Circular callouts labeled '1', '2', '3', '4', and '5' are distributed across the plan, likely referencing specific framing elements, connections, or details that are further defined in accompanying notes or schedules. The notation '4/12' appears twice, indicating a roof slope of 4 units vertical to 12 units horizontal, which is a common pitch for roofs. Arrows associated with callouts '3', '4', and '5' suggest directions of forces, slopes, or structural support. The presence of 'ROOF NOTES:' indicates that further critical information is provided elsewhere.",
+      "project_id": "25-01-004",
+      "page_number": 3,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "(2)\n2\nROOF PLAN\nSCALE: 1/16\" = 1'-0\"\nNOTES:\n3\n4/12\n4\n5\n3\n4/12\n5\nROOF NOTES:\n4\n2\n1\n(2\n☑"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Wall assembly – typical stud wall bracing detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Stud Wall Double Brace Detail",
+      "element_callouts": [
+        "B2"
+      ],
+      "key_components": [
+        "Studs",
+        "Diagonal Bracing",
+        "Blocking",
+        "Nails",
+        "Wedge Anchor",
+        "Plate"
+      ],
+      "summary": "This detail illustrates the \"B2 STUD WALL DOUBLE BRACE DETAIL\" for a typical stud wall assembly. It shows two primary connection types: a \"TOP CONNECTION\" and a \"BOTTOM CONNECTION\" for diagonal bracing. The bracing members are identified as \"2x6 DIAGONAL BRACE\". The notes specify that the 2x6 brace is to be continuous and end at the stud connection to the plate, and should not be notched into studs. Braces are to be installed at approximately 45-degree angles. The \"TOP CONNECTION\" shows \"DOUBLE SOLID BLOCKING BETWEEN STUDS\" fastened with (6) 3\\\" nails through the face and (3) nails through the stud into each end of each block. Additionally, (12) 3\\\" common spiral nails are used for each brace at the top and bottom of the wall. The \"BOTTOM CONNECTION\" details \"3-PLY SOLID BLOCKING BETWEEN STUDS TYP.\" fastened similarly with (6) 3\\\" nails through the face and (3) nails through the stud into each end of each block. It also specifies (2) 3\\\" common spiral nails for each stud, typically. For the bottom connection of the brace itself, (3) 3\\\" common spiral nails are used through a 2x5 plate (or 2x8 plate) into each stud end grain. The detail also indicates the use of (2) 3/8\\\" wedge anchors, typically at each brace location, to secure the wall to the foundation or slab. The notation \"N.T.S.\" indicates the drawing is not to scale.",
+      "project_id": "25-01-004",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "NOTES:\n1. 2x6 BRACE IS TO BE CONTINUOUS AND\nEND AT STUD CONNECTION TO PLATE.\n2. DO NOT NOTCH BRACES INTO STUDS.\n3. INSTALL BRACES AT APPROXIMATELY\n45 deg. ANGLES\n4. MIN.NAL SPACING **\n3-PLY SOLID BLOCKING BETWEEN STUDS TYP.\nFASTEN (6) NAILS THROUGH FACE &(3) NAILS\nTHROUGH STUD INTO EACH END OF EACH BLOCK\nDIAGONAL BRACE\nDIAGONAL BRACE\nDIAGONAL BRACE\n26 DIAGONAL BRACE\n(2) COMMON\nSPIRAL NAILS\nEACH STUD\n(TYP)\nDOUBLE SOLID BLOCKING BETWEEN STUDS\nFASTEN (6)\nNAILS THROUGH FACE & (3) NAILS\nTHROUGH STUD INTO EACH END OF EACH BLOCK\nTOP CONNECTION\n(2)\nWEDGE ANCHOR\nTYP. AT EACH BRACE LOCATION\nB2 STUD WALL DOUBLE BRACE DETAIL\nN.T.S.\n(12) 3 COMMON SPIRAL\nNAILS EACH BRACE\n(TOP & BOTTOM OF WALL)\n3)COMMON SPIRAL NAILS THROUGH 2x5\nPLATE 4 FOR 2x8) INTO EACH STUD END GRAIN\n(TOP & BOTTOM OF WALL)\nBOTTOM CONNECTION"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Elevation",
+      "location": "North side of building",
+      "level": "Ground Floor",
+      "orientation": "North elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Wall",
+        "Roof",
+        "Foundation",
+        "Footing",
+        "Plate"
+      ],
+      "summary": "This image displays the North Elevation of a building. The elevation shows the overall height and key vertical levels. The top of the footing (T/O FTG.) is indicated at a level of 1'-10\" below grade. The top of the foundation (T/O FOUND.) is at 6'-6\" above the top of the footing, making it 8'-4\" above the top of the footing. The top of the plate (T/O PLATE) is at 16'-4½\" above the top of the footing, indicating the total height of the wall structure. The roof has a pitched profile with slopes indicated by dimensions '4' and '12' (likely rise/run or pitch ratio). The main building structure appears to be clad with vertical siding, and there are large openings suggestive of garage doors or large bays, with arrows indicating directionality. The scale of the drawing is provided as 1/16\" = 1'-0\". A small structure or utility box is shown to the left of the main building, with its own height indicated as 3'-10\" and top of foundation at 11'-10\" above the footing. The drawing also includes a revision block at the top.",
+      "project_id": "25-01-004",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "T/O PLATE\n16'-4½\"\nT/O FOUND.\n6'-6\"\nT/O FTG.\n1'-10\"\n3'-10\"\n12\nREVISIONS\nNORTH ELEVATION\nSCALE: 1/16\"\n=\n1'-0\"\n12\n4\nDOUBLE SOLID BLOCKING BETWEEN STUDS\nNO.\nDATE\nபயன்"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "South wall of the building",
+      "level": "Unknown",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Steel frame",
+        "Metal siding",
+        "Roofing",
+        "Foundation",
+        "Footing",
+        "Plate",
+        "Load calculations"
+      ],
+      "summary": "This image displays the SOUTH ELEVATION of a building, with a scale of 1/16\" = 1'-0\". The elevation shows a steel-framed structure with metal siding and a sloped roof. Key vertical dimensions are indicated: the top of the footing (T/O FTG) is at an elevation of 6'-6\" below grade, the top of the foundation (T/O FOUND) is at 16'-4 1/2\", and the top of the plate (T/O PLATE) is at 16'-4 1/2\". The roof has a slope indicated by rise/run ratios of 12:4 on both sides. Load calculations for wind are shown, with values of 4.32 kPa and 2.4 kPa. A small attached structure, possibly a utility shed or office, is depicted on the right side of the main building, with its own height indicated as 11'-10\" and a floor level of 3'-10\" above grade. The main building appears to have three bays, suggested by the vertical lines representing columns and the horizontal arrows indicating potential door openings or movement within the bays.",
+      "project_id": "25-01-004",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "tial, Agricultural & Commercial Projects\n12\n12\nSOUTH ELEVATION\nSCALE: 1/16\" 1'-0\"\n4\n4.32 kPa\n2.4 kPa\nT/O PLATE\n16'-4½\nT/O FOUND.\n6'-6\"\nT/O FTG."
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Building cross section A-A",
+      "level": "Foundation",
+      "orientation": "Cross section A-A looking East",
+      "grid_references": [],
+      "section_callouts": [
+        "D6",
+        "D4",
+        "D3"
+      ],
+      "element_type": "Foundation and Wall Section",
+      "element_callouts": [
+        "A-A"
+      ],
+      "key_components": [
+        "Engineered Roof Truss",
+        "Steel Strapping",
+        "Wood Fascia",
+        "Steel Soffit",
+        "Double Top Plate",
+        "Uplift Clips",
+        "2x6 Top Strapping",
+        "Wall Studs",
+        "Blocking",
+        "Anchor Bolts",
+        "Sill Plate",
+        "Sill Gasket",
+        "2x6 Bottom Strapping",
+        "Foundation Wall",
+        "Footing",
+        "6\" Concrete Floor",
+        "6\" Compacted 'A' Granular",
+        "6\" Suspended Slab",
+        "15M Rebar",
+        "Bent Dowels",
+        "Concrete Cover"
+      ],
+      "summary": "This section view, labeled 'CROSS SECTION A-A', depicts a detailed cross-section of the building's foundation, walls, and roof structure. The roof system features engineered roof trusses spaced at 48\" on center, with 2x4 strapping at 22\" on center and diagonal bracing on webs as indicated by 'DIAGONAL BRACING ON ALL WEBS THAT REQUIRE LATERAL BRACING SEE D6'. The wall construction includes a double top plate with uplift clips, 2x6 top and bottom strapping fastened with 3 1/2\" nails, and typical blocking at quarter points. The foundation consists of a foundation wall, a 6\" compacted 'A' granular base, and a footing, with anchor bolts at 48\" on center. A 6\" concrete floor is shown over the granular base. A suspended slab, 6\" thick and made of 32 MPa concrete, is reinforced with 15M rebar each way at 12\" on center, and features bent dowels at 16\" on center. The OCR text also specifies '1/2\" DIA. ANCHOR BOLTS @ 48\" o.c.' and 'SILL PLATE ON SILL GASKET'. The detail also references other drawings for further information, such as 'SEE D6', 'AS PER D4', and 'SEE D3'. The overall height from the top of the footing to the top of the plate is indicated as 16'-4 1/2\", and the foundation wall height is approximately 3'-10\".",
+      "project_id": "25-01-004",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "DIAGONAL BRACING ON\nALL WEBS THAT REQUIRE\nLATERAL BRACING SEE D6\n12\n4\nNOTE:\n-ROOF TRUSS TO BE LOCATED DIRECTLY\nOVER WALL STUD SPACING\nTYPICAL TRUSS ROOF:\n29 GAUGE STEEL\n2x4 STRAPPING 22\" 0.c.\nENGINEERED ROOF TRUSS @ 48\" o.c.\n2x6 WOOD FASCIA\nVENTED STEEL SOFFIT &\nFASCIA TRIM\nLATERAL BRACING\nAS PER TRUSS DRAWING\n-X-BRACING AS PER ENGINEERS\nTRUSS DRAWING REVIEW:\nCONTRACTOR TO PROVIDE\nENGINEER WITH STAMPED\nTRUSS DRAWINGS\n==\nDOUBLE TOP PLATE, CONT.\nUPLIFT CLIPS AS PER |\nTRUSS MANUFACTURER\n1'-0\"\n2x6 TOP STRAPPING\nFASTEN TO TOP PLATE AND\nSTUD W/ (4) 3 1/2\" NAILS EACH\n3'-2\"\nWALL AS PER PLAN\nTYPICAL BLOCKING:\n3 ROWS BLOCKING\n@ QUARTER POINTS |\nTOP OF PLATE,\n16'-42\"\n2'-0\"x 2'-0\" 15M\nBENT DOWELS @\n16\" o.c. (TYP)\n6\" SUSPENDED SLAB 32 MPa\nW/ 15M EACH WAY @ 12\" o.c.\n-SLIGHT SLOPE SO WATER DRAINS\n1/2\" DIA. ANCHOR BOLTS\n@ 48\" o.c.\nSILL PLATE ON\nSILL GASKET\n3'-2\"\n2x6 BOTTOM\nSTRAPPING\nFASTEN TO BOTTOM\nPLATE AND STUD W/\n(4) 3 1/2\" NAILS EA,\n6\" CONCRETE FLOOR\n6\" COMPACTED 'A' GRANULAR\nFOUNDATION WALL AS\nPER PLAN\nFOOTING AS PER PLAN.\nROSS SECTION A-A\n_E: 4\" = 1'-0\"\nAS PER D4\nINT STATIONTM Owner: DAN RAMER\nPROJECT\nFOUNDATION\nWALL BEYOND\n-1½\" CONCRETE COVER\n-WALL AS PER PLAN\nTOP OF FOUNDATION,\nSTL LID SEE D3\nSLOPED GRADE\n5\" CONCRETE\nFLOOR\n6\" COMPACTED 'A'\nGRANULAR\nPROJECT CONTRACTOR:\n11'-10\"\nREVISIONS\nBUMPOUT CHANGED\nENGINEERED TRUSSES AS PER PLAN\n------ - - - --,\nBEAM AS PER PLAN\nEA PLY\nKING STUD AND BEARING\nSTUD AS PER PLAN|\nEA PLY 24\" o.c.\n2/16\" ANCHOR BOLTS BY OPENINGS-\nCONCRETE FOUNDATION\nWALL AS PER PLAN\n2/15M BARS CONT.\n1½\" COVER\nD2 OPENIN\nN.T.S.\nT/O/FOUNDATION,\nTOP OF FOOTING\n6'-6\"\n4\" COMM"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Moment Frame to Top Plate Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Plate",
+        "Bolts",
+        "Moment Frame Member",
+        "Top Plate"
+      ],
+      "summary": "This detail illustrates a connection between a moment frame member and a top plate. The visual representation shows a steel plate with multiple bolt holes, indicating a bolted connection. Dimensions provided clarify the geometry of the connection. The overall width of the plate appears to be approximately 5-1/2 inches, with specific offsets and dimensions such as 1.5 inches and 3.5 inches indicating the placement of bolt groups and plate edges. A 0.5-inch dimension likely represents a clearance or edge distance. The shaded areas suggest the extent of the moment frame member and the top plate it connects to. The text 'MOMENT FRAME TO TOP PLATE BOLT SPACING' explicitly states the purpose of this detail, focusing on the arrangement and spacing of bolts critical for the structural integrity of the moment frame connection to the top plate.",
+      "project_id": "25-01-004",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "3\" 1.25\"\n5-1/2\"\n3.5\"\nMOMENT FRAME TO TOP PLATE BOLT SPACING"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Moment Frame connection detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Moment Frame Detail",
+      "element_callouts": [
+        "STEEL COLUMN",
+        "STEEL BEAM",
+        "PRE-ENGINEERED TRUSS"
+      ],
+      "key_components": [
+        "Steel Column",
+        "Steel Beam",
+        "Base Plate",
+        "Top Plate",
+        "Anchor Bolts",
+        "Bolts",
+        "Steel Angles",
+        "Pre-engineered Truss",
+        "Truss Clips"
+      ],
+      "summary": "This detail illustrates a typical moment frame connection for a steel structure. It shows the connection between a steel column and a steel beam, with details for pre-engineered trusses above. The steel column has a specified width and is secured to a 16 1/2\" x 3/4\" top plate with (8) 1/2\" diameter bolts. The base of the column is anchored by a 14\" x 4\" base plate with (4) 1/2\" cast-in-place anchor bolts, each 10\" long with a 2\" hook. The steel beam is also indicated as \"AS PER PLAN\". A typical moment connection is detailed, featuring a top and bottom plate with dimensions of 3/8\" x 8\" (maximum of beam width minus 1\" or column width plus 1\"). The connection uses (2) 7/8\" diameter A325 bolts. Additionally, (2) L 3 1/2\" x 2 1/2\" x 3/8\" x 6\" long steel angles are shown, likely for bracing or stiffening. For the pre-engineered truss, truss clips are specified as per manufacturer requirements, and a 2x6 (or 2x8) plate is secured to the beam flange with 1/2\" bolts at 24\" on center, staggered on the sides of the flange. The detail also references \"COLUMN WIDTH\" and \"OPENING SIZE AS PER PLAN\" for various elements, indicating that specific dimensions are provided elsewhere. The \"FINISHED FLOOR HEIGHT\" and \"WALL HEIGHT AS PER PLAN\" are also noted, providing context for the vertical extent of the structure.",
+      "project_id": "25-01-004",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "COLUMN WIDTH\n16 1/2**** TOP PLATE\nc/w (8) BOLTS\nSTEEL COLUMN\nAS PER PLAN\nTYP\nさん\n1/2\"\n2%\n8\n(2)*0 A325\nBOLTS (TYP)\n2\n3\n(2) L 3*x 2*x*x6\"\nLONG STEEL ANGLE\nREVISIONS\nNO.\nDATE\nPRE-ENGINEERED\nTRUSS\nTRUSS CLIPS AS PER\nMFR REQUIREMENTS\n2x6 (OR 2x8 TO\nMATCH BEAM\nFLANGE WIDTH)\nPLATE SECURED TO\nBEAM w/* BOLTS @\n24\" o.c. (STAGGER\nSIDES OF FLANGE)\nTYPICAL TOP PLATE\nSIZE AS PER PLAN\nSTEEL BEAM AS PER PLAN\nTYP>\nCOLUMN WIDTH\nx14\"x4\" BASE PLATE\nc/w (4)½\" CAST IN\nPLACE ANCHOR BOLTS\n(10\" LONG x 2\" HOOK)\nOPENING SIZE AS PER PLAN\nMOMENT FRAME\nFINISHED FLOOR HEIGHT\nOPENING SIZE AS PER PLAN\nTYP\nCOPE 3\"x1\"\nTYPICAL\nMOMENT\nCONNECTION\nSTEEL COLUMN\nAS PER PLAN\n\"x8\"x (MAX OF BEAM\nWIDTH-1\" OR COLUMN\nWIDTH + 1\")\nTOP AND BOTTOM PLATE\nWALL HEIGHT AS PER PLAN\nCOLUMN WIDTH\nx14x4\" BASE PLATE\nSTUDS\nAS PER PLAN\nTYPICAL\nBOTTOM SILL\nPLATE SIZE\nAS PER PLAN\n3\" MIN."
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Wall assembly between shed and hay drying equipment room",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Section Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Plate Steel",
+        "Square Tube",
+        "Wall Steel",
+        "Foundation Wall"
+      ],
+      "summary": "This section view illustrates a wall assembly separating a shed from a hay drying equipment room. The primary wall construction features a 3/16\" plate steel element, supported by 2\" x 2\" wall steel members spaced at 16 inches on center (16\" o.c.). A square tube, specified as 13/16\" thick and typical (TYP), is shown welded to the plate steel, indicating a connection detail. The drawing also indicates that a foundation wall exists beyond this assembly. The overall wall appears to be constructed of steel components, with the plate steel forming a significant part of the wall's face.",
+      "project_id": "25-01-004",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "SHED WALL\nHAY DRYING EQUIP. ROOM WALL-\n3/16\" PLATE STEEL\n2\"x 2 3/16\" WALL\nSTEEL • 16\" c.c.\nFOUNDATION WALL BEYOND\n13/16 TYP\nSQUARE TUBE WELDED TO PLATE STEEL\nSECTION VIEW"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Site plan showing proposed and existing structures",
+      "level": "Site",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Site Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Existing Structures",
+        "Proposed Structure",
+        "Property Lines",
+        "Foundation Wall Detail"
+      ],
+      "summary": "This site plan illustrates the layout of proposed and existing structures relative to property lines. A proposed 68'-0\" x 140'-0\" hay storage shed is prominently shown, with dimensions indicating its placement and extent. Existing structures, including a barn and several sheds, are also depicted, providing context for the new construction. A detailed section view is included on the right, illustrating a connection detail for the hay drying equipment. This detail shows a 3/16\" plate steel component with a 2\"x 2\" 3/16\" steel square tube welded to it, designed to bear on both ends. The detail also specifies fastening with a 1/2\" x 4\" wedge bolt at each corner. The foundation wall is indicated as being beyond this detail. The overall site dimensions are referenced, with a 412'-0\" dimension shown along one property line and a 100'-0\" dimension indicating a distance between structures. The plan also includes notations for shed walls and hay drying equipment, suggesting the functional purpose of the proposed structure.",
+      "project_id": "25-01-004",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "PHONE: 519-501-3928\nBlueprints for Residential, Agricultural & Commercial Projec\nPROPERTY LINE\nW.L.NOILVLS\n412'-0\"\nPROPERTY LINE BEYOND\nPROPOSED\n68'-0\"x 140'-0\"\nHAY STOARGE\nSHED\n100'-0\"\nEXISTING SHED\nEXISTING BARN:\nbood\nEXISTING SHED\nPROPERTY LINE BEYOND\nSHED WALL\nHAY DRYING EQUIF\n3/16\" PLATE STEEL\n12\"x 2 3/1\nSTEEL 16\nFOUNDATION WALL BEYON\n13/16/TYP\nSQUARE TUBE WELDED TO PLATE STEE\nSECTION VIEW\nSTL COVER\nBEARING ON BOTH\nENDS (TYP)|\n2\"x 2 3/1\nSTEEL\n16\nFASTEN EA CORNER W/ 'x 4\"\nWEDGE BOLT (4)\nEXISTING SHED\nSHED WALL\n3/16\" PLATE STEEL"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Roof framing - typical truss bracing",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Truss Bracing Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Wood bracing",
+        "Truss members",
+        "Nails"
+      ],
+      "summary": "This detail illustrates the bracing system for roof trusses, primarily using 2x4 lumber. It specifies the installation of diagonal bracing, including 'X' bracing on opposite sides of trusses at endwalls, as indicated by the annotation '2x4 DIAGONAL \"X\" BRACE ON OPPOSITE SIDE OF TRUSS AT ENDWALLS WHERE SPECIFIED ELSEWHERE'. The detail also shows how to anchor these diagonal braces to laterals using four 3\\\" nails at the intersection of truss web and truss lateral. Struts are specified as 2x4 lumber, 5'-0\\\" long, attached to top and bottom truss web members with two 3\\\" nails each. A critical instruction is to lap diagonal bracing (minimum of 2 trusses) to ensure it extends fully from the top chord to the bottom chord, as noted by 'LAP 2x4 DIAGONAL (MIN. 2 TRUSSES) TO ENSURE DIAGONAL BRACE EXTENDS COMPLETELY FROM TOP CHORD TO BOTTOM CHORD OF TRUSS'. The spacing of the 2x4 diagonal bracing is to be determined by the bracing designer, with a maximum spacing of 48'-0\\\" mentioned. Butt joints for 2x4 laterals are to be tight and centered on the truss web at all splice locations. The detail clearly labels the 'TRUSS TOP CHORD', 'TRUSS WEB MEMBER', and 'TRUSS BOTTOM CHORD', showing how the bracing connects to these primary truss components.",
+      "project_id": "25-01-004",
+      "page_number": 7,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "2x4 DIAGONAL \"X\" BRACE ON\nOPPOSITE SIDE OF TRUSS AT\nENDWALLS WHERE SPECIFIED\nELSEWHERE\nANCHOR 2x4 DIAGONAL\n\"x\" BRACE ON OPPOSITE\nSIDE OF WEB WITH TWO OF\n3 NAILS EACH TRUSS\nSPACING AS SPECIFIED BY BRACE\nDESIGNER 48'-0\" MAXIMUM\n2x4 STRUT x 5'-0\" LONG ⚫ TOP\n⚫BOTTOM WITH TWO OF 3!\" NAILS\n• EACH TRUSS WEB MEMBER\nANCHOR 2x4 DIAGONAL BRACE TO LATERAL WITH\nFOUR OF 3\" NAILS ⚫ INTERSECTION OF TRUSS\nWEB 4 TRUSS LATERAL\nANCHOR DIAGONAL BRACE\nTO STRUT • BOTH ENDS\nWITH FOUR 3 NAILS\n2x4 DIAGONAL BRACING SPACED AS\nREQUIRED BY THE BRACING DESIGNER\nTRUSS TOP CHORD\nTRUSS WEB MEMBER\n2x4 STRUT x 5'-0\" LONG TOP\n* BOTTOM WITH TWO OF 3\"\nNAILS EACH TRUSS WEB MEMBER\nBUTT 2x4 LATERALS ALL SPLICE\nLOCATIONS. ENSURE BUTT JOINT IS\nTIGHT CENTERED ON TRUSS WEB\nLAP 2x4 DIAGONAL (MIN. 2 TRUSSES) TO ENSURE\nDIAGONAL BRACE EXTENDS COMPLETELY FROM\nTOP CHORD TO BOTTOM CHORD OF TRUSS\n(AS REQUIRED)\nTRUSS BOTTOM CHORD"
+    }
+  ]
+}

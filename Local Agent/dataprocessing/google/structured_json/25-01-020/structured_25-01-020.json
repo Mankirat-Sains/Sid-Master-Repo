@@ -1,0 +1,74 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S1"
+      ],
+      "element_type": "Dolly Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Ring",
+        "Dolly"
+      ],
+      "summary": "This detail drawing shows a top view of a \"LONG \\\"D\\\" RING - DOLLY\". The overall length of the dolly is indicated as 24 1/2 inches, and its height or thickness is shown as 2 inches. The dashed lines within the rectangular shape suggest internal divisions or structural elements within the dolly, possibly indicating reinforcement or connection points. The title \"LONG \\\"D\\\" RING - DOLLY - TOP VIEW\" and the scale of 1:8 provide context for the drawing. The callout \"3/S1\" indicates this detail is referenced from sheet S1, section or detail number 3.",
+      "project_id": "25-01-020",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "2\"\n-24\"-\n3\nSW\nS1\nLONG \"D\" RING - DOLLY - TOP VIEW\nSCALE: 1:8"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "General lifting device detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Lifting Device Detail",
+      "element_callouts": [
+        "S1"
+      ],
+      "key_components": [
+        "Steel Plate",
+        "D-Ring"
+      ],
+      "summary": "This detail drawing shows a front view of a \"LONG \"D\" RING - DOLLY\" identified by the callout \"S1\" and \"SCALE: 1:8\". The primary structural component is a \"2\" THICK AISI 4142 STEEL PLATE\". The overall geometry is defined by various dimensions, including a 30\" width and a 24 1/2\" base dimension. The top of the device features angled sides with angles of 49.5° and 40.5°, and a 4\" dimension at the apex. A circular opening with a diameter of 3 1/2\" is located near the top, and another circular opening with a diameter of 2\" is present at the base. Notations indicate that a \"LIFTING BEAM NOT SHOWN FOR CLARITY\" and a \"PLATE CUT-OUT TO BE SALVAGED FOR ALTERNATE USE\". The text \"MAX. CAPAC TO BE CLEARL\" suggests a maximum capacity is specified elsewhere, likely in a table referenced by \"SEE TABLE FOR G DEVICE.\" and \"ON 51 OF O.REG. 851 ARE CENTERED ON 516-09\" which are general notes pertaining to the device's application or specifications.",
+      "project_id": "25-01-020",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": ". SEE TABLE FOR\nG DEVICE.\nON 51 OF O.REG. 851\nARE CENTERED ON\n516-09\nLIFTING BEAM NOT SHOWN FOR CLARITY\nPLATE CUT-OUT TO BE SALVAGED FOR ALTERNATE USE\n2\" THICK AISI 4142 STEEL PLATE\n40.5°\n3½\"\n2\"\n49.5°\n30\"\n-03\n'MAX, CAPAC\nTO BE CLEARL\n13\"\n1516\n12\"\n17-\n3\n-\n-242\"\n3\"\n2 LONG \"D\" RING - DOLLY - FRONT VIEW\n$1\nSCALE: 1:8\n4"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Front view of a lifting device",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Lifting Dolly Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Plate",
+        "Lifting Lug",
+        "Bolt Hole"
+      ],
+      "summary": "This detail drawing shows the front view of a \"Long D\" Ring Dolly, identified by the callout '2 LONG \"D\" RING - DOLLY - FRONT VIEW' and referenced on sheet S1. The primary structural component is a 2\" thick plate made of AISI 4142 steel, specified to have a minimum yield strength (Fy) of 100 ksi. The overall dimensions of the dolly are detailed, with a total height of 48\" and a width of 24 1/2\" at its base. Key features include angled edges at the top with angles of 49.5° and 40.5°, and a central hole with a diameter of 3 1/2\" for a shackle pin. The drawing also indicates a smaller hole with a 2\" diameter near the base. A table indicates a maximum lifting capacity of 17 tons, which is also noted as needing to be clearly labeled on the device. General parameters state that lifting lugs are designed for vertical lifts only and that the shackle pin used is 3\" in diameter. The material specification for structural steel conforms to S16-09, and all steel is to be new and painted as specified by the owner. The drawing also notes that a lifting beam is not shown for clarity and that a plate cut-out is to be salvaged for alternate use.",
+      "project_id": "25-01-020",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "PARAMETERS\nG LIFTING CAPACITY (MAXIMUM LOAD): 17 TONS PER LINK. SEE TABLE FOR\nED CAPACITIES.\nTING CAPACITY MUST BE CLEARLY LABELED ON THE LIFTING DEVICE.\nMANENT RECORD MUST BE KEPT OF THIS DRAWING.\nVICE MUST BE OPERATED AND MAINTAINED AS PER SECTION 51 OF O.REG. 851\nTRIAL ESTABLISHMENTS) UNDER THE OHSA.\nTING LUGS ARE DESIGNED FOR VERTICAL LIFTS ONLY.\nR PROVISIONS SHALL BE MADE TO ENSURE LIFTING LUGS ARE CENTERED ON\nACKLE PIN.\nNG MATERIALS BY OTHERS.\nURAL STEEL\nTURAL STEEL SHALL CONFORM TO THE LATEST EDITION OF S16-09\nATES TO BE AISI 4142 (Fy = 100 ksi) MATERIAL (MINIMUM).\nRUCUTRAL STEEL SHALL BE NEW MATERIAL.\nATES PAINTED AS SPECIFIED BY THE OWNER.\nDUCED CAPACITY -\nHACKLE PIN DIA.\nMAX CAPACITY\n(TONS)\n17\nHACKLE PIN USED IS\n3\" DIA. DO NOT\nOTED CAPACITY\nLIFTING BEAM NOT SHOWN FOR CLARITY\nPLATE CUT-OUT TO BE SALVAGED FOR ALTERNATE USE\n2\" THICK AISI 4142 STEEL PLATE\n40.5°\n49.5°\n30\"\n2\n- 24\"\n-03\n1513\n3\"\n-IN\n'MAX. CAPACITY =\nTO BE CLEARLY LAB\nLONG \"D\" RING - DOLLY - FRONT VIEW\n2\nS1\nSCALE: 1:8\n48\""
+    }
+  ]
+}
