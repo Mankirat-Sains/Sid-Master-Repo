@@ -344,10 +344,19 @@ def run_agentic_rag(
         }
     
     # Extract DBRetrieval results (all fields are now in db_retrieval_* fields)
+    # Also extract desktop and web results
+    desktop_result = final_state.desktop_result
+    webcalcs_result = final_state.webcalcs_result
+    
+    # Determine primary answer - prioritize desktop/web if they exist
+    primary_answer = desktop_result or webcalcs_result or final_state.db_retrieval_result
+    
     return {
-        "answer": final_state.db_retrieval_result,
+        "answer": primary_answer or final_state.db_retrieval_result,
         "code_answer": final_state.db_retrieval_code_answer,
         "coop_answer": final_state.db_retrieval_coop_answer,
+        "desktop_answer": desktop_result,  # NEW: Desktop agent result
+        "webcalcs_answer": webcalcs_result,  # NEW: WebCalcs result
         "support": final_state.db_retrieval_support_score,
         "citations": final_state.db_retrieval_citations,
         "code_citations": final_state.db_retrieval_code_citations,

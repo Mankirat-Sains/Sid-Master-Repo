@@ -201,6 +201,58 @@ def strip_asterisks_from_projects(text: str) -> str:
     # Pattern 6: Handle any remaining **Project NUMBER** patterns with various spacing
     text = re.sub(r'\*\*\s*Project\s+(\d{2}-\d{2}-\d{3})\s*\*\*', r'Project \1', text)
     
+    # Pattern 7: Remove all markdown bolding **text** (comprehensive cleanup)
+    # This handles cases like **Bracing:**, **Lateral Bracing:**, etc.
+    # Match ** followed by text (non-greedy) followed by **
+    text = re.sub(r'\*\*([^*]+?)\*\*', r'\1', text)
+    
+    # Pattern 8: Clean up malformed LaTeX - dimensions wrapped in $...$ that aren't real math
+    # Look for patterns like $14" \times 16"$ or $3'0" \times 3'0" \times 12"$ (dimensions with units)
+    # These should be converted to plain text
+    def clean_dimension_math(match):
+        content = match.group(1)
+        
+        # Check if this looks like a dimension (not real math)
+        # Dimensions typically have:
+        # - Quote marks (inches ") or single quotes (feet ')
+        # - LaTeX text commands like \text{COLUMN DEPTH}
+        # - Dimension patterns like "14" x 16" or "3'0" x 3'0""
+        # - Fractions with units like "3/4""
+        
+        has_quotes = '"' in content or "'" in content
+        has_text_command = '\\text{' in content
+        has_dimension_pattern = bool(re.search(r'\d+\s*["\']\s*[x×]', content))
+        has_fraction_with_unit = bool(re.search(r'\d+/\d+\s*["\']', content)) or bool(re.search(r'\d+\s*["\']\s*/\s*\d+', content))
+        has_feet_inches_pattern = bool(re.search(r"\d+'?\d*\"\s*[x×]", content))
+        
+        # If it has any of these dimension indicators, it's likely a dimension, not math
+        if has_quotes or has_text_command or has_dimension_pattern or has_fraction_with_unit or has_feet_inches_pattern:
+            # Remove $ delimiters and clean up LaTeX commands
+            cleaned = content.replace('\\times', '×').replace('\\cdot', '·')
+            
+            # Remove LaTeX text commands: \text{COLUMN DEPTH} -> COLUMN DEPTH
+            cleaned = re.sub(r'\\text\{([^}]+)\}', r'\1', cleaned)
+            
+            # For dimensions, convert × to x (lowercase) and remove spaces around it
+            # This makes "14" × 16"" become "14"x16""
+            cleaned = re.sub(r'\s*×\s*', 'x', cleaned)
+            
+            # Clean up spacing around + and - operators (keep spaces for readability)
+            cleaned = re.sub(r'\s*\+\s*', ' + ', cleaned)
+            cleaned = re.sub(r'\s*-\s*', ' - ', cleaned)
+            
+            # Remove extra spaces but preserve spaces around operators
+            cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+            
+            return cleaned
+        
+        # Keep real math equations
+        # Real math typically has variables, operators, and no units
+        return match.group(0)
+    
+    # Match $...$ patterns but be careful not to break valid math
+    text = re.sub(r'\$([^$\n]+?)\$', clean_dimension_math, text)
+    
     return text
 
 
@@ -623,6 +675,8 @@ async def chat_handler(request: ChatRequest):
         answer = rag_result.get("answer", "No answer generated.")
         code_answer = rag_result.get("code_answer")  # May be None if code_db not enabled
         coop_answer = rag_result.get("coop_answer")  # May be None if coop_manual not enabled
+        desktop_answer = rag_result.get("desktop_answer")  # Desktop agent result (Excel, etc.)
+        webcalcs_answer = rag_result.get("webcalcs_answer")  # WebCalcs result
         code_citations = rag_result.get("code_citations", [])
         coop_citations = rag_result.get("coop_citations", [])
         project_citations = rag_result.get("citations", [])
@@ -630,12 +684,20 @@ async def chat_handler(request: ChatRequest):
         follow_up_questions = rag_result.get("follow_up_questions", [])  # Follow-up questions from verifier
         follow_up_suggestions = rag_result.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
         
-        # Check which databases were used
-        has_project = bool(answer and answer.strip())
+        # Check which databases/routers were used
+        has_project = bool(answer and answer.strip() and not desktop_answer and not webcalcs_answer)
         has_code = bool(code_answer and code_answer.strip())
         has_coop = bool(coop_answer and coop_answer.strip())
-        enabled_count = sum([has_project, has_code, has_coop])
+        has_desktop = bool(desktop_answer and desktop_answer.strip())
+        has_webcalcs = bool(webcalcs_answer and webcalcs_answer.strip())
+        enabled_count = sum([has_project, has_code, has_coop, has_desktop, has_webcalcs])
         multiple_enabled = enabled_count > 1
+        
+        # If desktop or webcalcs provided answer, use that as primary
+        if desktop_answer and desktop_answer.strip():
+            answer = desktop_answer
+        elif webcalcs_answer and webcalcs_answer.strip():
+            answer = webcalcs_answer
         
         # Note: References sections are no longer added automatically
         # Only inline citations in brackets are used (as specified in the prompts)
@@ -706,8 +768,11 @@ async def chat_handler(request: ChatRequest):
             thinking_log = rag_result.get("thinking_log", [])
             
             # Return separate answers
+            # Prioritize desktop/webcalcs answers if they exist
+            primary_reply = desktop_answer or webcalcs_answer or processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated."
+            
             response = ChatResponse(
-                reply=processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
+                reply=primary_reply,  # Primary answer (prioritizes desktop/webcalcs)
                 session_id=request.session_id,
                 timestamp=datetime.now().isoformat(),
                 latency_ms=round(latency_ms, 2),
@@ -786,8 +851,11 @@ async def chat_handler(request: ChatRequest):
             thinking_log = rag_result.get("thinking_log", [])
             
             # Prepare response
+            # Prioritize desktop/webcalcs answers if they exist
+            primary_reply = desktop_answer or webcalcs_answer or combined_answer
+            
             response = ChatResponse(
-                reply=combined_answer,
+                reply=primary_reply,
                 session_id=request.session_id,
                 timestamp=datetime.now().isoformat(),
                 latency_ms=round(latency_ms, 2),
@@ -938,21 +1006,50 @@ async def chat_stream_handler(request: ChatRequest):
                 # Get the latest checkpoint state for this thread
                 # For async checkpointers, use aget_state() instead of get_state()
                 from graph.checkpointer import CHECKPOINTER_TYPE
-                if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
-                    # Async checkpointer - use async method
-                    state_snapshot = await graph.aget_state({"configurable": {"thread_id": request.session_id}})
-                else:
-                    # Sync checkpointer - use sync method
-                    state_snapshot = graph.get_state({"configurable": {"thread_id": request.session_id}})
                 
-                if state_snapshot and state_snapshot.values:
-                    previous_state = state_snapshot.values
-                    logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
-                    if previous_state.get("messages"):
-                        logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+                # Check if checkpointer is available and initialized
+                if not hasattr(graph, 'checkpointer') or graph.checkpointer is None:
+                    logger.warning("⚠️ Checkpointer not available, skipping state load")
+                    previous_state = None
+                else:
+                    try:
+                        if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
+                            # Async checkpointer - use async method
+                            # Add timeout to prevent hanging
+                            import asyncio
+                            state_snapshot = await asyncio.wait_for(
+                                graph.aget_state({"configurable": {"thread_id": request.session_id}}),
+                                timeout=5.0  # 5 second timeout
+                            )
+                        else:
+                            # Sync checkpointer - use sync method
+                            state_snapshot = graph.get_state({"configurable": {"thread_id": request.session_id}})
+                        
+                        if state_snapshot and state_snapshot.values:
+                            previous_state = state_snapshot.values
+                            logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
+                            if previous_state.get("messages"):
+                                logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+                    except asyncio.TimeoutError:
+                        logger.warning(f"⚠️ Checkpointer timeout for thread_id={request.session_id}, continuing without previous state")
+                        previous_state = None
+                    except Exception as conn_error:
+                        # Check for connection-related errors
+                        error_msg = str(conn_error).lower()
+                        if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused"]):
+                            logger.warning(f"⚠️ Checkpointer connection error (continuing without state): {conn_error}")
+                            previous_state = None
+                        else:
+                            # Re-raise non-connection errors
+                            raise
             except Exception as e:
-                # No previous state exists (first invocation) - this is fine
-                logger.info(f"📖 No previous state found (first invocation): {e}")
+                # No previous state exists (first invocation) or checkpointer unavailable - this is fine
+                # Don't let checkpointer errors break the entire request
+                error_msg = str(e).lower()
+                if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network"]):
+                    logger.warning(f"⚠️ Checkpointer unavailable (continuing without state): {e}")
+                else:
+                    logger.info(f"📖 No previous state found (first invocation): {e}")
                 previous_state = None
             
             # Get messages from previous state for query rewriting and context
@@ -1058,13 +1155,36 @@ async def chat_stream_handler(request: ChatRequest):
             completion_executed = False  # Flag to ensure completion code runs only once
             
             try:
-                async for stream_item in graph.astream(
-                    asdict(init_state),
-                    config=config,
-                    stream_mode=["updates", "custom", "messages"],  # Add "messages" for token streaming
-                    durability=durability_mode,  # Pass durability as direct parameter, not in config
-                    subgraphs=True  # CRITICAL: Include outputs from subgraphs (e.g., db_retrieval subgraph) in stream
-                ):
+                # Wrap graph.astream in try-except to handle connection errors gracefully
+                try:
+                    stream_iterator = graph.astream(
+                        asdict(init_state),
+                        config=config,
+                        stream_mode=["updates", "custom", "messages"],  # Add "messages" for token streaming
+                        durability=durability_mode,  # Pass durability as direct parameter, not in config
+                        subgraphs=True  # CRITICAL: Include outputs from subgraphs (e.g., db_retrieval subgraph) in stream
+                    )
+                except Exception as stream_init_error:
+                    # Handle checkpointer connection errors during stream initialization
+                    error_msg = str(stream_init_error).lower()
+                    if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused"]):
+                        logger.error(f"❌ Checkpointer connection error during stream init: {stream_init_error}")
+                        logger.warning("⚠️ Continuing without checkpointer - state won't be persisted")
+                        # Try to continue without checkpointer by using a simpler config
+                        # Remove thread_id to avoid checkpointer access
+                        config_no_checkpoint = {"configurable": {}}
+                        stream_iterator = graph.astream(
+                            asdict(init_state),
+                            config=config_no_checkpoint,
+                            stream_mode=["updates", "custom", "messages"],
+                            durability="off",  # Disable checkpointer
+                            subgraphs=True
+                        )
+                    else:
+                        # Re-raise non-connection errors
+                        raise
+                
+                async for stream_item in stream_iterator:
                     # Handle different stream formats (with/without subgraphs)
                     # When subgraphs=True with multiple stream modes, format is: (namespace, stream_mode, chunk)
                     # When subgraphs=False or single mode, format is: (stream_mode, chunk)
@@ -1435,11 +1555,20 @@ async def chat_stream_handler(request: ChatRequest):
                         
                         # Break after correct node (last node in DBRetrieval pipeline)
                         # OR after router_dispatcher (which completes after subgraph finishes)
-                        if node_name == "correct" or (node_name == "router_dispatcher" and "db_retrieval_result" in state_dict):
+                        # Check for any result: db_retrieval, desktop, or webcalcs
+                        has_any_result = (
+                            "db_retrieval_result" in state_dict or 
+                            "desktop_result" in state_dict or 
+                            "webcalcs_result" in state_dict
+                        )
+                        if node_name == "correct" or (node_name == "router_dispatcher" and has_any_result):
                             logger.info(f"✅ Breaking after node '{node_name}' - subgraph execution complete")
                             logger.info(f"📊 Final state keys: {list(state_dict.keys())[:20]}...")  # Log first 20 keys
                             logger.info(f"📊 db_retrieval_result present: {'db_retrieval_result' in state_dict}")
-                            logger.info(f"📊 db_retrieval_result value: {str(state_dict.get('db_retrieval_result', 'None'))[:100] if state_dict.get('db_retrieval_result') else 'None'}")
+                            logger.info(f"📊 desktop_result present: {'desktop_result' in state_dict}")
+                            logger.info(f"📊 webcalcs_result present: {'webcalcs_result' in state_dict}")
+                            if state_dict.get('desktop_result'):
+                                logger.info(f"📊 desktop_result value: {str(state_dict.get('desktop_result', 'None'))[:100]}")
                             break
                     
                     # Execute completion code once (after for loop, inside async for body, uses flag to run only once)
@@ -1453,14 +1582,26 @@ async def chat_stream_handler(request: ChatRequest):
                     elif not completion_executed and final_state and not interrupt_detected and not chunk_has_interrupt:
                         # CRITICAL: Only run completion code if we have an actual answer, not just any state
                         # This prevents "No answer generated" from appearing prematurely
+                        # Helper to check if value is non-empty (handles strings, lists, etc.)
+                        def _has_content(value):
+                            if not value:
+                                return False
+                            if isinstance(value, str):
+                                return bool(value.strip())
+                            if isinstance(value, list):
+                                return len(value) > 0
+                            return bool(value)
+                        
                         has_answer = bool(
-                            final_state.get("db_retrieval_result") or 
-                            final_state.get("final_answer") or 
-                            final_state.get("answer") or
-                            final_state.get("db_retrieval_code_answer") or 
-                            final_state.get("code_answer") or
-                            final_state.get("db_retrieval_coop_answer") or 
-                            final_state.get("coop_answer")
+                            _has_content(final_state.get("db_retrieval_result")) or 
+                            _has_content(final_state.get("desktop_result")) or  # NEW: Check desktop result
+                            _has_content(final_state.get("webcalcs_result")) or  # NEW: Check webcalcs result
+                            _has_content(final_state.get("final_answer")) or 
+                            _has_content(final_state.get("answer")) or
+                            _has_content(final_state.get("db_retrieval_code_answer")) or 
+                            _has_content(final_state.get("code_answer")) or
+                            _has_content(final_state.get("db_retrieval_coop_answer")) or 
+                            _has_content(final_state.get("coop_answer"))
                         )
                         if has_answer:
                             completion_executed = True
@@ -1470,11 +1611,20 @@ async def chat_stream_handler(request: ChatRequest):
                             logger.info(f"📊 Streaming stats: {messages_received} LLM token events received via messages mode")
                             
                             # Extract final answer
-                            answer = final_state.get("db_retrieval_result") or final_state.get("final_answer") or final_state.get("answer")
+                            # Prioritize desktop/webcalcs results over db_retrieval
+                            desktop_answer_raw = final_state.get("desktop_result")
+                            webcalcs_answer_raw = final_state.get("webcalcs_result")
+                            
+                            # Handle Gemini list format for desktop/webcalcs answers
+                            # Use the local function defined at top of file, not import
+                            desktop_answer = extract_text_from_content(desktop_answer_raw) if desktop_answer_raw else None
+                            webcalcs_answer = extract_text_from_content(webcalcs_answer_raw) if webcalcs_answer_raw else None
+                            
+                            answer = desktop_answer or webcalcs_answer or final_state.get("db_retrieval_result") or final_state.get("final_answer") or final_state.get("answer")
                             code_answer = final_state.get("db_retrieval_code_answer") or final_state.get("code_answer")
                             coop_answer = final_state.get("db_retrieval_coop_answer") or final_state.get("coop_answer")
                             
-                            if not answer or answer.strip() == "":
+                            if not answer or (isinstance(answer, str) and answer.strip() == ""):
                                 answer = code_answer or coop_answer or "No answer generated."
                             
                             code_citations = final_state.get("db_retrieval_code_citations") or final_state.get("code_citations", [])
@@ -1484,15 +1634,42 @@ async def chat_stream_handler(request: ChatRequest):
                             follow_up_questions = final_state.get("db_retrieval_follow_up_questions") or final_state.get("follow_up_questions", [])
                             follow_up_suggestions = final_state.get("db_retrieval_follow_up_suggestions") or final_state.get("follow_up_suggestions", [])
                             
-                            has_project = bool(answer and answer.strip())
-                            has_code = bool(code_answer and code_answer.strip())
-                            has_coop = bool(coop_answer and coop_answer.strip())
-                            enabled_count = sum([has_project, has_code, has_coop])
+                            # Helper to safely check if answer has content (handles strings and lists)
+                            def _answer_has_content(ans):
+                                if not ans:
+                                    return False
+                                if isinstance(ans, str):
+                                    return bool(ans.strip())
+                                if isinstance(ans, list):
+                                    return len(ans) > 0
+                                return bool(ans)
+                            
+                            has_project = bool(_answer_has_content(answer) and not desktop_answer and not webcalcs_answer)
+                            has_code = bool(_answer_has_content(code_answer))
+                            has_coop = bool(_answer_has_content(coop_answer))
+                            has_desktop = bool(_answer_has_content(desktop_answer))
+                            has_webcalcs = bool(_answer_has_content(webcalcs_answer))
+                            enabled_count = sum([has_project, has_code, has_coop, has_desktop, has_webcalcs])
                             multiple_enabled = enabled_count > 1
                             
-                            if not answer or answer.strip() == "":
-                                if not code_answer or not code_answer.strip():
-                                    if not coop_answer or not coop_answer.strip():
+                            # Helper to safely check if answer is empty (handles strings and lists)
+                            def _is_empty_answer_safe(ans):
+                                if not ans:
+                                    return True
+                                if isinstance(ans, str):
+                                    return ans.strip() == ""
+                                if isinstance(ans, list):
+                                    return len(ans) == 0
+                                return False
+                            
+                            if _is_empty_answer_safe(answer):
+                                # Check desktop/webcalcs first, then code/coop, then error
+                                if not _is_empty_answer_safe(desktop_answer):
+                                    answer = desktop_answer
+                                elif not _is_empty_answer_safe(webcalcs_answer):
+                                    answer = webcalcs_answer
+                                elif _is_empty_answer_safe(code_answer):
+                                    if _is_empty_answer_safe(coop_answer):
                                         answer = "I couldn't generate a response. Please try rephrasing your question or check that the system is properly configured."
                             
                             latency_ms = (time.time() - start_time) * 1000
@@ -1535,8 +1712,11 @@ async def chat_stream_handler(request: ChatRequest):
                                     }
                                     supabase_logger.log_user_query(query_data)
                                 
+                                # Prioritize desktop/webcalcs answers
+                                primary_reply = desktop_answer or webcalcs_answer or processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated."
+                                
                                 response_data = {
-                                    'reply': processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",
+                                    'reply': primary_reply,  # Use desktop/webcalcs if available
                                     'session_id': request.session_id,
                                     'timestamp': datetime.now().isoformat(),
                                     'latency_ms': round(latency_ms, 2),
@@ -1554,10 +1734,27 @@ async def chat_stream_handler(request: ChatRequest):
                                     'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
                                 }
                             else:
-                                if code_answer and code_answer.strip():
+                                # Single answer mode - prioritize desktop/webcalcs
+                                # Use helper function to safely check content
+                                def _has_content_safe(ans):
+                                    if not ans:
+                                        return False
+                                    if isinstance(ans, str):
+                                        return bool(ans.strip())
+                                    if isinstance(ans, list):
+                                        return len(ans) > 0
+                                    return bool(ans)
+                                
+                                if _has_content_safe(desktop_answer):
+                                    combined_answer = desktop_answer
+                                    total_citations = 0  # Desktop results don't have citations
+                                elif _has_content_safe(webcalcs_answer):
+                                    combined_answer = webcalcs_answer
+                                    total_citations = 0  # WebCalcs results don't have citations
+                                elif _has_content_safe(code_answer):
                                     combined_answer = code_answer
                                     total_citations = len(code_citations)
-                                elif coop_answer and coop_answer.strip():
+                                elif _has_content_safe(coop_answer):
                                     combined_answer = coop_answer
                                     total_citations = len(coop_citations)
                                 else:
@@ -1642,9 +1839,29 @@ async def chat_stream_handler(request: ChatRequest):
                 logger.info(f"📤 Sent interrupt event to frontend: {interrupt_data.get('interrupt_type')}")
                 return  # Stop streaming - wait for resume
             
+        except (ConnectionError, OSError, asyncio.TimeoutError) as conn_error:
+            # Handle connection errors gracefully - checkpointer connection issues
+            error_msg = str(conn_error).lower()
+            if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused", "server closed"]):
+                logger.error(f"❌ Checkpointer connection error during streaming: {conn_error}")
+                logger.warning("⚠️ Checkpointer unavailable - this is non-fatal, continuing without state persistence")
+                # Send error but don't break - the query can still complete
+                yield f"data: {json.dumps({'type': 'error', 'message': 'Checkpointer connection issue - query may continue without state persistence'})}\n\n"
+                # Don't return - let the stream continue if possible
+                # The graph might still work without checkpointer
+            else:
+                # Re-raise if it's not a connection error
+                raise
         except Exception as e:
-            logger.error(f"❌ Streaming error: {e}")
-            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+            error_msg = str(e).lower()
+            # Check if it's a connection-related error
+            if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused", "server closed"]):
+                logger.error(f"❌ Connection error during streaming: {e}")
+                logger.warning("⚠️ Connection issue detected - this may be a checkpointer problem")
+                yield f"data: {json.dumps({'type': 'error', 'message': f'Connection error: {str(e)[:200]}'})}\n\n"
+            else:
+                logger.error(f"❌ Streaming error: {e}")
+                yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
             return
     
     return StreamingResponse(
@@ -1728,11 +1945,20 @@ async def chat_resume(request: Dict[str, Any]):
                             
                             # Get the content from the message chunk
                             if hasattr(message_chunk, 'content') and message_chunk.content:
+                                # CRITICAL: Extract text content - handles both string (OpenAI/Anthropic) and list (Gemini 3.0) formats
+                                # Without this, Gemini list format will be serialized as [object Object] in JSON
+                                raw_content = message_chunk.content
+                                token_content = extract_text_from_content(raw_content)
+                                
+                                # Skip if no text content extracted
+                                if not token_content:
+                                    continue
+                                
                                 # When resuming, stream all tokens (answer node filtering may not work correctly on resume)
                                 # The answer node should be the only one generating tokens after resume anyway
                                 node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
-                                logger.debug(f"💬 Resume: Streaming token from node '{node_name}' ({len(message_chunk.content)} chars)")
-                                yield f"data: {json.dumps({'type': 'token', 'content': message_chunk.content, 'timestamp': time.time()})}\n\n"
+                                logger.debug(f"💬 Resume: Streaming token from node '{node_name}' ({len(token_content)} chars)")
+                                yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'timestamp': time.time()})}\n\n"
                     elif stream_mode == "custom":
                         if isinstance(chunk, dict):
                             if chunk.get("type") == "thinking":
@@ -1851,11 +2077,14 @@ async def chat_resume(request: Dict[str, Any]):
                                 final_state = {}
                             final_state.update(state_updates)
                             
-                            # Break after router_dispatcher completes (same as main stream)
-                            # Check final_state (accumulated) not just state_updates (current chunk)
-                            # Also check for answer in various forms
-                            has_result = (
-                                final_state.get("db_retrieval_result") or
+                            # Break after correct node (last node in DBRetrieval pipeline)
+                            # OR after router_dispatcher (which completes after subgraph finishes)
+                            # OR after answer node completes (final answer generation)
+                            # Check for any result: db_retrieval, desktop, or webcalcs (same as main stream)
+                            has_any_result = (
+                                final_state.get("db_retrieval_result") or 
+                                final_state.get("desktop_result") or 
+                                final_state.get("webcalcs_result") or
                                 final_state.get("db_retrieval_code_answer") or
                                 final_state.get("db_retrieval_coop_answer") or
                                 final_state.get("final_answer") or
@@ -1863,21 +2092,39 @@ async def chat_resume(request: Dict[str, Any]):
                                 final_state.get("coop_answer")
                             )
                             
-                            if node_key == "router_dispatcher" and has_result:
-                                logger.info(f"✅ Resume: Breaking after router_dispatcher - subgraph execution complete")
+                            # Handle subgraph nodes: node_key can be a tuple like ('db_retrieval:thread_id', 'correct')
+                            if isinstance(node_key, tuple):
+                                node_name = node_key[-1] if len(node_key) > 0 else 'unknown'
+                            else:
+                                node_name = node_key
+                            
+                            if node_name == "correct" or (node_name == "router_dispatcher" and has_any_result) or (node_name == "answer" and has_any_result):
+                                logger.info(f"✅ Resume: Breaking after node '{node_name}' - subgraph execution complete")
                                 logger.info(f"📊 Resume: Answer present in final_state")
                                 break
                 
                 # Extract final answer and send completion (same logic as main stream)
                 if final_state:
+                    # Helper to check if value is non-empty (handles strings, lists, etc.)
+                    def _has_content(value):
+                        if not value:
+                            return False
+                        if isinstance(value, str):
+                            return bool(value.strip())
+                        if isinstance(value, list):
+                            return len(value) > 0
+                        return bool(value)
+                    
                     has_answer = bool(
-                        final_state.get("db_retrieval_result") or 
-                        final_state.get("final_answer") or 
-                        final_state.get("answer") or
-                        final_state.get("db_retrieval_code_answer") or 
-                        final_state.get("code_answer") or
-                        final_state.get("db_retrieval_coop_answer") or 
-                        final_state.get("coop_answer")
+                        _has_content(final_state.get("db_retrieval_result")) or 
+                        _has_content(final_state.get("desktop_result")) or  # NEW: Check desktop result
+                        _has_content(final_state.get("webcalcs_result")) or  # NEW: Check webcalcs result
+                        _has_content(final_state.get("final_answer")) or 
+                        _has_content(final_state.get("answer")) or
+                        _has_content(final_state.get("db_retrieval_code_answer")) or 
+                        _has_content(final_state.get("code_answer")) or
+                        _has_content(final_state.get("db_retrieval_coop_answer")) or 
+                        _has_content(final_state.get("coop_answer"))
                     )
                     
                     logger.info(f"📊 Resume: Final state check - messages_received={messages_received}, has_answer={has_answer}")
@@ -1886,15 +2133,31 @@ async def chat_resume(request: Dict[str, Any]):
                     if has_answer:
                         logger.info(f"✅ Resume: Answer found in final state, sending completion")
                         
-                        # Extract final answer
-                        answer = final_state.get("db_retrieval_result") or final_state.get("final_answer") or final_state.get("answer")
-                        code_answer = final_state.get("db_retrieval_code_answer") or final_state.get("code_answer")
-                        coop_answer = final_state.get("db_retrieval_coop_answer") or final_state.get("coop_answer")
+                        # Extract final answer (same logic as main stream)
+                        # Prioritize desktop/webcalcs results over db_retrieval
+                        desktop_answer_raw = final_state.get("desktop_result")
+                        webcalcs_answer_raw = final_state.get("webcalcs_result")
                         
-                        if not answer or answer.strip() == "":
-                            answer = code_answer or coop_answer or "No answer generated."
+                        # Handle Gemini list format for desktop/webcalcs answers
+                        desktop_answer = extract_text_from_content(desktop_answer_raw) if desktop_answer_raw else None
+                        webcalcs_answer = extract_text_from_content(webcalcs_answer_raw) if webcalcs_answer_raw else None
                         
-                        # Store answer_text for fallback streaming if needed
+                        # Extract code_answer and coop_answer first (they might be the primary answer)
+                        # Handle Gemini list format if needed
+                        code_answer_raw = final_state.get("db_retrieval_code_answer") or final_state.get("code_answer")
+                        coop_answer_raw = final_state.get("db_retrieval_coop_answer") or final_state.get("coop_answer")
+                        code_answer = extract_text_from_content(code_answer_raw) if code_answer_raw else None
+                        coop_answer = extract_text_from_content(coop_answer_raw) if coop_answer_raw else None
+                        
+                        # Extract project answer (db_retrieval_result, final_answer, or answer)
+                        # Keep these separate - don't mix code_answer into project_answer
+                        project_answer = final_state.get("db_retrieval_result") or final_state.get("final_answer") or final_state.get("answer")
+                        
+                        # For the main answer variable, prioritize desktop/webcalcs/project, but keep code/coop separate
+                        # This ensures has_project/has_code logic works correctly
+                        answer = desktop_answer or webcalcs_answer or project_answer
+                        
+                        # Store answer_text for fallback streaming if needed (include all types)
                         answer_text = answer or code_answer or coop_answer or ""
                         
                         code_citations = final_state.get("db_retrieval_code_citations") or final_state.get("code_citations", [])
@@ -1904,24 +2167,68 @@ async def chat_resume(request: Dict[str, Any]):
                         follow_up_questions = final_state.get("db_retrieval_follow_up_questions") or final_state.get("follow_up_questions", [])
                         follow_up_suggestions = final_state.get("db_retrieval_follow_up_suggestions") or final_state.get("follow_up_suggestions", [])
                         
-                        has_project = bool(answer and answer.strip())
-                        has_code = bool(code_answer and code_answer.strip())
-                        has_coop = bool(coop_answer and coop_answer.strip())
-                        enabled_count = sum([has_project, has_code, has_coop])
+                        # Helper to safely check if answer has content (handles strings and lists)
+                        def _answer_has_content(ans):
+                            if not ans:
+                                return False
+                            if isinstance(ans, str):
+                                return bool(ans.strip())
+                            if isinstance(ans, list):
+                                return len(ans) > 0
+                            return bool(ans)
+                        
+                        # Helper to safely check if answer is empty (handles strings and lists)
+                        def _is_empty_answer_safe(ans):
+                            if not ans:
+                                return True
+                            if isinstance(ans, str):
+                                return ans.strip() == ""
+                            if isinstance(ans, list):
+                                return len(ans) == 0
+                            return False
+                        
+                        # Helper function for content checking
+                        def _has_content_safe(ans):
+                            if not ans:
+                                return False
+                            if isinstance(ans, str):
+                                return bool(ans.strip())
+                            if isinstance(ans, list):
+                                return len(ans) > 0
+                            return bool(ans)
+                        
+                        # Determine which answer types are present (keep them separate)
+                        has_project = bool(_answer_has_content(project_answer) and not desktop_answer and not webcalcs_answer)
+                        has_code = bool(_answer_has_content(code_answer))
+                        has_coop = bool(_answer_has_content(coop_answer))
+                        has_desktop = bool(_answer_has_content(desktop_answer))
+                        has_webcalcs = bool(_answer_has_content(webcalcs_answer))
+                        enabled_count = sum([has_project, has_code, has_coop, has_desktop, has_webcalcs])
                         multiple_enabled = enabled_count > 1
                         
-                        # Use helper functions (defined at module level)
+                        # If no project answer but we have code/coop, that's fine - they'll be used separately
+                        # Only set error message if we truly have no answers at all
+                        if not has_project and not has_code and not has_coop and not has_desktop and not has_webcalcs:
+                            answer = "I couldn't generate a response. Please try rephrasing your question or check that the system is properly configured."
+                        elif not answer and (has_code or has_coop):
+                            # If we have code/coop but no project answer, that's fine - use code/coop
+                            answer = None  # Will be handled by the response_data construction below
+                        
+                        # Use helper functions (defined at module level) - same logic as main stream
                         if multiple_enabled:
-                            processed_project_answer = strip_asterisks_from_projects(answer) if has_project else None
-                            processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else code_answer
+                            processed_project_answer = strip_asterisks_from_projects(answer) if has_project and answer else None
+                            processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else (code_answer if has_code else None)
                             
-                            if has_code:
+                            if has_code and processed_code_answer:
                                 processed_code_answer = wrap_external_links(processed_code_answer)
                             
-                            processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else coop_answer
+                            processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else (coop_answer if has_coop else None)
+                            
+                            # Prioritize desktop/webcalcs answers, then project, then code, then coop
+                            primary_reply = desktop_answer or webcalcs_answer or processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated."
                             
                             response_data = {
-                                'reply': processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",
+                                'reply': primary_reply,  # Use desktop/webcalcs if available
                                 'session_id': session_id,
                                 'timestamp': datetime.now().isoformat(),
                                 'citations': len(project_citations) + len(code_citations) + len(coop_citations),
@@ -1937,10 +2244,17 @@ async def chat_resume(request: Dict[str, Any]):
                                 'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
                             }
                         else:
-                            if code_answer and code_answer.strip():
+                            # Single answer mode - prioritize desktop/webcalcs (same logic as main stream)
+                            if _has_content_safe(desktop_answer):
+                                combined_answer = desktop_answer
+                                total_citations = 0  # Desktop results don't have citations
+                            elif _has_content_safe(webcalcs_answer):
+                                combined_answer = webcalcs_answer
+                                total_citations = 0  # WebCalcs results don't have citations
+                            elif _has_content_safe(code_answer):
                                 combined_answer = code_answer
                                 total_citations = len(code_citations)
-                            elif coop_answer and coop_answer.strip():
+                            elif _has_content_safe(coop_answer):
                                 combined_answer = coop_answer
                                 total_citations = len(coop_citations)
                             else:
@@ -1954,6 +2268,10 @@ async def chat_resume(request: Dict[str, Any]):
                                 combined_answer = wrap_code_file_links(combined_answer, coop_citations)
                             if code_answer and code_answer.strip():
                                 combined_answer = wrap_external_links(combined_answer)
+                            
+                            # Ensure reply is always a string, never None or empty
+                            if not combined_answer or (isinstance(combined_answer, str) and not combined_answer.strip()):
+                                combined_answer = "No answer generated."
                             
                             response_data = {
                                 'reply': combined_answer,

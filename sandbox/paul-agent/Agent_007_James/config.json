@@ -1,6 +1,13 @@
 {
     "poll_interval": 30,
     "auto_sync_on_change": false,
+    "allowed_directories": [
+        "~/Desktop",
+        "~/Documents",
+        "~/Documents/Projects",
+        "/Volumes",
+        "/Volumes/J"
+    ],
     "projects": [
         {
             "project_id": "Testing",

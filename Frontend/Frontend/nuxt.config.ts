@@ -49,6 +49,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       orchestratorUrl: process.env.ORCHESTRATOR_URL || process.env.RAG_API_URL || 'http://localhost:8000',
+      agentApiUrl: process.env.AGENT_API_URL || 'http://localhost:8001',
       // Use public Speckle.systems instance (has CORS configured for browsers)
       // Can override with SPECKLE_URL env var if you want to use a different server
       speckleUrl: process.env.SPECKLE_URL || process.env.SPECKLE_SERVER_URL || 'https://app.speckle.systems',
