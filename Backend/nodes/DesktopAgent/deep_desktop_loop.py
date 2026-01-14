@@ -39,6 +39,7 @@ class DeepDesktopLoop:
         self.workspace_mgr = get_workspace_manager()
         self.docgen_tool = get_docgen_tool()
         self.evictor = get_evictor()
+        # Use raw llm_fast to avoid passing unsupported stream_options to legacy OpenAI clients
         self.planner_llm = llm_fast
         self.executor_llm = llm_fast
         self.tools = self._initialize_tools()
@@ -62,6 +63,25 @@ class DeepDesktopLoop:
             results = self._execute_plan(plan, state, workspace_dir, thread_id)
             final_result = self._package_results(results, workspace_dir, plan)
 
+            # Extract docgen output (if any) to propagate to parent graph/API
+            docgen_result = None
+            docgen_warnings: List[str] = []
+            for r in results:
+                action_res = r.get("action", {}) or {}
+                if action_res.get("action") == "generate_document" and action_res.get("success"):
+                    docgen_result = action_res.get("doc_generation_result")
+                    if not docgen_result:
+                        output_text = action_res.get("output", "")
+                        docgen_result = {
+                            "draft_text": output_text,
+                            "warnings": action_res.get("warnings", []),
+                            "citations": action_res.get("citations", []),
+                            "metadata": action_res.get("metadata", {}),
+                        }
+                    if isinstance(docgen_result, dict):
+                        docgen_warnings = docgen_result.get("warnings", []) or []
+                    break
+
             return {
                 "desktop_loop_result": final_result,
                 "desktop_plan_steps": plan.get("steps", []),
@@ -71,6 +91,9 @@ class DeepDesktopLoop:
                 "tool_execution_log": [r.get("action", {}) for r in results],
                 "requires_desktop_action": False,
                 "output_artifact_ref": final_result.get("artifact_ref"),
+                "doc_generation_result": docgen_result,
+                "doc_generation_warnings": docgen_warnings,
+                "final_answer": (docgen_result or {}).get("draft_text") if isinstance(docgen_result, dict) else None,
             }
         except Exception as exc:  # pragma: no cover - defensive
             logger.error(f"Error in deep desktop loop: {exc}", exc_info=True)
@@ -143,11 +166,15 @@ Keep plans concise (3-7 steps max).
             return plan
         except Exception as exc:
             logger.error(f"Error creating plan: {exc}", exc_info=True)
+            # Fallback: single-step plan favoring doc generation for doc workflows
+            preferred_action = "generate_document"
+            if not (str(task_type).startswith("doc_") or _get(state, "workflow") == "docgen"):
+                preferred_action = "write_file"
             return {
                 "goal": f"Execute {task_type} task",
                 "steps": [
                     {
-                        "action": "generate_document" if str(task_type).startswith("doc_") else "write_file",
+                        "action": preferred_action,
                         "reasoning": "Fallback single-step execution",
                         "params": {"content": user_query},
                     }
@@ -244,7 +271,7 @@ Keep plans concise (3-7 steps max).
         action_id = step.get("action_id") or f"{action}_{hash(json.dumps(params, sort_keys=True))}"
 
         if INTERRUPT_DESTRUCTIVE_ACTIONS and self._is_destructive_action(action):
-            approved_actions = state.get("desktop_approved_actions", []) if state else []
+            approved_actions = _get(state, "desktop_approved_actions", []) if state is not None else []
             if action_id not in approved_actions:
                 interrupt_data = self._create_interrupt_data(
                     action=action,
@@ -255,10 +282,9 @@ Keep plans concise (3-7 steps max).
                     action_id=action_id,
                 )
                 logger.info(f"Raising interrupt for destructive action: {action}")
-                raise GraphInterrupt(
-                    f"Approval required for {action}",
-                    interrupt_data=interrupt_data,
-                )
+                gi = GraphInterrupt(f"Approval required for {action}")
+                gi.data = interrupt_data
+                raise gi
 
         try:
             if action == "read_file":

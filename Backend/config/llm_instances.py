@@ -12,16 +12,13 @@ except Exception:  # pragma: no cover
     openai = None
 
 if openai:
+    import httpx
+
+    # Ensure httpx client classes are available for openai bindings
     if not hasattr(openai, "DefaultHttpxClient"):
-        class _DummyClient:
-            def __init__(self, *args, **kwargs):
-                pass
-        openai.DefaultHttpxClient = _DummyClient  # type: ignore
+        openai.DefaultHttpxClient = httpx.Client  # type: ignore[attr-defined]
     if not hasattr(openai, "DefaultAsyncHttpxClient"):
-        class _DummyAsyncClient:
-            def __init__(self, *args, **kwargs):
-                pass
-        openai.DefaultAsyncHttpxClient = _DummyAsyncClient  # type: ignore
+        openai.DefaultAsyncHttpxClient = httpx.AsyncClient  # type: ignore[attr-defined]
     if not hasattr(openai, "AsyncOpenAI"):
         openai.AsyncOpenAI = getattr(openai, "AsyncClient", None) or getattr(openai, "OpenAI", None) or openai.DefaultAsyncHttpxClient  # type: ignore
 
@@ -297,7 +294,8 @@ def create_llm_instance(model_name: str, temperature: float = 0, **kwargs):
             log_syn.warning(f"⚠️  Groq SDK not available, using OpenAI for '{model_name}'")
         elif not GROQ_API_KEY:
             log_syn.warning(f"⚠️  GROQ_API_KEY not set, using OpenAI for '{model_name}'")
-        return ChatOpenAI(model=model_name, temperature=temperature, **kwargs)
+        # Disable stream_usage to avoid passing stream_options to older OpenAI endpoints
+        return ChatOpenAI(model=model_name, temperature=temperature, stream_usage=False, **kwargs)
 
 
 # =============================================================================
