@@ -1,0 +1,1114 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "South wall of the building",
+      "level": "Ground Floor",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S4"
+      ],
+      "element_type": "South Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Siding",
+        "Overhead Doors",
+        "Awning",
+        "Concrete Foundation",
+        "Concrete Slab"
+      ],
+      "summary": "This image displays the South Elevation of a building, showing its exterior features and foundation details. The building is clad in metal siding and features multiple 10'-0\" x 10'-0\" overhead doors and a 36\" awning with a reference to detail 3/S4. The elevation also indicates various dimensions, including the height of the building at 11'-0\" to the top of the wall. The foundation system is detailed with a top of footing at 8'-0\" below grade, a foundation wall extending to 3'-0\" above the footing, and a concrete slab at 4'-4 1/2\" above the footing. The overall height to the top of the wall is shown as 11'-0\". The roof pitch is indicated with slopes of 12:3.5. The drawing also shows dimensions for openings such as a 7'-6\" window and a 7'-0\" door, and a 4'-6\" dimension related to an opening or feature near the right side of the building.",
+      "project_id": "25-01-005",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "7'-6\"\nHI\n3.5\n12\nCONC\nSOUTH ELEVATION\n1\nS1\nSCALE: 1/8\" = 1'-0\"\n10'-0\" X 10'-0\"\nO/H DOOR\n10'-0\" X 10'-0\"\nO/H DOOR\nMETAL SIDING\n✓\n-6'-9\"-\n12\n3.5\n10'-0\" X 10'-0\"\nO/H DOOR\n7'-0\"\nCONC.\n36\" AWNING (3/S4)\n12\n6\n-4'-0\"\n-4'-6\"-\nCONC.\n4'-4\"\n11'-0\"\n2\"\n4-4½\" 3-7\n10-1\n8'-0\"\nT/O WALL\nT/O WALL\nT/O FND. WALL\nT/O FND. WALL\nTOP OF FOOTING"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Drawing Index",
+      "element_callouts": [],
+      "key_components": [
+        "Table",
+        "Text"
+      ],
+      "summary": "This image displays a drawing index or table of contents for a set of structural drawings. The table lists the \"DRAWING NAME\" on the left and the corresponding \"PAGE\" number on the right. It indicates that \"ELEVATIONS\" are on page S1, \"FOUNDATION PLAN\" is on page S2, \"MAIN FLOOR PLAN\" is on page S3, \"ROOF PLAN\" is on page S4, \"BUILDING SECTIONS\" are on page S5, and \"DETAILS & NOTES\" are on page S6. This serves as a navigational guide to the various sheets within the structural drawing set.",
+      "project_id": "25-01-005",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "DRAWING NAME\nELEVATIONS\nPAGE\nS1\nFOUNDATION PLAN\nS2\nMAIN FLOOR PLAN\nS3\nROOF PLAN\nS4\nBUILDING SECTIONS\nDETAILS & NOTES\nS5\nS6"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Elevation",
+      "location": "North side of building",
+      "level": "Ground Floor",
+      "orientation": "North elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "3/S1"
+      ],
+      "element_type": "North Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Siding",
+        "Overhead Doors",
+        "Lift Door",
+        "Concrete Foundation",
+        "Wall",
+        "Footing",
+        "Roof"
+      ],
+      "summary": "This is the North Elevation of a building, as indicated by the title and the callout '3/S1'. The elevation shows the building's exterior facade, featuring metal siding and multiple large overhead doors (12'-0\" X 11'-6\") and one lift door (9'-0\" X 9'-0\"). The drawing provides critical vertical and horizontal dimensions for various elements. For instance, the top of the footing is indicated, followed by the top of the foundation wall (T/O FND. WALL) at 8\" and the top of the floor (T/O FLOOR) at 4'-0\" above the footing. The top of the foundation wall is at 8'-0\" above the footing. The overall height to the top of the walls (T/O WALLS) is shown as 29'-6\". The roof has a sloped profile, with a pitch indicated by the triangles showing a rise of 12 units for every 3.5 units of run. An exhaust fan is noted with a requirement to be kept above an opening and outside of a shearwall. The scale is provided as 1/8\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "EXHAUST FAN\n(KEEP ABOVE OPENING\nOUTSIDE OF SHEARWALL)\nT/O WALL\nT/O WALL\nT/O FND. WALL\nT/O FLOOR\nT/O FOOTING\n8'-0\" 4'-4½\" 3'-7½\"\n4'-8\"\nX\n8'-0 1/2\"-\n3.5\n12\n9'-0\" 9'-0\"\nLIFT DOOR\nCONC\n12'-0\" X 11'-6\"\nO/H DOOR\n12'-0\" X 11'-6\"\nO/H DOOR\n3\nNORTH ELEVATION\nS1\nSCALE: 1/8\" = 1'-0\"\n✓\n8'-0\".\nMETAL SIDING\n☑\n-8'-3\".\n12'-0\" X 11'-6\"\nO/H DOOR\n12'-0\" X 11'-6\"\nO/H DOOR\nCONC\n12'-0\" X 11'-6\"\nO/H DOOR\n12\n3.5\n12'-0\" X 11'-6\"\nO/H DOOR\n$1'-0\"\n12'-0\"\n4'-4\"\n11'-0\"\n29'-6\"\nT/O WALLS\nT/O FND. WALL\nT/O FLOOR\nT/O FOOTING"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Elevation",
+      "location": "West elevation of the building",
+      "level": "Unknown",
+      "orientation": "West elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Metal Siding",
+        "Concrete Foundation",
+        "Curtains",
+        "Overhead Door",
+        "Windows",
+        "Cupolas"
+      ],
+      "summary": "This image is a West Elevation of a building, as indicated by the title 'WEST ELEVATION' and the sheet reference 'S1'. The scale is provided as 1/8\" = 1'-0\". The elevation shows the building's exterior features, including a metal roof with cupolas, vertical metal siding, and a concrete foundation line at the base. Key openings include a large section labeled '136'-0\" x 10'-0\" HIGH CURTAINS' which appears to be a large opening or a series of openings for curtains, and a '20'-0\" X 10'-6\" O/H DOOR' (Overhead Door). There are also smaller window openings depicted. Dimensions are provided for the overhead door and the curtain opening, as well as distances from the edge to specific features, such as '-8'-0\"' and '-5'-8\"' which likely denote offsets or dimensions to openings or structural elements. The term 'CONC.' indicates a concrete foundation or base element visible at the bottom of the elevation.",
+      "project_id": "25-01-005",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "X\n||\n계\n-8'-0\".\n2\nWEST ELEVATION\nS1\nSCALE: 1/8\" = 1'-0\"\n||\n| |\n||\n||\n| |\n||\n||\n||\n||\n||\n| |\n| |\n||\n||\nCONC\n| |\n||\n| |\n||\n||\n||\n136'-0\" x 10'-0\" HIGH CURTAINS\n||\n||\n||\n||\n| |\n||\nMETAL ROOFING\n||\n||\n||\n||\n| |\n||\n||\n| |\n||\n| |\n||\n||\n||\n5'-8\"\nMETAL SIDING\n20'-0\" X 10'-6\"\nO/H DOOR\nI"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Elevation",
+      "location": "Exterior wall elevation",
+      "level": "Unknown",
+      "orientation": "Exterior elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Building Elevation",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Roofing",
+        "Metal Siding",
+        "Concrete Foundation",
+        "Curtains"
+      ],
+      "summary": "This image is an elevation view of a building's exterior. It depicts metal roofing and metal siding. The elevation shows several openings, including windows and large \"104'-0\" x 10'-0\" HIGH CURTAINS\", which likely represent large garage doors or similar openings. Dimensions such as 7'-0\" and 11'-0\" are shown, indicating spacing between elements or openings. A concrete foundation is visible at the base of the wall, with a label \"CONC.\" indicating concrete. The overall height of the building is not explicitly stated but implied by the scale and annotations. The title \"EVATION\" suggests this is an elevation drawing, and the scale \"= 1'-0\" indicates that one unit on the drawing represents one foot.",
+      "project_id": "25-01-005",
+      "page_number": 1,
+      "region_number": 5,
+      "relative_path": null,
+      "text_verbatim": "EVATION\n= 1'-0\"\n-7'-0\".\n11'-0\".\n/METAL SIDING\nCONC\nI\nMETAL ROOFING,\n| |\n| |\n||\n||\n| |\n| |\n| |\n계\n| |\n| |\n||\n||\n||\n| |\n||\n||\n104'-0\" x 10'-0\" HIGH CURTAINS\n| |\n| |\n||\n||\n||\n||\n||\n| |\n| |\n| |\n| |\n| |\n| |\n8\"/7\n계\nMETAL ROOFING\n4'-0\"-\nCONC."
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S3"
+      ],
+      "element_type": "Shearwall Details",
+      "element_callouts": [],
+      "key_components": [
+        "OSB Sheathing",
+        "Nails",
+        "Blocking",
+        "Stud Posts"
+      ],
+      "summary": "This image contains notes detailing two types of shearwalls: SINGLE SHEARWALL and DOUBLE SHEARWALL. The SINGLE SHEARWALL utilizes 7/16\" OSB on one side, fastened with 2 3/8\" nail-gun nails spaced at 4\" on center along panel edges and 8\" on center in the field. Blocking is specified at 24\" on center and along all panel edges. Each end of the shearwall panel requires a (3) ply stud post, unless a post is already present. The DOUBLE SHEARWALL is similar but has 7/16\" OSB on both sides, with the same nailing schedule for panel edges and field, and the same blocking and stud post requirements. Both details reference \"DETAIL 2/S3\" for further information. The visual elements include schematic representations of the shearwall construction, with one showing a single layer of OSB and the other showing double layers, and the associated fastening and blocking details.",
+      "project_id": "25-01-005",
+      "page_number": 1,
+      "region_number": 6,
+      "relative_path": null,
+      "text_verbatim": "SINGLE SHEARWALL\n7/16\" OSB ON ONE SIDE FASTENED\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\n×\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @24\" o.c. AND ALL PANEL EDGES.\n(3) PLY STUD POST EACH END OF SHEARWALL\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3\nDOUBLE SHEARWALL\n7/16\" OSB ON BOTH SIDES FASTENED\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(3) PLY STUD POST EACH END OF SHEARWALL\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Schedule",
+      "location": null,
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "7/S6",
+        "6/S6",
+        "4/S2",
+        "3/S2",
+        "2/S2",
+        "3/S5",
+        "2/S6"
+      ],
+      "element_type": "Foundation and Baseplate Schedule",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W3",
+        "W3b",
+        "W4",
+        "W6",
+        "BP1",
+        "BP2",
+        "F1",
+        "F2"
+      ],
+      "key_components": [
+        "Concrete",
+        "Reinforcing Steel",
+        "Anchor Bolts",
+        "Footings",
+        "Foundation Walls",
+        "Curb Walls",
+        "Baseplates"
+      ],
+      "summary": "This document appears to be a schedule or a collection of details related to foundation walls, baseplates, and footings. It defines various types of foundation walls, including an 8\" foundation wall (W1) that is 4'-4\" high, a 10\" sandwich foundation wall (W2) that is 8'-0\" high, and several types of curb walls (W3, W3b, W4, W6) with heights ranging from 1'-0\" to 4'-0\". All walls are specified as 25 MPa concrete and require reinforcement as per referenced details (e.g., W1 requires reinforcement per Detail 7/S6). A 24\" wide x 8\" footing with 20 MPa concrete and (2) 15M continuous reinforcement is also noted. The Baseplate Schedule lists two types: BP1, a 12\"x12\"x3/4\" thick baseplate with (4) 3/4\" diameter x 8\" anchor bolts, and BP2, an off-set 6\"x12\"x3/4\" thick baseplate with (2) 3/4\" diameter x 8\" anchor bolts, both referencing Detail 2/S6. The Footing Schedule details two footing types: F1, a 5'-6\"x5'-6\"x14\" thick concrete footing with 20 MPa concrete and (5) 15M reinforcing bars each way, and F2, a 4'-0\"x4'-0\"x12\" thick concrete footing with 20 MPa concrete and (4) 15M reinforcing bars each way. Both footings are to be poured on undisturbed soil and reference specific details for further information. The \"GRADE\" and \"SPECS\" labels suggest this is part of a larger set of construction documents.",
+      "project_id": "25-01-005",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "GRADE\nSPECS\nFOUNDATION WALLS:\nW1\n8\" FOUNDATION WALL 4'-4\" HIGH\n25 MPA CONCRETE\nW3\nW2\nREINFORCE AS PER DETAIL 7/S6\n10\" SANDWICH FOUNDATION WALL:\n25 MPA CONCRETE (8'-0\" HIGH)\nREINFORCE AS PER DETAIL 6/S6\n24\" WIDE X 8\" FOOTING\n20 MPA\n(2) 15M CONT.\nUNDISTURBED SOIL\nW3b\nW4\nW6\nBASEPLATE SCHEDULE:\n8\" CURB WALL 1'-0\" HIGH\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 4/S2\n6\" CURB WALL 4'-0\" HIGH\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 3/S2\n4\" CURB / MANGER WALL\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 2/S2\n6\" PARLOUR CURB WALLS\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 3/S5\nBP1-12\" x 12\" x 3/4\" THICK BASEPLATE\nC/W (4) 3/4\" DIA. x 8\" ANCHOR BOLTS\nSEE DETAIL 2/S6\nBP2 6\" x 12\" x 3/4\" THICK (OFF-SET)\nBASEPLATE C/W (2) 3/4\" DIA. x 8\"\nANCHOR BOLTS\nSEE DETAIL 2/S6\nFOOTING SCHEDULE:\nF15'-6\" x 5'-6\" x 14\" THICK CONCRETE\n20 MPa POUR CONCRETE R/W\n(5) 15M EACH WAY\nUNDISTURBED SOIL (SEE DETAIL 2/S6)\nF2 = 4'-0\" x 4'-0\" x 12\" THICK CONCRETE\n20 MPa POUR CONCRETE R/W\n(4) 15M EACH WAY\nUNDISTURBED SOIL"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "12\" High Curb Wall Detail",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "4/S2"
+      ],
+      "element_type": "Curb Wall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Poured Concrete Curb",
+        "Concrete Floor",
+        "Compacted Granular Fill",
+        "Reinforcing Steel"
+      ],
+      "summary": "This detail illustrates a 12\" high curb wall, referencing sheet S2. The curb itself is described as being 8\" or 6\" thick poured concrete, with its height determined by owner direction. A vertical reinforcement of 15M bars is specified, matching the curb height and extending 10\" high, with hooks spaced at 24\" on center in alternating directions, embedded into a thickened floor section. The main concrete floor is 6\" thick, resting on compacted granular 'A' fill. Below the curb, the floor is thickened to 8\" over a 24\" width and includes continuous (2) 15M reinforcement. The detail also indicates a wall or penning element above the curb, as per plan, with (2) 15M horizontal bars at the top of the curb. The scale of the drawing is 3/4\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "8\" OR 6\" THICK POURED CONCRETE CURB\nHEIGHT PER OWNER DIRECTION\n15M - VERT. MATCH CURB HEIGHT × 10\" H.\nHOOKS @ 24\" o.c.\nALTERNATING DIRECTIONS\nINTO THICKENED FLOOR\n6\" CONCRETE FLOOR\n1'-0\"\nWALL OR PENNING PER PLAN\n(2) 15M HORIZ. @ TOP\nCOMPACTED GRANULAR 'A' FILL\n12\" HIGH CURB WALL DETAIL\n4\nS2\nSCALE: 3/4\" =1'-0\"\nFLOOR THICKENED TO 8\"\nBELOW CURB (24\" WIDE)\nC/W (2) 15M CONT."
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Manger curb detail",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Manger Curb Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Curb",
+        "Concrete Floor",
+        "Granular Fill",
+        "Reinforcing Steel"
+      ],
+      "summary": "This detail illustrates a manger curb with a total height of 1'-3\" (one foot three inches), comprising a 7\" high curb section and an 8\" thick concrete floor. The curb itself is 4\" wide at the top and features chamfered top edges. The reinforcement within the 4\" to 6\" wide curb consists of 15M vertical bars bent into the floor slab at 24\" on center, with dimensions of 16\" high by 24\" vertical. Additionally, 10M continuous reinforcement is provided at the top of the curb. The detail indicates that one side of the curb is tapered. The concrete floor is 6\" thick, but it is thickened to 8\" below the curb for a width of 20\". The foundation consists of compacted granular 'A' fill. A note indicates '(2) 15M CONT' which likely refers to continuous reinforcement within the floor slab or foundation, and a 1'-8\" dimension is shown for the base width of the curb assembly. The scale of this detail is 3/4\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "1'-3\"\nCHAMFER TOP\nEDGES OF CURB\nã\nR\n4\"\n4\" 6\" CURB REINFORCEMENT:\n15M VERT. BENT INTO FLOOR @ 24\" o.c.\n(16\"H x 24\"V)\nAND 10M CONTINUOUS AT TOP\nTHIS SIDE TAPERED\n112\"\n6\" CONCRETE FLOOR\n6\"\n6\" CONCRETE FLOOR\nGRANULAR 'A' FILL\nFLOOR THICKENED TO 8\"\nBELOW CURB (20\" WIDE)\n2\nMANGER CURB DETAIL\nS2\nSCALE: 3/4\" = 1'-0\"\nCOMPACTED\n1'-8\"\n(2) 15M CONT"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Manure storage area and adjacent barn sections",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S3",
+        "2/S2",
+        "3/S2",
+        "4/S2",
+        "1/S5",
+        "2/S5"
+      ],
+      "element_type": "Manure Storage Pad and Foundation Plan",
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W3",
+        "W3b",
+        "W4",
+        "W6",
+        "F1",
+        "F2",
+        "BP1",
+        "BP2",
+        "A1",
+        "212",
+        "200",
+        "207",
+        "192",
+        "248",
+        "196 1/2"
+      ],
+      "key_components": [
+        "Concrete Slab",
+        "Foundation Walls",
+        "Footings",
+        "Granular Fill",
+        "Reinforcing Steel",
+        "W.W.M.",
+        "Curb",
+        "Undisturbed Soil"
+      ],
+      "summary": "This plan view depicts the ground floor layout, focusing on a manure storage pad and adjacent barn foundation walls. The manure storage area is a 3200 sq.ft. pad with a 6\" thick concrete floor, specified as 32 MPA concrete reinforced with 6x6x6/6 W.W.M. centered in the slab, laid over a minimum of 6\" of compacted Granular 'A' fill on undisturbed soil. A critical note advises against bonding the manure storage floor to the barn foundation or barn floor. The plan also shows various foundation walls (W1, W2, W3, W4, W6) and footings (F1, F2) with associated reinforcement details and dimensions. For example, W1 is an 8\" thick foundation wall 4'-4\" high, reinforced as per detail 7/S6, and W2 is a 10\" sandwich foundation wall 8'-0\" high. Several details are referenced, including 'THICKENED FLOOR EDGE DETAIL 3/S3', 'MANGER CURB DETAIL 2/S2', '4'-0\" HIGH CURB WALL DETAIL 3/S2', and '12\" HIGH CURB WALL DETAIL 4/S2', indicating specific construction methods for edges and curbs. The plan also includes dimensions for various sections and bays, such as 12'-0\" and 8'-0\" spacing for elements, and overall dimensions like 67'-01/2\" and 188'-0\". The presence of 'UNEXCAVATED' areas suggests portions of the site are not yet prepared. Notes regarding run-off flow paths and the potential for differential movement due to frost/thaw are also present, emphasizing contractor/owner responsibility for any resulting cracks or heave if the slab is not constructed below frost level.",
+      "project_id": "25-01-005",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "THICKENED FLOOR\nEDGE DETAIL 3/S3\nTYPICAL\n15'-0\"\n12'-0\"\n1'-8\"\n12'-0\"\n1-42\"\n3'-3\"\n8'-01\"\n9'-0\"\nRUN-OFF FLOW PATH\nSEE NUTRIENT MANAGEMENT\nPLAN (BY OTHERS)\nDO NOT BOND\nMANURE STORAGE FLOOR\nTO THE BARN FOUNDATION\nOR BARN FLOOR, TYP.\nMANURE\nSTORAGE\n3200 SQ.FT. PAD\n6\" THICK CONCRETE FLOOR\n32 MPA CONCRETE R/W\n6x6x6/6 W.W.M. CENTRED IN SLAB\nMIN 6\" COMPACTED GRANULAR 'A'\nUNDISTURBED SOIL\nCONCRETE SLAB NOT BELOW\nFROST LEVEL MAY EXPERIENCE\nDIFFERENTIAL MOVEMENT DUE\nTO FROST/THAW AND MAY\nCRACK OR HEAVE. THIS WILL\nNOT IMPAIR THE STRUCTURAL\nCAPACITY OF THE SLAB. IF\nCONSTRUCTED AS DRAWN, ANY\nCRACKS OR HEAVAGE IS THE\nRESPONSIBILITY OF THE\nCONTRACTOR AND/OR OWNER.\n40'-1112\"\n12'-0\"\n4'-3\"\n12'-0\"\n12'-0\"\n8'-3\"\n9½\"\n2'-5½\"\n1'-8\"\nRUN-OFF FLOW PATH\nSEE NUTRIENT MANAGEMENT\nPLAN (BY OTHERS)\n1'-3\"\nCHAMFER TOP\nEDGES OF CURB\n4\"\n8\"\n67'-012\"\n12'-0\"\n8'-0\"\n1'-5\"\n(4) 15M-\nVERTICAL\n4'-3\" x 1'-6\"\n12'-0\" x 1'-6\"\n5½\"\n12'-0\" x 1'-6\"\n3\n12'-0\" x 1'-6\"\n12'-0\" x 1'-6\"\nBP2\n212\n12'-0\" x 1'-6\"\n(4) 15M\nVERTICAL\n12'-0\" x 1'-6\"\n3'-3\" x 1'-0\"\n9'-0\" x 1'-6\"\nW1\n4'-8\"\n4'-3\" x 1'-6\"\n-(4) 15M\nVERTICAL\n10'-0\"\n200\n-(4) 15M\nVERTICAL\nSLOPE DN\n9'-4\"\nSLOPE DN\n25'-8\"\nTHIS DOOR EDGE\nTO SUIT POST LOCATION\n-CUT OPENINGS\nDOWN TO 6\" BELOW\nTOP OF FINISHED FLOOR.\nPOUR FLOOR OVER, TYP.\n-(4) 15M\nVERTICAL\n-(4) 15M\nSLOPE DN\nVERTICAL\n200\n212\n.9-.9\n25'-8\"\n4\"\n8\"\n7'-2\"\n7'-4\"\n25'-8\"\n4\"\n4\"\nW1\nW2\n248\n192\nW4\n200\nW1\n212\n38'-0\"\n8\"\n14'-2\"\n25'-8\"\n6'-6\"\n4\"\n4\"\n4\"\n7'-4\"\nF1\nBP1\n8'-0\"\n8'-0\"\n26'-0\"\n207\n9'-0\"\n7'-2\"\n1\nS5\nW2\n188'-0\"\n150'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n2'-0\"\n4'-32\" 3\"-3\"\n207\n248\n212\nDROPPED PEN FLOOR\nSEE EDGE DETAIL 2/S2\n(TYP.)\nBP1\n207\nUNEXCAVATED\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\n192\n207\nW4\nW1\nA7\n129'-8\"\nUNEXCAVATED\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\n26'-0\"\n192\n200\nW4\nF1\nBP1.\n200\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n26'-0\"\n188'-0\"\n11/2\"\nTHIS SIDE TAPERED\n1\nS5\n4\" 6\" CURB REINFORCEMENT:\n15M VERT. BENT INTO FLOOR @ 24\" o.c.\n(16\"H x 24\"V)\nAND 10M CONTINUOUS AT TOP\n(1) 15M HORIZ. @ TOP\n(DBL. IF WALL ABOVE)\n6\" THICK POURED CONCRETE CURB\n6\" CONCRETE FLOOR\nCOMPACTED\n6\"\n6\" CONCRETE FLOOR\nGRANULAR 'A' FILL\nFLOOR THICKENED TO 8\"\nBELOW CURB (20\" WIDE)\n52\n2\nMANGER CURB DETAIL\n1'-8\"\n(2) 15M CONT\n15M HORIZ. @ 24\" o.c.\n15M-VERT. MATCH CURB HEIGHT x 12\" H.\nHOOKS @ 16\" o.c.\nALTERNATING DIRECTIONS\nINTO THICKENED FLOOR\n6\" CONCRETE FLOOR\n4'-0\"\nCOMPACTED GRANULAR 'A' FILL\nFLOOR THICKENED TO 8\"\nBELOW CURB (24\" WIDE)\nC/W (2) 15M CONT.\n3\n4'-0\" HIGH CURB WALL DETAIL\n4\n52\nSCALE. 2/4\"\nS2\nSCALE 2/4\" 1'0\"\nW4\n207\n207\n26'-0\"\nDROPPED PEN FLOOR\nSEE EDGE DETAIL 2/S2\n(TYP.)\n192\n200\nDROPPED PEN FLOOR\nSEE EDGE DETAIL 2/S2\n(TYP.)\nBP1\nW4\nUNEXCAVATED\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\n26'-0\"\nW4\nW4\n200\n212\nW1\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n14'-0\" x 18'-0\" x 12\" THICK BIN PAD (CONFIRM w/ BIN SUPPLIER):\n32 MPa CONCRETE R/W 15M @ 12\" o.c. EACH DIRECTION\n3\" COVER FROM BOTTOM AND 2\" FROM TOP\nUNDISTURBED SOIL\nTOP OF PAD MIN. 6\" ABOVE GRADE\nSEE NOTES S6 FOR GENERAL SPECS\nF1\n-da\nW4\n207\n17'-8\"\nW4\n207\n22'-3\"\n13'-8\"\n5'-0\"\n12'-6\"\n207\n12'-0\"\n4\"\nくん\n3'-3\" x 1'-0\"\nW1\n5½\"\n-4\" PVC TO SEPTIC\n5'-0\"\n19'-4\"\n3'-1\"\n6'-11\"\n3'-1\"\n2'-9\"\n5\"\n3'-1\" x 1'-6\"\n-1\" x 1'-6\"\n2'-9\" x 1\n212\n(4) 15M\n200\nVERT. W3\n6'-9\"\n6'-9\n8\"\n8\"\n200\n212\n21\nW3\n212\n16\n5-4\nW1\n7'-5\"\n2'-6\"\n4\" PVC\n8\"8\"\n200\nW4\n207\n10'-0\"\n.3'-0\"\n12'-6\"\n248\nW3b\n12'-0\"\n2'-45'-0\"\n1'-2\"P\n-5'-0\" x 11:38\"\n248\nW3b\nF2\nBP1\n-4\" PVC\n-EXTEND POS\nTHRU WALL\nONTO FOOT\n200\n248\n196 1/2\nUNEXCA\n200\n6\" CONCRET\n32 MPA POUR\nMIN 6\" COMP\nUNDISTURBE\n(4) 15M-\nVERT.\n3'-3\" x 1'-0\"\nALLOWANCE FOR\nROOF OVERHANG\n13'-0\"\n3'-3\"\n1'-8\"\n2\n24 TON\nS5\nBIN\n8\" OR 6\" THICK POURED CONCRETE CURB\nHEIGHT PER OWNER DIRECTION\n15M-VERT. MATCH CURB HEIGHT x 10\" H.\nHOOKS @ 24\" o.c.\nALTERNATING DIRECTIONS\nINTO THICKENED FLOOR\n6\" CONCRETE FLOOR\nCOMPACTED GRANULAR 'A' FILL\n12\" HIGH CURB WALL DETAIL\n1'-0\"\nWALL OR PENNING PER PLAN\n(2) 15M HORIZ. @ TOP\nFLOOR THICKENED TO 8\"\nBELOW CURB (24\" WIDE)\nC/W (2) 15M CONT.\nFOUNDATION WALLS:\nW1\nW2\n8\" FOUNDATION WALL 4'-4\" HIGH\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 7/S6\n10\" SANDWICH FOUNDATION WALL:\n25 MPA CONCRETE (8'-0\" HIGH)\nREINFORCE AS PER DETAIL 6/S6\n24\" WIDE X 8\" FOOTING\n20 MPA\n(2) 15M CONT.\nUNDISTURBED SOIL\nW:\nW3\nW\nWe\nPARLOU\nSLOPED 3\" TO\nW6\n200\n32'-0\n2\nS5"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Plan",
+      "location": "Foundation - Main building footprint",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S5",
+        "2/S5",
+        "3/S2",
+        "4/S2"
+      ],
+      "element_callouts": [
+        "W1",
+        "W2",
+        "W3",
+        "W4",
+        "W6",
+        "F1",
+        "BP1",
+        "212",
+        "200",
+        "207",
+        "248",
+        "192",
+        "168",
+        "210",
+        "170",
+        "196 1/2"
+      ],
+      "key_components": [
+        "Concrete Floor",
+        "Compacted Granular Fill",
+        "Foundation Walls",
+        "Footings",
+        "Curbs",
+        "Dropped Pen Floor",
+        "Thickened Slab Edge",
+        "Anchor Bolts",
+        "Baseplates"
+      ],
+      "summary": "This is a Foundation Plan view showing the layout of foundation elements for the main building structure. The plan details the \"UNEXCAVATED\" areas with a \"6\" CONCRETE FLOOR\" constructed of \"32 MPA POURED CONCRETE\" over a \"MIN 6\" COMPACTED GRANULAR 'A' FILL\" on \"UNDISTURBED SOIL\". Various foundation walls are indicated by callouts like \"W1\" (8\" Foundation Wall, 4'-4\" high, 25 MPA concrete), \"W3\" (8\" Curb Wall, 1'-0\" high, 25 MPA concrete), and \"W4\" (4\" Curb/Manger Wall, 25 MPA concrete), with reinforcement specified as per associated details. Footings are identified by \"F1\" (5'-6\" x 5'-6\" x 14\" thick concrete, 20 MPa pour) and \"F2\" (4'-0\" x 4'-0\" x 12\" thick concrete, 20 MPa pour). The plan also shows \"DROPPED PEN FLOOR\" areas, referencing \"EDGE DETAIL 2/S2\" for specific construction. Several \"CURB WALL DETAILS\" are shown, including a \"4'-0\" HIGH CURB WALL DETAIL\" (3/S2) and a \"12\" HIGH CURB WALL DETAIL\" (4/S2), specifying concrete thickness, reinforcement (e.g., \"15M HORIZ. @ 24\" o.c.\", \"15M - VERT. MATCH CURB HEIGHT x 12\" H.\"), and connection to thickened floor sections. \"Baseplate Schedule\" entries like \"BP1\" (12\" x 12\" x 3/4\" thick baseplate with 3/4\" anchor bolts) are also noted. Section callouts like \"1/S5\", \"2/S5\", \"3/S2\", and \"4/S2\" link this plan to other relevant drawings. The legend clarifies symbols for \"TOP OF WALL\" (212) and \"FLOOR HEIGHT\" (200).",
+      "project_id": "25-01-005",
+      "page_number": 2,
+      "region_number": 5,
+      "relative_path": null,
+      "text_verbatim": "OR.\nYP.\nON\n6'-6\"\n25'-8\"\n4\"\n7'-2\"\n1\nS5\n7'-4\"\n4\"\nW1\n25'-8\"\nF1\nBP1\n8'-0\"\nD\nW4\n212\n248\n7'-4\"\n25'-8\"\n4\"\n6'-6\"\n8'-0\"\n26'-0\"\n14'-2\"\n207\n38'-0\"\n9'-0\"\n7'-2\"\n1\nS5\nW2\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n2'-0\"\n207\n248\n212\nW1\nDROPPED PEN FLOOR-\nSEE EDGE DETAIL 2/S2\n(TYP.)\nF1\nBP1\n207\nUNEXCAVATED\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\n192\n207\nW4\n26'-0\"\n129'-8\"\nUNEXCAVATED\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\n192\n200\nW4\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\nENT:\nOR @ 24\" o.c.\nTOP\n(1) 15M HORIZ. @ TOP\n(DBL. IF WALL ABOVE)\n6\" THICK POURED CONCRETE CURB\n15M HORIZ. @ 24\" o.c.\n15M-VERT. MATCH CURB HEIGHT x 12\" H.\nHOOKS @ 16\" o.c.\nALTERNATING DIRECTIONS\nINTO THICKENED FLOOR\n6\" CONCRETE FLOOR\n4'-0\"\n8\" OR 6\" THICK POURED CONCRETE CURB\nHEIGHT PER OWNER DIRECTION\n15M-VERT. MATCH CURB HEIGHT x 10\" H.\nHOOKS @ 24\" o.c.\nALTERNATING DIRECTIONS\nINTO THICKENED FLOOR\n6\" CONCRETE FLOOR\nF1\nBP1\n200\n188'-0\"\nCOMPACTED GRANULAR 'A' FILL\nFLOOR THICKENED TO 8\"\nBELOW CURB (24\" WIDE)\n3\nC/W (2) 15M CONT.\n4'-0\" HIGH CURB WALL DETAIL\n4\n12\" HIGH CURB WALL DETAIL\nS2\nSCALE: 3/4\" = 1'-0\"\nS2\nSCALE: 3/4\" = 1'-0\"\nCOMPACTED GRANULAR 'A' FILL\nW4\n207\n207\n26'-0\"\nDROPPED PEN FLOOR-\nSEE EDGE DETAIL 2/S2\n(TYP.)\n192\nF1\nBP1.\n200\nDROPPED PEN FLOOR-\nSEE EDGE DETAIL 2/S2\n(TYP.)\nW4\n188'-0\"\n150'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n4'-32\" 3'-3\"\nUNEXCAVATED\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\nW4\n207\n26'-0\"\nW4\nW4\n200\n212\nW1\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n14'-0\" x 18'-0\" x 12\" THICK BIN PAD (CONFIRM w/ BIN SUPPLIER):\n32 MPa CONCRETE R/W 15M @ 12\" o.c. EACH DIRECTION\n3\" COVER FROM BOTTOM AND 2\" FROM TOP\nUNDISTURBED SOIL\nTOP OF PAD MIN. 6\" ABOVE GRADE\nSEE NOTES S6 FOR GENERAL SPECS\n1'-0\"\nWALL OR PENNING PER PLAN\n(2) 15M HORIZ. @ TOP\nF1\nBP1\nW4\n207\n17'-8\"\n22'-3\"\n13'-8\"\n5'-0\"\nALLOWANCE FOR\nROOF OVERHANG\n13'-0\"\n200\n12'-6\"\n3'-0\"\n207\n12'-0\"\n4\"\nW4\n207\n10'-0\"\n5'-0\"\n19'-4\"\n3'-1\"\n6'-11\"\n3'-1\" 2'-9\"\n200\n3'-3\" x 1'-0\"\nW1\n512\"\n-4\" PVC TO SEPTIC\n212\n2\nS5\n44'-0\"\n36'-5½\"\n36'-0\"\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\n212\n4\" PVC\n212\n212\n3'-1\" x 1'-6\"\nW3\n200\n(4) 15M\nVERT.\n6'-9\"\nW3\n6'-9\" 18\"\n8\"\n8\"\n200\n212\n212\n3'-1\" x 1'-6\"\nW3\n212\n168\n6'-9\"\n5\n3'-3' x 1'-6\"\n5'-4\" 3'-4\" 3'-3\"\nW1\n7'-5\"\n6'-9\"\n19'-10\"\n-4\" PVC\n*\n-DETAIL\n4/S5\n200\nW1212\n3'-7\" x 1'-6\"-\n2'-6\"\n8\"8\"\n18'-0\"\n27'-11\"\n3'-7\" 2'-6\"\nW6\n210\nW6\nPARLOUR\nSLOPED 3\" TO NORTH\n170\nDETAIL 3/S6\nW6)\n· 5'-0\" x 1'-0\" -\n12'-6\"\n248\n6'-0\"\n2'-4\"\n+4112-11\n12'-0\"\n5'-0\"\n-5'-0\" x 1/32\" 1\n2\"-4\"\n248\nW3b\nW3b\nF2\nBP1\n-4\" PVC\n-EXTEND POST\nTHRU WALL\nONTO FOOTING\n200\n248\n196 1/2\n200\n11'-0\"\n7'-3\"\n10'-9\"\n248\nW1\nUNEXCAVATED\n6\" CONCRETE FLOOR\n32 MPA POURED CONCRETE\nMIN 6\" COMPACTED GRANULAR 'A' FILL\nUNDISTURBED SOIL\n(4) 15M-\nVERT.\n3'-3\" x 1'-0\"\n20'-0\" x 1'-6\"\n3'-3\"\n1'-8\"\n20'-0\"\n44'-0\"\n2\n24 TON\nS5\nBIN\nFOUNDATION WALLS:\nW1\n8\" FOUNDATION WALL 4'-4\" HIGH\n25 MPA CONCRETE\nW3\nREINFORCE AS PER DETAIL 7/S6\nW2\n10\" SANDWICH FOUNDATION WALL:\nW3b\n25 MPA CONCRETE (8'-0\" HIGH)\nREINFORCE AS PER DETAIL 6/S6\n24\" WIDE X 8\" FOOTING\nW4\nFLOOR THICKENED TO 8\"\nBELOW CURB (24\" WIDE)\nC/W (2) 15M CONT.\n20 MPA\n(2) 15M CONT.\nUNDISTURBED SOIL\nW6\n32'-0\"\n6'-0\"\n6'-0\"\n17'-8\"\n10'-9\"\n6'-3\"\n200\n35'-9\"\n210\nW6\n196 1/2\nW3\n196 1/2\n(4) 15M-\nVERT.\n(4) 15M-\nVERT.\n212\nW1\n10'-0\" x 1'-6\"\n3'-3\" x 1'-0\"\n19'-112\"\n200\n5'-4\"\n10'-0\" x 1'-6\"\n10'-0\" x 1'-6\"\nW1\n3'-3\" x 1'-0\"\nLEGEND\n212\n= TOP OF WALL\n200 = FLOOR HEIGHT\nA1 =POST ANCHOR:\nCBQGT66-SDS2 SIMPSON\nSTRONG TIE POST BRACKET\n(GALV.) SEE DETAIL 5/S6\nPROVIDE 1/2\" ANCHOR BOLTS\nAT 48\" O.C. ALL CLOSED WALLS\nх\n= DRAIN C/W P-TRAP AND\nCONNECTED TO 4\" PVC\nPIPE INTO SEPTIC BED\n(BY OTHERS)\nThese documen\nare the property\nThey may not b\nwithout the exp\nStar Blueprints\nDEC. 20 ISS\n2024\nDEC. 30 ISS\n2024\n19'-4\"\n8\"\n10'-0\"\n9'-6\"\n6'-3\"\n10'-9\"\n3'-3\"\n13'-10%\"\n6'-3\" x 1'-0\"\n10'-0\"\n3'-9\" 3'-3\"\n10'-0\"\n6'-9\"\n-1'-6\"\n18'-4\"\n912\"\n68'-1012\"\n108'-0\"\n44681 Gou\nNOG 1X0\nDESIGNER IN\nDuane Bauma\nALL CONSTR\nONTARIO BU\nThese d\nas per N\nCode of\nPermit a\nmade be\nW\nENG\n119 PI\nPH. 519\nFAX. 1-\nINFO@\nLICE\nTHE CONTRACTOR SHALL VERIFY ALL DIMENSIONS BEFORE CONSTRUCTION. ANY DISCREPANCIES SHALL BE REPORTED IMMEDIATELY. UNDER NO CIRCUMSTANCES SHALL THE CONTRACTOR PROCEED IN UNCERTAINTY.\nClient\n1\nS2\nFOUNDATION PLAN\nSCALE: 1/8\" = 1'-0\"\nBASEPLATE SCHEDULE:\nCLAR\nProject Title\n10\nDAI\n8\" CURB WALL 1'-0\" HIGH\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 4/S2\n6\" CURB WALL 4'-0\" HIGH\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 3/S2\n4\" CURB / MANGER WALL\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 2/S2\n6\" PARLOUR CURB WALLS\n25 MPA CONCRETE\nREINFORCE AS PER DETAIL 3/S5\nBP1=12\" x 12\" x 3/4\" THICK BASEPLATE\nC/W (4) 3/4\" DIA. x 8\" ANCHOR BOLTS\nSEE DETAIL 2/S6\nBP2 6\" x 12\" x 3/4\" THICK (OFF-SET)\nBASEPLATE C/W (2) 3/4\" DIA. x 8\"\nANCHOR BOLTS\nSEE DETAIL 2/S6\nFOOTING SCHEDULE:\nF15'-6\" x 5'-6\" x 14\" THICK CONCRETE\n20 MPa POUR CONCRETE R/W\n(5) 15M EACH WAY\n083777\nMt. For\nDrawing\nFOUN\nScale\nUNDISTURBED SOIL (SEE DETAIL 2/S6)\n1/8'\nDate\nF2 = 4'-0\" x 4'-0\" x 12\" THICK CONCRETE\nDEC. 1\nDrawn by\nD. BA\nProject #\n20 MPa POUR CONCRETE R/W\n(4) 15M EACH WAY\nUNDISTURBED SOIL"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Manure Pad Edge",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S3"
+      ],
+      "element_type": "Manure Pad Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Poured Concrete",
+        "Reinforcing Steel",
+        "Compacted Granular Fill"
+      ],
+      "summary": "This detail illustrates the edge of a manure pad, providing specific construction requirements. The concrete element has a total height of 10 inches, with a 3-inch concrete cover specified for the bottom and sides, and 2-inch cover for the top. The concrete is reinforced with four continuous 15M bars, requiring a minimum lap splice of 1 foot 8 inches. The pad slopes away, indicated by an arrow and text annotation. The foundation beneath the concrete consists of a minimum of 6 inches of compacted granular fill, designated as 'A'. A beveled edge is shown with a slope of 1 on 2. The detail is titled 'MANURE PAD EDGE DETAIL' and is referenced as detail 3 on sheet S3, with a scale of 3/4\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "2\" COVER TO CONC.\n(TOP & SIDES)\nSLOPE AWAY\n4 15M CONTINUOUS\n-\nMIN. 1'-8\" LAP @ SPLICES\nPOURED CONC.\nREINF. PER PLAN\n3\" COVER\nTO CONC.\n10\"\nCOMPACTED GRAN. 'A'\n1'-6\"\n6\" MIN.\n3\nMANURE PAD EDGE DETAIL\nS3\nSCALE: 3/4\" 1'-0\"\n="
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Shearwall anchor connection to foundation wall",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "S3"
+      ],
+      "element_type": "Shearwall Anchor Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Shearwall",
+        "Anchor Bolt",
+        "Angle Connector",
+        "Concrete Foundation Wall",
+        "OSB Sheathing",
+        "Stud Post"
+      ],
+      "summary": "This detail illustrates the connection between a shearwall and a concrete foundation wall, identified as 'SHEARWALL ANCHOR DETAILS' on sheet S3. The detail shows a side view of the connection. The shearwall is constructed with 7/16\" OSB sheathing on one or two sides, fastened with 2 3/8\" nail-gun nails at 4\" on center along panel edges and 8\" on center in the field. Blocking is provided at 24\" on center and along all panel edges. The top of the wall is secured to a truss as per the roof plan. A 3-ply stud post is specified at each end of the wall section. The shearwall is anchored to the concrete foundation wall using a 6\" x 3\" x 1/4\" angle, which is secured with a 5/8\" anchor bolt or equivalent epoxy anchor with an 8\" embedment into the concrete. This anchor detail is applied at each end of the shearwall. The foundation wall is a concrete foundation wall as per the plan. The anchor bolts are 1/2\" diameter and spaced at 48\" on center, indicated as typical. The detail includes a scale of 1\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "7/16\" O.S.B. ON 1 OR 2 SIDES PER PLAN\nFASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(TOP OF WALL SECURED TO TRUSS\nAS PER ROOF PLAN)\n3-PLY STUD POST\nEACH END OF WALL SECTION\n3\"\n6\" x 3\" x 1/4\" ANGLE C/W\n5/8\" ANCHOR BOLT\nOR EQUIV. EPOXY ANCHOR\n(8\" EMBED. INTO CONC.)\nAT EACH END OF SHEARWALL\n2\nSHEARWALL ANCHOR DETAILS\nS3\nSCALE: 1\" =1'-0\"\n1/2\"\n.9\n1/2\" DIA. A.B.\n48\" o.c. (TYP.)\nCONC. FND. WALL AS PER PLAN\n6¼\" |\nSIDE VIEW"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation wall and upper wall assembly",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Wall Assembly Detail",
+      "element_callouts": [
+        "15M"
+      ],
+      "key_components": [
+        "Concrete Foundation Wall",
+        "Wood Studs",
+        "OSB Sheathing",
+        "Angle Fasteners",
+        "Wood Lag Screws",
+        "Reinforcing Steel"
+      ],
+      "summary": "This section view details a wall assembly that transitions from a concrete foundation wall to an upper wall structure. The concrete foundation wall is 8 inches thick. Above this, the upper wall consists of wood studs with 7/16\" OSB sheathing applied to one or two sides, as indicated by the plan. An angle is shown fastened to the studs using eight 5/16\" x 3\" wood lag screws. The detail also indicates 15M reinforcing steel at the top perimeter of the foundation wall, noted as typical. Various dimensions are provided, including the overall height of the upper wall section at 6\", with internal stud dimensions and spacing. The foundation wall itself has a total width of 8 inches, with 4-inch dimensions shown for its base.",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "6\"\n2\" 1\"\"2\"\n5½\"\n1\" \"។ \"\n3\"\n7/16\" O.S.B. SHEATHING\n(1 OR 2 SIDES PER PLAN)\nANGLE FASTENED TO STUDS w/\n8 - 5/16\" x 3\" WOOD LAGS\n8\" CONC. FND. WALL\n15M TOP PERIMETER\n(TYP.)\n4\"\n4\"\n8\"\nSECTION VIEW"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Main Barn Area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S3",
+        "2/S5",
+        "1/S5"
+      ],
+      "element_callouts": [
+        "W10",
+        "L4",
+        "L5",
+        "L3",
+        "W11",
+        "L2",
+        "L1",
+        "C7",
+        "C3",
+        "C4",
+        "W12",
+        "W13"
+      ],
+      "key_components": [
+        "Steel Beam",
+        "Overhead Door",
+        "Curtain Wall",
+        "Concrete Foundation",
+        "Compacted Granular Fill",
+        "Stud Post",
+        "Anchor Bolt"
+      ],
+      "summary": "This image is a Main Floor Plan (SCALE: 1/8\" = 1'-0\"), indicated by the title and scale annotation. The plan depicts a large barn structure with various zones including \"BILLY PENS\", \"GOAT PENS\", \"MANGER ALLEY\", \"UTILITY\", \"VET RM\", \"OFFICE\", \"PARLOUR\", \"NURSERY\", and \"BILLY KIDS\". The overall dimensions of the structure are extensive, with a total length of 188'-0\" and a width of approximately 123'-0\". The plan shows a grid system with labels such as L1, L2, L3, L4, L5, and C1, C3, C4, C7, which define the layout and spacing of structural elements. Several steel beams are noted, including \"W18 x 45 STEEL BEAM\" spanning 26'-0\" in multiple locations, and \"W10\" beams. Numerous \"12'-0\" X 11'-6\" O/H DOOR\" (Overhead Doors) are indicated along the perimeter, along with a \"LIFT DOOR\" and a \"104'-0\" x 10'-0\" CURTAIN\" wall. The plan also references section cuts with callouts like \"1/S3\", \"2/S5\", and \"1/S5\", which connect this plan to other drawings in the set. A detail at the bottom right shows a \"3-PLY STUD POST\" connection with \"6\" x 3\" x 1/4\" ANGLE C/W 5/8\" ANCHOR BOLT\" for shearwall applications, and a \"POURED CONC. REINF. PER PLAN\" detail with \"4 - 15M CONTINUOUS MIN. 1'-8\" LAP @ SPLICES\" for concrete reinforcement, indicating a poured concrete slab with specific rebar requirements. The detail also shows \"2\" COVER TO CONC. (TOP & SIDES)\" and \"3\" COVER TO CONC.\", along with \"COMPACTED GRAN. 'A' 6\" MIN.\" for the sub-base preparation. The \"SLOPE AWAY\" annotation indicates drainage considerations for the concrete slab.",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "40'-11½\"\n123'-0\"\n108'-0\"\nор\n19\n15'-0\"\n✓\n„0-60-6\nLIFT DOOR\n12'-0\"\n12'-0\"\n8'-0\"\n12'-0\"\n12'-0\"\n3'-0\" 4'-6\"\n5'-2\"\n9'-0\"\n10\"\n1'-5\"\n1'-8\"\n8'-0\"\n67'-0\"\n5½\"\n12'-0\" X 11'-6\"\nO/H DOOR\nL4\n✓\n12'-0\" X 11'-6\"\n12'-0\" X 11'-6\"\nO/H DOOR\nO/H DOOR\n✓\n12'-0\" X 11'-6\"\nO/H DOOR\n12'-0\" X 11'-6\"\nそう\nL4\nL4\nO/H DOOR\nL4\n4'-7\"\n2'-11\"\n12'-0\"\n12'-0\"\n8'-3\"\n1'-8\"\nO/H DOOR\nL4\n12'-0\" X 11'-6\"\n4'-0\"\nL5\nW10\n✓\nW10\n25'-8\"\nW18 x 45 STEEL BEAM\n5'-6\"\n9'-0\"\n5'-0\" x 2'-8\" W10 5'-0\" x 2'-8\".\nL5\n4'-9\"\n8'-0\"\n4'-0\"\nL3\nW11\n)(\nL2\nL2\nG\nL2\nL2\n1\nMAIN FLOOR PLAN\nS3\nSCALE: 1/8\" = 1'-0\"\n1\nS5\nان\n38'-0\"\n9'-0\"\n9'-0\"\n5'-0\" x 2'-8\"\n5'-0\" x 2'-8\"\nL5\nL5\nL5\n4'-0\"\nBILLY PENS\n1\nS5\nW10\n15'-0\"\n1\nS5\n188'-0\"\n104'-0\" x 10'-0\" CURTAIN\n2'-0\"\n5'-6\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n5'-11\"\n44'-0\"\n35'-11\n2'-2\"\n3'-11\"\n14'-6\"\nL1\nL1\n'C\n°\n11'-0\"\n2\nS5\n3'-0\"\n4'-0\" x 2'-8\"\nL1\nL1\nL1\nL1\nL1\nL1\nL1\nL1\nL1\nL1\nL1\nL3\nL5\nSTRG\n3'-6\"\n3'-0\" x 3\nL5\nUTILITY\nMANGER ALLEY\nVET\n-10\"\nW12\nRM\n12'-10\"\n7'-0\"\n6'-112\"\n512\"\nW12\nW13\n12'-1\"\nW12\nOFFICE\nGOAT PENS\n8'-9\"\nWATER BOWLS\n(BY OTHERS)\n2'-10\"\n5'-6\"\nPR\nPIT\nHOLE in\n(B\n-WATER BOWLS\n(BY OTHERS)\nGOAT PENS\n26'-0\"\nW18 x 45 STEEL BEAM\nMANGER ALLEY\n26'-0\"\nMANGER ALLEY\n26'-0\"\nо\nо\n26'-0\"\n°\n(°)\nW18 x 45 STEEL BEAM\nW18 x 45 STEEL BEAM\nW18 x 45 STEEL BEAM\nW18 x 45 STEEL BEAM\nGOAT PENS\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nMANGER ALLEY\n22'-3\"\n12'-0\"\n-WATER BOWLS\n(BY OTHERS)\n10'-0\"\n10'-0\"\n3'-0\"\n1'-6\" 1'-6\"\nW11\n32'-0\"\nPARLOUR\nNURSERY\n28'-0\"\n5'-0\"\n10'-9\"\n6'-0\"\n10'-9\"\n6'-0\"\n3'-6\"\n5'-0\"\n3'-6\"\n5'-1\"\nCA\nNURSERY\nBILLY KIDS\nW11\nFEED ROO\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n5'-8\"\n4'-0\" 5'-0\" 3'-4\"\n8'-0\"\n136'-0\" x 10'-0\" CURTAIN\n18'-0\"\n20\n188'-0\"\n2\" COVER TO CONC.\n(TOP & SIDES)\nSLOPE AWAY\n3\" COVER\nTO CONC.\n10\"\n1'-6\"\n4-15M CONTINUOUS\nMIN. 1'-8\" LAP @ SPLICES\nPOURED CONC.\nREINF. PER PLAN\nCOMPACTED GRAN. 'A'\n6\" MIN.\nL2\nL2\nL2\nL4\nL5\n4'-0\" x 2'-8\" W10 3'-0\"\n20'-0\nQ¢\nO/H\n2\nS5\n7/16\" O.S.B. ON 1 OR 2 SIDES PER PLAN\nFASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(TOP OF WALL SECURED TO TRUSS\nAS PER ROOF PLAN)\n3-PLY STUD POST\nEACH END OF WALL SECTION\n6\" x 3\" x 1/4\" ANGLE C/W\n5/8\" ANCHOR BOLT\nOR EQUIV. EPOXY ANCHOR\n(8\" EMBED. INTO CONC.)\nAT EACH END OF SHEARWALL"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – Main Barn Area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S5",
+        "2/S5",
+        "3/S3"
+      ],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "W10",
+        "W11",
+        "L5",
+        "L1",
+        "C1",
+        "C3",
+        "W18",
+        "W12",
+        "W13",
+        "L3",
+        "L4",
+        "L6"
+      ],
+      "key_components": [
+        "Steel Beams",
+        "Steel Columns",
+        "Framed Walls",
+        "Concrete Foundation",
+        "Shearwalls",
+        "Lintels",
+        "Pens",
+        "Manger Alley",
+        "Water Bowls"
+      ],
+      "summary": "This is a ground floor plan of a large agricultural building, likely a barn or livestock facility, showing various zones including \"BILLY PENS\", \"GOAT PENS\", \"MANGER ALLEY\", \"MILK HOUSE\", \"PARLOUR\", \"NURSERY\", \"FEED ROOM\", and \"BILLY KIDS\". The overall dimensions of the structure are indicated, with a total length of 188'-0\" and a significant curtain wall of 104'-0\" x 10'-0\". The plan details the layout of steel beams (e.g., W18 x 45 STEEL BEAM) and columns (e.g., C1, C3) supporting the roof structure, along with framed wall types (W10, W11, W12, W13) and lintels (L1, L2, L3, L4, L5, L6) for openings. Several section callouts are present, including \"1/S5\" and \"2/S5\" which likely reference sections through the main structure, and \"3/S3\" referencing a detail for the manure pad edge. The plan also includes details for shearwall anchor connections and a manure pad edge detail, indicating the presence of concrete slabs and foundations. The \"FRAMED WALLS\" notes describe various wall assemblies, such as \"W10 2X6 EXTERIOR WALL\" and \"W12X6 INTERIOR BEARING\", detailing sheathing, studs, insulation, and liners. The \"LINTEL SCHEDULE\" and \"COLUMN SCHEDULE\" provide specific member types and dimensions for these elements. The plan indicates the placement of water bowls and other amenities. The overall structural system appears to be a steel frame with wood-framed walls and concrete slabs/foundations.",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 5,
+      "relative_path": null,
+      "text_verbatim": "25'-8\"\n9'-0\"\n38'-0\"\n9'-0\"\n9'-0\"\nW10 5'-0\" x 2'-8\"\n5'-0\" x 2'-8\"\n5'-0\" x 2'-8\"\nL5\n4'-0\"\nL5\nL5\n8'-0\"\nW11\nBILLY PENS\nо\n(BY OTHERS)\n1\nS5\n2'-0\"\n5'-6\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\nW10\n4'-0\"\n15'-0\"\n1\nS5\nL1\nL1\nL1\nL1\nL1\nL1\nGOAT PENS\nGOAT PENS\n-WATER BOWLS\n26'-0\"\n3 x 45 STEEL BEAM\nW18 x 45 STEEL BEAM\nMANGER ALLEY\nC3\n26'-0\"\nW18 x 45 STEEL BEAM\nGOAT PENS\nMANGER ALLEY\n26'-0\"\nL1\n188'-0\"\n104'-0\" x 10'-0\" CURTAIN\nMANGER ALLEY\nW18 x 45 STEEL BEAM\n2\nS5\n44'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n5'-11\"\n35'-11\"\n2'-2\"\n3'-11\"\n14'-6\"\n11'-0\"\n7'-0\"\n10'-6\"\n7'-0\"\n3'-0\"\n4'-0\" x 2'-8\"\nL1\nL1\nL1\nL1\nL1\nL1\nL3\nL5\nSTRG\nUTILITY\nVET\n2'-10\"\nRM\n6'-0\"\nW12\n12-10-\n×\n3'-0\" x 3'-0\"\n4'-0\" x 2'-8\" W10\nL5\nL5\n20'-0\"\n☑\n7'-0\"\n6'-1112\"\n5½\"\nW12\nW13\n12'-1\"\nW12\nMILK HOUSE\nOFFICE\n8'-9\"\n-PROVIDE GUARD\nWATER BOWLS\n(BY OTHERS)\n2'-10\"\n10'-0\"\n32'-0\"\nPARLOUR\n3'-6\"\n5'-0\" 3'-6\"\n5'-1\"\nPIT\nHOLE in\nSINKS\n(BY OTHERS)\nW11\nL3\n18'-10\"\nL5\nL5\nL4\n5'-0\" x 5'-0\"\n3'-0\"\n8'-0\" x 5'-0\"\n2'-6\" 2'-6\"\n0-9\n3\"\n10'-0\"\nNURSERY\nо\n3'-0\"\n9-19-17\n28'-0\"\n0-9\n10'-9\"\nL4\nст\nL5\n10'-0\" X 10'-0\"\n5'-0\" x 5'-0\"\n..0-.9\nO/H DOOR\nWALL STUDS @ 16\" o.c.\n(EXCEEDING 16'-0\" TALL)\nW10\nC3\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\nL2\n1\nS5\n26'-0\"\n22'-3\"\nW18 x 45 STEEL BEAM\nW18 x 45 STEEL BEAM\nMANGER ALLEY\n12'-0\"\nWATER BOWLS\n(BY OTHERS)\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n8'-0\"\n5'-8\"\n136'-0\" x 10'-0\" CURTAIN\n188'-0\"\n1\nMAIN FLOOR PLAN\n53\nSCALE: 1/8\" = 1'-0\"\n2\" COVER TO CONC.\n(TOP & SIDES)\nSLOPE AWAY\n3\" COVER\nTO CONC.\n4-15M CONTINUOUS\nMIN. 1'-8\" LAP @ SPLICES\nPOURED CONC.\nREINF. PER PLAN\n1'-6\"\n6\" MIN.\n3\nMANURE PAD EDGE DETAIL\nS3\nSCALE: 3/4\" = 1'-0\"\nCOMPACTED GRAN. 'A'\nL2\nL2\nL2\nC1\nC4\n✓\nL4\nL5\n4'-0\" x 2'-8\" W10 3'-0\"\n4'-0\" 5'-0\" 3'-4\"\n18'-0\"\n2\nS5\nNURSERY\nBILLY KIDS\n7/16\" O.S.B. ON 1 OR 2 SIDES PER PLAN\nFASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(TOP OF WALL SECURED TO TRUSS\nAS PER ROOF PLAN)\n3-PLY STUD POST\nEACH END OF WALL SECTION\n6\" x 3\" x 1/4\" ANGLE C/W\n5/8\" ANCHOR BOLT\nOR EQUIV. EPOXY ANCHOR\n(8\" EMBED. INTO CONC.)\nAT EACH END OF SHEARWALL\n2\nSHEARWALL ANCHOR DETAILS\nS3\nSCALE: 1\" 1'-0\"\nW11\nFEED ROOM\n614\"\nL6\n5'-0\"\n3\"\n10'-9\"\n20'-0\" X 10'-6\"\nO/H DOOR\n✓\n20'-0\"\n6'-0\"\n3\"\n60\nㅠ\n1/2\" DIA. A.B.\n48\" o.c. (TYP.)\n||\nCONC. FND. WALL AS PER PLAN\nSIDE VIEW\nO/H DOOR\nL5\nL4\nL5\nL4\n4'-0\" x 2'-8\"\n10'-0\" X 10'-0\"\n3'-0\"\n10'-0\" X 10'-0\"\nO/H DOOR\n☑\n7'-6\"\n4'-0\"\n8\"\n10'-0\"\n✓\n6'-9\"\n7'-7\"\n10'-0\"\n5'-5\"\n-3'-1½\"\n18'-5\"\n10'-0\"\n5'-312\"\n7'-4\"\n7'-4\"\n8'-2\" 3'-0\"\n8'-0\"\n4'-6\"\n69'-8\"\n108'-0\"\n19'-5\"\n6\"\nFRAMED WALLS:\nW10\nW11\nW12\nW13\n2X6 EXTERIOR WALL:\n29 ga. METAL WALL CLAD\nHOUSEWRAP (JOINTS TA\n1X4 STRAPPING @ 24\" O.\n7/16\" OSB SHEATHING SE\n2 3/8\" NAILGUN NAILS @\nPANEL EDGES & 10\" o.c.\n2X6 STUDS @ 24\" O.C.\nBLOCKING @ 48\" O.C.\nR-20 BATT INSULATION\nS-6 MIL POLY\nAG TUFF LINER AS PER C\n2X6 INTERIOR BEARING V\n7/16\" OSB SHEATHING SE\n2 3/8\" NAILGUN NAILS @\nPANEL EDGES & 10\" o.c.\n2X6 STUDS @ 16\" O.C.\nBLOCKING @ 48\" O.C.\nAG TUFF LINER AS PER C\n2X6 INTERIOR WALL:\nLINER AS PER CLIENT\n2X6 STUDS @ 24\" O.C.\nR-20 BATT INSULATION\nS-6 MIL POLY (WARM SIDE\nAG TUFF LINER AS PER C\n2X4 INTERIOR PARTITION\nLINER AS PER CLIENT\n2X4 STUDS @ 24\" O.C.\nR-12 BATT INSULATION\nS-6 MIL POLY (WARM SIDE\nAG TUFF LINER AS PER O\nSINGLE SHEARWALL\n7/16\" OSB ON ONE SIDE FASTENED\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD.\nBLOCKING @ 24\" o.c. AND ALL PANEL\n(3) PLY STUD POST EACH END OF SH\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3\nDOUBLE SHEARWALL\n7/16\" OSB ON BOTH SIDES FASTENE\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. F\nBLOCKING @ 24\" o.c. AND ALL PANEL\n(3) PLY STUD POST EACH END OF SH\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3\nLINTEL SCHEDULE:\nL1 (1) 1.75 x 11.25 LVL 2.0E\n(LET INTO POST) and (2)\nSEE DETAILS 4, 5/S6\nL2 (3) 2x12 PLATES\nSEE DETAILS 4, 5/S6\nL3 (3) 2X10 HEADER C/W\n2 STUDS BEARING & 1 S\nL4 (2) 2X10 HEADER C/W\n2 STUDS BEARING & 1 S\nL5 (2) 2X6 HEADER C/W\n1 STUD BEARING & 1 ST\nL6W10 x 22 STEEL BEAM O\n3 STUDS BEARING & 2 S\nSEE DETAIL 3/S6\nCOLUMN SCHEDULE:\nC1 = 6x8 SPF #2 OR BETTER\nC2 UNUSED\nC35\" x 5\" x 3/8\" HSS STEEL\nSEE DETAIL 2/S6\nC45\" x 5\" x 1/4\" HSS STEEL\nSEE DETAIL 2/S6\n512\"\n1\" \"។ \"\n7/16\" O.S.B. SHEATHING\n(1 OR 2 SIDES PER PLAN)\n3\"\nANGLE FASTENED TO STUDS w/\n8-5/16\" x 3\" WOOD LAGS\n8\" CONC. FND. WALL\n15M TOP PERIMETER\n(TYP.)\nSECTION VIEW"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation to Roof connection - Shearwall anchor details",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S3"
+      ],
+      "element_type": "Shearwall Anchor Detail",
+      "element_callouts": [],
+      "key_components": [
+        "OSB Sheathing",
+        "Stud Post",
+        "Angle Connector",
+        "Anchor Bolt",
+        "Concrete Foundation Wall",
+        "Rebar"
+      ],
+      "summary": "This detail illustrates the connection of shearwalls to the foundation and roof structure. The detail shows a side view and a section view of the shearwall anchor assembly. The shearwall is constructed with 7/16\" O.S.B. sheathing on one or two sides, fastened with 2 3/8\" nail-gun nails at 4\" on center along panel edges and 8\" on center in the field. Blocking is provided at 24\" on center and along all panel edges. The top of the wall is secured to the truss as indicated on the roof plan. At each end of the shearwall, a 3-ply stud post is present. The connection to the foundation involves a 6\" x 3\" x 1/4\" angle with a 5/8\" anchor bolt or equivalent epoxy anchor, requiring 8\" embedment into the concrete. The concrete foundation wall is 8\" thick, and a 15M rebar perimeter is specified as typical. The section view further clarifies the assembly, showing the 8\" concrete foundation wall and the 7/16\" O.S.B. sheathing. The angle connector is fastened to the studs using eight 5/16\" x 3\" wood lags. The detail also shows 1/2\" diameter anchor bolts spaced at 48\" on center, typical for securing the wall to the foundation.",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 6,
+      "relative_path": null,
+      "text_verbatim": "2\nS3\n7/16\" O.S.B. ON 1 OR 2 SIDES PER PLAN\nFASTENED w/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(TOP OF WALL SECURED TO TRUSS\nAS PER ROOF PLAN)\n3-PLY STUD POST\nEACH END OF WALL SECTION\n3\"\n6\" x 3\" x 1/4\" ANGLE C/W\n5/8\" ANCHOR BOLT\nOR EQUIV. EPOXY ANCHOR\n(8\" EMBED. INTO CONC.)\nAT EACH END OF SHEARWALL\nSHEARWALL ANCHOR DETAILS\nSCALE: 1\" =1'-0\"\n1/2\"\n1/2\" DIA. A.B.\n48\" o.c. (TYP.)\nCONC. FND. WALL AS PER PLAN\n6¼\"\nSIDE VIEW\n512\"\n1\"\"\"\n4\"\n4\"\n8\"\n7/16\" O.S.B. SHEATHING\n(1 OR 2 SIDES PER PLAN)\nANGLE FASTENED TO STUDS\n8 - 5/16\" x 3\" WOOD LAGS\n8\" CONC. FND. WALL\n15M TOP PERIMETER\n(TYP.)\nSECTION VIEW"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S3",
+        "3/S6",
+        "2/S6"
+      ],
+      "element_type": "Wall, Lintel, and Column Schedules and Details",
+      "element_callouts": [
+        "W10",
+        "W11",
+        "W12",
+        "W13",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5",
+        "L6",
+        "C1",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "key_components": [
+        "Framed Walls",
+        "Shearwalls",
+        "Lintels",
+        "Columns",
+        "OSB Sheathing",
+        "Wood Studs",
+        "Metal Cladding",
+        "Housewrap",
+        "Batt Insulation",
+        "Polyethylene Vapor Barrier",
+        "Steel Beams",
+        "HSS Steel Posts"
+      ],
+      "summary": "This document page contains detailed specifications for framed walls, a lintel schedule, and a column schedule, likely serving as a reference for structural elements. The 'FRAMED WALLS' section defines multiple wall types, including W10 (2x6 Exterior Wall) with 29 ga. metal cladding, housewrap, 7/16\" OSB sheathing secured with 2 3/8\" nailgun nails at 6\" o.c. on panel edges and 10\" o.c. in the field, 2x6 studs at 24\" o.c., R-20 batt insulation, and S-6 mil poly. Other framed walls like W11 (2x6 Interior Bearing Wall), W12 (2x6 Interior Wall), and W13 (2x4 Interior Partition Wall) are also detailed with varying stud spacing, insulation, and sheathing requirements. Specific shearwall details are provided: 'SINGLE SHEARWALL' uses 7/16\" OSB on one side fastened with 2 3/8\" nail-gun nails at 4\" o.c. on panel edges and 8\" o.c. in the field, with blocking at 24\" o.c. and at all panel edges, and a (3) ply stud post at each end, referencing detail 2/S3. 'DOUBLE SHEARWALL' specifies 7/16\" OSB on both sides with similar fastening and blocking, also referencing detail 2/S3. The 'LINTEL SCHEDULE' lists various lintel types (L1 through L6), including wood (LVL, 2x12 plates, 2x10 headers, 2x6 headers) and a W10 x 22 steel beam, with specific bearing and stud requirements and references to details on sheet S6. The 'COLUMN SCHEDULE' defines column types C1 (6x8 SPF #2 or better post), C3 (5\" x 5\" x 3/8\" HSS steel post), and C4 (5\" x 5\" x 1/4\" HSS steel post), all referencing details on sheet S6. This information is crucial for understanding the construction of walls, openings, and vertical supports within the building structure.",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 7,
+      "relative_path": null,
+      "text_verbatim": "FRAMED WALLS:\nW10\nWID\nW12\nW13\n2X6 EXTERIOR WALL:\n29 ga. METAL WALL CLADDING\nHOUSEWRAP (JOINTS TAPED)\n1X4 STRAPPING @ 24\" O.C.\n7/16\" OSB SHEATHING SECURED w/\n2 3/8\" NAILGUN NAILS @ 6\" o.c.\nPANEL EDGES & 10\" o.c. IN FIELD\n2X6 STUDS @ 24\" O.C.\nBLOCKING @ 48\" O.C.\nR-20 BATT INSULATION\nS-6 MIL POLY\nAG TUFF LINER AS PER CLIENT\n2X6 INTERIOR BEARING WALL:\n7/16\" OSB SHEATHING SECURED w/\n2 3/8\" NAILGUN NAILS @ 6\" o.c.\nPANEL EDGES & 10\" o.c. IN FIELD\n2X6 STUDS @ 16\" O.C.\nBLOCKING @ 48\" O.C.\nAG TUFF LINER AS PER CLIENT\n2X6 INTERIOR WALL:\nLINER AS PER CLIENT\n2X6 STUDS @ 24\" O.C.\nR-20 BATT INSULATION\nS-6 MIL POLY (WARM SIDE)\nAG TUFF LINER AS PER CLIENT\n2X4 INTERIOR PARTITION WALL:\nLINER AS PER CLIENT\n2X4 STUDS @ 24\" O.C.\nR-12 BATT INSULATION\nS-6 MIL POLY (WARM SIDE)\nAG TUFF LINER AS PER CLIENT\nSINGLE SHEARWALL\n7/16\" OSB ON ONE SIDE FASTENED\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @24\" o.c. AND ALL PANEL EDGES.\n(3) PLY STUD POST EACH END OF SHEARWALL\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3\nDOUBLE SHEARWALL\n7/16\" OSB ON BOTH SIDES FASTENED\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\n×\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(3) PLY STUD POST EACH END OF SHEARWALL\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3\nLINTEL SCHEDULE:\nL1 (1) 1.75 x 11.25 LVL 2.0E 3100fb\n(LET INTO POST) and (2) 2x12 PLATE\nSEE DETAILS 4, 5/S6\nL2 = (3) 2x12 PLATES\n=\nSEE DETAILS 4, 5/S6\nL3 (3) 2X10 HEADER C/W\n2 STUDS BEARING & 1 STUD KING\nL4 (2) 2X10 HEADER C/W\n2 STUDS BEARING & 1 STUD KING\nL5 (2) 2X6 HEADER C/W\n1 STUD BEARING & 1 STUD KING\nL6W10 x 22 STEEL BEAM C/W\n3 STUDS BEARING & 2 STUDS KING\nSEE DETAIL 3/S6\nCOLUMN SCHEDULE:\nC1 = 6x8 SPF #2 OR BETTER POST\nC2 UNUSED\nC3 5\" x 5\" x 3/8\" HSS STEEL POST\nSEE DETAIL 2/S6\nC4 = 5\" x 5\" x 1/4\" HSS STEEL POST\nSEE DETAIL 2/S6"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S3"
+      ],
+      "element_type": "Framed Wall Details",
+      "element_callouts": [
+        "W10",
+        "W11",
+        "W12",
+        "W13"
+      ],
+      "key_components": [
+        "Wood Studs",
+        "OSB Sheathing",
+        "Metal Cladding",
+        "Housewrap",
+        "Strapping",
+        "Blocking",
+        "Batt Insulation",
+        "Polyethylene Vapor Barrier",
+        "Liner",
+        "Shearwall"
+      ],
+      "summary": "This document section details various framed wall assemblies and shearwall construction. It defines specific wall types, identified by callouts such as W10, W11, W12, and W13, and outlines their material compositions and fastening schedules. For instance, W10 represents a 2x6 exterior wall featuring 29-gauge metal cladding over housewrap, 1x4 strapping at 24\" on center, and 7/16\" OSB sheathing secured with 2 3/8\" nailgun nails at 6\" on center at panel edges and 10\" on center in the field. This wall also includes 2x6 studs at 24\" on center, blocking at 48\" on center, R-20 batt insulation, a 6-mil polyethylene vapor barrier, and an \"AG TUFF LINER\" as specified by the client. W11 is a 2x6 interior bearing wall with similar sheathing and fastening but with studs at 16\" on center. W12 is a 2x6 interior wall with R-20 insulation and W13 is a 2x4 interior partition wall with R-12 insulation. The document also details \"SINGLE SHEARWALL\" and \"DOUBLE SHEARWALL\" construction. The single shearwall uses 7/16\" OSB on one side, fastened with 2 3/8\" nail-gun nails at 4\" on center at panel edges and 8\" on center in the field, with blocking at 24\" on center and at all panel edges, and a (3) ply stud post at each end. The double shearwall has OSB on both sides with similar fastening and blocking requirements. Both shearwall types reference \"DETAIL 2/S3\" for further clarification. The use of \"AG TUFF LINER AS PER CLIENT\" is a recurring note across multiple wall types, indicating a specific finish or liner material requirement.",
+      "project_id": "25-01-005",
+      "page_number": 3,
+      "region_number": 8,
+      "relative_path": null,
+      "text_verbatim": "FRAMED WALLS:\nW10\nW11\n2X6 EXTERIOR WALL:\n29 ga. METAL WALL CLADDING\nHOUSEWRAP (JOINTS TAPED)\n1X4 STRAPPING @ 24\" O.C.\n7/16\" OSB SHEATHING SECURED w\n2 3/8\" NAILGUN NAILS @ 6\" o.c.\nPANEL EDGES & 10\" o.c. IN FIELD\n2X6 STUDS @ 24\" O.C.\nBLOCKING @ 48\" O.C.\nR-20 BATT INSULATION\nS-6 MIL POLY\nAG TUFF LINER AS PER CLIENT\n2X6 INTERIOR BEARING WALL:\n7/16\" OSB SHEATHING SECURED W\n2 3/8\" NAILGUN NAILS @ 6\" 0.c.\nPANEL EDGES & 10\" o.c. IN FIELD\n2X6 STUDS @ 16\" O.C.\nBLOCKING @ 48\" O.C.\nAG TUFF LINER AS PER CLIENT\nW12\n2X6 INTERIOR WALL:\nLINER AS PER CLIENT\nW13\n2X6 STUDS @ 24\" O.C.\nR-20 BATT INSULATION\nS-6 MIL POLY (WARM SIDE)\nAG TUFF LINER AS PER CLIENT\n2X4 INTERIOR PARTITION WALL:\nLINER AS PER CLIENT\n2X4 STUDS @ 24\" O.C.\nR-12 BATT INSULATION\nS-6 MIL POLY (WARM SIDE)\nAG TUFF LINER AS PER CLIENT\nSINGLE SHEARWALL\n7/16\" OSB ON ONE SIDE FASTENED\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @24\" o.c. AND ALL PANEL EDGES.\n(3) PLY STUD POST EACH END OF SHEARWALL\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3\nDOUBLE SHEARWALL\n7/16\" OSB ON BOTH SIDES FASTENED\nw/ 2 3/8\" NAIL-GUN NAILS @ 4\" o.c.\n×\nPANEL EDGES AND 8\" o.c. IN FIELD. PROVIDE\nBLOCKING @ 24\" o.c. AND ALL PANEL EDGES.\n(3) PLY STUD POST EACH END OF SHEARWALL\nPANEL WHERE NO POST PRESENT\nSEE DETAIL 2/S3"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Roof framing detail at purlin splice",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S4"
+      ],
+      "element_type": "Awning Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Metal Track",
+        "Purlins",
+        "Nails"
+      ],
+      "summary": "This detail, labeled 'AWNING DETAIL' and referenced as '2/S4', illustrates the connection of a metal track to purlins at splice locations. The scale is provided as 3/4\" = 1'-0\". The drawing shows that the metal track is centered over the purlin splice. Ridge and eave purlins are indicated, with a note to refer to the plan for the number of rows. Crucially, all purlin splice locations are specified to be on the center of the truss. The detail also specifies that the metal track is to be installed per the plan, using N10HDG nails on each side of each splice, also as per the plan. This indicates a fastening system for the metal track to the purlins, likely for supporting an awning or similar roof element.",
+      "project_id": "25-01-005",
+      "page_number": 4,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "2\nAWNING DETAIL\nS4\nSCALE: 3/4\" 1'-0\"\n=\nMETAL TRACK CENTRED OVER PURLIN SPLICE\nRIDGE AND EAVE\nPURLINS (SEE PLAN\nFOR NUMBER OF ROWS)\nALL PURLIN SPLICE LOCATIONS\nARE ON CENTRE OF TRUSS\nMETAL TRACK PER PLAN\nN10HDG NAILS EACH SIDE\nOF EACH SPLICE AS PER PLAN"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Awning assembly detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S4"
+      ],
+      "element_type": "Awning Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Plywood Sheathing",
+        "Ledger",
+        "Rafter",
+        "Roofing Steel",
+        "Strapping",
+        "Connector",
+        "Hanger",
+        "Stud"
+      ],
+      "summary": "This detail illustrates the construction of an awning assembly. The primary structural support appears to be a 2x8 ledger secured to studs with 4-#12 x 4\" screws. A rafter is fastened to the top of this ledger using a Simpson Strong-Tie RR connector. The roof surface consists of 29 GA. roofing steel over 1x4 strapping and 1/2\" plywood sheathing. Another ledger, a 2x4, is secured with 2-3 1/2\" ARDOX fasteners to each stud, supporting a 2x4 element below. The detail also indicates a 2x6 member spaced at 24\" on center, with a dimension of 3'-0\" shown for a horizontal element, likely a beam or joist. The scale of the drawing is 3/4\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 4,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "FASTEN PLYWOOD\nSHEATHING TO LEDGER\n2x8 LEDGER SECURED w/\n4- #12 x4\" SCREWS TO EACH STUD\nFASTEN RAFTER TO TOP OF LEDGER w/\nSIMPSON STRONG-TIE\nRR CONNECTOR\n12\n1/2\" PLYWOOD SHEATHING\n29 GA. ROOFING STEEL\n1x4 STRAPPING\n6\n2-3 1/2\" ARDOX\n2x6 @ 24\" o.c.\nHANGER\n2x4\n2x4 LEDGER SECURED w/\n2-3 1/2\" ARDOX EACH STUD\n3\nAWNING DETAIL\nS4\nSCALE: 3/4\" = 1'-0\"\n3'-0\""
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S4",
+        "1/S6"
+      ],
+      "element_type": "Roof Plan Notes and Legend",
+      "element_callouts": [],
+      "key_components": [
+        "Bearing Wall",
+        "Fire Stop",
+        "Pre-engineered Truss",
+        "Continuous Purlin",
+        "OSB",
+        "Framing"
+      ],
+      "summary": "This document contains notes and a legend for a roof plan. The legend defines symbols for bearing walls (dashed red line), fire stops (solid red line), pre-engineered trusses (dashed gray line), and continuous purlins (dashed blue line), referencing detail 3/S4 for purlin information. The roof plan notes provide critical construction guidance: attic fire stops are to be installed as shown, secured with 7/16\" OSB to trusses or 2x3 framing, ensuring continuous support at all joints. A key dimensional constraint is that no single compartment dimension shall exceed 98'-4\", and fire stops must not impede roof ventilation. The notes also specify requirements for attic hatches, stating that each attic portion needs one, or a single hatch and door can be used in the fire stops. Trusses are to bear directly onto posts, and all dimensions must be confirmed before ordering trusses. Additionally, \"X\" bracing for truss laterals is required as per manufacturer shop drawings reviewed by the project engineer, with specific guidance found in detail 1/S6. Overhangs are to be installed as dimensioned on the plan. The overall system involves pre-engineered trusses supported by posts, with specific fire stopping and bracing requirements detailed.",
+      "project_id": "25-01-005",
+      "page_number": 4,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "LEGEND:\n= BEARING WALL\n= FIRE STOP\n= PRE-ENGINEERED TRUSS\n= CONTINUOUS PURLIN PER DETAIL 3/S4\nROOF PLAN NOTES:\nPROVIDE ATTIC FIRE STOPS AS SHOWN. 7/16\" OSB\nSECURED TO TRUSS OR 2x3 FRAMING AS REQUIRED.\nALL JOINTS SHALL HAVE CONTINUOUS SUPPORT.\nNO DIMENSION IN COMPARTMENT SHALL EXCEED 98'-4\".\nFIRE STOP NOT TO INTERFERE ROOF VENTILATION.\nPROVIDE ATTIC HATCHES INTO EACH ATTIC PORTION\nOR PROVIDE 1 ATTIC HATCH AND DOOR IN THE\nFIRESTOPS.\nTRUSSES SHALL BEAR DIRECTLY TO POST\nCONFIRM ALL DIMENSIONS BEFORE ORDERING\nTRUSSES.\nPROVIDE \"X\" BRACING OF TRUSS LATERALS\nAS PER MFG SHOP DRAWINGS REVIEWED BY\nTHE PROJECT ENGINEER. SEE DETAIL 1/S6\nOVERHANGS AS DIMENSIONED"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Plan",
+      "location": "Roof level",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S5",
+        "2/S5"
+      ],
+      "element_type": "Roof Framing Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Pre-engineered Scissor Trusses",
+        "Purlins",
+        "Blocking",
+        "Fire Stops",
+        "Metal Track"
+      ],
+      "summary": "This is a roof framing plan showing the layout of pre-engineered scissor trusses and associated framing members. The overall dimensions of the roof area are indicated as 69'-2\" by approximately 108'-0\". The primary structural elements are pre-engineered scissor trusses spaced at 48 inches on center (48\" O.C.). These trusses are noted to bear directly to every other post. Blocking, specifically 2x10 blocking, is shown to be used for minimum span support. The plan also details the continuous purlin system along the ridge and eaves, with metal track specified to be centered over purlin splices. A critical detail is the requirement to make adjacent ridge and eave sections continuous by providing 4'-0\" of 26ga track at each splice location, fastened with (16) N10HDG 1½\" nails on each side of each splice, as referenced in (2/S4). Fire stops are indicated throughout the roof assembly and are to extend fully into soffits. Chimney vents are also shown, to be installed per ventilation design by others. The plan includes section callouts '1/S5' and '2/S5', indicating connections to other drawing sheets for further detail. The legend clarifies symbols for bearing walls, fire stops, pre-engineered trusses, and continuous purlins. Roof plan notes provide additional specifications regarding attic fire stops, attic hatches, truss bearing, and lateral bracing requirements for trusses, referencing detail 1/S6 for 'X' bracing.",
+      "project_id": "25-01-005",
+      "page_number": 4,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "\"\nO.C.\n1\nROOF PLAN\n64\nSCALE: 1/8\" = 1'-0\"\n1\nS5\nINUOUS BY\na TRACK AT\nN10HDG 11/2\"\nPLICE (2/S4)\n2x12 RFTR @ 24\" O.C\n52'-0\"\n2x10 BLOCKING (MIN-SPAN)\n-PROVIDE STRUT UNDER\nEACH RAFTER C/W\nBLOCKING TO SUIT\n1\nS5\nMAKE 2 ADJACENT RIDGE (TOP) AND 2 ADJACENT\nEAVE (BOTTOM) CONTINUOUS BY PROVIDING 4'-0\" 26ga\nTRACK AT EACH SPLICE LOCATION C/W (16) N10HDG 1½\"\n-NAILS EACH SIDE OF EACH SPLICE (2/S4)\nFIRESTOP\nCHIMNEY VENTS AS\nPER VENTILATION DESIGN\n(TYP.) (BY OTHERS)\n68'-0\"\nEXTEND FIRE STOP\nFULLY INTO SOFFITS, TYP\nPRE-ENG\nSCISSOR TRUSS @ 48\"O.C.\nPRE-ENGINEERED\nSCISSOR TRUSS @ 48\"O.C.\nTRUSSES TO BEAR DIRECTLY TO EVERY OTHER POST\nTRUSSES TO BEAR DIRECTLY TO EVERY OTHER POST\n12\n3 1/2\n12\n3 1/2\nMETAL TRACK CENTRED OVER PURLIN SPLICE\nRIDGE AND EAVE\nPURLINS (SEE PLAN\nFOR NUMBER OF ROWS)\nFIRESTOP\nMAKE 2 ADJACENT RIDGE (TOP) AND 2 ADJACENT\nEAVE (BOTTOM) CONTINUOUS BY PROVIDING 4'-0\" 26ga\nTRACK AT EACH SPLICE LOCATION C/W (16) N10HDG 1/2\"\n-NAILS EACH SIDE OF EACH SPLICE (2/S4)\n2\nS5\n68'-0\"\nPRE-ENG. SCISSOR TRUSS\n¿PRE-ENGINEERED SCISSOR TRUSS @ 48\"O.C.\n✓ PRE-ENG. FLAT TRUSS\n1'-0\"\nW.\n17'-10\"\n4'-0\"\n9\n12'-0\"\nSTITCH SCREWS @ 12\" o.c.\nFASTEN PLYWOOD\nSHEATHING TO LEDGER\n2x8 LEDGER SECURED w/\n4- #12 x4\" SCREWS TO EACH STUD\nFASTEN RAFTER TO TOP OF LEDGER w/\nSIMPSON STRONG-TIE\nRR CONNECTOR\n29 GA. ROOFING STEEL\n1x4 STRAPPING\n1/2\" PLYWOOD SHEATHING\n2-3 1/2\" ARDOX\n6\n12\n2x6 @ 24\" o.c.\n2x4\nHANGER\n2\nS5\n3-0\"\n69'-2\"\n108'-0\"\nAWNING AS PER 3/S4\n18'-10\"\n3-0\"\nFASTEN GABLE END TRUSS TO TOP PLATE W/ 32\" NAILS\n@ 10\" O.C. (TYP EACH END)\n- OR -\nRUN STUDS PAST BOTTOM CHORD AND FASTEN\nW/ (3) 3½ NAILS PER STUD\n(TYP. ALL GABLE ENDS)\n1'-0\"\n4'-0\"\nLEGEND:\n= BEARING WALL\n= FIRE STOP\n= PRE-ENGINEERED TRUSS\n= CONTINUOUS PURLIN PER\nROOF PLAN NOTES:\nPROVIDE ATTIC FIRE STOPS AS SHOWN. 7/16\"\nSECURED TO TRUSS OR 2x3 FRAMING AS REQ\nALL JOINTS SHALL HAVE CONTINUOUS SUPPOR\nNO DIMENSION IN COMPARTMENT SHALL EXCE\nFIRE STOP NOT TO INTERFERE ROOF VENTILA\nPROVIDE ATTIC HATCHES INTO EACH ATTIC PO\nOR PROVIDE 1 ATTIC HATCH AND DOOR IN THE\nFIRESTOPS.\nTRUSSES SHALL BEAR DIRECTLY TO POST\nCONFIRM ALL DIMENSIONS BEFORE ORDERING\nTRUSSES.\nPROVIDE \"X\" BRACING OF TRUSS LATERALS\nAS PER MFG SHOP DRAWINGS REVIEWED BY\nTHE PROJECT ENGINEER. SEE DETAIL 1/S6\nOVERHANGS AS DIMENSIONED"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Plan",
+      "location": "Roof",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S4",
+        "2/S4"
+      ],
+      "element_callouts": [
+        "SBP"
+      ],
+      "key_components": [
+        "Pre-engineered Trusses",
+        "Rafters",
+        "Blocking",
+        "Purlins",
+        "Track",
+        "Firestop"
+      ],
+      "summary": "This is a roof framing plan view showing the layout of pre-engineered scissor trusses and rafters. The overall dimensions of the roof area are indicated, with a main span of 108'-0\" and a width of 66'-5½\". The pre-engineered scissor trusses are spaced at 48\" on center and are designed to bear directly to every other post. Rafters are shown as 2x12 members at 24\" on center, with 2x10 blocking at a minimum span. The plan details specific connections and continuity requirements for ridge and eave elements. For instance, it specifies making adjacent eave sections continuous by providing 4'-0\" of 26ga track at each splice location, secured with (16) N10HDG 1½\" nails on each side of each splice, as referenced in detail (2/S4). Similarly, adjacent ridge and eave sections are to be made continuous using the same track and nailing method. Firestop details are also indicated, with instructions to extend them fully into soffits. Chimney vents are noted as per ventilation design by others. Stitch screws at 12\" on center are specified for connections, and a scale of 1/8\" = 1'-0\" is provided.",
+      "project_id": "25-01-005",
+      "page_number": 4,
+      "region_number": 5,
+      "relative_path": null,
+      "text_verbatim": "4'-0\"\n1'-0\"\n12'-0\"\n40'-1112\"\nSTITCH SCREWS @ 12\" o.c.\n1\nROOF PLAN\nS4\nSCALE: 1/8\" = 1'-0\"\n108'-0\"\n1\nS5\n66'-5½\"\nSBP\nMAKE 1 ADJACENT EAVE CONTINUOUS BY\nPROVIDING 4'-0\" 26ga TRACK AT\nEACH SPLICE LOCATION C/W (16) N10HDG 11/2\"\nNAILS EACH SIDE OF EACH SPLICE (2/S4)\n15'-0\"\n2'-0\"\n1'-0\"\n2x12 RFTR @ 24\" O.C.\n52'-0\"\n2x10 BLOCKING (MIN-SPAN)\n-PROVIDE STRUT UNDER\nEACH RAFTER C/W\nBLOCKING TO SUIT\nMAKE 2 ADJACENT RIDGE (TOP) AND 2 ADJACENT\nEAVE (BOTTOM) CONTINUOUS BY PROVIDING 4'-0\" 26ga\nTRACK AT EACH SPLICE LOCATION C/W (16) N10HDG 11/2\"\n-NAILS EACH SIDE OF EACH SPLICE (2/S4)\n1\nS5\nFIRESTOP\nCHIMNEY VENTS AS\nPER VENTILATION DESIGN\n(TYP.) (BY OTHERS)\n68'-0\"\n¿PRE-ENG\nTRUSSES TO BEAR DIRECTLY TO EVERY OTHER POST\nSCISSOR TRUSS @ 48\"O.C.\nPRE-ENGINEERED\nSCISSOR TRUSS @ 48\"O.C.\nTRUSSES TO BEAR DIRECTLY TO EVERY OTHER POST\nENTRED OVER PURLIN SPLICE\n3 1/2\nRIDGE AND EAVE\nPURLINS (SEE PLAN\nFOR NUMBER OF ROWS)\n---\n2\nS5\nEXTEND FIRE STOP\nFULLY INTO SOFFITS, TYP\n3 1/2\nFIRESTOP\nMAKE 2 ADJACENT RIDGE (TOP) AND 2 ADJACENT\nEAVE (BOTTOM) CONTINUOUS BY PROVIDING 4'-0\" 26ga\nTRACK AT EACH SPLICE LOCATION C/W (16) N10HDG 1½\"\n-NAILS EACH SIDE OF EACH SPLICE (2/S4)\nPRE-ENG. SCISSOR TRUSS\n12'-0\"\nSTITCH SCREWS @ 12\"\n68'-0\"\n¿PRE-ENGINEERED SCISSOR TRUSS @ 48\"O.C.\nPRE-ENG. FLAT TRUSS\n2\nS5"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Milking Parlour area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S5"
+      ],
+      "element_type": "Milking Parlour Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Poured Concrete Wall",
+        "Concrete Floor",
+        "Reinforcing Steel",
+        "Granular Fill",
+        "Suspended Slab",
+        "Anchor Bolts",
+        "Sill Plate"
+      ],
+      "summary": "This detail illustrates the construction of a milking parlour, focusing on the foundation and floor systems. The detail shows a 6-inch thick poured concrete wall with a height of 3'-4\" above the floor, reinforced with 3-15M horizontal bars at 16\" on center and 15M vertical bars at 16\" on center, with the vertical bars bent 12\" into the footing and top. The concrete strength specified is 32 MPa. The foundation includes a 15M rebar reinforcement at 18\" on center in both directions, supporting the wall and floor. The floor itself is a 6\" thick concrete slab, also 32 MPa, with a crown for drainage. A portion of the floor is a 6\" thick suspended slab, 2'-6\" wide, designed as a tunnel for a milk pump, reinforced with 15M bars at 12\" on center each way, with a specified concrete cover of 1 1/2\" from the bottom of the slab to the first layer of rebar. The detail also shows a sill plate assembly with 1/2\" anchor bolts at 48\" on center, secured on a 1/4\" sill gasket. Backfill with granular fill is indicated to a depth of 2'-6\" below the slab. The detail is referenced as \"MILKING PARLOUR DETAIL\" and is shown at a scale of 3/4\" = 1'-0\", with a callout of 3/S5, indicating it is detail 3 on sheet S5.",
+      "project_id": "25-01-005",
+      "page_number": 5,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "NC. SLAB PER PLAN\n✓\nA\nP\nD\n4\nΔ\nBACK FILL w/\nGRANULAR FILL\n2'-6\"\n10\"\n8\"\n2'-4\"\n3'-6\"\nLOCKING HEAD RAIL\nAND RESTRAINTS BY\nOTHERS\n3\nMILKING PARLOUR DETAIL\nS5\nSCALE: 3/4\" = 1'-0\"\nMILKING PARLOUR\n5'-0\"\n6\" POURED CONCRETE WALL R/W\n3-15M HORIZ. @ 16\" o.c.\n15M VERT. @ 16\" o.c.\nBENT 12\" INTO FTG & BENT INTO TOP\n32 MPA\nPOURED CONCRETE\n15M REBAR @ 18\" o.c.\nBOTH WAYS\nCROWN IN\nFLOOR\n7'-4\"\n12'-0\"\n3'-4\"\n6\" CONCRETE FLOOR\n32 MPa CONCRETE\n(3) 15M CONT\n(BOTH SIDES)\n2'-10\"\n6\" CONCRETE\nFLOOR 32 MPa\n1'-2\"\n3'-6\"\nBEND VERTICALS\nTO TIE INTO FLOOR\n10\"\nSILL PLATE\nON 1/4\" SILL GASKET C/W\n1/2\" ANCHOR BOLTS @ 48\" o.c.\n15M BENT INTO FLOOR\n@ 24\" o.c.\nTHIS PORTION\n2'-6\" WIDE ONLY\n(TUNNEL TO MILK PUMP)\n6\" THICK SUSPENDED SLAB\n32 MPa POUR CONCRETE R/W\n15M 12\" o.c. EACH WAY\nPROVIDE 1 1/2\" CONCRETE FROM\nBOTTOM OF SLAB TO 1st LAYER OF REBAR\n2'-4\""
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Milk Pump Pit",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "S5"
+      ],
+      "element_type": "Milk Pump Pit Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Wall",
+        "Concrete Footing",
+        "Concrete Floor",
+        "Rebar",
+        "Native Soil"
+      ],
+      "summary": "This detail illustrates the construction of a milk pump pit, which is a foundation element. The pit features an 8-inch thick concrete wall constructed with 32 MPa concrete. This wall is reinforced with 15M horizontal rebar spaced at 16 inches on center and 15M vertical rebar, also at 16 inches on center, with a 12-inch hook extending into the footing. The footing itself, which also serves as the pit floor, is 8 inches thick and made of 32 MPa poured concrete. It is reinforced with 15M rebar at 18 inches on center in both directions and is designed to bear on native soil with a capacity of 3000 psf. The detail highlights a tunnel opening in the wall beyond the pit and specifies thickened edges of the surrounding floor to 8 inches. Reinforcement around openings includes (2) 15M vertical bars beside the opening and (2) 15M horizontal bars above the opening, extending 12 inches past its edge, with 24-inch by 15M diagonal bars at the corners. Additionally, 15M by 30-inch long bars are specified as dowels into the foundation wall at 24 inches on center, requiring a 4-inch embedment using HIT-HY 200 adhesive or similar. A minimum of 2 inches of concrete cover is indicated for the reinforcement. The detail is referenced as 'MILK PUMP PIT DETAIL' on sheet S5, with a scale of 3/4\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 5,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "24\" X 24\" X 15M HOOKS\n@ 24\" O.C.\n8\" CONCRETE WALL\n32 MPa CONCRETE R/W\n15M HORIZ. REBAR @ 16\" O.C.\nAND 15M VERTICAL REBAR C/W\n12\" HOOK INTO FOOTING @ 16\" O.C.\n(TYP. BOTH SIDES)\n4\nMILK PUMP PIT DETAIL\nS5\nSCALE: 3/4\" = 1'-0\"\n(2) 15M HORIZ. ABOVE\nOPENING CENTERED IN WALL.\nEXTEND 12\" PAST EDGE OF OPENING\nAND 24\" X 15M DIAG. AT CORNERS\nTHICKEN EDGE\nOF FLOOR TO 8\"\n1'-0\"\n1'-0\"\nTHICKEN EDGE OF\nFLOOR TO 8\"\nTUNNEL OPENING\nIN WALL BEYOND PIT\n15M X 30\" LONG BAR @ 24\" O.C.\nDOWEL INTO FND. WALL W/\nHIT-HY 200 ADHESIVE (OR SIMILAR)\n(4\" EMBEDMENT)\nMIN 2\" COVER\n(2) 15M VERT.\nBESIDE OPENING\n2'\n2'-6\"\nက\n||\n||\n||\n8\" FOOTING/PIT FLOOR:\n32 MPa POURED CONCRETE FLOOR\nR/W 15M CONT. @ 18\" O.C. EACH WAY\nTO BEAR ON NATIVE SOIL SUITABLE FOR\n3000 psf BEARING CAPACITY"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Barn and Milking Area sections",
+      "level": "Ground Floor",
+      "orientation": "Transverse section looking North",
+      "grid_references": [],
+      "section_callouts": [
+        "1/S5",
+        "2/S5"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Foundation Wall",
+        "Footing",
+        "Concrete Slab",
+        "Bearing Wall",
+        "Double Top Plate",
+        "Sill Plate",
+        "Anchor Bolts",
+        "Pre-engineered Trusses",
+        "Metal Roof Cladding",
+        "Strapping",
+        "Lateral Bracing",
+        "Loosefill Insulation",
+        "Vapour Barrier",
+        "Vented Soffits",
+        "Uplift Clips"
+      ],
+      "summary": "This drawing contains two section views of a barn and milking area. The first section, labeled 'SECTION THRU BARN S5', shows a typical barn wall assembly resting on a foundation wall and footing. Key components include a sill plate with 1/2\" anchor bolts at 48\" on center, a double top plate, and wall construction per plan. The roof structure features mono trusses with top chord bearing and continuous diagonal bracing on vertical truss members. Additional cellulose insulation is noted to suit beside the wall. The second section, 'SECTION THRU MILKING AREA S5', details the milking parlour area. It illustrates pre-engineered scissor trusses spaced at 48\" on center, with 2x4 strapping at 24\" on center and 2x4 lateral bracing. The roof cladding is 29ga metal. The section also specifies R40 loosefill insulation and an S6ml poly vapour barrier. Details for continuous ridge and eave track splices are provided, requiring 4'-0\" 26ga track with (16) N10HDG 1½\" nails on each side of each splice. \"X\" bracing of truss laterals is required as per manufacturer shop drawings, reviewed by the project engineer, and referenced to Detail 1/S6. Uplift clips are specified as per truss drawings at each bearing location. The foundation includes a concrete slab per plan, bearing on a foundation wall and footing. Vertical dimensions are provided, such as the wall height of 13'-4 7/8\" for the barn section and 10'-2 3/4\" for the milking area wall. The drawing also indicates a pit per Detail 4/S5 and vented soffits.",
+      "project_id": "25-01-005",
+      "page_number": 5,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "GRADE\nBACKFILL\nW/ PARENT\nMATERIAL\n1\nSECTION THRU BARN\nS5\nSCALE: 3/16\" = 1'-0\"\nCONT. DIAGONAL BRACE ON\nVERTICAL TRUSS MEMBER\nMONO TRUSS w/\nTOP CHORD BEARING\nADDITIONAL CELLULOSE\nTO SUIT BESIDE WALL\n-DOUBLE TOP PLATE\n(CONT.)\n-WALL PER PLAN\nSILL PLATE\nON 1/4\" SILL GASKET C/W\n1/2\" ANCHOR BOLTS @ 48\" o.c.\n-FND. WALL & FTG.\nAS PER-PLAN-\n2\nSECTION THRU MILKING AREA\nS5\nSCALE: 3/16\" = 1'-0\"\n-MAKE 2 ADJACENT RIDGE (TOP) AND 2 ADJACENT\nEAVE (BOTTOM) CONTINUOUS BY PROVIDING 4'-0\" 26ga\nTRACK AT EACH SPLICE LOCATION C/W (16) N10HDG 1½\"\nNAILS EACH SIDE OF EACH SPLICE (2/S4)\n12\n3.5\n2'-4%\"\nPROVIDE V.B.\nCONTINUOUS\n-BEARING\nWALL\nPIT PER DETAIL 4/S5\nMILKING PARLOUR\n13'-4%\"\nTRUSSES NOT AS SHOWN\n1 1/2\n12\nTYPICAL SCISSOR TRUSS ROOF:\n-29ga METAL ROOF CLADDING\n-2x4 STRAPPING 24\" o.C.\n-PRE-ENGINEERED SCISSOR TRUSSES @ 48\" o.c. w/\n2x4 LATERAL BRACING AS REQUIRED\n12\n13.5\nPROVIDE \"X\" BRACING OF TRUSS LATERALS\nAS PER MFG SHOP DRAWINGS REVIEWED BY\nTHE PROJECT ENGINEER. SEE DETAIL 1/S6\nR40 LOOSEFILL INSULATION\nS6ml POLY VAPOUR BARRIER\nLINER AS PER CLIENT\n-BOTTOM CHORD SLOPE\nTO BE CONFIRMED W/\nTRUSS MANUFACTURER\nCONC. SLAB\nPER PLAN\n10'-2¾\"\nINSULATION STOP\nT/O WALL\n1 1/2\nBEARING\nWALL\n12\n-VENTED\nUPLIFT CLIPS\nSOFFITS\nAS PER TRUSS DRAWINGS\nREVIEWED BY PROJECT ENG.\nTYP. EACH BEARING LOCATION\nCONC. SLAB\nPER PLAN\n1'-0\"\n4'-0\"\n12'-0\"\n11'-0\"\nT/O WALL\nT/O FND. WALL\nT/O FLOOR\nT/O FOOTING"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Section",
+      "location": "Barn section showing roof, walls, and foundation",
+      "level": "Foundation",
+      "orientation": "Section thru barn",
+      "grid_references": [],
+      "section_callouts": [
+        "2/S4",
+        "1/S6"
+      ],
+      "element_type": "Building Section",
+      "element_callouts": [],
+      "key_components": [
+        "Pre-engineered trusses",
+        "Metal roof cladding",
+        "Strapping",
+        "Lateral bracing",
+        "Insulation",
+        "Vapour barrier",
+        "Concrete slab",
+        "Foundation wall",
+        "Footing",
+        "Bearing wall",
+        "Blocking",
+        "Soffits",
+        "Backfill"
+      ],
+      "summary": "This section view illustrates a cross-section through a barn, detailing the roof structure, walls, and foundation. The roof system features pre-engineered scissor trusses spaced at 48 inches on center, supporting 29ga metal roof cladding and 2x4 strapping at 24 inches on center. Lateral bracing is specified as required, with \"X\" bracing of truss laterals detailed as per manufacturer shop drawings, reviewed by the project engineer, and referenced as \"SEE DETAIL 1/S6\". Uplift clips are to be provided at each bearing location as per truss drawings. The roof assembly includes R40 loosefill insulation and an S6ml poly vapour barrier. Ridge and eave connections are continuous, requiring 4'-0\" of 26ga track with (16) N10HDG 1½\" nails on each side of each splice, as noted with callout \"(2/S4)\". The wall structure consists of bearing walls and exterior posts, with foundation walls and footings as per plan. A concrete slab is present, with its thickness and details to be confirmed per plan. The overall height of the structure is indicated as 22'-6\" from the foundation to the peak. Various blocking elements (2x10, 2x8, 2x6 strut) and venting details (roof venting, morvents, vented soffits) are shown. The foundation includes a footing, foundation wall, and backfill with parent material. The scale of the drawing is 3/16\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 5,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "TED\nFITS\nPLATES PER PLAN\n-EXTERIOR POST\nWALL PER PLAN\nPOST C/W SADDLE\nANCHOR PER PLAN\nFND. WALL & FTG.\nAS PER PLAN\nSECTION THRU BARN\nSCALE: 3/16\" = 1'-0\"\n-MAKE 2 ADJACENT RIDGE (TOP) AND 2 ADJACENT\nEAVE (BOTTOM) CONTINUOUS BY PROVIDING 4'-0\" 26ga\nTRACK AT EACH SPLICE LOCATION C/W (16) N10HDG 1/2\"\nNAILS EACH SIDE OF EACH SPLICE (2/S4)\n12\n3.5\n1 1/2\n12\nCONFIRM CLEARANCE w/\nDOOR INSTALLER\nROOF VENTING\nPER OBC (BY OTHERS)\nTRUSSES NOT AS SHOWN\nUPLIFT CLIPS\nAS PER TRUSS DRAWINGS\nREVIEWED BY PROJECT ENG.\nTYP. EACH BEARING LOCATION\nPROVIDE \"X\" BRACING OF TRUSS LATERALS\nAS PER MFG SHOP DRAWINGS REVIEWED BY\nTHE PROJECT ENGINEER. SEE DETAIL 1/S6\nR40 LOOSEFILL INSULATION\nS6ml POLY VAPOUR BARRIER\nLINER AS PER CLIENT\n1'-0\"\n22'-6\"\nCONC. SLAB\nPER PLAN\nTYPICAL SCISSOR TRUSS ROOF:\n-29ga METAL ROOF CLADDING\n-2x4 STRAPPING 24\" o.c.\n-PRE-ENGINEERED SCISSOR TRUSSES @ 48\" o.c. w/\n2x4 LATERAL BRACING AS REQUIRED\n12\n3.5\n-BOTTOM CHORD SLOPE\nTO BE CONFIRMED W/\nTRUSS MANUFACTURER\n1 1/2\n12\n-VENTING\n-MORVENTS\n2x6 STRUT\nUNDER RFTR\n(2) 2x12 BLOCKING\nSET DOWN\nFOR VENTING\nBEARING\nWALL\n3'-4\"\n9'-0\"\n-2x10 BLOCKING\n12\n13.5\n-2x8 BLOCKING\n-VENTED\nSOFFITS\nGRADE\nBACKFILL\nW/ PARENT\nMATERIAL\n8'-0\"\n11'-0\"\n3'-0\"\n4'-412\"\n8'-0\"\n7'-8\"\nT/O W\nT/O W\nTIO EN\nTIO FN\nT/O F\nT/O D"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Post to foundation wall and plate connection",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "S6"
+      ],
+      "element_type": "Post to Foundation Connection Detail",
+      "element_callouts": [
+        "L1",
+        "L2",
+        "CBQGT66-SDS2"
+      ],
+      "key_components": [
+        "Truss",
+        "Post",
+        "Plate",
+        "Scab",
+        "Foundation Wall",
+        "Post Bracket",
+        "Concrete"
+      ],
+      "summary": "This detail illustrates the connection between a structural post and a foundation wall, including the roof truss bearing and plate assembly. The finished overhang of the roof structure extends 4'-0\". It specifies that every other truss bears directly onto the post, while trusses located between posts are secured to an uplift scab using 10-3 1/2\" nails or Simpson uplift clips. Two plate configurations are detailed: L1 involves a level plate let into the post, and L2 describes a hang plate positioned against the post, secured with (8) spikes. An additional L1 scab, 12\" long and fastened with (6) spikes, is also shown. The post's exterior face is flush with the exterior of the concrete foundation wall on the curtain side. A Simpson Strong-Tie post bracket, model CBQGT66-SDS2 (galvanized), is used to connect the post to the foundation. The detail is referenced as '5/S6' and is drawn at a scale of 1/2\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "VENTED\nSOFFIT\n4'-0\"\nFINISHED OVERHANG\nEVERY OTHER TRUSS TO BEAR\nDIRECTLY TO POST\nTRUSSES BETWEEN POSTS\nSECURE UPLIFT SCAB w/\n10-3 1/2\" NAILS OR SIMPSON UPLIFT CLIPS\nPLATES PER PLAN\n(notch 1 into posts)\nL1-LVL PLATE LET INTO POST\nL2 - HANG PLATE AGAINST POST w/ (8) SPIKES\n6\nL1-ADD 12\" LONG SCAB\nC/W (6) SPIKES)\nPOST PER PLAN\nO/S OF POST IS FLUSH\nw/ O/S OF CONCRETE\n(CURTAIN SIDE ONLY)\nCBQGT66-SDS2 SIMPSON\nSTRONG TIE POST BRACKET (GALV.)\n5\nPOST TO FDN. WALL & PLATE DETAIL\nS6\nSCALE: 1/2\" 1'-0\""
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation wall at grade",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Foundation Wall Detail",
+      "element_callouts": [
+        "FND. WALL"
+      ],
+      "key_components": [
+        "Poured Concrete",
+        "Footing",
+        "Granular Fill",
+        "Anchor Bolts",
+        "Rebar",
+        "Sill Plate",
+        "Stud Wall"
+      ],
+      "summary": "This detail illustrates an 8-inch thick foundation wall with a 24-inch wide footing, designed to support a stud wall. The footing is constructed with 20 MPA concrete and reinforced with two runs of 15M rebar. The foundation wall itself is made of 25 MPA poured concrete and is reinforced with 2-15M horizontal bars at the top and 15M vertical bars spaced at 48 inches on center. The detail shows the connection between the foundation wall and the footing via 15M x 24\" dowels, embedded 6 inches into the footing and spaced at 48 inches on center. A sill plate, secured with 1/2\" anchor bolts at 48\" on center and resting on a 1/4\" sill gasket, connects the stud wall to the foundation. The drawing also indicates a concrete floor slab per plan, supported by compacted granular 'A' fill. The exterior grade slopes away from the building, with backfill material shown. A minimum cover of 4'-0\" is noted. The scale of the detail is 1/2\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "7\nS6\n%\n4'-4\"\n3'-4\"\n1'-0\"\nSTUD WALL PER PLAN\nSILL PLATE\nON 1/4\" SILL GASKET C/W\n1/2\" ANCHOR BOLTS @ 48\" o.c.\nCONCRETE REINFORCEMENT:\n2-15M HORIZ. TOP\nAND 15M VERT. @ 48\" o.c.\nCONCRETE FLOOR PER PLAN\nSLOPE GRADE AWAY FROM BLDG. (TYP.)\nCOMPACTED\nGRANULAR 'A' FILL\n25 MPA\nPOURED CONCRETE\n15M X 24\" DOWEL @ 48\" o.c. W/ 6\"\nEMBEDMENT INTO FOOTING\n8\" THICK X 24\" FOOTINGS\n20 MPA CONCRETE\n2 RUNS 15M REBAR\nUNDISTURBED SOIL\n8\" FND. WALL DETAIL\nSCALE: 1/2\" = 1'-0\"\nBACK FILL w/\nPARENT\nMATERIAL\n4'-0\"\nMIN COVER"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Steel beam to stud post connection detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S3"
+      ],
+      "element_type": "Steel Beam to Stud Post Connection Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Beam",
+        "Stud Post",
+        "Concrete Foundation Wall",
+        "Endplate",
+        "Bolts",
+        "Plates",
+        "Pre-engineered Truss",
+        "Truss Clips",
+        "Sheathing",
+        "Double Top Plate"
+      ],
+      "summary": "This detail illustrates the connection between a steel beam and a stud post, likely for framing an opening such as a door. The detail shows a steel beam bearing on a stud post, which is anchored to a concrete foundation wall. The connection involves a 3/8\" endplate secured to the steel beam and the stud post with (#) 1/2\" diameter A325 bolts. A table indicates the number of bolts required based on the size of the steel beams (W24 beams require 12 bolts, W21 beams require 10, W16-W18 beams require 8, and W12-W14 beams require 6, W8-W10 beams require 4). The stud posts are specified as full length and bearing per plan. A pre-engineered truss is shown bearing on the steel beam, with truss clips per plan. A double top plate is secured to the studs with sheathing per plan. Another detail, (2) plates secured to the beam with 1/2\" bolts @ 24\" on center (staggered sides of flange), is also noted, matching wall top plate or beam width or truss manufacturer requirements. The opening is framed down to the desired door height and sheathed with plywood. The stud post is anchored to the foundation wall, with a reference to 'SEE DETAIL 2/S3' for the foundation anchor detail. The scale of the drawing is 1/2\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "(2) PLATES SECURED TO\nBEAM w/1/2\" BOLTS @ 24\" c/c\n(STAGGER SIDES OF FLANGE)\nMATCH WALL TOP PLATE or\nBEAM WIDTH or\nTRUSS MFG REQ'MENTS\nPRE ENGINEERED TRUSS\nTRUSS CLIPS\nPER PLAN\nDBLE TOP PLATE SECURED\nTO STUDS W/\nSHEATHING PER PLAN\n3/8\" ENDPLATE C/W\nSTEEL BEAM PER PLAN\n(#) 1/2\" DIA A325 BOLTS\nTHRU STUDS\nFRAME DOWN OPENING\nTO DESIRED DOOR HEIGHT\n(SHEATH WITH PLYWOOD)\n# of BOLTS\nW24 BEAMS (12)\nTYP\n¼\"V\nSTUDS\nPER PLAN\nW21 BEAMS (10)\nSTUDS BEARING\nW16-W18 BEAMS (8)\nPER PLAN\nW12-W14 BEAMS (6)\nW8-W10 BEAMS (4)\nSTUDS FULL LENGTH\nPER PLAN\nBOTTOM OF DOOR\nCONC. FND WALL\nSTUD POST TO\nFDN ANCHOR\nSEE DETAIL 2/S3\n3\nSTEEL BEAM TO STUD POST DETAIL\nS6\nSCALE: 1/2\" 1'-0\"\nSHEATHING\nPER PLAN\nلى"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Foundation - Sandwich wall detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "S6"
+      ],
+      "element_type": "Sandwich Foundation Wall Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete",
+        "Rebar",
+        "Rigid Insulation",
+        "Anchor Bolts",
+        "Footing",
+        "Compacted Fill"
+      ],
+      "summary": "This detail illustrates a \"Sandwich Fnd. Wall Detail\" (S6) for a foundation wall. The primary structural element is a 10\" thick concrete sandwich wall constructed with 25 MPa poured concrete. This wall incorporates 2\" thick rigid insulation and is reinforced with 10M rebar placed horizontally on each side at 16\" on center and vertically at 24\" on center. A minimum of 1 1/2\" concrete coverage is specified for all reinforcing bars. The detail also shows a 24\" wide by 8\" thick footing made of 20 MPa concrete, containing two runs of 15M rebar, which bears on undisturbed soil. The footing is connected to the wall via 15M x 24\" dowels spaced at 24\" on center, or alternatively, two 10M x 24\" dowels at the same spacing, both requiring a minimum 6\" embedment into the footing. Anchor bolts are specified: 1/2\" anchor bolts welded to U-hook bars at 4'-0\" on center are shown connecting to the top of the wall, and 1/2\" anchor bolts welded to a \"U\" at 48\" on center are shown connecting to the stud per plan. The detail indicates that insulation should be kept 24\" back from the face of wall openings, as is typical unless otherwise noted (TYP. U.N.O.). The overall height of the wall shown in the detail is 8'-0\", with various 1'-4\" increments indicated. A separate detail labeled \"LT DETAIL\" shows a 1/2\" anchor bolt welded to a U-hook bar at 4'-0\" o.c. The footing is dimensioned at 2'-0\" wide. The scale of the drawing is 1/2\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "1/2\" ANCHOR BOLT\nWELDED TO U-HOOK\nBAR @4'-0\" 0.c.\nLT DETAIL\nSTUD PER PLAN\n1/2\" ANCHOR BOLT\nWELDED TO \"U\" @ 48\" O.C.\nFLOOR PER PLAN\n25 MPa POURED\nCONCRETE (PEA STONE)\nCOMPACTED FILL\n24\" WIDE X 8\" THK. FOOTING\n20 MPA CONCRETE\n2 RUNS 15M REBAR\nUNDISTURBED SOIL\n6\nSANDWICH FND. WALL DETAIL\nS6\nSCALE: 1/2\" =1'-0\"\n4'-8\"\n1'-4\"\nt.l\n1'-4\"\n„0-.9\nCOVERAGE AT TOP\nEXTEND 15M TOP HOOK BARS @ 24\" o.c.\nAROUND 10M HORIZONTALS\n10\" CONCRETE SANDWICH WALL:\n25 MPa POURED CONCRETE\n2\" X 48\" RIGID INSULATION IN WALL c/w\n10M HORIZONTAL REBAR EACH SIDE @ 16\" o.c. AND\n10M VERTICAL REBAR 24\" o.c.\nPROVIDE 1 1/2\" CONCRETE COVERAGE\nTO ALL REINFORCING BARS\nKEEP INSULATION 24\" BACK\nFROM FACE OF WALL OPENINGS\n(TYP. U.N.O.)\n2'-0\"\n15M X 24\" DOWEL\n@ 24\" o.c. INTO FOOTING (MIN. 6\" EMBEDMENT)\nor\n(2) 10M X 24\" DOWEL\n@ 24\" O.C. INTO FOOTING (MIN. 6\" EMBEDMENT)"
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Connection detail between truss and post",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Plate Nail Spacing Guide",
+      "element_callouts": [
+        "TRUSS"
+      ],
+      "key_components": [
+        "Truss",
+        "Post",
+        "Shearblock",
+        "Uplift Scab",
+        "Uplift Clips",
+        "Nails",
+        "Spikes"
+      ],
+      "summary": "This detail, titled 'PLATE NAIL SPACING GUIDE', illustrates the connection between a TRUSS and a POST, along with associated fastening details. The scale is provided as 3/4\" = 1'-0\". The detail shows a shearblock below the truss and indicates that uplift scab or uplift clips should refer to truss shop drawings. It specifies that the number '5' denotes 5 fasteners per side, and the number '10' denotes 10 fasteners. Dimensions such as 11 1/4\" are shown, relating to the assembly. A critical note states that fasteners into treated lumber shall be ACQ rated. The legend clarifies that '#' symbol denotes the number of 3 1/2\" common spiral nails, galvanized, with minimum nail spacing as shown, and a triangle symbol with '#' denotes the number of 4\" common spikes, galvanized, also with minimum nail spacing as shown. The detail also references 'TRUSS CLIPS PER PLAN' and 'POST PER PLAN', indicating these elements are detailed elsewhere. The connection to the top of the post to the first nail is also dimensioned with values like 2 1/2\", 4\", and 2 1/2\".",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 5,
+      "relative_path": null,
+      "text_verbatim": "TRUSS\n10\nPER SIDE\n5\n5\nPER SIDE\n14\nSHEARBLOCK\nBELOW TRUSS\nUPLIFT SCAB OR SIMPSON\nUPLIFT CLIPS REFER TO\nTRUSS SHOP DWGS. REVIEWED BY\nPROJECT ENGINEER\n4\nPLATE NAIL SPACING GUIDE\nS6\nSCALE: 3/4\" = 1'-0\"\nTRUSS CLIPS PER PLAN\nTRUSS\nTOP OF POST\nTO FIRST NAIL\nPOST PER PLAN\nNOTE:\nFASTENERS INTO TREATED LUMBER\nSHALL BE ACQ RATED.\n#\nDENOTES # OF 3 1/2\" COMMON SPIRAL NAILS, GALV.\nMIN.NAIL SPACING AS SHOWN\nDENOTES # OF 4* COMMON SPIKES, GALV.\n#\nMIN.NAIL SPACING AS SHOWN"
+    },
+    {
+      "image_id": "region_06_red_box.png",
+      "classification": "Detail",
+      "location": "Roof framing - lateral bracing detail",
+      "level": "Roof",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "1/S6"
+      ],
+      "element_type": "Truss Lateral X Brace Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Truss",
+        "Diagonal Bracing",
+        "Strut",
+        "Lateral",
+        "Nails",
+        "Lumber (2x4)"
+      ],
+      "summary": "This detail illustrates the installation of lateral X bracing for roof trusses, specifically focusing on the connection and bracing members. The detail shows 2x4 lumber used for diagonal bracing and struts. Key annotations indicate that the spacing of the diagonal bracing is as specified by the bracing designer, with a maximum span of 48'-0\". Struts are specified as 2x4 lumber, 5'-0\" long, attached to the top and bottom chords with two 3 1/2\" nails at each truss web member. Diagonal braces are anchored to laterals with four 3 1/2\" nails at the intersection of the truss web and truss lateral. Diagonal \"X\" bracing is to be installed on the opposite side of the truss at endwalls and where specified. Connections for diagonal \"X\" bracing on the opposite side of the web require two 3 1/2\" nails at each truss. Butt joints for 2x4 laterals at splice locations must be tight and centered on the truss web. Lap joints for diagonal bracing are to span a minimum of 2 trusses to ensure complete coverage from top chord to bottom chord. The detail also references strapping or sheathing on the roof deck, spaced as specified by the truss engineer, and notes that 2x4 lumber is used for this purpose. The scale of the detail is 3/16\" = 1'-0\".",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 6,
+      "relative_path": null,
+      "text_verbatim": "STRAPPING OR SHEATHING ON\nROOF DECK SPACED AS SPECIFIED\nBY TRUSS ENGINEER (2x4 Lumber)\n2x4 STRUT x 5'-0\" LONG @ TOP\n& BOTTOM WITH TWO OF 3 1/2\" NAILS\n@ EACH TRUSS WEB MEMBER\nSPACING AS SPECIFIED BY BRACE DESIGNER\n48'-0\" MAXIMUM\nANCHOR 2x4 DIAGONAL BRACE TO LATERAL WITH\nFOUR OF 3 1/2\" NAILS @ INTERSECTION OF TRUSS\nWEB & TRUSS LATERAL\n2x4 DIAGONAL \"X\" BRACE ON\nOPPOSITE SIDE OF TRUSS AT\nENDWALLS & WHERE\nSPECIFIED ELSEWHERE\nANCHOR 2x4 DIAGONAL \"X\" ON\nOPPOSITE SIDE OF WEB WITH\nTWO OF 3 1/2\" NAILS @ EACH TRUSS\n1\nTRUSS LATERAL X BRACE DETAIL\nS6\nSCALE: 3/16\" = 1'-0\"\nANCHOR DIAGONAL BRACE\nTO STRUT @ BOTH ENDS\nWITH FOUR 3 1/2\" NAILS\n2x4 STRUT x 5'-0\" LONG @ TOP\n& BOTTOM WITH TWO OF 3 1/2\" NAILS\n@ EACH TRUSS WEB MEMBER\nBUTT 2x4 LATERALS @ ALL SPLICE\nLOCATIONS. ENSURE BUTT JOINT IS\nTIGHT & CENTERED ON TRUSS WEB.\nLAP 2x4 DIAGONAL (Min. 2 TRUSSES) TO ENSURE\nDIAGONAL BRACE EXTENDS COMPLETELY FROM\nTOP CHORD TO BOTTOM CHORD OF TRUSS.\n{AS REQUIRED}\n2x4 DIAGONAL BRACING SPACED AS\nREQUIRED BY THE BRACING DESIGNER\nTRUSS TOP CHORD\nTRUSS WEB MEMBER\nTRUSS BOTTOM CHORD\nEQUAL\nEQUAL\nEQUAL"
+    },
+    {
+      "image_id": "region_07_red_box.png",
+      "classification": "Detail",
+      "location": "Steel beam to steel column connections",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Steel Beam to Steel Column Connection Details",
+      "element_callouts": [
+        "BP1",
+        "BP2"
+      ],
+      "key_components": [
+        "Steel Beam",
+        "Steel Column",
+        "HSS Steel Post",
+        "Base Plate",
+        "Anchor Bolts",
+        "Web Stiffener",
+        "Top Plate",
+        "End Plate",
+        "Compacted Granular Fill"
+      ],
+      "summary": "This detail drawing illustrates various connection types between steel beams and steel columns, as well as steel posts. It shows different configurations for beam-to-column connections, including the use of top plates, end plates, and bolted connections. For instance, one detail shows a 1/2\" thick top plate with (4) 3/4\" A325 bolts connecting to the beam flange. Another detail depicts double top plates bolted to a steel beam with 1/2\" diameter bolts at 24\" on center, staggered. The drawing also specifies the number of 3/4\" A325 bolts required for connecting beams of different sizes, such as W24 beams requiring 12 bolts and W8-W10 beams requiring 4 bolts. Connections to HSS steel columns are shown with base plates and anchor bolts. Detail BP1 illustrates an HSS steel post connection with a 3/4\" thick galvanized base plate secured by (4) 1/2\" anchor bolts, each 1'-0\" long. Detail BP2 shows a base plate connection for a steel column, featuring a 6\" x 12\" x 3/4\" base plate with (2) 3/4\" x 8\" long anchor bolts. The foundation detail includes a 12\" x 12\" x 3/4\" base plate with (4) 3/4\" diameter x 8\" anchor bolts, resting on compacted granular fill, with a minimum depth of 2'-0\" specified. Reinforcement for the foundation is indicated as 15M in each direction, as per the footing schedule. Web stiffeners, 3/8\" thick, are specified on each side of the web directly above the column for through beams. Typical connection details, such as 1/4\" fillet welds and 3/4\" A325 bolts, are noted throughout the drawing.",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 7,
+      "relative_path": null,
+      "text_verbatim": "3/8\" WEB STIFFENER\nEACH SIDE OF WEB\nDIRECTLY ABOVE COLUMN\n(FOR THRU BEAMS)\nTYP 1/4\"\nPER PLAN\n1/2\" x BEAM WIDTH x 12\" TOP PLATE C/W\n(4) 3/4\" A325 BOLTS THRU\nPLATE INTO BEAM FLANGE\n1/4\" V\n<TYP.\nDBL. TOP PLATES BOLTED\nTO STEEL BEAM w/ 1/2\" DIA.\nBOLTS @ 24\" o.c. (STAGGERED)\n3/4\" A325 BOLTS TO\nCONNECT BEAMS\nTYP\n3/8\" END PLATE\n1/2\" x BEAM WIDTH x 12\" TOP PLATE C/W\n(4) 3/4\" A325 BOLTS THRU\nPLATE INTO BEAM FLANGE\nHSS STEEL POST\nPER PLAN\n1/4\"\n<TYP.\nBP1\n1½\"\n1/2\" ANCHOR BOLTS\n(TYP OF 4)\n1'-0\"\n3/4\" THICK GALV.\nBASE PLATE\n2\nS6\nSTEEL BEAM TO STEEL COLUMN DETAILS\nSCALE: 1/2\" = 1'-0\"\n12\" X 12\" - 3/4\"\nBASE PLATE C/W\n(4) 3/4\" dia X 8\" ANCHOR BOLTS\nTYP 1/4\"\n||\n# of BOLTS\nW24 BEAMS (12)\nW21 BEAMS (10)\nW16-W18 BEAMS (8)\nW12-W14 BEAMS (6)\nW8-W10 BEAMS (4)\nSTEEL BEAM PER PLAN\n(2) 3/4\" A325\nBOLTS\n1/4\" TYP\nCOLUMN PER PLAN\nFLOOR PER PLAN\n15M EACH DIRECTION\n(PER FOOTING SCHEDULE)\nCOMPACTED GRANULAR FILL\nCLEAR TO COVER\nWIDTH PER PLAN\nTYP\n1/4\"\nHSS STEEL COLUMN\nPER PLAN\nPER PLAN\n2'-0\" MIN.\n1/4\"\n8\" X 6\"-\"\nTOP PLATE\n1½\"\nBP2\n6\" x 12\" x 3/4\"\nBASE PLATE C/W\n(2) 3/4\" x 8\" LONG\nANCHOR BOLT\n1½\"\n1'-0\"\n2½\"\n12\n6\" x 12\" x 3/4\"\nBASE PLATE C/W\n(2) 3/4\" x 8\" LONG\nANCHOR BOLT"
+    },
+    {
+      "image_id": "region_08_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Anchor Bolt Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Anchor Bolt",
+        "U-Hook Bar",
+        "Concrete"
+      ],
+      "summary": "This detail illustrates the connection of a 1/2\" anchor bolt to a U-hook bar embedded within a concrete element. The anchor bolt extends through a steel plate or bracket, with dimensions indicating a 4 1/2\" projection above the bracket and 1 1/2\" below. The U-hook bar, which is welded to the anchor bolt, is spaced at 4'-0\" on center. The concrete element has a width of 10\" and a visible height of 6\". The detail clearly shows the embedment of the U-hook bar within the concrete, providing a secure anchor point. This type of detail is critical for connecting structural steel elements, such as columns or base plates, to concrete foundations or walls.",
+      "project_id": "25-01-005",
+      "page_number": 6,
+      "region_number": 8,
+      "relative_path": null,
+      "text_verbatim": "k\n10\"\n4 1/2\"\n1½\"\n1/2\" ANCHOR BOLT\nWELDED TO U-HOOK\nBAR @ 4'-0\" o.c.\n6\nANCHOR BOLT DETAIL"
+    }
+  ]
+}

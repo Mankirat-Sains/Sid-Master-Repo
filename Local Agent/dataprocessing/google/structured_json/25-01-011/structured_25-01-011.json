@@ -1,0 +1,90 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Base Frame Detail",
+      "element_callouts": [
+        "p1",
+        "p2",
+        "h6",
+        "h9",
+        "h10"
+      ],
+      "key_components": [
+        "Steel Frame",
+        "Bolts",
+        "Plates"
+      ],
+      "summary": "This image displays a detail of a base frame, likely for a steel structure. The overall dimensions are indicated by the overall length of 1372 and height of 775. Key internal dimensions include lengths of 1296, 1359, 699, and 709, and various offsets such as 140, 72, 105, 90, and 84. The labels 'p1', 'p2', 'h6', 'h9', and 'h10' likely refer to specific components, connection points, or material types within the base frame assembly, which would be further defined in accompanying schedules or notes. The detail shows a rectangular frame with internal bracing and connection points, suggesting it is a critical interface for supporting columns or other structural elements. The presence of multiple dotted lines indicates hidden elements or connections. The numerous dimensions and labels suggest a precise fabrication requirement for this base frame.",
+      "project_id": "25-01-011",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "140\n72-\np2\nh10\n572\n105\n-1372-\n-1296-\n140\n-1359\nh6\n72-\np2\n699\n775\nh9\nh9\nh10\n-72\n90-\n-84\nh6\nBase Frame Detail\n105-\n84-90"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Overall dolly assembly",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Dolly Assembly Views",
+      "element_callouts": [
+        "rb1",
+        "p1",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "h7",
+        "h8",
+        "h9",
+        "h10"
+      ],
+      "key_components": [
+        "Steel Frame",
+        "Casters",
+        "Lock Plates",
+        "Panel Supports"
+      ],
+      "summary": "This image displays two views, 'End View' and 'Front View (Open To Bags)', of an 'Upper Console Panel Dolly'. The views are detailed technical drawings showing the assembly's dimensions and components. The 'End View' has an overall width of 750 and a height of 1955, with a total length of 1410. The 'Front View' has an overall width of 1372 (54 inches) and a height of 1955 (80 inches). Key structural elements labeled include various frame members (h1 through h10), reinforcement bars (rb1), and lock plates (p1). Dimensions indicate specific lengths and heights of frame members and the overall structure. For instance, the 'End View' shows a width of 762 for a central section and a height of 482 from the base to the lower frame. The 'Front View' indicates a width of 1321 for a lower section and a height of 768 for a mid-section. The presence of casters is evident in both views, with dimensions like 254 and 279 indicating their placement and clearance. The 'Front View' also notes 'h5 (far side only)' and 'p1 (far side only)', suggesting some components are not visible from this perspective. The title 'Upper Console Panel Dolly' and the annotation 'Open To Bags This Side' provide functional context. A professional engineer's seal with the name C. O. Wickham, license number 100523812, and dated January 17th, 20, along with 'PROVINCE OF ONTARIO', indicates the drawing's professional origin and jurisdiction.",
+      "project_id": "25-01-011",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "14-\n-313-\n-813-\nh3\nh4\nh4\n-63\nUpper Console Panel Dolly\nOpen To Bags This Side\n1410\n160-\n160-\nrb1\n1435\n-40\n40-\n-90\nh5\n13-\n38\np1\nh6\nh7\n482\n286\n197\n-762-\nh2\nh7\nh6\n247\n6809\nh10\n-750-\n-775 (30)\nEnd View\n-38\nh8\n520\n1955\n-1372\n-635-\n-25\nh1\nh3\nh2\nh4\nh2\nh5 (far side only)\nrb1\n160-\n-90\n13-\n-455-\n1321-\nh7\nh10\n-686-\n-686-\nh7\np1 (far side only)\nh6\n-254\n-279-\nh9\nh8\nh9\n-1372 (54\")-\nh3\nh4\nh2\n768\n965\nh10\n1955 (80\")\nLICENSED\nE\nO. WICKHAM\n100523812\nJanuary 17th, 20\nPROVINCE OF ONTAR\nFront View (Open To Bags).\nLock Plates -\np1\n1”"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": null,
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Caster Plate Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Mild Steel Plate",
+        "Bolt Holes",
+        "Chamfered Corners"
+      ],
+      "summary": "This detail shows a caster plate, identified as a component for a larger assembly. The material is specified as \\\"Mild Steel\\\" with a thickness of \\\"1/4\\\" (one-quarter inch). The quantity required is \\\"8\\\" units. The drawing provides detailed dimensions for the plate's geometry, including overall length of 750 units and width varying due to chamfered corners. Key dimensions include a 35 unit offset from the ends for the chamfers, and a 61 unit dimension from the edge to the start of the chamfer. Several holes are indicated: a central hole with a diameter of \\\"\\\"11\\\" (eleven units), and multiple smaller holes for mounting or attachment, with specific spacings of 127, 72, and 72 units. Additional dimensions like 84, 241, 86, and 92 units define the placement of these holes and features relative to the plate edges. The overall dimensions and hole placements suggest this plate is designed to interface with other structural elements or equipment, likely for mobility or support.",
+      "project_id": "25-01-011",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "61\nCaster Plates\nMaterial \"Mild Steel\nQty - 8\n-35\n-35\n+\n-11\n35-\n61\n-84\n241\n86-\n127\n+72\n72-\n-92\n-750-"
+    }
+  ]
+}

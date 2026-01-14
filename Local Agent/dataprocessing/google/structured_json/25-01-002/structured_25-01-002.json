@@ -1,0 +1,87 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Thickened edge detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Thickened Edge Foundation Detail",
+      "element_callouts": [
+        "S1"
+      ],
+      "key_components": [
+        "Poured Concrete Curb",
+        "Anchor Bolts",
+        "Rebar",
+        "WWM",
+        "Granular Fill",
+        "Vapour Barrier",
+        "Extruded Polystyrene Insulation",
+        "Sill Plate"
+      ],
+      "summary": "This section detail illustrates a thickened edge foundation with a 12\" curb option. The foundation system includes a poured concrete curb that is 8 inches thick, reinforced with 15M rebar spaced at 32 inches on center, and a continuous 15M rebar at the top. The sill plate is secured with \\\"Ø anchor bolts at 48 inches on center. The detail also shows a slab portion with (4) 15M rebar and options for reinforcement including 6x6x\\% WWM, 16\" x 16\" 10M GRI, or Fibre Mesh. A 6mil poly vapour barrier is optional, placed over compacted Granular 'A' fill. Below the slab, a minimum of 2 inches (R10) of extruded polystyrene insulation with a minimum compressive strength of 30 psi is specified. The drawing indicates a slope away from the foundation at 2% and notes the presence of insulation if applicable. The overall dimensions shown include a 6'-0\" length for the slab area and a 1'-0\" width for the thickened edge portion. The section is labeled '2/S1' and identified as 'THICKENED EDGE (12\" CURB OPTION)' with a scale of 1/2\"=1'-0\".",
+      "project_id": "25-01-002",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "SLOPE GRADE AWAY 2%, &\nINSULATION (IF PRESENT)\n6'-0\"\n2\nSECTION\nS1 THICKENED EDGE (12\" CURB OPTION)\nSILL PLATE\nc/w ½\" ANCHOR BOLTS @ 48\" o.c.\n(LEAVE OPENINGS IN SILL PLATE @\nDOOR LOCATIONS)\n8\" POURED CONCRETE CURB\nc/w 15M REBAR x 20\" LONG @ 32\" o.c.\nw/ (1) 15M CONT. @ TOP\n(LEAVE OPENINGS IN CURB @ DOOR LOCATIONS) 6x6x% WWM\n(4) 15M REBAR\n(SEE NOTES FOR COVER)\nOR\n16\" x 16\" 10M GRI\nOR\nFIBRE MESH\n1\n6mil POLY VAPOUR\nBARRIER (OPTIONAL)\n2\"\n1'-0\"\nCOMPACTED\nGRANULAR 'A\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRE\nMIN. COMPRESSIVE STRENGTH OF 30 ps\n1/2\" 1'-0\""
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor – floating slab",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Floating Slab Plan",
+      "element_callouts": [
+        "S1"
+      ],
+      "key_components": [
+        "Floating Slab",
+        "Concrete"
+      ],
+      "summary": "This is a plan view of a floating slab, indicated by the title 'PLAN S1 FLOATING SLAB'. The overall dimensions of the slab are 40'-0\" in length and 30'-0\" in width, as shown by the dimension lines. The scale of the drawing is 1/8\"=1'-0\". Two section callouts, labeled '2/S1', are present, indicating where sections are taken through this slab plan and referencing sheet S1. The dashed line likely represents the perimeter of the slab or a formwork outline. The key components are the floating slab itself and the concrete material it is made of.",
+      "project_id": "25-01-002",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "30'-0\"\nPLAN\nS1 FLOATING SLAB\n1/8\"=1'-0\"\n2\nS1\n40'-0\"\n2\nS1"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Section",
+      "location": "Thickened edge detail",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Thickened Edge Slab Section",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Slab",
+        "Reinforcement",
+        "Granular Fill",
+        "Insulation",
+        "Vapour Barrier",
+        "Compacted Granular 'A'"
+      ],
+      "summary": "This section view details a thickened edge for a concrete slab, likely a foundation or floor slab. The slab has a total thickness of 6 inches, with a 2-inch thickened edge extending downwards. The slab is reinforced with four 15M rebar bars, with cover specified in separate notes. The top surface of the slab is designed to slope away at 2% for drainage. Below the slab, a 6-inch minimum layer of compacted Granular 'A' fill is specified, over which a minimum of 2 inches (R10) of extruded polystyrene insulation with a minimum compressive strength of 30 psi is placed. An optional 6-mil poly vapour barrier is indicated. Alternative reinforcement options include 6x6x% WWM (Welded Wire Mesh), 16\" x 16\" 10M grid, or fibre mesh, suggesting flexibility in construction. The overall dimensions shown include a 1'-0\" width for the thickened edge and a 6'-0\" horizontal dimension for a sloped grade area.",
+      "project_id": "25-01-002",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "SLOPE GRADE AWAY 2%, &\nINSULATION (IF PRESENT)\n2\nSECTION\nS1 THICKENED EDGE\n(4) 15M REBAR\n(SEE NOTES FOR COVER)\n6x6x% WWM\nOR\n16\" x 16\" 10M GRID\nOR\nFIBRE MESH\n2\n6'-0\"\n2\"\n1'-0\"\n1/2\"-1'-0\"\n6mil POLY VAPOUR\nBARRIER (OPTIONAL)\nCOMPACTED\nGRANULAR 'A'\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE\nMIN. COMPRESSIVE STRENGTH OF 30 psi"
+    }
+  ]
+}
