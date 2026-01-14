@@ -17,11 +17,48 @@ from desktop_agent.agents.doc_generation.report_generator import node_doc_genera
 from desktop_agent.agents.doc_generation.answer_adapter import node_doc_answer_adapter
 
 
+def _doc_entry_passthrough(state: RAGState) -> dict:
+    """Entry node to allow routing decisions."""
+    return {}
+
+
 def _doc_generate_route(state: RAGState) -> str:
     """Route to section vs report generation."""
     if getattr(state, "task_type", None) == "doc_report":
         return "doc_generate_report"
     return "doc_generate_section"
+
+
+def _doc_should_retrieve(state: RAGState) -> str:
+    """Decide whether to run retrieval before planning."""
+    needs_retrieval = getattr(state, "needs_retrieval", False)
+    retrieval_completed = getattr(state, "retrieval_completed", False)
+    log_query.info("🔀 DOCGEN ROUTING: needs_retrieval=%s, completed=%s", needs_retrieval, retrieval_completed)
+    if needs_retrieval and not retrieval_completed:
+        log_query.info("➡️  DOCGEN routing to retrieve")
+        return "doc_retrieve"
+    log_query.info("➡️  DOCGEN routing to plan (skip retrieval)")
+    return "doc_plan"
+
+
+def _doc_retrieve(state: RAGState) -> dict:
+    """
+    Placeholder retrieval guard for doc generation.
+    Marks retrieval as completed to avoid loops when generation doesn't need DB retrieval.
+    """
+    needs_retrieval = getattr(state, "needs_retrieval", True)
+    retrieval_completed = getattr(state, "retrieval_completed", False)
+    log_query.info(
+        "DOCGEN: retrieve (guard) | needs_retrieval=%s | retrieval_completed=%s", needs_retrieval, retrieval_completed
+    )
+    if retrieval_completed:
+        log_query.info("⏭️ DOCGEN retrieval already completed; skipping")
+        return {"retrieval_completed": True, "needs_retrieval": False}
+    if not needs_retrieval:
+        log_query.info("⏭️ DOCGEN retrieval not needed for simple generation")
+        return {"retrieval_completed": True, "needs_retrieval": False, "retrieved_docs": []}
+    # Hook for future retrieval logic; mark completion to avoid re-entry
+    return {"retrieval_completed": True, "needs_retrieval": False}
 
 
 def _doc_verify(state: RAGState) -> dict:
@@ -81,6 +118,8 @@ def build_doc_generation_subgraph():
     """Compile the doc generation subgraph."""
     g = StateGraph(RAGState)
 
+    g.add_node("doc_entry", _doc_entry_passthrough)
+    g.add_node("doc_retrieve", _doc_retrieve)
     g.add_node("doc_plan", node_doc_plan)
     g.add_node("doc_generate_section", node_doc_generate_section)
     g.add_node("doc_generate_report", node_doc_generate_report)
@@ -88,7 +127,17 @@ def build_doc_generation_subgraph():
     g.add_node("doc_verify", _doc_verify)
     g.add_node("doc_correct", _doc_correct)
 
-    g.set_entry_point("doc_plan")
+    g.set_entry_point("doc_entry")
+
+    g.add_conditional_edges(
+        "doc_entry",
+        _doc_should_retrieve,
+        {
+            "doc_retrieve": "doc_retrieve",
+            "doc_plan": "doc_plan",
+        },
+    )
+    g.add_edge("doc_retrieve", "doc_plan")
 
     g.add_conditional_edges(
         "doc_plan",
@@ -140,6 +189,11 @@ def call_doc_generation_subgraph(state: ParentState) -> dict:
         desktop_action_plan=getattr(state, "desktop_action_plan", None),
         doc_generation_result=getattr(state, "doc_generation_result", None),
         doc_generation_warnings=getattr(state, "doc_generation_warnings", []),
+        needs_retrieval=getattr(state, "needs_retrieval", True),
+        retrieval_completed=getattr(state, "retrieval_completed", False),
+        retrieved_docs=getattr(state, "retrieved_docs", []),
+        retrieved_code_docs=getattr(state, "retrieved_code_docs", []),
+        retrieved_coop_docs=getattr(state, "retrieved_coop_docs", []),
         execution_trace=getattr(state, "execution_trace", []),
         execution_trace_verbose=getattr(state, "execution_trace_verbose", []),
     )
@@ -158,6 +212,8 @@ def call_doc_generation_subgraph(state: ParentState) -> dict:
         "desktop_execution": result.get("desktop_execution"),
         "doc_generation_result": result.get("doc_generation_result"),
         "doc_generation_warnings": result.get("doc_generation_warnings", []),
+        "needs_retrieval": result.get("needs_retrieval", getattr(state, "needs_retrieval", True)),
+        "retrieval_completed": result.get("retrieval_completed", getattr(state, "retrieval_completed", False)),
         "final_answer": result.get("final_answer"),
         "answer_citations": result.get("answer_citations", []),
         "execution_trace": result.get("execution_trace", []),

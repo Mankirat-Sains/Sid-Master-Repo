@@ -80,6 +80,13 @@ def _rag_plan_router_to_image_or_retrieve(state: DBRetrievalState) -> str:
     """Route from rag_plan_router to image processing or retrieve."""
     images_base64 = state.get("images_base64") if isinstance(state, dict) else getattr(state, "images_base64", None)
     use_image_similarity = state.get("use_image_similarity", False) if isinstance(state, dict) else getattr(state, "use_image_similarity", False)
+    needs_retrieval = state.get("needs_retrieval", True) if isinstance(state, dict) else getattr(state, "needs_retrieval", True)
+    retrieval_completed = state.get("retrieval_completed", False) if isinstance(state, dict) else getattr(state, "retrieval_completed", False)
+
+    # Skip retrieval entirely when not needed or already done
+    if not needs_retrieval or retrieval_completed:
+        return "grade"
+
     if images_base64 and use_image_similarity:
         return "generate_image_embeddings"
     return "retrieve"
@@ -106,6 +113,7 @@ def build_db_retrieval_subgraph():
         {
             "generate_image_embeddings": "generate_image_embeddings",
             "retrieve": "retrieve",
+            "grade": "grade",
         },
     )
     g.add_edge("generate_image_embeddings", "image_similarity_search")

@@ -32,6 +32,35 @@ SECTION_KEYWORDS: Dict[str, str] = {
     "memo": "methodology",
 }
 
+# Simple vs complex generation cues
+_SIMPLE_GENERATION_PATTERNS = [
+    "generate a paragraph",
+    "write a paragraph",
+    "create a paragraph",
+    "generate a simple",
+    "write a simple",
+    "create a short",
+    "draft a brief",
+    "make a quick",
+    "write something about",
+    "create some text",
+]
+
+_COMPLEX_GENERATION_PATTERNS = [
+    "report",
+    "analysis",
+    "summary",
+    "project",
+    "status",
+    "overview",
+    "comparison",
+    "assessment",
+    "evaluation",
+    "based on our data",
+    "from our projects",
+    "using our information",
+]
+
 
 _DOC_VERBS = r"(draft|generate|create|write|prepare|produce|compose)"
 _DOCGEN_RULES = [
@@ -168,9 +197,31 @@ def _detect_section(text: str) -> str | None:
     return None
 
 
+def _classify_generation_complexity(text: str) -> Tuple[Optional[str], Optional[bool], Optional[bool]]:
+    """
+    Detect whether the request is a simple generation (no retrieval) or complex (needs retrieval).
+    Returns (task_type, needs_retrieval, retrieval_completed).
+    """
+    lowered = text.lower()
+    is_simple = any(pattern in lowered for pattern in _SIMPLE_GENERATION_PATTERNS)
+    is_complex = any(pattern in lowered for pattern in _COMPLEX_GENERATION_PATTERNS)
+
+    if is_simple and not is_complex:
+        return "simple_generation", False, True
+    if is_complex:
+        return "complex_generation", True, False
+    return None, None, None
+
+
 def node_doc_task_classifier(state: RAGState) -> dict:
     """Classify the user query for doc generation vs QA."""
     log_query.info("DOCGEN: entered node_doc_task_classifier")
+    log_query.info("🎯 DOCGEN CLASSIFYING: '%s'", state.user_query)
+
+    # Track retrieval intent defaults up front
+    needs_retrieval = getattr(state, "needs_retrieval", True)
+    retrieval_completed = getattr(state, "retrieval_completed", False)
+
     task_type, section_hint, rule, doc_type_hint = _detect_task_type(state.user_query or "")
     doc_type = state.doc_type or doc_type_hint or _detect_doc_type(state.user_query or "")
     section_type = state.section_type or section_hint or _detect_section(state.user_query or "")
@@ -188,12 +239,27 @@ def node_doc_task_classifier(state: RAGState) -> dict:
             task_type = "doc_section"
             rule = rule or "query_analyzer"
 
+    # Simple vs complex generation cues (used to determine retrieval needs)
+    gen_task_type, classified_needs_retrieval, classified_retrieval_completed = _classify_generation_complexity(
+        state.user_query or ""
+    )
+    if classified_needs_retrieval is not None:
+        needs_retrieval = classified_needs_retrieval
+    if classified_retrieval_completed is not None:
+        retrieval_completed = classified_retrieval_completed
+
     # If caller already hinted task_type, respect it
     task_type = task_type or state.task_type or "qa"
 
-    doc_intent = task_type in {"doc_section", "doc_report"} or bool(doc_type) or bool(analyzer_doc_type) or bool(rule)
+    doc_intent = (
+        task_type in {"doc_section", "doc_report"}
+        or bool(doc_type)
+        or bool(analyzer_doc_type)
+        or bool(rule)
+        or bool(gen_task_type)
+    )
     if doc_intent and task_type == "qa":
-        task_type = "doc_section"
+        task_type = gen_task_type or "doc_section"
 
     if doc_intent:
         workflow = "docgen"
@@ -204,10 +270,22 @@ def node_doc_task_classifier(state: RAGState) -> dict:
         desktop_policy = "never"
         log_query.info("DOCGEN: classifier defaulted to QA")
 
+    log_query.info(
+        "✅ DOCGEN CLASSIFIED: task_type=%s | workflow=%s | needs_retrieval=%s | retrieval_completed=%s",
+        task_type,
+        workflow,
+        needs_retrieval if doc_intent else True,
+        retrieval_completed if doc_intent else False,
+    )
+
     return {
         "task_type": task_type,
         "doc_type": doc_type,
         "section_type": section_type,
         "workflow": workflow,
         "desktop_policy": desktop_policy,
+        "needs_retrieval": needs_retrieval if doc_intent else True,
+        "retrieval_completed": retrieval_completed if doc_intent else False,
+        "generation_task_type": gen_task_type or task_type,
+        "classified": True,
     }

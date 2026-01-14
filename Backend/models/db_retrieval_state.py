@@ -60,6 +60,8 @@ class DBRetrievalState:
     # Control Flags
     corrective_attempted: bool = False
     needs_fix: bool = False
+    needs_retrieval: bool = True  # Allow upstream routing to disable retrieval
+    retrieval_completed: bool = False  # Prevent repeated retrieval passes
 
     # Project Tracking
     selected_projects: List[str] = field(default_factory=list)  # Projects from retrieval
