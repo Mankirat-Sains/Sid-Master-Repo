@@ -23,14 +23,14 @@ cp config.example.json config.json   # edit paths
 python doc_agent_api.py --config config.json --port 8002
 ```
 
-Example `config.json`:
+Example `config.json` (use absolute paths for reliability):
 ```json
 {
   "workspace_dir": "./workspace/doc-agent",
   "docs": [
     {
       "doc_id": "spec",
-      "file_path": "./sample_docs/spec.docx"
+      "file_path": "/absolute/path/to/sample_docs/spec.docx"
     }
   ]
 }
@@ -47,6 +47,7 @@ Example `config.json`:
 ### Ops schema (minimum viable)
 ```json
 {
+  "schema_version": 1,
   "ops": [
     {"op": "replace_text", "target": {"index": 3}, "text": "New text"},
     {"op": "insert_heading", "target": {"index": 5}, "level": 2, "text": "Schedule"},

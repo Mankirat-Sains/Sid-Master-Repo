@@ -130,9 +130,12 @@ class DocAgent:
         raise DocOperationError("doc_id or file_path must be provided.")
 
     def _resolve_path(self, file_path: str) -> Path:
+        """Resolve a path to an absolute location anchored in the workspace when relative."""
         p = Path(file_path)
         if not p.is_absolute():
             p = (self.workspace / p).resolve()
+        else:
+            p = p.resolve()
         p.parent.mkdir(parents=True, exist_ok=True)
         return p
 
@@ -260,4 +263,3 @@ class DocAgent:
         body.remove(para_elem)
         body.insert(to_idx, para_elem)
         return True, f"reorder_blocks {from_idx} -> {to_idx}"
-

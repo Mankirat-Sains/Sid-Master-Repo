@@ -41,12 +41,15 @@ class DocEditTool:
 
         resolved_path = Path(doc_path)
         if not resolved_path.is_absolute():
-            resolved_path = workspace_dir / resolved_path
+            resolved_path = (workspace_dir / resolved_path).resolve()
+        else:
+            resolved_path = resolved_path.resolve()
 
         payload: Dict[str, Any] = {
             "doc_id": doc_id or resolved_path.stem,
             "file_path": str(resolved_path),
             "ops": ops,
+            "schema_version": 1,
         }
         if save_as:
             payload["save_as"] = save_as

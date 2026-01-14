@@ -13,12 +13,12 @@ import logging
 from datetime import datetime
 import argparse
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Literal
 
 import uvicorn
 from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from local_doc_agent import DocAgent, DocOperationError, load_config
 
@@ -59,11 +59,37 @@ class DocOpenRequest(BaseModel):
     doc_id: Optional[str] = None
 
 
+class DocOperation(BaseModel):
+    op: Literal[
+        "replace_text",
+        "insert_paragraph",
+        "insert_heading",
+        "delete_block",
+        "set_style",
+        "reorder_blocks",
+    ]
+    target: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Target block spec, typically {'index': int}",
+    )
+    text: Optional[str] = None
+    level: Optional[int] = None
+    style: Optional[str] = None
+    save_as: Optional[str] = None
+    from_index: Optional[int] = None
+    to_index: Optional[int] = None
+
+    model_config = {"extra": "forbid"}
+
+
 class DocApplyRequest(BaseModel):
+    schema_version: int = Field(default=OPS_SCHEMA_VERSION)
     doc_id: Optional[str] = None
     file_path: Optional[str] = None
-    ops: List[Dict[str, Any]]
+    ops: List[DocOperation]
     save_as: Optional[str] = None
+
+    model_config = {"extra": "forbid"}
 
 
 class DocExportRequest(BaseModel):
@@ -83,6 +109,7 @@ class DocHistoryResponse(BaseModel):
 _agent_config: Optional[Dict[str, Any]] = None
 _doc_agent: Optional[DocAgent] = None
 _history: Dict[str, List[Dict[str, Any]]] = {}
+OPS_SCHEMA_VERSION = 1
 
 
 def get_agent() -> DocAgent:
@@ -178,13 +205,15 @@ async def apply_ops(request: DocApplyRequest, background_tasks: BackgroundTasks)
         raise HTTPException(status_code=400, detail="doc_id or file_path is required to apply operations.")
     if not request.ops:
         raise HTTPException(status_code=400, detail="ops list cannot be empty.")
+    if request.schema_version != OPS_SCHEMA_VERSION:
+        raise HTTPException(status_code=400, detail=f"Unsupported schema_version {request.schema_version}. Expected {OPS_SCHEMA_VERSION}.")
 
     def _run_ops():
         try:
             result = agent.apply_ops(
                 doc_id=request.doc_id,
-                file_path=request.file_path,
-                ops=request.ops,
+                file_path=str(Path(request.file_path).resolve()) if request.file_path else None,
+                ops=[op.model_dump() for op in request.ops],
                 save_as=request.save_as,
             )
             _record_history(result["doc_id"], {"event": "apply", "change_summary": result.get("change_summary", [])})
