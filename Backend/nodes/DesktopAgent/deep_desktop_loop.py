@@ -14,6 +14,7 @@ from langgraph.errors import GraphInterrupt
 from models.rag_state import RAGState
 from persistence.workspace_manager import get_workspace_manager
 from nodes.DesktopAgent.tools.docgen_tool import get_docgen_tool
+from nodes.DesktopAgent.tools.doc_edit_tool import get_doc_edit_tool
 from utils.tool_eviction import get_evictor
 from config.settings import (
     MAX_DEEP_AGENT_ITERATIONS,
@@ -38,6 +39,7 @@ class DeepDesktopLoop:
         self.max_iterations = MAX_DEEP_AGENT_ITERATIONS
         self.workspace_mgr = get_workspace_manager()
         self.docgen_tool = get_docgen_tool()
+        self.doc_edit_tool = get_doc_edit_tool()
         self.evictor = get_evictor()
         # Use raw llm_fast to avoid passing unsupported stream_options to legacy OpenAI clients
         self.planner_llm = llm_fast
@@ -111,6 +113,7 @@ class DeepDesktopLoop:
             "delete_file",
             "list_files",
             "generate_document",
+            "edit_document",
         ]
 
     def _create_plan(self, state: RAGState, workspace_dir: Path) -> Dict[str, Any]:
@@ -129,6 +132,7 @@ Available tools:
 - write_file: Write content to a file
 - list_files: List files in workspace
 - generate_document: Generate document content (calls docgen)
+- edit_document: Apply structured DOCX ops (insert/replace/delete/style/reorder) via doc agent
 
 Create a step-by-step plan. Each step should specify:
 - action: The tool to use
@@ -299,6 +303,8 @@ Keep plans concise (3-7 steps max).
                 result = self._tool_list_files(params, workspace_dir, thread_id)
             elif action == "generate_document":
                 result = self._tool_generate_document(params, workspace_dir, thread_id, state)
+            elif action == "edit_document":
+                result = self._tool_edit_document(params, workspace_dir, thread_id)
             else:
                 result = {"success": False, "error": f"Unknown action: {action}", "action": action}
 
@@ -340,6 +346,8 @@ Keep plans concise (3-7 steps max).
             if action == "generate_document":
                 observation["summary"] = "Document generated successfully"
                 observation["is_complete"] = True
+            elif action == "edit_document":
+                observation["summary"] = "Document edited successfully"
             elif action == "write_file":
                 observation["summary"] = f"Wrote {action_result.get('filename', 'file')}"
             elif action == "read_file":
@@ -361,6 +369,7 @@ Keep plans concise (3-7 steps max).
         destructive_actions = {
             "write_file",
             "edit_file",
+            "edit_document",
             "delete_file",
             "execute_code",
             "materialize_doc",
@@ -530,6 +539,20 @@ Keep plans concise (3-7 steps max).
         pattern = params.get("pattern", "*")
         files = self.workspace_mgr.list_files(thread_id, pattern)
         return {"success": True, "files": [str(f.relative_to(workspace_dir)) for f in files], "count": len(files)}
+
+    def _tool_edit_document(self, params: Dict[str, Any], workspace_dir: Path, thread_id: str) -> Dict[str, Any]:
+        """Call doc-agent to apply structured DOCX operations."""
+        doc_result = self.doc_edit_tool.edit_document(params, workspace_dir, thread_id)
+        if not doc_result.get("success"):
+            return doc_result
+        return {
+            "success": True,
+            "doc_id": doc_result.get("doc_id"),
+            "file_path": doc_result.get("file_path"),
+            "change_summary": doc_result.get("change_summary"),
+            "structure": doc_result.get("structure"),
+            "output": doc_result.get("output"),
+        }
 
     def _tool_generate_document(
         self,
