@@ -199,7 +199,12 @@ export const useChat = () => {
             try {
               const data = JSON.parse(line.slice(6))
               const workflowSignal = data.workflow || data.task_type || data.node
-              const documentPayload = data.doc_generation_result || data.document_state || data.document_patch || data.document
+              // Prefer concrete document state/patch before raw generation result
+              const documentPayload =
+                data.document_state ||
+                data.document_patch ||
+                data.document ||
+                data.doc_generation_result
 
               if (workflowSignal && callbacks?.onWorkflow) {
                 callbacks.onWorkflow(workflowSignal)
@@ -244,8 +249,17 @@ export const useChat = () => {
                 if (callbacks?.onWorkflow && (data.result?.workflow || data.result?.task_type)) {
                   callbacks.onWorkflow(data.result.workflow || data.result.task_type)
                 }
-                if (callbacks?.onDocument && (data.result?.doc_generation_result || data.result?.document_state || data.result?.document_patch)) {
-                  callbacks.onDocument(data.result.doc_generation_result || data.result.document_state || data.result.document_patch)
+                if (
+                  callbacks?.onDocument &&
+                  (data.result?.document_state || data.result?.document_patch || data.result?.document || data.result?.doc_generation_result)
+                ) {
+                  const docPayload =
+                    data.result.document_state ||
+                    data.result.document_patch ||
+                    data.result.document ||
+                    data.result.doc_generation_result
+                  console.log('📄 [useChat] Document payload received on complete:', docPayload)
+                  callbacks.onDocument(docPayload)
                 }
                 callbacks?.onComplete?.(data.result as ChatResponse)
               } else if (data.type === 'interrupt') {

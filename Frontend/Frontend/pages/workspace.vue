@@ -2558,6 +2558,17 @@ function handleWorkflowSignal(payload: any) {
 }
 
 function handleDocumentUpdate(payload: any) {
+  const docUrl =
+    payload?.docUrl ||
+    payload?.documentKey ||
+    payload?.onlyoffice?.docUrl ||
+    payload?.document_state?.docUrl ||
+    payload?.doc_generation_result?.docUrl ||
+    payload?.doc_generation_result?.document_state?.docUrl
+  console.log('📄 [workspace] Document payload received:', {
+    keys: Object.keys(payload || {}),
+    docUrl
+  })
   const updated = applyDocumentPatch(payload)
   if (updated) {
     const detected = detectWorkflowFromPayload(payload)
