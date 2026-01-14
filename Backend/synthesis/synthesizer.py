@@ -104,16 +104,36 @@ def synthesize(
         )
     
     print(f"📋 SYNTHESIS: Extracted project IDs from docs: {sorted(list(unique_projects))[:20]}{'...' if len(unique_projects) > 20 else ''}")  # Diagnostic
+    
+    # Log any suspicious project IDs (very short or non-standard format)
+    suspicious_projects = [p for p in unique_projects if len(p) < 5 or not any(c.isdigit() for c in p)]
+    if suspicious_projects:
+        log_query.warning(f"⚠️ Found suspicious project IDs: {suspicious_projects}")
 
     # Fetch metadata from Supabase for ALL unique projects (if not pre-fetched)
     print(f"🔍 SYNTHESIS: About to fetch metadata for {len(unique_projects)} unique projects")  # Diagnostic
+    
+    # Ensure project_metadata is always a dict
     if project_metadata is None:
         project_metadata = fetch_project_metadata(list(unique_projects))
-    else:
-        missing_projects = [p for p in unique_projects if p not in project_metadata]
-        if missing_projects:
-            additional_metadata = fetch_project_metadata(missing_projects)
+    elif not isinstance(project_metadata, dict):
+        log_query.warning(f"⚠️ project_metadata is not a dict (type: {type(project_metadata)}), resetting to empty dict")
+        project_metadata = {}
+    
+    # Final safety check - ensure it's a dict
+    if not isinstance(project_metadata, dict):
+        log_query.error(f"❌ project_metadata is not a dict after fetch (type: {type(project_metadata)}), using empty dict")
+        project_metadata = {}
+    
+    # Find missing projects and fetch their metadata
+    missing_projects = [p for p in unique_projects if p not in project_metadata]
+    if missing_projects:
+        log_query.info(f"🔍 Fetching metadata for {len(missing_projects)} missing projects: {missing_projects[:5]}{'...' if len(missing_projects) > 5 else ''}")
+        additional_metadata = fetch_project_metadata(missing_projects)
+        if isinstance(additional_metadata, dict):
             project_metadata.update(additional_metadata)
+        else:
+            log_query.warning(f"⚠️ fetch_project_metadata returned non-dict: {type(additional_metadata)}, skipping update")
 
     # Build grouped context with enriched project information
     lines = []

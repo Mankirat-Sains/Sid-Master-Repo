@@ -4,7 +4,9 @@
     "allowed_directories": [
         "~/Desktop",
         "~/Documents",
-        "~/Documents/Projects"
+        "~/Documents/Projects",
+        "/Volumes",
+        "/Volumes/J"
     ],
     "projects": [
         {

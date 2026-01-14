@@ -38,7 +38,7 @@ ANSWER_PROMPT = PromptTemplate.from_template(
     "- Do NOT wrap dimensions in LaTeX math delimiters ($...$ or $$...$$). "
     "- LaTeX math delimiters ($...$ and $$...$$) should ONLY be used for actual mathematical equations with variables, operators, and formulas. "
     "- Examples of what NOT to format as math: '$14\" \\times 16\"$', '$3/4\"$', '$6\"$' - these are just dimensions, not equations. "
-    "- Examples of what SHOULD be formatted as math: '$P = q \\cdot C_e$' (actual equation), '$$V = \\sqrt{2gh}$$' (formula). "
+    "- Examples of what SHOULD be formatted as math: '$P = q \\cdot C_e$' (actual equation), '$$V = \\sqrt{{2gh}}$$' (formula). "
 
     "CRITICAL INSTRUCTIONS: "
     "- For queries about specific equipment, features, or topics (like 'forklift extensions', 'concrete slabs', 'steel beams', etc.), you MUST list EVERY SINGLE project that matches the criteria. "

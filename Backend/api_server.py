@@ -1006,21 +1006,50 @@ async def chat_stream_handler(request: ChatRequest):
                 # Get the latest checkpoint state for this thread
                 # For async checkpointers, use aget_state() instead of get_state()
                 from graph.checkpointer import CHECKPOINTER_TYPE
-                if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
-                    # Async checkpointer - use async method
-                    state_snapshot = await graph.aget_state({"configurable": {"thread_id": request.session_id}})
-                else:
-                    # Sync checkpointer - use sync method
-                    state_snapshot = graph.get_state({"configurable": {"thread_id": request.session_id}})
                 
-                if state_snapshot and state_snapshot.values:
-                    previous_state = state_snapshot.values
-                    logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
-                    if previous_state.get("messages"):
-                        logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+                # Check if checkpointer is available and initialized
+                if not hasattr(graph, 'checkpointer') or graph.checkpointer is None:
+                    logger.warning("⚠️ Checkpointer not available, skipping state load")
+                    previous_state = None
+                else:
+                    try:
+                        if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
+                            # Async checkpointer - use async method
+                            # Add timeout to prevent hanging
+                            import asyncio
+                            state_snapshot = await asyncio.wait_for(
+                                graph.aget_state({"configurable": {"thread_id": request.session_id}}),
+                                timeout=5.0  # 5 second timeout
+                            )
+                        else:
+                            # Sync checkpointer - use sync method
+                            state_snapshot = graph.get_state({"configurable": {"thread_id": request.session_id}})
+                        
+                        if state_snapshot and state_snapshot.values:
+                            previous_state = state_snapshot.values
+                            logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
+                            if previous_state.get("messages"):
+                                logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+                    except asyncio.TimeoutError:
+                        logger.warning(f"⚠️ Checkpointer timeout for thread_id={request.session_id}, continuing without previous state")
+                        previous_state = None
+                    except Exception as conn_error:
+                        # Check for connection-related errors
+                        error_msg = str(conn_error).lower()
+                        if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused"]):
+                            logger.warning(f"⚠️ Checkpointer connection error (continuing without state): {conn_error}")
+                            previous_state = None
+                        else:
+                            # Re-raise non-connection errors
+                            raise
             except Exception as e:
-                # No previous state exists (first invocation) - this is fine
-                logger.info(f"📖 No previous state found (first invocation): {e}")
+                # No previous state exists (first invocation) or checkpointer unavailable - this is fine
+                # Don't let checkpointer errors break the entire request
+                error_msg = str(e).lower()
+                if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network"]):
+                    logger.warning(f"⚠️ Checkpointer unavailable (continuing without state): {e}")
+                else:
+                    logger.info(f"📖 No previous state found (first invocation): {e}")
                 previous_state = None
             
             # Get messages from previous state for query rewriting and context
@@ -1126,13 +1155,36 @@ async def chat_stream_handler(request: ChatRequest):
             completion_executed = False  # Flag to ensure completion code runs only once
             
             try:
-                async for stream_item in graph.astream(
-                    asdict(init_state),
-                    config=config,
-                    stream_mode=["updates", "custom", "messages"],  # Add "messages" for token streaming
-                    durability=durability_mode,  # Pass durability as direct parameter, not in config
-                    subgraphs=True  # CRITICAL: Include outputs from subgraphs (e.g., db_retrieval subgraph) in stream
-                ):
+                # Wrap graph.astream in try-except to handle connection errors gracefully
+                try:
+                    stream_iterator = graph.astream(
+                        asdict(init_state),
+                        config=config,
+                        stream_mode=["updates", "custom", "messages"],  # Add "messages" for token streaming
+                        durability=durability_mode,  # Pass durability as direct parameter, not in config
+                        subgraphs=True  # CRITICAL: Include outputs from subgraphs (e.g., db_retrieval subgraph) in stream
+                    )
+                except Exception as stream_init_error:
+                    # Handle checkpointer connection errors during stream initialization
+                    error_msg = str(stream_init_error).lower()
+                    if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused"]):
+                        logger.error(f"❌ Checkpointer connection error during stream init: {stream_init_error}")
+                        logger.warning("⚠️ Continuing without checkpointer - state won't be persisted")
+                        # Try to continue without checkpointer by using a simpler config
+                        # Remove thread_id to avoid checkpointer access
+                        config_no_checkpoint = {"configurable": {}}
+                        stream_iterator = graph.astream(
+                            asdict(init_state),
+                            config=config_no_checkpoint,
+                            stream_mode=["updates", "custom", "messages"],
+                            durability="off",  # Disable checkpointer
+                            subgraphs=True
+                        )
+                    else:
+                        # Re-raise non-connection errors
+                        raise
+                
+                async for stream_item in stream_iterator:
                     # Handle different stream formats (with/without subgraphs)
                     # When subgraphs=True with multiple stream modes, format is: (namespace, stream_mode, chunk)
                     # When subgraphs=False or single mode, format is: (stream_mode, chunk)
@@ -1787,9 +1839,29 @@ async def chat_stream_handler(request: ChatRequest):
                 logger.info(f"📤 Sent interrupt event to frontend: {interrupt_data.get('interrupt_type')}")
                 return  # Stop streaming - wait for resume
             
+        except (ConnectionError, OSError, asyncio.TimeoutError) as conn_error:
+            # Handle connection errors gracefully - checkpointer connection issues
+            error_msg = str(conn_error).lower()
+            if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused", "server closed"]):
+                logger.error(f"❌ Checkpointer connection error during streaming: {conn_error}")
+                logger.warning("⚠️ Checkpointer unavailable - this is non-fatal, continuing without state persistence")
+                # Send error but don't break - the query can still complete
+                yield f"data: {json.dumps({'type': 'error', 'message': 'Checkpointer connection issue - query may continue without state persistence'})}\n\n"
+                # Don't return - let the stream continue if possible
+                # The graph might still work without checkpointer
+            else:
+                # Re-raise if it's not a connection error
+                raise
         except Exception as e:
-            logger.error(f"❌ Streaming error: {e}")
-            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+            error_msg = str(e).lower()
+            # Check if it's a connection-related error
+            if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused", "server closed"]):
+                logger.error(f"❌ Connection error during streaming: {e}")
+                logger.warning("⚠️ Connection issue detected - this may be a checkpointer problem")
+                yield f"data: {json.dumps({'type': 'error', 'message': f'Connection error: {str(e)[:200]}'})}\n\n"
+            else:
+                logger.error(f"❌ Streaming error: {e}")
+                yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
             return
     
     return StreamingResponse(
