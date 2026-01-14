@@ -344,11 +344,20 @@ class SectionGenerator:
 
             user_request = ""
             if doc_request:
-                user_request = doc_request.get("user_query") or doc_request.get("title") or ""
+                user_request = (
+                    doc_request.get("user_query")
+                    or doc_request.get("title")
+                    or doc_request.get("content")
+                    or doc_request.get("prompt")
+                    or ""
+                )
             if not user_request and isinstance(ctx, dict):
                 user_request = (
-                    ctx.get("doc_request", {}).get("title")
+                    ctx.get("doc_request", {}).get("user_query")
+                    or ctx.get("doc_request", {}).get("title")
                     or ctx.get("user_context", {}).get("user_query")
+                    or ctx.get("state_context", {}).get("user_query")
+                    or ctx.get("state_context", {}).get("original_question")
                     or ""
                 )
 
