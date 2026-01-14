@@ -16,16 +16,17 @@ python doc_agent_api.py --config config.example.json --port 8002
 ```bash
 curl http://localhost:8002/health
 
-# Open a doc
+# Open a doc (use absolute path or workspace-relative)
 curl -X POST http://localhost:8002/api/doc/open \
   -H "Content-Type: application/json" \
-  -d '{"file_path": "./sample_docs/spec.docx"}'
+  -d '{"file_path": "/absolute/path/to/sample_docs/spec.docx"}'
 
 # Apply edits
 curl -X POST http://localhost:8002/api/doc/apply \
   -H "Content-Type: application/json" \
   -d '{
-    "file_path": "./sample_docs/spec.docx",
+    "file_path": "/absolute/path/to/sample_docs/spec.docx",
+    "schema_version": 1,
     "ops": [
       {"op": "replace_text", "target": {"index": 1}, "text": "Updated intro"},
       {"op": "insert_heading", "target": {"index": 2}, "level": 2, "text": "Schedule"}

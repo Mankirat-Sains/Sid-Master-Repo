@@ -65,6 +65,7 @@ from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOO
 
 DOC_API_URL = os.getenv("DOC_API_URL", "http://localhost:8002").rstrip("/")
 DOC_API_TIMEOUT = float(os.getenv("DOC_API_TIMEOUT", "20"))
+DOC_OP_SCHEMA_VERSION = 1
 
 # Import Kuzu manager
 try:
@@ -2048,6 +2049,34 @@ async def _doc_agent_request(method: str, path: str, json_body: Optional[Dict[st
         logger.error(f"Doc agent unreachable at {url}: {exc}")
         raise HTTPException(status_code=502, detail=f"Doc agent unavailable at {DOC_API_URL}: {exc}")
 
+def _validate_doc_ops_payload(payload: Dict[str, Any]) -> None:
+    if payload is None:
+        raise HTTPException(status_code=400, detail="Payload is required.")
+    ops = payload.get("ops")
+    if ops is None or not isinstance(ops, list) or len(ops) == 0:
+        raise HTTPException(status_code=400, detail="ops[] is required and must be a non-empty list.")
+    schema_version = payload.get("schema_version", DOC_OP_SCHEMA_VERSION)
+    if schema_version != DOC_OP_SCHEMA_VERSION:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported schema_version {schema_version}. Expected {DOC_OP_SCHEMA_VERSION}",
+        )
+    for op in ops:
+        if not isinstance(op, dict) or "op" not in op:
+            raise HTTPException(status_code=400, detail="Each operation must be an object with an 'op' field.")
+        name = op.get("op")
+        if name in {"replace_text", "insert_paragraph", "insert_heading", "delete_block", "set_style"}:
+            target = op.get("target")
+            if not isinstance(target, dict) or "index" not in target:
+                raise HTTPException(status_code=400, detail=f"Operation '{name}' requires target.index")
+    # Ensure file_path exists if provided (best-effort)
+    file_path = payload.get("file_path")
+    if file_path:
+        try:
+            Path(file_path)
+        except Exception:
+            raise HTTPException(status_code=400, detail="file_path must be a valid path string.")
+
 
 @app.get("/api/doc/health")
 async def doc_agent_health():
@@ -2061,6 +2090,7 @@ async def doc_agent_open(payload: Dict[str, Any]):
 
 @app.post("/api/doc/apply")
 async def doc_agent_apply(payload: Dict[str, Any]):
+    _validate_doc_ops_payload(payload)
     return await _doc_agent_request("post", "/api/doc/apply", json_body=payload)
 
 
