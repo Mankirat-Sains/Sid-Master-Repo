@@ -1,6 +1,7 @@
 """
 Planning Node - Router Selection Only
 Determines which routers (rag, web, desktop) should handle the query
+This is the orchestrator - keeps it simple and fast
 """
 import json
 import re
@@ -12,7 +13,10 @@ from langgraph.config import get_stream_writer
 
 
 def node_plan(state: ParentState) -> dict:
-    """Planning node - selects which routers to use"""
+    """
+    Planning node - selects which routers to use (orchestrator level - keep it simple)
+    Determines which routers (rag, web, desktop) should handle the query
+    """
     t_start = time.time()
     log_query.info(">>> PLAN START (Router Selection)")
     
@@ -26,9 +30,24 @@ def node_plan(state: ParentState) -> dict:
 
     try:
         # Get router selection from LLM
-        choice = router_selection_llm.invoke(
-            ROUTER_SELECTION_PROMPT.format(q=state.user_query)
-        ).content.strip()
+        # Match the exact pattern used by other working routers (desktop_router, web_router, etc.)
+        # They all pass formatted prompt strings directly to .invoke()
+        formatted_prompt = ROUTER_SELECTION_PROMPT.format(q=state.user_query)
+        
+        # Invoke with string (same pattern as desktop_router.py, web_router.py, rag_plan.py)
+        response = router_selection_llm.invoke(formatted_prompt)
+        
+        # Extract content - should be AIMessage with .content attribute
+        # This matches the pattern: desktop_router_llm.invoke(...).content.strip()
+        if hasattr(response, 'content'):
+            choice = response.content.strip()
+        else:
+            # Fallback: try to extract from ChatResult if needed
+            log_query.warning(f"Unexpected response type: {type(response)}, trying to extract content")
+            if hasattr(response, 'generations') and response.generations:
+                choice = response.generations[0].message.content.strip()
+            else:
+                choice = str(response).strip()
 
         # Parse JSON response
         try:

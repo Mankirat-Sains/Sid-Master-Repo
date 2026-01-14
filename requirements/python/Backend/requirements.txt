@@ -13,6 +13,9 @@ langchain-openai>=0.0.5
 langchain-community>=0.0.20
 langchain-anthropic>=0.1.0
 
+# Deep Agents (for Excel KB Agent with planning capabilities)
+deepagents>=0.1.0
+
 # Google Vertex AI (for Gemini models with service account authentication)
 # Note: ChatVertexAI is deprecated but required for service account auth
 # ChatGoogleGenerativeAI only supports API key authentication
