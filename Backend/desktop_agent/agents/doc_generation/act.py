@@ -1,23 +1,5 @@
-"""
-DOCGEN: Act node.
-Executes prepared desktop steps via Desktop Agent adapter (noop if no steps).
-No high-level decisions; execution-only.
-"""
-from __future__ import annotations
+"""Compatibility shim for desktop action execution in doc generation."""
 
-from typing import List, Dict, Any
-from models.rag_state import RAGState
-from config.logging_config import log_query
+from document_generation.desktop_actions import execute_desktop_actions, node_doc_act
 
-
-def node_doc_act(state: RAGState) -> dict:
-    """Execute desktop steps (placeholder)."""
-    log_query.info("DOCGEN: entered node_doc_act")
-    steps: List[Dict[str, Any]] = getattr(state, "desktop_steps", []) or []
-    if not steps:
-        return {"desktop_execution": "noop"}
-    return {
-        "desktop_execution": "executed",
-        "desktop_steps": steps,
-    }
-
+__all__ = ["execute_desktop_actions", "node_doc_act"]

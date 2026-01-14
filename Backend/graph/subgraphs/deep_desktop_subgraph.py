@@ -5,7 +5,7 @@ Runs the deep desktop loop as a standalone subgraph.
 from langgraph.graph import StateGraph, END
 
 from models.rag_state import RAGState
-from nodes.DesktopAgent.deep_desktop_loop import node_deep_desktop_loop
+from desktop_agent.deep_agent.loop import node_deep_desktop_loop
 
 
 def build_deep_desktop_subgraph():

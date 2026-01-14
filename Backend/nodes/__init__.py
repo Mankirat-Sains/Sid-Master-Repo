@@ -17,5 +17,4 @@ from .DBRetrieval.SQLdb.image_nodes import node_generate_image_embeddings, node_
 
 # Router nodes
 from .WebCalcs.web_router import node_web_router
-from .DesktopAgent.desktop_router import node_desktop_router
-
+from desktop_agent.routing import node_desktop_router

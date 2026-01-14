@@ -1,5 +1,5 @@
-# Deprecated: use Backend/document_generation/config/defaults.yaml
-# Legacy document generation configuration retained for compatibility.
+# Document generation configuration
+# Tweak these values to point to real templates/output locations for your environment.
 templates:
   default_template: "standard_report"
   output_format: "docx"

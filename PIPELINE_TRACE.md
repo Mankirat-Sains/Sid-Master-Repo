@@ -12,29 +12,24 @@
   - Returns `final_state.final_answer` (or multi-DB variants), citations, etc., to the API handler.
 
 ## LangGraph Registration (Backend/graph/builder.py)
-- Nodes registered (wrap logs task_type/desktop flags):
-  - plan → doc_task_classifier → doc_plan → desktop_router → doc_think → doc_act → doc_generate_section|doc_generate_report → doc_answer_adapter → verify → correct
-  - router_dispatcher, rag, generate_image_embeddings, image_similarity_search, retrieve, grade, answer, verify, correct
+- Nodes registered (with execution tracing):
+  - plan → doc_task_classifier → desktop_agent subgraph | router_dispatcher | db_retrieval subgraph
+  - db_retrieval subgraph: rag_plan_router → generate_image_embeddings? → retrieve → grade → answer → verify → correct
 - Entry point: `plan`.
 
 ### Routing Conditions
 - plan → doc_task_classifier (always).
 - doc_task_classifier → `_doc_or_router`:
-  - If `workflow == "docgen"` or `task_type in {doc_section, doc_report}` → `doc_plan`.
-  - Else → router path (`router_dispatcher` if routers selected, else `rag`).
-- doc_act → `_doc_generate_route`: doc_report → doc_generate_report else doc_generate_section.
-- verify → `_verify_route`: fix → retrieve, ok → correct.
-- router_dispatcher/rag → optional image branch → retrieve → grade → answer → verify → correct.
+  - If `workflow == "docgen"` or `task_type in {doc_section, doc_report}` → `desktop_agent` subgraph.
+  - Else → router path (`router_dispatcher` if routers selected, else `db_retrieval`).
+- router_dispatcher/db_retrieval → optional image branch → retrieve → grade → answer → verify → correct.
 
 ## Doc Generation Flow (task_type=doc_section/doc_report or workflow=docgen)
 1) doc_task_classifier: sets `workflow="docgen"`, `desktop_policy="required"`, task_type/doc_type/section_type hints.
-2) doc_plan: runs Tier2 QueryAnalyzer; builds `doc_request`; sets `requires_desktop_action`; passes `desktop_action_plan`.
-3) desktop_router: routes to desktop tool (Word default for docgen).
-4) doc_think: shapes execution steps (no decisions).
-5) doc_act: executes steps (noop allowed).
-6) doc_generate_section or doc_generate_report: Tier2 generation.
-7) doc_answer_adapter: sets `final_answer`/`answer` and `answer_citations`; passes warnings.
-8) verify → correct tail unchanged.
+2) desktop_agent subgraph (Backend/graph/subgraphs/desktop_agent_subgraph.py):
+   - desktop_router runs when `"desktop"` is in `selected_routers`.
+   - document_generation_subgraph: doc_entry → doc_retrieve (guard) → doc_plan (Tier2 QueryAnalyzer) → doc_generate_section|doc_generate_report → doc_answer_adapter → doc_verify → doc_correct.
+3) doc_answer_adapter: sets `final_answer`/`answer_citations`; passes warnings; verify/correct tail mirrors QA branch.
 
 ## QA Flow (default)
 - doc_task_classifier → router_dispatcher|rag → (optional image) → retrieve → grade → answer → verify → correct.
@@ -53,6 +48,6 @@
 
 ## Example Branching
 - Prompt “Create an RP report doc …”:
-  doc_task_classifier → doc_plan → desktop_router → doc_think → doc_act → doc_generate_report → doc_answer_adapter → verify → correct.
+  doc_task_classifier → desktop_agent → doc_plan → doc_generate_report → doc_answer_adapter → verify → correct.
 - Prompt “What does the report say about expansion joints?”:
-  doc_task_classifier → rag → retrieve → grade → answer → verify → correct.
+  doc_task_classifier → db_retrieval → retrieve → grade → answer → verify → correct.

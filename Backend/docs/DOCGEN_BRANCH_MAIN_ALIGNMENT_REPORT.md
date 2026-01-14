@@ -3,7 +3,7 @@
 ## Main Conformity Checklist
 - ✅ Conversation history now flows through `ParentState` and checkpointer: query rewriter accepts `messages`/`conversation_history` and both chat/streaming entrypoints seed messages with the current user turn (`Backend/models/memory.py`, `Backend/main.py`, `Backend/api_server.py`).
 - ✅ DB retrieval subgraph returns persisted memory: `node_correct` writes messages + structured `conversation_history` with a sliding window and the wrapper propagates them back to the parent state (`Backend/nodes/DBRetrieval/SQLdb/correct.py`, `Backend/graph/subgraphs/db_retrieval_subgraph.py`).
-- ✅ Doc generation participates in memory flow: docgen subgraph now accepts parent messages/history and writes them back so docgen exchanges are checkpointed (`Backend/graph/subgraphs/desktop/docgen_subgraph.py`).
+- ✅ Doc generation participates in memory flow: docgen subgraph now accepts parent messages/history and writes them back so docgen exchanges are checkpointed (`Backend/graph/subgraphs/document_generation_subgraph.py`).
 - ✅ Streaming aligned to parent graph architecture: uses `ParentState`, pulls conversation history from the checkpointer, respects `db_retrieval_*` result fields, and keeps token streaming single-sourced from LangGraph (custom token streaming suppressed for doc workflows to avoid duplication) (`Backend/api_server.py`).
 - ✅ Response payload parity: streaming responses now include `execution_trace`/`node_path` and prefer aggregated `db_retrieval_*` fields to match non-streaming chat behavior (`Backend/api_server.py`).
 - ⚠️ Tests not executed here because `pytest` is not installed in the environment; manual verification recommended after installing it.

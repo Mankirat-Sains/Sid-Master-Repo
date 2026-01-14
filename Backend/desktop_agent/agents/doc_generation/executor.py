@@ -1,25 +1,5 @@
-"""
-DOCGEN: Execution wrapper for desktop actions.
-This node never decides flow; it only executes requested desktop actions (if any) and records results.
-"""
-from __future__ import annotations
+"""Compatibility shim for desktop execution gateway in doc generation."""
 
-from models.rag_state import RAGState
-from config.logging_config import log_query
+from document_generation.desktop_actions import run_desktop_execution, node_desktop_execute
 
-
-def node_desktop_execute(state: RAGState) -> dict:
-    """Execute desktop plan when requested; no-op otherwise."""
-    log_query.info(f"DOCGEN: entered node_desktop_execute (requires={state.requires_desktop_action})")
-    if not state.requires_desktop_action:
-        return {}
-
-    # Placeholder: hook Desktop Agent here. Respect execution-only constraint.
-    result = {
-        "desktop_execution": "simulated",
-        "desktop_action_plan": state.desktop_action_plan,
-    }
-    if state.output_artifact_ref:
-        result["output_artifact_ref"] = state.output_artifact_ref
-    return result
-
+__all__ = ["run_desktop_execution", "node_desktop_execute"]

@@ -41,7 +41,7 @@ The desktop agent now runs as a deep, iterative agent that plans, executes, and 
 - Routes to deep desktop loop when `DEEP_AGENT_ENABLED`
 - Normalizes ParentState → RAGState and back
 
-### Deep Desktop Loop (`Backend/nodes/DesktopAgent/deep_desktop_loop.py`)
+### Deep Desktop Loop (`Backend/desktop_agent/deep_agent/loop.py`)
 - Think/act/observe iterations, workspace management, docgen tool calls
 - Interrupts raised for destructive actions when `INTERRUPT_DESTRUCTIVE_ACTIONS` is true
 

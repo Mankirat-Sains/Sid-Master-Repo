@@ -13,8 +13,8 @@ from langgraph.errors import GraphInterrupt
 
 from models.rag_state import RAGState
 from persistence.workspace_manager import get_workspace_manager
-from nodes.DesktopAgent.tools.docgen_tool import get_docgen_tool
-from nodes.DesktopAgent.tools.doc_edit_tool import get_doc_edit_tool
+from desktop_agent.tools.document_generation_tool import get_document_generation_tool
+from desktop_agent.tools.document_edit_tool import get_doc_edit_tool
 from utils.tool_eviction import get_evictor
 from config.settings import (
     MAX_DEEP_AGENT_ITERATIONS,
@@ -38,7 +38,7 @@ class DeepDesktopLoop:
     def __init__(self) -> None:
         self.max_iterations = MAX_DEEP_AGENT_ITERATIONS
         self.workspace_mgr = get_workspace_manager()
-        self.docgen_tool = get_docgen_tool()
+        self.doc_generation_tool = get_document_generation_tool()
         self.doc_edit_tool = get_doc_edit_tool()
         self.evictor = get_evictor()
         # Use raw llm_fast to avoid passing unsupported stream_options to legacy OpenAI clients
@@ -562,7 +562,7 @@ Keep plans concise (3-7 steps max).
         state: Optional[RAGState] = None,
     ) -> Dict[str, Any]:
         """Generate document tool using docgen subgraph wrapper."""
-        result = self.docgen_tool.generate_document(
+        result = self.doc_generation_tool.generate_document(
             params=params,
             workspace_dir=workspace_dir,
             thread_id=thread_id,

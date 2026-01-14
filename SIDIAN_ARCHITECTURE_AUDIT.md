@@ -30,7 +30,7 @@ User → FastAPI (/chat or /chat/stream)
 - Graph orchestration: `Backend/graph/builder.py` plus subgraphs in `Backend/graph/subgraphs/`.
 - State models: `Backend/models/parent_state.py`, `Backend/models/db_retrieval_state.py`, `Backend/models/rag_state.py`.
 - Retrieval/RAG nodes: `Backend/nodes/DBRetrieval/SQLdb/` (plan/router/retrieve/grade/answer/verify/correct + image nodes).
-- Desktop/docgen: `Backend/desktop_agent/agents/doc_generation/` and `Backend/nodes/DesktopAgent/desktop_router.py`.
+- Document generation: `Backend/document_generation/` and `Backend/nodes/DesktopAgent/desktop_router.py`.
 - Persistence: `Backend/graph/checkpointer.py` (in-memory/sqlite/postgres), Supabase vector stores in `Backend/nodes/DBRetrieval/KGdb/supabase_client.py`.
 - Observability: logging config in `Backend/config/logging_config.py`, thinking log generators in `Backend/thinking/`.
 
@@ -68,7 +68,7 @@ User → FastAPI (/chat or /chat/stream)
   - Retries/loops: verification loop can route back to `retrieve` when `needs_fix`; image branch optional.
 - **DesktopAgent subgraph** (`graph/subgraphs/desktop_agent_subgraph.py`, `StateGraph(ParentState)`):
   - `desktop_router` → conditional `_desktop_to_next` → `doc_generation` (if docgen workflow) → `finish` → END.
-  - Docgen subgraph (`graph/subgraphs/desktop/docgen_subgraph.py`, `StateGraph(RAGState)`): `doc_plan` → conditional to `doc_generate_section` or `doc_generate_report` → `doc_answer_adapter` → `doc_verify` (noop) → `doc_correct` (pass-through) → END.
+  - Docgen subgraph (`graph/subgraphs/document_generation_subgraph.py`, `StateGraph(RAGState)`): `doc_plan` → conditional to `doc_generate_section` or `doc_generate_report` → `doc_answer_adapter` → `doc_verify` (noop) → `doc_correct` (pass-through) → END.
 - **Current graph diagram (ASCII):**
 ```
 plan → doc_task_classifier → {desktop_agent | router_dispatcher | db_retrieval} → END
@@ -90,7 +90,7 @@ desktop_agent:
 - Complexity/intent heuristics: `_extract_complexity_from_reasoning` annotates `_planning_intelligence` (semantic telemetry stored on state for later logging).
 
 # 7) Router Behavior (As-Built)
-- **Doc vs QA**: `desktop_agent/agents/doc_generation/task_classifier.py::node_doc_task_classifier` applies regex heuristics and optional `tier2.query_analyzer` to set `task_type` (`doc_section`/`doc_report` vs `qa`), `doc_type`, `section_type`, `workflow`, and `desktop_policy` (required/never).
+- **Doc vs QA**: `document_generation/document_classifier.py::node_doc_task_classifier` applies regex heuristics and optional `tier2.query_analyzer` to set `task_type` (`doc_section`/`doc_report` vs `qa`), `doc_type`, `section_type`, `workflow`, and `desktop_policy` (required/never).
 - **Desktop router**: `nodes/DesktopAgent/desktop_router.py` runs `DESKTOP_ROUTER_PROMPT` to select `desktop_tools` (string list) when `"desktop"` is in `selected_routers`; otherwise no-op.
 - **DB router**: `nodes/DBRetrieval/SQLdb/rag_router.py` classifies database usage across `project_db`, `code_db`, `coop_manual`, `speckle_db`; picks `project_route` (`smart` vs `large` chunks), auto-enables speckle for structural keywords, and enforces `project_db` when speckle is chosen. Stores `_routing_intelligence`.
 - **Router dispatcher**: `nodes/router_dispatcher.py` runs selected routers in parallel (`rag` sync to propagate GraphInterrupt, `web`/`desktop` in ThreadPool). Merges sub-results into parent state.
@@ -111,7 +111,7 @@ desktop_agent:
 
 # 9) Desktop Agent / Tool Execution (As-Built)
 - Desktop agent is minimal: `desktop_router` only selects tool names; no actual desktop tool execution nodes are implemented in the LangGraph path.
-- Doc generation is the primary “desktop” action: `doc_generation` subgraph calls Tier2 generator/report drafter (`desktop_agent/agents/doc_generation/{section_generator.py,report_generator.py}`) using Supabase or in-memory Qdrant vector store. `doc_plan` uses `tier2.query_analyzer` to build `doc_request` and flag `requires_desktop_action` when user mentions Word/save operations.
+- Doc generation is the primary “desktop” action: `doc_generation` subgraph calls Tier2 generator/report drafter (`document_generation/{section_drafter.py,report_drafter.py}`) using Supabase or in-memory Qdrant vector store. `doc_plan` uses `tier2.query_analyzer` to build `doc_request` and flag `requires_desktop_action` when user mentions Word/save operations.
 - `doc_answer_adapter` maps docgen output (`draft_text`/`combined_text`, `citations`) into `final_answer`/`answer_citations` so the same verify/correct tail can run.
 - Think/act separation: not present; doc generation is a single LLM/tool call per node. No explicit deep-agent inner loop.
 - File operations: OnlyOffice docx materialization in `api_server.py::materialize_onlyoffice_document` writes to `Backend/documents/` and serves via `/documents/{name}`. No sandboxing; direct filesystem writes.

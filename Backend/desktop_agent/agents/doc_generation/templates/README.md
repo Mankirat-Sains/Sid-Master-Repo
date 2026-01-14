@@ -1,3 +1,3 @@
-# Document Templates
+# Legacy template directory
 
-Place document templates here for different report types.
+Templates now live under `Backend/document_generation/templates/`.

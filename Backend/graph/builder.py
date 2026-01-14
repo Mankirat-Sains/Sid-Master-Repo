@@ -16,7 +16,7 @@ from utils.path_setup import ensure_info_retrieval_on_path
 ensure_info_retrieval_on_path()
 from nodes.plan import node_plan
 from nodes.router_dispatcher import node_router_dispatcher
-from desktop_agent.agents.doc_generation.task_classifier import node_doc_task_classifier
+from document_generation import node_doc_task_classifier
 
 
 def _get_state_field(state, field, default=None):

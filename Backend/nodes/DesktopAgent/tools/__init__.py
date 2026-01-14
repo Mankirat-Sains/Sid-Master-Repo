@@ -1,6 +1,19 @@
-"""Desktop agent tools package."""
+"""Compatibility layer for desktop agent tools (moved to `desktop_agent.tools`)."""
 
-from .docgen_tool import get_docgen_tool, DocGenTool
-from .doc_edit_tool import get_doc_edit_tool, DocEditTool
+from desktop_agent.tools import (
+    DocumentGenerationTool,
+    DocGenTool,
+    get_document_generation_tool,
+    get_docgen_tool,
+    get_doc_edit_tool,
+    DocEditTool,
+)
 
-__all__ = ["get_docgen_tool", "DocGenTool", "get_doc_edit_tool", "DocEditTool"]
+__all__ = [
+    "DocumentGenerationTool",
+    "DocGenTool",
+    "get_document_generation_tool",
+    "get_docgen_tool",
+    "get_doc_edit_tool",
+    "DocEditTool",
+]

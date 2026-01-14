@@ -174,7 +174,7 @@ def _heuristic_grade(state):
 
 ### 3.1 Create Deep Desktop Loop Node
 **New files:**
-- `Backend/nodes/DesktopAgent/deep_desktop_loop.py`
+- `Backend/desktop_agent/deep_agent/loop.py`
 - `Backend/graph/subgraphs/deep_desktop_subgraph.py`
 
 **Implementation:**
@@ -311,16 +311,16 @@ class RAGState(DBRetrievalState, total=False):
     large_output_refs: Dict[str, str]  # file references for big outputs
 ```
 
-### 3.3 Convert DocGen to Tool in Deep Loop
+### 3.3 Convert Document Generation to Tool in Deep Loop
 **Files to modify:**
-- `Backend/desktop_agent/agents/doc_generation/`
-- `Backend/nodes/DesktopAgent/tools/docgen_tool.py` (new)
+- `Backend/document_generation/`
+- `Backend/desktop_agent/tools/document_generation_tool.py` (new)
 
 **Implementation:**
 ```python
-# docgen_tool.py
-class DocGenTool:
-    """Wrapper that makes docgen subgraph callable as a tool"""
+# document_generation_tool.py
+class DocumentGenerationTool:
+    """Wrapper that makes document-generation subgraph callable as a tool"""
     
     @tool
     async def generate_document_section(
@@ -329,9 +329,9 @@ class DocGenTool:
         context: Dict,
         workspace_dir: Path
     ) -> Dict:
-        """Tool version of docgen subgraph"""
+        """Tool version of document-generation subgraph"""
         
-        # Write context to workspace for docgen
+        # Write context to workspace for doc generation
         context_file = workspace_dir / "docgen_context.json"
         context_file.write_text(json.dumps(context))
         
@@ -646,7 +646,7 @@ MEMORY_RETENTION_DAYS=30
 ### Phase 3B: Deep Desktop Loop Core
 - **Think-Act-Observe Loop**  
   - Purpose: Replace single-shot desktop actions with iterative deep loop, planning, execution, observation.  
-  - Files: `Backend/nodes/DesktopAgent/deep_desktop_loop.py`.  
+  - Files: `Backend/desktop_agent/deep_agent/loop.py`.  
   - Implementation: Plans via LLM, iterates up to MAX_DEEP_AGENT_ITERATIONS, basic tools (read/write/list), packages results/artifacts.  
   - Status: ✅ Completed.  
   - Evidence: DeepDesktopLoop class with planning, execution, observation, artifact packaging; compiled successfully.  
@@ -655,19 +655,19 @@ MEMORY_RETENTION_DAYS=30
 ### Phase 3C: Interrupt Integration
 - **Destructive Action Interrupts**  
   - Purpose: Gate destructive actions with approval via GraphInterrupt.  
-  - Files: `Backend/nodes/DesktopAgent/deep_desktop_loop.py`.  
+  - Files: `Backend/desktop_agent/deep_agent/loop.py`.  
   - Implementation: Detects destructive actions, raises GraphInterrupt with context unless approved; edit/delete tools added; action_ids tracked.  
   - Status: ✅ Completed.  
   - Evidence: Interrupt gating in `_execute_step`, `_is_destructive_action`, `_create_interrupt_data`; edit/delete tools implemented.  
   - Dependencies: Interrupt-aware router; RAGState approval lists; to be wired via API.
 
-### Phase 3D: DocGen Tool Wrapper & Output Eviction
-- **DocGen as Tool with Eviction**  
-  - Purpose: Make docgen callable as a tool and evict large outputs to workspace.  
-  - Files: `Backend/nodes/DesktopAgent/tools/docgen_tool.py`, `Backend/nodes/DesktopAgent/tools/__init__.py`, `Backend/utils/tool_eviction.py`, `Backend/nodes/DesktopAgent/deep_desktop_loop.py`.  
-  - Implementation: DocGen tool wrapper calls section_generator (fallback mock), prepares context, evicts large drafts, integrates evictor; deep loop updated to use tool list and evict large outputs.  
+### Phase 3D: Document Generation Tool Wrapper & Output Eviction
+- **Document generation as Tool with Eviction**  
+  - Purpose: Make doc generation callable as a tool and evict large outputs to workspace.  
+  - Files: `Backend/desktop_agent/tools/document_generation_tool.py`, `Backend/desktop_agent/tools/__init__.py`, `Backend/utils/tool_eviction.py`, `Backend/desktop_agent/deep_agent/loop.py`.  
+  - Implementation: DocumentGenerationTool wraps section generator (fallback mock), prepares context, evicts large drafts, integrates evictor; deep loop updated to use tool list and evict large outputs.  
   - Status: ✅ Completed.  
-  - Evidence: Docgen tool class; tool eviction utility; deep loop uses docgen_tool/get_evictor and includes generate_document in tools.  
+  - Evidence: DocumentGenerationTool class; tool eviction utility; deep loop uses get_document_generation_tool/get_evictor and includes generate_document in tools.  
   - Dependencies: Workspace manager; settings MAX_INLINE_TOOL_RESULT.
 
 ### Phase 3E: Integration
@@ -741,7 +741,7 @@ MEMORY_RETENTION_DAYS=30
 
 ### **4.1: Workspace vs Memories Strategy**  
 - **Purpose**: Separate ephemeral workspace (per-thread) from durable memories (cross-thread) to manage state bloat and enable long-term context.  
-- **Files**: `Backend/persistence/memory_store.py` (new), `Backend/persistence/workspace_manager.py` (exists), `Backend/models/rag_state.py` (update), `Backend/config/settings.py` (update), `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (update).  
+- **Files**: `Backend/persistence/memory_store.py` (new), `Backend/persistence/workspace_manager.py` (exists), `Backend/models/rag_state.py` (update), `Backend/config/settings.py` (update), `Backend/desktop_agent/deep_agent/loop.py` (update).  
 - **Implementation**:  
   - Create `MemoryStore` class for durable storage (Supabase/Postgres/SQLite) with methods `store_memory`, `retrieve_memories`, `delete_memory`.  
   - Update `WorkspaceManager` to focus purely on ephemeral storage (already done).  
@@ -753,17 +753,17 @@ MEMORY_RETENTION_DAYS=30
 
 ### **4.2: Tool Result Eviction & Summarization**  
 - **Purpose**: Automatically evict large tool outputs (>3000 chars) to workspace files with intelligent summaries.  
-- **Files**: `Backend/utils/tool_eviction.py` (exists), `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (integrated), `Backend/nodes/DesktopAgent/tools/docgen_tool.py` (integrated).  
+- **Files**: `Backend/utils/tool_eviction.py` (exists), `Backend/desktop_agent/deep_agent/loop.py` (integrated), `Backend/desktop_agent/tools/document_generation_tool.py` (integrated).  
 - **Implementation**:  
   - Created `ToolResultEvictor` class with token-aware eviction and summarization.  
-  - Integrated with docgen tool wrapper to handle large document drafts.  
+  - Integrated with document generation tool wrapper to handle large drafts.  
   - Deep desktop loop uses evictor for all tool outputs exceeding `MAX_INLINE_TOOL_RESULT`.  
 - **Status**: ✅ Completed in Phase 3D.  
-- **Evidence**: `tool_eviction.py` with summarization; deep loop calls evictor; docgen tool includes eviction logic.
+- **Evidence**: `tool_eviction.py` with summarization; deep loop calls evictor; document generation tool includes eviction logic.
 
 ### **4.3: Enhanced Logging & Observability**  
 - **Purpose**: Capture structured logs of deep agent decisions, tool calls, and state changes for debugging and monitoring.  
-- **Files**: `Backend/observability/structured_logger.py` (new), `Backend/observability/__init__.py`, `Backend/graph/tracing.py` (update), `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (update).  
+- **Files**: `Backend/observability/structured_logger.py` (new), `Backend/observability/__init__.py`, `Backend/graph/tracing.py` (update), `Backend/desktop_agent/deep_agent/loop.py` (update).  
 - **Implementation**:  
   - Create `StructuredLogger` class that logs to file, stdout, or external service (LangSmith).  
   - Log deep agent steps: plan generation, tool execution (args/results), interrupts, iterations.  
@@ -810,7 +810,7 @@ MEMORY_RETENTION_DAYS=30
 - **Purpose**: Ensure deep agent features work correctly and reliably.  
 - **Files**: `tests/test_deep_agent.py` (new), `tests/test_interrupts.py` (new), `tests/test_workspace.py` (new), `pytest.ini` (new).  
 - **Implementation**:  
-  - Unit tests for `deep_desktop_loop.py`, `docgen_tool.py`, `tool_eviction.py`.  
+  - Unit tests for `deep_desktop_loop.py`, `document_generation_tool.py`, `tool_eviction.py`.  
   - Integration tests for full deep agent flow (planning, execution, interrupts).  
   - End-to-end tests simulating user sessions with multiple turns.  
   - Mock external dependencies (LLM, vector stores) for reliable tests.  
@@ -834,7 +834,7 @@ MEMORY_RETENTION_DAYS=30
 
 ### **6.1: Performance Optimization**  
 - **Purpose**: Improve deep agent response times and resource usage.  
-- **Files**: `Backend/nodes/DesktopAgent/deep_desktop_loop.py` (optimize), `Backend/persistence/workspace_manager.py` (optimize), `Backend/utils/tool_eviction.py` (optimize).  
+- **Files**: `Backend/desktop_agent/deep_agent/loop.py` (optimize), `Backend/persistence/workspace_manager.py` (optimize), `Backend/utils/tool_eviction.py` (optimize).  
 - **Implementation**:  
   - Profile deep agent execution to identify bottlenecks (LLM calls, file I/O).  
   - Cache expensive operations (plan generation for similar requests).  

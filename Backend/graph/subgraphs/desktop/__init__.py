@@ -1,2 +1,1 @@
-"""Desktop Agent subgraph components."""
-
+"""Compatibility namespace for desktop subgraphs."""

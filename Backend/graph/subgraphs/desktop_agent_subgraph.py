@@ -9,8 +9,8 @@ from models.rag_state import RAGState
 from models.parent_state import ParentState
 from config.logging_config import log_route
 from config.settings import DEEP_AGENT_ENABLED
-from nodes.DesktopAgent.desktop_router import node_desktop_router
-from graph.subgraphs.desktop.docgen_subgraph import call_doc_generation_subgraph
+from desktop_agent.routing import node_desktop_router
+from graph.subgraphs.document_generation_subgraph import call_doc_generation_subgraph
 from graph.subgraphs.deep_desktop_subgraph import call_deep_desktop_subgraph
 from graph.tracing import wrap_subgraph_node
 
