@@ -45,6 +45,17 @@ def extract_file_metadata(root_folder: str) -> pd.DataFrame:
             parts = file_path.relative_to(root_path).parts
             file_data['path_tokens'] = '|'.join(parts[:-1])  # All folder names
             
+            # Identify parent_subfolder (first-level subfolder, direct child of root)
+            # This is the subfolder at depth 1 from root
+            if len(parts) > 1:
+                # First part is the direct child subfolder name
+                parent_subfolder_name = parts[0]
+                parent_subfolder_path = root_path / parent_subfolder_name
+                file_data['parent_subfolder'] = str(parent_subfolder_path)
+            else:
+                # File is directly in root (shouldn't happen in normal case)
+                file_data['parent_subfolder'] = str(root_path)
+            
             # File name patterns
             name_lower = file_path.stem.lower()
             file_data['has_numbers'] = bool(re.search(r'\d', name_lower))
@@ -104,11 +115,14 @@ def compute_relative_features(df: pd.DataFrame) -> pd.DataFrame:
     df['size_zscore'] = (df['file_size'] - df['folder_size_mean']) / (df['folder_size_std'] + 1)
     df['is_size_outlier'] = (abs(df['size_zscore']) > 2).astype(int)
     
-    # Folder keyword detection
-    keywords = ['drawing', 'drawings', 'pdf', 'pdfs', 'project', 'projects', 'plan', 'plans']
+    # Folder and file name keyword detection
+    keywords = ['drawing', 'drawings', 'pdf', 'pdfs', 'project', 'projects', 'plan', 'plans', 
+                'spec', 'specification', 'doc', 'document', 'rev', 'revision', 'sheet', 'sheets',
+                'layout', 'detail', 'details', 'section', 'dwg', 'cad']
     for keyword in keywords:
         df[f'folder_has_{keyword}'] = df['folder_name'].str.lower().str.contains(keyword, na=False).astype(int)
         df[f'path_has_{keyword}'] = df['path_tokens'].str.lower().str.contains(keyword, na=False).astype(int)
+        df[f'file_has_{keyword}'] = df['file_name'].str.lower().str.contains(keyword, na=False).astype(int)
     
     return df
 

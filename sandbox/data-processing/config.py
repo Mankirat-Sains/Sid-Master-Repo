@@ -15,7 +15,8 @@ for dir_path in [DATA_DIR, FEATURES_DIR, LABELS_DIR, MODELS_DIR, PREDICTIONS_DIR
     dir_path.mkdir(parents=True, exist_ok=True)
 
 # Model configuration
-N_STRATEGIC_CASES = 5  # Number of cases for user to label
+N_STRATEGIC_CASES = 20  # Number of cases for user to label
+SELECTION_BATCH_SIZE = 5  # Number of cases to select per batch (adaptive learning)
 PREDICTION_THRESHOLD = 0.5  # Threshold for binary classification
 MODEL_FILE_PREFIX = "file_selection_model"
 
@@ -27,4 +28,10 @@ ENABLE_SIZE_FEATURES = True
 ENABLE_DATE_FEATURES = True
 ENABLE_FOLDER_FEATURES = True
 ENABLE_CONTEXT_FEATURES = True
+
+# Folder processing limits
+MAX_FOLDERS = 2000  # Maximum number of first-level subfolders to process (prevents system overload)
+
+# Folder filtering (for testing)
+FOLDER_NAME_PREFIX_FILTER = "25-01-"  # Only process folders whose names start with this prefix (set to None to disable)
 
