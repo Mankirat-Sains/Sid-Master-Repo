@@ -17,7 +17,7 @@ class DummyGenerator(Tier2Generator):
         self.calls.append(section)
         resp = self.responses.get(section, {})
         return {
-            "draft_text": resp.get("text", "[TBD – insufficient source content]"),
+            "draft_text": resp.get("text", "[TBD placeholder]"),
             "length_target": resp.get("length_target", {"min_chars": 50, "max_chars": 100}),
             "citations": resp.get("citations", []),
             "doc_type": overrides.get("doc_type") if overrides else None,
@@ -62,7 +62,7 @@ def test_report_drafter_infers_sections_and_combines_text():
 
 def test_report_drafter_skips_when_no_content():
     responses = {
-        "introduction": {"text": "[TBD – insufficient source content]", "warnings": ["missing"]},
+        "introduction": {"text": "[TBD placeholder]", "warnings": ["missing"]},
         "conclusion": {"text": "Conclusion text", "citations": []},
     }
     gen = DummyGenerator(responses)

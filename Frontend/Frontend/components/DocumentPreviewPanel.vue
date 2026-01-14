@@ -122,13 +122,41 @@ const docTitle = computed(() => documentState.value?.title || 'Untitled Document
 const serverUrl = computed(() => (config.public.onlyofficeServerUrl as string | undefined)?.replace(/\/$/, '') || '')
 const documentUrl = computed(() => {
   const doc = documentState.value || undefined
-  return (
+  const raw =
     (doc?.docUrl as string | undefined) ||
     (doc?.onlyoffice?.docUrl as string | undefined) ||
     (doc?.metadata?.docUrl as string | undefined) ||
     (config.public.onlyofficeDocumentUrl as string | undefined) ||
     ''
-  )
+
+  // Base that the OnlyOffice server can reach; prefer explicit override
+  const preferredBase =
+    (config.public.onlyofficeDocumentBaseUrl as string | undefined)?.replace(/\/$/, '') ||
+    (config.public.orchestratorUrl as string | undefined)?.replace(/\/$/, '') ||
+    (typeof window !== 'undefined' ? window.location.origin.replace(/\/$/, '') : '')
+
+  if (raw && raw.startsWith('/')) {
+    const normalized = `${preferredBase}${raw}`
+    console.log('📄 [OnlyOffice] Normalized relative docUrl to absolute:', normalized)
+    return normalized
+  }
+
+  // If absolute but host differs and an explicit base is provided, rebase to the preferred host
+  try {
+    if (raw && preferredBase) {
+      const urlObj = new URL(raw)
+      const preferredObj = new URL(preferredBase)
+      if (urlObj.host !== preferredObj.host) {
+        const rebased = `${preferredBase}${urlObj.pathname}${urlObj.search}${urlObj.hash}`
+        console.log('📄 [OnlyOffice] Rebased docUrl to preferred host:', rebased)
+        return rebased
+      }
+    }
+  } catch {
+    // Ignore URL parsing errors
+  }
+
+  return raw
 })
 const callbackUrl = computed(() => {
   const doc = documentState.value || undefined

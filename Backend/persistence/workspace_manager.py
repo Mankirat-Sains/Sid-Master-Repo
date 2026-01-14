@@ -16,8 +16,10 @@ class WorkspaceManager:
     """Manages ephemeral workspace files for deep agent operations."""
 
     def __init__(self, base_path: Optional[str] = None):
-        preferred = Path(base_path or os.getenv("WORKSPACE_BASE_PATH", "/workspace"))
-        fallback = Path(__file__).resolve().parents[2] / "workspace"
+        # Default to repo-local workspace unless explicitly overridden
+        default_repo_workspace = Path(__file__).resolve().parents[2] / "workspace"
+        preferred = Path(base_path or os.getenv("WORKSPACE_BASE_PATH") or default_repo_workspace)
+        fallback = default_repo_workspace
         self.retention_hours = int(os.getenv("WORKSPACE_RETENTION_HOURS", "24"))
 
         self.base = preferred
