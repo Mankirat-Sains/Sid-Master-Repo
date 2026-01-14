@@ -54,6 +54,9 @@ app.add_middleware(
 # -----------------------------------------------------------------------------
 
 
+OPS_SCHEMA_VERSION = 1
+
+
 class DocOpenRequest(BaseModel):
     file_path: str
     doc_id: Optional[str] = None
@@ -109,7 +112,6 @@ class DocHistoryResponse(BaseModel):
 _agent_config: Optional[Dict[str, Any]] = None
 _doc_agent: Optional[DocAgent] = None
 _history: Dict[str, List[Dict[str, Any]]] = {}
-OPS_SCHEMA_VERSION = 1
 
 
 def get_agent() -> DocAgent:
