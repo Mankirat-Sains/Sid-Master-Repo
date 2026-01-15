@@ -602,6 +602,11 @@
                                 </div>
                               </div>
                             </div>
+                            <CollapsibleSources
+                              v-if="entry.role === 'assistant' && entry.citations_metadata"
+                              :metadata="entry.citations_metadata"
+                              class="mt-2 w-full"
+                            />
                             <div
                               class="flex items-center gap-3 text-[11px] text-white/50 mt-1 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto"
                               :class="entry.role === 'user' ? 'self-end' : 'self-start pl-1'"
@@ -974,6 +979,7 @@ import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
 import DocumentPreviewPanel from '~/components/DocumentPreviewPanel.vue'
+import CollapsibleSources from '~/components/CollapsibleSources.vue'
 import { useChat } from '~/composables/useChat'
 // Removed useSmartChat - using streaming endpoint only to avoid duplication
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
@@ -999,6 +1005,7 @@ type ChatEntry = {
   liked?: boolean
   disliked?: boolean
   id?: string
+  citations_metadata?: any
 }
 
 type Conversation = {
@@ -2787,6 +2794,13 @@ async function handleSend() {
           const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
           const redirectMessage = '✅ Please refer to the document'
           const documentSummary = result?.doc_generation_result?.document_summary || result.reply || result.message || redirectMessage
+          const citationsMetadata = result?.citations_metadata || result?.doc_generation_result?.citations_metadata || null
+          console.log('🐛 [onComplete] citations metadata received (chat):', {
+            topLevel: result?.citations_metadata,
+            docgen: result?.doc_generation_result?.citations_metadata,
+            selected: citationsMetadata,
+            docCount: citationsMetadata?.documents?.length || 0
+          })
           handleWorkflowSignal(result)
           if (documentPayload) {
             handleDocumentUpdate(documentPayload)
@@ -2837,6 +2851,7 @@ async function handleSend() {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
                 images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here
+                citations_metadata: citationsMetadata || conversation.chatLog[messageIndex].citations_metadata,
                 timestamp: Date.now()
               })
             }
@@ -2849,6 +2864,7 @@ async function handleSend() {
               role: 'assistant', 
               content: finalAnswer, // Store raw text, not formatted HTML
               images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here too
+              citations_metadata: citationsMetadata || undefined,
               timestamp: Date.now() 
             })
           }
@@ -2995,6 +3011,13 @@ async function regenerateAssistant(message: string, sessionId: string) {
           const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
           const redirectMessage = '✅ Please refer to the document'
           const documentSummary = result?.doc_generation_result?.document_summary || result.reply || result.message || redirectMessage
+          const citationsMetadata = result?.citations_metadata || result?.doc_generation_result?.citations_metadata || null
+          console.log('🐛 [onComplete] citations metadata received (stream):', {
+            topLevel: result?.citations_metadata,
+            docgen: result?.doc_generation_result?.citations_metadata,
+            selected: citationsMetadata,
+            docCount: citationsMetadata?.documents?.length || 0
+          })
           handleWorkflowSignal(result)
           if (documentPayload) {
             handleDocumentUpdate(documentPayload)
@@ -3032,6 +3055,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
                 images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here
+                citations_metadata: citationsMetadata || conversation.chatLog[messageIndex].citations_metadata,
                 timestamp: Date.now()
               })
             }
@@ -3044,6 +3068,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
               role: 'assistant',
               content: finalAnswer, // Store raw text, not formatted HTML
               images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here too
+              citations_metadata: citationsMetadata || undefined,
               timestamp: Date.now()
             })
           }

@@ -11,6 +11,7 @@ from uuid import uuid4
 from models.rag_state import RAGState
 from utils.tool_eviction import get_evictor
 from persistence.workspace_manager import get_workspace_manager
+from desktop_agent.agents.doc_generation.section_generator import _clean_draft_text  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +47,9 @@ class DocGenTool:
                 context_file=context_file,
                 workspace_dir=workspace_dir,
             )
+            # Final guardrail: strip warning/citation noise from draft_text
+            if isinstance(result.get("draft_text"), str):
+                result["draft_text"] = _clean_draft_text(result.get("draft_text"))
 
             processed = self._process_docgen_result(result=result, workspace_dir=workspace_dir)
             docgen_payload = {
@@ -56,6 +60,7 @@ class DocGenTool:
                 "length_target": (result.get("length_target") or {}),
                 "doc_type": doc_request.get("doc_type"),
                 "section_type": doc_request.get("section_type"),
+                "citations_metadata": result.get("citations_metadata"),
             }
 
             return {
@@ -127,19 +132,20 @@ class DocGenTool:
     def _process_docgen_result(self, result: Dict[str, Any], workspace_dir: Path) -> Dict[str, Any]:
         """Process docgen result with output eviction."""
         draft_text = result.get("draft_text", "") or ""
+        cleaned = _clean_draft_text(draft_text)
 
-        if len(draft_text) > self.evictor.max_inline_size:
-            logger.info(f"Evicting large docgen output: {len(draft_text)} chars")
+        if len(cleaned) > self.evictor.max_inline_size:
+            logger.info(f"Evicting large docgen output: {len(cleaned)} chars")
             output_file = workspace_dir / f"doc_output_{uuid4().hex[:8]}.md"
-            output_file.write_text(draft_text, encoding="utf-8")
-            summary = draft_text[: self.evictor.summary_length] + "... [truncated]"
+            output_file.write_text(cleaned, encoding="utf-8")
+            summary = cleaned[: self.evictor.summary_length] + "... [truncated]"
             return {
                 "content": summary,
                 "eviction": {
                     "evicted": True,
                     "file_ref": str(output_file),
                     "filename": output_file.name,
-                    "full_size": len(draft_text),
+                    "full_size": len(cleaned),
                 },
                 "metadata": result.get("metadata", {}),
             }
@@ -147,13 +153,13 @@ class DocGenTool:
         eviction = self.evictor.process_result("docgen", draft_text, workspace_dir)
         if eviction.get("evicted"):
             return {
-                "content": eviction.get("summary"),
+                "content": _clean_draft_text(eviction.get("summary") or ""),
                 "eviction": eviction,
                 "metadata": result.get("metadata", {}),
             }
 
         return {
-            "content": draft_text,
+            "content": cleaned,
             "eviction": {"evicted": False},
             "metadata": result.get("metadata", {}),
         }

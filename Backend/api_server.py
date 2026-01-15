@@ -484,6 +484,23 @@ def _extract_doc_text_for_summary(doc_result: Dict[str, Any], answer_text: Optio
     return answer_text or ""
 
 
+def _strip_doc_noise(text: str) -> str:
+    """Remove inline citations and warning banners from any chat-facing text."""
+    if not text:
+        return ""
+    cleaned = text
+    # Drop leading WARNING sentences/clauses
+    cleaned = re.sub(r"(?is)\bwarning:\s.*?(?=(\n\n|$))", "", cleaned)
+    cleaned = re.sub(r"(?is)\bwarning:\s.*?\.\s*", "", cleaned)
+    # Strip inline citation brackets and numeric markers
+    cleaned = re.sub(r"\[[^\]]*(?:Source|Document|Ref|citation|project|page|source)[^\]]*\]", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\[\s*\d+\s*\]", "", cleaned)
+    # Collapse whitespace
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    cleaned = re.sub(r"[ \t]{2,}", " ", cleaned)
+    return cleaned.strip()
+
+
 def _extract_doc_section_titles(doc_result: Dict[str, Any]) -> List[str]:
     """Collect section titles/headings for display."""
     titles: List[str] = []
@@ -556,7 +573,7 @@ def format_document_summary(
 ) -> Optional[str]:
     """Build a markdown summary for chat display."""
     doc_result = doc_result or {}
-    body_text = _extract_doc_text_for_summary(doc_result, answer_text)
+    body_text = _strip_doc_noise(_extract_doc_text_for_summary(doc_result, answer_text))
     section_titles = _extract_doc_section_titles(doc_result)
     citations = _extract_doc_citations(doc_result)
 
@@ -598,6 +615,70 @@ def format_document_summary(
     lines.append("📎 Full document available in the preview above")
 
     return "\n".join(lines).strip()
+
+
+def _normalize_citation_entry(cite: Dict[str, Any]) -> Dict[str, Any]:
+    """Normalize a single citation into the UI-friendly metadata shape."""
+    return {
+        "title": cite.get("title") or cite.get("document_title") or cite.get("filename") or "Source",
+        "project": cite.get("project_key") or cite.get("drawing_number") or cite.get("project"),
+        "date": cite.get("date") or cite.get("document_date"),
+        "author": cite.get("author"),
+        "relevance": cite.get("score") or cite.get("similarity") or cite.get("relevance"),
+        "content_preview": cite.get("content_preview") or cite.get("preview") or cite.get("text") or "",
+        "source_id": cite.get("artifact_id") or cite.get("id") or cite.get("chunk_id") or cite.get("source_id"),
+        "page": cite.get("page_id") or cite.get("page"),
+    }
+
+
+def _ensure_citations_metadata(
+    doc_generation_result_payload: Optional[Dict[str, Any]],
+    citations_fallback: Optional[List[Dict[str, Any]]],
+    warnings_fallback: Optional[List[str]],
+    original_query: Optional[str],
+    expanded_queries: Optional[List[str]] = None,
+    support_score: Optional[float] = None,
+) -> Dict[str, Any]:
+    """
+    Guarantee a citations_metadata payload exists. Prefer any precomputed block,
+    otherwise build from available citations.
+    """
+    if isinstance(doc_generation_result_payload, dict):
+        existing = doc_generation_result_payload.get("citations_metadata")
+        if existing:
+            try:
+                doc_count = len(existing.get("documents", [])) if isinstance(existing, dict) else 0
+                print(f"🐛 DEBUG: Using existing citations_metadata with {doc_count} documents")
+            except Exception:
+                print("🐛 DEBUG: Using existing citations_metadata (count unavailable)")
+            return existing
+
+    citations = []
+    if isinstance(doc_generation_result_payload, dict):
+        citations = doc_generation_result_payload.get("citations") or []
+    if not citations:
+        citations = citations_fallback or []
+
+    documents: List[Dict[str, Any]] = []
+    for cite in citations or []:
+        if isinstance(cite, dict):
+            documents.append(_normalize_citation_entry(cite))
+
+    metadata = {
+        "documents": documents,
+        "warnings": warnings_fallback or [],
+        "search_metadata": {
+            "original_query": original_query or "",
+            "expanded_queries": expanded_queries or [],
+            "support_score": support_score if support_score is not None else 0.0,
+            "retrieved_count": len(documents),
+        },
+    }
+    print(
+        f"🐛 DEBUG: Built fallback citations_metadata with {len(documents)} documents | "
+        f"support_score={metadata['search_metadata']['support_score']}"
+    )
+    return metadata
 
 
 def _normalize_doc_blocks(doc_result: Dict[str, Any], answer_text: Optional[str]) -> List[Dict[str, Any]]:
@@ -809,16 +890,21 @@ def materialize_onlyoffice_document(
             lowered = text.lower()
             return "[tbd" in lowered or "insufficient source" in lowered
 
+        if answer_text:
+            answer_text = _strip_doc_noise(answer_text)
         if answer_text and _has_tbd(answer_text):
             print("🚨 EMERGENCY FALLBACK: Replacing TBD content in answer_text")
             answer_text = fallback_replacement
             _log_emergency("materialize.emergency_fallback_answer_text", answer_text)
         if isinstance(doc_result, dict):
             draft_value = doc_result.get("draft_text")
-            if isinstance(draft_value, str) and _has_tbd(draft_value):
-                print("🚨 EMERGENCY FALLBACK: Replacing TBD content in doc_result draft_text")
-                doc_result["draft_text"] = fallback_replacement
-                _log_emergency("materialize.emergency_fallback_doc_result", draft_value)
+            if isinstance(draft_value, str):
+                cleaned = _strip_doc_noise(draft_value)
+                doc_result["draft_text"] = cleaned
+                if _has_tbd(draft_value):
+                    print("🚨 EMERGENCY FALLBACK: Replacing TBD content in doc_result draft_text")
+                    doc_result["draft_text"] = fallback_replacement
+                    _log_emergency("materialize.emergency_fallback_doc_result", draft_value)
             sections = doc_result.get("sections")
             if isinstance(sections, list):
                 for section in sections:
@@ -826,6 +912,8 @@ def materialize_onlyoffice_document(
                         continue
                     for key in ("text", "draft_text", "content", "body"):
                         val = section.get(key)
+                        if isinstance(val, str):
+                            section[key] = _strip_doc_noise(val)
                         if isinstance(val, str) and _has_tbd(val):
                             print(f"🚨 EMERGENCY FALLBACK: Replacing TBD content in section field '{key}'")
                             section[key] = fallback_replacement
@@ -1039,6 +1127,7 @@ class ChatResponse(BaseModel):
     doc_generation_result: Optional[Dict[str, Any]] = None  # Structured document payload for doc preview
     doc_generation_warnings: Optional[List[str]] = None  # Doc generation warnings to show in UI
     document_state: Optional[Dict[str, Any]] = None  # OnlyOffice document patch
+    citations_metadata: Optional[Dict[str, Any]] = None  # Structured citations/references metadata
 
 
 class ActionApprovalRequest(BaseModel):
@@ -1262,6 +1351,20 @@ async def chat_handler(request: ChatRequest):
         follow_up_suggestions = rag_result.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
         doc_answer_text = None
         doc_generation_result_payload = rag_result.get("doc_generation_result")
+        citations_metadata = _ensure_citations_metadata(
+            doc_generation_result_payload if isinstance(doc_generation_result_payload, dict) else None,
+            project_citations,
+            rag_result.get("doc_generation_warnings") or rag_result.get("warnings") or [],
+            request.message,
+            expanded_queries=rag_result.get("expanded_queries") or [],
+            support_score=rag_result.get("support") or rag_result.get("answer_support_score"),
+        )
+        if isinstance(doc_generation_result_payload, dict) and not doc_generation_result_payload.get("citations_metadata"):
+            doc_generation_result_payload = dict(doc_generation_result_payload)
+            doc_generation_result_payload["citations_metadata"] = citations_metadata
+        print(
+            f"🐛 DEBUG: /chat citations_metadata docs={len(citations_metadata.get('documents', [])) if isinstance(citations_metadata, dict) else 0}"
+        )
         doc_summary = None
         
         # Check which databases were used
@@ -1377,6 +1480,7 @@ async def chat_handler(request: ChatRequest):
                 warnings=rag_result.get("doc_generation_warnings"),
                 doc_generation_result=doc_generation_result_payload,
                 doc_generation_warnings=rag_result.get("doc_generation_warnings"),
+                citations_metadata=citations_metadata,
             )
         else:
             # Single answer mode (backward compatible)
@@ -1470,6 +1574,7 @@ async def chat_handler(request: ChatRequest):
                 warnings=rag_result.get("doc_generation_warnings"),
                 doc_generation_result=doc_generation_result_payload,
                 doc_generation_warnings=rag_result.get("doc_generation_warnings"),
+                citations_metadata=citations_metadata,
             )
 
         if should_materialize_doc(rag_result.get("workflow"), rag_result.get("task_type"), rag_result.get("doc_generation_result")):
@@ -1995,6 +2100,26 @@ async def chat_stream_handler(request: ChatRequest):
             follow_up_suggestions = final_state.get("follow_up_suggestions", []) or final_state.get("db_retrieval_follow_up_suggestions", [])
             doc_answer_text = None
             doc_generation_result_payload = final_state.get("doc_generation_result")
+            support_score = (
+                final_state.get("answer_support_score")
+                or final_state.get("db_retrieval_support_score")
+                or final_state.get("support")
+            )
+            expanded_queries = final_state.get("expanded_queries") or final_state.get("db_retrieval_expanded_queries") or []
+            citations_metadata = _ensure_citations_metadata(
+                doc_generation_result_payload if isinstance(doc_generation_result_payload, dict) else None,
+                project_citations,
+                final_state.get("doc_generation_warnings") or final_state.get("warnings") or [],
+                request.message,
+                expanded_queries=expanded_queries,
+                support_score=support_score,
+            )
+            if isinstance(doc_generation_result_payload, dict) and not doc_generation_result_payload.get("citations_metadata"):
+                doc_generation_result_payload = dict(doc_generation_result_payload)
+                doc_generation_result_payload["citations_metadata"] = citations_metadata
+            print(
+                f"🐛 DEBUG: /chat/stream citations_metadata docs={len(citations_metadata.get('documents', [])) if isinstance(citations_metadata, dict) else 0}"
+            )
             doc_summary = None
             
             route_value = final_state.get("data_route") or final_state.get("db_retrieval_route")
@@ -2105,6 +2230,7 @@ async def chat_stream_handler(request: ChatRequest):
                     'node_path': " → ".join(execution_trace) if execution_trace else None,
                     'doc_generation_result': doc_generation_result_payload,
                     'doc_generation_warnings': final_state.get("doc_generation_warnings"),
+                    'citations_metadata': citations_metadata,
                 }
                 if doc_summary:
                     response_data['reply'] = doc_summary
@@ -2192,6 +2318,7 @@ async def chat_stream_handler(request: ChatRequest):
                     'node_path': " → ".join(execution_trace) if execution_trace else None,
                     'doc_generation_result': doc_generation_result_payload,
                     'doc_generation_warnings': final_state.get("doc_generation_warnings"),
+                    'citations_metadata': citations_metadata,
                 }
                 if doc_summary:
                     response_data['reply'] = doc_summary
