@@ -450,6 +450,156 @@ def _safe_filename_component(value: str) -> str:
     return cleaned or "doc"
 
 
+def _humanize_doc_label(value: Optional[str]) -> Optional[str]:
+    """Convert snake_case labels to title case for display."""
+    if not value:
+        return None
+    text = str(value).replace("_", " ").strip()
+    return text.title() if text else None
+
+
+def _extract_doc_text_for_summary(doc_result: Dict[str, Any], answer_text: Optional[str]) -> str:
+    """Pick the best available text snippet to summarize."""
+    if not isinstance(doc_result, dict):
+        return answer_text or ""
+
+    for key in ("combined_text", "draft_text", "content", "text"):
+        value = doc_result.get(key)
+        if isinstance(value, str) and value.strip():
+            return value
+
+    sections = doc_result.get("sections") or []
+    section_parts: List[str] = []
+    for section in sections:
+        if not isinstance(section, dict):
+            continue
+        for key in ("text", "draft_text", "content", "body"):
+            value = section.get(key)
+            if isinstance(value, str) and value.strip():
+                section_parts.append(value.strip())
+                break
+    if section_parts:
+        return "\n\n".join(section_parts)
+
+    return answer_text or ""
+
+
+def _extract_doc_section_titles(doc_result: Dict[str, Any]) -> List[str]:
+    """Collect section titles/headings for display."""
+    titles: List[str] = []
+    if not isinstance(doc_result, dict):
+        return titles
+
+    for section in doc_result.get("sections") or []:
+        if not isinstance(section, dict):
+            continue
+        title = (
+            section.get("title")
+            or section.get("heading")
+            or section.get("section_type")
+            or section.get("name")
+        )
+        if title:
+            titles.append(str(title))
+
+    # Deduplicate while preserving order
+    seen = set()
+    unique_titles = []
+    for title in titles:
+        if title in seen:
+            continue
+        seen.add(title)
+        unique_titles.append(title)
+    return unique_titles
+
+
+def _extract_doc_citations(doc_result: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Flatten citations from doc_result or its sections."""
+    if not isinstance(doc_result, dict):
+        return []
+    if isinstance(doc_result.get("citations"), list):
+        return doc_result.get("citations") or []
+    citations: List[Dict[str, Any]] = []
+    for section in doc_result.get("sections") or []:
+        if isinstance(section, dict):
+            citations.extend(section.get("citations") or [])
+    return citations
+
+
+def _first_sentences(text: str, max_sentences: int = 3, max_chars: int = 500) -> str:
+    """Take the first few sentences with a character cap."""
+    if not text:
+        return ""
+    sentences = re.split(r"(?<=[.!?])\s+", text.strip())
+    picked: List[str] = []
+    total = 0
+    for sentence in sentences:
+        if not sentence:
+            continue
+        picked.append(sentence.strip())
+        total += len(sentence)
+        if len(picked) >= max_sentences or total >= max_chars:
+            break
+    summary = " ".join(picked).strip()
+    if len(summary) > max_chars:
+        summary = summary[:max_chars].rstrip()
+        if not summary.endswith("..."):
+            summary += "..."
+    return summary
+
+
+def format_document_summary(
+    doc_result: Optional[Dict[str, Any]],
+    doc_type: Optional[str],
+    section_type: Optional[str],
+    answer_text: Optional[str],
+) -> Optional[str]:
+    """Build a markdown summary for chat display."""
+    doc_result = doc_result or {}
+    body_text = _extract_doc_text_for_summary(doc_result, answer_text)
+    section_titles = _extract_doc_section_titles(doc_result)
+    citations = _extract_doc_citations(doc_result)
+
+    if not body_text and not section_titles:
+        return None
+
+    summary_text = _first_sentences(body_text, max_sentences=3, max_chars=500) if body_text else ""
+    word_count = len((body_text or "").split())
+    title = (
+        doc_result.get("title")
+        or doc_result.get("doc_title")
+        or doc_result.get("document_title")
+        or _humanize_doc_label(doc_type)
+        or "Generated Document"
+    )
+    if section_type and section_type not in (doc_type or ""):
+        pretty_section = _humanize_doc_label(section_type)
+        if pretty_section and pretty_section.lower() not in title.lower():
+            title = f"{title} - {pretty_section}"
+
+    lines: List[str] = [f"📄 Document Generated: {title}"]
+
+    if summary_text:
+        lines.extend(["", "**Summary:**", summary_text])
+
+    if section_titles:
+        lines.append("")
+        lines.append("**Key Sections:**")
+        for heading in section_titles[:8]:
+            lines.append(f"- {heading}")
+        if len(section_titles) > 8:
+            lines.append(f"- … {len(section_titles) - 8} more")
+
+    lines.append("")
+    lines.append("**Statistics:**")
+    lines.append(f"• Word Count: ~{word_count} words" if word_count else "• Word Count: N/A")
+    lines.append(f"• Citations: {len(citations)} source{'s' if len(citations) != 1 else ''} referenced")
+    lines.append("")
+    lines.append("📎 Full document available in the preview above")
+
+    return "\n".join(lines).strip()
+
+
 def _normalize_doc_blocks(doc_result: Dict[str, Any], answer_text: Optional[str]) -> List[Dict[str, Any]]:
     """Convert doc_generation_result or plain text into a normalized block list."""
     blocks: List[Dict[str, Any]] = []
@@ -1111,6 +1261,8 @@ async def chat_handler(request: ChatRequest):
         follow_up_questions = rag_result.get("follow_up_questions", [])  # Follow-up questions from verifier
         follow_up_suggestions = rag_result.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
         doc_answer_text = None
+        doc_generation_result_payload = rag_result.get("doc_generation_result")
+        doc_summary = None
         
         # Check which databases were used
         has_project = bool(answer and answer.strip())
@@ -1189,6 +1341,15 @@ async def chat_handler(request: ChatRequest):
             
             # Return separate answers
             doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
+            doc_summary = format_document_summary(
+                doc_generation_result_payload,
+                rag_result.get("doc_type"),
+                rag_result.get("section_type"),
+                doc_answer_text,
+            )
+            if doc_summary and isinstance(doc_generation_result_payload, dict):
+                doc_generation_result_payload = dict(doc_generation_result_payload)
+                doc_generation_result_payload["document_summary"] = doc_summary
             response = ChatResponse(
                 reply=processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
                 session_id=request.session_id,
@@ -1214,7 +1375,7 @@ async def chat_handler(request: ChatRequest):
                 doc_type=rag_result.get("doc_type"),
                 section_type=rag_result.get("section_type"),
                 warnings=rag_result.get("doc_generation_warnings"),
-                doc_generation_result=rag_result.get("doc_generation_result"),
+                doc_generation_result=doc_generation_result_payload,
                 doc_generation_warnings=rag_result.get("doc_generation_warnings"),
             )
         else:
@@ -1279,6 +1440,15 @@ async def chat_handler(request: ChatRequest):
             
             # Prepare response
             doc_answer_text = combined_answer
+            doc_summary = format_document_summary(
+                doc_generation_result_payload,
+                rag_result.get("doc_type"),
+                rag_result.get("section_type"),
+                doc_answer_text,
+            )
+            if doc_summary and isinstance(doc_generation_result_payload, dict):
+                doc_generation_result_payload = dict(doc_generation_result_payload)
+                doc_generation_result_payload["document_summary"] = doc_summary
             response = ChatResponse(
                 reply=combined_answer,
                 session_id=request.session_id,
@@ -1298,7 +1468,7 @@ async def chat_handler(request: ChatRequest):
                 doc_type=rag_result.get("doc_type"),
                 section_type=rag_result.get("section_type"),
                 warnings=rag_result.get("doc_generation_warnings"),
-                doc_generation_result=rag_result.get("doc_generation_result"),
+                doc_generation_result=doc_generation_result_payload,
                 doc_generation_warnings=rag_result.get("doc_generation_warnings"),
             )
 
@@ -1306,17 +1476,20 @@ async def chat_handler(request: ChatRequest):
             # Fallback to final_answer if doc_answer_text is empty
             doc_answer_text = doc_answer_text or rag_result.get("final_answer") or rag_result.get("answer")
             document_state = materialize_onlyoffice_document(
-                rag_result.get("doc_generation_result"),
+                doc_generation_result_payload,
                 doc_answer_text or answer,
                 request.session_id,
                 message_id,
             )
             if document_state:
                 response.document_state = document_state
-                response.reply = "✅ Please refer to the document"
+                response.reply = doc_summary or "✅ Please refer to the document"
                 doc_url = document_state.get("docUrl") or document_state.get("onlyoffice", {}).get("docUrl")
                 logger.warning(f"📑 Chat response includes document_state with url={doc_url}")
                 print(f"📑 Chat document_state url={doc_url}")
+
+        if doc_summary:
+            response.reply = doc_summary
 
         logger.info(f"Successfully processed request in {latency_ms:.2f}ms [ID: {message_id}]")
         return response
@@ -1821,6 +1994,8 @@ async def chat_stream_handler(request: ChatRequest):
             follow_up_questions = final_state.get("follow_up_questions", []) or final_state.get("db_retrieval_follow_up_questions", [])
             follow_up_suggestions = final_state.get("follow_up_suggestions", []) or final_state.get("db_retrieval_follow_up_suggestions", [])
             doc_answer_text = None
+            doc_generation_result_payload = final_state.get("doc_generation_result")
+            doc_summary = None
             
             route_value = final_state.get("data_route") or final_state.get("db_retrieval_route")
             execution_trace = final_state.get("execution_trace") or []
@@ -1896,6 +2071,15 @@ async def chat_stream_handler(request: ChatRequest):
 
                 # Build response with separate answers (matching chat endpoint)
                 doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
+                doc_summary = format_document_summary(
+                    doc_generation_result_payload,
+                    final_state.get("doc_type"),
+                    final_state.get("section_type"),
+                    doc_answer_text,
+                )
+                if doc_summary and isinstance(doc_generation_result_payload, dict):
+                    doc_generation_result_payload = dict(doc_generation_result_payload)
+                    doc_generation_result_payload["document_summary"] = doc_summary
                 response_data = {
                     'reply': processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
                     'session_id': request.session_id,
@@ -1919,9 +2103,11 @@ async def chat_stream_handler(request: ChatRequest):
                     'section_type': final_state.get("section_type"),
                     'execution_trace': execution_trace,
                     'node_path': " → ".join(execution_trace) if execution_trace else None,
-                    'doc_generation_result': final_state.get("doc_generation_result"),
+                    'doc_generation_result': doc_generation_result_payload,
                     'doc_generation_warnings': final_state.get("doc_generation_warnings"),
                 }
+                if doc_summary:
+                    response_data['reply'] = doc_summary
             else:
                 # Single answer mode (backward compatible, matching chat endpoint)
                 if code_answer and code_answer.strip():
@@ -1978,6 +2164,15 @@ async def chat_stream_handler(request: ChatRequest):
 
                 # Build response (matching chat endpoint)
                 doc_answer_text = combined_answer
+                doc_summary = format_document_summary(
+                    doc_generation_result_payload,
+                    final_state.get("doc_type"),
+                    final_state.get("section_type"),
+                    doc_answer_text,
+                )
+                if doc_summary and isinstance(doc_generation_result_payload, dict):
+                    doc_generation_result_payload = dict(doc_generation_result_payload)
+                    doc_generation_result_payload["document_summary"] = doc_summary
                 response_data = {
                     'reply': combined_answer,
                     'session_id': request.session_id,
@@ -1995,23 +2190,25 @@ async def chat_stream_handler(request: ChatRequest):
                     'section_type': final_state.get("section_type"),
                     'execution_trace': execution_trace,
                     'node_path': " → ".join(execution_trace) if execution_trace else None,
-                    'doc_generation_result': final_state.get("doc_generation_result"),
+                    'doc_generation_result': doc_generation_result_payload,
                     'doc_generation_warnings': final_state.get("doc_generation_warnings"),
                 }
+                if doc_summary:
+                    response_data['reply'] = doc_summary
 
             if should_materialize_doc(
                 final_state.get("workflow"), final_state.get("task_type"), final_state.get("doc_generation_result")
             ):
                 doc_answer_text = doc_answer_text or final_state.get("final_answer") or final_state.get("answer")
                 document_state = materialize_onlyoffice_document(
-                    final_state.get("doc_generation_result"),
+                    doc_generation_result_payload,
                     doc_answer_text or answer,
                     request.session_id,
                     message_id,
                 )
                 if document_state:
                     response_data["document_state"] = document_state
-                    response_data["reply"] = "✅ Please refer to the document"
+                    response_data["reply"] = doc_summary or "✅ Please refer to the document"
                     doc_url = document_state.get("docUrl") or document_state.get("onlyoffice", {}).get("docUrl")
                     logger.warning(f"📑 Streaming response includes document_state with url={doc_url}")
                     print(f"📑 Streaming document_state url={doc_url}")

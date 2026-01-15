@@ -2786,12 +2786,13 @@ async function handleSend() {
           const isDocumentResponse = Boolean(documentPayload)
           const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
           const redirectMessage = '✅ Please refer to the document'
+          const documentSummary = result?.doc_generation_result?.document_summary || result.reply || result.message || redirectMessage
           handleWorkflowSignal(result)
           if (documentPayload) {
             handleDocumentUpdate(documentPayload)
           }
           const shouldMakeDocument = shouldCreateDocumentFromResult(result, isDocumentResponse)
-          const answerForDocument = streamedContent || result.reply || result.message || ''
+          const answerForDocument = streamedContent || documentSummary || ''
 
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
@@ -2826,7 +2827,7 @@ async function handleSend() {
               // Only use result.reply if streaming content is empty
               const accumulatedContent = conversation.chatLog[messageIndex].content || ''
               const finalAnswer = isDocumentResponse
-                ? redirectMessage
+                ? documentSummary
                 : accumulatedContent || result.reply || result.message || 'No response generated.'
               
               // Ensure content is formatted (it should already be via getFormattedMessage)
@@ -2843,7 +2844,7 @@ async function handleSend() {
             // Fallback: create message if streaming didn't happen
             // IMPORTANT: Store RAW text, not formatted HTML
             // Formatting happens in getFormattedMessage() which is called on render
-            const finalAnswer = isDocumentResponse ? redirectMessage : result.reply || result.message || 'No response generated.'
+            const finalAnswer = isDocumentResponse ? documentSummary : result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({ 
               role: 'assistant', 
               content: finalAnswer, // Store raw text, not formatted HTML
@@ -2865,7 +2866,7 @@ async function handleSend() {
           }
           
           const finalAnswer = isDocumentResponse
-            ? redirectMessage
+            ? documentSummary
             : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
           if (shouldMakeDocument) {
@@ -2993,12 +2994,13 @@ async function regenerateAssistant(message: string, sessionId: string) {
           const isDocumentResponse = Boolean(documentPayload)
           const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
           const redirectMessage = '✅ Please refer to the document'
+          const documentSummary = result?.doc_generation_result?.document_summary || result.reply || result.message || redirectMessage
           handleWorkflowSignal(result)
           if (documentPayload) {
             handleDocumentUpdate(documentPayload)
           }
           const shouldMakeDocument = shouldCreateDocumentFromResult(result, isDocumentResponse)
-          const answerForDocument = streamedContent || result.reply || result.message || ''
+          const answerForDocument = streamedContent || documentSummary || ''
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
           const images = !isDocumentResponse
@@ -3020,7 +3022,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
               // Only use result.reply if streaming content is empty
               const accumulatedContent = conversation.chatLog[messageIndex].content || ''
               const finalAnswer = isDocumentResponse
-                ? redirectMessage
+                ? documentSummary
                 : accumulatedContent || result.reply || result.message || 'No response generated.'
               
               // Ensure content is formatted (it should already be via getFormattedMessage)
@@ -3037,7 +3039,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
             // Fallback: create message if streaming didn't happen
             // IMPORTANT: Store RAW text, not formatted HTML
             // Formatting happens in getFormattedMessage() which is called on render
-            const finalAnswer = isDocumentResponse ? redirectMessage : result.reply || result.message || 'No response generated.'
+            const finalAnswer = isDocumentResponse ? documentSummary : result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({
               role: 'assistant',
               content: finalAnswer, // Store raw text, not formatted HTML
@@ -3059,7 +3061,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
           }
           
           const finalAnswer = isDocumentResponse
-            ? redirectMessage
+            ? documentSummary
             : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
           if (shouldMakeDocument) {
