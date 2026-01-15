@@ -15,12 +15,6 @@ from config.logging_config import log_query
 # =============================================================================
 # MEMORY LIMITS
 # =============================================================================
-
-# Maximum number of conversation exchanges to keep in memory
-MAX_CONVERSATION_HISTORY = 10
-
-# Maximum number of semantic intelligence records to keep
-MAX_SEMANTIC_HISTORY = 5
 # =============================================================================
 # MEMORY STORAGE
 # =============================================================================
@@ -136,7 +130,8 @@ def _extract_semantic_context_for_rewriter(session_data: dict) -> dict:
 def intelligent_query_rewriter(
     user_query: str, 
     session_id: str,
-    messages: Optional[List[Dict[str, str]]] = None
+    messages: Optional[List[Dict[str, str]]] = None,
+    conversation_history: Optional[List[Dict]] = None,
 ) -> Tuple[str, dict]:
     """
     Use LLM to intelligently rewrite queries and detect follow-ups.
@@ -147,6 +142,7 @@ def intelligent_query_rewriter(
         session_id: Session identifier for context retrieval
         messages: Optional messages from state (preferred over SESSION_MEMORY)
                   Format: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
+        conversation_history: Optional structured history (question/answer pairs) from state
     
     Returns:
         Tuple of (rewritten_query, filters_dict)
@@ -158,34 +154,45 @@ def intelligent_query_rewriter(
         log_query.info(f"🎯 EXPLICIT IDs DETECTED IN QUERY: {explicit_ids}")
         return user_query, {"project_keys": explicit_ids}
     
-    # Use messages from state if provided (preferred), otherwise fall back to SESSION_MEMORY
-    if messages is None:
-        session_data = SESSION_MEMORY.get(session_id, {})
-        # Try to get messages, fallback to conversation_history for backward compatibility
-        messages = session_data.get("messages", [])
-        if not messages and session_data.get("conversation_history"):
-            # Convert old format to new format for backward compatibility
-            messages = []
-            for exchange in session_data["conversation_history"]:
-                messages.append({"role": "user", "content": exchange.get("question", "")})
-                messages.append({"role": "assistant", "content": exchange.get("answer", "")})
-        log_query.info(f"💭 Using messages from SESSION_MEMORY ({len(messages)} messages)")
+    # Build effective messages for follow-up detection
+    session_data = SESSION_MEMORY.get(session_id, {})
+    if conversation_history is None:
+        conversation_history = session_data.get("conversation_history", [])
+
+    msg_list: List[Dict[str, str]] = []
+    if messages is not None:
+        msg_list = list(messages)
+        log_query.info(f"💭 Using messages from state ({len(msg_list)} messages)")
+    elif conversation_history:
+        for exchange in conversation_history:
+            msg_list.append({"role": "user", "content": exchange.get("question", "")})
+            msg_list.append({"role": "assistant", "content": exchange.get("answer", "")})
+        log_query.info(f"💭 Using messages converted from conversation_history ({len(msg_list)} messages)")
     else:
-        log_query.info(f"💭 Using messages from state ({len(messages)} messages)")
+        # Try to get messages, fallback to conversation_history for backward compatibility
+        msg_list = session_data.get("messages", [])
+        if not msg_list and session_data.get("conversation_history"):
+            # Convert old format to new format for backward compatibility
+            for exchange in session_data["conversation_history"]:
+                msg_list.append({"role": "user", "content": exchange.get("question", "")})
+                msg_list.append({"role": "assistant", "content": exchange.get("answer", "")})
+        log_query.info(f"💭 Using messages from SESSION_MEMORY ({len(msg_list)} messages)")
     
     # SEMANTIC INTELLIGENCE: Get semantic context from session memory (for semantic patterns)
     session_data = SESSION_MEMORY.get(session_id, {})
+    if conversation_history:
+        session_data = {**session_data, "conversation_history": conversation_history}
     semantic_context = _extract_semantic_context_for_rewriter(session_data)
     
     # Format FULL conversation history for LLM (user sees this, so LLM should see it too)
     # Show complete messages - this is what the user actually sees
     conversation_context_str = ""
-    if messages:
+    if msg_list:
         conversation_context_str = "\n\nFULL CONVERSATION HISTORY (what the user sees):\n"
         # Show all messages (or last 10 exchanges if too long)
         max_exchanges = 10
         max_messages = max_exchanges * 2
-        recent_messages = messages[-max_messages:] if len(messages) > max_messages else messages
+        recent_messages = msg_list[-max_messages:] if len(msg_list) > max_messages else msg_list
         
         exchange_num = 1
         for i in range(0, len(recent_messages), 2):
@@ -461,4 +468,3 @@ def get_conversation_context(session_id: str, max_exchanges: int = 3, messages: 
                 exchange_num += 1
     
     return "\n".join(lines)
-

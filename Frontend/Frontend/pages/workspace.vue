@@ -20,6 +20,15 @@
       </div>
     </header>
 
+    <transition name="toast-fade">
+      <div
+        v-if="documentUpdateToast"
+        class="fixed top-14 right-4 z-50 px-4 py-3 rounded-xl bg-emerald-500/90 text-white text-sm shadow-lg border border-white/10 backdrop-blur"
+      >
+        {{ documentUpdateToast }}
+      </div>
+    </transition>
+
     <div class="flex flex-1 overflow-hidden min-w-0 min-h-0 workspace-shell relative">
       <!-- Icon rail -->
       <aside class="w-12 bg-white/5 backdrop-blur-lg border-r border-purple-500/40 shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex flex-col items-center py-2 space-y-1.5 overflow-visible relative z-30">
@@ -384,6 +393,12 @@
 
       <!-- Main content -->
       <main class="flex-1 bg-black flex overflow-hidden min-w-0 workspace-main">
+        <div
+          v-if="isResizingViewer"
+          class="viewer-resize-overlay"
+          @mousemove="onViewerResize"
+          @mouseup="stopViewerResize"
+        ></div>
         <div class="flex flex-col flex-1 min-h-0 w-full max-w-4xl max-w-full mx-auto py-4 px-3 gap-4 min-w-0">
           <div class="flex items-center justify-between flex-wrap gap-3"></div>
 
@@ -391,12 +406,12 @@
             <div
               ref="viewerSplitContainer"
               class="flex flex-1 min-h-0"
-              :class="showSpeckleViewer ? '' : 'justify-center'"
+              :class="showSpeckleViewer || showDocumentPreview ? '' : 'justify-center'"
             >
               <div
                 class="h-full w-full chat-frame overflow-hidden flex flex-col"
-                :class="{ 'chat-frame--docked': showSpeckleViewer }"
-                :style="showSpeckleViewer ? chatPaneStyle : undefined"
+                :class="{ 'chat-frame--docked': showSpeckleViewer || showDocumentPreview }"
+                :style="showSpeckleViewer || showDocumentPreview ? chatPaneStyle : undefined"
               >
                 <template v-if="!activeChatLog.length">
                   <div class="flex-1 min-h-[360px] flex flex-col items-center justify-center gap-7 text-center px-5 -translate-y-8 md:-translate-y-10">
@@ -555,88 +570,8 @@
                                 : 'text-white'
                               "
                             >
-                              <!-- Interrupt message (code verification) -->
-                              <div v-if="entry.interrupt && entry.interrupt.type === 'code_verification'" class="space-y-3">
-                                <div class="text-sm text-white/90">
-                                  <p class="font-semibold mb-2">{{ entry.interrupt.question }}</p>
-                                  <p class="text-xs text-white/60 mb-2">📊 Found {{ entry.interrupt.chunk_count }} relevant chunks from {{ entry.interrupt.code_count }} building codes</p>
-                                  <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 space-y-1.5 max-h-48 overflow-y-auto">
-                                    <div v-for="(code, idx) in entry.interrupt.codes" :key="idx" class="flex items-center gap-2 text-xs text-white/80">
-                                      <span class="text-purple-400">✓</span>
-                                      <span>{{ code }}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div v-if="entry.interrupt.processing || entry.interrupt.completed" class="flex items-center gap-2 text-xs text-white/60">
-                                  <div v-if="entry.interrupt.processing" class="h-3 w-3 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
-                                  <span v-if="entry.interrupt.processing">Processing...</span>
-                                  <span v-else class="text-green-400">✓ Approved</span>
-                                </div>
-                                <div v-else class="flex gap-2">
-                                  <button
-                                    class="px-3 py-1.5 rounded-lg bg-purple-600 text-white text-xs font-semibold hover:bg-purple-700 transition"
-                                    @click="handleApproveCodesForEntry(entry)"
-                                  >
-                                    Approve
-                                  </button>
-                                  <button
-                                    class="px-3 py-1.5 rounded-lg bg-red-600/80 text-white text-xs font-semibold hover:bg-red-600 transition"
-                                    @click="handleRejectCodesForEntry(entry)"
-                                  >
-                                    Reject
-                                  </button>
-                                </div>
-                              </div>
-                              <!-- Interrupt message (code selection) -->
-                              <div v-else-if="entry.interrupt && entry.interrupt.type === 'code_selection'" class="space-y-3">
-                                <div class="text-sm text-white/90">
-                                  <p class="font-semibold mb-2">{{ entry.interrupt.question }}</p>
-                                  <div v-if="entry.interrupt.previously_retrieved?.length > 0" class="mb-3">
-                                    <p class="text-xs text-white/60 mb-1">Previously Retrieved:</p>
-                                    <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-2 space-y-1 max-h-24 overflow-y-auto">
-                                      <div v-for="(code, idx) in entry.interrupt.previously_retrieved" :key="idx" class="text-xs text-white/60">
-                                        ⚠️ {{ code }}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <p class="text-xs text-white/60 mb-2">Select codes ({{ getSelectedCodesForEntry(entry).length }} selected):</p>
-                                  <div v-if="!entry.interrupt.processing" class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 space-y-2 max-h-64 overflow-y-auto">
-                                    <div
-                                      v-for="(code, idx) in entry.interrupt.available_codes"
-                                      :key="idx"
-                                      class="flex items-center gap-2 p-1.5 rounded hover:bg-white/5 transition cursor-pointer"
-                                      @click="toggleCodeSelectionForEntry(entry, code)"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        :checked="getSelectedCodesForEntry(entry).includes(code)"
-                                        @change="toggleCodeSelectionForEntry(entry, code)"
-                                        class="w-3.5 h-3.5 rounded border-white/20 bg-white/5 text-purple-600 focus:ring-purple-500"
-                                      />
-                                      <span class="text-xs text-white/80 flex-1">{{ code }}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div v-if="entry.interrupt.processing || entry.interrupt.completed" class="flex items-center gap-2 text-xs text-white/60">
-                                  <div v-if="entry.interrupt.processing" class="h-3 w-3 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
-                                  <span v-if="entry.interrupt.processing">Processing...</span>
-                                  <span v-else class="text-green-400">✓ Submitted</span>
-                                </div>
-                                <div v-else class="flex gap-2">
-                                  <button
-                                    class="px-3 py-1.5 rounded-lg bg-purple-600 text-white text-xs font-semibold hover:bg-purple-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
-                                    :disabled="getSelectedCodesForEntry(entry).length === 0"
-                                    @click="handleSubmitCodeSelectionForEntry(entry)"
-                                  >
-                                    Submit ({{ getSelectedCodesForEntry(entry).length }})
-                                  </button>
-                                </div>
-                              </div>
-                              <!-- Regular message -->
-                              <div v-else>
-                                <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
-                                <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
-                              </div>
+                              <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
+                              <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
                             </div>
                             <!-- Image gallery for similar images -->
                             <div
@@ -812,7 +747,31 @@
                 </template>
               </div>
 
-              <template v-if="showAnyViewer">
+              <template v-if="showDocumentPreview">
+                <div class="viewer-resize-handle" @mousedown.prevent="startViewerResize">
+                  <div class="viewer-resize-grip"></div>
+                </div>
+
+                <div
+                  class="flex flex-col min-h-0 viewer-pane bg-[#13131b] border-l border-[#242436] shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
+                  :style="viewerPaneStyle"
+                >
+                  <div class="relative flex-1 min-h-0">
+                    <button
+                      class="viewer-close"
+                      type="button"
+                      @click="closeDocumentPreview"
+                      aria-label="Close document preview"
+                    >
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                    <DocumentPreviewPanel class="flex-1 min-h-0" />
+                  </div>
+                </div>
+              </template>
+              <template v-else-if="showSpeckleViewer">
                 <div class="viewer-resize-handle" @mousedown.prevent="startViewerResize">
                   <div class="viewer-resize-grip"></div>
                 </div>
@@ -821,8 +780,7 @@
                   class="flex flex-col min-h-0 viewer-pane bg-[#2a2a2a] border-l border-[#3a3a3a] shadow-[0_22px_70px_rgba(0,0,0,0.45)]"
                   :style="viewerPaneStyle"
                 >
-                  <!-- Speckle Viewer -->
-                  <div v-if="showSpeckleViewer" class="relative flex-1 min-h-0 bg-[#2a2a2a] viewer-canvas-shell">
+                  <div class="relative flex-1 min-h-0 bg-[#2a2a2a] viewer-canvas-shell">
                     <button
                       class="viewer-close"
                       type="button"
@@ -870,11 +828,6 @@
                       class="viewer-canvas"
                       @close="closeSpeckleViewer"
                     />
-                  </div>
-
-                  <!-- Excel Viewer -->
-                  <div v-else-if="showExcelViewer" class="relative flex-1 min-h-0 bg-[#0f0f0f]">
-                    <LiveCalculationsViewer @close="closeExcelViewer" />
                   </div>
                 </div>
               </template>
@@ -1020,14 +973,16 @@ import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
-import LiveCalculationsViewer from '~/components/LiveCalculationsViewer.vue'
+import DocumentPreviewPanel from '~/components/DocumentPreviewPanel.vue'
 import { useChat } from '~/composables/useChat'
 // Removed useSmartChat - using streaming endpoint only to avoid duplication
 import { useMessageFormatter } from '~/composables/useMessageFormatter'
 import { useSpeckle } from '~/composables/useSpeckle'
 import { useWorkspace } from '~/composables/useWorkspace'
+import { useDocumentWorkflow, normalizeWorkflow, cloneDocumentState } from '~/composables/useDocumentWorkflow'
 import { useRuntimeConfig } from '#app'
 import type { Component } from 'vue'
+import type { StructuredDocument, WorkflowMode } from '~/composables/useDocumentWorkflow'
 
 type ChatEntry = {
   role: 'user' | 'assistant'
@@ -1043,6 +998,7 @@ type ChatEntry = {
   timestamp?: number
   liked?: boolean
   disliked?: boolean
+  id?: string
 }
 
 type Conversation = {
@@ -1055,6 +1011,8 @@ type Conversation = {
   chatLog: ChatEntry[]
   autoTitleGenerated?: boolean
   userRenamed?: boolean
+  workflowMode?: WorkflowMode
+  documentState?: StructuredDocument | null
 }
 
 const PAGE_IDS = ['home', 'settings', 'work', 'timesheet', 'todo', 'discussion'] as const
@@ -1312,6 +1270,18 @@ const renderKey = ref(0)
 const { findProjectByKey, getProjectModels } = useSpeckle()
 const workspace = useWorkspace()
 const config = useRuntimeConfig()
+const {
+  activeWorkflowMode,
+  documentState,
+  isDocumentWorkflow,
+  setWorkflowMode,
+  setDocumentState,
+  applyDocumentPatch,
+  ensureDocumentState,
+  resetDocumentWorkflow,
+  resetToBlankDocument,
+  createDocumentFromAnswer
+} = useDocumentWorkflow()
 type DataSources = { project_db: boolean; code_db: boolean; coop_manual: boolean }
 const dataSources = ref<DataSources>({
   project_db: true,
@@ -1340,6 +1310,7 @@ const logsPanelHeight = ref(320)
 const logsPanelBottom = ref(0)
 const logsResizeStartY = ref(0)
 const logsResizeStartHeight = ref(0)
+const docWorkflowPrimed = ref(false)
 const logsDragStartY = ref(0)
 const logsDragStartBottom = ref(0)
 const isResizingLogs = ref(false)
@@ -1363,32 +1334,6 @@ const deleteDialog = ref<{ open: boolean; convId: string | null }>({
   open: false,
   convId: null
 })
-// Interrupt state for human-in-the-loop code verification
-const interruptState = ref<{
-  open: boolean
-  interrupt_id: string | null
-  interrupt_type: string | null
-  question: string
-  codes: string[]
-  code_count: number
-  chunk_count: number
-  available_codes: string[]
-  previously_retrieved: string[]
-  session_id: string | null
-  selected_codes: string[] // For code_selection type
-}>({
-  open: false,
-  interrupt_id: null,
-  interrupt_type: null,
-  question: '',
-  codes: [],
-  code_count: 0,
-  chunk_count: 0,
-  available_codes: [],
-  previously_retrieved: [],
-  session_id: null,
-  selected_codes: []
-})
 const titleGenerationInFlight = new Set<string>()
 const isDocsCompact = computed(() => sidebarWidth.value <= 280)
 function isRailActionFilled(id: SidebarMode) {
@@ -1406,6 +1351,8 @@ const docListSubtitle = ref('')
 const speckleViewerModels = ref<Array<{ id: string; url: string; name: string; projectName?: string }>>([])
 const speckleViewerSelectedId = ref('')
 const speckleViewerPanelOpen = ref(false)
+const docPreviewPanelOpen = ref(false)
+const docPreviewUserClosed = ref(false)
 const speckleViewerFetchLoading = ref(false)
 const speckleViewerFetchError = ref('')
 const selectedSpeckleModel = computed(() => speckleViewerModels.value.find(model => model.id === speckleViewerSelectedId.value) || null)
@@ -1414,16 +1361,26 @@ const isResizingViewer = ref(false)
 const viewerSplitContainer = ref<HTMLElement | null>(null)
 const viewerResizeStartX = ref(0)
 const viewerResizeStartPercent = ref(50)
-const showSpeckleViewer = computed(() => speckleViewerPanelOpen.value && !!selectedSpeckleModel.value)
+const showSpeckleViewer = computed(
+  () => !isDocumentWorkflow.value && speckleViewerPanelOpen.value && !!selectedSpeckleModel.value
+)
+const showDocumentPreview = computed(() => isDocumentWorkflow.value && docPreviewPanelOpen.value)
+const chatPaneStyle = computed(() =>
+  showSpeckleViewer.value || showDocumentPreview.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}
+)
+const viewerPaneStyle = computed(() =>
+  showSpeckleViewer.value || showDocumentPreview.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}
+)
+const documentUpdateToast = ref('')
+let documentUpdateTimer: ReturnType<typeof setTimeout> | null = null
 
-// Excel Viewer State
-const excelViewerPanelOpen = ref(false)
-const showExcelViewer = computed(() => excelViewerPanelOpen.value)
-
-// Combined viewer state - only one can be open at a time
-const showAnyViewer = computed(() => showSpeckleViewer.value || showExcelViewer.value)
-const chatPaneStyle = computed(() => (showAnyViewer.value ? { flexBasis: `${viewerSplitPercent.value}%` } : {}))
-const viewerPaneStyle = computed(() => (showAnyViewer.value ? { flexBasis: `${100 - viewerSplitPercent.value}%` } : {}))
+function withConversationDefaults(conv: Conversation): Conversation {
+  return {
+    ...conv,
+    workflowMode: conv.workflowMode || 'default',
+    documentState: conv.documentState ?? null
+  }
+}
 
 const defaultConversations: Conversation[] = [
   { id: 'conv-1', title: 'Submarine Simulation Refinement', short: 'Submarine Sim...', time: '52m ago', section: 'Today', sessionId: 'session-1', chatLog: [] },
@@ -1442,7 +1399,7 @@ const defaultConversations: Conversation[] = [
   { id: 'conv-14', title: 'Mesh Refinement Zone Design', short: 'Refinement zone', time: 'Nov 19', section: 'This Month', sessionId: 'session-14', chatLog: [] }
 ]
 
-const conversations = ref<Conversation[]>([...defaultConversations])
+const conversations = ref<Conversation[]>(defaultConversations.map(withConversationDefaults))
 
 const sectionOrder = ['Today', 'Yesterday', 'This Month']
 const activeConversationId = ref(conversations.value[0]?.id || '')
@@ -1469,6 +1426,23 @@ const filteredConversationSections = computed(() => {
     }))
     .filter(section => section.items.length)
 })
+
+function syncWorkflowFromConversation(conversation: Conversation | null) {
+  setWorkflowMode(conversation?.workflowMode || 'default')
+  setDocumentState(conversation?.documentState || null)
+  if ((conversation?.workflowMode || 'default') !== 'default') {
+    speckleViewerPanelOpen.value = false
+    docPreviewUserClosed.value = false
+    docPreviewPanelOpen.value = true
+  }
+}
+
+function persistDocumentStateToConversation() {
+  const convo = activeConversation.value
+  if (!convo) return
+  convo.workflowMode = activeWorkflowMode.value
+  convo.documentState = cloneDocumentState(documentState.value)
+}
 
 
 function scrollToBottom(smooth = false) {
@@ -1614,7 +1588,7 @@ function loadMemory() {
   try {
     const parsed = JSON.parse(raw)
     if (Array.isArray(parsed.conversations)) {
-      conversations.value = parsed.conversations
+      conversations.value = parsed.conversations.map((conv: Conversation) => withConversationDefaults(conv))
     }
     if (parsed.activeConversationId) {
       activeConversationId.value = parsed.activeConversationId
@@ -1675,9 +1649,10 @@ function loadMemory() {
       activeConversationId.value = conversations.value[0]?.id || ''
     }
     if (!conversations.value.length) {
-      conversations.value = [...defaultConversations]
+      conversations.value = defaultConversations.map(withConversationDefaults)
       activeConversationId.value = conversations.value[0]?.id || ''
     }
+    syncWorkflowFromConversation(activeConversation.value)
   } catch (error) {
     console.warn('Unable to load workspace memory, using defaults', error)
   }
@@ -1722,6 +1697,7 @@ watch(activeConversationId, () => {
   attachments.value = []
   nextTick(resizePrompt)
   scrollToBottom()
+  syncWorkflowFromConversation(activeConversation.value)
 })
 
 onMounted(() => {
@@ -1772,6 +1748,22 @@ watch(
   newLen => {
     if (newLen > 0) docListOpen.value = true
   }
+)
+
+watch(
+  [documentState, activeWorkflowMode],
+  () => {
+    persistDocumentStateToConversation()
+    if (activeWorkflowMode.value === 'default') {
+      docPreviewPanelOpen.value = false
+      docPreviewUserClosed.value = false
+    } else {
+      if (!docPreviewUserClosed.value) {
+        docPreviewPanelOpen.value = true
+      }
+    }
+  },
+  { deep: true }
 )
 
 watch(
@@ -1911,7 +1903,7 @@ function stopSidebarResize() {
 }
 
 function startViewerResize(e: MouseEvent) {
-  if (!showAnyViewer.value) return
+  if (!showSpeckleViewer.value && !showDocumentPreview.value) return
   isResizingViewer.value = true
   viewerResizeStartX.value = e.clientX
   viewerResizeStartPercent.value = viewerSplitPercent.value
@@ -2063,13 +2055,19 @@ function startNewConversation() {
     sessionId: newId,
     chatLog: [],
     autoTitleGenerated: false,
-    userRenamed: false
+    userRenamed: false,
+    workflowMode: 'default',
+    documentState: null
   }
-  conversations.value = [newConversation, ...conversations.value]
+  conversations.value = [withConversationDefaults(newConversation), ...conversations.value]
   activeConversationId.value = newId
   setActivePage('home')
   prompt.value = ''
   attachments.value = []
+  resetDocumentWorkflow()
+  docPreviewPanelOpen.value = false
+  docPreviewUserClosed.value = false
+  docWorkflowPrimed.value = false
 }
 
 function ensureLandingNewConversation() {
@@ -2358,259 +2356,6 @@ function toggleDataSource(key: keyof DataSources) {
   dataSources.value[key] = !dataSources.value[key]
 }
 
-// Interrupt handling functions
-async function resumeFromInterrupt(resumeValue: string | boolean | string[], entry?: any) {
-  if (!interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot resume: missing interrupt_id or session_id')
-    return
-  }
-
-  try {
-    const url = `${config.public.orchestratorUrl}/chat/resume`
-    console.log('🔄 Resuming from interrupt:', { resumeValue, interrupt_id: interruptState.value.interrupt_id })
-    
-    // Mark entry as processing (remove interrupt UI, show loading)
-    if (entry) {
-      entry.interrupt = { ...entry.interrupt, processing: true }
-      renderKey.value++
-    }
-    
-    // Call resume endpoint - it will stream the continuation
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        session_id: interruptState.value.session_id,
-        response: resumeValue,  // Backend expects "response" not "resume_value"
-        interrupt_id: interruptState.value.interrupt_id
-      })
-    })
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-    }
-    
-    // Handle the streaming response from resume (same as chat/stream)
-    const reader = response.body?.getReader()
-    const decoder = new TextDecoder()
-    
-    if (!reader) {
-      throw new Error('No response body reader available')
-    }
-    
-    let buffer = ''
-    const currentConversation = conversations.value.find(c => c.sessionId === interruptState.value.session_id)
-    if (!currentConversation) {
-      console.error('❌ Cannot find conversation for session_id:', interruptState.value.session_id)
-      return
-    }
-    
-    // Find the interrupt entry and create a new message after it for the response
-    let interruptEntryIndex = -1
-    if (entry) {
-      interruptEntryIndex = currentConversation.chatLog.findIndex(e => e.id === entry.id)
-    } else {
-      // Find the last interrupt entry
-      for (let i = currentConversation.chatLog.length - 1; i >= 0; i--) {
-        if (currentConversation.chatLog[i].interrupt) {
-          interruptEntryIndex = i
-          entry = currentConversation.chatLog[i]
-          break
-        }
-      }
-    }
-    
-    // Create a new message for the response (after the interrupt message)
-    let responseMessageIndex = interruptEntryIndex + 1
-    if (responseMessageIndex >= currentConversation.chatLog.length || 
-        currentConversation.chatLog[responseMessageIndex].role !== 'assistant' ||
-        currentConversation.chatLog[responseMessageIndex].content) {
-      // Insert new message after interrupt
-      currentConversation.chatLog.splice(responseMessageIndex, 0, {
-        id: `response-${Date.now()}`,
-        role: 'assistant',
-        content: '',
-        timestamp: Date.now()
-      })
-    } else {
-      // Use existing empty assistant message
-      responseMessageIndex = interruptEntryIndex + 1
-    }
-    
-    let streamingMessageId: string | null = null
-    
-    while (true) {
-      const { done, value } = await reader.read()
-      
-      if (done) {
-        console.log('✅ Resume stream completed')
-        break
-      }
-      
-      buffer += decoder.decode(value, { stream: true })
-      
-      // Process complete SSE messages
-      const lines = buffer.split('\n')
-      buffer = lines.pop() || ''
-      
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          try {
-            const data = JSON.parse(line.slice(6))
-            
-            if (data.type === 'token') {
-              // Append token to the response message
-              if (responseMessageIndex >= 0 && responseMessageIndex < currentConversation.chatLog.length) {
-                const responseMessage = currentConversation.chatLog[responseMessageIndex]
-                if (responseMessage.role === 'assistant') {
-                  const currentContent = responseMessage.content || ''
-                  const newContent = currentContent + data.content
-                  renderKey.value++
-                  currentConversation.chatLog.splice(responseMessageIndex, 1, {
-                    ...responseMessage,
-                    content: newContent
-                  })
-                  scrollToBottom()
-                }
-              }
-            } else if (data.type === 'interrupt') {
-              // Another interrupt (e.g., code selection after rejection)
-              interruptState.value = {
-                open: true,
-                interrupt_id: data.interrupt_id,
-                interrupt_type: data.interrupt_type,
-                question: data.question || '',
-                codes: data.codes || [],
-                code_count: data.code_count || 0,
-                chunk_count: data.chunk_count || 0,
-                available_codes: data.available_codes || [],
-                previously_retrieved: data.previously_retrieved || [],
-                session_id: data.session_id || interruptState.value.session_id,
-                selected_codes: []
-              }
-              
-              // Add new interrupt message to chat
-              const interruptMessageId = `interrupt-${Date.now()}`
-              currentConversation.chatLog.push({
-                id: interruptMessageId,
-                role: 'assistant',
-                content: '',
-                interrupt: {
-                  type: data.interrupt_type,
-                  question: data.question || '',
-                  codes: data.codes || [],
-                  code_count: data.code_count || 0,
-                  chunk_count: data.chunk_count || 0,
-                  available_codes: data.available_codes || [],
-                  previously_retrieved: data.previously_retrieved || [],
-                  selected_codes: []
-                },
-                timestamp: Date.now()
-              })
-              scrollToBottom()
-            } else if (data.type === 'complete') {
-              console.log('✅ Resume completed', data.result ? 'with result' : 'without result')
-              // Mark interrupt entry as completed (hide buttons, keep the message)
-              if (entry && entry.interrupt) {
-                entry.interrupt.completed = true
-                renderKey.value++
-              }
-              
-              // Process result data if present (image similarity, citations, etc.)
-              if (data.result && responseMessageIndex >= 0 && responseMessageIndex < currentConversation.chatLog.length) {
-                const responseMessage = currentConversation.chatLog[responseMessageIndex]
-                if (responseMessage.role === 'assistant') {
-                  // Add metadata from result
-                  if (data.result.image_similarity_results) {
-                    responseMessage.images = data.result.image_similarity_results.map((img: any) => ({
-                      url: img.image_url,
-                      project_key: img.project_key,
-                      page_number: img.page_number,
-                      similarity: img.similarity,
-                      caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
-                    }))
-                  }
-                  renderKey.value++
-                }
-              }
-            } else if (data.type === 'thinking') {
-              // Handle thinking logs if needed
-              console.log('💭 Thinking:', data.message)
-            }
-          } catch (e) {
-            console.error('Error parsing resume SSE data:', e, line)
-          }
-        }
-      }
-    }
-  } catch (error: any) {
-    console.error('❌ Resume error:', error)
-    alert(`Failed to resume: ${error.message || 'Unknown error'}`)
-    // Re-enable interrupt UI on error
-    if (entry && entry.interrupt) {
-      entry.interrupt.processing = false
-      renderKey.value++
-    }
-  }
-}
-
-// Helper functions for entry-based interrupt handling
-function getSelectedCodesForEntry(entry: any): string[] {
-  if (!entry.interrupt) return []
-  return entry.interrupt.selected_codes || []
-}
-
-function setSelectedCodesForEntry(entry: any, codes: string[]) {
-  if (!entry.interrupt) return
-  if (!entry.interrupt.selected_codes) {
-    entry.interrupt.selected_codes = []
-  }
-  entry.interrupt.selected_codes = codes
-}
-
-function toggleCodeSelectionForEntry(entry: any, code: string) {
-  const selected = getSelectedCodesForEntry(entry)
-  const index = selected.indexOf(code)
-  if (index === -1) {
-    selected.push(code)
-  } else {
-    selected.splice(index, 1)
-  }
-  setSelectedCodesForEntry(entry, selected)
-  renderKey.value++ // Force reactivity
-}
-
-function handleApproveCodesForEntry(entry: any) {
-  if (!entry.interrupt || !interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot approve: missing interrupt data')
-    return
-  }
-  resumeFromInterrupt('approved', entry)
-}
-
-function handleRejectCodesForEntry(entry: any) {
-  if (!entry.interrupt || !interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot reject: missing interrupt data')
-    return
-  }
-  resumeFromInterrupt('rejected', entry)
-}
-
-function handleSubmitCodeSelectionForEntry(entry: any) {
-  const selectedCodes = getSelectedCodesForEntry(entry)
-  if (selectedCodes.length === 0) {
-    alert('Please select at least one code')
-    return
-  }
-  if (!interruptState.value.interrupt_id || !interruptState.value.session_id) {
-    console.error('❌ Cannot submit: missing interrupt data')
-    return
-  }
-  resumeFromInterrupt(selectedCodes, entry)
-}
-
 // Recreate SmartChatPanel's document list + Speckle modal wiring
 function openDocumentsList(documents: any[], title?: string, subtitle?: string) {
   docListDocs.value = documents
@@ -2620,6 +2365,44 @@ function openDocumentsList(documents: any[], title?: string, subtitle?: string) 
 }
 
 function handleDocumentSelect(doc: any) {
+  const isPdfDoc = (d: any) => {
+    const url = d?.url || d?.filePath
+    return typeof url === 'string' && url.toLowerCase().endsWith('.pdf')
+  }
+  const isDocxDoc = (d: any) => {
+    const url = d?.url || d?.filePath
+    return typeof url === 'string' && url.toLowerCase().endsWith('.docx')
+  }
+
+  // If this looks like a document and doc workflows are active, show in preview
+  if (isDocumentWorkflow.value || isPdfDoc(doc) || isDocxDoc(doc) || doc.document_state || doc.doc_generation_result) {
+    const documentPayload =
+      doc.document_state ||
+      doc.doc_generation_result ||
+      doc.doc ||
+      doc.document ||
+      doc.document_patch ||
+      (isPdfDoc(doc)
+        ? {
+            title: doc.title || doc.name,
+            docType: 'pdf',
+            pdf: { url: doc.url || doc.filePath, page: 1 }
+          }
+        : undefined)
+
+    if (documentPayload) {
+      applyDocumentPatch(documentPayload)
+      const targetMode =
+        detectWorkflowFromPayload(documentPayload) ||
+        (activeWorkflowMode.value !== 'default' ? activeWorkflowMode.value : 'docgen')
+      setWorkflowMode(targetMode)
+      docPreviewUserClosed.value = false
+      docPreviewPanelOpen.value = true
+      viewerSplitPercent.value = 50
+      return
+    }
+  }
+
   const models = docListDocs.value
     .filter(d => d.url)
     .map(d => ({
@@ -2643,17 +2426,9 @@ function closeSpeckleViewer() {
   speckleViewerSelectedId.value = ''
 }
 
-function openExcelViewer() {
-  // Close Speckle viewer if open
-  if (showSpeckleViewer.value) {
-    closeSpeckleViewer()
-  }
-  excelViewerPanelOpen.value = true
-  viewerSplitPercent.value = 50
-}
-
-function closeExcelViewer() {
-  excelViewerPanelOpen.value = false
+function closeDocumentPreview() {
+  docPreviewPanelOpen.value = false
+  docPreviewUserClosed.value = true
 }
 
 function openSpeckleViewerWithModels(models: Array<{ id: string; url: string; name: string; projectName?: string }>) {
@@ -2746,6 +2521,85 @@ async function fetchAndDisplaySpeckleModels(answerText: string, fallbackText?: s
   speckleViewerFetchLoading.value = false
 }
 
+function notifyDocumentUpdate(message: string) {
+  documentUpdateToast.value = message
+  if (documentUpdateTimer) {
+    clearTimeout(documentUpdateTimer)
+  }
+  documentUpdateTimer = setTimeout(() => {
+    documentUpdateToast.value = ''
+    documentUpdateTimer = null
+  }, 3000)
+}
+
+function detectWorkflowFromPayload(payload: any): WorkflowMode | null {
+  if (!payload) return null
+  const workflow = typeof payload === 'string'
+    ? payload
+    : payload.workflow || payload.task_type || payload.node
+  if (!workflow) return null
+  const normalized = normalizeWorkflow(workflow)
+  return normalized === 'default' ? null : normalized
+}
+
+function handleWorkflowSignal(payload: any) {
+  const detected = detectWorkflowFromPayload(payload)
+  if (!detected) return
+  if (!docWorkflowPrimed.value) {
+    resetToBlankDocument()
+    docWorkflowPrimed.value = true
+  }
+  setWorkflowMode(detected)
+  speckleViewerPanelOpen.value = false
+  docPreviewUserClosed.value = false
+  docPreviewPanelOpen.value = true
+  viewerSplitPercent.value = 50
+  persistDocumentStateToConversation()
+}
+
+function handleDocumentUpdate(payload: any) {
+  const docUrl =
+    payload?.docUrl ||
+    payload?.documentKey ||
+    payload?.onlyoffice?.docUrl ||
+    payload?.document_state?.docUrl ||
+    payload?.doc_generation_result?.docUrl ||
+    payload?.doc_generation_result?.document_state?.docUrl
+  console.log('📄 [workspace] Document payload received:', {
+    keys: Object.keys(payload || {}),
+    docUrl
+  })
+  const updated = applyDocumentPatch(payload)
+  if (updated) {
+    const detected = detectWorkflowFromPayload(payload)
+    if (detected) {
+      setWorkflowMode(detected)
+    } else if (activeWorkflowMode.value === 'default') {
+      setWorkflowMode('docgen')
+    }
+    speckleViewerPanelOpen.value = false
+    docPreviewUserClosed.value = false
+    docPreviewPanelOpen.value = true
+    viewerSplitPercent.value = 50
+    notifyDocumentUpdate('📄 Document updated! Check the OnlyOffice panel.')
+    persistDocumentStateToConversation()
+  }
+}
+
+function shouldCreateDocumentFromResult(payload: any, isDocumentResponse: boolean) {
+  if (isDocumentResponse) return false
+  const workflow = detectWorkflowFromPayload(payload)
+  if (workflow) return true
+
+  const route = typeof payload?.route === 'string' ? payload.route.toLowerCase() : ''
+  if (route.includes('doc')) return true
+
+  const docType = typeof payload?.doc_type === 'string' ? payload.doc_type.toLowerCase() : ''
+  if (docType.includes('doc')) return true
+
+  return Boolean(payload?.create_document || payload?.workflow_type === 'document')
+}
+
 function resizePrompt() {
   const el = promptInput.value
   if (!el) return
@@ -2783,9 +2637,11 @@ async function handleSend() {
   const hasMessage = prompt.value.trim().length > 0
   const hasAttachments = attachments.value.length > 0
   if ((!hasMessage && !hasAttachments) || isSending.value) return
+  docWorkflowPrimed.value = false
 
   const conversation = activeConversation.value
   if (!conversation) return
+  const documentContext = isDocumentWorkflow.value ? cloneDocumentState(ensureDocumentState()) : null
 
   // Set isSending IMMEDIATELY to prevent duplicate calls
   isSending.value = true
@@ -2861,8 +2717,10 @@ async function handleSend() {
             timestamp: new Date(),
             type: 'thinking'
           })
+          handleWorkflowSignal(log)
         },
         onToken: token => {
+          handleWorkflowSignal(token)
           // Remove thinking message on first token
           if (!streamingMessageId) {
             // Clear the thinking interval
@@ -2915,42 +2773,8 @@ async function handleSend() {
             })
           }
         },
-        onInterrupt: async (interrupt) => {
-          console.log('⏸️  Interrupt received:', interrupt)
-          // Store interrupt state and add inline message to chat
-          interruptState.value = {
-            open: true,
-            interrupt_id: interrupt.interrupt_id,
-            interrupt_type: interrupt.interrupt_type,
-            question: interrupt.question,
-            codes: interrupt.codes,
-            code_count: interrupt.code_count,
-            chunk_count: interrupt.chunk_count,
-            available_codes: interrupt.available_codes,
-            previously_retrieved: interrupt.previously_retrieved,
-            session_id: interrupt.session_id,
-            selected_codes: []
-          }
-          
-          // Add interrupt message to chat log (inline, not modal)
-          const interruptMessageId = `interrupt-${Date.now()}`
-          conversation.chatLog.push({
-            id: interruptMessageId,
-            role: 'assistant',
-            content: '',
-            interrupt: {
-              type: interrupt.interrupt_type,
-              question: interrupt.question,
-              codes: interrupt.codes,
-              code_count: interrupt.code_count,
-              chunk_count: interrupt.chunk_count,
-              available_codes: interrupt.available_codes,
-              previously_retrieved: interrupt.previously_retrieved
-            },
-            timestamp: Date.now()
-          })
-          scrollToBottom()
-        },
+        onWorkflow: handleWorkflowSignal,
+        onDocument: handleDocumentUpdate,
         onComplete: async result => {
           // ALWAYS clear the thinking interval and remove thinking message on completion
           clearInterval(thinkingInterval)
@@ -2958,23 +2782,17 @@ async function handleSend() {
           if (thinkingIndex !== -1) {
             conversation.chatLog.splice(thinkingIndex, 1)
           }
-          
-          // Check if user wants to see Excel data
-          const messageLower = message.toLowerCase()
-          const replyLower = (result.reply || '').toLowerCase()
-          const shouldShowExcel = messageLower.includes('show me the excel') ||
-                                  messageLower.includes('show excel') ||
-                                  messageLower.includes('excel data') ||
-                                  messageLower.includes('excel sync') ||
-                                  messageLower.includes('live calculations') ||
-                                  replyLower.includes('excel') ||
-                                  replyLower.includes('calculations')
-          
-          if (shouldShowExcel) {
-            // Open Excel viewer
-            openExcelViewer()
+          const documentPayload = result.doc_generation_result || result.document_state || result.document_patch
+          const isDocumentResponse = Boolean(documentPayload)
+          const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
+          const redirectMessage = '✅ Please refer to the document'
+          handleWorkflowSignal(result)
+          if (documentPayload) {
+            handleDocumentUpdate(documentPayload)
           }
-          
+          const shouldMakeDocument = shouldCreateDocumentFromResult(result, isDocumentResponse)
+          const answerForDocument = streamedContent || result.reply || result.message || ''
+
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
           console.log('🖼️ [onComplete] Image similarity results received:', {
@@ -2984,13 +2802,15 @@ async function handleSend() {
             firstResult: imageResults[0] || null,
             fullResult: result
           })
-          const images = imageResults.map((img: any) => ({
-            url: img.image_url,
-            project_key: img.project_key,
-            page_number: img.page_number,
-            similarity: img.similarity,
-            caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
-          }))
+          const images = !isDocumentResponse
+            ? imageResults.map((img: any) => ({
+              url: img.image_url,
+              project_key: img.project_key,
+              page_number: img.page_number,
+              similarity: img.similarity,
+              caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
+            }))
+            : []
           console.log('🖼️ [onComplete] Transformed images for display:', {
             count: images.length,
             images: images,
@@ -3005,7 +2825,9 @@ async function handleSend() {
               // Keep the accumulated content from streaming - it's already formatted
               // Only use result.reply if streaming content is empty
               const accumulatedContent = conversation.chatLog[messageIndex].content || ''
-              const finalAnswer = accumulatedContent || result.reply || result.message || 'No response generated.'
+              const finalAnswer = isDocumentResponse
+                ? redirectMessage
+                : accumulatedContent || result.reply || result.message || 'No response generated.'
               
               // Ensure content is formatted (it should already be via getFormattedMessage)
               // Force one final render to ensure formatting sticks
@@ -3013,7 +2835,7 @@ async function handleSend() {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
-                images: images.length > 0 ? images : undefined, // Add images here
+                images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here
                 timestamp: Date.now()
               })
             }
@@ -3021,11 +2843,11 @@ async function handleSend() {
             // Fallback: create message if streaming didn't happen
             // IMPORTANT: Store RAW text, not formatted HTML
             // Formatting happens in getFormattedMessage() which is called on render
-            const finalAnswer = result.reply || result.message || 'No response generated.'
+            const finalAnswer = isDocumentResponse ? redirectMessage : result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({ 
               role: 'assistant', 
               content: finalAnswer, // Store raw text, not formatted HTML
-              images: images.length > 0 ? images : undefined, // Add images here too
+              images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here too
               timestamp: Date.now() 
             })
           }
@@ -3042,9 +2864,24 @@ async function handleSend() {
             }
           }
           
-          const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
+          const finalAnswer = isDocumentResponse
+            ? redirectMessage
+            : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
-          await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          if (shouldMakeDocument) {
+            const docContent = answerForDocument || finalAnswer
+            createDocumentFromAnswer(result?.session_id || conversation.sessionId || conversation.id, docContent)
+            setWorkflowMode('docgen')
+            docWorkflowPrimed.value = true
+            speckleViewerPanelOpen.value = false
+            docPreviewUserClosed.value = false
+            docPreviewPanelOpen.value = true
+            viewerSplitPercent.value = 50
+            persistDocumentStateToConversation()
+          }
+          if (!isDocumentResponse && !isDocumentWorkflow.value) {
+            await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          }
           scrollToBottom(true)
         },
         onError: error => {
@@ -3056,6 +2893,11 @@ async function handleSend() {
           }
           streamError = error
         }
+      },
+      {
+        documentContext: documentContext || undefined,
+        workflowHint: activeWorkflowMode.value,
+        selection: null
       }
     )
 
@@ -3078,6 +2920,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
     // Use streaming endpoint ONLY - no duplicate calls
     const conversation = activeConversation.value
     if (!conversation) return
+    const documentContext = isDocumentWorkflow.value ? cloneDocumentState(ensureDocumentState()) : null
     
     let streamingMessageId: string | null = null
     let streamError: Error | null = null
@@ -3095,8 +2938,10 @@ async function regenerateAssistant(message: string, sessionId: string) {
             timestamp: new Date(),
             type: 'thinking'
           })
+          handleWorkflowSignal(log)
         },
         onToken: token => {
+          handleWorkflowSignal(token)
           // Create streaming message on first token
           if (!streamingMessageId) {
             streamingMessageId = `streaming-${Date.now()}`
@@ -3141,16 +2986,30 @@ async function regenerateAssistant(message: string, sessionId: string) {
             })
           }
         },
+        onWorkflow: handleWorkflowSignal,
+        onDocument: handleDocumentUpdate,
         onComplete: async result => {
+          const documentPayload = result.doc_generation_result || result.document_state || result.document_patch
+          const isDocumentResponse = Boolean(documentPayload)
+          const streamedContent = streamingMessageId ? conversation.chatLog[conversation.chatLog.length - 1]?.content || '' : ''
+          const redirectMessage = '✅ Please refer to the document'
+          handleWorkflowSignal(result)
+          if (documentPayload) {
+            handleDocumentUpdate(documentPayload)
+          }
+          const shouldMakeDocument = shouldCreateDocumentFromResult(result, isDocumentResponse)
+          const answerForDocument = streamedContent || result.reply || result.message || ''
           // Extract image similarity results and transform for display
           const imageResults = result.image_similarity_results || []
-          const images = imageResults.map((img: any) => ({
-            url: img.image_url,
-            project_key: img.project_key,
-            page_number: img.page_number,
-            similarity: img.similarity,
-            caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
-          }))
+          const images = !isDocumentResponse
+            ? imageResults.map((img: any) => ({
+              url: img.image_url,
+              project_key: img.project_key,
+              page_number: img.page_number,
+              similarity: img.similarity,
+              caption: `Project ${img.project_key}, Page ${img.page_number}${img.similarity ? ` (${(img.similarity * 100).toFixed(1)}% similar)` : ''}`
+            }))
+            : []
           
           // Use the accumulated content from streaming (already formatted via getFormattedMessage)
           // Don't overwrite with result.reply as it might be different or cause formatting to revert
@@ -3160,7 +3019,9 @@ async function regenerateAssistant(message: string, sessionId: string) {
               // Keep the accumulated content from streaming - it's already formatted
               // Only use result.reply if streaming content is empty
               const accumulatedContent = conversation.chatLog[messageIndex].content || ''
-              const finalAnswer = accumulatedContent || result.reply || result.message || 'No response generated.'
+              const finalAnswer = isDocumentResponse
+                ? redirectMessage
+                : accumulatedContent || result.reply || result.message || 'No response generated.'
               
               // Ensure content is formatted (it should already be via getFormattedMessage)
               // Force one final render to ensure formatting sticks
@@ -3168,7 +3029,7 @@ async function regenerateAssistant(message: string, sessionId: string) {
               conversation.chatLog.splice(messageIndex, 1, {
                 ...conversation.chatLog[messageIndex],
                 content: finalAnswer,
-                images: images.length > 0 ? images : undefined, // Add images here
+                images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here
                 timestamp: Date.now()
               })
             }
@@ -3176,11 +3037,11 @@ async function regenerateAssistant(message: string, sessionId: string) {
             // Fallback: create message if streaming didn't happen
             // IMPORTANT: Store RAW text, not formatted HTML
             // Formatting happens in getFormattedMessage() which is called on render
-            const finalAnswer = result.reply || result.message || 'No response generated.'
+            const finalAnswer = isDocumentResponse ? redirectMessage : result.reply || result.message || 'No response generated.'
             conversation.chatLog.push({
               role: 'assistant',
               content: finalAnswer, // Store raw text, not formatted HTML
-              images: images.length > 0 ? images : undefined, // Add images here too
+              images: !isDocumentResponse && images.length > 0 ? images : undefined, // Add images here too
               timestamp: Date.now()
             })
           }
@@ -3197,15 +3058,35 @@ async function regenerateAssistant(message: string, sessionId: string) {
             }
           }
           
-          const finalAnswer = conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
+          const finalAnswer = isDocumentResponse
+            ? redirectMessage
+            : conversation.chatLog[conversation.chatLog.length - 1]?.content || result.reply || result.message || ''
           void maybeGenerateTitle(conversation, message, finalAnswer)
-          await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          if (shouldMakeDocument) {
+            const docContent = answerForDocument || finalAnswer
+            createDocumentFromAnswer(result?.session_id || conversation.sessionId || conversation.id, docContent)
+            setWorkflowMode('docgen')
+            docWorkflowPrimed.value = true
+            speckleViewerPanelOpen.value = false
+            docPreviewUserClosed.value = false
+            docPreviewPanelOpen.value = true
+            viewerSplitPercent.value = 50
+            persistDocumentStateToConversation()
+          }
+          if (!isDocumentResponse && !isDocumentWorkflow.value) {
+            await fetchAndDisplaySpeckleModels(finalAnswer, message)
+          }
           scrollToBottom(true)
         },
         onError: error => {
           // No thinking message in regenerate - just capture error
           streamError = error
         }
+      },
+      {
+        documentContext: documentContext || undefined,
+        workflowHint: activeWorkflowMode.value,
+        selection: null
       }
     )
 
@@ -3360,6 +3241,15 @@ function performDeleteConversation() {
   min-width: 320px;
 }
 
+.viewer-resize-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  cursor: col-resize;
+  z-index: 60;
+  user-select: none;
+}
+
 .viewer-resize-handle {
   width: 10px;
   cursor: col-resize;
@@ -3494,6 +3384,15 @@ function performDeleteConversation() {
 
 .fade-enter-from,
 .fade-leave-to {
+  opacity: 0;
+}
+
+.toast-fade-enter-active,
+.toast-fade-leave-active {
+  transition: opacity 0.18s ease;
+}
+.toast-fade-enter-from,
+.toast-fade-leave-to {
   opacity: 0;
 }
 </style>

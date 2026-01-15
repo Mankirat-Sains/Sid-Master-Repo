@@ -67,6 +67,17 @@ def _log_retrieved_chunks_detailed(docs, logger):
 def node_retrieve(state: DBRetrievalState) -> dict:
     """Retrieve documents based on plan or direct query"""
     print("🔍 node_retrieve called")  # Diagnostic - always visible
+    needs_retrieval = getattr(state, "needs_retrieval", True)
+    retrieval_done = getattr(state, "retrieval_completed", False)
+    print(f"   - needs_retrieval: {needs_retrieval}")
+    print(f"   - retrieval_completed: {retrieval_done}")
+    if retrieval_done:
+        print("⏭️  SKIPPING RETRIEVAL: already completed")
+        return {"retrieval_completed": True, "needs_retrieval": False}
+    if needs_retrieval is False:
+        print("⏭️  SKIPPING RETRIEVAL: not needed for this task")
+        return {"retrieval_completed": True, "needs_retrieval": False}
+
     t_start = time.time()
     try:
         log_query.info(">>> RETRIEVE START")
@@ -182,7 +193,11 @@ def node_retrieve(state: DBRetrievalState) -> dict:
 
             t_elapsed = time.time() - t_start
             log_query.info(f"<<< RETRIEVE DONE in {t_elapsed:.2f}s")
-            return result
+            return {
+                **result,
+                "retrieval_completed": True,
+                "needs_retrieval": False,
+            }
 
         # Fallback to legacy retrieval when no plan is provided
         print("⚠️ Using legacy retrieval path (no plan)")  # Diagnostic
@@ -235,7 +250,9 @@ def node_retrieve(state: DBRetrievalState) -> dict:
                     "retrieved_code_docs": state.retrieved_code_docs,
                     "code_verification_response": "approved",
                     "retrieved_code_filenames": state.retrieved_code_filenames or [],
-                    "approved_code_filenames": state.approved_code_filenames or []
+                    "approved_code_filenames": state.approved_code_filenames or [],
+                    "retrieval_completed": True,
+                    "needs_retrieval": False,
                 }
             
             # Check if we have approved filenames from previous rejection (resume path)
@@ -278,7 +295,9 @@ def node_retrieve(state: DBRetrievalState) -> dict:
                                     "retrieved_code_docs": code_docs,
                                     "code_verification_response": "approved",
                                     "retrieved_code_filenames": retrieved_filenames,
-                                    "approved_code_filenames": retrieved_filenames
+                                    "approved_code_filenames": retrieved_filenames,
+                                    "retrieval_completed": True,
+                                    "needs_retrieval": False,
                                 }
                             elif verification_response == "rejected" or verification_response is False:
                                 log_query.info("❌ Code verification: REJECTED - fetching all available codes")
@@ -309,7 +328,9 @@ def node_retrieve(state: DBRetrievalState) -> dict:
                                         "code_verification_response": "approved",
                                         "retrieved_code_filenames": selected_codes,
                                         "approved_code_filenames": selected_codes,
-                                        "all_available_code_filenames": all_codes
+                                        "all_available_code_filenames": all_codes,
+                                        "retrieval_completed": True,
+                                        "needs_retrieval": False,
                                     }
                                 else:
                                     log_query.warning("⚠️  No codes selected by user, proceeding with empty code docs")
@@ -317,7 +338,9 @@ def node_retrieve(state: DBRetrievalState) -> dict:
                                         "retrieved_code_docs": [],
                                         "code_verification_response": "rejected",
                                         "retrieved_code_filenames": [],
-                                        "all_available_code_filenames": all_codes
+                                        "all_available_code_filenames": all_codes,
+                                        "retrieval_completed": True,
+                                        "needs_retrieval": False,
                                     }
             except Exception as e:
                 log_query.error(f"❌ Code database retrieve failed: {e}")
@@ -348,7 +371,13 @@ def node_retrieve(state: DBRetrievalState) -> dict:
         
         if not retrieved and not code_docs and not coop_docs:
             log_query.warning("⚠️  No documents retrieved from any enabled database")
-            return {"retrieved_docs": [], "retrieved_code_docs": [], "retrieved_coop_docs": []}
+            return {
+                "retrieved_docs": [],
+                "retrieved_code_docs": [],
+                "retrieved_coop_docs": [],
+                "retrieval_completed": True,
+                "needs_retrieval": False,
+            }
         
         log_query.info(f"📊 TOTAL RETRIEVED: {len(project_docs)} project docs, {len(code_docs)} code docs, {len(coop_docs)} coop docs")
         
@@ -357,7 +386,11 @@ def node_retrieve(state: DBRetrievalState) -> dict:
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< RETRIEVE DONE in {t_elapsed:.2f}s")
         
-        result = {"retrieved_docs": retrieved}
+        result = {
+            "retrieved_docs": retrieved,
+            "retrieval_completed": True,
+            "needs_retrieval": False,
+        }
         if code_docs and project_db_enabled:
             result["retrieved_code_docs"] = code_docs
         if coop_docs and (project_db_enabled or code_db_enabled):
@@ -375,5 +408,8 @@ def node_retrieve(state: DBRetrievalState) -> dict:
         log_query.error(f"node_retrieve failed: {e}")
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< RETRIEVE DONE (with error) in {t_elapsed:.2f}s")
-        return {"retrieved_docs": []}
-
+        return {
+            "retrieved_docs": [],
+            "retrieval_completed": True,
+            "needs_retrieval": False,
+        }

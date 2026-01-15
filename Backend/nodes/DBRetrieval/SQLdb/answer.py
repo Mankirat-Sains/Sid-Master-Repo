@@ -418,4 +418,3 @@ def node_answer(state: DBRetrievalState) -> dict:
             "final_answer": f"Error synthesizing answer: {error_msg[:200]}", 
             "answer_citations": []
         }
-

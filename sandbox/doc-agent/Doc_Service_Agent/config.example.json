@@ -1,0 +1,9 @@
+{
+  "workspace_dir": "./workspace/doc-agent",
+  "docs": [
+    {
+      "doc_id": "sample-spec",
+      "file_path": "./sample_docs/spec.docx"
+    }
+  ]
+}

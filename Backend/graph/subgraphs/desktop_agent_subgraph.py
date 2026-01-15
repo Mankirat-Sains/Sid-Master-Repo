@@ -1,144 +1,138 @@
 """
 DesktopAgent Subgraph
-Handles desktop application interactions (Excel, Word, Revit, etc.)
+Handles desktop application interactions and delegates doc generation when requested.
 """
-from langgraph.graph import StateGraph, START, END
+from dataclasses import asdict
+from langgraph.graph import StateGraph, END
+
+from models.rag_state import RAGState
 from models.parent_state import ParentState
-from models.desktop_agent_state import DesktopAgentState
 from config.logging_config import log_route
-
-# Import DesktopAgent nodes
+from config.settings import DEEP_AGENT_ENABLED
 from nodes.DesktopAgent.desktop_router import node_desktop_router
-from nodes.DesktopAgent.excel_kb_agent import node_excel_kb_agent
+from graph.subgraphs.desktop.docgen_subgraph import call_doc_generation_subgraph
+from graph.subgraphs.deep_desktop_subgraph import call_deep_desktop_subgraph
+from graph.tracing import wrap_subgraph_node
 
 
-def _parent_to_desktop_state(parent_state: ParentState) -> DesktopAgentState:
-    """Convert ParentState to DesktopAgentState"""
-    return DesktopAgentState(
-        session_id=parent_state.session_id,
-        user_query=parent_state.user_query,
-        original_question=parent_state.original_question,
-        user_role=parent_state.user_role,
-        messages=parent_state.messages,
-        excel_cache={},  # Start with empty cache
-        desktop_result=None,
-        desktop_citations=[]
-    )
-
-
-def _desktop_to_parent_state(desktop_state: DesktopAgentState) -> dict:
-    """Convert DesktopAgentState back to dict for parent state update"""
-    return {
-        "desktop_result": desktop_state.desktop_result,
-        "desktop_citations": desktop_state.desktop_citations
+def _desktop_to_next(state: RAGState) -> str:
+    """
+    Route after desktop router:
+    - If doc generation is requested, route to deep_desktop when enabled, otherwise doc_generation.
+    - Otherwise finish.
+    """
+    is_doc_task = getattr(state, "workflow", None) == "docgen" or getattr(state, "task_type", None) in {
+        "doc_section",
+        "doc_report",
     }
-
-
-def _route_desktop(state: DesktopAgentState) -> str:
-    """Route to appropriate desktop agent based on query"""
-    query_lower = state.user_query.lower()
-    
-    # Check for Excel-related queries
-    excel_keywords = ["excel", "spreadsheet", "workbook", "sheet", "cell", "formula", "calculation"]
-    if any(keyword in query_lower for keyword in excel_keywords):
-        return "excel_kb_agent"
-    
-    # Default to excel_kb_agent for now (can add more agents later)
-    return "excel_kb_agent"
+    if not is_doc_task:
+        return "finish"
+    if DEEP_AGENT_ENABLED:
+        return "deep_desktop"
+    return "doc_generation"
 
 
 def build_desktop_agent_subgraph():
     """
     Build the DesktopAgent subgraph.
-    This subgraph handles desktop application interactions.
-    
-    Current structure:
-    - desktop_router: Routes to appropriate desktop agents
-    - excel_kb_agent: Excel knowledge base (reads on-demand, caches in state)
-    
-    Future expansion:
-    - word_agent: Word document processing
-    - revit_agent: Revit model interactions
-    - verify: Verify desktop actions
+    Current structure: desktop_router → (doc_generation?) → finish.
     """
-    g = StateGraph(DesktopAgentState)
-    
-    # Add nodes
-    g.add_node("desktop_router", node_desktop_router)
-    g.add_node("excel_kb_agent", node_excel_kb_agent)
-    
-    # Future nodes will be added here:
-    # g.add_node("word_agent", node_word_agent)
-    # g.add_node("revit_agent", node_revit_agent)
-    # g.add_node("verify", node_verify_desktop)
-    
-    # Set entry point
+    g = StateGraph(RAGState)
+
+    g.add_node("desktop_router", wrap_subgraph_node("desktop_router")(node_desktop_router))
+    g.add_node("doc_generation", wrap_subgraph_node("doc_generation")(call_doc_generation_subgraph))
+    if DEEP_AGENT_ENABLED:
+        g.add_node("deep_desktop", wrap_subgraph_node("deep_desktop")(call_deep_desktop_subgraph))
+    g.add_node("finish", wrap_subgraph_node("finish")(lambda state: {}))
+
     g.set_entry_point("desktop_router")
-    
-    # Route from desktop_router to appropriate agent
-    g.add_conditional_edges(
-        "desktop_router",
-        _route_desktop,
-        {
-            "excel_kb_agent": "excel_kb_agent",
-        }
-    )
-    
-    # Excel KB agent → END
-    g.add_edge("excel_kb_agent", END)
-    
-    # Compile subgraph (checkpointer will be propagated from parent)
+    if DEEP_AGENT_ENABLED:
+        g.add_conditional_edges(
+            "desktop_router",
+            _desktop_to_next,
+            {
+                "deep_desktop": "deep_desktop",
+                "doc_generation": "doc_generation",
+                "finish": "finish",
+            },
+        )
+        g.add_edge("deep_desktop", "finish")
+    else:
+        g.add_conditional_edges(
+            "desktop_router",
+            _desktop_to_next,
+            {
+                "doc_generation": "doc_generation",
+                "finish": "finish",
+            },
+        )
+    g.add_edge("doc_generation", "finish")
+    g.add_edge("finish", END)
+
     return g.compile()
 
 
-# Global subgraph instance (will be initialized when first called)
 _desktop_agent_subgraph = None
 
 
 def call_desktop_agent_subgraph(state: ParentState) -> dict:
     """
     Wrapper node that invokes the DesktopAgent subgraph.
-    This function is called from the parent graph or router_dispatcher.
-    
-    Converts ParentState to DesktopAgentState, runs subgraph, then converts back.
-    Excel cache in DesktopAgentState is ephemeral - auto-clears when query completes.
     """
     global _desktop_agent_subgraph
-    
-    # Lazy initialization of subgraph
+
     if _desktop_agent_subgraph is None:
         log_route.info("🔧 Initializing DesktopAgent subgraph...")
         _desktop_agent_subgraph = build_desktop_agent_subgraph()
         log_route.info("✅ DesktopAgent subgraph initialized")
-    
-    # Convert ParentState to DesktopAgentState
-    desktop_state = _parent_to_desktop_state(state)
-    
-    # Invoke subgraph with DesktopAgentState
+
+    # Normalize state to RAGState with defaults for new fields
+    state_dict = state if isinstance(state, dict) else asdict(state)
+    rag_state_dict = _ensure_rag_state_fields(state_dict)
+    rag_state = RAGState(**rag_state_dict)
+
+    parent_trace = rag_state.execution_trace or []
+    parent_verbose = rag_state.execution_trace_verbose or []
+
     try:
-        result_state = _desktop_agent_subgraph.invoke(desktop_state)
-        
-        # Handle both dict and DesktopAgentState return types
-        # LangGraph may return dict in some cases
-        if isinstance(result_state, dict):
-            # Already a dict - extract desktop_result and desktop_citations
-            result = {
-                "desktop_result": result_state.get("desktop_result"),
-                "desktop_citations": result_state.get("desktop_citations", [])
-            }
-        else:
-            # DesktopAgentState object - convert to dict
-            result = _desktop_to_parent_state(result_state)
-        
-        log_route.info(f"✅ DesktopAgent subgraph completed (Excel cache cleared automatically)")
-        return result
-        
+        result = _desktop_agent_subgraph.invoke(rag_state)
+        if not isinstance(result, dict):
+            return {"desktop_result": result}
+        return {
+            **result,
+            "desktop_result": result,
+            "execution_trace": parent_trace + (result.get("execution_trace", []) or []),
+            "execution_trace_verbose": parent_verbose + (result.get("execution_trace_verbose", []) or []),
+        }
     except Exception as e:
         log_route.error(f"❌ DesktopAgent subgraph failed: {e}")
         import traceback
+
         traceback.print_exc()
-        # Return state with error indication
         return {
-            "desktop_result": f"Error: {str(e)}",
-            "desktop_citations": []
+            "desktop_tools": [],
+            "desktop_reasoning": f"Error: {str(e)}",
         }
+
+
+def _ensure_rag_state_fields(state_dict: dict) -> dict:
+    """Ensure all RAGState fields exist in the state dictionary."""
+    rag_state_defaults = {
+        "desktop_plan_steps": [],
+        "desktop_current_step": 0,
+        "desktop_iteration_count": 0,
+        "desktop_workspace_dir": None,
+        "desktop_workspace_files": [],
+        "desktop_memories": [],
+        "desktop_context": {},
+        "desktop_interrupt_pending": False,
+        "desktop_approved_actions": [],
+        "desktop_interrupt_data": None,
+        "tool_execution_log": [],
+        "large_output_refs": {},
+        "desktop_loop_result": None,
+    }
+    for field, default in rag_state_defaults.items():
+        if field not in state_dict:
+            state_dict[field] = default
+    return state_dict

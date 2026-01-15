@@ -4,6 +4,24 @@ Create and configure all LLM instances used throughout the system
 """
 import os
 from pathlib import Path
+
+# Compat shim for newer openai package (>=1.x) with langchain_openai expecting DefaultHttpxClient
+try:
+    import openai  # type: ignore
+except Exception:  # pragma: no cover
+    openai = None
+
+if openai:
+    import httpx
+
+    # Ensure httpx client classes are available for openai bindings
+    if not hasattr(openai, "DefaultHttpxClient"):
+        openai.DefaultHttpxClient = httpx.Client  # type: ignore[attr-defined]
+    if not hasattr(openai, "DefaultAsyncHttpxClient"):
+        openai.DefaultAsyncHttpxClient = httpx.AsyncClient  # type: ignore[attr-defined]
+    if not hasattr(openai, "AsyncOpenAI"):
+        openai.AsyncOpenAI = getattr(openai, "AsyncClient", None) or getattr(openai, "OpenAI", None) or openai.DefaultAsyncHttpxClient  # type: ignore
+
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_anthropic import ChatAnthropic
 from langchain_core.caches import BaseCache  # Fix for Pydantic v2 compatibility
@@ -57,7 +75,6 @@ GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
 VERTEX_AI_LOCATION = os.getenv("VERTEX_AI_LOCATION", "us-east4")
 
 # Log if using Gemini models
-SYNTHESIS_MODEL = os.getenv("SYNTHESIS_MODEL", "")
 if SYNTHESIS_MODEL.startswith("gemini-3"):
     log_syn.info(f"ℹ️  Using 'global' region for Gemini 3 models")
 elif SYNTHESIS_MODEL.startswith("gemini"):
@@ -272,16 +289,17 @@ def create_llm_instance(model_name: str, temperature: float = 0, **kwargs):
     else:
         # Use OpenAI for non-Groq models or if Groq is not available
         if not is_groq_model:
-            log_syn.warning(f"⚠️  Model '{model_name}' not recognized as Groq model, using OpenAI")
+            log_syn.info(f"ℹ️  Using OpenAI model: {model_name}")
         elif not GROQ_AVAILABLE:
             log_syn.warning(f"⚠️  Groq SDK not available, using OpenAI for '{model_name}'")
         elif not GROQ_API_KEY:
             log_syn.warning(f"⚠️  GROQ_API_KEY not set, using OpenAI for '{model_name}'")
-        return ChatOpenAI(model=model_name, temperature=temperature, **kwargs)
+        # Disable stream_usage to avoid passing stream_options to older OpenAI endpoints
+        return ChatOpenAI(model=model_name, temperature=temperature, stream_usage=False, **kwargs)
 
 
 # =============================================================================
-# FAST MODELS (cheaper, faster) - Using Groq for speed
+# FAST MODELS (cheaper, faster) - defaults to OpenAI, uses Groq if configured
 # =============================================================================
 llm_fast = create_llm_instance(FAST_MODEL, temperature=0)
 llm_router = create_llm_instance(ROUTER_MODEL, temperature=0)

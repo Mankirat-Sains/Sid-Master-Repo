@@ -1,9 +1,9 @@
 """
 Parent State Definition
-Lightweight state object for the parent graph that orchestrates subgraphs
+Lightweight state object for the parent graph that orchestrates subgraphs.
 """
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 
 @dataclass
@@ -16,33 +16,78 @@ class ParentState:
     # Session & Query (shared across all subgraphs)
     session_id: str = ""
     user_query: str = ""  # User's query
-    original_question: Optional[str] = None  # Original user question (for storing in messages)
-    user_role: Optional[str] = None  # User role for role-based preferences
-    
-    # Messages (persisted by checkpointer) - Follows LangGraph's pattern
-    # Simple format: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
+    original_question: Optional[str] = None  # Original user question
+    user_role: Optional[str] = None  # User role for preferences
+    data_sources: Optional[Dict[str, bool]] = None  # Database selection flags
+
+    # Messages (persisted by checkpointer) - LangGraph pattern
     messages: List[Dict[str, str]] = field(default_factory=list)
-    
+    conversation_history: List[Dict[str, Any]] = field(default_factory=list)
+
     # Routing (orchestration level)
-    selected_routers: List[str] = field(default_factory=list)  # List of selected routers: "rag", "web", "desktop"
-    
-    # Image inputs (shared, but primarily used by DBRetrieval)
-    images_base64: Optional[List[str]] = None  # Base64 encoded images from frontend
-    
+    selected_routers: List[str] = field(default_factory=list)  # "rag", "web", "desktop"
+
+    # Image inputs (shared, primarily for DBRetrieval)
+    images_base64: Optional[List[str]] = None
+    image_embeddings: Optional[List[List[float]]] = None
+    image_similarity_results: List[Dict] = field(default_factory=list)
+    use_image_similarity: bool = False
+    query_intent: Optional[str] = None
+    project_filter: Optional[str] = None
+    selected_projects: List[str] = field(default_factory=list)
+    needs_clarification: bool = False
+    clarification_question: Optional[str] = None
+
     # Results from subgraphs (aggregated outputs)
     db_retrieval_result: Optional[str] = None  # final_answer from DBRetrieval subgraph
-    db_retrieval_citations: List[Dict] = field(default_factory=list)  # Citations from DBRetrieval
-    db_retrieval_code_answer: Optional[str] = None  # Code answer from DBRetrieval
-    db_retrieval_code_citations: List[Dict] = field(default_factory=list)  # Code citations
-    db_retrieval_coop_answer: Optional[str] = None  # Coop answer from DBRetrieval
-    db_retrieval_coop_citations: List[Dict] = field(default_factory=list)  # Coop citations
-    db_retrieval_follow_up_questions: List[str] = field(default_factory=list)  # Follow-up questions
-    db_retrieval_follow_up_suggestions: List[str] = field(default_factory=list)  # Follow-up suggestions
-    db_retrieval_selected_projects: List[str] = field(default_factory=list)  # Projects from retrieval
-    db_retrieval_route: Optional[str] = None  # Data route (smart/large)
-    db_retrieval_image_similarity_results: List[Dict] = field(default_factory=list)  # Image similarity results
-    db_retrieval_expanded_queries: List[str] = field(default_factory=list)  # Expanded queries
-    db_retrieval_support_score: float = 0.0  # Answer support score
-    webcalcs_result: Optional[Dict] = None  # Results from WebCalcs subgraph (future)
-    desktop_result: Optional[Dict] = None  # Results from DesktopAgent subgraph (future)
-    build_model_result: Optional[Dict] = None  # Results from BuildModelGen subgraph (future)
+    db_retrieval_citations: List[Dict] = field(default_factory=list)
+    db_retrieval_code_answer: Optional[str] = None
+    db_retrieval_code_citations: List[Dict] = field(default_factory=list)
+    db_retrieval_coop_answer: Optional[str] = None
+    db_retrieval_coop_citations: List[Dict] = field(default_factory=list)
+    db_retrieval_follow_up_questions: List[str] = field(default_factory=list)
+    db_retrieval_follow_up_suggestions: List[str] = field(default_factory=list)
+    db_retrieval_selected_projects: List[str] = field(default_factory=list)
+    db_retrieval_route: Optional[str] = None
+    db_retrieval_image_similarity_results: List[Dict] = field(default_factory=list)
+    db_retrieval_expanded_queries: List[str] = field(default_factory=list)
+    db_retrieval_support_score: float = 0.0
+    webcalcs_result: Optional[Dict] = None
+    desktop_result: Optional[Dict] = None
+    build_model_result: Optional[Dict] = None
+
+    # Doc generation / workflow metadata
+    workflow: Optional[str] = None  # "qa" | "docgen"
+    desktop_policy: Optional[str] = None  # "required" | "optional" | "never"
+    task_type: Optional[str] = None  # "qa" | "doc_section" | "doc_report"
+    doc_type: Optional[str] = None
+    section_type: Optional[str] = None
+    doc_request: Optional[Dict[str, Any]] = None
+    requires_desktop_action: bool = False
+    desktop_action_plan: Optional[Dict[str, Any]] = None
+    desktop_steps: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_execution: Optional[str] = None
+    output_artifact_ref: Optional[Dict[str, Any]] = None
+    desktop_plan_steps: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_current_step: int = 0
+    desktop_iteration_count: int = 0
+    desktop_workspace_dir: Optional[str] = None
+    desktop_workspace_files: List[str] = field(default_factory=list)
+    desktop_memories: List[Dict[str, Any]] = field(default_factory=list)
+    desktop_context: Dict[str, Any] = field(default_factory=dict)
+    desktop_interrupt_pending: bool = False
+    desktop_approved_actions: List[str] = field(default_factory=list)
+    desktop_interrupt_data: Optional[Dict[str, Any]] = None
+    tool_execution_log: List[Dict[str, Any]] = field(default_factory=list)
+    large_output_refs: Dict[str, str] = field(default_factory=dict)
+    desktop_loop_result: Optional[Dict[str, Any]] = None
+
+    # Doc generation outputs
+    doc_generation_result: Optional[Dict[str, Any]] = None
+    doc_generation_warnings: List[str] = field(default_factory=list)
+    final_answer: Optional[str] = None
+    answer_citations: List[Dict[str, Any]] = field(default_factory=list)
+
+    # Execution trace (optional)
+    execution_trace: List[str] = field(default_factory=list)
+    execution_trace_verbose: List[Dict[str, Any]] = field(default_factory=list)

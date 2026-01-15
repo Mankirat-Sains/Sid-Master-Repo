@@ -64,18 +64,13 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 # =============================================================================
 
 # Fast models (cheaper, faster for simple tasks)
-# Use Groq models for speed optimization
-# Available Groq models (with full paths):
-# - llama-3.3-70b-versatile (no prefix needed)
-# - meta-llama/llama-4-scout-17b-16e-instruct
-# - openai/gpt-oss-120b (for complex planning)
-# - openai/gpt-oss-20b (faster alternative)
-FAST_MODEL = os.getenv("FAST_MODEL", "llama-3.3-70b-versatile")  # Fast, reliable
-ROUTER_MODEL = os.getenv("ROUTER_MODEL", "llama-3.3-70b-versatile")
-GRADER_MODEL = os.getenv("GRADER_MODEL", "llama-3.3-70b-versatile")
-SUPPORT_MODEL = os.getenv("SUPPORT_MODEL", "llama-3.3-70b-versatile")
-RAG_PLANNER_MODEL = os.getenv("RAG_PLANNER_MODEL", "openai/gpt-oss-120b")  # Complex planning and reasoning
-VERIFY_MODEL = os.getenv("VERIFY_MODEL", "llama-3.3-70b-versatile")  # Verification tasks
+# Default to OpenAI to avoid Groq dependency unless explicitly overridden
+FAST_MODEL = os.getenv("FAST_MODEL", "gpt-4o-mini")  # Fast, reliable
+ROUTER_MODEL = os.getenv("ROUTER_MODEL", "gpt-4o-mini")
+GRADER_MODEL = os.getenv("GRADER_MODEL", "gpt-4o-mini")
+SUPPORT_MODEL = os.getenv("SUPPORT_MODEL", "gpt-4o-mini")
+RAG_PLANNER_MODEL = os.getenv("RAG_PLANNER_MODEL", "gpt-4o")  # Complex planning and reasoning
+VERIFY_MODEL = os.getenv("VERIFY_MODEL", "gpt-4o-mini")  # Verification tasks
 
 # High-quality models (for synthesis, final answers - keep using OpenAI/Anthropic)
 SYNTHESIS_MODEL = os.getenv("SYNTHESIS_MODEL", "gpt-4o")
@@ -127,6 +122,26 @@ MAX_HYBRID_RETRIEVAL_DOCS = 100  # Total docs for hybrid retrieval
 # =============================================================================
 MAX_CONVERSATION_HISTORY = 5  # Keep last 5 Q&A exchanges
 MAX_SEMANTIC_HISTORY = 5      # Keep semantic intelligence for last 5 exchanges
+
+# ============================================================================
+# QUALITY GATES (Phase 2)
+# ============================================================================
+USE_VERIFIER = os.getenv("USE_VERIFIER", "true").lower() == "true"
+MAX_VERIFIER_TOKENS = int(os.getenv("MAX_VERIFIER_TOKENS", "2000"))
+USE_GRADER = os.getenv("USE_GRADER", "true").lower() == "true"
+MAX_DOCS_TO_GRADE = int(os.getenv("MAX_DOCS_TO_GRADE", "10"))
+MAX_GRADER_TOKENS = int(os.getenv("MAX_GRADER_TOKENS", "4000"))
+
+# ============================================================================
+# DEEP DESKTOP AGENT (Phase 3)
+# ============================================================================
+WORKSPACE_BASE_PATH = os.getenv("WORKSPACE_BASE_PATH", "/workspace")
+WORKSPACE_RETENTION_HOURS = int(os.getenv("WORKSPACE_RETENTION_HOURS", "24"))
+MAX_DEEP_AGENT_ITERATIONS = int(os.getenv("MAX_DEEP_AGENT_ITERATIONS", "10"))
+DEEP_AGENT_ENABLED = os.getenv("DEEP_AGENT_ENABLED", "true").lower() == "true"
+INTERRUPT_DESTRUCTIVE_ACTIONS = os.getenv("INTERRUPT_DESTRUCTIVE_ACTIONS", "true").lower() == "true"
+INTERRUPT_APPROVAL_TIMEOUT = int(os.getenv("INTERRUPT_APPROVAL_TIMEOUT", "300"))
+MAX_INLINE_TOOL_RESULT = int(os.getenv("MAX_INLINE_TOOL_RESULT", "3000"))
 
 # =============================================================================
 # ROLE-BASED DATABASE PREFERENCES
@@ -213,4 +228,3 @@ VALID_ROLES = list(ROLE_DATABASE_PREFERENCES.keys())
 # DEBUG MODE
 # =============================================================================
 DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() in ("true", "1", "t")
-
