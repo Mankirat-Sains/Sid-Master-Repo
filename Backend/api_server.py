@@ -457,6 +457,23 @@ class CypherResponse(BaseModel):
     error: Optional[str] = None
     query: Optional[str] = None
 
+class NaturalLanguageQueryRequest(BaseModel):
+    query: str  # Natural language question
+
+class NaturalLanguageQueryResponse(BaseModel):
+    success: bool
+    cypher_query: Optional[str] = None
+    verification_result: Optional[Dict[str, Any]] = None
+    columns: Optional[List[str]] = None
+    rows: Optional[List[Any]] = None
+    row_count: Optional[int] = None
+    reasoning: Optional[str] = None
+    confidence: Optional[float] = None
+    latency_ms: Optional[float] = None
+    error: Optional[str] = None
+    requires_clarification: Optional[bool] = None
+    clarification_question: Optional[str] = None
+
 class ChatResponse(BaseModel):
     reply: str
     session_id: str
@@ -2718,16 +2735,102 @@ async def get_graph_schema():
     """Get the Kuzu graph database schema (Debug mode only)"""
     if not DEBUG_MODE:
         raise HTTPException(status_code=403, detail="Graph database access is only available in DEBUG_MODE")
-    
+
     if get_kuzu_manager is None:
         raise HTTPException(status_code=500, detail="Kuzu manager not available")
-    
+
     try:
         kuzu_manager = get_kuzu_manager()
         return kuzu_manager.get_schema()
     except Exception as e:
         logger.error(f"Graph schema endpoint error: {e}")
         return {"success": False, "error": str(e)}
+
+@app.post("/graph/query", response_model=NaturalLanguageQueryResponse)
+async def query_graph_with_natural_language(request: NaturalLanguageQueryRequest):
+    """
+    Convert natural language to Cypher query and execute against Kuzu graph database.
+
+    This endpoint:
+    1. Generates Cypher query from natural language using LLM
+    2. Verifies the query using agent-based verification
+    3. Executes the query against KuzuDB
+    4. Returns formatted results
+
+    Example request:
+    {
+        "query": "How many projects are in the database?"
+    }
+
+    Returns:
+    - success: Whether the operation succeeded
+    - cypher_query: The generated Cypher query
+    - verification_result: Result from the verification agent
+    - columns/rows/row_count: Query results
+    - reasoning: LLM's explanation of the query
+    - confidence: LLM's confidence score (0-1)
+    - latency_ms: Total execution time
+    """
+    if not DEBUG_MODE:
+        raise HTTPException(status_code=403, detail="Graph database access is only available in DEBUG_MODE")
+
+    if get_kuzu_manager is None:
+        raise HTTPException(status_code=500, detail="Kuzu manager not available")
+
+    try:
+        # Import the Text-to-Cypher assistant
+        from nodes.DBRetrieval.KGdb.text_to_cypher_assistant import TextToCypherAssistant
+
+        logger.info(f"📝 Natural language query: {request.query}")
+
+        # Create assistant and execute query
+        assistant = TextToCypherAssistant()
+        result = assistant.query(request.query)
+
+        # Extract execution results if successful
+        if result.get("success", False):
+            # Get the raw Kuzu execution result
+            kuzu_manager = get_kuzu_manager()
+            cypher_query = result.get("cypher_query")
+            exec_result = kuzu_manager.execute(cypher_query)
+
+            return NaturalLanguageQueryResponse(
+                success=True,
+                cypher_query=cypher_query,
+                verification_result=result.get("verification_result"),
+                columns=exec_result.get("columns"),
+                rows=exec_result.get("rows"),
+                row_count=result.get("row_count"),
+                reasoning=result.get("reasoning"),
+                confidence=result.get("confidence"),
+                latency_ms=result.get("latency_ms"),
+                error=None
+            )
+        else:
+            # Return failure with error details
+            return NaturalLanguageQueryResponse(
+                success=False,
+                cypher_query=result.get("cypher_query"),
+                verification_result=result.get("verification_result"),
+                columns=None,
+                rows=None,
+                row_count=0,
+                reasoning=result.get("reasoning"),
+                confidence=result.get("confidence", 0.0),
+                latency_ms=result.get("latency_ms"),
+                error=result.get("error", "Unknown error"),
+                requires_clarification=result.get("requires_clarification", False),
+                clarification_question=result.get("clarification_question")
+            )
+
+    except Exception as e:
+        logger.error(f"Natural language query endpoint error: {e}")
+        import traceback
+        traceback.print_exc()
+        return NaturalLanguageQueryResponse(
+            success=False,
+            error=str(e)
+        )
 
 if __name__ == "__main__":
     # Check environment setup
@@ -2747,7 +2850,8 @@ if __name__ == "__main__":
     print(f"   📊 Enhanced Debugger: http://0.0.0.0:{port}/logs/enhanced?format=html")
     print(f"   📈 Log Statistics: http://0.0.0.0:{port}/logs/enhanced/stats")
     if DEBUG_MODE:
-        print(f"   🛠️  Kuzu Graph DB Cypher: http://0.0.0.0:{port}/graph/schema")
+        print(f"   🛠️  Kuzu Graph DB Schema: http://0.0.0.0:{port}/graph/schema")
+        print(f"   🔍 Natural Language → Cypher: http://0.0.0.0:{port}/graph/query")
     print(f"\n📡 Server running on port: {port}")
     print("⚡ Ready for Electron chatbutton app!")
 

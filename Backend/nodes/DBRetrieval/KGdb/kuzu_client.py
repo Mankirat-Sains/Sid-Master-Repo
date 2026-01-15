@@ -130,7 +130,7 @@ class KuzuManager:
     def get_schema(self):
         """Returns the current graph schema (node and rel tables)"""
         try:
-            # Kuzu doesn't have a direct 'get_schema' method like some others, 
+            # Kuzu doesn't have a direct 'get_schema' method like some others,
             # but we can query metadata or use internal methods if available.
             # For now, we'll return a simple placeholder or common metadata query.
             tables = self.conn.execute("CALL SHOW_TABLES() RETURN *").get_as_df().to_dict(orient='records')

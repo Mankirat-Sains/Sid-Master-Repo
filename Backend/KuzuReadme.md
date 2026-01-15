@@ -12,12 +12,106 @@ Kuzu is our embedded graph database running locally within the backend process. 
 
 ### Performance & Data Notice
 - **Initial Load:** When loading the database for the first time (initialization), it may take **30-50 seconds** to process the schema and data insertions. After this initial setup, all Cypher queries are extremely fast, typically returning results in **less than a second**.
-- **Project Data:** The database is currently pre-populated with **26 hardcoded projects**. 
+- **Project Data:** The database is currently pre-populated with **26 hardcoded projects**.
 - **Future Roadmap:** Ideally, in the future, every new project that gets added to the system should be automatically synchronized and added to the user's Kuzu graph database for real-time relationship mapping.
 
-## Sample Queries (Curl)
+## API Endpoints
 
-You can copy and paste these commands directly into your terminal to query the database.
+There are **two ways** to query the Kuzu graph database via HTTP:
+
+### 1. Natural Language Queries (Text-to-Cypher) - **RECOMMENDED**
+**Endpoint:** `POST /graph/query`
+
+This endpoint accepts natural language questions and automatically converts them to Cypher queries using AI. The system includes:
+- **Automatic Cypher generation** from plain English
+- **5-level verification** (safety, schema, syntax, KuzuDB compatibility, complexity)
+- **Agent-based validation** to prevent dangerous operations
+- **Detailed metadata** including confidence scores and reasoning
+
+**Example:**
+```bash
+curl -X POST "http://localhost:8000/graph/query" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "query": "How many structural walls are in the Westlake project?"
+     }'
+```
+
+**Response includes:**
+- `success`: Whether the query succeeded
+- `cypher_query`: The generated Cypher query (for transparency)
+- `verification_result`: 5-level verification details
+- `columns`: Column names from the result
+- `rows`: Actual data returned
+- `row_count`: Number of results
+- `reasoning`: Why this Cypher was generated
+- `confidence`: AI confidence score (0.0 to 1.0)
+- `latency_ms`: Execution time
+
+### 2. Direct Cypher Queries - **ADVANCED**
+**Endpoint:** `POST /graph/cypher`
+
+For developers who want full control, you can send raw Cypher queries directly. This endpoint **bypasses** the verification system and executes queries as-is.
+
+**Example:**
+```bash
+curl -X POST "http://localhost:8000/graph/cypher" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "query": "MATCH (p:Project) RETURN p.name LIMIT 10;"
+     }'
+```
+
+**⚠️ Use with caution:** This endpoint does not validate queries for safety or compatibility.
+
+---
+
+## Natural Language Query Examples
+
+Below are examples using the **Text-to-Cypher endpoint** (`/graph/query`) with natural language:
+
+### Basic Counting
+```bash
+curl -X POST "http://localhost:8000/graph/query" \
+     -H "Content-Type: application/json" \
+     -d '{"query": "How many projects are in the database?"}'
+```
+
+### Filtering by Properties
+```bash
+curl -X POST "http://localhost:8000/graph/query" \
+     -H "Content-Type: application/json" \
+     -d '{"query": "Show me all structural walls taller than 10 feet"}'
+```
+
+### Project-Specific Queries
+```bash
+curl -X POST "http://localhost:8000/graph/query" \
+     -H "Content-Type: application/json" \
+     -d '{"query": "List all walls in project 25-01-161"}'
+```
+
+### Aggregations
+```bash
+curl -X POST "http://localhost:8000/graph/query" \
+     -H "Content-Type: application/json" \
+     -d '{"query": "Count beams by level"}'
+```
+
+### Relationship Traversals
+```bash
+curl -X POST "http://localhost:8000/graph/query" \
+     -H "Content-Type: application/json" \
+     -d '{"query": "Who owns the Westlake project?"}'
+```
+
+---
+
+## Direct Cypher Query Examples
+
+Below are examples using the **direct Cypher endpoint** (`/graph/cypher`) for advanced users:
+
+**Note:** These examples use raw Cypher syntax. For most use cases, the natural language endpoint (`/graph/query`) is easier and safer.
 
 ### 1. Count All Nodes by Type
 Get a summary count of all node types in the graph.

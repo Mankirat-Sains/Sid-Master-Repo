@@ -122,8 +122,9 @@ Backend/data
 *_Cardoso.md
 plan.txt
 questions.txt
-
+instructions.txt
 
 __pycache__/
 *.pyc
+
 

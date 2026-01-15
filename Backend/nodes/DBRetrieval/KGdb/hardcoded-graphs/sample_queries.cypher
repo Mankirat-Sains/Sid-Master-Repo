@@ -88,19 +88,24 @@ LIMIT 20;
 // Use case: Understanding the composition of different projects
 
 MATCH (p:Project)-[:CONTAINS_MODEL]->(m:Model)-[:HAS_VERSION]->(v:Version)
+WITH p, v
 OPTIONAL MATCH (v)-[:REFERENCES_WALL]->(w:Wall)
+WITH p, v, COUNT(DISTINCT w) AS Walls
 OPTIONAL MATCH (v)-[:REFERENCES_FLOOR]->(f:Floor)
+WITH p, v, Walls, COUNT(DISTINCT f) AS Floors
 OPTIONAL MATCH (v)-[:REFERENCES_ROOF]->(r:Roof)
+WITH p, v, Walls, Floors, COUNT(DISTINCT r) AS Roofs
 OPTIONAL MATCH (v)-[:REFERENCES_BEAM]->(b:Beam)
+WITH p, v, Walls, Floors, Roofs, COUNT(DISTINCT b) AS Beams
 OPTIONAL MATCH (v)-[:REFERENCES_COLUMN]->(c:`Column`)
+WITH p, Walls, Floors, Roofs, Beams, COUNT(DISTINCT c) AS Columns
 RETURN p.name AS ProjectName,
-       COUNT(DISTINCT w) AS Walls,
-       COUNT(DISTINCT f) AS Floors,
-       COUNT(DISTINCT r) AS Roofs,
-       COUNT(DISTINCT b) AS Beams,
-       COUNT(DISTINCT c) AS Columns
-ORDER BY (COUNT(DISTINCT w) + COUNT(DISTINCT f) + COUNT(DISTINCT r) +
-          COUNT(DISTINCT b) + COUNT(DISTINCT c)) DESC
+       Walls,
+       Floors,
+       Roofs,
+       Beams,
+       Columns
+ORDER BY (Walls + Floors + Roofs + Beams + Columns) DESC
 LIMIT 15;
 
 
