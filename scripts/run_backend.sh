@@ -25,6 +25,12 @@ SCRIPT_DIR="$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
 cd "${ROOT_DIR}/Backend"
 
+# Prefer the Backend venv if it exists so we pick up the right Python version and dependencies.
+if [ -x "${ROOT_DIR}/Backend/venv/bin/uvicorn" ]; then
+  export PATH="${ROOT_DIR}/Backend/venv/bin:${PATH}"
+  echo "Using venv at ${ROOT_DIR}/Backend/venv"
+fi
+
 free_port "${PORT}"
 
 export PYTHONPATH="${ROOT_DIR}/Backend:${PYTHONPATH:-}"

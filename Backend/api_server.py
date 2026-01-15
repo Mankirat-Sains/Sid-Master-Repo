@@ -825,11 +825,14 @@ async def startup_event():
         
         # Verify checkpointer is being used
         if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
-            logger.info(f"✅ Using {CHECKPOINTER_TYPE} checkpointer (persistent)")
-            logger.info("💾 State will be automatically saved to Supabase after each node execution")
-            # Verify the graph is actually using the async checkpointer
-            if hasattr(main.graph, 'checkpointer'):
-                logger.info(f"✅ Graph checkpointer verified: {type(main.graph.checkpointer).__name__}")
+            if initialized_checkpointer.__class__.__name__ != "AsyncPostgresSaver":
+                logger.warning(f"⚠️  {CHECKPOINTER_TYPE} checkpointer unavailable; using in-memory fallback")
+            else:
+                logger.info(f"✅ Using {CHECKPOINTER_TYPE} checkpointer (persistent)")
+                logger.info("💾 State will be automatically saved to Supabase after each node execution")
+                # Verify the graph is actually using the async checkpointer
+                if hasattr(main.graph, 'checkpointer'):
+                    logger.info(f"✅ Graph checkpointer verified: {type(main.graph.checkpointer).__name__}")
         else:
             logger.info(f"✅ Using {CHECKPOINTER_TYPE} checkpointer")
     except Exception as e:

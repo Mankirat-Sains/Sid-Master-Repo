@@ -178,8 +178,15 @@ async def init_checkpointer_async():
     global checkpointer, _checkpointer_init_func, _checkpointer_instance
     if CHECKPOINTER_TYPE == "postgres" or CHECKPOINTER_TYPE == "supabase":
         if _checkpointer_init_func is not None:
-            _checkpointer_instance = await _checkpointer_init_func()
-            checkpointer = _checkpointer_instance
+            try:
+                _checkpointer_instance = await _checkpointer_init_func()
+                checkpointer = _checkpointer_instance
+            except Exception as exc:
+                if DEBUG_MODE:
+                    print(f"⚠️  Postgres checkpointer unavailable, falling back to memory: {exc}")
+                from langgraph.checkpoint.memory import InMemorySaver
+                _checkpointer_instance = InMemorySaver()
+                checkpointer = _checkpointer_instance
         else:
             # Fallback if init function wasn't created
             from langgraph.checkpoint.memory import InMemorySaver
