@@ -122,6 +122,30 @@ class DeepDesktopLoop:
         desktop_action_plan = _get(state, "desktop_action_plan", {}) or {}
         task_type = desktop_action_plan.get("task_type", "unknown")
 
+        # For docgen workflows, short-circuit to a deterministic plan that actually calls docgen.
+        is_doc_workflow = _get(state, "workflow") == "docgen" or str(_get(state, "task_type")).startswith("doc_")
+        if is_doc_workflow:
+            doc_request = _get(state, "doc_request", {}) or {}
+            if user_query and not doc_request.get("user_query"):
+                doc_request["user_query"] = user_query
+            doc_type = _get(state, "doc_type")
+            section_type = _get(state, "section_type")
+            if doc_type:
+                doc_request.setdefault("doc_type", doc_type)
+            if section_type:
+                doc_request.setdefault("section_type", section_type)
+            logger.info("Doc workflow detected; forcing generate_document plan")
+            return {
+                "goal": f"Generate document content for: {user_query or 'document request'}",
+                "steps": [
+                    {
+                        "action": "generate_document",
+                        "reasoning": "Doc workflow requires generating draft content via docgen.",
+                        "params": {"doc_request": doc_request},
+                    }
+                ],
+            }
+
         planning_prompt = f"""You are a desktop task planner. Break down the following request into concrete steps.
 
 User Request: {user_query}
