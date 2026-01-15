@@ -5,13 +5,19 @@ from typing import Dict, Optional
 from storage.metadata_db import MetadataDB
 
 DEFAULTS = {
-    "introduction": (800, 1200),
-    "methodology": (500, 900),
-    "results": (300, 600),
-    "recommendations": (200, 400),
-    "conclusion": (80, 180),
-    "limitations": (200, 400),
-    "general": (400, 800),
+    "executive_summary": (700, 1100),
+    "background": (1200, 1800),
+    "introduction": (1200, 1800),
+    "scope": (1000, 1600),
+    "methodology": (1200, 1800),
+    "analysis": (1500, 2200),
+    "findings": (1500, 2200),
+    "results": (1200, 1800),
+    "detailed_analysis": (1600, 2400),
+    "recommendations": (900, 1300),
+    "conclusion": (600, 900),
+    "limitations": (600, 900),
+    "general": (900, 1300),
 }
 
 
