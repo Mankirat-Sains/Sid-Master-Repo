@@ -408,5 +408,14 @@ def node_answer(state: DBRetrievalState) -> dict:
                     "image_similarity_results": state.image_similarity_results or []
                 }
     except Exception as e:
-        log_syn.error(f"Answer synthesis failed: {e}")
-        return {"final_answer": "Error synthesizing answer", "answer_citations": []}
+        import traceback
+        error_msg = str(e)
+        error_traceback = traceback.format_exc()
+        log_syn.error(f"Answer synthesis failed: {error_msg}")
+        log_syn.error(f"Traceback: {error_traceback}")
+        # Return error with more detail for debugging (but sanitize for user)
+        return {
+            "final_answer": f"Error synthesizing answer: {error_msg[:200]}", 
+            "answer_citations": []
+        }
+

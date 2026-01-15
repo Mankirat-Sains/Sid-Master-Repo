@@ -547,20 +547,33 @@ async function loadModel(url: string) {
           stack: urlError.stack,
           url: url,
           hasToken: !!token,
+          tokenLength: token?.length || 0,
           serverUrl: serverUrl
         })
         
         // Check for specific error types
         if (urlError.message && (urlError.message.includes('403') || urlError.message.includes('Forbidden'))) {
-          throw new Error('Authentication error: Token may not have access to this project')
+          if (!token) {
+            throw new Error('Authentication required: This model is private. Please set SPECKLE_TOKEN in your .env file and restart the server.')
+          } else {
+            throw new Error('Authentication error: Token may not have access to this project. Please verify your SPECKLE_TOKEN has access to this model.')
+          }
         } else if (urlError.message && urlError.message.includes('404')) {
           throw new Error('Model not found: Check if the project/model ID is correct')
-        } else if (urlError.message && urlError.message.includes('Query failed') || urlError.message.includes('fetch')) {
+        } else if (urlError.message && (urlError.message.includes('Query failed') || urlError.message.includes('fetch'))) {
+          // Check if it's an authentication issue
+          if (!token) {
+            throw new Error(`Authentication required: This model appears to be private. Please set SPECKLE_TOKEN in your .env file (at repo root or Frontend/.env) and restart the Nuxt dev server. The model exists at: ${url}`)
+          }
           // This might be a CORS issue - try to provide helpful error message
           console.warn('⚠️ Query failed - this might be a CORS issue')
           console.warn('💡 The Speckle server needs to allow CORS from your origin')
           console.warn('💡 Electron apps don\'t have CORS restrictions, but browsers do')
           throw new Error(`Query failed: ${urlError.message}. This might be a CORS issue - the Speckle server needs to allow requests from ${window.location.origin}`)
+        }
+        // Generic error - check if token is missing
+        if (!token) {
+          throw new Error(`Authentication may be required. Error: ${urlError.message}. Please set SPECKLE_TOKEN in your .env file and restart the server.`)
         }
         throw urlError
       }

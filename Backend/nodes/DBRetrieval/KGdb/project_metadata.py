@@ -66,11 +66,21 @@ def fetch_project_metadata(project_ids: List[str]) -> Dict[str, Dict[str, str]]:
         for proj_id in project_ids:
             if proj_id not in metadata and PROJECT_RE.match(proj_id):
                 log_db.warning(f"Project {proj_id} not found in Supabase project_info table")
+            elif proj_id not in metadata:
+                # Log non-standard project IDs that weren't found
+                log_db.debug(f"Non-standard project ID '{proj_id}' not found in Supabase (may be malformed)")
+        
+        # Ensure we return a dict (safety check)
+        if not isinstance(metadata, dict):
+            log_db.error(f"❌ Metadata is not a dict (type: {type(metadata)}), returning empty dict")
+            return {}
         
         return metadata
         
     except Exception as e:
+        import traceback
         log_db.error(f"Supabase project metadata lookup failed: {e}")
+        log_db.error(f"Traceback: {traceback.format_exc()}")
         return {}
 
 

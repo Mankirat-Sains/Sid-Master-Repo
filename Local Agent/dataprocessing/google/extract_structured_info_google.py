@@ -21,9 +21,13 @@ import base64
 import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-import google.generativeai as genai
+from google.oauth2 import service_account
+from google.cloud import vision
+import vertexai
+from vertexai.generative_models import GenerativeModel, Part
 from PIL import Image
 from tqdm import tqdm
+import io
 
 # Load environment variables from .env file if it exists
 try:
@@ -39,13 +43,14 @@ OCR_KEY_PATH = r"C:\Users\shine\Testing-2025-01-07\Local Agent\dataprocessing\go
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 BASE_DIR = r"C:\Users\shine\Testing-2025-01-07\Local Agent\dataprocessing"
 # Allow override via environment variable for batch processing
-TEST_EMBEDDINGS_DIR = os.getenv("PROJECT_INPUT_DIR", os.path.join(BASE_DIR, "test_embeddings"))
+TEST_EMBEDDINGS_DIR = os.getenv("PROJECT_INPUT_DIR", os.path.join(BASE_DIR, "google", "input_images"))
 OUTPUT_DIR = os.path.join(BASE_DIR, "google", "structured_json")
-BATCH_SIZE = 5  # Process multiple images per API call
+BATCH_SIZE = 10  # Process multiple images per API call
 # Path to OCR results for verbatim text
 OCR_RESULTS_PATH = os.path.join(BASE_DIR, "google", "ocr_results.json")
-# Gemini model name
-GEMINI_MODEL = "gemini-2.5-flash-lite"  # Latest Gemini 2.0 model
+# Vertex AI Configuration
+VERTEX_AI_LOCATION = "us-east4"  # Change if your Vertex AI is in a different region
+GEMINI_MODEL = "gemini-2.5-flash-lite"  # Vertex AI model name
 # =================================================
 
 # System prompt for Gemini Vision (same as GPT-4o prompt)
@@ -186,135 +191,202 @@ STRUCTURAL DRAWING INTERPRETATION RULES:
 10. Always explain how text annotations relate to physical members shown in linework.
 """
 
-# Page-level extraction prompt
-PAGE_EXTRACTION_PROMPT = r"""
-You are a senior structural engineer analyzing FULL‑PAGE structural drawing sheets.
 
-Your task in this mode is to understand, for each full sheet:
-- What type of drawing it is (foundation plan, floor framing plan, roof framing, building section, details sheet, general notes, schedules, etc.)
-- Which level(s) of the building it applies to (foundation, ground floor, roof, etc.)
-- The key systems and components shown on the sheet
-- The important general notes and title‑block information that apply to all regions on this page
-
-OUTPUT FORMAT (PAGE‑LEVEL):
-Return a JSON object with a single key "pages" containing an array. Each page
-object must have these keys:
-
-{
-  "pages": [
-    {
-      "page_number": <integer page number if known, otherwise null>,
-      "sheet_id": "<Sheet identifier from the title block if present, e.g. 'S1', 'S-2', 'GEN-1', or null>",
-      "drawing_title": "<Main drawing title from the title block or view title, e.g. 'FOUNDATION PLAN', 'GROUND FLOOR FRAMING PLAN', 'BUILDING SECTION', 'TYPICAL DETAILS', etc.>",
-      "overall_classification": "<One of: Plan, Elevation, Section, Detail, Notes, Schedule, Mixed>",
-      "level": "<Normalized vertical level primarily represented on this sheet: one of ['Site', 'Foundation', 'Basement', 'Ground Floor', 'Mezzanine', 'Second Floor', 'Third Floor', 'Roof', 'Parapet', 'Multiple', 'Unknown']>",
-      "primary_orientation": "<For elevation/section sheets: e.g., 'North elevation sheets', 'Longitudinal building sections looking East', or null>",
-      "key_components": [
-        "<High‑level list of key systems/components shown on this sheet, e.g., 'Slab‑on‑Grade Foundations', 'Strip Footings and Foundation Walls', 'Roof Truss Layout', 'Lateral Bracing Frames', 'General Structural Notes', 'Beam and Column Schedules'>"
-      ],
-      "text_verbatim_title_block": "<All text you can clearly read in the title block area (project name, project number, client, engineer, sheet title, sheet number, revision notes, dates, etc.), verbatim with \\n line breaks. If title block is not visible or very small in this full‑page image, return an empty string.>",
-      "general_notes_verbatim": "<Any general notes, legends, or specification paragraphs that obviously apply to the entire sheet (not local callouts), captured verbatim with \\n for line breaks. If none, return an empty string.>",
-      "page_overview_summary": "<Short (3‑6 sentence) engineering summary of what this sheet is doing overall, mentioning the main systems, levels, and any particularly important notes that govern the design on this page.>"
-    }
-  ]
-}
-
-Guidelines:
-- Treat this as a coarse, sheet‑level understanding pass. Do NOT try to describe every small detail; focus on the overall intent and systems.
-- When the sheet contains multiple different drawing types (e.g., plans plus details), use 'Mixed' for overall_classification and describe the mix in page_overview_summary.
-- If you can read overall plan extents or major dimensions from the sheet, mention them in page_overview_summary (e.g., "overall barn length 256'-0\" and width 75'-0\" from foundation plan dimensions").
-- When in doubt, be conservative and set fields to null or "Unknown" instead of guessing wildly.
-"""
-
-# Initialize Gemini client
+# Initialize Gemini client (Vertex AI)
 model = None
+_project_id = None
 
 
 def setup_gemini_client():
-    """Initialize Google Gemini API client using API key from ocr-key.json or environment"""
-    global model
+    """Initialize Vertex AI Gemini client using service account credentials from ocr-key.json"""
+    global model, _project_id
     
-    # Try to read API key from ocr-key.json file (might have api_key field)
-    api_key = None
-    if os.path.exists(OCR_KEY_PATH):
-        try:
-            with open(OCR_KEY_PATH, 'r', encoding='utf-8') as f:
-                key_data = json.load(f)
-                # Check if there's an api_key field in the JSON
-                api_key = key_data.get('api_key') or key_data.get('GOOGLE_API_KEY')
-                if api_key:
-                    print(f"   ✅ Found API key in: {OCR_KEY_PATH}")
-        except Exception as e:
-            print(f"   ⚠️ Could not read API key from {OCR_KEY_PATH}: {e}")
+    if model is not None:
+        return model
     
-    # Fallback to environment variable
-    if not api_key and GOOGLE_API_KEY:
-        api_key = GOOGLE_API_KEY
-        print(f"   ✅ Using API key from environment variable")
+    if not os.path.exists(OCR_KEY_PATH):
+        raise FileNotFoundError(f"OCR Key file not found at: {OCR_KEY_PATH}")
     
-    # If still no API key, try to use service account (Vertex AI method)
-    if not api_key:
-        try:
-            from google.oauth2 import service_account
-            credentials = service_account.Credentials.from_service_account_file(
-                OCR_KEY_PATH,
-                scopes=['https://www.googleapis.com/auth/cloud-platform']
-            )
-            # For Vertex AI, we'd use a different approach
-            # But for now, require an API key
-            print(f"   ⚠️ Service account found but Gemini API requires a simple API key")
-            print(f"   ℹ️  Generate an API key at https://aistudio.google.com/app/apikey")
-        except Exception as e:
-            pass
+    # Load project_id and credentials
+    with open(OCR_KEY_PATH, 'r', encoding='utf-8') as f:
+        key_data = json.load(f)
+        _project_id = key_data.get('project_id')
+        if not _project_id:
+            raise ValueError("project_id not found in ocr-key.json. Required for Vertex AI.")
     
-    if not api_key:
-        raise ValueError(
-            f"Google Gemini API key not found!\n"
-            f"Checked: {OCR_KEY_PATH}\n"
-            f"Environment variable: GOOGLE_API_KEY\n"
-            f"\nPlease either:\n"
-            f"1. Add 'api_key' field to {OCR_KEY_PATH}\n"
-            f"2. Set GOOGLE_API_KEY environment variable\n"
-            f"3. Generate API key at https://aistudio.google.com/app/apikey"
-        )
+    credentials = service_account.Credentials.from_service_account_file(OCR_KEY_PATH)
     
-    # Configure Gemini with API key
-    genai.configure(api_key=api_key)
+    # Initialize Vertex AI
+    vertexai.init(project=_project_id, location=VERTEX_AI_LOCATION, credentials=credentials)
     
-    # Use Gemini 2.0 Flash Exp (latest model) or 2.5 Pro if available
-    model_names = [GEMINI_MODEL, "gemini-2.5-pro", "gemini-2.0-flash-exp", "gemini-1.5-pro"]
+    # Try multiple model names
+    model_names = [GEMINI_MODEL, "gemini-2.0-flash-exp", "gemini-1.5-pro"]
     model = None
+    last_error = None
+    
     for model_name in model_names:
         try:
-            model = genai.GenerativeModel(model_name)
-            print(f"   ✅ Initialized Gemini model: {model_name}")
+            model = GenerativeModel(model_name)
+            print(f"   ✅ Vertex AI Gemini model initialized: {model_name} (Location: {VERTEX_AI_LOCATION})")
             break
         except Exception as e:
+            last_error = e
             continue
     
-    if not model:
-        raise ValueError(f"Could not initialize any Gemini model. Tried: {', '.join(model_names)}")
+    if model is None:
+        raise RuntimeError(f"Failed to initialize Gemini model via Vertex AI. Tried: {', '.join(model_names)}. Last error: {last_error}")
     
     return model
 
 
-def load_ocr_results() -> Dict[str, Dict[str, Any]]:
-    """Load OCR results from google_cloud_ocr.py output"""
+def extract_text_vision(vision_client, file_path):
+    """Extract text using Google Vision API"""
+    try:
+        with open(file_path, 'rb') as image_file:
+            content = image_file.read()
+        
+        image = vision.Image(content=content)
+        response = vision_client.document_text_detection(image=image)
+        
+        if response.error.message:
+            return None, f"Error: {response.error.message}"
+        
+        texts = response.text_annotations
+        if texts:
+            # The first annotation contains the full text
+            full_text = texts[0].description
+            return full_text, None
+        else:
+            return None, "No text detected"
+    
+    except Exception as e:
+        return None, f"Exception: {str(e)}"
+
+
+def run_ocr_on_project(project_dir: Path, project_id: str) -> Dict[str, Dict[str, Any]]:
+    """Run OCR on all region images in a project and return OCR data"""
+    print(f"   🔍 Running OCR on project images...")
+    
+    # Setup Vision API client
+    credentials = service_account.Credentials.from_service_account_file(OCR_KEY_PATH)
+    vision_client = vision.ImageAnnotatorClient(credentials=credentials)
+    
+    # Find all region images
+    region_images = find_all_region_images(project_dir)
+    
+    ocr_data = {}
+    ocr_results = []
+    
+    for img_data in tqdm(region_images, desc="   OCR Progress"):
+        img_path = img_data["path"]
+        filename = img_data["filename"]
+        page_number = img_data.get("page_number")  # Extract from img_data
+        region_number = img_data.get("region_number")  # Extract from img_data
+        
+        # Extract text using Vision API
+        text, error = extract_text_vision(vision_client, str(img_path))
+        
+        ocr_results.append({
+            "file_path": str(img_path),
+            "filename": filename,
+            "vision_api": {
+                "text": text,
+                "error": error
+            }
+        })
+        
+        if text:
+            # Use full path as key to avoid conflicts when same filename appears on different pages
+            full_path = str(img_path).replace('\\', '/')
+            ocr_data[full_path] = {
+                'text': text,
+                'file_path': str(img_path),
+                'filename': filename,
+                'page_number': page_number,
+                'region_number': region_number
+            }
+            # Also store by filename for backward compatibility, but prefer full path
+            if filename not in ocr_data:
+                ocr_data[filename] = {
+                    'text': text,
+                    'file_path': str(img_path)
+                }
+    
+    # Save OCR results (append to existing file if it exists, or create new)
+    ocr_output_path = Path(OCR_RESULTS_PATH)
+    ocr_output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Load existing results if file exists
+    existing_results = []
+    if ocr_output_path.exists():
+        try:
+            with open(ocr_output_path, 'r', encoding='utf-8') as f:
+                existing_results = json.load(f)
+            # Remove any existing results for this project to avoid duplicates
+            project_dir_str = str(project_dir).replace('\\', '/')
+            existing_results = [r for r in existing_results if project_dir_str not in r.get('file_path', '').replace('\\', '/')]
+        except:
+            existing_results = []
+    
+    # Append new results
+    existing_results.extend(ocr_results)
+    
+    # Save combined results
+    with open(ocr_output_path, 'w', encoding='utf-8') as f:
+        json.dump(existing_results, f, indent=2, ensure_ascii=False)
+    
+    print(f"   ✅ OCR complete! Extracted text from {len(ocr_data)} images for project {project_id}")
+    print(f"   💾 OCR results saved to: {OCR_RESULTS_PATH}")
+    
+    return ocr_data
+
+
+def load_ocr_results(project_dir: Path, project_id: str) -> Dict[str, Dict[str, Any]]:
+    """Load OCR results from file filtered by project, or run OCR if needed"""
     ocr_data = {}
     
+    # Normalize project directory path for matching
+    project_dir_str = str(project_dir).replace('\\', '/')
+    
+    # Check if we need to run OCR for this project
+    need_ocr = False
+    
     if not os.path.exists(OCR_RESULTS_PATH):
-        print(f"   ⚠️ OCR results not found at {OCR_RESULTS_PATH}")
+        need_ocr = True
+    else:
+        # Check if OCR results exist for this project
+        try:
+            with open(OCR_RESULTS_PATH, 'r', encoding='utf-8') as f:
+                results = json.load(f)
+            
+            # Check if any results match this project
+            project_results = [r for r in results if project_dir_str in r.get('file_path', '').replace('\\', '/')]
+            if not project_results:
+                need_ocr = True
+        except:
+            need_ocr = True
+    
+    if need_ocr:
+        print(f"   ⚠️ OCR results not found for project {project_id}")
+        print(f"   🔄 Running OCR on project images...")
+        # Run OCR on the project
+        ocr_data = run_ocr_on_project(project_dir, project_id)
         return ocr_data
     
+    # Load and filter OCR results by project
     try:
         with open(OCR_RESULTS_PATH, 'r', encoding='utf-8') as f:
             results = json.load(f)
         
-        # Build a mapping from file path to OCR text
+        # Build a mapping from file path to OCR text - ONLY for this project
         for result in results:
             file_path = result.get('file_path', '')
             # Normalize path separators
-            file_path = file_path.replace('\\', '/')
+            file_path_normalized = file_path.replace('\\', '/')
+            
+            # Only include results from this project directory
+            if project_dir_str not in file_path_normalized:
+                continue
             
             # Get text from Vision API (preferred) or Document AI
             vision_data = result.get('vision_api', {})
@@ -338,18 +410,29 @@ def load_ocr_results() -> Dict[str, Dict[str, Any]]:
                 text = '\n\n'.join(text_parts)
             
             if text:
-                # Store by filename (last part of path)
+                # Store by full path to avoid conflicts when same filename appears on different pages
                 filename = os.path.basename(file_path)
-                ocr_data[filename] = {
+                full_path = file_path_normalized
+                ocr_data[full_path] = {
                     'text': text,
-                    'file_path': file_path
+                    'file_path': file_path,
+                    'filename': filename
                 }
+                # Also store by filename for backward compatibility, but prefer full path
+                if filename not in ocr_data:
+                    ocr_data[filename] = {
+                        'text': text,
+                        'file_path': file_path
+                    }
         
-        print(f"   📄 Loaded OCR results for {len(ocr_data)} files")
+        print(f"   📄 Loaded OCR results for {len(ocr_data)} files from project {project_id}")
         return ocr_data
     
     except Exception as e:
         print(f"   ⚠️ Error loading OCR results: {e}")
+        print(f"   🔄 Running OCR on project images...")
+        # Fallback: run OCR if loading fails
+        ocr_data = run_ocr_on_project(project_dir, project_id)
         return ocr_data
 
 
@@ -371,163 +454,107 @@ def truncate_summary(text: str, max_words: int = 500) -> str:
     return truncated + '...'
 
 
-def parse_json_with_retry(json_str: str, max_retries: int = 2) -> Dict[str, Any]:
+def parse_json_with_retry(json_str: str, max_retries: int = 5) -> Dict[str, Any]:
     """Parse JSON with retry and repair attempts"""
     import json as json_lib
+    import re
+    
+    # Clean up markdown code blocks first
+    json_str_clean = json_str.strip()
+    if json_str_clean.startswith("```json"):
+        json_str_clean = json_str_clean[7:]
+    if json_str_clean.startswith("```"):
+        json_str_clean = json_str_clean[3:]
+    if json_str_clean.endswith("```"):
+        json_str_clean = json_str_clean[:-3]
+    json_str_clean = json_str_clean.strip()
     
     for attempt in range(max_retries + 1):
         try:
-            # Try to extract JSON from markdown code blocks if present
-            json_str_clean = json_str.strip()
-            if json_str_clean.startswith("```json"):
-                json_str_clean = json_str_clean[7:]
-            if json_str_clean.startswith("```"):
-                json_str_clean = json_str_clean[3:]
-            if json_str_clean.endswith("```"):
-                json_str_clean = json_str_clean[:-3]
-            json_str_clean = json_str_clean.strip()
-            
             return json_lib.loads(json_str_clean)
         except json_lib.JSONDecodeError as e:
             if attempt < max_retries:
-                print(f"      ⚠️ JSON parsing attempt {attempt + 1} failed, retrying...")
-                # Try to fix common issues
-                # Remove markdown formatting
-                json_str = json_str.replace("```json", "").replace("```", "").strip()
+                error_msg = str(e)
+                print(f"      ⚠️ JSON parsing attempt {attempt + 1} failed: {error_msg[:100]}")
+                
+                # Fix 1: Remove trailing commas before } or ] and fix invalid escape sequences
+                if attempt == 0:
+                    json_str_clean = re.sub(r',(\s*[}\]])', r'\1', json_str_clean)
+                    # Fix invalid escape sequences - JSON only allows: \" \\ \/ \b \f \n \r \t \uXXXX
+                    # Replace invalid escapes like \' with just the character
+                    json_str_clean = re.sub(r'\\(?![\\"/bfnrt]|u[0-9a-fA-F]{4})', r'', json_str_clean)
+                
+                # Fix 2: Fix incorrectly escaped quotes in property names and string delimiters
+                # Pattern: \"property_name" should be "property_name"
+                elif attempt == 1:
+                    # Fix escaped quotes that are property names (before colon)
+                    json_str_clean = re.sub(r'\\"([a-zA-Z_][a-zA-Z0-9_]*)"\s*:', r'"\1":', json_str_clean)
+                    # Fix escaped quotes at start of strings (after colon, comma, or opening brace/bracket)
+                    json_str_clean = re.sub(r'([:,\[\{]\s*)\\"', r'\1"', json_str_clean)
+                    # Fix escaped quotes at end of strings (before comma, closing brace/bracket)
+                    json_str_clean = re.sub(r'\\"(\s*[,}\]])', r'"\1', json_str_clean)
+                    # Fix invalid escape sequences again (in case they were introduced)
+                    json_str_clean = re.sub(r'\\(?![\\"/bfnrt]|u[0-9a-fA-F]{4})', r'', json_str_clean)
+                
+                # Fix 3: Try to find and extract just the JSON object
+                elif attempt == 2:
+                    start_idx = json_str_clean.find('{')
+                    if start_idx >= 0:
+                        brace_count = 0
+                        end_idx = start_idx
+                        for i in range(start_idx, len(json_str_clean)):
+                            if json_str_clean[i] == '{':
+                                brace_count += 1
+                            elif json_str_clean[i] == '}':
+                                brace_count -= 1
+                                if brace_count == 0:
+                                    end_idx = i + 1
+                                    break
+                        if end_idx > start_idx:
+                            json_str_clean = json_str_clean[start_idx:end_idx]
+                
+                # Fix 4: Fix invalid escape sequences (like double-escaped quotes and invalid escapes)
+                elif attempt == 3:
+                    # Fix invalid escape sequences first - remove backslashes before invalid characters
+                    # JSON only allows: \" \\ \/ \b \f \n \r \t \uXXXX
+                    json_str_clean = re.sub(r'\\(?![\\"/bfnrt]|u[0-9a-fA-F]{4})', r'', json_str_clean)
+                    # Fix double-escaped quotes: \\" -> \"
+                    json_str_clean = json_str_clean.replace('\\\\"', '\\"')
+                    # Fix triple-escaped quotes: \\\" -> \"
+                    json_str_clean = json_str_clean.replace('\\\\\\"', '\\"')
+                    # Fix escaped quotes in property names more aggressively
+                    json_str_clean = re.sub(r'\\"([a-zA-Z_][a-zA-Z0-9_]*)"\s*:', r'"\1":', json_str_clean)
+                
+                # Fix 5: More aggressive - fix all escaped quotes that shouldn't be escaped
+                elif attempt == 4:
+                    # Unescape quotes that are clearly property names or string delimiters
+                    # Look for pattern: \"word": and replace with "word":
+                    json_str_clean = re.sub(r'\\"([a-zA-Z_][a-zA-Z0-9_]*)"\s*:', r'"\1":', json_str_clean)
+                    # Also fix array/object boundaries
+                    json_str_clean = re.sub(r'\\"(\s*[\[\{])', r'"\1', json_str_clean)
+                    json_str_clean = re.sub(r'([\]\}])\s*\\"', r'\1"', json_str_clean)
+                    # Fix escaped quotes around array brackets
+                    json_str_clean = re.sub(r'\\"(\s*\[)', r'"\1', json_str_clean)
+                    json_str_clean = re.sub(r'(\]\s*)\\"', r'\1"', json_str_clean)
+                
                 continue
             else:
+                # Last attempt failed - print the problematic section for debugging
+                error_pos = getattr(e, 'pos', None)
+                if error_pos:
+                    start = max(0, error_pos - 200)
+                    end = min(len(json_str_clean), error_pos + 200)
+                    print(f"      ❌ JSON error at position {error_pos}")
+                    print(f"      Problematic section: {json_str_clean[start:end]}")
+                    # Also try to save the full response for debugging
+                    try:
+                        debug_file = Path("debug_json_response.txt")
+                        with open(debug_file, 'w', encoding='utf-8') as f:
+                            f.write(json_str_clean)
+                        print(f"      💾 Full response saved to: {debug_file}")
+                    except:
+                        pass
                 raise
-
-
-def find_full_page_images(project_dir: Path) -> List[Dict[str, Any]]:
-    """Find all full-page images for a project"""
-    full_pages: List[Dict[str, Any]] = []
-    manifest_path = project_dir / "manifest.json"
-
-    if manifest_path.exists():
-        try:
-            with open(manifest_path, "r", encoding="utf-8") as f:
-                manifest = json.load(f)
-            for img in manifest.get("images", []):
-                if img.get("type") == "full_page":
-                    filename = img.get("filename")
-                    if not filename:
-                        continue
-                    page_number = img.get("page_number")
-                    img_path = project_dir / filename
-                    if img_path.exists():
-                        full_pages.append({
-                            "path": img_path,
-                            "filename": filename,
-                            "page_number": page_number,
-                        })
-        except Exception as e:
-            print(f"   ⚠️ Could not read manifest.json for full-page images: {e}")
-
-    # Fallback: if manifest missing or empty, try simple glob for *page_*.png
-    if not full_pages:
-        for img_path in sorted(project_dir.glob("*page_*.png")):
-            m = re.search(r"page_(\d+)", img_path.name)
-            page_number = int(m.group(1)) if m else None
-            full_pages.append({
-                "path": img_path,
-                "filename": img_path.name,
-                "page_number": page_number,
-            })
-
-    return full_pages
-
-
-def extract_page_metadata(project_dir: Path, project_id: str) -> Dict[int, Dict[str, Any]]:
-    """Run a first-pass analysis over full-page images to get sheet-level context"""
-    global model
-    
-    # Check if page metadata already exists
-    output_dir = Path(OUTPUT_DIR) / project_id
-    page_meta_file = output_dir / f"page_metadata_{project_id}.json"
-    if page_meta_file.exists():
-        try:
-            with open(page_meta_file, 'r', encoding='utf-8') as f:
-                existing_data = json.load(f)
-                pages_array = existing_data.get("pages", [])
-                page_context: Dict[int, Dict[str, Any]] = {}
-                for page_meta in pages_array:
-                    page_number = page_meta.get("page_number")
-                    if page_number is not None:
-                        page_context[int(page_number)] = page_meta
-                print(f"   📄 Using existing page-level metadata ({len(page_context)} pages)")
-                return page_context
-        except Exception as e:
-            print(f"   ⚠️ Could not load existing page metadata: {e}, will regenerate")
-
-    full_pages = find_full_page_images(project_dir)
-    if not full_pages:
-        print("   ⚠️ No full-page images found; skipping page-level analysis")
-        return {}
-
-    print(f"   📄 Found {len(full_pages)} full-page images for page-level analysis")
-
-    # Process pages individually (Gemini handles one image at a time better)
-    page_context: Dict[int, Dict[str, Any]] = {}
-    
-    for page in full_pages:
-        try:
-            img = Image.open(page["path"])
-            
-            prompt = f"""Analyze this FULL-PAGE structural drawing sheet and return page-level metadata as described in the system prompt. 
-Output a JSON object with a single key 'pages' containing an array with ONE page metadata object.
-
-Page number: {page.get('page_number', 'unknown')}
-Filename: {page['filename']}"""
-
-            response = model.generate_content(
-                [PAGE_EXTRACTION_PROMPT, prompt, img],
-                generation_config={
-                    "temperature": 0.2,
-                    "response_mime_type": "application/json",
-                }
-            )
-            
-            result_text = response.text
-            result_json = parse_json_with_retry(result_text)
-            
-            pages_array = result_json.get("pages", [])
-            if pages_array:
-                page_meta = pages_array[0]
-                # If model didn't set page_number, use our known value
-                if page_meta.get("page_number") is None:
-                    page_meta["page_number"] = page.get("page_number")
-                
-                page_number = page_meta.get("page_number")
-                if page_number is not None:
-                    # Truncate long fields
-                    overview = page_meta.get("page_overview_summary") or ""
-                    general_notes = page_meta.get("general_notes_verbatim") or ""
-                    
-                    if len(overview) > 1200:
-                        overview = overview[:1200] + "..."
-                    if len(general_notes) > 2000:
-                        general_notes = general_notes[:2000] + "..."
-                    
-                    page_meta["page_overview_summary"] = overview
-                    page_meta["general_notes_verbatim"] = general_notes
-                    
-                    page_context[int(page_number)] = page_meta
-                    
-        except Exception as e:
-            print(f"   ⚠️ Failed to process page {page.get('page_number', 'unknown')}: {e}")
-            continue
-
-    # Save page-level metadata
-    if page_context:
-        output_dir = Path(OUTPUT_DIR) / project_id
-        output_dir.mkdir(parents=True, exist_ok=True)
-        page_meta_file = output_dir / f"page_metadata_{project_id}.json"
-        with open(page_meta_file, "w", encoding="utf-8") as f:
-            json.dump({"pages": list(page_context.values())}, f, indent=2, ensure_ascii=False)
-        print(f"   💾 Saved page-level metadata to: {page_meta_file}")
-
-    return page_context
 
 
 def find_all_region_images(project_dir: Path) -> List[Dict[str, Any]]:
@@ -551,10 +578,10 @@ def find_all_region_images(project_dir: Path) -> List[Dict[str, Any]]:
             
             images.append({
                 "path": img_path,
-                "filename": img_path.name,
-                "page_number": page_number,
-                "region_number": region_number,
-                "relative_path": f"{page_dir.name}/{img_path.name}"
+                "filename": img_path.name,  # Full filename like "region_01_red_box.png"
+                "page_number": page_number,  # Integer from page_001 -> 1
+                "region_number": region_number,  # Integer from region_01 -> 1
+                "relative_path": None  # Can be empty as per user requirement
             })
     
     return images
@@ -564,7 +591,6 @@ def process_image_batch(
     image_data_list: List[Dict[str, Any]],
     project_id: str,
     ocr_data: Dict[str, Dict[str, Any]],
-    page_context: Dict[int, Dict[str, Any]] | None = None,
 ) -> List[Dict[str, Any]]:
     """Process a batch of region images with Gemini Vision"""
     global model
@@ -577,12 +603,19 @@ def process_image_batch(
             img_path = img_data["path"]
             filename = img_data["filename"]
             
-            # Load image
-            img = Image.open(str(img_path))
+            # Read image as bytes directly (since they're already PNG files)
+            with open(str(img_path), 'rb') as f:
+                image_bytes = f.read()
+            
+            image_part = Part.from_data(image_bytes, mime_type="image/png")
             
             # Get OCR text if available (for adding to output later, not for prompting)
+            # Match by full path first (most accurate), then fall back to filename
             ocr_text = ""
-            if filename in ocr_data:
+            img_path_str = str(img_path).replace('\\', '/')
+            if img_path_str in ocr_data:
+                ocr_text = ocr_data[img_path_str].get('text', '')
+            elif filename in ocr_data:
                 ocr_text = ocr_data[filename].get('text', '')
             
             # Build prompt - DO NOT include verbatim text extraction in the prompt
@@ -603,38 +636,16 @@ def process_image_batch(
             page_number = img_data.get("page_number")
             if page_number is not None:
                 context_lines.append(f"Page Number: {page_number}")
-                
-                # If we have page-level metadata for this page, include it
-                if page_context and page_number is not None:
-                    meta = page_context.get(int(page_number))
-                    if meta:
-                        sheet_id = meta.get("sheet_id") or ""
-                        drawing_title = meta.get("drawing_title") or ""
-                        overall_class = meta.get("overall_classification") or ""
-                        level = meta.get("level") or ""
-                        overview = meta.get("page_overview_summary") or ""
-                        
-                        header_bits = []
-                        if sheet_id:
-                            header_bits.append(f"Sheet ID: {sheet_id}")
-                        if drawing_title:
-                            header_bits.append(f"Drawing Title: {drawing_title}")
-                        if overall_class:
-                            header_bits.append(f"Page Classification: {overall_class}")
-                        if level:
-                            header_bits.append(f"Primary Level: {level}")
-                        
-                        if header_bits:
-                            context_lines.append("Page-level context: " + " | ".join(header_bits))
-                        if overview:
-                            context_lines.append(f"Page Overview: {overview[:500]}")
             
             prompt_parts.append("\n".join(context_lines))
             prompt = "\n".join(prompt_parts)
             
-            # Generate response
+            # Build full prompt
+            full_prompt = f"{EXTRACTION_PROMPT}\n\n{prompt}"
+            
+            # Generate response using Vertex AI
             response = model.generate_content(
-                [EXTRACTION_PROMPT, prompt, img],
+                [full_prompt, image_part],
                 generation_config={
                     "temperature": 0.2,
                     "response_mime_type": "application/json",
@@ -692,8 +703,8 @@ def process_project(project_id: str):
     print(f"   Input: {project_dir}")
     print(f"   Output: {output_file}")
     
-    # Load OCR results
-    ocr_data = load_ocr_results()
+    # Load OCR results (or run OCR if needed)
+    ocr_data = load_ocr_results(project_dir, project_id)
     
     # Find all region images
     region_images = find_all_region_images(project_dir)
@@ -711,20 +722,29 @@ def process_project(project_id: str):
         try:
             with open(output_file, 'r', encoding='utf-8') as f:
                 existing_data = json.load(f)
-                existing_ids = {img.get("image_id") for img in existing_data.get("images", [])}
+                existing_ids = {img.get("image_id") for img in existing_data.get("images", []) if img.get("image_id")}
             print(f"   📂 Resuming: {len(existing_ids)} images already processed")
+            if len(existing_ids) > 0:
+                print(f"   📋 Sample existing IDs: {list(existing_ids)[:5]}")
         except Exception as e:
             print(f"   ⚠️ Could not load existing file: {e}")
     
-    # Filter out already processed images
-    images_to_process = [img for img in region_images if img["filename"] not in existing_ids]
+    # Filter out already processed images - match by filename
+    images_to_process = []
+    for img in region_images:
+        filename = img["filename"]
+        if filename not in existing_ids:
+            images_to_process.append(img)
     
-    if not images_to_process:
+    print(f"   📊 Total images: {len(region_images)}, Already processed: {len(existing_ids)}, To process: {len(images_to_process)}")
+    
+    if len(images_to_process) == 0:
         print(f"   ✅ All images already processed!")
         return
     
-    # First pass: analyze full-page images to get sheet-level context
-    page_context: Dict[int, Dict[str, Any]] = extract_page_metadata(project_dir, project_id)
+    if len(images_to_process) > 0:
+        print(f"   🔄 Will process {len(images_to_process)} new images")
+        print(f"   📝 Sample images to process: {[img['filename'] for img in images_to_process[:5]]}")
     
     print(f"   ⚙️ Processing {len(images_to_process)} new images...")
     
@@ -736,7 +756,7 @@ def process_project(project_id: str):
         
         print(f"   ⚙️ Processing Batch {batch_num}/{total_batches} ({len(batch)} images)...")
         
-        results = process_image_batch(batch, project_id, ocr_data, page_context=page_context)
+        results = process_image_batch(batch, project_id, ocr_data)
         
         if results:
             existing_data["images"].extend(results)
@@ -775,30 +795,32 @@ def main():
         project_id = sys.argv[1]
         process_project(project_id)
     else:
-        # Process all projects in test_embeddings directory
-        test_embeddings_path = Path(TEST_EMBEDDINGS_DIR)
+        # Process all projects in input_images directory
+        input_images_path = Path(TEST_EMBEDDINGS_DIR)
         
-        if not test_embeddings_path.exists():
-            print(f"❌ Test embeddings directory not found: {test_embeddings_path}")
+        if not input_images_path.exists():
+            print(f"❌ Input images directory not found: {input_images_path}")
             return
         
         # Find all project directories
-        projects = sorted([d.name for d in test_embeddings_path.iterdir() if d.is_dir()])
+        projects = sorted([d.name for d in input_images_path.iterdir() if d.is_dir()])
         
         if not projects:
-            print(f"❌ No project directories found in {test_embeddings_path}")
+            print(f"❌ No project directories found in {input_images_path}")
             return
         
-        print(f"Found {len(projects)} project(s): {', '.join(projects)}")
+        print(f"📁 Found {len(projects)} project(s): {', '.join(projects)}")
         print()
         
         for project_id in projects:
             try:
                 process_project(project_id)
+                print()  # Add blank line between projects
             except Exception as e:
                 print(f"❌ Error processing {project_id}: {e}")
                 import traceback
                 traceback.print_exc()
+                print()  # Add blank line even on error
                 continue
     
     print("\n" + "="*60)

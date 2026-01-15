@@ -1,0 +1,79 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Plan",
+      "location": "Second Floor – main layout",
+      "level": "Second Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Second Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Floor Framing",
+        "Walls",
+        "Stairs",
+        "Existing Ceiling Joists"
+      ],
+      "summary": "This is a hand-drawn second-floor plan view, indicated by the title \"SECOND FLOOR\" and \"NOT TO SCALE\". The plan depicts the layout of rooms including a washroom, closet, and bedroom, along with dimensions for various spaces. Notable dimensions include a 12'5\" width for a section of the washroom, a 9'10\" dimension for another part of the washroom area, and a 14'10\" dimension for the bedroom. The plan also shows a staircase with a \"Down\" label and a 10'8\" dimension associated with it. Red annotations highlight \"EXISTING CEILING JOIST\" in two locations, suggesting the presence of existing structural elements above or integrated into the framing. A critical note states \"TRUSSES ARE FULL SPAN TO EXTERIOR WALLS\", indicating the roof framing system spans directly to the exterior walls, implying a specific roof structure design. The overall layout suggests a residential or similar building floor plan with distinct room divisions and circulation paths.",
+      "project_id": "25-01-013",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "17'5\"\nEXISTING CEILING JOIST\n9'4\nWashroom\n3'\n910\n46h\nCloset\n\"\n✓ 6'6\"\n10°\n14110\"\nEXISTING CEILING JOIST\nBedroom\n14\nTRUSSES ARE FULL SPAN TO\nEXTERIOR WALLS\n3'\n10'8\"\nSECOND FLOOR\nNOT TO SCALE\nDown"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Plan",
+      "location": "Main Floor – central area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Main Floor Plan",
+      "element_callouts": [
+        "LVL BEAM"
+      ],
+      "key_components": [
+        "Stud Posts",
+        "LVL Beam",
+        "Concrete Block Wall",
+        "Existing Floor Joists",
+        "Load Bearing Wall"
+      ],
+      "summary": "This is a main floor plan view illustrating structural modifications. The plan indicates the removal of an existing load-bearing wall and the installation of a new LVL beam. The new beam is specified as a dropped beam and requires a minimum of three 1.75\" x 14\" LVL 2.0E 3100fb members. The plan also shows the placement of minimum (3) PLY 2X6 stud posts to support structural loads. Several dimensions are noted, including 11'10\", 12'11\", and 14'6\" for beam length and room dimensions. Annotations prompt confirmation regarding the depth of the installed beam and what is located below an installed post, specifically questioning if it is a 6\" concrete block wall and if its cores are grouted solid. Existing floor joists are also indicated. The drawing is marked 'NOT TO SCALE'.",
+      "project_id": "25-01-013",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "11'10\nKitchen\nEXISTING FLOOR JOIST\nCinder\nwall\nCONFIRM WHAT IS BELOW THE\nINSTALLED POST.\n6\" CONCRETE BLOCK WALL?\nCONFIRM IF THE CORES ARE\nGROUTED SOLID\nMAIN FLOOR\nOT TO SCALE.\nBean\n14'6\"\n12'1111\nMIN (3) PLY 2X6 STUD POST\nEXISTING FLOOR JOIST\nNEW LVL BEAM (DROPPED)\nPLEASE CONFIRM DEPTH OF\nINSTALLED BEAM.\nMIN (3) 1.75\" x 14\" LVL 2.0E 3100fb\nREQUIRED\nREMOVE EXISTING LOAD\nBEARING WALL\nMIN (3) PLY 2X6 STUD POST\nL\n7'2\"\n7\nwashroom\n6'\n10'\ncloset\n171\nLaundry"
+    },
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Detail",
+      "location": "Typical post blocking detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S0.0"
+      ],
+      "element_type": "Typical Post Blocking Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Steel Column",
+        "Wood Joists",
+        "Blocking",
+        "Existing Subfloor",
+        "Existing Load Bearing Wall/Beam"
+      ],
+      "summary": "This detail illustrates the proper method for installing new posts to support loads above, ensuring they bear directly on existing structural elements or are adequately blocked. The detail shows a new steel column positioned above an existing load-bearing wall or beam. Crucially, it specifies 'SOLID BLOCKING, FULL WIDTH OF POST BEARING ABOVE. (TYP.)' to ensure direct load transfer. The existing subfloor is shown above the joists, which are supported by the existing load-bearing wall or beam. A note indicates that 'ALL POSTS TO BEAR DIRECTLY ON EXISTING WALL OR BEAM BELOW OR HAVE SOLID BLOCKING IN JOISTS AS PER DETAIL'. Another annotation clarifies that 'EXCEPT AS DIRECTED OTHERWISE, PROVIDE POST DOWN TO FOUNDATION LEVEL BENEATH ALL POINT LOADS. (TYP. U.N.O.)', emphasizing the importance of extending posts to the foundation for significant point loads. The scale of the detail is indicated as 1/2\" = 1'-0\".",
+      "project_id": "25-01-013",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "2\nS0.0\nNOTE:\nALL POSTS TO BEAR DIRECTLY ON\nEXISTING WALL OR BEAM BELOW\nOR HAVE SOLID BLOCKING IN\nJOISTS AS PER DETAIL\nEXISTING SUBFLOOR\nNEW COLUMN ABOVE\nWALL OR BEAM\n-SOLID BLOCKING,\nFULL WIDTH OF POST\nBEARING ABOVE. (TYP.)\nEXISTING LOAD BEARING\nWALL BELOW (OR BEAM)\nEXCEPT AS DIRECTED\nOTHERWISE, PROVIDE POST\nDOWN TO FOUNDATION\nLEVEL BENEATH ALL POINT\nLOADS. (TYP. U.N.O.)\nDETAIL\nTYPICAL POST BLOCKING DETAIL\n1/2\" = 1'-0\""
+    }
+  ]
+}

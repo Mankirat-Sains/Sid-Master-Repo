@@ -122,6 +122,29 @@ try:
         def _llm_type(self) -> str:
             return "groq"
         
+        def invoke(self, input, config=None, **kwargs):
+            """
+            Override invoke to handle string inputs directly and avoid BaseChatModel's
+            string-to-message conversion that causes the ChatGeneration += list error.
+            """
+            from langchain_core.messages import HumanMessage
+            
+            # Convert string input to HumanMessage
+            if isinstance(input, str):
+                messages = [HumanMessage(content=input)]
+            elif isinstance(input, list):
+                messages = input
+            else:
+                messages = [input]
+            
+            # Call _generate directly with messages
+            result = self._generate(messages, **kwargs)
+            
+            # Return the AIMessage from the result (matching BaseChatModel behavior)
+            if result.generations:
+                return result.generations[0].message
+            return result
+        
         def _generate(
             self,
             messages: List[BaseMessage],
@@ -168,7 +191,14 @@ try:
             # Convert response to LangChain format
             message = AIMessage(content=response.choices[0].message.content)
             generation = ChatGeneration(message=message)
-            return ChatResult(generations=[generation])
+            # CRITICAL: ChatResult must have generations as a list, and may need llm_output
+            return ChatResult(
+                generations=[generation],
+                llm_output={
+                    "model_name": self.model,
+                    "token_usage": getattr(response, "usage", {})
+                }
+            )
         
         def _stream(
             self,

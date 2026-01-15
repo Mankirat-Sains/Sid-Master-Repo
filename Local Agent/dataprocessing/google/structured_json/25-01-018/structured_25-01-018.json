@@ -1,0 +1,104 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Elevation",
+      "location": "South wall",
+      "level": "Ground Floor",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [
+        "AS-1"
+      ],
+      "element_type": "Wall Framing Elevation",
+      "element_callouts": [
+        "AS-1",
+        "AE-1"
+      ],
+      "key_components": [
+        "Wood Stud Framing",
+        "Windows",
+        "Siding",
+        "Roof Shingles",
+        "Timber Columns",
+        "Timber Girt",
+        "Stone Column Bases"
+      ],
+      "summary": "This image is a South Elevation showing the framing for a \"Tall Wall\" section of the building. The elevation depicts the exterior wall construction, including wood stud framing, window openings, and various siding materials. Key vertical dimensions are indicated, such as the top of the foundation (T/O FDN.) at 9'-7 3/8\" and the top of the proposed second floor (T/O SUBFLR.) at 3'-6 1/8\" above the existing main subfloor. The framing includes multiple \"1 JACK + 1 KING\" configurations around window openings, indicating a common method for supporting headers. The note \"ADD OR ENSURE STUDS ARE 2x6 @ 16\" o.c. MAX.\" specifies the stud spacing and size for the wall. The drawing also references existing timber columns and a timber girt. Exterior finishes are detailed, including \"GENTEK VINYL FAIRWEATHER VERTICAL SIDING\", \"GENTEK ALUMINUM ALIGN HORIZONTAL SIDING\", \"FALSE TIMBER HEADERS\", and \"GENTEK VINYL TRIM WORK\". The roof is noted as \"EXIST. STEEL ROOF TO REMAIN\" and finished with \"ASPHALT SHINGLES\". Stone column bases are shown at the foundation level. The scale is provided as 1/4\" = 1'-0\".",
+      "project_id": "25-01-018",
+      "page_number": 1,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "U/S SOFFIT\nEXIST.\nT/O SUBFLR.\nPROPOSED 2nd\nT/O SUBFLR.\nEXIST. MAIN\nT/O FDN.\nEXIST\n9'-7 3/8\"\n3'-6 1/8\"\nEX. TIMBER COLUMN\n1\nAS-1/\n1\nAS-1\nJACK + 1 KING\n3'-0\"\nI JACK + 1 KING\nI JACK + 1 KING\n2\nAE-1\nSCALE: 1/4\" = 1'-0\"\n6'-0\"\n4'-0\"\n(2) 2x6\nEX. TIMBER GIRT\n(2) 2x6\n(2) 2x6\nFLOOR PER PLAN\nADD OR ENSURE STUDS\nARE 2x6 @ 16\" o.c. MAX.\n(2) 2x6\nSOUTH ELEVATION \"TALL WALL\" FRAMING\nJACK + 1 KING\n-EXIST. STEEL ROOF TO REMAIN\nGENTEK VINYL FAIRWEATHER VERTICAL\nSIDING IN MOONLIT MOSS COLOUR, TYP.\nGENTEK ALUMINUM ALIGN HORIZONTAL\nSIDING IN DARK DRIFT COLOUR, TYP.\n-FALSE TIMBER HEADERS\nGENTEK VINYL TRIM WORK IN IRON ORE\nCOLOUR, TYP.\nJACK + 1 KING\nWINDOWS IN IRON ORE COLOUR, TYP.\nJACK + 1 KING\nEX. TIMBER COLUMN\nASPHALT SHINGLES, DARI\nCHARCOAL STANDARD\nSHINGLES COLOUR (SIMIL\nTO IRON ORE COLOUR)\nSTONE COLUMN BASES"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Schedule",
+      "location": "South elevation",
+      "level": "Unknown",
+      "orientation": "South elevation",
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "Elevation Schedule",
+      "element_callouts": [],
+      "key_components": [
+        "Glazing",
+        "Wall Area",
+        "Spatial Calculation"
+      ],
+      "summary": "This document is a schedule titled \"PROPOSED SOUTH ELEVATION\", detailing glazing quantities and areas, along with spatial calculations for the south elevation of a structure. It lists three types of glazing units, specified by \"ID/SIZE\" as \"3'-0\" x 3'-0\", \"3'-0\" x 4'-0\", and \"3'-0\" x 6'-0\". For each size, the quantity (QUAN.) is 2, with corresponding \"GLAZING AREA (sf)\" of 8.00, 10.80, and 16.60 respectively. The \"TOTAL OPENING AREA (sf)\" for these units are 16.00, 21.60, and 33.20. Below this, a \"SPATIAL CALCULATION\" section provides key metrics. The \"WALL AREA (sf)\" is calculated as 504.40, which is equivalent to 46.86 \"WALL AREA (sm)\". A \"LIMITING DISTANCE (M)\" of 8.7 is noted. The \"MAXIMUM GLAZING ALLOWED (\"%)\" is 100%, corresponding to a maximum allowed area of 504.40 \"sf\". The \"TOTAL GLAZING AREA PROVIDED (sf)\" is 70.80, which constitutes 14.04% of the total wall area. This schedule is crucial for understanding the fenestration strategy and compliance with building code requirements for the south elevation.",
+      "project_id": "25-01-018",
+      "page_number": 1,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "PROPOSED SOUTH ELEVATION\nQUAN.\nID/SIZE\nGLAZING AREA (sf) | TOTAL OPENING AREA (sf)\n2\n3'-0\" x 3'-0\"\n8.00\n16.00\n2\n3-0\" x 4'-0\"\n10.80\n21.60\n2\n3'-0\" x 6'-0\"\n16.60\n33.20\nSPATIAL CALCULATION\nWALL AREA (sf)\n504.40\nWALL AREA (sm)\n46.86\nLIMITING DISTANCE (M)\n8.7\nMAXIMUM GLAZING ALLOWED (%)\n100\nMAXIMUM GLAZING ALLOWED (sf)\nTOTAL GLAZING AREA PROVIDED (sf)\nTOTAL GLAZING AREA PROVIDED (%)\n14.04\n504.40\n70.80"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Detail",
+      "location": "Wall assembly detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "A-A"
+      ],
+      "element_type": "Wall Assembly Detail",
+      "element_callouts": [
+        "C9x13.4"
+      ],
+      "key_components": [
+        "Timber",
+        "Steel",
+        "Fasteners",
+        "Strapping"
+      ],
+      "summary": "This detail illustrates a wall assembly, specifically focusing on the connection of a double sill and associated framing. The detail is presented in two views: SECTION A-A, a cross-section, and SECTION A-A (ISO), an isometric view for clarity. The double sill is noted to be \"AS PER WALL SCHEDULE\". The first ply of the sill is fastened with 1/2\" diameter lag screws, requiring a minimum embedment of 3 1/2\" into timber at 24\" on center, with staggered placement. The second ply is fastened with 3 1/4\" nailgun nails at 2\" on center, with the number of nails varying based on lumber size (e.g., 3 nails for 2x6, 4 nails for 2x8). These nails are spaced at 12\" on center along the sill. An existing timber girt is shown, and a steel member labeled \"C9x13.4\" is also depicted. \"STRAPPING AS PER WALL SCHEDULE\" indicates additional bracing elements are detailed elsewhere. The detail highlights the connection of timber framing elements and the specific fastening requirements for constructing the sill and wall assembly.",
+      "project_id": "25-01-018",
+      "page_number": 1,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "SECTION A-A\nDOUBLE SILL AS PER WALL\nSCHEDULE\nFIRST PLY FASTENED w/ 1/2\"\ndia. LAG SCREWS W/ MIN. 3\n1/2\" EMBED. INTO TIMBER @\n24\" o.c. (STAGGERED)\nSECOND PLY FASTENED WITH\n3 1/4\" NAILGUN NAILS @ 2\"\nO.C. (3 FOR 2x6, 4 FOR 2x8,\nETC) SPACED AT 12\" O.C.\nALONG SILL\nC9x13.4\nEX. TIMBER GIRT\nSECTION A-A (ISO)\nSTRAPPING AS PER\nWALL SCHEDULE"
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Notes",
+      "location": null,
+      "level": null,
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [],
+      "element_type": "General Notes",
+      "element_callouts": [],
+      "key_components": [
+        "Notes"
+      ],
+      "summary": "This document contains general notes applicable to the structural drawings. Note 2, \\\"Do not scale the drawings,\\\" emphasizes that dimensions provided on the drawings are to be used for construction and that the drawings should not be scaled to determine measurements. Note 3 instructs users to verify all dimensions and report any discrepancies to the architectural designer before contract issuance, ensuring accuracy and coordination. Note 4 states that all work must comply with the Ontario Building Code, other relevant codes, and applicable authorities, establishing the regulatory framework for the project. Note 1 pertains to the seal and signature, indicating professional responsibility for the design activities.",
+      "project_id": "25-01-018",
+      "page_number": 1,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "GENERAL NOTES:\n1. Seal & Signature are by the person that has\nreviewed and taken responsibility for design\nactivities.\n2. Do not scale the drawings.\n3. Check and verify all dimensions and report\nany discrepancies, contradictions, or\nambiguities to the architectural designer prior\nto issuance of contract.\n4. All work to be carried out in accordance with\nthe Ontario Building Code, other applicable\ncodes and standards, and any other authority\nhaving jurisdiction."
+    }
+  ]
+}

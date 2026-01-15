@@ -1252,7 +1252,7 @@ const timesheetMenuItems = [
 const search = ref('')
 const prompt = ref('')
 const promptInput = ref<HTMLTextAreaElement | null>(null)
-const tags = ref(['missile.ai'])
+const tags = ref([])
 const chatContainer = ref<HTMLElement | null>(null)
 const isSending = ref(false)
 const attachments = ref<{ name: string; base64: string }[]>([])
@@ -1594,7 +1594,7 @@ function loadMemory() {
       activeConversationId.value = parsed.activeConversationId
     }
     if (Array.isArray(parsed.tags)) {
-      tags.value = parsed.tags
+      tags.value = parsed.tags.filter(tag => tag.toLowerCase() !== 'missile.ai')
     }
     if (typeof parsed.selectedModel === 'string' && availableModels.includes(parsed.selectedModel)) {
       selectedModel.value = parsed.selectedModel
@@ -1731,6 +1731,13 @@ watch(
   () => saveMemory(),
   { deep: true }
 )
+
+// Ensure 'missile.ai' is always filtered out
+watch(tags, () => {
+  if (tags.value.some(tag => tag.toLowerCase() === 'missile.ai')) {
+    tags.value = tags.value.filter(tag => tag.toLowerCase() !== 'missile.ai')
+  }
+}, { immediate: true })
 
 watch(prompt, () => {
   nextTick(resizePrompt)

@@ -1,7 +1,16 @@
 <template>
-  <div class="h-full work-view bg-[#0f0f0f] text-white overflow-y-auto">
+  <div class="h-full work-view bg-[#0f0f0f] text-white overflow-hidden">
+    <!-- Project Workspace View (for folder-based projects) -->
+    <ProjectWorkspaceView
+      v-if="selectedProject && selectedProject.localPath"
+      :project-id="selectedProject.id"
+      :project-name="selectedProject.name"
+      :root-path="selectedProject.localPath"
+      @back="clearSelection"
+    />
+
     <!-- Workspace Content (shown when workspace has content - takes priority) -->
-    <div v-if="workspaceState.mode !== 'empty'" class="h-full flex flex-col">
+    <div v-else-if="workspaceState.mode !== 'empty'" class="h-full flex flex-col overflow-y-auto">
       <div class="flex-1 min-h-0 card-pane overflow-hidden">
         <!-- PDF Viewer -->
         <PDFViewer
@@ -38,19 +47,22 @@
     </div>
 
     <!-- Welcome Screen (Project Selection) -->
-    <div v-else-if="!selectedProject" class="h-full flex flex-col items-center justify-center px-8 text-center">
+    <div v-else-if="!selectedProject" class="h-full flex flex-col items-center justify-center px-8 text-center overflow-y-auto">
       <h2 class="text-3xl font-semibold text-white mb-10 tracking-tight max-w-3xl">
-        Select one of the projects you have been assigned and get to work
+        Pick a folder to be the predominant knowledge base for your chat
       </h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-4 max-w-6xl w-full">
+        <!-- Existing project cards -->
         <button
           v-for="project in assignedProjects"
           :key="project.id"
           @click="selectProject(project)"
           :class="[
-            'group relative p-6 rounded-2xl transition-all duration-300 ease-out card-tile',
-            selectedProjectId === project.id ? 'tile-active' : 'tile-idle'
+            'group relative p-6 rounded-2xl transition-all duration-300 ease-out card-tile border-2',
+            selectedProjectId === project.id 
+              ? 'border-purple-500/80 tile-active' 
+              : 'border-purple-500/40 tile-idle'
           ]"
         >
           <div class="text-center space-y-2">
@@ -66,12 +78,76 @@
             <p class="text-sm text-white/70">{{ project.name }}</p>
           </div>
         </button>
+
+        <!-- User-added folder cards -->
+        <div
+          v-for="project in savedFolders"
+          :key="project.id"
+          :class="[
+            'group relative rounded-2xl transition-all duration-300 ease-out card-tile border-2',
+            selectedProjectId === project.id 
+              ? 'border-purple-500/80 tile-active' 
+              : 'border-purple-500/40 tile-idle'
+          ]"
+        >
+          <button
+            @click="selectProject(project)"
+            class="w-full p-6 text-center"
+          >
+            <div class="space-y-2">
+              <div :class="[
+                'w-16 h-16 mx-auto rounded-2xl flex items-center justify-center transition-all duration-300 text-white',
+                selectedProjectId === project.id ? 'bg-gradient-to-br from-purple-500 to-purple-700 shadow-lg' : 'bg-gradient-to-br from-purple-400 to-purple-600 group-hover:shadow-lg'
+              ]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+              </div>
+              <p class="font-semibold text-white text-lg">{{ project.id }}</p>
+              <p class="text-sm text-white/70 truncate max-w-[150px] mx-auto" :title="project.localPath">{{ project.name }}</p>
+            </div>
+          </button>
+          <button
+            @click.stop="removeFolder(project.id)"
+            class="absolute top-2 right-2 w-6 h-6 rounded-full bg-red-500/20 hover:bg-red-500/40 text-red-400 flex items-center justify-center opacity-0 group-hover:opacity-100 transition z-10"
+            title="Remove folder"
+          >
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Add Folder Button -->
+        <button
+          @click="showFolderBrowser = true"
+          class="group relative p-6 rounded-2xl transition-all duration-300 ease-out card-tile border-2 border-dashed border-white/20 hover:border-purple-500/50 hover:bg-white/5"
+        >
+          <div class="text-center space-y-2">
+            <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center transition-all duration-300 text-white bg-gradient-to-br from-purple-400/20 to-purple-600/20 group-hover:from-purple-400/40 group-hover:to-purple-600/40">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <p class="font-semibold text-white text-lg">Add Folder</p>
+            <p class="text-sm text-white/70">Browse and select</p>
+          </div>
+        </button>
       </div>
     </div>
 
-    <!-- Project Overview -->
-    <div v-else-if="selectedProject && !selectedTask" class="h-full px-8 py-8 space-y-6">
+    <!-- Project Overview (for assigned projects without localPath) -->
+    <div v-else-if="selectedProject && !selectedProject.localPath && !selectedTask" class="h-full px-8 py-8 space-y-6 overflow-y-auto">
       <div class="flex flex-col gap-2">
+        <button 
+          @click="clearSelection"
+          class="inline-flex items-center gap-2 text-white/60 hover:text-white transition text-sm self-start"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Projects
+        </button>
         <div class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-lg shadow-lg">
           <span class="text-xs uppercase tracking-wide">Tasks / Work / {{ selectedProject.id }}</span>
         </div>
@@ -126,10 +202,10 @@
     </div>
 
     <!-- Task Detail View - Workspace Area -->
-    <div v-else-if="selectedTask" class="h-full flex flex-col px-8 py-8 space-y-6">
+    <div v-else-if="selectedTask" class="h-full flex flex-col px-8 py-8 space-y-6 overflow-y-auto">
       <div class="flex-shrink-0 space-y-3">
         <div class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-lg shadow-lg">
-          <span class="text-xs uppercase tracking-wide">Tasks / Work / {{ selectedProject.id }} / {{ selectedTask.name }}</span>
+          <span class="text-xs uppercase tracking-wide">Tasks / Work / {{ selectedProject?.id }} / {{ selectedTask.name }}</span>
         </div>
         <h1 class="text-3xl font-semibold text-white tracking-tight">{{ selectedTask.name }}</h1>
       </div>
@@ -214,24 +290,36 @@
         </div>
       </div>
     </div>
+
+    <!-- Folder Browser Modal -->
+    <FolderBrowserModal
+      v-if="showFolderBrowser"
+      @close="showFolderBrowser = false"
+      @select="handleFolderSelected"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
 import PDFViewer from '~/components/PDFViewer.vue'
 import DraftEditor from '~/components/DraftEditor.vue'
+import FolderBrowserModal from '~/components/FolderBrowserModal.vue'
+import ProjectWorkspaceView from '~/components/ProjectWorkspaceView.vue'
 import { useWorkspace } from '~/composables/useWorkspace'
 
 const workspace = useWorkspace()
 const workspaceState = computed(() => workspace.state.value)
 const draftLoading = ref(false)
 const draftLoadingMessage = ref('')
+const showFolderBrowser = ref(false)
 
 interface Project {
   id: string
   name: string
+  localPath?: string
+  type?: 'assigned' | 'folder'
 }
 
 interface Task {
@@ -247,75 +335,73 @@ const selectedProject = ref<Project | null>(null)
 const selectedTaskId = ref<string | null>(null)
 const selectedTask = ref<Task | null>(null)
 
-function handleExportToWord(content: string) {
-  // This will be handled by the chat/local agent integration
-  console.log('Export to Word requested:', content)
-  // TODO: Emit event to parent or call local agent API
-}
+// Saved folders from localStorage
+const savedFolders = ref<Project[]>([])
+const STORAGE_KEY_FOLDERS = 'work-folders-v1'
 
-async function handleAIAddSection(prompt: string, currentContent: string) {
-  console.log('AI Add Section requested:', prompt)
-  
-  draftLoading.value = true
-  draftLoadingMessage.value = 'Generating new section with AI...'
-  
+function loadSavedFolders() {
+  if (typeof window === 'undefined') return
   try {
-    // Construct the message for the AI to generate a new section
-    const message = `${prompt}
-
-Current proposal content:
-${currentContent.substring(0, 2000)}...
-
-Please generate the new section in HTML format with proper formatting:
-- Use <h2> for section headings
-- Use <p> for paragraphs
-- Use <ul> and <li> for bullet lists
-- Use <strong> for bold text
-- Ensure the HTML is valid and well-formatted
-
-Return only the HTML content for the new section, without any additional explanation.`
-    
-    const response = await sendChatMessage(message, 'draft-ai-edit')
-    
-    // Extract HTML from response - try to find HTML content
-    let htmlContent = response.reply
-    
-    // If response is wrapped in markdown code blocks, extract HTML
-    const codeBlockMatch = htmlContent.match(/```(?:html)?\s*([\s\S]*?)\s*```/)
-    if (codeBlockMatch) {
-      htmlContent = codeBlockMatch[1]
-    }
-    
-    // Ensure it's valid HTML - if it starts with a tag, use as-is
-    if (!htmlContent.trim().startsWith('<')) {
-      // Wrap in paragraph if it's plain text
-      htmlContent = `<p>${htmlContent}</p>`
-    }
-    
-    // Insert the content into the draft editor
-    if (draftEditorRef.value && typeof draftEditorRef.value.insertContentAtCursor === 'function') {
-      draftEditorRef.value.insertContentAtCursor(htmlContent)
-    } else {
-      // Fallback: append to current content
-      const updatedContent = currentContent + '\n\n' + htmlContent
-      workspace.updateDraftContent(updatedContent)
+    const stored = localStorage.getItem(STORAGE_KEY_FOLDERS)
+    if (stored) {
+      savedFolders.value = JSON.parse(stored)
     }
   } catch (error) {
-    console.error('AI add section error:', error)
-    alert('Error generating section. Please try again.')
-  } finally {
-    draftLoading.value = false
-    draftLoadingMessage.value = ''
+    console.error('Error loading saved folders:', error)
   }
 }
 
-// Mock assigned projects
-const assignedProjects: Project[] = [
-  { id: '2025-01-004', name: 'Downtown Office Tower' },
-  { id: '2025-03-006', name: 'Industrial Warehouse' },
-  { id: '2025-07-006', name: 'School Addition' },
-  { id: '2025-09-006', name: 'Retail Complex' }
-]
+function saveFolders() {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem(STORAGE_KEY_FOLDERS, JSON.stringify(savedFolders.value))
+  } catch (error) {
+    console.error('Error saving folders:', error)
+  }
+}
+
+function addFolder(project: Project) {
+  // Check if folder already exists
+  if (savedFolders.value.some(p => p.localPath === project.localPath)) {
+    console.log('Folder already exists:', project.localPath)
+    return
+  }
+  savedFolders.value.push(project)
+  saveFolders()
+}
+
+function removeFolder(projectId: string) {
+  savedFolders.value = savedFolders.value.filter(p => p.id !== projectId)
+  saveFolders()
+  if (selectedProjectId.value === projectId) {
+    clearSelection()
+  }
+}
+
+function handleFolderSelected(path: string, name: string) {
+  const project: Project = {
+    id: name,
+    name: name,
+    localPath: path,
+    type: 'folder'
+  }
+  addFolder(project)
+  showFolderBrowser.value = false
+}
+
+function clearSelection() {
+  selectedProject.value = null
+  selectedProjectId.value = null
+  selectedTask.value = null
+  selectedTaskId.value = null
+}
+
+function handleExportToWord(content: string) {
+  console.log('Export to Word requested:', content)
+}
+
+// Assigned projects (empty by default, can be populated from API)
+const assignedProjects: Project[] = []
 
 const completedTasks: Task[] = [
   { id: 'task1', name: 'Preliminary Layout' },
@@ -325,19 +411,7 @@ const completedTasks: Task[] = [
 const todoTasks: Task[] = [
   { id: 'task3', name: 'Finish Foundation Design' },
   { id: 'task4', name: 'Retaining Wall Design' },
-  { 
-    id: 'task5', 
-    name: 'Model Truss Framing',
-    goal: 'Find past similar projects',
-    modelUrl: 'https://app.speckle.systems/projects/bde23c9150/models/fc47277266',
-    features: {
-      'Span': '10m',
-      'Loading': 'OBC',
-      'Location': 'Trout Lake',
-      'Width': '',
-      'Bridge type': ''
-    }
-  },
+  { id: 'task5', name: 'Model Truss Framing'},
   { id: 'task6', name: 'QA/QC' }
 ]
 
@@ -360,6 +434,10 @@ function selectTask(task: Task) {
     emit('update-breadcrumb', `Tasks/Work/${selectedProject.value.id}/${task.name}`)
   }
 }
+
+onMounted(() => {
+  loadSavedFolders()
+})
 </script>
 
 <style scoped>
@@ -377,7 +455,6 @@ function selectTask(task: Task) {
 
 .card-tile {
   background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 14px 50px rgba(0, 0, 0, 0.45);
 }
 

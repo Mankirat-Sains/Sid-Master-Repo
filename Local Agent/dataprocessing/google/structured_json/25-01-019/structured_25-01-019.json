@@ -1,0 +1,153 @@
+{
+  "images": [
+    {
+      "image_id": "region_01_red_box.png",
+      "classification": "Section",
+      "location": "Load Bearing Edge @ Cross-Ties",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "4/S1"
+      ],
+      "element_type": "Load Bearing Edge Section",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Slab",
+        "Footing",
+        "Reinforcing Steel",
+        "Granular Fill",
+        "Extruded Polystyrene",
+        "Polyethylene Vapor Barrier",
+        "Wedge Anchors",
+        "Threaded Rod Anchors"
+      ],
+      "summary": "This section view details a load-bearing edge at cross-ties, likely for a foundation or slab system. The primary structural element is a concrete slab supported by a footing. The slab has a thickness of approximately 6 inches, indicated by the dimension line and the placement of reinforcement. It is reinforced with (3) 15M rebar bars at the top and (3) 15M rebar bars at the bottom, with additional reinforcement specified as either 6\"x6\"x% WWM (welded wire mesh) or 10M grid at 10\" on center. The footing appears to be approximately 1'-6\" wide and 2\" deep, resting on compacted granular 'A' fill. A minimum of 2 inches of extruded polystyrene insulation (R10) with a minimum compressive strength of 30 psi is placed below the slab, protected by a 6 mil poly vapor barrier. The drawing also indicates a 2% slope away from the load-bearing edge for grade and insulation, if present. Anchoring details are provided, specifying Hilti Kwik Bolt 3 wedge anchors with a minimum 4\" embedment or Hilti carbon steel threaded rod with Hilti HIT-HY 200 safe set system, also with a minimum 4\" embedment, or equivalent anchors. The diameter and projection of these anchors are to be as per steel drawings. The section callout '4/S1' indicates this is section 4 on sheet S1, and the scale is 1/2\" = 1'-0\".",
+      "project_id": "25-01-019",
+      "page_number": 2,
+      "region_number": 1,
+      "relative_path": null,
+      "text_verbatim": "DIAMETER AND PROJECTION\nAS PER STEEL DWGS.\nHILTI KWIK BOLT 3 WEDGE ANCHORS\nMIN 4\" EMBED OR\nSLOPE AWAY 2%\n(3) 15M REBAR @ TOP\nGRADE & INSULATION\n(IF PRESENT)\nHILTI HAS CARBON STEEL THREADED\nROD WITH HILTI HIT-HY 200 SAFE SET\nSYSTEM MIN 4\" EMBED\nOR EQUIVALENT ANCHORS\n4\n၂၀\nSI\n1'-6\"\n1'-0\"\n1'-0\"\n4'-0\"\n1'-6\"\n(2) 15M HOOKED\nBARS\n6\"x6\"x% WWM\nOR\n10M GRID @ 10\" o.c.\n9\nMIN.\n.9\nMIN. 2\" (R10) OF EXTRUDED\nPOLYSTYRENE\nCOMPACTED\nGRANULAR 'A'\nMIN. COMPRESSIVE STRENGTH\nOF 30 psi\nc/w 6 mil POLY\n(3) 15M REBAR @ BTM\nSECTION - Load Bearing Edge @ Cross-Ties\nSCALE: 1/2\" =1'-0'"
+    },
+    {
+      "image_id": "region_02_red_box.png",
+      "classification": "Detail",
+      "location": "Non-Load Bearing Edge detail",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "3/S1"
+      ],
+      "element_type": "Non-Load Bearing Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Slab",
+        "Extruded Polystyrene Insulation",
+        "Polyethylene Vapor Barrier",
+        "Compacted Granular Fill",
+        "Rebar Reinforcement",
+        "Welded Wire Mesh"
+      ],
+      "summary": "This detail illustrates a non-load bearing edge of a concrete slab. The slab has a total thickness of 6 inches at its edge, with a 2-inch layer of compacted granular fill ('A') below it. The slab itself is reinforced with two (2) 15M rebar bars at the bottom and continuous (2) 15M rebar bars hooked at the end, with a note to 'SEE S0 FOR COVER'. Alternatively, 6\"x6\"x6 WWM or 10M grid rebar spaced at 10\" on center is permitted. The detail also shows a minimum 2\" (R10) layer of extruded polystyrene insulation with a minimum compressive strength of 30 psi, covered by a 6 mil polyethylene vapor barrier. The grade slopes away at 2% and includes insulation if present. The overall width shown for the slab edge construction is 4'-0\", with a 1'-6\" dimension indicating the width of the granular fill and insulation layer. The scale of the drawing is 1/2\" = 1'-0\".",
+      "project_id": "25-01-019",
+      "page_number": 2,
+      "region_number": 2,
+      "relative_path": null,
+      "text_verbatim": "SLOPE AWAY 2%\nGRADE & INSULATION\n(IF PRESENT)\nSw!\n3\nSI\n4'-0\"\n1'-6\"\n2\"\n6\"\n2\"\n(2) 15M REBAR CONT.\nHOOKED AT END.\n(SEE SO FOR COVER)\n6\"x6\"x6 WWM\nOR\n10M GRID @ 10\" o.c.\nMIN. 2\" (R10) OF EXTRUDED\nPOLYSTYRENE\nMIN. COMPRESSIVE STRENGTH\nOF 30 psi\nc/w 6 mil POLY\n1'-6\"\n(2) 15M REBAR @ BTM\nSECTION - Non-Load Bearing Edge\n=\nSCALE: 1/2\" 1'-0\"\n6\"\nMIN.\n6\"\nCOMPACTED\nGRANULAR 'A'"
+    },
+    {
+      "image_id": "region_03_red_box.png",
+      "classification": "Plan",
+      "location": "Ground Floor - main building area",
+      "level": "Ground Floor",
+      "orientation": null,
+      "grid_references": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "section_callouts": [
+        "2/S1",
+        "4/S1",
+        "5/S1",
+        "3/S1"
+      ],
+      "element_type": "Floor Plan",
+      "element_callouts": [],
+      "key_components": [
+        "Foundation Walls",
+        "Columns",
+        "Beams",
+        "Slab"
+      ],
+      "summary": "This is a ground floor plan view of a building, indicated by the title 'PLAN' and the scale '1/8\" = 1'-0\"'. The overall dimensions of the building footprint are shown, with a total width of 35'-0\" and a total length of 24'-0\". The plan is organized by a grid system, with lettered grids (A-G) along the vertical axis and numbered grids (1-4) along the horizontal axis. Key dimensions are provided for bays and overall extents, such as 13'-6\", 10'-9\", 3'-0\", 10'-0\", 8'-6\", 2'-6\", 6'-1\", 8'-0\", and 9'-11\". The dashed lines likely represent foundation walls or the perimeter of the slab. Several circular callouts with numbers and 'SI' (e.g., '2/S1', '4/S1', '5/S1', '3/S1') are present, indicating section cuts through this plan and referencing Sheet S1. These callouts are positioned near where columns or internal walls are indicated. The plan shows the layout of structural elements including columns (indicated by the circular symbols with internal lines) and potentially beams or internal walls. The grid lines and dimensions define the structural bays and the placement of these elements.",
+      "project_id": "25-01-019",
+      "page_number": 2,
+      "region_number": 3,
+      "relative_path": null,
+      "text_verbatim": "SI\nA\nB\n2'-6\"\n24'-0\"\n8'-6\"\nPLAN\nSCALE: 1/8\" 1'-0\"\n=\n(0\n10'-0\"\n3'-0\"\n13'-6\"\n35'-0\"\n10'-9\"\n5\nST\n5\nSI\n3\nST\n4\n4\n2\n4\nSI\nSI\n9'-11\"\n10'-9\"\n8'-0\"\n6'-1\""
+    },
+    {
+      "image_id": "region_04_red_box.png",
+      "classification": "Detail",
+      "location": "Load bearing edge of slab/foundation",
+      "level": "Foundation",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "2/S1"
+      ],
+      "element_type": "Load Bearing Edge Detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete Slab",
+        "Reinforcing Steel",
+        "Extruded Polystyrene Insulation",
+        "Polyethylene Vapor Barrier",
+        "Compacted Granular Fill",
+        "Wire Mesh Reinforcement"
+      ],
+      "summary": "This detail illustrates a typical load-bearing edge for a concrete slab or foundation. The concrete element has a total width of 4'-0\" and a depth of 1'-6\" at its thickest point, with a thickened edge extending 2\" below the main slab level. Reinforcement includes (3) 15M rebar bars at the top and (3) 15M rebar bars at the bottom of the slab. An alternative reinforcement option is specified as 6\"x6\"x% WWM (Welded Wire Mesh) or 10M grid rebar spaced at 10\" on center. The detail shows a 2\" layer of extruded polystyrene insulation (minimum R10, 30 psi compressive strength) with a 6 mil polyethylene vapor barrier below the slab. The slab rests on a minimum of 6\" of compacted granular 'A' fill. The top surface of the slab is sloped away at 2% for grade and insulation, if present. The section callout '2/S1' indicates this detail is from sheet S1, section 2. The scale is provided as 1/2\" = 1'-0\".",
+      "project_id": "25-01-019",
+      "page_number": 2,
+      "region_number": 4,
+      "relative_path": null,
+      "text_verbatim": "2\nSI\nSLOPE AWAY 2%\nGRADE & INSULATION\n(IF PRESENT)\n4'-0\"\n(3) 15M REBAR @ TOP\n6\"x6\"x% WWM\nOR\n10M GRID @ 10\" o.c.\n1'-6\"\n2\"\n1'-6\"\nSECTION Typ. Load Bearing Edge\n-\nSCALE: 1/2\" 1'-0\"\nMIN. 2\" (R10) OF EXTRUDED\nPOLYSTYRENE\nMIN. COMPRESSIVE STRENGTH\nOF 30 psi\nc/w 6 mil POLY\n(3) 15M REBAR @ BTM\nCOMPACTED\nGRANULAR 'A'\n6\"\nMIN.\n6\""
+    },
+    {
+      "image_id": "region_05_red_box.png",
+      "classification": "Detail",
+      "location": "Intermediate thickening of slab",
+      "level": "Unknown",
+      "orientation": null,
+      "grid_references": [],
+      "section_callouts": [
+        "5/S1"
+      ],
+      "element_type": "Slab thickening detail",
+      "element_callouts": [],
+      "key_components": [
+        "Concrete slab",
+        "Extruded polystyrene insulation",
+        "Polyethylene vapor barrier",
+        "Compacted granular fill",
+        "Reinforcing steel"
+      ],
+      "summary": "This detail illustrates an intermediate thickening within a concrete slab. The thickening is 1'-0\" deep and 1'-0\" wide, as indicated by the dimension lines. The slab incorporates a minimum of 2 inches (R10) of extruded polystyrene insulation with a minimum compressive strength of 30 psi, protected by a 6-mil polyethylene vapor barrier. Below the slab, a layer of compacted granular 'A' fill is present. The reinforcement consists of two continuous 15M rebar bars, hooked at the ends, with cover to be referenced in other notes. The detail is labeled as 'SECTION - Intermediate Thickening' and is drawn to a scale of 1/2\" = 1'-0\". The callout '5/S1' indicates this detail is from sheet S1, section 5.",
+      "project_id": "25-01-019",
+      "page_number": 2,
+      "region_number": 5,
+      "relative_path": null,
+      "text_verbatim": "Δ\nx-\nMIN. 2\" (R10) OF EXTRUDED POLYSTYRENE\nMIN. COMPRESSIVE STRENGTH OF 30 psi\nc/w 6 mil POLY.\nLO\n5\nSI\n1'-0\"\nD\n(2) 15M REBAR CONT.\nHOOKED AT END\n(SEE NOTES FOR COVER)\nCOMPACTED\n2\nGRANULAR 'A'\n1'-0\"\nSECTION Intermediate Thickening\n-\nSCALE: 1/2' 1'-0\"\n="
+    }
+  ]
+}

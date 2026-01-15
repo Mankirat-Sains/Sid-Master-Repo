@@ -14,7 +14,6 @@ from graph.subgraphs.document_generation_subgraph import call_doc_generation_sub
 from graph.subgraphs.deep_desktop_subgraph import call_deep_desktop_subgraph
 from graph.tracing import wrap_subgraph_node
 
-
 def _desktop_to_next(state: RAGState) -> str:
     """
     Route after desktop router:
@@ -30,6 +29,7 @@ def _desktop_to_next(state: RAGState) -> str:
     if DEEP_AGENT_ENABLED:
         return "deep_desktop"
     return "doc_generation"
+
 
 
 def build_desktop_agent_subgraph():
@@ -110,8 +110,8 @@ def call_desktop_agent_subgraph(state: ParentState) -> dict:
 
         traceback.print_exc()
         return {
-            "desktop_tools": [],
-            "desktop_reasoning": f"Error: {str(e)}",
+            "desktop_result": f"Error: {str(e)}",
+            "desktop_citations": []
         }
 
 

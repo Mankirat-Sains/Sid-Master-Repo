@@ -5,21 +5,19 @@ Routes query to appropriate desktop applications
 import json
 import re
 import time
-from models.rag_state import RAGState
+from models.desktop_agent_state import DesktopAgentState
 from prompts.desktop_router_prompts import DESKTOP_ROUTER_PROMPT, desktop_router_llm
 from config.logging_config import log_route
 
 
-def node_desktop_router(state: RAGState) -> dict:
+def node_desktop_router(state: DesktopAgentState) -> dict:
     """Route query to appropriate desktop applications"""
     t_start = time.time()
     log_route.info(">>> DESKTOP ROUTER START")
 
     try:
-        # Only run if "desktop" is in selected routers
-        if "desktop" not in (state.selected_routers or []):
-            log_route.info("⏭️  Skipping desktop router - not selected")
-            return {"desktop_tools": [], "desktop_reasoning": ""}
+        # Desktop router always runs in DesktopAgent subgraph
+        # (Parent graph already routed here)
 
         choice = desktop_router_llm.invoke(
             DESKTOP_ROUTER_PROMPT.format(q=state.user_query)

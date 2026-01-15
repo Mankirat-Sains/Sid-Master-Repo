@@ -175,6 +175,58 @@ def strip_asterisks_from_projects(text: str) -> str:
     # Pattern 6: Handle any remaining **Project NUMBER** patterns with various spacing
     text = re.sub(r'\*\*\s*Project\s+(\d{2}-\d{2}-\d{3})\s*\*\*', r'Project \1', text)
     
+    # Pattern 7: Remove all markdown bolding **text** (comprehensive cleanup)
+    # This handles cases like **Bracing:**, **Lateral Bracing:**, etc.
+    # Match ** followed by text (non-greedy) followed by **
+    text = re.sub(r'\*\*([^*]+?)\*\*', r'\1', text)
+    
+    # Pattern 8: Clean up malformed LaTeX - dimensions wrapped in $...$ that aren't real math
+    # Look for patterns like $14" \times 16"$ or $3'0" \times 3'0" \times 12"$ (dimensions with units)
+    # These should be converted to plain text
+    def clean_dimension_math(match):
+        content = match.group(1)
+        
+        # Check if this looks like a dimension (not real math)
+        # Dimensions typically have:
+        # - Quote marks (inches ") or single quotes (feet ')
+        # - LaTeX text commands like \text{COLUMN DEPTH}
+        # - Dimension patterns like "14" x 16" or "3'0" x 3'0""
+        # - Fractions with units like "3/4""
+        
+        has_quotes = '"' in content or "'" in content
+        has_text_command = '\\text{' in content
+        has_dimension_pattern = bool(re.search(r'\d+\s*["\']\s*[x×]', content))
+        has_fraction_with_unit = bool(re.search(r'\d+/\d+\s*["\']', content)) or bool(re.search(r'\d+\s*["\']\s*/\s*\d+', content))
+        has_feet_inches_pattern = bool(re.search(r"\d+'?\d*\"\s*[x×]", content))
+        
+        # If it has any of these dimension indicators, it's likely a dimension, not math
+        if has_quotes or has_text_command or has_dimension_pattern or has_fraction_with_unit or has_feet_inches_pattern:
+            # Remove $ delimiters and clean up LaTeX commands
+            cleaned = content.replace('\\times', '×').replace('\\cdot', '·')
+            
+            # Remove LaTeX text commands: \text{COLUMN DEPTH} -> COLUMN DEPTH
+            cleaned = re.sub(r'\\text\{([^}]+)\}', r'\1', cleaned)
+            
+            # For dimensions, convert × to x (lowercase) and remove spaces around it
+            # This makes "14" × 16"" become "14"x16""
+            cleaned = re.sub(r'\s*×\s*', 'x', cleaned)
+            
+            # Clean up spacing around + and - operators (keep spaces for readability)
+            cleaned = re.sub(r'\s*\+\s*', ' + ', cleaned)
+            cleaned = re.sub(r'\s*-\s*', ' - ', cleaned)
+            
+            # Remove extra spaces but preserve spaces around operators
+            cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+            
+            return cleaned
+        
+        # Keep real math equations
+        # Real math typically has variables, operators, and no units
+        return match.group(0)
+    
+    # Match $...$ patterns but be careful not to break valid math
+    text = re.sub(r'\$([^$\n]+?)\$', clean_dimension_math, text)
+    
     return text
 
 
@@ -1101,6 +1153,8 @@ async def chat_handler(request: ChatRequest):
         answer = rag_result.get("answer", "No answer generated.")
         code_answer = rag_result.get("code_answer")  # May be None if code_db not enabled
         coop_answer = rag_result.get("coop_answer")  # May be None if coop_manual not enabled
+        desktop_answer = rag_result.get("desktop_answer")  # Desktop agent result (Excel, etc.)
+        webcalcs_answer = rag_result.get("webcalcs_answer")  # WebCalcs result
         code_citations = rag_result.get("code_citations", [])
         coop_citations = rag_result.get("coop_citations", [])
         project_citations = rag_result.get("citations", [])
@@ -1109,12 +1163,20 @@ async def chat_handler(request: ChatRequest):
         follow_up_suggestions = rag_result.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
         doc_answer_text = None
         
-        # Check which databases were used
-        has_project = bool(answer and answer.strip())
+        # Check which databases/routers were used
+        has_project = bool(answer and answer.strip() and not desktop_answer and not webcalcs_answer)
         has_code = bool(code_answer and code_answer.strip())
         has_coop = bool(coop_answer and coop_answer.strip())
-        enabled_count = sum([has_project, has_code, has_coop])
+        has_desktop = bool(desktop_answer and desktop_answer.strip())
+        has_webcalcs = bool(webcalcs_answer and webcalcs_answer.strip())
+        enabled_count = sum([has_project, has_code, has_coop, has_desktop, has_webcalcs])
         multiple_enabled = enabled_count > 1
+        
+        # If desktop or webcalcs provided answer, use that as primary
+        if desktop_answer and desktop_answer.strip():
+            answer = desktop_answer
+        elif webcalcs_answer and webcalcs_answer.strip():
+            answer = webcalcs_answer
         
         # Note: References sections are no longer added automatically
         # Only inline citations in brackets are used (as specified in the prompts)
@@ -1185,9 +1247,11 @@ async def chat_handler(request: ChatRequest):
             thinking_log = rag_result.get("thinking_log", [])
             
             # Return separate answers
-            doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
+            # Prioritize desktop/webcalcs answers if they exist
+            primary_reply = desktop_answer or webcalcs_answer or processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated."
+            
             response = ChatResponse(
-                reply=processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
+                reply=primary_reply,  # Primary answer (prioritizes desktop/webcalcs)
                 session_id=request.session_id,
                 timestamp=datetime.now().isoformat(),
                 latency_ms=round(latency_ms, 2),
@@ -1275,9 +1339,11 @@ async def chat_handler(request: ChatRequest):
             thinking_log = rag_result.get("thinking_log", [])
             
             # Prepare response
-            doc_answer_text = combined_answer
+
+            primary_reply = desktop_answer or webcalcs_answer or processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated."
+
             response = ChatResponse(
-                reply=combined_answer,
+                reply=primary_reply,
                 session_id=request.session_id,
                 timestamp=datetime.now().isoformat(),
                 latency_ms=round(latency_ms, 2),
@@ -1454,23 +1520,50 @@ async def chat_stream_handler(request: ChatRequest):
                 # Get the latest checkpoint state for this thread
                 # For async checkpointers, use aget_state() instead of get_state()
                 from graph.checkpointer import CHECKPOINTER_TYPE
-                if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
-                    # Async checkpointer - use async method
-                    state_snapshot = await graph.aget_state({"configurable": {"thread_id": request.session_id}})
-                else:
-                    # Sync checkpointer - use sync method
-                    state_snapshot = graph.get_state({"configurable": {"thread_id": request.session_id}})
                 
-                if state_snapshot and state_snapshot.values:
-                    previous_state = state_snapshot.values
-                    logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
-                    if previous_state.get("messages"):
-                        logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
-                    if previous_state.get("conversation_history"):
-                        logger.info(f"📖 Found {len(previous_state['conversation_history'])} prior exchanges")
+                # Check if checkpointer is available and initialized
+                if not hasattr(graph, 'checkpointer') or graph.checkpointer is None:
+                    logger.warning("⚠️ Checkpointer not available, skipping state load")
+                    previous_state = None
+                else:
+                    try:
+                        if CHECKPOINTER_TYPE in ["postgres", "supabase"]:
+                            # Async checkpointer - use async method
+                            # Add timeout to prevent hanging
+                            import asyncio
+                            state_snapshot = await asyncio.wait_for(
+                                graph.aget_state({"configurable": {"thread_id": request.session_id}}),
+                                timeout=5.0  # 5 second timeout
+                            )
+                        else:
+                            # Sync checkpointer - use sync method
+                            state_snapshot = graph.get_state({"configurable": {"thread_id": request.session_id}})
+                        
+                        if state_snapshot and state_snapshot.values:
+                            previous_state = state_snapshot.values
+                            logger.info(f"📖 Loaded previous state from checkpointer for thread_id={request.session_id}")
+                            if previous_state.get("messages"):
+                                logger.info(f"📖 Found {len(previous_state['messages'])} previous messages")
+                    except asyncio.TimeoutError:
+                        logger.warning(f"⚠️ Checkpointer timeout for thread_id={request.session_id}, continuing without previous state")
+                        previous_state = None
+                    except Exception as conn_error:
+                        # Check for connection-related errors
+                        error_msg = str(conn_error).lower()
+                        if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused"]):
+                            logger.warning(f"⚠️ Checkpointer connection error (continuing without state): {conn_error}")
+                            previous_state = None
+                        else:
+                            # Re-raise non-connection errors
+                            raise
             except Exception as e:
-                # No previous state exists (first invocation) - this is fine
-                logger.info(f"📖 No previous state found (first invocation): {e}")
+                # No previous state exists (first invocation) or checkpointer unavailable - this is fine
+                # Don't let checkpointer errors break the entire request
+                error_msg = str(e).lower()
+                if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network"]):
+                    logger.warning(f"⚠️ Checkpointer unavailable (continuing without state): {e}")
+                else:
+                    logger.info(f"📖 No previous state found (first invocation): {e}")
                 previous_state = None
             
             # Get messages/conversation history from previous state for query rewriting and context
@@ -1587,30 +1680,84 @@ async def chat_stream_handler(request: ChatRequest):
             #       4. Durability mode controls WHEN it saves (exit = only at end, async/sync = after each node)
             # CRITICAL: durability is a DIRECT parameter, not in config dict!
             messages_received = 0
-            async for stream_mode, chunk in graph.astream(
-                asdict(init_state),
-                config=config,
-                stream_mode=["updates", "custom", "messages"],  # Add "messages" for token streaming
-                durability=durability_mode  # Pass durability as direct parameter, not in config
-            ):
-                # Handle LLM token streaming (messages mode)
-                # This captures tokens directly from LLM calls made within nodes
-                if stream_mode == "messages":
-                    messages_received += 1
-                    # Log first few messages to debug
-                    if messages_received <= 3:
-                        logger.info(f"📨 Messages mode event #{messages_received}: type={type(chunk)}, chunk={str(chunk)[:200]}")
-                    
-                    # chunk is a tuple: (AIMessageChunk, metadata)
-                    if isinstance(chunk, tuple) and len(chunk) >= 2:
-                        message_chunk = chunk[0]
-                        metadata = chunk[1] if len(chunk) > 1 else {}
+            interrupt_detected = False
+            interrupt_payload = None
+            completion_executed = False  # Flag to ensure completion code runs only once
+            
+            try:
+                # Wrap graph.astream in try-except to handle connection errors gracefully
+                try:
+                    stream_iterator = graph.astream(
+                        asdict(init_state),
+                        config=config,
+                        stream_mode=["updates", "custom", "messages"],  # Add "messages" for token streaming
+                        durability=durability_mode,  # Pass durability as direct parameter, not in config
+                        subgraphs=True  # CRITICAL: Include outputs from subgraphs (e.g., db_retrieval subgraph) in stream
+                    )
+                except Exception as stream_init_error:
+                    # Handle checkpointer connection errors during stream initialization
+                    error_msg = str(stream_init_error).lower()
+                    if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused"]):
+                        logger.error(f"❌ Checkpointer connection error during stream init: {stream_init_error}")
+                        logger.warning("⚠️ Continuing without checkpointer - state won't be persisted")
+                        # Try to continue without checkpointer by using a simpler config
+                        # Remove thread_id to avoid checkpointer access
+                        config_no_checkpoint = {"configurable": {}}
+                        stream_iterator = graph.astream(
+                            asdict(init_state),
+                            config=config_no_checkpoint,
+                            stream_mode=["updates", "custom", "messages"],
+                            durability="off",  # Disable checkpointer
+                            subgraphs=True
+                        )
+                    else:
+                        # Re-raise non-connection errors
+                        raise
+                
+                async for stream_item in stream_iterator:
+                    # Handle different stream formats (with/without subgraphs)
+                    # When subgraphs=True with multiple stream modes, format is: (namespace, stream_mode, chunk)
+                    # When subgraphs=False or single mode, format is: (stream_mode, chunk)
+                    # namespace is a tuple like ('node_name:task_id',) for subgraph nodes, or () for parent nodes
+                    if isinstance(stream_item, tuple) and len(stream_item) == 3:
+                        # Format: (namespace, stream_mode, chunk) when subgraphs=True with multiple modes
+                        namespace, stream_mode, chunk = stream_item
+                        # Log subgraph namespace for debugging (first few only)
+                        if node_count < 5 and namespace:
+                            logger.debug(f"📦 Subgraph namespace: {namespace}")
+                    elif isinstance(stream_item, tuple) and len(stream_item) == 2:
+                        # Format: (stream_mode, chunk) when subgraphs=False or single mode
+                        stream_mode, chunk = stream_item
+                        namespace = ()  # No namespace for parent graph nodes
+                    else:
+                        # Unexpected format - log and skip
+                        logger.warning(f"⚠️ Unexpected stream format: {type(stream_item)}, length: {len(stream_item) if isinstance(stream_item, tuple) else 'N/A'}")
+                        logger.warning(f"⚠️ Stream item: {str(stream_item)[:200]}")
+                        continue
+                    # Handle LLM token streaming (messages mode)
+                    # This captures tokens directly from LLM calls made within nodes
+                    if stream_mode == "messages":
+                        messages_received += 1
+                        # Log first few messages to debug
+                        if messages_received <= 5:
+                            logger.info(f"📨 Messages mode event #{messages_received}: type={type(chunk)}, chunk={str(chunk)[:200]}")
                         
                         # Get the content from the message chunk
-                        if hasattr(message_chunk, 'content') and message_chunk.content:
-                            token_content = message_chunk.content
+                        # chunk is an AIMessageChunk or similar message object
+                        message_chunk = chunk if hasattr(chunk, 'content') else None
+                        if message_chunk and message_chunk.content:
+                            # Import helper function to handle Gemini list format
+                            from synthesis.synthesizer import extract_text_from_content
+                            raw_content = message_chunk.content
+                            token_content = extract_text_from_content(raw_content)
+                            
+                            # Skip if no text content extracted
+                            if not token_content:
+                                continue
+                            
                             # Only stream tokens from synthesis LLM (answer node) - filter out other nodes
                             # Check metadata for node info to filter tokens
+                            metadata = getattr(message_chunk, 'metadata', None) or getattr(message_chunk, 'response_metadata', None) or {}
                             node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
                             
                             # IMPORTANT: Only stream tokens from the "answer" node to main chat
@@ -1628,11 +1775,11 @@ async def chat_stream_handler(request: ChatRequest):
                             logger.debug(f"💬 Streaming token: {len(token_content)} chars from {node_name}")
                             yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': 'answer', 'timestamp': time.time()})}\n\n"
                             await asyncio.sleep(0.001)  # Minimal delay for proper streaming
-                    continue
-                
+                        continue
+                    
                     # Handle custom events (emitted directly from nodes)
-                if stream_mode == "custom":
-                    logger.debug(f"📨 Custom event received: {chunk}")
+                    if stream_mode == "custom":
+                        logger.debug(f"📨 Custom event received: {chunk}")
                     # Handle custom events - send thinking logs to Agent Thinking panel, tokens to main chat
                     if isinstance(chunk, dict):
                         if chunk.get("type") == "thinking":
@@ -1653,404 +1800,526 @@ async def chat_stream_handler(request: ChatRequest):
                             logger.debug(f"💬 Streaming token from node '{token_node}': {len(token_content)} chars")
                             yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'node': token_node, 'timestamp': time.time()})}\n\n"
                             await asyncio.sleep(0.001)  # Minimal delay for proper streaming
-                    continue
-                
-                # Handle state updates (updates mode)
-                if stream_mode != "updates":
-                    continue
-                    
-                # chunk is now {node_name: state_updates_dict}
-                # This gives us the node name directly as the key
-                node_outputs = chunk
-                logger.info(f"📦 Received node_outputs: {list(node_outputs.keys())}")
-                
-                for node_name, state_updates in node_outputs.items():
-                    node_count += 1
-                    logger.info(f"🔍 Processing node #{node_count}: '{node_name}'")
-                    
-                    if not isinstance(state_updates, dict):
                         continue
                     
-                    # Merge state updates into accumulated state
-                    # (updates mode gives us only the changes, not full state)
-                    accumulated_state.update(state_updates)
-                    state_dict = accumulated_state.copy()
-                    workflow_hint = state_dict.get("workflow") or state_updates.get("workflow")
-                    task_type_hint = state_dict.get("task_type") or state_updates.get("task_type")
-                    if (workflow_hint and str(workflow_hint).lower().startswith("doc")) or (
-                        task_type_hint and str(task_type_hint).startswith("doc")
-                    ) or node_name.startswith("doc_"):
-                        doc_workflow_detected = True
+                    # Handle state updates (updates mode)
+                    if stream_mode != "updates":
+                        continue
+                        
+                    # chunk is now {node_name: state_updates_dict}
+                    # This gives us the node name directly as the key
+                    node_outputs = chunk
+                    logger.info(f"📦 Received node_outputs: {list(node_outputs.keys())}")
                     
-                    # Generate thinking log based on node using intelligent_log_generator and RAG state data
-                    thinking_log = None
-                    
-                    if node_name == "plan":
-                        plan = state_dict.get("query_plan") or {}
-                        thinking_log = log_generator.generate_planning_log(
-                            query=request.message,
-                            plan=plan,
-                            route=state_dict.get("data_route") or "smart",
-                            project_filter=state_dict.get("project_filter")
-                        )
-                    elif node_name == "router_dispatcher":
-                        thinking_log = log_generator.generate_router_dispatcher_log(
-                            query=request.message,
-                            selected_routers=state_dict.get("selected_routers", [])
-                        )
-                    elif node_name == "rag":
-                        thinking_log = log_generator.generate_rag_log(
-                            query=request.message,
-                            query_plan=state_dict.get("query_plan"),
-                            data_route=state_dict.get("data_route"),
-                            data_sources=state_dict.get("data_sources")
-                        )
-                    elif node_name == "generate_image_embeddings":
-                        image_count = len(state_dict.get("images_base64") or [])
-                        thinking_log = log_generator.generate_image_embeddings_log(
-                            query=request.message,
-                            image_count=image_count
-                        )
-                    elif node_name == "image_similarity_search":
-                        similarity_results = state_dict.get("image_similarity_results", [])
-                        project_keys = set()
-                        for img in similarity_results:
-                            proj = img.get("project_key")
-                            if proj:
-                                project_keys.add(proj)
-                        thinking_log = log_generator.generate_image_similarity_log(
-                            query=request.message,
-                            result_count=len(similarity_results),
-                            project_count=len(project_keys)
-                        )
-                    elif node_name == "retrieve":
-                        thinking_log = log_generator.generate_retrieval_log(
-                            query=request.message,
-                            project_count=len(state_dict.get("retrieved_docs") or []),
-                            code_count=len(state_dict.get("retrieved_code_docs") or []),
-                            coop_count=len(state_dict.get("retrieved_coop_docs") or []),
-                            projects=_extract_projects(state_dict.get("retrieved_docs") or []),
-                            route=state_dict.get("data_route") or "smart",
-                            project_filter=state_dict.get("project_filter"),
-                            query_plan=state_dict.get("query_plan")
-                        )
-                    elif node_name == "grade":
-                        thinking_log = log_generator.generate_grading_log(
-                            query=request.message,
-                            retrieved_count=len(state_dict.get("retrieved_docs") or []),
-                            graded_count=len(state_dict.get("graded_docs") or []),
-                            filtered_out=len(state_dict.get("retrieved_docs") or []) - len(state_dict.get("graded_docs") or [])
-                        )
-                    elif node_name == "answer":
-                        thinking_log = log_generator.generate_synthesis_log(
-                            query=request.message,
-                            graded_count=len(state_dict.get("answer_citations") or []),
-                            projects=_extract_projects_from_citations(state_dict.get("answer_citations") or []),
-                            has_code=bool(state_dict.get("code_answer")),
-                            has_coop=bool(state_dict.get("coop_answer"))
-                        )
-                    elif node_name == "verify":
-                        thinking_log = log_generator.generate_verify_log(
-                            query=request.message,
-                            needs_fix=state_dict.get("needs_fix", False),
-                            follow_up_count=len(state_dict.get("follow_up_questions", [])),
-                            suggestion_count=len(state_dict.get("follow_up_suggestions", []))
-                        )
-                    elif node_name == "correct":
-                        thinking_log = log_generator.generate_correct_log(
-                            query=request.message,
-                            support_score=state_dict.get("answer_support_score", 1.0),
-                            corrective_attempted=state_dict.get("corrective_attempted", False)
-                        )
-                    else:
-                        # For any unexpected nodes, log them but don't show to user
-                        logger.info(f"Skipping thinking log for node: {node_name}")
+                    for node_name, state_updates in node_outputs.items():
+                        node_count += 1
+                        logger.info(f"🔍 Processing node #{node_count}: '{node_name}'")
+                        
+                        if not isinstance(state_updates, dict):
+                            continue
+                        
+                        # Merge state updates into accumulated state
+                        # (updates mode gives us only the changes, not full state)
+                        accumulated_state.update(state_updates)
+                        state_dict = accumulated_state.copy()
+                        workflow_hint = state_dict.get("workflow") or state_updates.get("workflow")
+                        task_type_hint = state_dict.get("task_type") or state_updates.get("task_type")
+                        if (workflow_hint and str(workflow_hint).lower().startswith("doc")) or (
+                            task_type_hint and str(task_type_hint).startswith("doc")
+                        ) or node_name.startswith("doc_"):
+                            doc_workflow_detected = True
+                        
+                        # Generate thinking log based on node using intelligent_log_generator and RAG state data
                         thinking_log = None
+                        
+                        if node_name == "plan":
+                            plan = state_dict.get("query_plan") or {}
+                            thinking_log = log_generator.generate_planning_log(
+                                query=request.message,
+                                plan=plan,
+                                route=state_dict.get("data_route") or "smart",
+                                project_filter=state_dict.get("project_filter")
+                            )
+                        elif node_name == "router_dispatcher":
+                            thinking_log = log_generator.generate_router_dispatcher_log(
+                                query=request.message,
+                                selected_routers=state_dict.get("selected_routers", [])
+                            )
+                        elif node_name == "rag":
+                            thinking_log = log_generator.generate_rag_log(
+                                query=request.message,
+                                query_plan=state_dict.get("query_plan"),
+                                data_route=state_dict.get("data_route"),
+                                data_sources=state_dict.get("data_sources")
+                            )
+                        elif node_name == "generate_image_embeddings":
+                            image_count = len(state_dict.get("images_base64") or [])
+                            thinking_log = log_generator.generate_image_embeddings_log(
+                                query=request.message,
+                                image_count=image_count
+                            )
+                        elif node_name == "image_similarity_search":
+                            similarity_results = state_dict.get("image_similarity_results", [])
+                            project_keys = set()
+                            for img in similarity_results:
+                                proj = img.get("project_key")
+                                if proj:
+                                    project_keys.add(proj)
+                            thinking_log = log_generator.generate_image_similarity_log(
+                                query=request.message,
+                                result_count=len(similarity_results),
+                                project_count=len(project_keys)
+                            )
+                        elif node_name == "retrieve":
+                            thinking_log = log_generator.generate_retrieval_log(
+                                query=request.message,
+                                project_count=len(state_dict.get("retrieved_docs") or []),
+                                code_count=len(state_dict.get("retrieved_code_docs") or []),
+                                coop_count=len(state_dict.get("retrieved_coop_docs") or []),
+                                projects=_extract_projects(state_dict.get("retrieved_docs") or []),
+                                route=state_dict.get("data_route") or "smart",
+                                project_filter=state_dict.get("project_filter"),
+                                query_plan=state_dict.get("query_plan")
+                            )
+                        elif node_name == "grade":
+                            thinking_log = log_generator.generate_grading_log(
+                                query=request.message,
+                                retrieved_count=len(state_dict.get("retrieved_docs") or []),
+                                graded_count=len(state_dict.get("graded_docs") or []),
+                                filtered_out=len(state_dict.get("retrieved_docs") or []) - len(state_dict.get("graded_docs") or [])
+                            )
+                        elif node_name == "answer":
+                            thinking_log = log_generator.generate_synthesis_log(
+                                query=request.message,
+                                graded_count=len(state_dict.get("answer_citations") or []),
+                                projects=_extract_projects_from_citations(state_dict.get("answer_citations") or []),
+                                has_code=bool(state_dict.get("code_answer")),
+                                has_coop=bool(state_dict.get("coop_answer"))
+                            )
+                        elif node_name == "verify":
+                            thinking_log = log_generator.generate_verify_log(
+                                query=request.message,
+                                needs_fix=state_dict.get("needs_fix", False),
+                                follow_up_count=len(state_dict.get("follow_up_questions", [])),
+                                suggestion_count=len(state_dict.get("follow_up_suggestions", []))
+                            )
+                        elif node_name == "correct":
+                            thinking_log = log_generator.generate_correct_log(
+                                query=request.message,
+                                support_score=state_dict.get("answer_support_score", 1.0),
+                                corrective_attempted=state_dict.get("corrective_attempted", False)
+                            )
+                        else:
+                            # For any unexpected nodes, log them but don't show to user
+                            logger.info(f"Skipping thinking log for node: {node_name}")
+                            thinking_log = None
+                        
+                        # Emit thinking log to stream for Agent Thinking panel (NOT displayed in main chat)
+                        if thinking_log:
+                            log_data = {'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()}
+                            logger.info(f"📤 Streaming thinking log for node '{node_name}': {thinking_log[:100]}...")
+                            # Send to stream for Agent Thinking panel - frontend will route to correct panel
+                            yield f"data: {json.dumps(log_data)}\n\n"
+                            await asyncio.sleep(0.001)  # Minimal delay for proper streaming
+                        else:
+                            logger.info(f"⏭️  No thinking log generated for node '{node_name}'")
+                        
+                        # DO NOT manually stream answer - tokens come via "messages" mode
+                        # The manual word-by-word streaming causes duplication
+                        # Tokens are already being streamed in real-time via messages mode
+                        # This manual streaming was causing word duplication ("Project Project", etc.)
+                        if node_name == "answer":
+                            logger.info(f"📤 Answer node completed - tokens streaming via messages mode (received: {messages_received})")
+                        
+                        # Store final state - correct node is the last one in DBRetrieval subgraph
+                        # Also check for router_dispatcher completion (which calls subgraph)
+                        final_state = state_dict.copy()
+                        
+                        # Break after correct node (last node in DBRetrieval pipeline)
+                        # OR after router_dispatcher (which completes after subgraph finishes)
+                        # Check for any result: db_retrieval, desktop, or webcalcs
+                        has_any_result = (
+                            "db_retrieval_result" in state_dict or 
+                            "desktop_result" in state_dict or 
+                            "webcalcs_result" in state_dict
+                        )
+                        if node_name == "correct" or (node_name == "router_dispatcher" and has_any_result):
+                            logger.info(f"✅ Breaking after node '{node_name}' - subgraph execution complete")
+                            logger.info(f"📊 Final state keys: {list(state_dict.keys())[:20]}...")  # Log first 20 keys
+                            logger.info(f"📊 db_retrieval_result present: {'db_retrieval_result' in state_dict}")
+                            logger.info(f"📊 desktop_result present: {'desktop_result' in state_dict}")
+                            logger.info(f"📊 webcalcs_result present: {'webcalcs_result' in state_dict}")
+                            if state_dict.get('desktop_result'):
+                                logger.info(f"📊 desktop_result value: {str(state_dict.get('desktop_result', 'None'))[:100]}")
+                            break
                     
-                    # Emit thinking log to stream for Agent Thinking panel (NOT displayed in main chat)
-                    if thinking_log:
-                        log_data = {'type': 'thinking', 'message': thinking_log, 'node': node_name, 'timestamp': time.time()}
-                        logger.info(f"📤 Streaming thinking log for node '{node_name}': {thinking_log[:100]}...")
-                        # Send to stream for Agent Thinking panel - frontend will route to correct panel
-                        yield f"data: {json.dumps(log_data)}\n\n"
-                        await asyncio.sleep(0.001)  # Minimal delay for proper streaming
-                    else:
-                        logger.info(f"⏭️  No thinking log generated for node '{node_name}'")
-                    
-                    # DO NOT manually stream answer - tokens come via "messages" mode
-                    # The manual word-by-word streaming causes duplication
-                    # Tokens are already being streamed in real-time via messages mode (line 930)
-                    # This manual streaming was causing word duplication ("Project Project", etc.)
-                    if node_name == "answer":
-                        logger.info(f"📤 Answer node completed - tokens streaming via messages mode (received: {messages_received})")
-                    
-                    # Store final state - correct node is the last one
-                    final_state = state_dict.copy()
-                    
-                    # Break after correct node (last node in pipeline)
-                    if node_name == "correct":
-                        break
+                    # Execute completion code once (after for loop, inside async for body, uses flag to run only once)
+                    # CRITICAL: Skip completion code if interrupt was detected OR if we just processed an interrupt node
+                    # Check if any node in this chunk was an interrupt before running completion
+                    chunk_has_interrupt = any(key == "__interrupt__" or (isinstance(key, tuple) and key[-1] == "__interrupt__") for key in node_outputs.keys())
+                    if chunk_has_interrupt:
+                        logger.info("⏸️  Skipping completion code - interrupt detected in current chunk")
+                    elif interrupt_detected:
+                        logger.info("⏸️  Skipping completion code - interrupt was previously detected")
+                    elif not completion_executed and final_state and not interrupt_detected and not chunk_has_interrupt:
+                        # CRITICAL: Only run completion code if we have an actual answer, not just any state
+                        # This prevents "No answer generated" from appearing prematurely
+                        # Helper to check if value is non-empty (handles strings, lists, etc.)
+                        def _has_content(value):
+                            if not value:
+                                return False
+                            if isinstance(value, str):
+                                return bool(value.strip())
+                            if isinstance(value, list):
+                                return len(value) > 0
+                            return bool(value)
+                        
+                        has_answer = bool(
+                            _has_content(final_state.get("db_retrieval_result")) or 
+                            _has_content(final_state.get("desktop_result")) or  # NEW: Check desktop result
+                            _has_content(final_state.get("webcalcs_result")) or  # NEW: Check webcalcs result
+                            _has_content(final_state.get("final_answer")) or 
+                            _has_content(final_state.get("answer")) or
+                            _has_content(final_state.get("db_retrieval_code_answer")) or 
+                            _has_content(final_state.get("code_answer")) or
+                            _has_content(final_state.get("db_retrieval_coop_answer")) or 
+                            _has_content(final_state.get("coop_answer"))
+                        )
+                        if has_answer:
+                            completion_executed = True
+                            logger.info("✅ Running completion code - answer found in state")
+                            
+                            # Log streaming stats
+                            logger.info(f"📊 Streaming stats: {messages_received} LLM token events received via messages mode")
+                            
+                            # Check if we got a result
+                            if not doc_workflow_detected and should_materialize_doc(
+                                final_state.get("workflow"), final_state.get("task_type"), final_state.get("doc_generation_result")
+                            ):
+                                doc_workflow_detected = True
+                            
+                            # Extract final answer
+                            # Prioritize desktop/webcalcs results over db_retrieval
+                            desktop_answer_raw = final_state.get("desktop_result")
+                            webcalcs_answer_raw = final_state.get("webcalcs_result")
+                            
+                            # Handle Gemini list format for desktop/webcalcs answers
+                            from synthesis.synthesizer import extract_text_from_content
+                            desktop_answer = extract_text_from_content(desktop_answer_raw) if desktop_answer_raw else None
+                            webcalcs_answer = extract_text_from_content(webcalcs_answer_raw) if webcalcs_answer_raw else None
+                            
+                            answer = desktop_answer or webcalcs_answer or final_state.get("db_retrieval_result") or final_state.get("final_answer") or final_state.get("answer")
+                            code_answer = final_state.get("db_retrieval_code_answer") or final_state.get("code_answer")
+                            coop_answer = final_state.get("db_retrieval_coop_answer") or final_state.get("coop_answer")
+                            
+                            if not answer or (isinstance(answer, str) and answer.strip() == ""):
+                                answer = code_answer or coop_answer or "No answer generated."
+                            
+                            code_citations = final_state.get("db_retrieval_code_citations") or final_state.get("code_citations", [])
+                            coop_citations = final_state.get("db_retrieval_coop_citations") or final_state.get("coop_citations", [])
+                            project_citations = final_state.get("db_retrieval_citations") or final_state.get("answer_citations", [])
+                            image_similarity_results = final_state.get("db_retrieval_image_similarity_results") or final_state.get("image_similarity_results", [])
+                            follow_up_questions = final_state.get("db_retrieval_follow_up_questions") or final_state.get("follow_up_questions", [])
+                            follow_up_suggestions = final_state.get("db_retrieval_follow_up_suggestions") or final_state.get("follow_up_suggestions", [])
+                            
+                            # Helper to safely check if answer has content (handles strings and lists)
+                            def _answer_has_content(ans):
+                                if not ans:
+                                    return False
+                                if isinstance(ans, str):
+                                    return bool(ans.strip())
+                                if isinstance(ans, list):
+                                    return len(ans) > 0
+                                return bool(ans)
+                            
+                            has_project = bool(_answer_has_content(answer) and not desktop_answer and not webcalcs_answer)
+                            has_code = bool(_answer_has_content(code_answer))
+                            has_coop = bool(_answer_has_content(coop_answer))
+                            has_desktop = bool(_answer_has_content(desktop_answer))
+                            has_webcalcs = bool(_answer_has_content(webcalcs_answer))
+                            enabled_count = sum([has_project, has_code, has_coop, has_desktop, has_webcalcs])
+                            multiple_enabled = enabled_count > 1
+                            
+                            # Helper to safely check if answer is empty (handles strings and lists)
+                            def _is_empty_answer_safe(ans):
+                                if not ans:
+                                    return True
+                                if isinstance(ans, str):
+                                    return ans.strip() == ""
+                                if isinstance(ans, list):
+                                    return len(ans) == 0
+                                return False
+                            
+                            if _is_empty_answer_safe(answer):
+                                # Check desktop/webcalcs first, then code/coop, then error
+                                if not _is_empty_answer_safe(desktop_answer):
+                                    answer = desktop_answer
+                                elif not _is_empty_answer_safe(webcalcs_answer):
+                                    answer = webcalcs_answer
+                                elif _is_empty_answer_safe(code_answer):
+                                    if _is_empty_answer_safe(coop_answer):
+                                        answer = "I couldn't generate a response. Please try rephrasing your question or check that the system is properly configured."
+                            
+                            latency_ms = (time.time() - start_time) * 1000
+                            
+                            route_value = final_state.get("data_route") or final_state.get("db_retrieval_route")
+                            execution_trace = final_state.get("execution_trace") or []
+                            
+                            if multiple_enabled:
+                                # Multiple databases enabled - return separate answers
+                                # Strip asterisks from project names/numbers
+                                processed_project_answer = strip_asterisks_from_projects(answer) if has_project else None
+
+                                # Wrap code file citations with file-link tags (shows filename)
+                                processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else code_answer
+
+                                # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
+                                if has_code:
+                                    processed_code_answer = wrap_external_links(processed_code_answer)
+
+                                # Wrap coop file citations with file-link tags (shows page number only)
+                                processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else coop_answer
+
+                                # Log to Supabase (matching chat endpoint)
+                                supabase_logger = get_supabase_logger()
+                                if supabase_logger.enabled:
+                                    user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
+                                    # Build combined logging text
+                                    parts = []
+                                    if has_project:
+                                        parts.append(answer)
+                                    if has_code:
+                                        parts.append(f"--- Code References ---\n\n{code_answer}")
+                                    if has_coop:
+                                        parts.append(f"--- Training Manual References ---\n\n{coop_answer}")
+                                    combined_for_logging = "\n\n".join(parts)
+
+                                    # Upload first image if provided (for logging)
+                                    image_url = None
+                                    if images_to_process and len(images_to_process) > 0:
+                                        image_url = supabase_logger.upload_image(
+                                            images_to_process[0],
+                                            message_id,
+                                            "image/png"
+                                        )
+
+                                    query_data = {
+                                        "message_id": message_id,
+                                        "session_id": request.session_id,
+                                        "user_query": request.message,
+                                        "rag_response": combined_for_logging,
+                                        "route": route_value,
+                                        "citations_count": len(project_citations) + len(code_citations) + len(coop_citations),
+                                        "latency_ms": round(latency_ms, 2),
+                                        "user_identifier": user_identifier,
+                                        "image_url": image_url
+                                    }
+                                    supabase_logger.log_user_query(query_data)
+
+                                # Prioritize desktop/webcalcs answers
+                                primary_reply = desktop_answer or webcalcs_answer or processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated."
+
+                                # Build response with separate answers (matching chat endpoint)
+                                doc_answer_text = primary_reply or processed_project_answer or processed_code_answer or processed_coop_answer or answer
+                                response_data = {
+                                    'reply': primary_reply,  # Use desktop/webcalcs if available
+                                    'session_id': request.session_id,
+                                    'timestamp': datetime.now().isoformat(),
+                                    'latency_ms': round(latency_ms, 2),
+                                    'citations': len(project_citations) + len(code_citations) + len(coop_citations),  # Total citations
+                                    'route': route_value,
+                                    'message_id': message_id,
+                                    'project_answer': processed_project_answer,
+                                    'code_answer': processed_code_answer,
+                                    'coop_answer': processed_coop_answer,
+                                    'project_citations': len(project_citations) if has_project else None,
+                                    'code_citations': len(code_citations) if has_code else None,
+                                    'coop_citations': len(coop_citations) if has_coop else None,
+                                    'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
+                                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
+                                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None,
+                                    'workflow': final_state.get("workflow"),
+                                    'task_type': final_state.get("task_type"),
+                                    'doc_type': final_state.get("doc_type"),
+                                    'section_type': final_state.get("section_type"),
+                                    'execution_trace': execution_trace,
+                                    'node_path': " → ".join(execution_trace) if execution_trace else None,
+                                    'doc_generation_result': final_state.get("doc_generation_result"),
+                                    'doc_generation_warnings': final_state.get("doc_generation_warnings"),
+                                }
+                            else:
+                                # Single answer mode (backward compatible, matching chat endpoint)
+                                # Prioritize desktop/webcalcs
+                                # Use helper function to safely check content
+                                def _has_content_safe(ans):
+                                    if not ans:
+                                        return False
+                                    if isinstance(ans, str):
+                                        return bool(ans.strip())
+                                    if isinstance(ans, list):
+                                        return len(ans) > 0
+                                    return bool(ans)
+                                
+                                if _has_content_safe(desktop_answer):
+                                    combined_answer = desktop_answer
+                                    total_citations = 0  # Desktop results don't have citations
+                                elif _has_content_safe(webcalcs_answer):
+                                    combined_answer = webcalcs_answer
+                                    total_citations = 0  # WebCalcs results don't have citations
+                                elif _has_content_safe(code_answer):
+                                    combined_answer = code_answer
+                                    total_citations = len(code_citations)
+                                elif _has_content_safe(coop_answer):
+                                    combined_answer = coop_answer
+                                    total_citations = len(coop_citations)
+                                else:
+                                    combined_answer = answer
+                                    total_citations = len(project_citations)
+
+                                # Strip asterisks from project names/numbers
+                                combined_answer = strip_asterisks_from_projects(combined_answer)
+
+                                # Wrap code file citations with file-link tags for clickable links
+                                if code_citations:
+                                    combined_answer = wrap_code_file_links(combined_answer, code_citations)
+
+                                # Wrap coop file citations with file-link tags for clickable links
+                                if coop_citations:
+                                    combined_answer = wrap_code_file_links(combined_answer, coop_citations)
+
+                                # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
+                                if code_answer and code_answer.strip():
+                                    combined_answer = wrap_external_links(combined_answer)
+                                # Log to Supabase (matching chat endpoint)
+                                supabase_logger = get_supabase_logger()
+                                if supabase_logger.enabled:
+                                    user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
+
+                                    # Upload first image if provided (for logging)
+                                    image_url = None
+                                    if images_to_process and len(images_to_process) > 0:
+                                        image_url = supabase_logger.upload_image(
+                                            images_to_process[0],
+                                            message_id,
+                                            "image/png"
+                                        )
+
+                                    query_data = {
+                                        "message_id": message_id,
+                                        "session_id": request.session_id,
+                                        "user_query": request.message,
+                                        "rag_response": combined_answer,
+                                        "route": route_value,
+                                        "citations_count": total_citations,
+                                        "latency_ms": round(latency_ms, 2),
+                                        "user_identifier": user_identifier,
+                                        "image_url": image_url
+                                    }
+                                    supabase_logger.log_user_query(query_data)
+
+                                # Build response (matching chat endpoint)
+                                doc_answer_text = combined_answer
+                                response_data = {
+                                    'reply': combined_answer,
+                                    'session_id': request.session_id,
+                                    'timestamp': datetime.now().isoformat(),
+                                    'latency_ms': round(latency_ms, 2),
+                                    'citations': total_citations,
+                                    'route': route_value,
+                                    'message_id': message_id,
+                                    'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
+                                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
+                                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None,
+                                    'workflow': final_state.get("workflow"),
+                                    'task_type': final_state.get("task_type"),
+                                    'doc_type': final_state.get("doc_type"),
+                                    'section_type': final_state.get("section_type"),
+                                    'execution_trace': execution_trace,
+                                    'node_path': " → ".join(execution_trace) if execution_trace else None,
+                                    'doc_generation_result': final_state.get("doc_generation_result"),
+                                    'doc_generation_warnings': final_state.get("doc_generation_warnings"),
+                                }
+                            
+                            # Handle document materialization if needed
+                            if should_materialize_doc(
+                                final_state.get("workflow"), final_state.get("task_type"), final_state.get("doc_generation_result")
+                            ):
+                                doc_answer_text = doc_answer_text or final_state.get("final_answer") or final_state.get("answer")
+                                document_state = materialize_onlyoffice_document(
+                                    final_state.get("doc_generation_result"),
+                                    doc_answer_text or answer,
+                                    request.session_id,
+                                    message_id,
+                                )
+                                if document_state:
+                                    response_data["document_state"] = document_state
+                                    response_data["reply"] = "✅ Please refer to the document"
+                                    doc_url = document_state.get("docUrl") or document_state.get("onlyoffice", {}).get("docUrl")
+                                    logger.warning(f"📑 Streaming response includes document_state with url={doc_url}")
+                                    print(f"📑 Streaming document_state url={doc_url}")
+                            
+                            # Log image similarity results for debugging
+                            if image_similarity_results:
+                                logger.info(f"🖼️ Sending {len(image_similarity_results)} image similarity results to frontend")
+                                for i, img in enumerate(image_similarity_results[:3]):  # Log first 3
+                                    logger.info(f"🖼️   Image {i+1}: project={img.get('project_key')}, page={img.get('page_number')}, url={img.get('image_url', 'MISSING')[:50]}...")
+                            else:
+                                logger.info(f"🖼️ No image similarity results to send (image_similarity_results is empty or None)")
+                            
+                            # Send completion event with final result
+                            yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"
+                            logger.info(f"✅ Streaming completed in {latency_ms:.2f}ms [ID: {message_id}]")
+                        else:
+                            logger.debug("⏭️  Skipping completion code - no answer in state yet (waiting for answer node)")
             
-            # Log streaming stats
-            logger.info(f"📊 Streaming stats: {messages_received} LLM token events received via messages mode")
-            
-            # Check if we got a result
-            if not final_state:
-                yield f"data: {json.dumps({'type': 'error', 'message': 'No result returned from RAG'})}\n\n"
+            except GraphInterrupt as interrupt:
+                # CRITICAL: Interrupt detected - pause execution and wait for human input
+                # Extract interrupt payload from the exception
+                interrupt_payload = extract_interrupt_data(interrupt)
+                try:
+                    state_snapshot = await _load_thread_state(graph, request.session_id)
+                    safe_state = ensure_rag_state_compatibility(state_snapshot)
+                    safe_state["desktop_interrupt_pending"] = True
+                    safe_state["desktop_interrupt_data"] = interrupt_payload
+                    await _update_thread_state(
+                        graph,
+                        request.session_id,
+                        {
+                            "desktop_interrupt_pending": True,
+                            "desktop_interrupt_data": interrupt_payload,
+                            "desktop_approved_actions": safe_state.get("desktop_approved_actions", []),
+                        },
+                    )
+                    interrupt_payload["state_summary"] = get_deep_agent_state_summary(safe_state)
+                except Exception as exc:  # pragma: no cover - defensive
+                    logger.error(f"Failed to persist interrupt state: {exc}")
+                yield f"data: {json.dumps({'type': 'interrupt', 'message': 'Action requires approval', 'interrupt': interrupt_payload, 'session_id': request.session_id})}\n\n"
                 return
-            if not doc_workflow_detected and should_materialize_doc(
-                final_state.get("workflow"), final_state.get("task_type"), final_state.get("doc_generation_result")
-            ):
-                doc_workflow_detected = True
             
-            # Extract final answer (matching chat endpoint logic)
-            answer = (
-                final_state.get("final_answer")
-                or final_state.get("db_retrieval_result")
-                or final_state.get("answer", "No answer generated.")
-            )
-            code_answer = final_state.get("code_answer") or final_state.get("db_retrieval_code_answer")
-            coop_answer = final_state.get("coop_answer") or final_state.get("db_retrieval_coop_answer")
-            code_citations = final_state.get("code_citations", []) or final_state.get("db_retrieval_code_citations", [])
-            coop_citations = final_state.get("coop_citations", []) or final_state.get("db_retrieval_coop_citations", [])
-            project_citations = final_state.get("answer_citations", []) or final_state.get("db_retrieval_citations", [])
-            image_similarity_results = final_state.get("image_similarity_results", []) or final_state.get("db_retrieval_image_similarity_results", [])
-            follow_up_questions = final_state.get("follow_up_questions", []) or final_state.get("db_retrieval_follow_up_questions", [])
-            follow_up_suggestions = final_state.get("follow_up_suggestions", []) or final_state.get("db_retrieval_follow_up_suggestions", [])
-            doc_answer_text = None
-            
-            route_value = final_state.get("data_route") or final_state.get("db_retrieval_route")
-            execution_trace = final_state.get("execution_trace") or []
-
-            # Check which databases were used (matching chat endpoint)
-            has_project = bool(answer and answer.strip())
-            has_code = bool(code_answer and code_answer.strip())
-            has_coop = bool(coop_answer and coop_answer.strip())
-            enabled_count = sum([has_project, has_code, has_coop])
-            multiple_enabled = enabled_count > 1
-            
-            # Handle empty or None answers (matching chat endpoint)
-            if not answer or answer.strip() == "":
-                # Only set error message if there's no code_answer or coop_answer (pure project_db mode)
-                if not code_answer or not code_answer.strip():
-                    if not coop_answer or not coop_answer.strip():
-                        answer = "I couldn't generate a response. Please try rephrasing your question or check that the system is properly configured."
-            
-            # Calculate latency
-            latency_ms = (time.time() - start_time) * 1000
-            
-            # Process answers separately for multi-bubble display (matching chat endpoint)
-            if multiple_enabled:
-                # Multiple databases enabled - return separate answers
-                # Strip asterisks from project names/numbers
-                processed_project_answer = strip_asterisks_from_projects(answer) if has_project else None
-
-                # Wrap code file citations with file-link tags (shows filename)
-                processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else code_answer
-
-                # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
-                if has_code:
-                    processed_code_answer = wrap_external_links(processed_code_answer)
-
-                # Wrap coop file citations with file-link tags (shows page number only)
-                processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else coop_answer
-
-                # Log to Supabase (matching chat endpoint)
-                supabase_logger = get_supabase_logger()
-                if supabase_logger.enabled:
-                    user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
-                    # Build combined logging text
-                    parts = []
-                    if has_project:
-                        parts.append(answer)
-                    if has_code:
-                        parts.append(f"--- Code References ---\n\n{code_answer}")
-                    if has_coop:
-                        parts.append(f"--- Training Manual References ---\n\n{coop_answer}")
-                    combined_for_logging = "\n\n".join(parts)
-
-                    # Upload first image if provided (for logging)
-                    image_url = None
-                    if images_to_process and len(images_to_process) > 0:
-                        image_url = supabase_logger.upload_image(
-                            images_to_process[0],
-                            message_id,
-                            "image/png"
-                        )
-
-                    query_data = {
-                        "message_id": message_id,
-                        "session_id": request.session_id,
-                        "user_query": request.message,
-                        "rag_response": combined_for_logging,
-                        "route": route_value,
-                        "citations_count": len(project_citations) + len(code_citations) + len(coop_citations),
-                        "latency_ms": round(latency_ms, 2),
-                        "user_identifier": user_identifier,
-                        "image_url": image_url
-                    }
-                    supabase_logger.log_user_query(query_data)
-
-                # Build response with separate answers (matching chat endpoint)
-                doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
-                response_data = {
-                    'reply': processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
-                    'session_id': request.session_id,
-                    'timestamp': datetime.now().isoformat(),
-                    'latency_ms': round(latency_ms, 2),
-                    'citations': len(project_citations) + len(code_citations) + len(coop_citations),  # Total citations
-                    'route': route_value,
-                    'message_id': message_id,
-                    'project_answer': processed_project_answer,
-                    'code_answer': processed_code_answer,
-                    'coop_answer': processed_coop_answer,
-                    'project_citations': len(project_citations) if has_project else None,
-                    'code_citations': len(code_citations) if has_code else None,
-                    'coop_citations': len(coop_citations) if has_coop else None,
-                    'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
-                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
-                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None,
-                    'workflow': final_state.get("workflow"),
-                    'task_type': final_state.get("task_type"),
-                    'doc_type': final_state.get("doc_type"),
-                    'section_type': final_state.get("section_type"),
-                    'execution_trace': execution_trace,
-                    'node_path': " → ".join(execution_trace) if execution_trace else None,
-                    'doc_generation_result': final_state.get("doc_generation_result"),
-                    'doc_generation_warnings': final_state.get("doc_generation_warnings"),
-                }
+        except (ConnectionError, OSError, asyncio.TimeoutError) as conn_error:
+            # Handle connection errors gracefully - checkpointer connection issues
+            error_msg = str(conn_error).lower()
+            if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused", "server closed"]):
+                logger.error(f"❌ Checkpointer connection error during streaming: {conn_error}")
+                logger.warning("⚠️ Checkpointer unavailable - this is non-fatal, continuing without state persistence")
+                # Send error but don't break - the query can still complete
+                yield f"data: {json.dumps({'type': 'error', 'message': 'Checkpointer connection issue - query may continue without state persistence'})}\n\n"
+                # Don't return - let the stream continue if possible
+                # The graph might still work without checkpointer
             else:
-                # Single answer mode (backward compatible, matching chat endpoint)
-                if code_answer and code_answer.strip():
-                    combined_answer = code_answer
-                    total_citations = len(code_citations)
-                elif coop_answer and coop_answer.strip():
-                    combined_answer = coop_answer
-                    total_citations = len(coop_citations)
-                else:
-                    combined_answer = answer
-                    total_citations = len(project_citations)
-
-                # Strip asterisks from project names/numbers
-                combined_answer = strip_asterisks_from_projects(combined_answer)
-
-                # Wrap code file citations with file-link tags for clickable links
-                if code_citations:
-                    combined_answer = wrap_code_file_links(combined_answer, code_citations)
-
-                # Wrap coop file citations with file-link tags for clickable links
-                if coop_citations:
-                    combined_answer = wrap_code_file_links(combined_answer, coop_citations)
-
-                # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
-                if code_answer and code_answer.strip():
-                    combined_answer = wrap_external_links(combined_answer)
-
-                # Log to Supabase (matching chat endpoint)
-                supabase_logger = get_supabase_logger()
-                if supabase_logger.enabled:
-                    user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
-
-                    # Upload first image if provided (for logging)
-                    image_url = None
-                    if images_to_process and len(images_to_process) > 0:
-                        image_url = supabase_logger.upload_image(
-                            images_to_process[0],
-                            message_id,
-                            "image/png"
-                        )
-
-                    query_data = {
-                        "message_id": message_id,
-                        "session_id": request.session_id,
-                        "user_query": request.message,
-                        "rag_response": combined_answer,
-                        "route": route_value,
-                        "citations_count": total_citations,
-                        "latency_ms": round(latency_ms, 2),
-                        "user_identifier": user_identifier,
-                        "image_url": image_url
-                    }
-                    supabase_logger.log_user_query(query_data)
-
-                # Build response (matching chat endpoint)
-                doc_answer_text = combined_answer
-                response_data = {
-                    'reply': combined_answer,
-                    'session_id': request.session_id,
-                    'timestamp': datetime.now().isoformat(),
-                    'latency_ms': round(latency_ms, 2),
-                    'citations': total_citations,
-                    'route': route_value,
-                    'message_id': message_id,
-                    'image_similarity_results': image_similarity_results if image_similarity_results else [],  # Always include as array, not None
-                    'follow_up_questions': follow_up_questions if follow_up_questions else None,
-                    'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None,
-                    'workflow': final_state.get("workflow"),
-                    'task_type': final_state.get("task_type"),
-                    'doc_type': final_state.get("doc_type"),
-                    'section_type': final_state.get("section_type"),
-                    'execution_trace': execution_trace,
-                    'node_path': " → ".join(execution_trace) if execution_trace else None,
-                    'doc_generation_result': final_state.get("doc_generation_result"),
-                    'doc_generation_warnings': final_state.get("doc_generation_warnings"),
-                }
-
-            if should_materialize_doc(
-                final_state.get("workflow"), final_state.get("task_type"), final_state.get("doc_generation_result")
-            ):
-                doc_answer_text = doc_answer_text or final_state.get("final_answer") or final_state.get("answer")
-                document_state = materialize_onlyoffice_document(
-                    final_state.get("doc_generation_result"),
-                    doc_answer_text or answer,
-                    request.session_id,
-                    message_id,
-                )
-                if document_state:
-                    response_data["document_state"] = document_state
-                    response_data["reply"] = "✅ Please refer to the document"
-                    doc_url = document_state.get("docUrl") or document_state.get("onlyoffice", {}).get("docUrl")
-                    logger.warning(f"📑 Streaming response includes document_state with url={doc_url}")
-                    print(f"📑 Streaming document_state url={doc_url}")
-            
-            # Log image similarity results for debugging
-            if image_similarity_results:
-                logger.info(f"🖼️ Sending {len(image_similarity_results)} image similarity results to frontend")
-                for i, img in enumerate(image_similarity_results[:3]):  # Log first 3
-                    logger.info(f"🖼️   Image {i+1}: project={img.get('project_key')}, page={img.get('page_number')}, url={img.get('image_url', 'MISSING')[:50]}...")
-            else:
-                logger.info(f"🖼️ No image similarity results to send (image_similarity_results is empty or None)")
-            
-            # Send completion event with final result
-            yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"
-            
-            logger.info(f"✅ Streaming completed in {latency_ms:.2f}ms [ID: {message_id}]")
-            
-        except GraphInterrupt as interrupt:
-            interrupt_payload = extract_interrupt_data(interrupt)
-            try:
-                state_snapshot = await _load_thread_state(graph, request.session_id)
-                safe_state = ensure_rag_state_compatibility(state_snapshot)
-                safe_state["desktop_interrupt_pending"] = True
-                safe_state["desktop_interrupt_data"] = interrupt_payload
-                await _update_thread_state(
-                    graph,
-                    request.session_id,
-                    {
-                        "desktop_interrupt_pending": True,
-                        "desktop_interrupt_data": interrupt_payload,
-                        "desktop_approved_actions": safe_state.get("desktop_approved_actions", []),
-                    },
-                )
-                interrupt_payload["state_summary"] = get_deep_agent_state_summary(safe_state)
-            except Exception as exc:  # pragma: no cover - defensive
-                logger.error(f"Failed to persist interrupt state: {exc}")
-            yield f"data: {json.dumps({'type': 'interrupt', 'message': 'Action requires approval', 'interrupt': interrupt_payload, 'session_id': request.session_id})}\n\n"
-            return
+                # Re-raise if it's not a connection error
+                raise
         except Exception as e:
-            logger.error(f"❌ Streaming error: {e}")
-            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
-    
+            error_msg = str(e).lower()
+            # Check if it's a connection-related error
+            if any(phrase in error_msg for phrase in ["connection", "closed", "timeout", "network", "refused", "server closed"]):
+                logger.error(f"❌ Connection error during streaming: {e}")
+                logger.warning("⚠️ Connection issue detected - this may be a checkpointer problem")
+                yield f"data: {json.dumps({'type': 'error', 'message': f'Connection error: {str(e)[:200]}'})}\n\n"
+            else:
+                logger.error(f"❌ Streaming error: {e}")
+                yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+            return    
     return StreamingResponse(
         generate_stream(),
         media_type="text/event-stream",
@@ -2092,10 +2361,450 @@ async def approve_action(request: ActionApprovalRequest):
             "desktop_interrupt_pending": False,
             "desktop_interrupt_data": None,
         }
-
+        
         await _update_thread_state(graph, request.session_id, update_values)
         logger.info(
             f"Action '{request.action_id}' approval={request.approved} recorded for session {request.session_id} (reason={request.reason})"
+        )
+        
+        # Resume with Command
+        # The response value becomes the return value of interrupt() in the node
+        from langgraph.types import Command
+        
+        # Start streaming the resumed execution
+        async def generate_resume_stream():
+            import time  # Import time inside function to ensure it's in scope
+            final_state = None
+            messages_received = 0
+            
+            try:
+                async for stream_item in graph.astream(
+                    Command(resume=user_response),
+                    config=config,
+                    stream_mode=["updates", "custom", "messages"],
+                    durability=os.getenv("CHECKPOINTER_DURABILITY", "exit").lower(),
+                    subgraphs=True  # CRITICAL: Include outputs from subgraphs (e.g., db_retrieval subgraph) in stream
+                ):
+                    # Handle different stream formats (with/without subgraphs)
+                    # When subgraphs=True with multiple stream modes, format is: (namespace, stream_mode, chunk)
+                    # When subgraphs=False or single mode, format is: (stream_mode, chunk)
+                    if isinstance(stream_item, tuple) and len(stream_item) == 3:
+                        namespace, stream_mode, chunk = stream_item
+                    elif isinstance(stream_item, tuple) and len(stream_item) == 2:
+                        stream_mode, chunk = stream_item
+                    else:
+                        logger.warning(f"⚠️ Resume: Unexpected stream format: {type(stream_item)}")
+                        continue
+                    # Forward all stream events to frontend (same as chat/stream)
+                    if stream_mode == "messages":
+                        messages_received += 1
+                        if isinstance(chunk, tuple) and len(chunk) >= 2:
+                            message_chunk = chunk[0]
+                            metadata = chunk[1] if len(chunk) > 1 else {}
+                            
+                            # Get the content from the message chunk
+                            if hasattr(message_chunk, 'content') and message_chunk.content:
+                                # CRITICAL: Extract text content - handles both string (OpenAI/Anthropic) and list (Gemini 3.0) formats
+                                # Without this, Gemini list format will be serialized as [object Object] in JSON
+                                raw_content = message_chunk.content
+                                token_content = extract_text_from_content(raw_content)
+                                
+                                # Skip if no text content extracted
+                                if not token_content:
+                                    continue
+                                
+                                # When resuming, stream all tokens (answer node filtering may not work correctly on resume)
+                                # The answer node should be the only one generating tokens after resume anyway
+                                node_name = metadata.get('langgraph_node', 'unknown') if isinstance(metadata, dict) else 'unknown'
+                                logger.debug(f"💬 Resume: Streaming token from node '{node_name}' ({len(token_content)} chars)")
+                                yield f"data: {json.dumps({'type': 'token', 'content': token_content, 'timestamp': time.time()})}\n\n"
+                    elif stream_mode == "custom":
+                        if isinstance(chunk, dict):
+                            if chunk.get("type") == "thinking":
+                                yield f"data: {json.dumps({'type': 'thinking', 'message': chunk.get('message', ''), 'node': chunk.get('node', 'unknown'), 'timestamp': time.time()})}\n\n"
+                    elif stream_mode == "updates":
+                        # Track final state and break after router_dispatcher completes
+                        for node_key, state_updates in chunk.items():
+                            # CRITICAL: Handle __interrupt__ node FIRST - this is how LangGraph signals interrupts in astream mode
+                            # When using .astream(), interrupts appear as __interrupt__ node output, not as exceptions
+                            # This is especially important for the second interrupt (code selection after rejection)
+                            
+                            # Handle subgraph nodes: node_key can be a tuple like ('db_retrieval:thread_id', '__interrupt__')
+                            if isinstance(node_key, tuple):
+                                node_name = node_key[-1] if len(node_key) > 0 else 'unknown'
+                            else:
+                                node_name = node_key
+                            
+                            if node_name == "__interrupt__":
+                                logger.info("⏸️  Resume: Second interrupt detected (code selection after rejection)")
+                                logger.info(f"📋 Interrupt node_key={node_key}, state_updates type={type(state_updates)}")
+                                
+                                # Extract interrupt information directly from state_updates
+                                # In astream mode, state_updates for __interrupt__ is a tuple containing an Interrupt object
+                                try:
+                                    interrupt_value = None
+                                    interrupt_id = None
+                                    
+                                    # state_updates is a tuple: (Interrupt(value={...}, id=...), ...)
+                                    if isinstance(state_updates, tuple) and len(state_updates) > 0:
+                                        interrupt_obj = state_updates[0]  # Get first Interrupt object
+                                        if hasattr(interrupt_obj, 'value'):
+                                            interrupt_value = interrupt_obj.value
+                                        if hasattr(interrupt_obj, 'id'):
+                                            interrupt_id = interrupt_obj.id
+                                        
+                                        logger.info(f"⏸️  Resume: INTERRUPT EXTRACTED: type={interrupt_value.get('type') if isinstance(interrupt_value, dict) else 'unknown'}, id={interrupt_id}")
+                                    
+                                    # Fallback: check if it's a dict (shouldn't happen, but be safe)
+                                    elif isinstance(state_updates, dict):
+                                        if "__interrupt__" in state_updates:
+                                            interrupt_list = state_updates.get("__interrupt__", [])
+                                            if interrupt_list and len(interrupt_list) > 0:
+                                                interrupt_obj = interrupt_list[0]
+                                                if isinstance(interrupt_obj, dict):
+                                                    interrupt_value = interrupt_obj.get("value")
+                                                    interrupt_id = interrupt_obj.get("id")
+                                                elif hasattr(interrupt_obj, 'value'):
+                                                    interrupt_value = interrupt_obj.value
+                                                    interrupt_id = getattr(interrupt_obj, 'id', None)
+                                    
+                                    if interrupt_value is None:
+                                        logger.error("❌ Resume: Could not extract interrupt information from state_updates")
+                                        interrupt_data = {
+                                            "type": "interrupt",
+                                            "interrupt_id": None,
+                                            "interrupt_type": "unknown",
+                                            "question": "Code selection required",
+                                            "codes": [],
+                                            "code_count": 0,
+                                            "chunk_count": 0,
+                                            "available_codes": [],
+                                            "previously_retrieved": [],
+                                            "session_id": session_id,
+                                            "thread_id": session_id
+                                        }
+                                    else:
+                                        # Send interrupt event to frontend with extracted data
+                                        interrupt_data = {
+                                            "type": "interrupt",
+                                            "interrupt_id": interrupt_id,
+                                            "interrupt_type": interrupt_value.get("type") if isinstance(interrupt_value, dict) else "unknown",
+                                            "question": interrupt_value.get("question") if isinstance(interrupt_value, dict) else "",
+                                            "codes": interrupt_value.get("codes") if isinstance(interrupt_value, dict) else [],
+                                            "code_count": interrupt_value.get("code_count") if isinstance(interrupt_value, dict) else 0,
+                                            "chunk_count": interrupt_value.get("chunk_count") if isinstance(interrupt_value, dict) else 0,
+                                            "available_codes": interrupt_value.get("available_codes") or [] if isinstance(interrupt_value, dict) else [],
+                                            "previously_retrieved": interrupt_value.get("previously_retrieved") if isinstance(interrupt_value, dict) else [],
+                                            "session_id": session_id,
+                                            "thread_id": session_id
+                                        }
+                                    
+                                    yield f"data: {json.dumps(interrupt_data)}\n\n"
+                                    logger.info(f"📤 Resume: Sent second interrupt event to frontend: {interrupt_data.get('interrupt_type')}")
+                                    codes_list = interrupt_data.get('codes') or []
+                                    available_codes_list = interrupt_data.get('available_codes') or []
+                                    logger.info(f"📋 Resume: Interrupt payload: codes={len(codes_list)}, available_codes={len(available_codes_list)}")
+                                    
+                                    # Return early - don't process further until user responds
+                                    return
+                                    
+                                except Exception as e:
+                                    logger.error(f"❌ Resume: Error extracting interrupt information: {e}")
+                                    # Still send a basic interrupt event
+                                    interrupt_data = {
+                                        "type": "interrupt",
+                                        "interrupt_id": None,
+                                        "interrupt_type": "code_selection",
+                                        "question": "Please select which building codes you'd like me to reference:",
+                                        "codes": [],
+                                        "code_count": 0,
+                                        "chunk_count": 0,
+                                        "available_codes": [],
+                                        "previously_retrieved": [],
+                                        "session_id": session_id,
+                                        "thread_id": session_id
+                                    }
+                                    yield f"data: {json.dumps(interrupt_data)}\n\n"
+                                    return
+                            
+                            # Skip non-dict state_updates (like interrupt tuples)
+                            if not isinstance(state_updates, dict):
+                                continue
+                            
+                            # Update final_state with latest state
+                            if final_state is None:
+                                final_state = {}
+                            final_state.update(state_updates)
+                            
+                            # Break after correct node (last node in DBRetrieval pipeline)
+                            # OR after router_dispatcher (which completes after subgraph finishes)
+                            # OR after answer node completes (final answer generation)
+                            # Check for any result: db_retrieval, desktop, or webcalcs (same as main stream)
+                            has_any_result = (
+                                final_state.get("db_retrieval_result") or 
+                                final_state.get("desktop_result") or 
+                                final_state.get("webcalcs_result") or
+                                final_state.get("db_retrieval_code_answer") or
+                                final_state.get("db_retrieval_coop_answer") or
+                                final_state.get("final_answer") or
+                                final_state.get("code_answer") or
+                                final_state.get("coop_answer")
+                            )
+                            
+                            # Handle subgraph nodes: node_key can be a tuple like ('db_retrieval:thread_id', 'correct')
+                            if isinstance(node_key, tuple):
+                                node_name = node_key[-1] if len(node_key) > 0 else 'unknown'
+                            else:
+                                node_name = node_key
+                            
+                            if node_name == "correct" or (node_name == "router_dispatcher" and has_any_result) or (node_name == "answer" and has_any_result):
+                                logger.info(f"✅ Resume: Breaking after node '{node_name}' - subgraph execution complete")
+                                logger.info(f"📊 Resume: Answer present in final_state")
+                                break
+                
+                # Extract final answer and send completion (same logic as main stream)
+                if final_state:
+                    # Helper to check if value is non-empty (handles strings, lists, etc.)
+                    def _has_content(value):
+                        if not value:
+                            return False
+                        if isinstance(value, str):
+                            return bool(value.strip())
+                        if isinstance(value, list):
+                            return len(value) > 0
+                        return bool(value)
+                    
+                    has_answer = bool(
+                        _has_content(final_state.get("db_retrieval_result")) or 
+                        _has_content(final_state.get("desktop_result")) or  # NEW: Check desktop result
+                        _has_content(final_state.get("webcalcs_result")) or  # NEW: Check webcalcs result
+                        _has_content(final_state.get("final_answer")) or 
+                        _has_content(final_state.get("answer")) or
+                        _has_content(final_state.get("db_retrieval_code_answer")) or 
+                        _has_content(final_state.get("code_answer")) or
+                        _has_content(final_state.get("db_retrieval_coop_answer")) or 
+                        _has_content(final_state.get("coop_answer"))
+                    )
+                    
+                    logger.info(f"📊 Resume: Final state check - messages_received={messages_received}, has_answer={has_answer}")
+                    logger.info(f"📊 Resume: Final state keys: {list(final_state.keys())[:20]}")
+                    
+                    if has_answer:
+                        logger.info(f"✅ Resume: Answer found in final state, sending completion")
+                        
+                        # Extract final answer (same logic as main stream)
+                        # Prioritize desktop/webcalcs results over db_retrieval
+                        desktop_answer_raw = final_state.get("desktop_result")
+                        webcalcs_answer_raw = final_state.get("webcalcs_result")
+                        
+                        # Handle Gemini list format for desktop/webcalcs answers
+                        desktop_answer = extract_text_from_content(desktop_answer_raw) if desktop_answer_raw else None
+                        webcalcs_answer = extract_text_from_content(webcalcs_answer_raw) if webcalcs_answer_raw else None
+                        
+                        # Extract code_answer and coop_answer first (they might be the primary answer)
+                        # Handle Gemini list format if needed
+                        code_answer_raw = final_state.get("db_retrieval_code_answer") or final_state.get("code_answer")
+                        coop_answer_raw = final_state.get("db_retrieval_coop_answer") or final_state.get("coop_answer")
+                        code_answer = extract_text_from_content(code_answer_raw) if code_answer_raw else None
+                        coop_answer = extract_text_from_content(coop_answer_raw) if coop_answer_raw else None
+                        
+                        # Extract project answer (db_retrieval_result, final_answer, or answer)
+                        # Keep these separate - don't mix code_answer into project_answer
+                        project_answer = final_state.get("db_retrieval_result") or final_state.get("final_answer") or final_state.get("answer")
+                        
+                        # For the main answer variable, prioritize desktop/webcalcs/project, but keep code/coop separate
+                        # This ensures has_project/has_code logic works correctly
+                        answer = desktop_answer or webcalcs_answer or project_answer
+                        
+                        # Store answer_text for fallback streaming if needed (include all types)
+                        answer_text = answer or code_answer or coop_answer or ""
+                        
+                        code_citations = final_state.get("db_retrieval_code_citations") or final_state.get("code_citations", [])
+                        coop_citations = final_state.get("db_retrieval_coop_citations") or final_state.get("coop_citations", [])
+                        project_citations = final_state.get("db_retrieval_citations") or final_state.get("answer_citations", [])
+                        image_similarity_results = final_state.get("db_retrieval_image_similarity_results") or final_state.get("image_similarity_results", [])
+                        follow_up_questions = final_state.get("db_retrieval_follow_up_questions") or final_state.get("follow_up_questions", [])
+                        follow_up_suggestions = final_state.get("db_retrieval_follow_up_suggestions") or final_state.get("follow_up_suggestions", [])
+                        
+                        # Helper to safely check if answer has content (handles strings and lists)
+                        def _answer_has_content(ans):
+                            if not ans:
+                                return False
+                            if isinstance(ans, str):
+                                return bool(ans.strip())
+                            if isinstance(ans, list):
+                                return len(ans) > 0
+                            return bool(ans)
+                        
+                        # Helper to safely check if answer is empty (handles strings and lists)
+                        def _is_empty_answer_safe(ans):
+                            if not ans:
+                                return True
+                            if isinstance(ans, str):
+                                return ans.strip() == ""
+                            if isinstance(ans, list):
+                                return len(ans) == 0
+                            return False
+                        
+                        # Helper function for content checking
+                        def _has_content_safe(ans):
+                            if not ans:
+                                return False
+                            if isinstance(ans, str):
+                                return bool(ans.strip())
+                            if isinstance(ans, list):
+                                return len(ans) > 0
+                            return bool(ans)
+                        
+                        # Determine which answer types are present (keep them separate)
+                        has_project = bool(_answer_has_content(project_answer) and not desktop_answer and not webcalcs_answer)
+                        has_code = bool(_answer_has_content(code_answer))
+                        has_coop = bool(_answer_has_content(coop_answer))
+                        has_desktop = bool(_answer_has_content(desktop_answer))
+                        has_webcalcs = bool(_answer_has_content(webcalcs_answer))
+                        enabled_count = sum([has_project, has_code, has_coop, has_desktop, has_webcalcs])
+                        multiple_enabled = enabled_count > 1
+                        
+                        # If no project answer but we have code/coop, that's fine - they'll be used separately
+                        # Only set error message if we truly have no answers at all
+                        if not has_project and not has_code and not has_coop and not has_desktop and not has_webcalcs:
+                            answer = "I couldn't generate a response. Please try rephrasing your question or check that the system is properly configured."
+                        elif not answer and (has_code or has_coop):
+                            # If we have code/coop but no project answer, that's fine - use code/coop
+                            answer = None  # Will be handled by the response_data construction below
+                        
+                        # Use helper functions (defined at module level) - same logic as main stream
+                        if multiple_enabled:
+                            processed_project_answer = strip_asterisks_from_projects(answer) if has_project and answer else None
+                            processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else (code_answer if has_code else None)
+                            
+                            if has_code and processed_code_answer:
+                                processed_code_answer = wrap_external_links(processed_code_answer)
+                            
+                            processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else (coop_answer if has_coop else None)
+                            
+                            # Prioritize desktop/webcalcs answers, then project, then code, then coop
+                            primary_reply = desktop_answer or webcalcs_answer or processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated."
+                            
+                            response_data = {
+                                'reply': primary_reply,  # Use desktop/webcalcs if available
+                                'session_id': session_id,
+                                'timestamp': datetime.now().isoformat(),
+                                'citations': len(project_citations) + len(code_citations) + len(coop_citations),
+                                'route': final_state.get("data_route"),
+                                'project_answer': processed_project_answer,
+                                'code_answer': processed_code_answer,
+                                'coop_answer': processed_coop_answer,
+                                'project_citations': len(project_citations) if has_project else None,
+                                'code_citations': len(code_citations) if has_code else None,
+                                'coop_citations': len(coop_citations) if has_coop else None,
+                                'image_similarity_results': image_similarity_results if image_similarity_results else [],
+                                'follow_up_questions': follow_up_questions if follow_up_questions else None,
+                                'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
+                            }
+                        else:
+                            # Single answer mode - prioritize desktop/webcalcs (same logic as main stream)
+                            if _has_content_safe(desktop_answer):
+                                combined_answer = desktop_answer
+                                total_citations = 0  # Desktop results don't have citations
+                            elif _has_content_safe(webcalcs_answer):
+                                combined_answer = webcalcs_answer
+                                total_citations = 0  # WebCalcs results don't have citations
+                            elif _has_content_safe(code_answer):
+                                combined_answer = code_answer
+                                total_citations = len(code_citations)
+                            elif _has_content_safe(coop_answer):
+                                combined_answer = coop_answer
+                                total_citations = len(coop_citations)
+                            else:
+                                combined_answer = answer
+                                total_citations = len(project_citations)
+                            
+                            combined_answer = strip_asterisks_from_projects(combined_answer)
+                            if code_citations:
+                                combined_answer = wrap_code_file_links(combined_answer, code_citations)
+                            if coop_citations:
+                                combined_answer = wrap_code_file_links(combined_answer, coop_citations)
+                            if code_answer and code_answer.strip():
+                                combined_answer = wrap_external_links(combined_answer)
+                            
+                            # Ensure reply is always a string, never None or empty
+                            if not combined_answer or (isinstance(combined_answer, str) and not combined_answer.strip()):
+                                combined_answer = "No answer generated."
+                            
+                            response_data = {
+                                'reply': combined_answer,
+                                'session_id': session_id,
+                                'timestamp': datetime.now().isoformat(),
+                                'citations': total_citations,
+                                'route': final_state.get("data_route"),
+                                'image_similarity_results': image_similarity_results if image_similarity_results else [],
+                                'follow_up_questions': follow_up_questions if follow_up_questions else None,
+                                'follow_up_suggestions': follow_up_suggestions if follow_up_suggestions else None
+                            }
+                        
+                        # Only use fallback if we truly got no tokens AND answer exists
+                        # This should be rare - normally tokens should stream from answer node
+                        # NOTE: This fallback should NOT be needed if tokens are streaming correctly
+                        # If this triggers, it means tokens aren't being captured from the answer node
+                        if messages_received == 0 and answer_text:
+                            logger.warning("⚠️ Resume: No tokens received during streaming, but answer exists in state")
+                            logger.info("📤 Resume: Sending answer content as token chunks to frontend")
+                            # Send answer in chunks to simulate streaming (no await in generator)
+                            chunk_size = 50  # Smaller chunks for better streaming effect
+                            for i in range(0, len(answer_text), chunk_size):
+                                chunk = answer_text[i:i + chunk_size]
+                                yield f"data: {json.dumps({'type': 'token', 'content': chunk, 'timestamp': time.time()})}\n\n"
+                                messages_received += 1
+                        
+                        # Send completion with result
+                        yield f"data: {json.dumps({'type': 'complete', 'result': response_data})}\n\n"
+                        logger.info(f"✅ Resume streaming completed - {messages_received} token events received")
+                    else:
+                        logger.warning("⚠️ Resume: No answer found in final state")
+                        yield f"data: {json.dumps({'type': 'complete', 'message': 'Resume completed but no answer found'})}\n\n"
+                else:
+                    logger.warning("⚠️ Resume: No final state captured")
+                    yield f"data: {json.dumps({'type': 'complete', 'message': 'Resume completed'})}\n\n"
+            except GraphInterrupt as interrupt:
+                # Another interrupt occurred (e.g., code selection after rejection)
+                # This is expected when user rejects initial codes - second interrupt for code selection
+                interrupt_value = interrupt.value if hasattr(interrupt, 'value') else None
+                interrupt_id = interrupt.id if hasattr(interrupt, 'id') else None
+                
+                logger.info(f"⏸️  Resume: Second interrupt detected (code selection after rejection)")
+                logger.info(f"📋 Interrupt type: {interrupt_value.get('type') if isinstance(interrupt_value, dict) else 'unknown'}")
+                
+                interrupt_data = {
+                    "type": "interrupt",
+                    "interrupt_id": interrupt_id,
+                    "interrupt_type": interrupt_value.get("type") if isinstance(interrupt_value, dict) else "unknown",
+                    "question": interrupt_value.get("question") if isinstance(interrupt_value, dict) else "",
+                    "codes": interrupt_value.get("codes") if isinstance(interrupt_value, dict) else [],
+                    "code_count": interrupt_value.get("code_count") if isinstance(interrupt_value, dict) else 0,
+                    "chunk_count": interrupt_value.get("chunk_count") if isinstance(interrupt_value, dict) else 0,
+                    "available_codes": interrupt_value.get("available_codes") if isinstance(interrupt_value, dict) else [],
+                    "previously_retrieved": interrupt_value.get("previously_retrieved") if isinstance(interrupt_value, dict) else [],
+                    "session_id": session_id,
+                    "thread_id": session_id
+                }
+                
+                yield f"data: {json.dumps(interrupt_data)}\n\n"
+                logger.info(f"📤 Resume: Sent second interrupt event to frontend (code selection)")
+                return  # Stop streaming - wait for second resume with selected codes
+            except Exception as e:
+                logger.error(f"❌ Resume error: {e}")
+                yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+        
+        return StreamingResponse(
+            generate_resume_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+                "Access-Control-Allow-Origin": "*"
+            }
         )
 
         resumed_state = None
