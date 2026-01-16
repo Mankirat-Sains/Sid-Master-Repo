@@ -12,6 +12,7 @@ from typing import Any, Dict
 from models.rag_state import RAGState
 from config.logging_config import log_query
 from nodes.DesktopAgent.doc_generation.section_generator import _sections_to_context
+from . import approval as doc_approval
 
 _DOC_SERVICES: Dict[str, Any] | None = None
 
@@ -265,28 +266,18 @@ def node_doc_generate_report(state: RAGState) -> dict:
 
     # Build section status list (draft/approved/locked) and update queue
     updated_queue: List[Dict[str, Any]] = []
-    section_status: List[Dict[str, Any]] = []
-    source_sections = template_sections or section_queue or []
-    for sec in source_sections:
+    base_sections = template_sections or section_queue or []
+    for sec in base_sections:
         if not isinstance(sec, dict):
             continue
         sec_type = sec.get("section_type")
         sec_id = sec.get("section_id")
-        status = sec.get("status")
-        if status == "approved":
-            status = "approved"
-        elif target_section_id and (sec_id == target_section_id or (not sec_id and sec_type == overrides.get("section_type"))):
-            status = "draft"
-        else:
-            status = "locked"
-        section_status.append(
-            {
-                "section_id": sec_id,
-                "section_type": sec_type,
-                "position_order": sec.get("position_order"),
-                "status": status,
-            }
-        )
+        status = (sec.get("status") or "").lower()
+        if status not in {"approved", "pending", "locked", "draft", "rejected"}:
+            if target_section_id and (sec_id == target_section_id or (not sec_id and sec_type == overrides.get("section_type"))):
+                status = "draft"
+            else:
+                status = "locked"
         updated_queue.append(
             {
                 "section_id": sec_id,
@@ -297,6 +288,57 @@ def node_doc_generate_report(state: RAGState) -> dict:
         )
     if updated_queue:
         section_queue = updated_queue
+
+    # Test-only auto-approval to enable full-document runs without UI feedback.
+    if doc_approval.AUTO_APPROVE_SECTIONS and target_section_id and section_queue:
+        try:
+            section_queue = doc_approval.maybe_auto_approve(section_queue, target_section_id)
+            if template_sections:
+                status_map = {
+                    sec.get("section_id") or sec.get("section_type"): sec.get("status") for sec in section_queue
+                }
+                template_sections = [
+                    {
+                        **sec,
+                        "status": status_map.get(sec.get("section_id") or sec.get("section_type"), sec.get("status")),
+                    }
+                    for sec in template_sections
+                    if isinstance(sec, dict)
+                ]
+            log_query.info("DOCGEN: AUTO_APPROVE_SECTIONS enabled; auto-approved section_id=%s", target_section_id)
+        except Exception as exc:  # noqa: BLE001
+            log_query.warning("DOCGEN: auto-approve failed; continuing without auto-approval (%s)", exc)
+
+    # Finalize section_status from the latest queue/template
+    section_status: List[Dict[str, Any]] = []
+    source_sections = template_sections or section_queue or []
+    for sec in source_sections:
+        if not isinstance(sec, dict):
+            continue
+        sec_type = sec.get("section_type")
+        sec_id = sec.get("section_id")
+        status = (sec.get("status") or "").lower()
+        if doc_approval.AUTO_APPROVE_SECTIONS:
+            if status not in {"approved", "pending", "locked", "draft", "rejected"}:
+                if target_section_id and (sec_id == target_section_id or (not sec_id and sec_type == overrides.get("section_type"))):
+                    status = "draft"
+                else:
+                    status = "locked"
+        else:
+            if status == "approved":
+                status = "approved"
+            elif target_section_id and (sec_id == target_section_id or (not sec_id and sec_type == overrides.get("section_type"))):
+                status = "draft"
+            else:
+                status = "locked"
+        section_status.append(
+            {
+                "section_id": sec_id,
+                "section_type": sec_type,
+                "position_order": sec.get("position_order"),
+                "status": status,
+            }
+        )
 
     try:
         print(f"🐛 DEBUG: doc_generation_result keys: {list(result.keys())}")

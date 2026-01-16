@@ -3108,7 +3108,6 @@ Layout captured from commit 32b6666 on main prior to the doc-organisation merge.
 |   |-- GraphQL-MCP/
 |   |   |-- .github/
 |   |   |   `-- workflows/
-|   |   |       |-- ci.yml
 |   |   |       `-- docker.yml
 |   |   |-- custom_tools/
 |   |   |   |-- __init__.py

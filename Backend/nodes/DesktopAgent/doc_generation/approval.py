@@ -2,7 +2,11 @@
 Section approval helpers for doc generation.
 """
 from __future__ import annotations
+import os
 from typing import List, Dict
+
+
+AUTO_APPROVE_SECTIONS = os.getenv("AUTO_APPROVE_SECTIONS", "").lower() in {"1", "true", "yes", "on"}
 
 
 def _normalize_status(status: str | None) -> str:
@@ -48,3 +52,13 @@ def reject_section(section_queue: List[Dict], section_id: str, feedback: str | N
                 entry["feedback"] = feedback
         updated.append(entry)
     return updated
+
+
+def maybe_auto_approve(section_queue: List[Dict], section_id: str) -> List[Dict]:
+    """
+    Auto-approve the current section and unlock the next one when the test flag is enabled.
+    No-op when AUTO_APPROVE_SECTIONS is false.
+    """
+    if not AUTO_APPROVE_SECTIONS or not section_queue or not section_id:
+        return section_queue
+    return approve_section(section_queue, section_id)

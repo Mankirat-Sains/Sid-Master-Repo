@@ -5,6 +5,7 @@ Connect the chatbutton Electron app to the rag.py backend
 """
 
 # Windows async event loop fix - required for proper SSE streaming on Windows
+from __future__ import annotations
 import sys
 if sys.platform == 'win32':
     import asyncio
@@ -17,6 +18,7 @@ import httpx
 from pathlib import Path
 from datetime import datetime
 import logging
+
 import shutil
 import re
 import uuid
@@ -25,7 +27,7 @@ import hmac
 import hashlib
 from typing import Dict, Any, Optional, List
 from langgraph.errors import GraphInterrupt
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
+from fastapi import Body, FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
 from docx import Document as DocxDocument
@@ -33,6 +35,7 @@ from pydantic import BaseModel
 import uvicorn
 from dotenv import load_dotenv
 from utils.path_setup import ensure_info_retrieval_on_path
+from nodes.DesktopAgent.doc_generation import approval as doc_approval
 
 ensure_info_retrieval_on_path()
 try:
@@ -1183,6 +1186,31 @@ async def onlyoffice_callback_api(request: Request):
 async def onlyoffice_callback_api_doc(request: Request):
     """Alias route for callbacks when proxied under /api/doc/*."""
     return await onlyoffice_callback(request)
+
+
+class SectionQueuePayload(BaseModel):
+    section_queue: List[Dict[str, Any]]
+    feedback: Optional[str] = None
+
+
+@app.post("/docgen/sections/{section_id}/approve")
+async def approve_docgen_section(section_id: str, payload: SectionQueuePayload = Body(...)):
+    """
+    Approve a section and unlock the next pending/locked section.
+    Controller-only: delegates to doc_approval.approve_section.
+    """
+    updated_queue = doc_approval.approve_section(payload.section_queue, section_id)
+    return {"section_queue": updated_queue}
+
+
+@app.post("/docgen/sections/{section_id}/reject")
+async def reject_docgen_section(section_id: str, payload: SectionQueuePayload = Body(...)):
+    """
+    Reject a section (mark as rejected with optional feedback).
+    Controller-only: delegates to doc_approval.reject_section.
+    """
+    updated_queue = doc_approval.reject_section(payload.section_queue, section_id, payload.feedback)
+    return {"section_queue": updated_queue}
 
 # Initialize async checkpointer on FastAPI startup
 @app.on_event("startup")
@@ -2528,16 +2556,22 @@ async def chat_stream_handler(request: ChatRequest):
             try:
                 state_snapshot = await _load_thread_state(graph, request.session_id)
                 safe_state = ensure_rag_state_compatibility(state_snapshot)
+                state_updates = interrupt_payload.get("state_updates") if isinstance(interrupt_payload, dict) else {}
+                if isinstance(state_updates, dict):
+                    safe_state.update(state_updates)
                 safe_state["desktop_interrupt_pending"] = True
                 safe_state["desktop_interrupt_data"] = interrupt_payload
+                update_values = {
+                    "desktop_interrupt_pending": True,
+                    "desktop_interrupt_data": interrupt_payload,
+                    "desktop_approved_actions": safe_state.get("desktop_approved_actions", []),
+                }
+                if isinstance(state_updates, dict) and state_updates:
+                    update_values.update(state_updates)
                 await _update_thread_state(
                     graph,
                     request.session_id,
-                    {
-                        "desktop_interrupt_pending": True,
-                        "desktop_interrupt_data": interrupt_payload,
-                        "desktop_approved_actions": safe_state.get("desktop_approved_actions", []),
-                    },
+                    update_values,
                 )
                 interrupt_payload["state_summary"] = get_deep_agent_state_summary(safe_state)
             except Exception as exc:  # pragma: no cover - defensive
@@ -2580,15 +2614,115 @@ async def approve_action(request: ActionApprovalRequest):
             )
 
         safe_state = ensure_rag_state_compatibility(state_snapshot)
+        interrupt_data = safe_state.get("desktop_interrupt_data") or {}
+        interrupt_state_updates = interrupt_data.get("state_updates") if isinstance(interrupt_data, dict) else {}
+        if isinstance(interrupt_state_updates, dict):
+            safe_state.update({k: v for k, v in interrupt_state_updates.items() if v is not None})
         approved_actions = list(safe_state.get("desktop_approved_actions", []) or [])
         if request.approved and request.action_id not in approved_actions:
             approved_actions.append(request.action_id)
+
+        def _find_next_section(queue: List[Dict[str, Any]]) -> tuple[Optional[str], Optional[str]]:
+            for sec in queue or []:
+                if not isinstance(sec, dict):
+                    continue
+                if sec.get("status") == "approved":
+                    continue
+                if sec.get("status") == "locked":
+                    continue
+                return sec.get("section_id"), sec.get("section_type")
+            return None, None
+
+        def _upsert_approved_section(sections: List[Dict[str, Any]], payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+            if not payload:
+                return sections
+            filtered = [s for s in sections or [] if s.get("section_id") != payload.get("section_id")]
+            filtered.append(payload)
+            return filtered
+
+        state_updates: Dict[str, Any] = {}
+        is_section_interrupt = isinstance(interrupt_data, dict) and (
+            interrupt_data.get("type") == "section_approval" or interrupt_data.get("action") == "doc_section_review"
+        )
+        if is_section_interrupt:
+            section_id = (
+                interrupt_data.get("section_id")
+                or interrupt_data.get("current_section_id")
+                or safe_state.get("current_section_id")
+            )
+            section_queue = list(
+                safe_state.get("section_queue")
+                or (interrupt_state_updates or {}).get("section_queue")
+                or interrupt_data.get("section_queue")
+                or []
+            )
+            approved_sections = list(
+                safe_state.get("approved_sections")
+                or (interrupt_state_updates or {}).get("approved_sections")
+                or interrupt_data.get("approved_sections")
+                or []
+            )
+            section_payload = interrupt_data.get("section_payload") or {}
+            if not section_payload and isinstance(interrupt_state_updates, dict):
+                section_payload = interrupt_state_updates.get("doc_generation_result") or {}
+            section_type = interrupt_data.get("section_type") or section_payload.get("section_type")
+            if not section_type:
+                for sec in section_queue:
+                    if sec.get("section_id") == section_id:
+                        section_type = sec.get("section_type")
+                        break
+
+            approved_section_payload = {
+                "section_id": section_id,
+                "section_type": section_type,
+                "position_order": section_payload.get("position_order")
+                or (next((s.get("position_order") for s in section_queue if s.get("section_id") == section_id), None)),
+                "text": section_payload.get("draft_text")
+                or section_payload.get("section_content")
+                or interrupt_data.get("section_content")
+                or section_payload.get("combined_text"),
+                "metadata": section_payload.get("metadata") or {},
+            }
+
+            if request.approved:
+                updated_queue = doc_approval.approve_section(section_queue, section_id)
+                next_section_id, next_section_type = _find_next_section(updated_queue)
+                state_updates.update(
+                    {
+                        "section_queue": updated_queue,
+                        "approved_sections": _upsert_approved_section(approved_sections, approved_section_payload),
+                        "current_section_id": next_section_id,
+                        "section_type": next_section_type,
+                    }
+                )
+            else:
+                updated_queue = doc_approval.reject_section(section_queue, section_id, request.reason or "")
+                state_updates.update(
+                    {
+                        "section_queue": updated_queue,
+                        "approved_sections": approved_sections,
+                        "current_section_id": section_id,
+                        "section_type": section_type,
+                        "doc_generation_result": None,
+                    }
+                )
+
+            doc_request = safe_state.get("doc_request") or {}
+            if isinstance(doc_request, dict):
+                merged_doc_request = dict(doc_request)
+                merged_doc_request["section_queue"] = state_updates.get("section_queue", section_queue)
+                merged_doc_request["approved_sections"] = state_updates.get("approved_sections", approved_sections)
+                merged_doc_request["section_type"] = state_updates.get("section_type", section_type)
+                merged_doc_request["current_section_id"] = state_updates.get("current_section_id", section_id)
+                state_updates["doc_request"] = merged_doc_request
 
         update_values = {
             "desktop_approved_actions": approved_actions,
             "desktop_interrupt_pending": False,
             "desktop_interrupt_data": None,
         }
+        if state_updates:
+            update_values.update(state_updates)
 
         await _update_thread_state(graph, request.session_id, update_values)
         logger.info(
@@ -2597,20 +2731,24 @@ async def approve_action(request: ActionApprovalRequest):
 
         resumed_state = None
         resumed = False
-        if request.approved:
+        if request.approved or is_section_interrupt:
             try:
                 resumed_state = await _resume_graph(graph, request.session_id)
                 resumed = True if resumed_state is not None else False
             except GraphInterrupt as interrupt:
                 interrupt_payload = extract_interrupt_data(interrupt)
+                resumed_state_updates = interrupt_payload.get("state_updates") if isinstance(interrupt_payload, dict) else {}
+                update_values = {
+                    "desktop_interrupt_pending": True,
+                    "desktop_interrupt_data": interrupt_payload,
+                    "desktop_approved_actions": approved_actions,
+                }
+                if isinstance(resumed_state_updates, dict) and resumed_state_updates:
+                    update_values.update(resumed_state_updates)
                 await _update_thread_state(
                     graph,
                     request.session_id,
-                    {
-                        "desktop_interrupt_pending": True,
-                        "desktop_interrupt_data": interrupt_payload,
-                        "desktop_approved_actions": approved_actions,
-                    },
+                    update_values,
                 )
                 return ActionApprovalResponse(
                     success=True,
@@ -2623,7 +2761,7 @@ async def approve_action(request: ActionApprovalRequest):
             success=True,
             message="Action processed",
             resumed=resumed,
-            next_state=resumed_state if isinstance(resumed_state, dict) else state_snapshot,
+            next_state=resumed_state if isinstance(resumed_state, dict) else {**state_snapshot, **update_values},
         )
     except Exception as exc:
         logger.error(f"Failed to process action approval: {exc}", exc_info=True)

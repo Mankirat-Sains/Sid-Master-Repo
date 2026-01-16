@@ -9,15 +9,21 @@ import re
 import traceback
 from pathlib import Path
 from typing import Any, Dict, List
+from langgraph.errors import GraphInterrupt
 
 import pandas as pd
 
+from utils.path_setup import ensure_info_retrieval_on_path
 from models.rag_state import RAGState
 from config.logging_config import log_query
+from . import approval as doc_approval
 
 _DOC_SERVICES: Dict[str, Any] | None = None
 _CSV_FALLBACK_DF: pd.DataFrame | None = None
 _CSV_HAS_ROWS = False
+
+# Ensure info_retrieval modules are importable before generator load
+ensure_info_retrieval_on_path()
 
 
 def _log_text_checkpoint(location_name: str, text: str | None) -> None:
@@ -363,6 +369,26 @@ def node_doc_generate_section(state: RAGState) -> dict:
     if updated_queue:
         section_queue = updated_queue
 
+    # Test-only auto-approval to drive full-document runs without UI feedback.
+    if doc_approval.AUTO_APPROVE_SECTIONS and section_id:
+        try:
+            section_queue = doc_approval.maybe_auto_approve(section_queue, section_id)
+            if template_sections:
+                status_map = {
+                    sec.get("section_id") or sec.get("section_type"): sec.get("status") for sec in section_queue
+                }
+                template_sections = [
+                    {
+                        **sec,
+                        "status": status_map.get(sec.get("section_id") or sec.get("section_type"), sec.get("status")),
+                    }
+                    for sec in template_sections
+                    if isinstance(sec, dict)
+                ]
+            log_query.info("DOCGEN: AUTO_APPROVE_SECTIONS enabled; auto-approved section_id=%s", section_id)
+        except Exception as exc:  # noqa: BLE001
+            log_query.warning("DOCGEN: auto-approve failed; continuing without auto-approval (%s)", exc)
+
     # Build section status list (draft/approved/locked)
     section_status: List[Dict[str, Any]] = []
     source_sections = template_sections or section_queue
@@ -371,13 +397,20 @@ def node_doc_generate_section(state: RAGState) -> dict:
             continue
         sec_type = sec.get("section_type")
         sec_id = sec.get("section_id")
-        status = sec.get("status")
-        if status == "approved":
-            status = "approved"
-        elif section_id and (sec_id == section_id or (not sec_id and sec_type == overrides.get("section_type"))):
-            status = "draft"
+        status = (sec.get("status") or "").lower()
+        if doc_approval.AUTO_APPROVE_SECTIONS:
+            if status not in {"approved", "pending", "locked", "draft", "rejected"}:
+                if section_id and (sec_id == section_id or (not sec_id and sec_type == overrides.get("section_type"))):
+                    status = "draft"
+                else:
+                    status = "locked"
         else:
-            status = "locked"
+            if status == "approved":
+                status = "approved"
+            elif section_id and (sec_id == section_id or (not sec_id and sec_type == overrides.get("section_type"))):
+                status = "draft"
+            else:
+                status = "locked"
         section_status.append(
             {
                 "section_id": sec_id,
@@ -405,14 +438,18 @@ def node_doc_generate_section(state: RAGState) -> dict:
     except Exception as exc:  # noqa: BLE001
         log_query.warning(f"DOCGEN: failed to log citations_metadata debug info ({exc})")
 
-    return {
-        "doc_generation_result": {
-            **result,
-            "section_queue": section_queue,
-            "approved_sections": approved_sections,
-            "template_sections": template_sections,
-            "section_status": section_status,
-        },
+    # Package generation payload and raise an interrupt for approval before continuing
+    doc_generation_payload = {
+        **result,
+        "section_queue": section_queue,
+        "approved_sections": approved_sections,
+        "template_sections": template_sections,
+        "section_status": section_status,
+    }
+
+    # Persist interim state so resume path has the draft + queue metadata
+    state_updates: Dict[str, Any] = {
+        "doc_generation_result": doc_generation_payload,
         "doc_generation_warnings": warnings,
         "section_queue": section_queue,
         "approved_sections": approved_sections,
@@ -420,7 +457,59 @@ def node_doc_generate_section(state: RAGState) -> dict:
         "doc_type_variant": doc_type_variant,
         "current_section_id": section_id,
         "section_status": section_status,
+        "section_type": overrides.get("section_type"),
     }
+    doc_request = dict(overrides)
+    doc_request["section_queue"] = section_queue
+    doc_request["approved_sections"] = approved_sections
+    state_updates["doc_request"] = doc_request
+
+    # Capture a concise preview for UI while keeping full text in payload
+    section_preview = (cleaned_text or result.get("draft_text") or draft_text or "")[:800]
+    section_status_value = next(
+        (
+            sec.get("status")
+            for sec in section_status
+            if (section_id and sec.get("section_id") == section_id)
+            or (not section_id and sec.get("section_type") == overrides.get("section_type"))
+        ),
+        "draft",
+    )
+
+    interrupt_payload: Dict[str, Any] = {
+        "type": "section_approval",
+        "action": "doc_section_review",
+        "action_id": f"section::{section_id or overrides.get('section_type') or 'unknown'}",
+        "section_id": section_id,
+        "section_type": overrides.get("section_type"),
+        "section_status": section_status_value,
+        "section_preview": section_preview,
+        "section_content": cleaned_text or result.get("draft_text") or draft_text,
+        "section_queue": section_queue,
+        "section_status_list": section_status,
+        "allowed_actions": ["approve", "reject"],
+        "approved_sections": approved_sections,
+        "doc_generation_result": doc_generation_payload,
+        "doc_generation_warnings": warnings,
+        "current_section_id": section_id,
+        "section_payload": {
+            "section_id": section_id,
+            "section_type": overrides.get("section_type"),
+            "position_order": overrides.get("position_order"),
+            "draft_text": cleaned_text or result.get("draft_text") or draft_text,
+            "citations": result.get("citations"),
+            "metadata": generation_meta,
+        },
+        "state_updates": state_updates,
+    }
+
+    if doc_approval.AUTO_APPROVE_SECTIONS:
+        log_query.info("DOCGEN: AUTO_APPROVE_SECTIONS enabled; returning without interrupt.")
+        return state_updates
+
+    interrupt_exc = GraphInterrupt("Section approval required before continuing")
+    interrupt_exc.data = interrupt_payload
+    raise interrupt_exc
 
 
 _CSV_FALLBACK_CACHE: Dict[str, Dict[str, str]] | None = None
@@ -666,10 +755,5 @@ class SectionGenerator:
             result["approved_sections"] = approved_sections
             return result
         except Exception as exc:  # pragma: no cover - defensive fallback
-            log_query.error(f"DOCGEN: SectionGenerator.generate failed: {exc}")
-            return {
-                "draft_text": f"# Document\n\nGenerated content for: {doc_request.get('title', 'Untitled') if doc_request else 'Untitled'}",
-                "sections": [],
-                "warnings": [f"SectionGenerator fallback used: {exc}"],
-                "metadata": {"fallback": True, "reason": str(exc)},
-            }
+            log_query.error(f"DOCGEN: SectionGenerator.generate failed: {exc}", exc_info=True)
+            raise

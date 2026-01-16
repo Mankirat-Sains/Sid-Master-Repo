@@ -33,6 +33,31 @@ interface ChatResponse {
   thinking_log?: string[]
 }
 
+interface InterruptPayload {
+  interrupt_id: string | null
+  interrupt_type?: string
+  action_id?: string | null
+  action?: string
+  question?: string
+  codes?: string[]
+  code_count?: number
+  chunk_count?: number
+  available_codes?: string[]
+  previously_retrieved?: string[]
+  section_id?: string | null
+  section_type?: string | null
+  section_status?: string | null
+  section_preview?: string
+  section_content?: string
+  allowed_actions?: string[]
+  doc_generation_result?: Record<string, unknown>
+  section_queue?: Array<Record<string, unknown>> | null
+  state_updates?: Record<string, unknown> | null
+  session_id: string
+  thread_id: string
+  raw?: Record<string, unknown>
+}
+
 interface StreamCallbacks {
   onLog?: (log: { type: string; message: string; timestamp: number; node?: string }) => void
   onToken?: (token: { content: string; node: string; timestamp: number }) => void
@@ -41,18 +66,7 @@ interface StreamCallbacks {
   onDocument?: (payload: Record<string, unknown>) => void
   onComplete?: (result: ChatResponse) => void
   onError?: (error: Error) => void
-  onInterrupt?: (interrupt: {
-    interrupt_id: string | null
-    interrupt_type: string
-    question: string
-    codes: string[]
-    code_count: number
-    chunk_count: number
-    available_codes: string[]
-    previously_retrieved: string[]
-    session_id: string
-    thread_id: string
-  }) => void
+  onInterrupt?: (interrupt: InterruptPayload) => void
 }
 
 interface StreamOptions {
@@ -264,24 +278,40 @@ export const useChat = () => {
                 callbacks?.onComplete?.(data.result as ChatResponse)
               } else if (data.type === 'interrupt') {
                 // Human-in-the-loop interrupt - requires user input
+                const interruptPayloadRaw: any =
+                  data.interrupt && typeof data.interrupt === 'object' ? data.interrupt : data
                 console.log('⏸️  Interrupt received from stream:', {
-                  interrupt_type: data.interrupt_type,
-                  codes: data.codes?.length || 0,
-                  available_codes: data.available_codes?.length || 0,
-                  question: data.question
+                  interrupt_type: interruptPayloadRaw.type || interruptPayloadRaw.interrupt_type,
+                  codes: interruptPayloadRaw.codes?.length || 0,
+                  available_codes: interruptPayloadRaw.available_codes?.length || 0,
+                  question: interruptPayloadRaw.question
                 })
                 if (callbacks?.onInterrupt) {
                   callbacks.onInterrupt({
-                    interrupt_id: data.interrupt_id,
-                    interrupt_type: data.interrupt_type,
-                    question: data.question || '',
-                    codes: data.codes || [],
-                    code_count: data.code_count || 0,
-                    chunk_count: data.chunk_count || 0,
-                    available_codes: data.available_codes || [],
-                    previously_retrieved: data.previously_retrieved || [],
+                    interrupt_id: interruptPayloadRaw.interrupt_id ?? interruptPayloadRaw.action_id ?? null,
+                    interrupt_type: interruptPayloadRaw.type || interruptPayloadRaw.interrupt_type,
+                    action_id: interruptPayloadRaw.action_id ?? null,
+                    action: interruptPayloadRaw.action,
+                    question: interruptPayloadRaw.question || data.question || '',
+                    codes: interruptPayloadRaw.codes || [],
+                    code_count: interruptPayloadRaw.code_count || data.code_count || 0,
+                    chunk_count: interruptPayloadRaw.chunk_count || data.chunk_count || 0,
+                    available_codes: interruptPayloadRaw.available_codes || [],
+                    previously_retrieved: interruptPayloadRaw.previously_retrieved || [],
+                    section_id: interruptPayloadRaw.section_id || interruptPayloadRaw.current_section_id || null,
+                    section_type: interruptPayloadRaw.section_type || null,
+                    section_status: interruptPayloadRaw.section_status || null,
+                    section_preview: interruptPayloadRaw.section_preview || interruptPayloadRaw.section_content,
+                    section_content: interruptPayloadRaw.section_content,
+                    allowed_actions: interruptPayloadRaw.allowed_actions || interruptPayloadRaw.actions,
+                    doc_generation_result:
+                      interruptPayloadRaw.doc_generation_result || interruptPayloadRaw.state_updates?.doc_generation_result,
+                    section_queue:
+                      interruptPayloadRaw.section_queue || interruptPayloadRaw.state_updates?.section_queue || null,
+                    state_updates: interruptPayloadRaw.state_updates || null,
                     session_id: data.session_id || sessionId,
-                    thread_id: data.thread_id || sessionId
+                    thread_id: data.thread_id || sessionId,
+                    raw: interruptPayloadRaw
                   })
                 } else {
                   console.warn('⚠️ No onInterrupt callback provided - interrupt will not be handled')

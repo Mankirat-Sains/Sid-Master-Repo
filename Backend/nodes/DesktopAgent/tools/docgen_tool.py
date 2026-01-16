@@ -113,24 +113,15 @@ class DocGenTool:
         workspace_dir: Path,
     ) -> Dict[str, Any]:
         """Call existing docgen generation logic."""
-        try:
-            from nodes.DesktopAgent.doc_generation.section_generator import SectionGenerator  # type: ignore
+        from nodes.DesktopAgent.doc_generation.section_generator import SectionGenerator  # type: ignore
 
-            generator = SectionGenerator()
-            result = generator.generate(
-                doc_request=doc_request,
-                context_path=str(context_file),
-                output_dir=str(workspace_dir),
-            )
-            return result
-        except Exception as exc:
-            # Fall back to a lightweight mock result rather than failing the loop
-            logger.warning(f"Docgen unavailable, returning fallback content: {exc}")
-            return {
-                "draft_text": f"# Document\n\nGenerated content for: {doc_request.get('title', 'Untitled')}",
-                "sections": [],
-                "metadata": {"fallback": True, "reason": f"Docgen unavailable: {exc}"},
-            }
+        generator = SectionGenerator()
+        result = generator.generate(
+            doc_request=doc_request,
+            context_path=str(context_file),
+            output_dir=str(workspace_dir),
+        )
+        return result
 
     def _process_docgen_result(self, result: Dict[str, Any], workspace_dir: Path) -> Dict[str, Any]:
         """Process docgen result with output eviction."""

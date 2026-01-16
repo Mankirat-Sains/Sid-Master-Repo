@@ -3,13 +3,9 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+from langgraph.errors import GraphInterrupt
 
 ROOT = Path(__file__).resolve().parents[2]
-if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))
-backend_dir = ROOT / "Backend"
-if backend_dir.exists() and str(backend_dir) not in sys.path:
-    sys.path.append(str(backend_dir))
 
 from models.rag_state import RAGState  # noqa: E402
 import Backend.nodes.DesktopAgent.doc_generation.section_generator as sg  # noqa: E402
@@ -18,8 +14,6 @@ import importlib.util
 
 # Load pipeline and resolver modules from paths (space in folder name)
 LA_ROOT = ROOT / "Local Agent" / "info_retrieval" / "src"
-if str(LA_ROOT) not in sys.path:
-    sys.path.append(str(LA_ROOT))
 pipeline_path = LA_ROOT / "ingest" / "pipeline.py"
 resolver_path = LA_ROOT / "templates" / "template_resolver.py"
 
@@ -196,8 +190,10 @@ def test_section_generator_carries_template_and_status(monkeypatch):
     stub = StubGen()
     monkeypatch.setattr(sg, "_load_services", lambda: {"generator": stub})
 
-    res = sg.node_doc_generate_section(state)
-    dgr = res["doc_generation_result"]
+    with pytest.raises(GraphInterrupt) as excinfo:
+        sg.node_doc_generate_section(state)
+    payload = excinfo.value.data or {}
+    dgr = payload.get("doc_generation_result", {})
 
     # Generator called once for the next pending section (s2)
     assert len(stub.calls) == 1
@@ -215,7 +211,7 @@ def test_section_generator_carries_template_and_status(monkeypatch):
     # Template context propagated into result metadata
     assert dgr.get("metadata", {}).get("template_id") == "tmpl-123"
     assert dgr.get("metadata", {}).get("section_id") == "s2"
-    assert res.get("current_section_id") == "s2"
+    assert payload.get("current_section_id") == "s2"
 
 
 def test_ingest_resolves_template_and_section_ids(monkeypatch):
@@ -323,29 +319,43 @@ def test_approval_and_rejection_flow(monkeypatch):
     monkeypatch.setattr(sg, "_load_services", lambda: {"generator": stub})
 
     # First run: should draft s1 only
-    res1 = sg.node_doc_generate_section(state)
+    with pytest.raises(GraphInterrupt) as first_interrupt:
+        sg.node_doc_generate_section(state)
     assert len(stub.calls) == 1
     assert stub.calls[0].get("section_id") == "s1"
+    payload1 = first_interrupt.value.data or {}
 
     from Backend.nodes.DesktopAgent.doc_generation import approval
 
     # Approve s1, unlock s2
-    queue_after_approve = approval.approve_section(res1["section_queue"], "s1")
+    queue_after_approve = approval.approve_section(payload1["section_queue"], "s1")
     state.section_queue = queue_after_approve
     state.template_sections = queue_after_approve
+    state.approved_sections = [
+        {
+            "section_id": "s1",
+            "section_type": "intro",
+            "text": (payload1.get("doc_generation_result") or {}).get("draft_text"),
+        }
+    ]
+    state.doc_request = {"section_queue": queue_after_approve, "approved_sections": state.approved_sections}
 
     # Next run: should draft s2, not touch s1
-    res2 = sg.node_doc_generate_section(state)
+    with pytest.raises(GraphInterrupt) as second_interrupt:
+        sg.node_doc_generate_section(state)
     assert len(stub.calls) == 2
     assert stub.calls[1].get("section_id") == "s2"
-    statuses = {s["section_type"]: s["status"] for s in res2["doc_generation_result"]["section_status"]}
+    payload2 = second_interrupt.value.data or {}
+    statuses = {s["section_type"]: s["status"] for s in payload2["doc_generation_result"]["section_status"]}
     assert statuses["intro"] == "approved"
     assert statuses["methodology"] == "draft"
 
     # Reject s2 and ensure regeneration hits only s2
-    queue_after_reject = approval.reject_section(res2["section_queue"], "s2", feedback="fix it")
+    queue_after_reject = approval.reject_section(payload2["section_queue"], "s2", feedback="fix it")
     state.section_queue = queue_after_reject
     state.template_sections = queue_after_reject
-    res3 = sg.node_doc_generate_section(state)
+    state.doc_request = {"section_queue": queue_after_reject, "approved_sections": state.approved_sections}
+    with pytest.raises(GraphInterrupt) as third_interrupt:
+        sg.node_doc_generate_section(state)
     assert len(stub.calls) == 3
     assert stub.calls[2].get("section_id") == "s2"

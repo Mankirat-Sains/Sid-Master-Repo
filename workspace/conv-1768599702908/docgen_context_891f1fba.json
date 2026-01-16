@@ -1,0 +1,20 @@
+{
+  "doc_request": {
+    "user_query": "Generate a design report section-by-section for a hospital parking garage expansion. Start with the Executive Summary, then Methodology and Results. Keep it concise and grounded in building codes.",
+    "doc_type": "design_report",
+    "section_type": "conclusions"
+  },
+  "user_context": {},
+  "timestamp": "2026-01-16T21:41:47.233662",
+  "state_context": {
+    "user_query": "Generate a design report section-by-section for a hospital parking garage expansion. Start with the Executive Summary, then Methodology and Results. Keep it concise and grounded in building codes.",
+    "retrieved_docs": [],
+    "conversation_history": [
+      {
+        "question": "Generate a design report section-by-section for a hospital parking garage expansion. Start with the Executive Summary, then Methodology and Results. Keep it concise and grounded in building codes.",
+        "answer": null,
+        "timestamp": 1768599705.127938
+      }
+    ]
+  }
+}

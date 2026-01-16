@@ -516,16 +516,18 @@
                             placeholder="How can I help you today?"
                             aria-label="Prompt input"
                             rows="1"
+                            :readonly="isInterruptActive"
+                            :aria-disabled="isInterruptActive"
                             @keydown.enter.exact.prevent="handleSend"
                             @input="resizePrompt"
                             @paste="handlePaste"
                           ></textarea>
                           <button
                             class="h-10 w-10 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
-                            :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                            :class="(prompt.trim() || attachments.length) && !isSending && !isInterruptActive ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
                             aria-label="Send"
                             @click="handleSend"
-                            :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                            :disabled="isSending || isInterruptActive || (!prompt.trim() && !attachments.length)"
                           >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
@@ -570,7 +572,70 @@
                                 : 'text-white'
                               "
                             >
-                              <div v-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
+                              <div
+                                v-if="entry.interrupt"
+                                class="w-full bg-[#0f0f17] border border-purple-500/30 rounded-2xl p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] space-y-3"
+                              >
+                                <div class="flex items-center justify-between gap-3">
+                                  <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="px-2 py-1 rounded-full bg-purple-500/20 text-purple-100 text-[11px] uppercase tracking-wide">Section approval</span>
+                                    <span
+                                      v-if="entry.interrupt.section_type"
+                                      class="px-2 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-white/80"
+                                    >
+                                      {{ entry.interrupt.section_type }}
+                                    </span>
+                                    <span
+                                      v-if="entry.interrupt.section_status"
+                                      class="px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-[11px] capitalize border border-emerald-400/30"
+                                    >
+                                      {{ entry.interrupt.section_status }}
+                                    </span>
+                                  </div>
+                                  <span v-if="entry.interruptDecision" class="text-[11px] uppercase text-white/70">
+                                    {{ entry.interruptDecision === 'approved' ? 'Approved' : 'Rejected' }}
+                                  </span>
+                                </div>
+                                <p class="text-[12px] text-white/65">
+                                  Review the generated section before continuing. Generation is paused until you choose.
+                                </p>
+                                <div
+                                  class="whitespace-pre-wrap text-[13px] text-white/85 bg-white/5 border border-white/10 rounded-xl px-3 py-2"
+                                >
+                                  {{ entry.interrupt.section_preview || entry.interrupt.section_content || entry.content || 'No content available.' }}
+                                </div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                  <span
+                                    v-if="entry.interrupt.section_id"
+                                    class="px-2 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-white/70"
+                                  >
+                                    ID: {{ entry.interrupt.section_id }}
+                                  </span>
+                                  <span
+                                    v-if="entry.interrupt.allowed_actions?.length"
+                                    class="px-2 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-white/70"
+                                  >
+                                    Actions: {{ entry.interrupt.allowed_actions.join(', ') }}
+                                  </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                  <button
+                                    class="px-3 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold hover:bg-purple-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                    :disabled="interruptProcessing"
+                                    @click="handleInterruptDecision('approved', entry)"
+                                  >
+                                    Approve
+                                  </button>
+                                  <button
+                                    class="px-3 py-2 rounded-full bg-white/10 border border-white/20 text-white text-xs font-semibold hover:bg-white/15 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                    :disabled="interruptProcessing"
+                                    @click="handleInterruptDecision('rejected', entry)"
+                                  >
+                                    Reject &amp; Regenerate
+                                  </button>
+                                </div>
+                              </div>
+                              <div v-else-if="entry.role === 'assistant'" class="prose prose-invert prose-sm max-w-none" v-html="getFormattedMessage(entry)"></div>
                               <div v-else class="whitespace-pre-wrap text-[12px] text-white/90">{{ entry.content }}</div>
                             </div>
                             <!-- Image gallery for similar images -->
@@ -718,16 +783,18 @@
                             placeholder="Reply..."
                             aria-label="Prompt input"
                             rows="1"
+                            :readonly="isInterruptActive"
+                            :aria-disabled="isInterruptActive"
                             @keydown.enter.exact.prevent="handleSend"
                             @input="resizePrompt"
                             @paste="handlePaste"
                           ></textarea>
                           <button
                             class="h-9 w-9 rounded-full flex items-center justify-center text-white flex-shrink-0 transition"
-                            :class="(prompt.trim() || attachments.length) && !isSending ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
+                            :class="(prompt.trim() || attachments.length) && !isSending && !isInterruptActive ? 'bg-[#6b21a8] hover:bg-[#7c2cc7]' : 'bg-[#6b21a8]/50 cursor-not-allowed'"
                             aria-label="Send"
                             @click="handleSend"
-                            :disabled="isSending || (!prompt.trim() && !attachments.length)"
+                            :disabled="isSending || isInterruptActive || (!prompt.trim() && !attachments.length)"
                           >
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
@@ -995,6 +1062,25 @@ import { useRuntimeConfig } from '#app'
 import type { Component } from 'vue'
 import type { StructuredDocument, WorkflowMode } from '~/composables/useDocumentWorkflow'
 
+type InterruptPayload = {
+  interrupt_id: string | null
+  action_id?: string | null
+  action?: string
+  interrupt_type?: string
+  section_id?: string | null
+  section_type?: string | null
+  section_status?: string | null
+  section_preview?: string
+  section_content?: string
+  allowed_actions?: string[]
+  doc_generation_result?: Record<string, any>
+  section_queue?: Array<Record<string, any>>
+  state_updates?: Record<string, any> | null
+  session_id?: string
+  thread_id?: string
+  raw?: Record<string, any>
+}
+
 type ChatEntry = {
   role: 'user' | 'assistant'
   content: string
@@ -1011,6 +1097,8 @@ type ChatEntry = {
   disliked?: boolean
   id?: string
   citations_metadata?: any
+  interrupt?: InterruptPayload
+  interruptDecision?: 'approved' | 'rejected'
 }
 
 type Conversation = {
@@ -1268,6 +1356,8 @@ const promptInput = ref<HTMLTextAreaElement | null>(null)
 const tags = ref([])
 const chatContainer = ref<HTMLElement | null>(null)
 const isSending = ref(false)
+const activeInterrupt = ref<InterruptPayload | null>(null)
+const interruptProcessing = ref(false)
 const attachments = ref<{ name: string; base64: string }[]>([])
 const fileInput = ref<HTMLInputElement | null>(null)
 // Image modal state
@@ -1301,6 +1391,7 @@ const dataSources = ref<DataSources>({
   code_db: true,
   coop_manual: true
 })
+const isInterruptActive = computed(() => !!activeInterrupt.value)
 const iconRailWidth = 48 // tailwind w-12 (3rem)
 const collapsedRailOffset = 10
 const sidebarWidth = ref(224) // default 14rem
@@ -1708,6 +1799,8 @@ watch(
 watch(activeConversationId, () => {
   prompt.value = ''
   attachments.value = []
+  activeInterrupt.value = null
+  interruptProcessing.value = false
   nextTick(resizePrompt)
   scrollToBottom()
   syncWorkflowFromConversation(activeConversation.value)
@@ -2646,10 +2739,110 @@ function handleAgentLog(log: AgentLog) {
   logsPanelOpen.value = true
 }
 
+function normalizeInterruptPayload(interrupt: any): InterruptPayload {
+  const raw = interrupt || {}
+  const stateUpdates = raw.state_updates || raw.stateUpdates || {}
+  return {
+    interrupt_id: raw.interrupt_id ?? raw.action_id ?? raw.id ?? null,
+    action_id: raw.action_id ?? raw.interrupt_id ?? null,
+    action: raw.action,
+    interrupt_type: raw.interrupt_type || raw.type,
+    section_id: raw.section_id ?? raw.current_section_id ?? null,
+    section_type: raw.section_type ?? null,
+    section_status: raw.section_status ?? null,
+    section_preview: raw.section_preview ?? raw.section_content,
+    section_content: raw.section_content ?? raw.section_preview,
+    allowed_actions: raw.allowed_actions,
+    doc_generation_result: raw.doc_generation_result || stateUpdates.doc_generation_result,
+    section_queue: raw.section_queue || stateUpdates.section_queue,
+    state_updates: stateUpdates || null,
+    session_id: raw.session_id,
+    thread_id: raw.thread_id,
+    raw
+  }
+}
+
+function handleIncomingInterrupt(interrupt: any) {
+  const conversation = activeConversation.value
+  if (!conversation) return
+  const normalized = normalizeInterruptPayload(interrupt)
+  activeInterrupt.value = normalized
+  conversation.chatLog.push({
+    id: `interrupt-${Date.now()}`,
+    role: 'assistant',
+    content: '',
+    interrupt: normalized,
+    timestamp: Date.now()
+  })
+  scrollToBottom()
+}
+
+function handleApprovalNextState(response: any) {
+  const conversation = activeConversation.value
+  if (!conversation || !response) return
+  const payload = response.next_state ?? response
+
+  if (payload && (payload.type === 'section_approval' || payload.action === 'doc_section_review' || payload.state_updates)) {
+    handleIncomingInterrupt(payload)
+    return
+  }
+
+  const documentPayload =
+    payload?.doc_generation_result || payload?.document_state || payload?.document_patch || payload?.document
+  if (documentPayload) {
+    handleDocumentUpdate(documentPayload)
+  }
+  handleWorkflowSignal(payload || {})
+
+  const finalText =
+    payload?.doc_generation_result?.document_summary ||
+    payload?.reply ||
+    payload?.final_answer ||
+    payload?.answer ||
+    payload?.message ||
+    payload?.doc_generation_result?.draft_text ||
+    ''
+
+  if (finalText) {
+    conversation.chatLog.push({
+      role: 'assistant',
+      content: finalText,
+      citations_metadata: payload?.citations_metadata || payload?.doc_generation_result?.citations_metadata,
+      timestamp: Date.now()
+    })
+  }
+  scrollToBottom(true)
+}
+
+async function handleInterruptDecision(decision: 'approved' | 'rejected', entry: ChatEntry) {
+  if (!entry.interrupt || !activeConversation.value) return
+  if (interruptProcessing.value) return
+  interruptProcessing.value = true
+  try {
+    const payload = {
+      action_id: entry.interrupt.action_id || entry.interrupt.interrupt_id || 'section_approval',
+      approved: decision === 'approved',
+      session_id: activeConversation.value.sessionId,
+      reason: decision === 'rejected' ? 'User rejected section draft' : ''
+    }
+    const resp = await $fetch(`${config.public.orchestratorUrl}/approve-action`, {
+      method: 'POST',
+      body: payload
+    })
+    entry.interruptDecision = decision
+    activeInterrupt.value = null
+    handleApprovalNextState(resp)
+  } catch (error) {
+    console.error('Failed to submit interrupt decision', error)
+  } finally {
+    interruptProcessing.value = false
+  }
+}
+
 async function handleSend() {
   const hasMessage = prompt.value.trim().length > 0
   const hasAttachments = attachments.value.length > 0
-  if ((!hasMessage && !hasAttachments) || isSending.value) return
+  if ((!hasMessage && !hasAttachments) || isSending.value || isInterruptActive.value) return
   docWorkflowPrimed.value = false
 
   const conversation = activeConversation.value
@@ -2915,6 +3108,14 @@ async function handleSend() {
             conversation.chatLog.splice(thinkingIndex, 1)
           }
           streamError = error
+        },
+        onInterrupt: interrupt => {
+          clearInterval(thinkingInterval)
+          const thinkingIndex = conversation.chatLog.findIndex(entry => entry.id === thinkingMessageId)
+          if (thinkingIndex !== -1) {
+            conversation.chatLog.splice(thinkingIndex, 1)
+          }
+          handleIncomingInterrupt(interrupt)
         }
       },
       {
@@ -2937,7 +3138,7 @@ async function handleSend() {
 }
 
 async function regenerateAssistant(message: string, sessionId: string) {
-  if (isSending.value) return
+  if (isSending.value || isInterruptActive.value) return
   isSending.value = true
   try {
     // Use streaming endpoint ONLY - no duplicate calls
@@ -3114,6 +3315,15 @@ async function regenerateAssistant(message: string, sessionId: string) {
         onError: error => {
           // No thinking message in regenerate - just capture error
           streamError = error
+        },
+        onInterrupt: interrupt => {
+          if (streamingMessageId) {
+            const lastIndex = conversation.chatLog.length - 1
+            if (lastIndex >= 0 && conversation.chatLog[lastIndex].role === 'assistant' && !conversation.chatLog[lastIndex].content) {
+              conversation.chatLog.splice(lastIndex, 1)
+            }
+          }
+          handleIncomingInterrupt(interrupt)
         }
       },
       {
