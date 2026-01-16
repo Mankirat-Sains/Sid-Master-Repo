@@ -53,11 +53,14 @@ class MetadataDB:
                     source TEXT NOT NULL,
                     file_path TEXT,
                     doc_type TEXT,
+                    doc_type_variant TEXT,
                     section_type TEXT,
                     chunk_type TEXT NOT NULL,
                     calculation_type TEXT,
                     text TEXT NOT NULL,
                     normalized_text TEXT,
+                    template_id TEXT,
+                    section_id TEXT,
                     style_frequency INTEGER DEFAULT 0,
                     quality_score REAL,
                     is_pinned INTEGER DEFAULT 0,
@@ -79,7 +82,10 @@ class MetadataDB:
                 CREATE INDEX IF NOT EXISTS idx_chunks_artifact ON chunks(artifact_id);
                 CREATE INDEX IF NOT EXISTS idx_chunks_company ON chunks(company_id);
                 CREATE INDEX IF NOT EXISTS idx_chunks_doc_type ON chunks(doc_type);
+                CREATE INDEX IF NOT EXISTS idx_chunks_doc_type_variant ON chunks(doc_type_variant);
                 CREATE INDEX IF NOT EXISTS idx_chunks_section_type ON chunks(section_type);
+                CREATE INDEX IF NOT EXISTS idx_chunks_template ON chunks(template_id);
+                CREATE INDEX IF NOT EXISTS idx_chunks_section ON chunks(section_id);
                 CREATE INDEX IF NOT EXISTS idx_chunks_created ON chunks(created_at);
                 CREATE INDEX IF NOT EXISTS idx_chunks_norm_text ON chunks(normalized_text);
                 CREATE INDEX IF NOT EXISTS idx_docs_company ON documents(company_id);
@@ -98,11 +104,14 @@ class MetadataDB:
             "source": record.get("source", "upload"),
             "file_path": record.get("file_path"),
             "doc_type": record.get("doc_type"),
+            "doc_type_variant": record.get("doc_type_variant"),
             "section_type": record.get("section_type"),
             "chunk_type": record.get("chunk_type"),
             "calculation_type": record.get("calculation_type"),
             "text": record.get("text"),
             "normalized_text": record.get("normalized_text"),
+            "template_id": record.get("template_id"),
+            "section_id": record.get("section_id"),
             "style_frequency": int(record.get("style_frequency", 0) or 0),
             "quality_score": record.get("quality_score"),
             "is_pinned": int(bool(record.get("is_pinned", False))),
@@ -122,11 +131,11 @@ class MetadataDB:
             conn.execute(
                 """
                 INSERT OR REPLACE INTO chunks
-                (chunk_id, artifact_id, version_id, company_id, source, file_path, doc_type, section_type, chunk_type,
-                 calculation_type, text, normalized_text, style_frequency, quality_score, is_pinned, page_number, section_number, heading, project_name, author, reviewer, tags,
+                (chunk_id, artifact_id, version_id, company_id, source, file_path, doc_type, doc_type_variant, section_type, chunk_type,
+                 calculation_type, text, normalized_text, template_id, section_id, style_frequency, quality_score, is_pinned, page_number, section_number, heading, project_name, author, reviewer, tags,
                  parent_artifact_id, related_chunks, created_at, modified_at)
-                VALUES (:chunk_id, :artifact_id, :version_id, :company_id, :source, :file_path, :doc_type, :section_type,
-                        :chunk_type, :calculation_type, :text, :normalized_text, :style_frequency, :quality_score, :is_pinned,
+                VALUES (:chunk_id, :artifact_id, :version_id, :company_id, :source, :file_path, :doc_type, :doc_type_variant, :section_type,
+                        :chunk_type, :calculation_type, :text, :normalized_text, :template_id, :section_id, :style_frequency, :quality_score, :is_pinned,
                         :page_number, :section_number, :heading, :project_name,
                         :author, :reviewer, :tags, :parent_artifact_id, :related_chunks, :created_at, :modified_at)
                 """,

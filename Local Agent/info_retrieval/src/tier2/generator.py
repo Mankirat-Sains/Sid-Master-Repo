@@ -138,6 +138,9 @@ class Tier2Generator:
         extra_context = overrides.get("extra_context") or []
         doc_type = overrides.get("doc_type", doc_type)
         section_type = overrides.get("section_type", section_type)
+        template_id = overrides.get("template_id")
+        section_id = overrides.get("section_id")
+        doc_type_variant = overrides.get("doc_type_variant")
         length_target = self.section_profiles.load(company_id, doc_type, section_type)
         min_chars = length_target.get("min_chars") or 900
         max_chars = length_target.get("max_chars") or 1300
@@ -151,6 +154,9 @@ class Tier2Generator:
             top_k=10,
             doc_type=doc_type,
             section_type=section_type,
+            template_id=template_id,
+            section_id=section_id,
+            doc_type_variant=doc_type_variant,
         )
         style_chunks, style_warnings, style_source = self._retrieve_with_fallbacks(
             query_text=user_request,
@@ -159,6 +165,9 @@ class Tier2Generator:
             top_k=4,
             doc_type=doc_type,
             section_type=section_type,
+            template_id=template_id,
+            section_id=section_id,
+            doc_type_variant=doc_type_variant,
         )
 
         warnings: List[str] = []
@@ -345,9 +354,18 @@ Generate the section:"""
         top_k: int,
         doc_type: Optional[str],
         section_type: Optional[str],
+        template_id: Optional[str] = None,
+        section_id: Optional[str] = None,
+        doc_type_variant: Optional[str] = None,
     ) -> tuple[List[Dict[str, Any]], List[str], str]:
         warnings: List[str] = []
         filters_base = {"company_id": company_id, "index_type": chunk_type}
+        if template_id:
+            filters_base["template_id"] = template_id
+        if section_id:
+            filters_base["section_id"] = section_id
+        if doc_type_variant:
+            filters_base["doc_type_variant"] = doc_type_variant
         attempts = [
             {**filters_base, **({"doc_type": doc_type} if doc_type else {}), **({"section_type": section_type} if section_type else {})},
             {**filters_base, **({"doc_type": doc_type} if doc_type else {})},

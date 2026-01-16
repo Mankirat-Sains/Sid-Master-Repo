@@ -49,7 +49,7 @@ class SupabaseVectorStore(VectorStore):
         self.passthrough_columns = self._parse_passthrough_columns(
             os.getenv(
                 "SUPABASE_PASSTHROUGH_COLUMNS",
-                "artifact_id,version_id,company_id,chunk_type,index_type,section_type,doc_type,source,file_path,heading,page_number",
+                "artifact_id,version_id,company_id,chunk_type,index_type,section_type,doc_type,doc_type_variant,source,file_path,heading,page_number,template_id,section_id",
             )
         )
         self._metadata_supported = bool(self.metadata_column)
@@ -202,12 +202,15 @@ class SupabaseVectorStore(VectorStore):
             "company_filter": "company_filter",
             "doc_type": "doc_type_filter",
             "doc_type_filter": "doc_type_filter",
+            "doc_type_variant": "doc_type_variant_filter",
             "index_type": "index_type_filter",
             "index_type_filter": "index_type_filter",
             "section_type": "section_type_filter",
             "section_type_filter": "section_type_filter",
             "version_id": "version_filter",
             "version_filter": "version_filter",
+            "template_id": "template_id_filter",
+            "section_id": "section_id_filter",
         }
 
         mapped: Dict[str, object] = {}

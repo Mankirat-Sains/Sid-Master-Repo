@@ -50,7 +50,14 @@ class IngestionPipeline:
         self.metadata_extractor = MetadataExtractor()
         self.style_filter = StyleExemplarFilter()
 
-    def ingest(self, file_path: str) -> Dict[str, int | str]:
+    def ingest(
+        self,
+        file_path: str,
+        *,
+        template_id: str | None = None,
+        section_id_map: Dict[str, str] | None = None,
+        doc_type_variant: str | None = None,
+    ) -> Dict[str, int | str]:
         path = Path(file_path)
         if not path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
@@ -81,6 +88,11 @@ class IngestionPipeline:
                 }
 
         doc_meta = self.metadata_extractor.extract_metadata(parsed, company_id=self.company_id)
+        # Allow caller to override template linkage/doc_type variant
+        if template_id:
+            doc_meta["template_id"] = template_id
+        if doc_type_variant:
+            doc_meta["doc_type_variant"] = doc_type_variant
         self.metadata_db.insert_document(
             {
                 "artifact_id": doc_meta["artifact_id"],
@@ -107,6 +119,9 @@ class IngestionPipeline:
         for idx, (chunk, vector) in enumerate(zip(chunks, embeddings)):
             chunk_id = f"{doc_meta['artifact_id']}_{idx}"
             section_type = doc_meta.get("section_types", {}).get(chunk.get("section_title"))
+            section_id = None
+            if section_id_map and section_type and section_type in section_id_map:
+                section_id = section_id_map[section_type]
             text = chunk.get("text", "")
             normalized_text = self.style_filter._normalize(text)
             frequency_before = self.metadata_db.get_style_frequency(normalized_text, section_type)
@@ -141,6 +156,7 @@ class IngestionPipeline:
                 "company_id": self.company_id,
                 "source": doc_meta.get("source", "upload"),
                 "doc_type": doc_meta.get("doc_type"),
+                "doc_type_variant": doc_meta.get("doc_type_variant"),
                 "section_type": section_type,
                 "chunk_type": chunk_type,
                 "index_type": chunk_type,
@@ -150,6 +166,8 @@ class IngestionPipeline:
                 "heading": chunk.get("section_title"),
                 "schema_version": "1.0",
                 "normalized_text": normalized_text,
+                "template_id": doc_meta.get("template_id"),
+                "section_id": section_id,
                 "style_frequency": style_frequency,
                 "quality_score": quality_score,
                 "is_pinned": False,

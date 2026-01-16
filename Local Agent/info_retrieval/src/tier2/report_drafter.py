@@ -64,7 +64,10 @@ class ReportDrafter:
         doc_type: Optional[str] = None,
         overrides: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
-        doc_type = doc_type or self._infer_doc_type(user_request) or "design_report"
+        overrides = overrides or {}
+        doc_type = overrides.get("doc_type") or doc_type or self._infer_doc_type(user_request) or "design_report"
+        template_id = overrides.get("template_id")
+        doc_type_variant = overrides.get("doc_type_variant")
         section_order, source = self.get_section_order(company_id, doc_type)
         section_order = self._ensure_core_sections(section_order)
 
@@ -76,7 +79,13 @@ class ReportDrafter:
             result = self.generator.draft_section(
                 company_id=company_id,
                 user_request=user_request,
-                overrides={"doc_type": doc_type, "section_type": section_type, **(overrides or {})},
+                overrides={
+                    "doc_type": doc_type,
+                    "section_type": section_type,
+                    "template_id": template_id,
+                    "doc_type_variant": doc_type_variant,
+                    **(overrides or {}),
+                },
             )
             section_warnings = result.get("warnings", [])
             if result.get("draft_text", "").startswith("[TBD"):
