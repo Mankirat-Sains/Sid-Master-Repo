@@ -10,12 +10,16 @@ from langgraph.graph import StateGraph, END
 from models.parent_state import ParentState
 from models.rag_state import RAGState
 from config.logging_config import log_query
-from config.settings import DEEP_AGENT_ENABLED
 from utils.path_setup import ensure_info_retrieval_on_path
 
 ensure_info_retrieval_on_path()
 from nodes.plan import node_plan
 from nodes.router_dispatcher import node_router_dispatcher
+from nodes.DesktopAgent.doc_generation.task_classifier import node_doc_task_classifier
+from graph.subgraphs import (
+    call_db_retrieval_subgraph,
+    call_desktop_agent_subgraph,
+)
 
 
 def _get_state_field(state, field, default=None):
@@ -69,27 +73,19 @@ def _router_route(state: RAGState) -> str:
     return "db_retrieval"
 
 
-def _plan_to_router_or_doc_classifier(state: RAGState) -> str:
-    """
-    After plan node: Check if planner selected RAG router.
-    - If planner selected "rag", go directly to router_dispatcher (skip doc classifier)
-    - Otherwise, check doc_task_classifier to see if it's a doc generation request
-    """
-    selected_routers = _get_state_field(state, "selected_routers", []) or []
-    # If planner explicitly selected RAG, respect that decision and skip doc classifier
-    if "rag" in selected_routers:
-        return "router_dispatcher"
-    # Otherwise, let doc classifier determine if it's doc generation
-    return "doc_task_classifier"
-
-
 def _doc_or_router(state: RAGState) -> str:
     """
     Route to desktop/doc generation when requested; otherwise follow router/db_retrieval flow.
     """
     workflow = _get_state_field(state, "workflow")
     task_type = _get_state_field(state, "task_type")
+    selected_app = (_get_state_field(state, "selected_app") or "").lower()
+    desktop_tools = _get_state_field(state, "desktop_tools", []) or []
+    requires_desktop = _get_state_field(state, "requires_desktop_action", False)
+
     if workflow == "docgen" or task_type in {"doc_section", "doc_report"}:
+        return "desktop_agent"
+    if selected_app or desktop_tools or requires_desktop:
         return "desktop_agent"
     return _router_route(state)
 
@@ -186,21 +182,16 @@ def build_graph():
     g = StateGraph(RAGState)
 
     g.add_node("plan", _wrap_node("plan", node_plan))
+    g.add_node("doc_task_classifier", _wrap_node("doc_task_classifier", node_doc_task_classifier))
+    g.add_node("desktop_agent", _wrap_node("desktop_agent", call_desktop_agent_subgraph))
+    g.add_node("db_retrieval", _wrap_node("db_retrieval", call_db_retrieval_subgraph))
     g.add_node("router_dispatcher", _wrap_node("router_dispatcher", node_router_dispatcher))
 
     g.set_entry_point("plan")
 
-    # After plan: if planner selected RAG, go directly to router_dispatcher
-    # Otherwise, check doc_task_classifier to see if it's doc generation
-    g.add_conditional_edges(
-        "plan",
-        _plan_to_router_or_doc_classifier,
-        {
-            "router_dispatcher": "router_dispatcher",
-            "doc_task_classifier": "doc_task_classifier",
-        },
-    )
-    
+    # Always run doc/docgen classifier after plan to set workflow/task_type hints
+    g.add_edge("plan", "doc_task_classifier")
+
     # After doc_task_classifier: route based on workflow/task_type
     g.add_conditional_edges(
         "doc_task_classifier",
@@ -214,6 +205,7 @@ def build_graph():
 
     g.add_edge("desktop_agent", END)
     g.add_edge("router_dispatcher", END)
+    g.add_edge("db_retrieval", END)
 
     from graph.checkpointer import checkpointer
 

@@ -32,6 +32,12 @@ class RAGState(DBRetrievalState):
 
     # Routing metadata
     selected_routers: List[str] = field(default_factory=list)
+    selected_app: str = ""
+    operation_type: str = ""
+    file_path: str = ""
+    verification_result: Dict[str, Any] = field(default_factory=dict)
+    desktop_tools: List[str] = field(default_factory=list)
+    desktop_reasoning: str = ""
     workflow: Optional[str] = None  # "qa" | "docgen"
     desktop_policy: Optional[str] = None  # "required" | "optional" | "never"
     task_type: Optional[str] = None  # "qa" | "doc_section" | "doc_report"

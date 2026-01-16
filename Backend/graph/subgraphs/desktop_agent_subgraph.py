@@ -1,6 +1,8 @@
 """
 DesktopAgent Subgraph
-Handles desktop application interactions and delegates doc generation when requested.
+Handles desktop application interactions and delegates to specific desktop agents.
+Structure matches commit 32b6666 (see CODEBASE_STRUCTURE_32b6666.md) while keeping
+doc-generation compatibility when workflow demands it.
 """
 from dataclasses import asdict
 from langgraph.graph import StateGraph, END
@@ -10,6 +12,9 @@ from models.parent_state import ParentState
 from config.logging_config import log_route
 from config.settings import DEEP_AGENT_ENABLED
 from nodes.DesktopAgent.desktop_router import node_desktop_router
+from nodes.DesktopAgent.excel_agent import node_excel_agent
+from nodes.DesktopAgent.word_agent import node_word_agent
+from nodes.DesktopAgent.revit_agent import node_revit_agent
 from graph.subgraphs.desktop.docgen_subgraph import call_doc_generation_subgraph
 from graph.subgraphs.deep_desktop_subgraph import call_deep_desktop_subgraph
 from graph.tracing import wrap_subgraph_node
@@ -19,33 +24,45 @@ def _desktop_to_next(state: RAGState) -> str:
     """
     Route after desktop router:
     - If doc generation is requested, route to deep_desktop when enabled, otherwise doc_generation.
-    - Otherwise finish.
+    - Otherwise route to the requested desktop app agent or finish.
     """
-    is_doc_task = getattr(state, "workflow", None) == "docgen" or getattr(state, "task_type", None) in {
-        "doc_section",
-        "doc_report",
-    }
-    if not is_doc_task:
-        return "finish"
-    if DEEP_AGENT_ENABLED:
-        return "deep_desktop"
-    return "doc_generation"
+    workflow = getattr(state, "workflow", None)
+    task_type = getattr(state, "task_type", None)
+    selected_app = (getattr(state, "selected_app", None) or "").lower()
+    desktop_tools = getattr(state, "desktop_tools", []) or []
+
+    if workflow == "docgen" or task_type in {"doc_section", "doc_report"}:
+        return "deep_desktop" if DEEP_AGENT_ENABLED else "doc_generation"
+
+    target = selected_app or (str(desktop_tools[0]).lower() if desktop_tools else "")
+
+    if "excel" in target:
+        return "excel_agent"
+    if "word" in target:
+        return "word_agent"
+    if "revit" in target:
+        return "revit_agent"
+    return "finish"
 
 
 def build_desktop_agent_subgraph():
     """
     Build the DesktopAgent subgraph.
-    Current structure: desktop_router → (doc_generation?) → finish.
+    Structure: desktop_router → (excel|word|revit|docgen) → finish.
     """
     g = StateGraph(RAGState)
 
     g.add_node("desktop_router", wrap_subgraph_node("desktop_router")(node_desktop_router))
+    g.add_node("excel_agent", wrap_subgraph_node("excel_agent")(node_excel_agent))
+    g.add_node("word_agent", wrap_subgraph_node("word_agent")(node_word_agent))
+    g.add_node("revit_agent", wrap_subgraph_node("revit_agent")(node_revit_agent))
     g.add_node("doc_generation", wrap_subgraph_node("doc_generation")(call_doc_generation_subgraph))
     if DEEP_AGENT_ENABLED:
         g.add_node("deep_desktop", wrap_subgraph_node("deep_desktop")(call_deep_desktop_subgraph))
     g.add_node("finish", wrap_subgraph_node("finish")(lambda state: {}))
 
     g.set_entry_point("desktop_router")
+
     if DEEP_AGENT_ENABLED:
         g.add_conditional_edges(
             "desktop_router",
@@ -53,6 +70,9 @@ def build_desktop_agent_subgraph():
             {
                 "deep_desktop": "deep_desktop",
                 "doc_generation": "doc_generation",
+                "excel_agent": "excel_agent",
+                "word_agent": "word_agent",
+                "revit_agent": "revit_agent",
                 "finish": "finish",
             },
         )
@@ -63,10 +83,17 @@ def build_desktop_agent_subgraph():
             _desktop_to_next,
             {
                 "doc_generation": "doc_generation",
+                "excel_agent": "excel_agent",
+                "word_agent": "word_agent",
+                "revit_agent": "revit_agent",
                 "finish": "finish",
             },
         )
+
     g.add_edge("doc_generation", "finish")
+    g.add_edge("excel_agent", "finish")
+    g.add_edge("word_agent", "finish")
+    g.add_edge("revit_agent", "finish")
     g.add_edge("finish", END)
 
     return g.compile()
@@ -118,6 +145,8 @@ def call_desktop_agent_subgraph(state: ParentState) -> dict:
 def _ensure_rag_state_fields(state_dict: dict) -> dict:
     """Ensure all RAGState fields exist in the state dictionary."""
     rag_state_defaults = {
+        "selected_app": "",
+        "operation_type": "",
         "desktop_plan_steps": [],
         "desktop_current_step": 0,
         "desktop_iteration_count": 0,

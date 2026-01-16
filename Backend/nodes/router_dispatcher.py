@@ -13,12 +13,48 @@ from graph.subgraphs.desktop_agent_subgraph import call_desktop_agent_subgraph
 from config.logging_config import log_route
 
 
+def _requires_desktop_agent(state: ParentState) -> bool:
+    """Determine whether the desktop agent should be invoked."""
+    if getattr(state, "requires_desktop_action", False):
+        return True
+
+    workflow = getattr(state, "workflow", None)
+    task_type = getattr(state, "task_type", None)
+    if workflow == "docgen" or task_type in {"doc_section", "doc_report"}:
+        return True
+
+    selected_app = getattr(state, "selected_app", "") or ""
+    desktop_tools = getattr(state, "desktop_tools", []) or []
+    if selected_app or desktop_tools:
+        return True
+
+    # Keyword heuristic on latest user message
+    user_query = getattr(state, "user_query", "") or ""
+    latest_message = ""
+    if getattr(state, "messages", None):
+        try:
+            latest_message = (state.messages[-1] or {}).get("content", "")
+        except Exception:
+            latest_message = ""
+    text = f"{user_query} {latest_message}".lower()
+    desktop_keywords = ["excel", "spreadsheet", "word", ".docx", "desktop", "revit", "cad", "file path"]
+    return any(k in text for k in desktop_keywords)
+
+
 def node_router_dispatcher(state: ParentState) -> dict:
     """Dispatch to appropriate router nodes in parallel"""
     t_start = time.time()
     log_route.info(">>> ROUTER DISPATCHER START")
-    
-    selected_routers = state.selected_routers or []
+
+    selected_routers = list(getattr(state, "selected_routers", []) or [])
+    if _requires_desktop_agent(state) and "desktop" not in selected_routers:
+        selected_routers.append("desktop")
+        try:
+            state.selected_routers = selected_routers
+        except Exception:
+            # State may be an immutable dataclass; ignore if assignment fails
+            pass
+
     log_route.info(f"📋 Selected routers: {selected_routers}")
     
     results = {}
@@ -82,4 +118,3 @@ def node_router_dispatcher(state: ParentState) -> dict:
     log_route.info(f"<<< ROUTER DISPATCHER DONE in {t_elapsed:.2f}s")
     
     return state_updates
-

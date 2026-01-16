@@ -26,6 +26,12 @@ class ParentState:
 
     # Routing (orchestration level)
     selected_routers: List[str] = field(default_factory=list)  # "rag", "web", "desktop"
+    selected_app: str = ""  # excel | word | revit
+    operation_type: str = ""  # read | write | analyze
+    file_path: str = ""
+    verification_result: Dict[str, Any] = field(default_factory=dict)
+    desktop_tools: List[str] = field(default_factory=list)
+    desktop_reasoning: str = ""
 
     # Image inputs (shared, primarily for DBRetrieval)
     images_base64: Optional[List[str]] = None
