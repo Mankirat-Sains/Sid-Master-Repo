@@ -1,0 +1,23 @@
+{
+  "doc_request": {
+    "user_query": "Find me 3 projects with steel beams"
+  },
+  "user_context": {},
+  "timestamp": "2026-01-15T23:19:14.751329",
+  "state_context": {
+    "user_query": "Find me 3 projects with steel beams",
+    "retrieved_docs": [],
+    "conversation_history": [
+      {
+        "question": "pip install pandas",
+        "answer": null,
+        "timestamp": 1768519145.1374872
+      },
+      {
+        "question": "Find me 3 projects with steel beams",
+        "answer": null,
+        "timestamp": 1768519152.6524951
+      }
+    ]
+  }
+}

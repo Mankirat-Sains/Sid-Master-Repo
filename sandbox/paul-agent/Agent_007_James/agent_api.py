@@ -42,6 +42,7 @@ logger = logging.getLogger('AgentAPI')
 # Global agent instance
 _agent_instance: Optional[SyncAgent] = None
 _agent_config: Optional[Dict] = None
+_config_file_path: Optional[str] = None  # Store path to config.json file
 _sync_history: List[Dict[str, Any]] = []
 _sync_status: Dict[str, Any] = {
     "status": "stopped",
@@ -96,6 +97,18 @@ class SyncResult(BaseModel):
     message: str
     data: Optional[Dict[str, Any]] = None
     timestamp: str
+
+class DirectoryInfo(BaseModel):
+    path: str
+    dateAdded: str
+    addedBy: str
+
+class AddDirectoryRequest(BaseModel):
+    path: str
+    addedBy: Optional[str] = "User"
+
+class DeleteDirectoryRequest(BaseModel):
+    path: str
 
 # ============================================================================
 # HELPER FUNCTIONS
@@ -222,6 +235,28 @@ def validate_path(file_path: str) -> Path:
             detail=f"Invalid path: {str(e)}"
         )
 
+
+def save_config_to_file():
+    """Save current config to the config file"""
+    global _agent_config, _config_file_path
+    
+    if _config_file_path is None or _agent_config is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Config file path not set or config not loaded"
+        )
+    
+    try:
+        with open(_config_file_path, 'w') as f:
+            json.dump(_agent_config, f, indent=4)
+        logger.info(f"Config saved to {_config_file_path}")
+    except Exception as e:
+        logger.error(f"Failed to save config: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to save config file: {str(e)}"
+        )
+
 # ============================================================================
 # API ENDPOINTS
 # ============================================================================
@@ -243,7 +278,8 @@ async def root():
             "configure": "/api/agent/configure",
             "files_list": "/api/agent/files/list",
             "excel_info": "/api/agent/files/excel/info",
-            "excel_read": "/api/agent/files/excel/read"
+            "excel_read": "/api/agent/files/excel/read",
+            "directories": "/api/agent/directories"
         }
     }
 
@@ -1075,6 +1111,204 @@ async def read_excel_file(file_path: str, sheet_name: str = None, max_rows: int 
         )
 
 # ============================================================================
+# DIRECTORY MANAGEMENT ENDPOINTS
+# ============================================================================
+
+@app.get("/api/agent/directories", response_model=List[DirectoryInfo])
+async def get_directories():
+    """
+    Get list of allowed directories from config.
+    Returns directories with metadata (date added, who added).
+    """
+    if _agent_config is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent not configured"
+        )
+    
+    allowed_dirs = _agent_config.get("allowed_directories", [])
+    directories_metadata = _agent_config.get("directories_metadata", {})
+    
+    result = []
+    for dir_path in allowed_dirs:
+        # Get metadata if available, otherwise use defaults
+        # Try both original path and normalized path for metadata lookup
+        metadata = directories_metadata.get(dir_path, {})
+        if not metadata:
+            # Try normalized path
+            normalized = str(Path(dir_path).expanduser().resolve())
+            metadata = directories_metadata.get(normalized, {})
+        
+        result.append(DirectoryInfo(
+            path=dir_path,
+            dateAdded=metadata.get("dateAdded", datetime.utcnow().strftime("%Y-%m-%d")),
+            addedBy=metadata.get("addedBy", "System")
+        ))
+    
+    return result
+
+
+@app.post("/api/agent/directories", response_model=DirectoryInfo)
+async def add_directory(request: AddDirectoryRequest):
+    """
+    Add a new directory to allowed_directories.
+    Updates both in-memory config and config.json file.
+    """
+    if _agent_config is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent not configured"
+        )
+    
+    if _config_file_path is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Config file path not set"
+        )
+    
+    try:
+        # Normalize and validate the path
+        new_path = str(Path(request.path).expanduser().resolve())
+        
+        # Check if directory exists
+        path_obj = Path(new_path)
+        if not path_obj.exists():
+            raise HTTPException(
+                status_code=400,
+                detail=f"Directory does not exist: {new_path}"
+            )
+        
+        if not path_obj.is_dir():
+            raise HTTPException(
+                status_code=400,
+                detail=f"Path is not a directory: {new_path}"
+            )
+        
+        # Check if already exists
+        allowed_dirs = _agent_config.get("allowed_directories", [])
+        if new_path in allowed_dirs:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Directory already in allowed list: {new_path}"
+            )
+        
+        # Add to config
+        if "allowed_directories" not in _agent_config:
+            _agent_config["allowed_directories"] = []
+        _agent_config["allowed_directories"].append(new_path)
+        
+        # Initialize metadata if needed
+        if "directories_metadata" not in _agent_config:
+            _agent_config["directories_metadata"] = {}
+        
+        # Add metadata
+        _agent_config["directories_metadata"][new_path] = {
+            "dateAdded": datetime.utcnow().strftime("%Y-%m-%d"),
+            "addedBy": request.addedBy
+        }
+        
+        # Save to file
+        save_config_to_file()
+        
+        # Reset agent instance to pick up new config
+        global _agent_instance
+        _agent_instance = None
+        
+        logger.info(f"Added directory: {new_path}")
+        
+        return DirectoryInfo(
+            path=new_path,
+            dateAdded=_agent_config["directories_metadata"][new_path]["dateAdded"],
+            addedBy=request.addedBy
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error adding directory: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to add directory: {str(e)}"
+        )
+
+
+@app.delete("/api/agent/directories")
+async def delete_directory(request: DeleteDirectoryRequest):
+    """
+    Remove a directory from allowed_directories.
+    Updates both in-memory config and config.json file.
+    """
+    if _agent_config is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Agent not configured"
+        )
+    
+    if _config_file_path is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Config file path not set"
+        )
+    
+    try:
+        # Normalize the path
+        path_to_remove = str(Path(request.path).expanduser().resolve())
+        
+        allowed_dirs = _agent_config.get("allowed_directories", [])
+        
+        # Find and remove (handle both original and normalized paths)
+        removed = False
+        for i, dir_path in enumerate(allowed_dirs):
+            normalized = str(Path(dir_path).expanduser().resolve())
+            if normalized == path_to_remove or dir_path == request.path:
+                allowed_dirs.pop(i)
+                removed = True
+                break
+        
+        if not removed:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Directory not found in allowed list: {request.path}"
+            )
+        
+        # Remove metadata if exists
+        if "directories_metadata" in _agent_config:
+            # Remove by matching normalized paths
+            metadata_to_remove = None
+            for key in list(_agent_config["directories_metadata"].keys()):
+                normalized = str(Path(key).expanduser().resolve())
+                if normalized == path_to_remove:
+                    metadata_to_remove = key
+                    break
+            
+            if metadata_to_remove:
+                del _agent_config["directories_metadata"][metadata_to_remove]
+        
+        # Save to file
+        save_config_to_file()
+        
+        # Reset agent instance to pick up new config
+        global _agent_instance
+        _agent_instance = None
+        
+        logger.info(f"Removed directory: {path_to_remove}")
+        
+        return {
+            "success": True,
+            "message": f"Directory removed: {path_to_remove}",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error removing directory: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to remove directory: {str(e)}"
+        )
+
+# ============================================================================
 # MAIN
 # ============================================================================
 
@@ -1092,7 +1326,8 @@ def main():
     # Load config if provided
     if args.config:
         try:
-            global _agent_config
+            global _agent_config, _config_file_path
+            _config_file_path = args.config
             _agent_config = load_config(args.config)
             logger.info(f"Loaded configuration from {args.config}")
             logger.info(f"Configured with {len(_agent_config.get('projects', []))} projects")

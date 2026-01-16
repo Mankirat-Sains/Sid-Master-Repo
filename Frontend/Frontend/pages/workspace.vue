@@ -858,6 +858,10 @@
           <div v-else-if="activePage === 'discussion'" class="flex-1 min-h-0 overflow-hidden">
             <DiscussionView />
           </div>
+
+          <div v-else-if="activePage === 'knowledge'" class="flex-1 min-h-0 overflow-hidden">
+            <KnowledgeBaseView />
+          </div>
         </div>
       </main>
       <input
@@ -977,6 +981,7 @@ import TimesheetView from '~/components/views/TimesheetView.vue'
 import TodoListView from '~/components/views/TodoListView.vue'
 import DiscussionView from '~/components/views/DiscussionView.vue'
 import SettingsView from '~/components/views/SettingsView.vue'
+import KnowledgeBaseView from '~/components/views/KnowledgeBaseView.vue'
 import SpeckleViewer from '~/components/SpeckleViewer.vue'
 import DocumentPreviewPanel from '~/components/DocumentPreviewPanel.vue'
 import CollapsibleSources from '~/components/CollapsibleSources.vue'
@@ -1022,7 +1027,7 @@ type Conversation = {
   documentState?: StructuredDocument | null
 }
 
-const PAGE_IDS = ['home', 'settings', 'work', 'timesheet', 'todo', 'discussion'] as const
+const PAGE_IDS = ['home', 'settings', 'work', 'timesheet', 'todo', 'discussion', 'knowledge'] as const
 type ActivePage = (typeof PAGE_IDS)[number]
 const TIMESHEET_SECTIONS = ['employees', 'projects', 'projectInsights', 'employeeInsights', 'nonDigital', 'settings'] as const
 type TimesheetSection = (typeof TIMESHEET_SECTIONS)[number]
@@ -1213,6 +1218,7 @@ const railIcons = [
   { id: 'timesheet', component: ClockIcon, label: 'Timeline' },
   { id: 'todo', component: TodoIcon, label: 'To-Do List' },
   { id: 'discussion', component: ChatIcon, label: 'Discussion' },
+  { id: 'knowledge', component: BrainIcon, label: 'Knowledge Base' },
   { id: 'settings', component: GearIcon, label: 'Settings' }
 ]
 

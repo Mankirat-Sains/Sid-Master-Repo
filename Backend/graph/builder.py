@@ -70,6 +70,20 @@ def _router_route(state: RAGState) -> str:
     return "db_retrieval"
 
 
+def _plan_to_router_or_doc_classifier(state: RAGState) -> str:
+    """
+    After plan node: Check if planner selected RAG router.
+    - If planner selected "rag", go directly to router_dispatcher (skip doc classifier)
+    - Otherwise, check doc_task_classifier to see if it's a doc generation request
+    """
+    selected_routers = _get_state_field(state, "selected_routers", []) or []
+    # If planner explicitly selected RAG, respect that decision and skip doc classifier
+    if "rag" in selected_routers:
+        return "router_dispatcher"
+    # Otherwise, let doc classifier determine if it's doc generation
+    return "doc_task_classifier"
+
+
 def _doc_or_router(state: RAGState) -> str:
     """
     Route to desktop/doc generation when requested; otherwise follow router/db_retrieval flow.
@@ -183,7 +197,18 @@ def build_graph():
 
     g.set_entry_point("plan")
 
-    g.add_edge("plan", "doc_task_classifier")
+    # After plan: if planner selected RAG, go directly to router_dispatcher
+    # Otherwise, check doc_task_classifier to see if it's doc generation
+    g.add_conditional_edges(
+        "plan",
+        _plan_to_router_or_doc_classifier,
+        {
+            "router_dispatcher": "router_dispatcher",
+            "doc_task_classifier": "doc_task_classifier",
+        },
+    )
+    
+    # After doc_task_classifier: route based on workflow/task_type
     g.add_conditional_edges(
         "doc_task_classifier",
         _doc_or_router,

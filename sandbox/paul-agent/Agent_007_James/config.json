@@ -2,11 +2,7 @@
     "poll_interval": 30,
     "auto_sync_on_change": false,
     "allowed_directories": [
-        "~/Desktop",
-        "~/Documents",
-        "~/Documents/Projects",
-        "/Volumes",
-        "/Volumes/J"
+        "/Volumes"
     ],
     "projects": [
         {
@@ -15,18 +11,23 @@
             "excel_file": "/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Sidian/Vibeeng/Sid_demo.xlsx",
             "sheet_name": "INFO",
             "cell_mappings": {
-              "ground_snow_load": "B6",
-              "ground_rain_load": "B7",
-              "wind_load": "B8",
-              "roof_pitch": "B9",
-              "roof_pitch_degrees": "D9",
-              "plan_dimension_length": "E234",
-              "plan_dimension_width": "E235",
-              "location": "B5",
-              "occupancy": "B3",
-              "project_type": "B2"
+                "ground_snow_load": "B6",
+                "ground_rain_load": "B7",
+                "wind_load": "B8",
+                "roof_pitch": "B9",
+                "roof_pitch_degrees": "D9",
+                "plan_dimension_length": "E234",
+                "plan_dimension_width": "E235",
+                "location": "B5",
+                "occupancy": "B3",
+                "project_type": "B2"
             }
-          }
-    ]
-  }
-  
+        }
+    ],
+    "directories_metadata": {
+        "/Volumes": {
+            "dateAdded": "2026-01-16",
+            "addedBy": "User"
+        }
+    }
+}
