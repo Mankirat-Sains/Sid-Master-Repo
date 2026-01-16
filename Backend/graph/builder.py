@@ -16,7 +16,6 @@ from utils.path_setup import ensure_info_retrieval_on_path
 ensure_info_retrieval_on_path()
 from nodes.plan import node_plan
 from nodes.router_dispatcher import node_router_dispatcher
-from desktop_agent.agents.doc_generation.task_classifier import node_doc_task_classifier
 
 
 def _get_state_field(state, field, default=None):
@@ -58,27 +57,6 @@ def _convert_to_rag_state(state) -> RAGState:
     return rag_state
 
 
-def _router_route(state: RAGState) -> str:
-    """
-    Planner routing:
-    - If the plan selected any routers, run router_dispatcher first.
-    - Otherwise go straight to db_retrieval subgraph.
-    """
-    selected_routers = _get_state_field(state, "selected_routers", []) or []
-    if selected_routers:
-        return "router_dispatcher"
-    return "db_retrieval"
-
-
-def _doc_or_router(state: RAGState) -> str:
-    """
-    Route to desktop/doc generation when requested; otherwise follow router/db_retrieval flow.
-    """
-    workflow = _get_state_field(state, "workflow")
-    task_type = _get_state_field(state, "task_type")
-    if workflow == "docgen" or task_type in {"doc_section", "doc_report"}:
-        return "desktop_agent"
-    return _router_route(state)
 
 
 def _log_node_state(node_name: str, state) -> None:
@@ -170,33 +148,19 @@ def _wrap_node(node_name: str, fn):
 
 def build_graph():
     """Build the parent LangGraph workflow."""
-    from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
-    from graph.subgraphs.desktop_agent_subgraph import call_desktop_agent_subgraph
-
     g = StateGraph(RAGState)
 
     g.add_node("plan", _wrap_node("plan", node_plan))
-    g.add_node("doc_task_classifier", _wrap_node("doc_task_classifier", node_doc_task_classifier))
-    g.add_node("desktop_agent", _wrap_node("desktop_agent", call_desktop_agent_subgraph))
-    g.add_node("db_retrieval", _wrap_node("db_retrieval", call_db_retrieval_subgraph))
     g.add_node("router_dispatcher", _wrap_node("router_dispatcher", node_router_dispatcher))
 
     g.set_entry_point("plan")
 
-    g.add_edge("plan", "doc_task_classifier")
-    g.add_conditional_edges(
-        "doc_task_classifier",
-        _doc_or_router,
-        {
-            "desktop_agent": "desktop_agent",
-            "router_dispatcher": "router_dispatcher",
-            "db_retrieval": "db_retrieval",
-        },
-    )
-
-    g.add_edge("desktop_agent", END)
+    # Plan goes directly to router_dispatcher which handles routing to:
+    # - db_retrieval subgraph (if "rag" in selected_routers)
+    # - webcalcs subgraph (if "web" in selected_routers)
+    # - desktop_agent subgraph (if "desktop" in selected_routers)
+    g.add_edge("plan", "router_dispatcher")
     g.add_edge("router_dispatcher", END)
-    g.add_edge("db_retrieval", END)
 
     from graph.checkpointer import checkpointer
 
