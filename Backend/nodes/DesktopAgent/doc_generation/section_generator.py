@@ -185,14 +185,17 @@ def node_doc_generate_section(state: RAGState) -> dict:
     doc_type_variant = overrides.get("doc_type_variant") or getattr(state, "doc_type_variant", None)
     if doc_type_variant:
         overrides["doc_type_variant"] = doc_type_variant
-
+    template_sections = list(getattr(state, "template_sections", []) or overrides.get("template_sections", []) or [])
     section_queue = list(getattr(state, "section_queue", []) or overrides.get("section_queue", []) or [])
     section_id = overrides.get("section_id") or getattr(state, "current_section_id", None)
     if section_queue:
         for sec in section_queue:
             if not isinstance(sec, dict):
                 continue
-            if (sec.get("status") or "") == "approved":
+            status = (sec.get("status") or "").lower()
+            if status == "approved":
+                continue
+            if status == "locked":
                 continue
             if not section_id:
                 section_id = sec.get("section_id")
@@ -229,6 +232,13 @@ def node_doc_generate_section(state: RAGState) -> dict:
                 merged.pop(key, None)
             else:
                 merged[key] = val
+        # Ensure template/section identifiers always flow into the generator
+        if template_id:
+            merged.setdefault("template_id", template_id)
+        if section_id:
+            merged.setdefault("section_id", section_id)
+        if template_sections:
+            merged.setdefault("template_sections", template_sections)
         log_query.info("DOCGEN: calling generator with overrides=%s", {k: merged[k] for k in merged})
         print(f"🤖 Calling generator for: '{state.user_query}' with overrides keys={list(merged.keys())}")
         result_block = generator.draft_section(
@@ -345,10 +355,37 @@ def node_doc_generate_section(state: RAGState) -> dict:
                 or (not entry.get("section_id") and entry.get("section_type") == overrides.get("section_type"))
             ):
                 if entry.get("status") != "approved":
-                    entry["status"] = "generated"
+                    entry["status"] = "draft"
+            else:
+                if entry.get("status") not in {"approved", "draft"}:
+                    entry["status"] = "locked"
             updated_queue.append(entry)
     if updated_queue:
         section_queue = updated_queue
+
+    # Build section status list (draft/approved/locked)
+    section_status: List[Dict[str, Any]] = []
+    source_sections = template_sections or section_queue
+    for sec in source_sections:
+        if not isinstance(sec, dict):
+            continue
+        sec_type = sec.get("section_type")
+        sec_id = sec.get("section_id")
+        status = sec.get("status")
+        if status == "approved":
+            status = "approved"
+        elif section_id and (sec_id == section_id or (not sec_id and sec_type == overrides.get("section_type"))):
+            status = "draft"
+        else:
+            status = "locked"
+        section_status.append(
+            {
+                "section_id": sec_id,
+                "section_type": sec_type,
+                "position_order": sec.get("position_order"),
+                "status": status,
+            }
+        )
 
     # Ensure citations metadata is always present for the UI (sources dropdown)
     if not result.get("citations_metadata"):
@@ -373,7 +410,8 @@ def node_doc_generate_section(state: RAGState) -> dict:
             **result,
             "section_queue": section_queue,
             "approved_sections": approved_sections,
-            "template_sections": overrides.get("template_sections") or state.template_sections,
+            "template_sections": template_sections,
+            "section_status": section_status,
         },
         "doc_generation_warnings": warnings,
         "section_queue": section_queue,
@@ -381,6 +419,7 @@ def node_doc_generate_section(state: RAGState) -> dict:
         "template_id": template_id,
         "doc_type_variant": doc_type_variant,
         "current_section_id": section_id,
+        "section_status": section_status,
     }
 
 

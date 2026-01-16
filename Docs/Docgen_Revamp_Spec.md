@@ -16,6 +16,16 @@ Transform the document generation system into a **section-by-section interactive
 
 ---
 
+## Progress & Completion Status (mid-Feb 2026)
+
+- Routing & orchestration alignment: **100%** — plan → doc_task_classifier → desktop_agent path restored; router dispatcher no longer triggers docgen directly; import cycles resolved; backend routing tests passing (`test_doc_generation_routing.py`).
+- Template storage & section catalog (DB schema, migrations): **100%** — Supabase/Postgres migration added (template_id, template metadata, template_sections table, backfill from legacy section_order) with unique constraints and indexes.
+- Section-by-section workflow & approvals: **5%** — current docgen remains single-pass; no per-section approval loop implemented.
+- Style learning & application: **10%** — style chunks exist; no template-level pattern mapping or enforcement yet.
+- Interrupts / human-in-the-loop controls: **0%** — interrupt system still file-action–only.
+- Frontend preview alignment (doc_generation_result rendering): **30%** — existing preview works for whole-doc payloads; no section-step UX or approvals.
+- Telemetry & logging (docgen CSV, traces): **70%** — CSV logging validated in tests; execution_trace now carries docgen branch nodes.
+
 ## I. What You're Asking For (Restated)
 
 ### Core Requirements

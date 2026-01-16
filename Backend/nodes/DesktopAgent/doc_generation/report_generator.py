@@ -165,11 +165,11 @@ Rewrite as a cohesive report with the section headings above, multi-paragraph de
 
 
 def node_doc_generate_report(state: RAGState) -> dict:
-    """Generate a multi-section report draft and stash in state."""
+    """Generate a single report section (one per request) and stash in state."""
     log_query.info(f"DOCGEN: entered node_doc_generate_report (task_type={state.task_type})")
     try:
         services = _load_services()
-        drafter = services["drafter"]
+        generator = services["generator"]
     except Exception as exc:  # noqa: BLE001
         log_query.error(f"DOCGEN: failed to initialize services: {exc}")
         return {
@@ -187,10 +187,35 @@ def node_doc_generate_report(state: RAGState) -> dict:
         overrides["template_id"] = state.template_id
     if state.doc_type_variant and not overrides.get("doc_type_variant"):
         overrides["doc_type_variant"] = state.doc_type_variant
+
+    template_sections = list(getattr(state, "template_sections", []) or overrides.get("template_sections", []) or [])
     section_queue = list(getattr(state, "section_queue", []) or overrides.get("section_queue", []) or [])
     if section_queue:
         overrides["section_queue"] = section_queue
     approved_sections = getattr(state, "approved_sections", []) or overrides.get("approved_sections") or []
+
+    # Determine target section (next pending)
+    target_section_id = overrides.get("section_id") or getattr(state, "current_section_id", None)
+    target_section_type = overrides.get("section_type") or state.section_type
+    if section_queue:
+        for sec in section_queue:
+            if not isinstance(sec, dict):
+                continue
+            if sec.get("status") == "approved":
+                continue
+            target_section_id = target_section_id or sec.get("section_id")
+            target_section_type = target_section_type or sec.get("section_type")
+            break
+    elif template_sections and not target_section_type:
+        target_section_type = template_sections[0].get("section_type")
+        target_section_id = template_sections[0].get("section_id")
+
+    if target_section_type:
+        overrides["section_type"] = target_section_type
+    if target_section_id:
+        overrides["section_id"] = target_section_id
+
+    # Build extra context (approved sections + retrieved docs)
     extra_context = _sections_to_context(approved_sections)
     context_docs = getattr(state, "graded_docs", None) or getattr(state, "retrieved_docs", None)
     if context_docs:
@@ -207,18 +232,16 @@ def node_doc_generate_report(state: RAGState) -> dict:
     if extra_context:
         overrides["extra_context"] = extra_context
 
-    result = drafter.draft_report(
+    # Generate a single section
+    result = generator.draft_section(
         company_id=company_id,
         user_request=state.user_query or "",
-        doc_type=state.doc_type,
         overrides=overrides or None,
     )
 
     warnings = (getattr(state, "doc_generation_warnings", []) or []) + (result.get("warnings", []) or [])
-    # Mark if any section is TBD/skipped due to missing grounding
-    for section in result.get("sections", []):
-        if section.get("text", "").strip().startswith("[TBD"):
-            warnings.append(f"Section '{section.get('section_type')}' lacks grounding; marked TBD.")
+    if isinstance(result.get("draft_text"), str) and result.get("draft_text", "").strip().startswith("[TBD"):
+        warnings.append(f"Section '{overrides.get('section_type')}' lacks grounding; marked TBD.")
 
     # Sanitize content and attach metadata for UI presentation
     if isinstance(result.get("draft_text"), str):
@@ -240,12 +263,40 @@ def node_doc_generate_report(state: RAGState) -> dict:
             result, state.user_query or state.original_question
         )
 
-    # Enforce minimum report length and expand if needed
-    try:
-        generator = services.get("generator")
-        result, warnings = _enforce_report_length(result, generator, warnings)
-    except Exception as exc:  # noqa: BLE001
-        warnings.append(f"Length verification failed: {exc}")
+    # Build section status list (draft/approved/locked) and update queue
+    updated_queue: List[Dict[str, Any]] = []
+    section_status: List[Dict[str, Any]] = []
+    source_sections = template_sections or section_queue or []
+    for sec in source_sections:
+        if not isinstance(sec, dict):
+            continue
+        sec_type = sec.get("section_type")
+        sec_id = sec.get("section_id")
+        status = sec.get("status")
+        if status == "approved":
+            status = "approved"
+        elif target_section_id and (sec_id == target_section_id or (not sec_id and sec_type == overrides.get("section_type"))):
+            status = "draft"
+        else:
+            status = "locked"
+        section_status.append(
+            {
+                "section_id": sec_id,
+                "section_type": sec_type,
+                "position_order": sec.get("position_order"),
+                "status": status,
+            }
+        )
+        updated_queue.append(
+            {
+                "section_id": sec_id,
+                "section_type": sec_type,
+                "position_order": sec.get("position_order"),
+                "status": status,
+            }
+        )
+    if updated_queue:
+        section_queue = updated_queue
 
     try:
         print(f"🐛 DEBUG: doc_generation_result keys: {list(result.keys())}")
@@ -264,10 +315,15 @@ def node_doc_generate_report(state: RAGState) -> dict:
             "approved_sections": approved_sections,
             "template_id": overrides.get("template_id"),
             "doc_type_variant": overrides.get("doc_type_variant"),
+            "template_sections": template_sections,
+            "section_status": section_status,
         },
         "doc_generation_warnings": warnings,
         "section_queue": section_queue,
         "approved_sections": approved_sections,
         "template_id": overrides.get("template_id"),
         "doc_type_variant": overrides.get("doc_type_variant"),
+        "template_sections": template_sections,
+        "section_status": section_status,
+        "current_section_id": target_section_id,
     }

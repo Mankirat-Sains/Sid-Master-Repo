@@ -28,34 +28,42 @@ def _should_use_templates(doc_type: Optional[str]) -> bool:
     return True
 
 
-def _resolve_template_sections(company_id: str, doc_type: Optional[str]) -> Tuple[Optional[str], List[Dict[str, Any]], List[str]]:
+def _resolve_template_sections(company_id: str, doc_type: Optional[str]) -> Tuple[Optional[str], List[Dict[str, Any]], Dict[str, Any], List[str]]:
     """
-    Fetch ordered template sections from Supabase when enabled.
-    Returns (template_id, sections, warnings).
+    Fetch ordered template sections and template metadata from Supabase when enabled.
+    Returns (template_id, sections, template_metadata, warnings).
     """
     if not _should_use_templates(doc_type):
-        return None, [], []
+        return None, [], {}, []
 
     try:
         from templates.template_resolver import resolve_template_sections
     except Exception as exc:  # noqa: BLE001
         log_query.warning("DOCGEN: template resolver unavailable (%s)", exc)
-        return None, [], [f"Template resolver unavailable: {exc}"]
+        return None, [], {}, [f"Template resolver unavailable: {exc}"]
 
     try:
         resolved = resolve_template_sections(company_id=company_id, doc_type=doc_type or "")
     except Exception as exc:  # noqa: BLE001
         log_query.warning("DOCGEN: failed to resolve template sections (%s)", exc)
-        return None, [], [f"Template lookup failed: {exc}"]
+        return None, [], {}, [f"Template lookup failed: {exc}"]
 
     if not resolved:
-        return None, [], []
+        return None, [], {}, []
 
     sections = resolved.get("sections") or []
     template_id = resolved.get("template_id")
+    template_metadata = resolved.get("template_metadata") or {}
+    template_name = resolved.get("template_name")
+    template_version = resolved.get("template_version")
+    if isinstance(template_metadata, dict):
+        if template_name and "template_name" not in template_metadata:
+            template_metadata["template_name"] = template_name
+        if template_version and "template_version" not in template_metadata:
+            template_metadata["template_version"] = template_version
     # Ensure deterministic ordering
     sections = sorted(sections, key=lambda s: s.get("position_order") or 0)
-    return template_id, sections, []
+    return template_id, sections, template_metadata, []
 
 
 def _normalize_approved_sections(sections: Any) -> List[Dict[str, Any]]:
@@ -156,7 +164,9 @@ def build_doc_plan(state: RAGState) -> Dict[str, Any]:
     if not approved_raw and isinstance(state.doc_request, dict):
         approved_raw = state.doc_request.get("approved_sections", []) or []
     approved_sections = _normalize_approved_sections(approved_raw)
-    template_id, template_sections, template_warnings = _resolve_template_sections(company_id, doc_type)
+    template_id, template_sections, template_metadata, template_warnings = _resolve_template_sections(company_id, doc_type)
+    template_name = template_metadata.get("template_name") if isinstance(template_metadata, dict) else None
+    template_version = template_metadata.get("template_version") if isinstance(template_metadata, dict) else None
     section_queue, current_section_id, queue_section_type = _build_section_queue(template_sections, approved_sections, section_type)
     if queue_section_type and not section_type:
         section_type = queue_section_type
@@ -170,8 +180,13 @@ def build_doc_plan(state: RAGState) -> Dict[str, Any]:
         **analysis,
         "template_id": template_id,
         "template_sections": template_sections,
+        "template_metadata": template_metadata,
+        "template_name": template_name,
+        "template_version": template_version,
         "section_queue": section_queue,
         "approved_sections": approved_sections,
+        "heading_style": (template_metadata or {}).get("heading_style"),
+        "default_format": (template_metadata or {}).get("default_format"),
     }
 
     needs_desktop = _detect_desktop_request(state.user_query or "")

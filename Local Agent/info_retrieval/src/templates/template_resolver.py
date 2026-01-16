@@ -19,7 +19,8 @@ def resolve_template_sections(
     key: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     """
-    Fetch template_id and section_id mapping from Supabase `document_templates` and `template_sections`.
+    Fetch template_id, template metadata, and section_id mapping from Supabase
+    `document_templates` and `template_sections`.
     Returns None if Supabase client is unavailable or no template found.
     """
     if create_client is None:
@@ -36,7 +37,7 @@ def resolve_template_sections(
     try:
         tmpl_resp = (
             client.table("document_templates")
-            .select("template_id, doc_type, company_id")
+            .select("template_id, doc_type, company_id, template_name, version, metadata")
             .eq("company_id", company_id)
             .eq("doc_type", doc_type)
             .eq("is_active", True)
@@ -49,6 +50,9 @@ def resolve_template_sections(
             logger.info("No active template found for company=%s doc_type=%s", company_id, doc_type)
             return None
         template_id = templates[0]["template_id"]
+        template_metadata = templates[0].get("metadata") or {}
+        template_name = templates[0].get("template_name")
+        template_version = templates[0].get("version")
 
         sections_resp = (
             client.table("template_sections")
@@ -62,6 +66,9 @@ def resolve_template_sections(
 
         return {
             "template_id": template_id,
+            "template_metadata": template_metadata,
+            "template_name": template_name,
+            "template_version": template_version,
             "sections": sections,
             "section_id_map": section_id_map,
         }
@@ -74,4 +81,3 @@ def import_env(name: str) -> Optional[str]:
     import os
 
     return os.getenv(name)
-
