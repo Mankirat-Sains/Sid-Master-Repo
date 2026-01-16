@@ -57,6 +57,7 @@ class IngestionPipeline:
         template_id: str | None = None,
         section_id_map: Dict[str, str] | None = None,
         doc_type_variant: str | None = None,
+        auto_resolve_template: bool = True,
     ) -> Dict[str, int | str]:
         path = Path(file_path)
         if not path.exists():
@@ -93,6 +94,19 @@ class IngestionPipeline:
             doc_meta["template_id"] = template_id
         if doc_type_variant:
             doc_meta["doc_type_variant"] = doc_type_variant
+
+        # Auto-resolve template/sections from Supabase if not provided
+        if auto_resolve_template and not doc_meta.get("template_id") and doc_meta.get("doc_type"):
+            try:
+                from templates.template_resolver import resolve_template_sections  # type: ignore
+
+                resolved = resolve_template_sections(company_id=self.company_id, doc_type=doc_meta["doc_type"])
+                if resolved:
+                    doc_meta["template_id"] = resolved.get("template_id")
+                    if not section_id_map:
+                        section_id_map = resolved.get("section_id_map")
+            except Exception as exc:  # pragma: no cover - defensive
+                logger.warning("Template auto-resolution failed: %s", exc)
         self.metadata_db.insert_document(
             {
                 "artifact_id": doc_meta["artifact_id"],
