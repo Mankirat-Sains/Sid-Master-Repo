@@ -11,7 +11,7 @@ from uuid import uuid4
 from models.rag_state import RAGState
 from utils.tool_eviction import get_evictor
 from persistence.workspace_manager import get_workspace_manager
-from desktop_agent.agents.doc_generation.section_generator import _clean_draft_text  # type: ignore
+from nodes.DesktopAgent.doc_generation.section_generator import _clean_draft_text  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -108,10 +108,7 @@ class DocGenTool:
     ) -> Dict[str, Any]:
         """Call existing docgen generation logic."""
         try:
-            try:
-                from desktop_agent.agents.doc_generation.section_generator import SectionGenerator  # type: ignore
-            except Exception:
-                from Backend.desktop_agent.agents.doc_generation.section_generator import SectionGenerator  # type: ignore
+            from nodes.DesktopAgent.doc_generation.section_generator import SectionGenerator  # type: ignore
 
             generator = SectionGenerator()
             result = generator.generate(

@@ -9,28 +9,38 @@ from ir_utils.logger import get_logger
 logger = get_logger(__name__)
 
 # Default ordering when we cannot infer/template
-DEFAULT_SECTION_ORDER = [
+CORE_REPORT_SECTIONS = [
     "executive_summary",
-    "introduction",
+    "background",
+    "detailed_analysis",
+    "recommendations",
+    "conclusion",
+]
+DEFAULT_SECTION_ORDER = CORE_REPORT_SECTIONS + [
     "scope",
     "methodology",
     "findings",
     "results",
-    "recommendations",
     "limitations",
-    "conclusion",
     "appendix",
 ]
-SAFETY_FALLBACK_SECTIONS = [
-    "introduction",
-    "scope",
-    "methodology",
-    "findings",
-    "recommendations",
-    "limitations",
-    "conclusion",
-]
+SAFETY_FALLBACK_SECTIONS = CORE_REPORT_SECTIONS
 MIN_INFERRED_SECTIONS = 4
+
+DISPLAY_LABELS = {
+    "executive_summary": "Executive Summary",
+    "background": "Background",
+    "introduction": "Background",
+    "scope": "Background and Scope",
+    "methodology": "Methodology",
+    "analysis": "Detailed Analysis",
+    "findings": "Detailed Analysis",
+    "results": "Detailed Analysis",
+    "detailed_analysis": "Detailed Analysis",
+    "recommendations": "Recommendations",
+    "limitations": "Limitations",
+    "conclusion": "Conclusion",
+}
 
 
 def preferred_sort(section_types: List[str]) -> List[str]:
@@ -56,6 +66,7 @@ class ReportDrafter:
     ) -> Dict[str, Any]:
         doc_type = doc_type or self._infer_doc_type(user_request) or "design_report"
         section_order, source = self.get_section_order(company_id, doc_type)
+        section_order = self._ensure_core_sections(section_order)
 
         sections_output: List[Dict[str, Any]] = []
         section_status: List[Dict[str, Any]] = []
@@ -99,7 +110,7 @@ class ReportDrafter:
 
         combined_parts = []
         for section in sections_output:
-            header = section["section_type"].replace("_", " ").title()
+            header = self._display_header(section["section_type"])
             combined_parts.append(f"{header}\n{section['text']}".strip())
         combined_text = "\n\n".join(combined_parts)
 
@@ -129,6 +140,19 @@ class ReportDrafter:
 
         # 3) Fallback default
         return DEFAULT_SECTION_ORDER, "default"
+
+    def _ensure_core_sections(self, section_order: List[str]) -> List[str]:
+        ordered = list(dict.fromkeys(section_order))
+        for section in CORE_REPORT_SECTIONS:
+            if section not in ordered:
+                if section == "executive_summary":
+                    ordered.insert(0, section)
+                else:
+                    ordered.append(section)
+        return ordered
+
+    def _display_header(self, section_type: str) -> str:
+        return DISPLAY_LABELS.get(section_type, section_type.replace("_", " ").title())
 
     def _load_template_sections(self, company_id: str, doc_type: Optional[str]) -> List[str]:
         """

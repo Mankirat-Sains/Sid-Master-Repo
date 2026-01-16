@@ -1350,7 +1350,12 @@ async def chat_handler(request: ChatRequest):
         follow_up_questions = rag_result.get("follow_up_questions", [])  # Follow-up questions from verifier
         follow_up_suggestions = rag_result.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
         doc_answer_text = None
-        doc_generation_result_payload = rag_result.get("doc_generation_result")
+        
+        # Only extract doc_generation_result if workflow is docgen (not qa/rag)
+        # This ensures RAG subgraph results don't include document generation artifacts
+        workflow = rag_result.get("workflow")
+        doc_generation_result_payload = rag_result.get("doc_generation_result") if workflow == "docgen" else None
+        
         citations_metadata = _ensure_citations_metadata(
             doc_generation_result_payload if isinstance(doc_generation_result_payload, dict) else None,
             project_citations,
@@ -1444,15 +1449,20 @@ async def chat_handler(request: ChatRequest):
             
             # Return separate answers
             doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
-            doc_summary = format_document_summary(
-                doc_generation_result_payload,
-                rag_result.get("doc_type"),
-                rag_result.get("section_type"),
-                doc_answer_text,
-            )
-            if doc_summary and isinstance(doc_generation_result_payload, dict):
-                doc_generation_result_payload = dict(doc_generation_result_payload)
-                doc_generation_result_payload["document_summary"] = doc_summary
+            
+            # Only format document summary if workflow is docgen (not qa/rag)
+            # This ensures document statistics only appear for doc generation, not RAG queries
+            doc_summary = None
+            if workflow == "docgen" and doc_generation_result_payload:
+                doc_summary = format_document_summary(
+                    doc_generation_result_payload,
+                    rag_result.get("doc_type"),
+                    rag_result.get("section_type"),
+                    doc_answer_text,
+                )
+                if doc_summary and isinstance(doc_generation_result_payload, dict):
+                    doc_generation_result_payload = dict(doc_generation_result_payload)
+                    doc_generation_result_payload["document_summary"] = doc_summary
             response = ChatResponse(
                 reply=processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
                 session_id=request.session_id,
@@ -1544,15 +1554,20 @@ async def chat_handler(request: ChatRequest):
             
             # Prepare response
             doc_answer_text = combined_answer
-            doc_summary = format_document_summary(
-                doc_generation_result_payload,
-                rag_result.get("doc_type"),
-                rag_result.get("section_type"),
-                doc_answer_text,
-            )
-            if doc_summary and isinstance(doc_generation_result_payload, dict):
-                doc_generation_result_payload = dict(doc_generation_result_payload)
-                doc_generation_result_payload["document_summary"] = doc_summary
+            
+            # Only format document summary if workflow is docgen (not qa/rag)
+            # This ensures document statistics only appear for doc generation, not RAG queries
+            doc_summary = None
+            if workflow == "docgen" and doc_generation_result_payload:
+                doc_summary = format_document_summary(
+                    doc_generation_result_payload,
+                    rag_result.get("doc_type"),
+                    rag_result.get("section_type"),
+                    doc_answer_text,
+                )
+                if doc_summary and isinstance(doc_generation_result_payload, dict):
+                    doc_generation_result_payload = dict(doc_generation_result_payload)
+                    doc_generation_result_payload["document_summary"] = doc_summary
             response = ChatResponse(
                 reply=combined_answer,
                 session_id=request.session_id,
@@ -2099,7 +2114,12 @@ async def chat_stream_handler(request: ChatRequest):
             follow_up_questions = final_state.get("follow_up_questions", []) or final_state.get("db_retrieval_follow_up_questions", [])
             follow_up_suggestions = final_state.get("follow_up_suggestions", []) or final_state.get("db_retrieval_follow_up_suggestions", [])
             doc_answer_text = None
-            doc_generation_result_payload = final_state.get("doc_generation_result")
+            
+            # Only extract doc_generation_result if workflow is docgen (not qa/rag)
+            # This ensures RAG subgraph results don't include document generation artifacts
+            workflow = final_state.get("workflow")
+            doc_generation_result_payload = final_state.get("doc_generation_result") if workflow == "docgen" else None
+            
             support_score = (
                 final_state.get("answer_support_score")
                 or final_state.get("db_retrieval_support_score")
@@ -2196,15 +2216,19 @@ async def chat_stream_handler(request: ChatRequest):
 
                 # Build response with separate answers (matching chat endpoint)
                 doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
-                doc_summary = format_document_summary(
-                    doc_generation_result_payload,
-                    final_state.get("doc_type"),
-                    final_state.get("section_type"),
-                    doc_answer_text,
-                )
-                if doc_summary and isinstance(doc_generation_result_payload, dict):
-                    doc_generation_result_payload = dict(doc_generation_result_payload)
-                    doc_generation_result_payload["document_summary"] = doc_summary
+                
+                # Only format document summary if workflow is docgen (not qa/rag)
+                # This ensures document statistics only appear for doc generation, not RAG queries
+                if workflow == "docgen" and doc_generation_result_payload:
+                    doc_summary = format_document_summary(
+                        doc_generation_result_payload,
+                        final_state.get("doc_type"),
+                        final_state.get("section_type"),
+                        doc_answer_text,
+                    )
+                    if doc_summary and isinstance(doc_generation_result_payload, dict):
+                        doc_generation_result_payload = dict(doc_generation_result_payload)
+                        doc_generation_result_payload["document_summary"] = doc_summary
                 response_data = {
                     'reply': processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
                     'session_id': request.session_id,
@@ -2290,15 +2314,19 @@ async def chat_stream_handler(request: ChatRequest):
 
                 # Build response (matching chat endpoint)
                 doc_answer_text = combined_answer
-                doc_summary = format_document_summary(
-                    doc_generation_result_payload,
-                    final_state.get("doc_type"),
-                    final_state.get("section_type"),
-                    doc_answer_text,
-                )
-                if doc_summary and isinstance(doc_generation_result_payload, dict):
-                    doc_generation_result_payload = dict(doc_generation_result_payload)
-                    doc_generation_result_payload["document_summary"] = doc_summary
+                
+                # Only format document summary if workflow is docgen (not qa/rag)
+                # This ensures document statistics only appear for doc generation, not RAG queries
+                if workflow == "docgen" and doc_generation_result_payload:
+                    doc_summary = format_document_summary(
+                        doc_generation_result_payload,
+                        final_state.get("doc_type"),
+                        final_state.get("section_type"),
+                        doc_answer_text,
+                    )
+                    if doc_summary and isinstance(doc_generation_result_payload, dict):
+                        doc_generation_result_payload = dict(doc_generation_result_payload)
+                        doc_generation_result_payload["document_summary"] = doc_summary
                 response_data = {
                     'reply': combined_answer,
                     'session_id': request.session_id,

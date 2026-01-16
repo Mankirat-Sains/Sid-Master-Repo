@@ -107,6 +107,62 @@ def _build_citations_metadata(result: Dict[str, Any], user_request: str | None) 
     }
 
 
+def _count_words(text: str) -> int:
+    return len(re.findall(r"\b\w+\b", text or ""))
+
+
+def _enforce_report_length(
+    result: Dict[str, Any], generator: Any, warnings: list[str], target_min_words: int = 800, target_words: int = 1200
+) -> tuple[Dict[str, Any], list[str]]:
+    """Ensure the combined report meets the minimum word count; expand using the LLM client if needed."""
+    combined_text = result.get("combined_text") or result.get("draft_text") or ""
+    current_words = _count_words(combined_text)
+    if current_words >= target_min_words:
+        return result, warnings
+
+    llm_client = getattr(generator, "llm_client", None)
+    if not llm_client:
+        warnings.append(f"Length check skipped (no LLM client available). Current length: {current_words} words.")
+        return result, warnings
+
+    sections = result.get("sections") or []
+    section_outline = "\n\n".join(
+        f"{(s.get('section_type') or 'Section').replace('_', ' ').title()}:\n{s.get('text', '')}" for s in sections
+    )
+    expand_prompt = f"""Expand the drafted report into {target_words}-{target_words + 400} words while keeping five clear sections:
+- Executive Summary
+- Background
+- Detailed Analysis
+- Recommendations
+- Conclusion
+
+Use the content below as source material; add connective tissue, specific details, and professional tone without inventing facts beyond the provided text.
+Existing combined draft:
+---
+{combined_text}
+---
+Section snippets:
+---
+{section_outline}
+---
+
+Rewrite as a cohesive report with the section headings above, multi-paragraph depth under each heading, and no citation brackets or warning banners."""
+    try:
+        expanded = llm_client.generate_chat(
+            system_prompt="You are an engineering documentation writer. Expand the report while preserving factual grounding and section intent.",
+            user_prompt=expand_prompt,
+            max_tokens=3200,
+            temperature=0.4,
+        )
+        cleaned = _clean_draft_text(expanded)
+        result["combined_text"] = cleaned
+        result["draft_text"] = cleaned
+        warnings.append(f"Report expanded to meet length requirements (from {current_words} words).")
+    except Exception as exc:  # noqa: BLE001
+        warnings.append(f"Length expansion failed ({exc}); returning shorter draft (~{current_words} words).")
+    return result, warnings
+
+
 def node_doc_generate_report(state: RAGState) -> dict:
     """Generate a multi-section report draft and stash in state."""
     log_query.info(f"DOCGEN: entered node_doc_generate_report (task_type={state.task_type})")
@@ -126,6 +182,9 @@ def node_doc_generate_report(state: RAGState) -> dict:
         overrides.update({k: v for k, v in state.doc_request.items() if v})
     if state.doc_type:
         overrides["doc_type"] = state.doc_type
+    context_docs = getattr(state, "graded_docs", None) or getattr(state, "retrieved_docs", None)
+    if context_docs:
+        overrides["extra_context"] = context_docs
 
     result = drafter.draft_report(
         company_id=company_id,
@@ -159,6 +218,13 @@ def node_doc_generate_report(state: RAGState) -> dict:
         result["citations_metadata"] = result.get("citations_metadata") or _build_citations_metadata(
             result, state.user_query or state.original_question
         )
+
+    # Enforce minimum report length and expand if needed
+    try:
+        generator = services.get("generator")
+        result, warnings = _enforce_report_length(result, generator, warnings)
+    except Exception as exc:  # noqa: BLE001
+        warnings.append(f"Length verification failed: {exc}")
 
     try:
         print(f"🐛 DEBUG: doc_generation_result keys: {list(result.keys())}")

@@ -11,10 +11,10 @@ from models.parent_state import ParentState
 from models.rag_state import RAGState
 from config.settings import MAX_CONVERSATION_HISTORY
 from config.logging_config import log_query
-from desktop_agent.agents.doc_generation.plan import node_doc_plan
-from desktop_agent.agents.doc_generation.section_generator import node_doc_generate_section
-from desktop_agent.agents.doc_generation.report_generator import node_doc_generate_report
-from desktop_agent.agents.doc_generation.answer_adapter import node_doc_answer_adapter
+from nodes.DesktopAgent.doc_generation.plan import node_doc_plan
+from nodes.DesktopAgent.doc_generation.section_generator import node_doc_generate_section
+from nodes.DesktopAgent.doc_generation.report_generator import node_doc_generate_report
+from nodes.DesktopAgent.doc_generation.answer_adapter import node_doc_answer_adapter
 
 
 def _doc_entry_passthrough(state: RAGState) -> dict:

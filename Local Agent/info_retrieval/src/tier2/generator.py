@@ -79,6 +79,39 @@ def _dedupe_citations_by_doc(citations: List[Dict[str, Any]]) -> List[Dict[str, 
     return list(best.values())
 
 
+def _convert_extra_context(extra_context: Any) -> List[Dict[str, Any]]:
+    """
+    Convert pre-fetched graded/retrieved docs into chunk-like dicts so they can
+    be merged with retriever results for grounding and citations.
+    """
+    if extra_context and not isinstance(extra_context, (list, tuple)):
+        extra_context = [extra_context]
+    chunks: List[Dict[str, Any]] = []
+    for doc in extra_context or []:
+        text = None
+        meta: Dict[str, Any] = {}
+        if hasattr(doc, "page_content"):
+            text = getattr(doc, "page_content", None)
+            meta = getattr(doc, "metadata", {}) or {}
+        elif isinstance(doc, dict):
+            text = doc.get("page_content") or doc.get("text") or doc.get("content")
+            meta = doc.get("metadata", {}) or {}
+        if not text:
+            continue
+        similarity = meta.get("similarity_score") or meta.get("score") or 0.75
+        source = meta.get("source") or meta.get("file_path") or meta.get("document_name") or meta.get("artifact_id")
+        chunk_meta = {
+            "artifact_id": meta.get("artifact_id"),
+            "source": source,
+            "file_path": meta.get("file_path") or source,
+            "page_number": meta.get("page_number") or meta.get("page") or meta.get("page_index"),
+            "chunk_id": meta.get("chunk_id"),
+            "similarity_score": similarity,
+        }
+        chunks.append({"text": text, "metadata": chunk_meta, "score": similarity})
+    return chunks
+
+
 class Tier2Generator:
     """
     Orchestrates Tier 2 RAG-based document generation.
@@ -102,9 +135,14 @@ class Tier2Generator:
         section_type = analysis.get("section_type")
 
         overrides = overrides or {}
+        extra_context = overrides.get("extra_context") or []
         doc_type = overrides.get("doc_type", doc_type)
         section_type = overrides.get("section_type", section_type)
         length_target = self.section_profiles.load(company_id, doc_type, section_type)
+        min_chars = length_target.get("min_chars") or 900
+        max_chars = length_target.get("max_chars") or 1300
+        target_word_min = max(180, int(round(min_chars / 5.5)))
+        target_word_max = int(round(max_chars / 4.5))
 
         content_chunks, content_warnings, content_source = self._retrieve_with_fallbacks(
             query_text=user_request,
@@ -127,6 +165,12 @@ class Tier2Generator:
         warnings.extend(content_warnings)
         warnings.extend(style_warnings)
 
+        manual_chunks = _convert_extra_context(extra_context)
+        if manual_chunks:
+            warnings.append(f"Merged {len(manual_chunks)} pre-fetched context chunks from retrieval/graded docs.")
+            content_chunks = manual_chunks + content_chunks
+            content_source = f"prefetched+{content_source}"
+
         print(f"📊 Retrieved {len(content_chunks)} content chunks for generation")
         top_score = max(
             [
@@ -145,42 +189,40 @@ class Tier2Generator:
 
         if has_sufficient_data:
             print("✅ Sufficient data found - generating from retrieved sources")
-            prompt = f"""Based on the following retrieved information from our knowledge base:
+            prompt = f"""You are drafting the "{section_type or 'section'}" portion of a technical engineering report.
 
+Primary question: "{user_request}"
+
+Retrieved evidence (use as the backbone for assertions):
 {_format_chunks_for_context(content_chunks)}
 
-Generate a professional response to: "{user_request}"
+Write a detailed section ({target_word_min}-{target_word_max} words, 3-6 paragraphs) that:
+- Opens with one sentence framing the purpose of this section.
+- Develops background, analysis, and implications using numbers, dates, locations, and component names from the evidence.
+- Calls out risks, constraints, and decisions with the rationale grounded in the sources.
+- Closes with a concise takeaway that sets up recommendations or next steps.
+- Keep attributions implicit (no bracketed citations or warnings), but base claims only on the provided material.
+- Do not include placeholders such as [TBD] or filler text.
 
-Requirements:
-- Use ONLY the information from the retrieved sources above
-- Include citations [Source: document_name, page X]
-- Start with: "Based on our documentation..."
-- Be specific and reference the actual data
-- If the sources don't fully answer the question, acknowledge what's missing
-
-Generate the response:"""
+Generate the section:"""
             mode = "retrieved"
             data_source = "retrieved"
         elif has_some_data:
             print("⚠️ Limited data found - combining with industry standards")
             print(f"   Limited path detail: top_score={top_score}, using top 5 chunks (of {len(content_chunks)})")
             content_chunks = content_chunks[:5]
-            prompt = f"""We found some relevant information in our knowledge base:
+            prompt = f"""You are drafting the "{section_type or 'section'}" portion of a technical engineering report.
 
+We found partial evidence relevant to the request:
 {_format_chunks_for_context(content_chunks)}
 
-However, this doesn't fully address: "{user_request}"
+Task: Write a grounded section ({target_word_min}-{target_word_max} words, 3-6 paragraphs) for "{user_request}" that:
+1) Leads with what we DO know from the evidence above, weaving in specific figures, dates, and component names.
+2) Clearly flags gaps (e.g., "The documentation does not specify X; typical practice is Y") and supplements with industry-standard guidance.
+3) Provides actionable context, risks, and next steps tied to the available sources.
+Keep attributions implicit (no citation brackets), avoid boilerplate, and do not emit warning banners or placeholders.
 
-Generate a response that:
-1. First paragraph: Present what we DO have from our sources with citations [Source: document_name]
-2. Second paragraph: Acknowledge the gap: "While our documentation doesn't provide complete details on [specific aspect], industry standard practice for [topic] typically involves..."
-3. Third paragraph: Provide general industry knowledge to fill the gap
-
-Do not add any warning banners; the system will prepend one if needed.
-
-Be honest about what comes from our data vs. general knowledge.
-
-Generate the response:"""
+Generate the section:"""
             warnings.append("Limited retrieved content; supplementing with industry knowledge.")
             mode = "hybrid"
             data_source = "hybrid"
@@ -190,14 +232,13 @@ Generate the response:"""
 
 Our knowledge base does not contain specific information on this topic.
 
-Generate a response that:
-1. First sentence: "We don't have specific documentation on this topic in our knowledge base."
-2. Following paragraphs: Provide general industry-standard guidance on the topic
-3. Mention: "For organization-specific requirements, please consult with your technical team or refer to relevant industry standards."
+Write a thorough section ({target_word_min}-{target_word_max} words, 3-6 paragraphs) that:
+1) Opens by stating that specific internal documentation is unavailable.
+2) Provides background, analysis, and key considerations using industry-standard practice for the topic.
+3) Outlines risks, constraints, and decision factors, then closes with clear recommendations or next steps.
+Keep the tone professional and technical; avoid citations or warning banners and do not use placeholders like [TBD].
 
-Be helpful but transparent about the source being general knowledge, not our documentation.
-
-Generate the response:"""
+Generate the section:"""
             warnings.append("No matching knowledge base content; response is based on general guidance.")
             mode = "general"
             data_source = "general"
@@ -207,14 +248,15 @@ Generate the response:"""
             prompt += "\nStyle cues from prior documents:\n" + "\n".join(f"- {line}" for line in style_hint_lines)
 
         system_prompt = (
-            "You are an engineering documentation writer. Cite internal sources when provided and clearly separate internal facts from general knowledge."
+            "You are an engineering documentation writer producing comprehensive, multi-paragraph report sections. "
+            "Prioritize specificity, structure, and completeness using provided evidence."
         )
         try:
             draft_text = self.llm_client.generate_chat(
                 system_prompt=system_prompt,
                 user_prompt=prompt,
-                max_tokens=900,
-                temperature=0.4 if has_sufficient_data else 0.5,
+                max_tokens=2200,
+                temperature=0.35 if has_sufficient_data else 0.45,
             )
             _log_text_checkpoint("tier2.grounded_generation", draft_text)
         except Exception as e:  # noqa: BLE001
@@ -284,13 +326,13 @@ Generate the response:"""
             return stripped
         rewrite_prompt = (
             f"Rewrite the following section to be between {min_chars} and {max_chars} characters. "
-            "Preserve tone, style, facts, and any citations like [Source: ...]. No new facts. Plain text only.\n\n"
+            "Preserve tone, style, facts, and any citations like [Source: ...]. No new facts. Keep multi-paragraph structure. Plain text only.\n\n"
             f"---\n{text}\n---"
         )
         rewritten = self.llm_client.generate_chat(
             system_prompt="You are an engineering documentation writer. Keep within specified length and do not add facts.",
             user_prompt=rewrite_prompt,
-            max_tokens=800,
+            max_tokens=2000,
         )
         _log_text_checkpoint("tier2.enforce_length_rewrite", rewritten)
         return rewritten.strip()

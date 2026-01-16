@@ -1,6 +1,5 @@
-"""Document generation agent module."""
+"""Document generation nodes module."""
 
-from .task_classifier import node_doc_task_classifier
 from .plan import node_doc_plan
 from .think import node_doc_think
 from .act import node_doc_act
@@ -10,7 +9,6 @@ from .report_generator import node_doc_generate_report
 from .answer_adapter import node_doc_answer_adapter
 
 __all__ = [
-    "node_doc_task_classifier",
     "node_doc_plan",
     "node_doc_think",
     "node_doc_act",
