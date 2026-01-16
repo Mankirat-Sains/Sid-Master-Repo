@@ -220,8 +220,8 @@ def generate_action_summary(action_result: Dict[str, Any]) -> str:
 # ---------------------------------------------------------------------------
 # State conversion & validation
 # ---------------------------------------------------------------------------
-def ensure_rag_state_compatibility(state: Dict[str, Any]) -> Dict[str, Any]:
-    """Ensure state has all required RAGState fields with defaults."""
+def ensure_desktop_agent_state_compatibility(state: Dict[str, Any]) -> Dict[str, Any]:
+    """Ensure state has all required DesktopAgentState fields with defaults."""
     base = _safe_state_copy(state)
 
     defaults = {

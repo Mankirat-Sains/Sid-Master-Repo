@@ -1,0 +1,3743 @@
+{
+  "source": {
+    "workbook_path": "/mnt/data/Glulam Column.xlsx",
+    "sheet": "Axial",
+    "code_reference_pdf": "/mnt/data/Wood_Design_Manual_2020.pdf"
+  },
+  "sheet_summary_5_sentences": "The Axial sheet is a glulam column design worksheet that evaluates axial load, bending moment, and combined axial–bending checks for a single member. Users enter geometry, tributary loading, material grade/species, service condition, and stability factors, and the sheet computes factored actions and section properties. The worksheet then derives material modification factors and resistances (compression, tension, moment) consistent with CSA O86 design procedures for glulam members. Finally, it calculates interaction/utilization ratios (e.g., axial/bending utilization) to indicate pass/fail against the standard ≤1.0 acceptance criterion. This sheet should be used during preliminary and detailed design to quickly verify whether a proposed glulam column size and bracing arrangement satisfies code-based resistance requirements.",
+  "inputs": {
+    "project_information": {
+      "project_name": {
+        "anchor_cell": "E8",
+        "display_name": "Project Name:",
+        "symbol": null,
+        "value": "Template",
+        "unit": null,
+        "cells": {
+          "value_cell": "E8",
+          "label_cell": "D8",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      }
+    },
+    "loads_and_inputs": {
+      "member_type": {
+        "anchor_cell": "F16",
+        "display_name": "Member Type",
+        "symbol": null,
+        "value": "Axial-Bending",
+        "unit": null,
+        "cells": {
+          "value_cell": "F16",
+          "label_cell": "C16",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "dead_load": {
+        "anchor_cell": "F18",
+        "display_name": "Dead Load",
+        "symbol": null,
+        "value": 2,
+        "unit": "kPa",
+        "cells": {
+          "value_cell": "F18",
+          "label_cell": "C18",
+          "symbol_cell": null,
+          "unit_cell": "G18",
+          "constraint_cell": null
+        }
+      },
+      "live_load": {
+        "anchor_cell": "F19",
+        "display_name": "Live Load",
+        "symbol": null,
+        "value": 3.25,
+        "unit": "kPa",
+        "cells": {
+          "value_cell": "F19",
+          "label_cell": "C19",
+          "symbol_cell": null,
+          "unit_cell": "G19",
+          "constraint_cell": null
+        }
+      },
+      "tributary_width": {
+        "anchor_cell": "F21",
+        "display_name": "Tributary Width",
+        "symbol": null,
+        "value": 9,
+        "unit": "m",
+        "cells": {
+          "value_cell": "F21",
+          "label_cell": "C21",
+          "symbol_cell": null,
+          "unit_cell": "G21",
+          "constraint_cell": null
+        }
+      },
+      "tributary_length": {
+        "anchor_cell": "F22",
+        "display_name": "Tributary Length",
+        "symbol": null,
+        "value": 9,
+        "unit": "m",
+        "cells": {
+          "value_cell": "F22",
+          "label_cell": "C22",
+          "symbol_cell": null,
+          "unit_cell": "G22",
+          "constraint_cell": null
+        }
+      },
+      "wood_species": {
+        "anchor_cell": "F27",
+        "display_name": "Wood species",
+        "symbol": null,
+        "value": "D.F.L",
+        "unit": null,
+        "cells": {
+          "value_cell": "F27",
+          "label_cell": "C27",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "stress_grade": {
+        "anchor_cell": "F28",
+        "display_name": "Stress Grade",
+        "symbol": null,
+        "value": "20f-E",
+        "unit": null,
+        "cells": {
+          "value_cell": "F28",
+          "label_cell": "C28",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "service_condition": {
+        "anchor_cell": "F30",
+        "display_name": "Service Condition",
+        "symbol": null,
+        "value": "Wet",
+        "unit": null,
+        "cells": {
+          "value_cell": "F30",
+          "label_cell": "C30",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "load_duration_factor_KD": {
+        "anchor_cell": "F32",
+        "display_name": "Load Duration Factor,",
+        "symbol": "KD",
+        "value": 1,
+        "unit": null,
+        "cells": {
+          "value_cell": "F32",
+          "label_cell": "C32",
+          "symbol_cell": "D32",
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "system_factor_KH": {
+        "anchor_cell": "F33",
+        "display_name": "System Factor",
+        "symbol": "KH",
+        "value": 1.15,
+        "unit": null,
+        "cells": {
+          "value_cell": "F33",
+          "label_cell": "C33",
+          "symbol_cell": "D33",
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "effective_length_factor_strong_axis_Ke_d": {
+        "anchor_cell": "F34",
+        "display_name": "Effective Length Factor Strong Axis,",
+        "symbol": "Ke,d",
+        "value": 0.8,
+        "unit": null,
+        "cells": {
+          "value_cell": "F34",
+          "label_cell": "C34",
+          "symbol_cell": "D34",
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "effective_length_factor_weak_axis_Ke_b": {
+        "anchor_cell": "F35",
+        "display_name": "Effective Length Factor Weak Axis,",
+        "symbol": "Ke,b",
+        "value": 0.65,
+        "unit": null,
+        "cells": {
+          "value_cell": "F35",
+          "label_cell": "C35",
+          "symbol_cell": "D35",
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "factored_moment_Mf": {
+        "anchor_cell": "F37",
+        "display_name": "Factored Moment",
+        "symbol": "Mf",
+        "value": 50,
+        "unit": "kN·m",
+        "cells": {
+          "value_cell": "F37",
+          "label_cell": "C37",
+          "symbol_cell": "D37",
+          "unit_cell": "G37",
+          "constraint_cell": null
+        }
+      },
+      "bending_along": {
+        "anchor_cell": "F38",
+        "display_name": "Bending Along",
+        "symbol": null,
+        "value": "Strong-Axis",
+        "unit": null,
+        "cells": {
+          "value_cell": "F38",
+          "label_cell": "C38",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "compression_or_tension": {
+        "anchor_cell": "F39",
+        "display_name": "Compression or Tension",
+        "symbol": null,
+        "value": "Compression",
+        "unit": null,
+        "cells": {
+          "value_cell": "F39",
+          "label_cell": "C39",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "compression_edge_fully_laterally_supported": {
+        "anchor_cell": "F40",
+        "display_name": "Compression Edge Fully Laterally Supported?",
+        "symbol": null,
+        "value": "Yes",
+        "unit": null,
+        "cells": {
+          "value_cell": "F40",
+          "label_cell": "C40",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      },
+      "intermediate_support_spacing": {
+        "anchor_cell": "F41",
+        "display_name": "Intermediate Support Spacing",
+        "symbol": null,
+        "value": 50,
+        "unit": "mm",
+        "cells": {
+          "value_cell": "F41",
+          "label_cell": "C41",
+          "symbol_cell": null,
+          "unit_cell": "G41",
+          "constraint_cell": null
+        }
+      },
+      "input_S8": {
+        "anchor_cell": "S8",
+        "display_name": "Project Name:",
+        "symbol": null,
+        "value": "Input",
+        "unit": null,
+        "cells": {
+          "value_cell": "S8",
+          "label_cell": "D8",
+          "symbol_cell": null,
+          "unit_cell": null,
+          "constraint_cell": null
+        }
+      }
+    },
+    "beam_properties": {
+      "column_length_L": {
+        "anchor_cell": "G46",
+        "display_name": "Column Length",
+        "symbol": "L",
+        "value": 9000,
+        "unit": "mm",
+        "cells": {
+          "value_cell": "G46",
+          "label_cell": "D46",
+          "symbol_cell": "E46",
+          "unit_cell": "H46",
+          "constraint_cell": null
+        }
+      },
+      "unbraced_length_strong_axis_Ld": {
+        "anchor_cell": "G47",
+        "display_name": "Unbraced length, strong-axis,",
+        "symbol": "Ld",
+        "value": 9000,
+        "unit": "mm",
+        "cells": {
+          "value_cell": "G47",
+          "label_cell": "D47",
+          "symbol_cell": "E47",
+          "unit_cell": "H47",
+          "constraint_cell": null
+        }
+      },
+      "unbraced_length_weak_axis_Lb": {
+        "anchor_cell": "G48",
+        "display_name": "Unbraced length, weak-axis,",
+        "symbol": "Lb",
+        "value": 4000,
+        "unit": "mm",
+        "cells": {
+          "value_cell": "G48",
+          "label_cell": "D48",
+          "symbol_cell": "E48",
+          "unit_cell": "H48",
+          "constraint_cell": null
+        }
+      },
+      "beam_width_b": {
+        "anchor_cell": "G49",
+        "display_name": "Beam width,",
+        "symbol": "b",
+        "value": 175,
+        "unit": "mm",
+        "cells": {
+          "value_cell": "G49",
+          "label_cell": "D49",
+          "symbol_cell": "E49",
+          "unit_cell": "H49",
+          "constraint_cell": null
+        }
+      },
+      "beam_depth_d": {
+        "anchor_cell": "G50",
+        "display_name": "Beam depth,",
+        "symbol": "d",
+        "value": 380,
+        "unit": "mm",
+        "cells": {
+          "value_cell": "G50",
+          "label_cell": "D50",
+          "symbol_cell": "E50",
+          "unit_cell": "H50",
+          "constraint_cell": null
+        }
+      },
+      "net_cross_sectional_area_An": {
+        "anchor_cell": "G52",
+        "display_name": "Net creoss-sectional area,",
+        "symbol": "An",
+        "value": 0,
+        "unit": "mm²",
+        "cells": {
+          "value_cell": "G52",
+          "label_cell": "D52",
+          "symbol_cell": "E52",
+          "unit_cell": "H52",
+          "constraint_cell": null
+        }
+      }
+    },
+    "other_inputs": {}
+  },
+  "fields_in_sheet_order": [
+    {
+      "anchor_cell": "E8",
+      "display_name": "Project Name:",
+      "symbol": null,
+      "role": "input",
+      "value": "Template",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "E8",
+        "label_cell": "D8",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "S8",
+      "display_name": "Project Name:",
+      "symbol": null,
+      "role": "input",
+      "value": "Input",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "S8",
+        "label_cell": "D8",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F16",
+      "display_name": "Member Type",
+      "symbol": null,
+      "role": "input",
+      "value": "Axial-Bending",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F16",
+        "label_cell": "C16",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "H27",
+          "H28",
+          "M24",
+          "M25",
+          "M26",
+          "N18",
+          "N20",
+          "N22"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "5.3.2.3",
+          "manual_page": 282,
+          "manual_excerpt": "d at both ends to prevent lateral displacement and rotation, the lateral stability factor KL = 1.0 for all three trial sections as the member"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F18",
+      "display_name": "Dead Load",
+      "symbol": null,
+      "role": "input",
+      "value": 2,
+      "formula": null,
+      "unit": "kPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F18",
+        "label_cell": "C18",
+        "symbol_cell": null,
+        "unit_cell": "G18",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "F24",
+          "F25"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "N18",
+      "display_name": "Compression Utilization",
+      "symbol": null,
+      "role": "output",
+      "value": "N/A",
+      "formula": "=IF(F16=\"Compression\",F25/MIN(G97:G97),\"N/A\")",
+      "unit": null,
+      "constraint": "≤1",
+      "cells": {
+        "value_cell": "N18",
+        "label_cell": "L18",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": "O18"
+      },
+      "dependencies": {
+        "precedents": [
+          "F16",
+          "F25",
+          "G97"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F19",
+      "display_name": "Live Load",
+      "symbol": null,
+      "role": "input",
+      "value": 3.25,
+      "formula": null,
+      "unit": "kPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F19",
+        "label_cell": "C19",
+        "symbol_cell": null,
+        "unit_cell": "G19",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "F24",
+          "F25"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "N20",
+      "display_name": "Tension Utilization",
+      "symbol": null,
+      "role": "output",
+      "value": "N/A",
+      "formula": "=IF(F16=\"Tension\",F25/G105,\"N/A\")",
+      "unit": null,
+      "constraint": "≤1",
+      "cells": {
+        "value_cell": "N20",
+        "label_cell": "L20",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": "O20"
+      },
+      "dependencies": {
+        "precedents": [
+          "F16",
+          "F25",
+          "G105"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F21",
+      "display_name": "Tributary Width",
+      "symbol": null,
+      "role": "input",
+      "value": 9,
+      "formula": null,
+      "unit": "m",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F21",
+        "label_cell": "C21",
+        "symbol_cell": null,
+        "unit_cell": "G21",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "F24",
+          "F25"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F22",
+      "display_name": "Tributary Length",
+      "symbol": null,
+      "role": "input",
+      "value": 9,
+      "formula": null,
+      "unit": "m",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F22",
+        "label_cell": "C22",
+        "symbol_cell": null,
+        "unit_cell": "G22",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "F24",
+          "F25"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "N22",
+      "display_name": "Axial/Bending Utilization",
+      "symbol": null,
+      "role": "output",
+      "value": 1.9214448934000452,
+      "formula": "=IF(F16=\"Axial-Bending\",IF(F39=\"Compression\",G125,G127),\"N/A\")",
+      "unit": null,
+      "constraint": "≤1",
+      "cells": {
+        "value_cell": "N22",
+        "label_cell": "L22",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": "O22"
+      },
+      "dependencies": {
+        "precedents": [
+          "F16",
+          "F39",
+          "G125",
+          "G127"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F24",
+      "display_name": "Axial Load",
+      "symbol": "Pn",
+      "role": "output",
+      "value": 425.25,
+      "formula": "=F21*F22*(F18+F19)",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F24",
+        "label_cell": "C24",
+        "symbol_cell": "D24",
+        "unit_cell": "G24",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F18",
+          "F19",
+          "F21",
+          "F22"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "M24",
+      "display_name": "Axial Load",
+      "symbol": "Pn",
+      "role": "output",
+      "value": null,
+      "formula": "=IF(F16=\"Compression\",IF(G94=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "M24",
+        "label_cell": "C24",
+        "symbol_cell": "D24",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F16",
+          "G94"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F25",
+      "display_name": "Factored Axial Load",
+      "symbol": "Pf",
+      "role": "calculation",
+      "value": 597.375,
+      "formula": "=MAX(1.4*F18,1.25*F18+1.5*F19)*(F21*F22)",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F25",
+        "label_cell": "C25",
+        "symbol_cell": "D25",
+        "unit_cell": "G25",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F18",
+          "F19",
+          "F21",
+          "F22"
+        ],
+        "dependents": [
+          "G125",
+          "G127",
+          "N18",
+          "N20"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "M25",
+      "display_name": "Factored Axial Load",
+      "symbol": "Pf",
+      "role": "output",
+      "value": null,
+      "formula": "=IF(F16=\"Compression\",IF(G95=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "M25",
+        "label_cell": "C25",
+        "symbol_cell": "D25",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F16",
+          "G95"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "M26",
+      "display_name": "Stress grades not recommended:",
+      "symbol": null,
+      "role": "output",
+      "value": null,
+      "formula": "=IF(F16=\"Axial-Bending\",IF(G115>50,\"Too slender, increase member size\",\"\"),\"\")",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "M26",
+        "label_cell": "H26",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F16",
+          "G115"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F27",
+      "display_name": "Wood species",
+      "symbol": null,
+      "role": "input",
+      "value": "D.F.L",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F27",
+        "label_cell": "C27",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G61",
+          "G62",
+          "G63",
+          "G65",
+          "G67"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "H27",
+      "display_name": "Wood species",
+      "symbol": null,
+      "role": "output",
+      "value": "DFL: 24f-E, 20f-E",
+      "formula": "=IF(F16=\"Compression\",\"DFL: 24f-E, 24F-EX, 20f-E ,20f-EX\",IF(F16=\"Tension\",\"DFL: 24f-E, 20f-E\",\"DFL: 24f-E, 20f-E\"))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "H27",
+        "label_cell": "C27",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F16"
+        ],
+        "dependents": []
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F28",
+      "display_name": "Stress Grade",
+      "symbol": null,
+      "role": "input",
+      "value": "20f-E",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F28",
+        "label_cell": "C28",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G61",
+          "G62",
+          "G63",
+          "G65",
+          "G67"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "5.3.2.3",
+          "manual_page": 282,
+          "manual_excerpt": "d at both ends to prevent lateral displacement and rotation, the lateral stability factor KL = 1.0 for all three trial sections as the member"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "H28",
+      "display_name": "Stress Grade",
+      "symbol": null,
+      "role": "output",
+      "value": "SPF: 20f-E",
+      "formula": "=IF(F16=\"Compression\", \"SPF: 20f-E ,20f-EX\",IF(F16=\"Tension\",\"SPF: 20f-E\",\"SPF: 20f-E\"))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "H28",
+        "label_cell": "C28",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F16"
+        ],
+        "dependents": []
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "5.3.2.3",
+          "manual_page": 282,
+          "manual_excerpt": "d at both ends to prevent lateral displacement and rotation, the lateral stability factor KL = 1.0 for all three trial sections as the member"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F30",
+      "display_name": "Service Condition",
+      "symbol": null,
+      "role": "input",
+      "value": "Wet",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F30",
+        "label_cell": "C30",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G72",
+          "G75",
+          "G77",
+          "G78"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "5.3.2.3",
+          "manual_page": 282,
+          "manual_excerpt": "d at both ends to prevent lateral displacement and rotation, the lateral stability factor KL = 1.0 for all three trial sections as the member"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.4",
+          "manual_page": 53,
+          "manual_excerpt": "Chapter 6. (2) If the sawn lumber joists in this example are substituted by glulam joists, the system factor must be taken as KH ="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F32",
+      "display_name": "Load Duration Factor,",
+      "symbol": "KD",
+      "role": "input",
+      "value": 1,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F32",
+        "label_cell": "C32",
+        "symbol_cell": "D32",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G83",
+          "G84",
+          "G85",
+          "G86",
+          "G87"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "5.3.2.3",
+          "manual_page": 282,
+          "manual_excerpt": "d at both ends to prevent lateral displacement and rotation, the lateral stability factor KL = 1.0 for all three trial sections as the member"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.4",
+          "manual_page": 53,
+          "manual_excerpt": "Chapter 6. (2) If the sawn lumber joists in this example are substituted by glulam joists, the system factor must be taken as KH ="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F33",
+      "display_name": "System Factor",
+      "symbol": "KH",
+      "role": "input",
+      "value": 1.15,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F33",
+        "label_cell": "C33",
+        "symbol_cell": "D33",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G83",
+          "G84",
+          "G85",
+          "G86",
+          "G87"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.4",
+          "manual_page": 53,
+          "manual_excerpt": "Chapter 6. (2) If the sawn lumber joists in this example are substituted by glulam joists, the system factor must be taken as KH ="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F34",
+      "display_name": "Effective Length Factor Strong Axis,",
+      "symbol": "Ke,d",
+      "role": "input",
+      "value": 0.8,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F34",
+        "label_cell": "C34",
+        "symbol_cell": "D34",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G92"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.1",
+          "manual_page": 1323,
+          "manual_excerpt": "CSA O86:19 Engineering design in wood 7.5.8 Compressive resistance parallel to grain 7.5.8.1 Effective length, Le Unless otherwise noted in this Standard, the effective length,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        }
+      ],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "F35",
+      "display_name": "Effective Length Factor Weak Axis,",
+      "symbol": "Ke,b",
+      "role": "input",
+      "value": 0.65,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F35",
+        "label_cell": "C35",
+        "symbol_cell": "D35",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G93"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.1",
+          "manual_page": 1323,
+          "manual_excerpt": "CSA O86:19 Engineering design in wood 7.5.8 Compressive resistance parallel to grain 7.5.8.1 Effective length, Le Unless otherwise noted in this Standard, the effective length,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "F37",
+      "display_name": "Factored Moment",
+      "symbol": "Mf",
+      "role": "input",
+      "value": 50,
+      "formula": null,
+      "unit": "kN·m",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F37",
+        "label_cell": "C37",
+        "symbol_cell": "D37",
+        "unit_cell": "G37",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G125",
+          "G127"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.1",
+          "manual_page": 257,
+          "manual_excerpt": "ns subjected to combined bending and compression (CSA O86 Clause 7.5.6.3.2) as well as sawn lumber and timber. If the above limits are exceeded, KL"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.2",
+          "manual_page": 1311,
+          "manual_excerpt": "d by purlins so connected that they prevent lateral displacement of the compressive edge of the bending member, the unsupported length shall be taken as"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F38",
+      "display_name": "Bending Along",
+      "symbol": null,
+      "role": "input",
+      "value": "Strong-Axis",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F38",
+        "label_cell": "C38",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G124",
+          "G54",
+          "G55"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.1",
+          "manual_page": 257,
+          "manual_excerpt": "ns subjected to combined bending and compression (CSA O86 Clause 7.5.6.3.2) as well as sawn lumber and timber. If the above limits are exceeded, KL"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.2",
+          "manual_page": 1311,
+          "manual_excerpt": "d by purlins so connected that they prevent lateral displacement of the compressive edge of the bending member, the unsupported length shall be taken as"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F39",
+      "display_name": "Compression or Tension",
+      "symbol": null,
+      "role": "input",
+      "value": "Compression",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F39",
+        "label_cell": "C39",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "N22"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.1",
+          "manual_page": 257,
+          "manual_excerpt": "ns subjected to combined bending and compression (CSA O86 Clause 7.5.6.3.2) as well as sawn lumber and timber. If the above limits are exceeded, KL"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.2",
+          "manual_page": 1311,
+          "manual_excerpt": "d by purlins so connected that they prevent lateral displacement of the compressive edge of the bending member, the unsupported length shall be taken as"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F40",
+      "display_name": "Compression Edge Fully Laterally Supported?",
+      "symbol": null,
+      "role": "input",
+      "value": "Yes",
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "F40",
+        "label_cell": "C40",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G114"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.1",
+          "manual_page": 257,
+          "manual_excerpt": "ns subjected to combined bending and compression (CSA O86 Clause 7.5.6.3.2) as well as sawn lumber and timber. If the above limits are exceeded, KL"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.2",
+          "manual_page": 1311,
+          "manual_excerpt": "d by purlins so connected that they prevent lateral displacement of the compressive edge of the bending member, the unsupported length shall be taken as"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "F41",
+      "display_name": "Intermediate Support Spacing",
+      "symbol": null,
+      "role": "input",
+      "value": 50,
+      "formula": null,
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "F41",
+        "label_cell": "C41",
+        "symbol_cell": null,
+        "unit_cell": "G41",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G114"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.1",
+          "manual_page": 257,
+          "manual_excerpt": "ns subjected to combined bending and compression (CSA O86 Clause 7.5.6.3.2) as well as sawn lumber and timber. If the above limits are exceeded, KL"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G46",
+      "display_name": "Column Length",
+      "symbol": "L",
+      "role": "input",
+      "value": 9000,
+      "formula": null,
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G46",
+        "label_cell": "D46",
+        "symbol_cell": "E46",
+        "unit_cell": "H46",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G53"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "G47",
+      "display_name": "Unbraced length, strong-axis,",
+      "symbol": "Ld",
+      "role": "input",
+      "value": 9000,
+      "formula": null,
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G47",
+        "label_cell": "D47",
+        "symbol_cell": "E47",
+        "unit_cell": "H47",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G81",
+          "G92"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.1",
+          "manual_page": 1323,
+          "manual_excerpt": "CSA O86:19 Engineering design in wood 7.5.8 Compressive resistance parallel to grain 7.5.8.1 Effective length, Le Unless otherwise noted in this Standard, the effective length,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        }
+      ],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "G48",
+      "display_name": "Unbraced length, weak-axis,",
+      "symbol": "Lb",
+      "role": "input",
+      "value": 4000,
+      "formula": null,
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G48",
+        "label_cell": "D48",
+        "symbol_cell": "E48",
+        "unit_cell": "H48",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G93"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.1",
+          "manual_page": 1323,
+          "manual_excerpt": "CSA O86:19 Engineering design in wood 7.5.8 Compressive resistance parallel to grain 7.5.8.1 Effective length, Le Unless otherwise noted in this Standard, the effective length,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "G49",
+      "display_name": "Beam width,",
+      "symbol": "b",
+      "role": "input",
+      "value": 175,
+      "formula": null,
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G49",
+        "label_cell": "D49",
+        "symbol_cell": "E49",
+        "unit_cell": "H49",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G115",
+          "G51",
+          "G53",
+          "G54",
+          "G55",
+          "G81",
+          "G95"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.3",
+          "manual_page": 1311,
+          "manual_excerpt": "displacement, the unsupported length may be taken as zero. For decking to provide such support, it shall be fastened securely to the bending member and"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G50",
+      "display_name": "Beam depth,",
+      "symbol": "d",
+      "role": "input",
+      "value": 380,
+      "formula": null,
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G50",
+        "label_cell": "D50",
+        "symbol_cell": "E50",
+        "unit_cell": "H50",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G115",
+          "G51",
+          "G53",
+          "G54",
+          "G55",
+          "G81",
+          "G94"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.3",
+          "manual_page": 1311,
+          "manual_excerpt": "displacement, the unsupported length may be taken as zero. For decking to provide such support, it shall be fastened securely to the bending member and"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G51",
+      "display_name": "Cross sectional area,",
+      "symbol": "Ag",
+      "role": "calculation",
+      "value": 66500,
+      "formula": "=G49*G50",
+      "unit": "mm²",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G51",
+        "label_cell": "D51",
+        "symbol_cell": "E51",
+        "unit_cell": "H51",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G49",
+          "G50"
+        ],
+        "dependents": [
+          "G102",
+          "G110",
+          "G97"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Section property for a glulam column used in resistance and interaction checks."
+    },
+    {
+      "anchor_cell": "G52",
+      "display_name": "Net creoss-sectional area,",
+      "symbol": "An",
+      "role": "input",
+      "value": 0,
+      "formula": null,
+      "unit": "mm²",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G52",
+        "label_cell": "D52",
+        "symbol_cell": "E52",
+        "unit_cell": "H52",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G103"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        }
+      ],
+      "engineering_context": "Section property for a glulam column used in resistance and interaction checks."
+    },
+    {
+      "anchor_cell": "G53",
+      "display_name": "Beam volume,",
+      "symbol": "Z",
+      "role": "calculation",
+      "value": 0.5984999999999999,
+      "formula": "=(G49/1000)*(G50/1000)*(G46/1000)",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G53",
+        "label_cell": "D53",
+        "symbol_cell": "E53",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G46",
+          "G49",
+          "G50"
+        ],
+        "dependents": [
+          "G74"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.2",
+          "manual_page": 1060,
+          "manual_excerpt": "sizes and species of wood . As such, the effect is considered to be a characteristic of the parent material, and the same duration of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G54",
+      "display_name": "Moment of inertia,",
+      "symbol": "Ig",
+      "role": "calculation",
+      "value": 800216666.6666666,
+      "formula": "=IF(F38=\"Strong-Axis\", G49*(G50^3)/12,G50*(G49^3)/12)",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G54",
+        "label_cell": "D54",
+        "symbol_cell": "E54",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F38",
+          "G49",
+          "G50"
+        ],
+        "dependents": [
+          "G124",
+          "G56"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G55",
+      "display_name": "Neutral axis,",
+      "symbol": "y",
+      "role": "calculation",
+      "value": 190,
+      "formula": "=IF(F38=\"Strong-Axis\",G50/2,G49/2)",
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G55",
+        "label_cell": "D55",
+        "symbol_cell": "E55",
+        "unit_cell": "H55",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F38",
+          "G49",
+          "G50"
+        ],
+        "dependents": [
+          "G56"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G56",
+      "display_name": "Section modulus,",
+      "symbol": "S",
+      "role": "calculation",
+      "value": 4211666.666666666,
+      "formula": "=G54/G55",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G56",
+        "label_cell": "D56",
+        "symbol_cell": "E56",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G54",
+          "G55"
+        ],
+        "dependents": [
+          "G118",
+          "G119"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G61",
+      "display_name": "Comp. strength parallel to grain,",
+      "symbol": "fc",
+      "role": "calculation",
+      "value": 30.2,
+      "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,5,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,5,0)))",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G61",
+        "label_cell": "D61",
+        "symbol_cell": "E61",
+        "unit_cell": "H61",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F27",
+          "F28",
+          "K12",
+          "K18"
+        ],
+        "dependents": [
+          "G64",
+          "G83"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G62",
+      "display_name": "Strength in tension parallel to grain at net section,",
+      "symbol": "ftn",
+      "role": "calculation",
+      "value": 20.4,
+      "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,7,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,7,0)))",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G62",
+        "label_cell": "D62",
+        "symbol_cell": "E62",
+        "unit_cell": "H62",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F27",
+          "F28",
+          "K12",
+          "K18"
+        ],
+        "dependents": [
+          "G85"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G63",
+      "display_name": "Strength in tension parallel to grain at gross section,",
+      "symbol": "ftg",
+      "role": "calculation",
+      "value": 15.3,
+      "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,8,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,8,0)))",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G63",
+        "label_cell": "D63",
+        "symbol_cell": "E63",
+        "unit_cell": "H63",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F27",
+          "F28",
+          "K12",
+          "K18"
+        ],
+        "dependents": [
+          "G84"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G64",
+      "display_name": "Compression parallel combined with bending",
+      "symbol": "fcb",
+      "role": "calculation",
+      "value": 30.2,
+      "formula": "=G61",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G64",
+        "label_cell": "D64",
+        "symbol_cell": "E64",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G61"
+        ],
+        "dependents": [
+          "G86"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G65",
+      "display_name": "Strength in bending",
+      "symbol": "fb",
+      "role": "calculation",
+      "value": 19.2,
+      "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,3,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,3,0)))",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G65",
+        "label_cell": "D65",
+        "symbol_cell": "E65",
+        "unit_cell": "H65",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F27",
+          "F28",
+          "K12",
+          "K18"
+        ],
+        "dependents": [
+          "G87"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G67",
+      "display_name": "Modulus of elasticity,",
+      "symbol": "E",
+      "role": "calculation",
+      "value": 12400,
+      "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,9,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,9,0)))",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G67",
+        "label_cell": "D67",
+        "symbol_cell": "E67",
+        "unit_cell": "H67",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F27",
+          "F28",
+          "K12",
+          "K18"
+        ],
+        "dependents": [
+          "G116",
+          "G68",
+          "G80"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G68",
+      "display_name": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,9,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,9,0)))",
+      "symbol": "E05",
+      "role": "calculation",
+      "value": 10788,
+      "formula": "=0.87*G67",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G68",
+        "label_cell": null,
+        "symbol_cell": "E68",
+        "unit_cell": "H68",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G67"
+        ],
+        "dependents": [
+          "G124",
+          "G76"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G69",
+      "display_name": "Compression Resistance factor,",
+      "symbol": "ϕC",
+      "role": "static",
+      "value": 0.8,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G69",
+        "label_cell": "D69",
+        "symbol_cell": "E69",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G110",
+          "G97"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.3",
+          "manual_page": 1061,
+          "manual_excerpt": "r-Larch glulam has demonstrated good performance under adverse moisture conditions, such as due to poor roof maintenance, provided that the moisture was not retained for"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G70",
+      "display_name": "Resistance factor,",
+      "symbol": null,
+      "role": "static",
+      "value": 0.9,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G70",
+        "label_cell": "D70",
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G102",
+          "G103",
+          "G118",
+          "G119"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.3",
+          "manual_page": 1061,
+          "manual_excerpt": "r-Larch glulam has demonstrated good performance under adverse moisture conditions, such as due to poor roof maintenance, provided that the moisture was not retained for"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G72",
+      "display_name": "Comp. parallel to grain,",
+      "symbol": "KSc",
+      "role": "calculation",
+      "value": 0.75,
+      "formula": "=IF($F$30=\"Dry\",VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G72",
+        "label_cell": "D72",
+        "symbol_cell": "E72",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "E72",
+          "F30",
+          "H30"
+        ],
+        "dependents": [
+          "G83",
+          "G84",
+          "G85",
+          "G86"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.2",
+          "manual_page": 1060,
+          "manual_excerpt": "sizes and species of wood . As such, the effect is considered to be a characteristic of the parent material, and the same duration of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.3",
+          "manual_page": 1061,
+          "manual_excerpt": "r-Larch glulam has demonstrated good performance under adverse moisture conditions, such as due to poor roof maintenance, provided that the moisture was not retained for"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G73",
+      "display_name": "Treatment factor,",
+      "symbol": "KT",
+      "role": "static",
+      "value": 1,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G73",
+        "label_cell": "D73",
+        "symbol_cell": "E73",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G116",
+          "G124",
+          "G76",
+          "G80",
+          "G83",
+          "G84",
+          "G85",
+          "G86",
+          "G87"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.2",
+          "manual_page": 1060,
+          "manual_excerpt": "sizes and species of wood . As such, the effect is considered to be a characteristic of the parent material, and the same duration of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.3",
+          "manual_page": 1061,
+          "manual_excerpt": "r-Larch glulam has demonstrated good performance under adverse moisture conditions, such as due to poor roof maintenance, provided that the moisture was not retained for"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G74",
+      "display_name": null,
+      "symbol": "KZcg",
+      "role": "calculation",
+      "value": 0.7269266193455038,
+      "formula": "=MIN(0.68*G53^(-0.13),1)",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G74",
+        "label_cell": null,
+        "symbol_cell": "E74",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G53"
+        ],
+        "dependents": [
+          "G110",
+          "G76",
+          "G97"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.2",
+          "manual_page": 1060,
+          "manual_excerpt": "sizes and species of wood . As such, the effect is considered to be a characteristic of the parent material, and the same duration of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G75",
+      "display_name": "Modulus of elasticity,",
+      "symbol": "KSE",
+      "role": "calculation",
+      "value": 0.9,
+      "formula": "=IF($F$30=\"Dry\",VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G75",
+        "label_cell": "D75",
+        "symbol_cell": "E75",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "E75",
+          "F30",
+          "H30"
+        ],
+        "dependents": [
+          "G116",
+          "G124",
+          "G76",
+          "G80"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.4.2",
+          "manual_page": 1060,
+          "manual_excerpt": "sizes and species of wood . As such, the effect is considered to be a characteristic of the parent material, and the same duration of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G76",
+      "display_name": "Slenderness Factor",
+      "symbol": "KC",
+      "role": "calculation",
+      "value": 0.7251573715310196,
+      "formula": "=(1+(G83*G74*MAX(G94:G95)^3)/(35*G68*G75*G73))^-1",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G76",
+        "label_cell": "D76",
+        "symbol_cell": "E76",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G68",
+          "G73",
+          "G74",
+          "G75",
+          "G83",
+          "G94",
+          "G95"
+        ],
+        "dependents": [
+          "G110",
+          "G97"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.6",
+          "manual_page": 281,
+          "manual_excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G77",
+      "display_name": "Tension parallel to grain,",
+      "symbol": "KSt",
+      "role": "output",
+      "value": 0.75,
+      "formula": "=IF($F$30=\"Dry\",VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G77",
+        "label_cell": "D77",
+        "symbol_cell": "E77",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "E77",
+          "F30",
+          "H30"
+        ],
+        "dependents": []
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G78",
+      "display_name": "=IF($F$30=\"Dry\",VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+      "symbol": "KSb",
+      "role": "calculation",
+      "value": 0.8,
+      "formula": "=IF($F$30=\"Dry\",VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G78",
+        "label_cell": null,
+        "symbol_cell": "E78",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "E78",
+          "F30",
+          "H30"
+        ],
+        "dependents": [
+          "G87"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G79",
+      "display_name": "Curvature factor,",
+      "symbol": "Kx",
+      "role": "static",
+      "value": 1,
+      "formula": null,
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G79",
+        "label_cell": "D79",
+        "symbol_cell": "E79",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [],
+        "dependents": [
+          "G118",
+          "G119",
+          "G80"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G80",
+      "display_name": "Lateral stability factor,",
+      "symbol": "KL",
+      "role": "calculation",
+      "value": 1,
+      "formula": "=IF(G115>50,\"ERROR\",IF(G115<10,1,IF(G115<G116,(1-(1/3)*((G115/G116)^4)),IF(G116<G115,0.65*G67*G75*G73/((G115^2)*G87*G79)))))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G80",
+        "label_cell": "D80",
+        "symbol_cell": "E80",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G115",
+          "G116",
+          "G67",
+          "G73",
+          "G75",
+          "G79",
+          "G87"
+        ],
+        "dependents": [
+          "G119"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G81",
+      "display_name": "Size factor,",
+      "symbol": "KZbg",
+      "role": "calculation",
+      "value": 1.0188847041011477,
+      "formula": "=MIN(((130/G47)^(1/10))*((610/G50)^(1/10))*((9100/G49)^(1/10)),1.3)",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G81",
+        "label_cell": "D81",
+        "symbol_cell": "E81",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G47",
+          "G49",
+          "G50"
+        ],
+        "dependents": [
+          "G118"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G83",
+      "display_name": "Compressive strength parallel to grain,",
+      "symbol": "Fc",
+      "role": "calculation",
+      "value": 26.0475,
+      "formula": "=G61*F32*F33*G72*G73",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G83",
+        "label_cell": "D83",
+        "symbol_cell": "E83",
+        "unit_cell": "H83",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F32",
+          "F33",
+          "G61",
+          "G72",
+          "G73"
+        ],
+        "dependents": [
+          "G76",
+          "G97"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G84",
+      "display_name": "Strength in tension parallel to grain at gross section,",
+      "symbol": "Ftg",
+      "role": "calculation",
+      "value": 13.19625,
+      "formula": "=G63*F32*F33*G72*G73",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G84",
+        "label_cell": "D84",
+        "symbol_cell": "E84",
+        "unit_cell": "H84",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F32",
+          "F33",
+          "G63",
+          "G72",
+          "G73"
+        ],
+        "dependents": [
+          "G102"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G85",
+      "display_name": "Strength in tension parallel to grain at net section,",
+      "symbol": "Ftn",
+      "role": "calculation",
+      "value": 17.595,
+      "formula": "=G62*F32*F33*G72*G73",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G85",
+        "label_cell": "D85",
+        "symbol_cell": "E85",
+        "unit_cell": "H85",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F32",
+          "F33",
+          "G62",
+          "G72",
+          "G73"
+        ],
+        "dependents": [
+          "G103"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G86",
+      "display_name": "Strength in compression parallel combined with bending,",
+      "symbol": "Fcb",
+      "role": "calculation",
+      "value": 26.0475,
+      "formula": "=G64*F32*F33*G72*G73",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G86",
+        "label_cell": "D86",
+        "symbol_cell": "E86",
+        "unit_cell": "H86",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F32",
+          "F33",
+          "G64",
+          "G72",
+          "G73"
+        ],
+        "dependents": [
+          "G110"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G87",
+      "display_name": "Strength in Bending.",
+      "symbol": "Fb",
+      "role": "calculation",
+      "value": 17.663999999999998,
+      "formula": "=G65*F32*F33*G78*G73",
+      "unit": "MPa",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G87",
+        "label_cell": "D87",
+        "symbol_cell": "E87",
+        "unit_cell": "H87",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F32",
+          "F33",
+          "G65",
+          "G73",
+          "G78"
+        ],
+        "dependents": [
+          "G116",
+          "G118",
+          "G119",
+          "G80"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G92",
+      "display_name": "Effective Length, Strong Axis,",
+      "symbol": "Le,d",
+      "role": "calculation",
+      "value": 7200,
+      "formula": "=G47*F34",
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G92",
+        "label_cell": "D92",
+        "symbol_cell": "E92",
+        "unit_cell": "H92",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F34",
+          "G47"
+        ],
+        "dependents": [
+          "G124",
+          "G94"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.1",
+          "manual_page": 1323,
+          "manual_excerpt": "CSA O86:19 Engineering design in wood 7.5.8 Compressive resistance parallel to grain 7.5.8.1 Effective length, Le Unless otherwise noted in this Standard, the effective length,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        }
+      ],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "G93",
+      "display_name": "Effective Length, Weak Axis,",
+      "symbol": "Le,b",
+      "role": "calculation",
+      "value": 2600,
+      "formula": "=G48*F35",
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G93",
+        "label_cell": "D93",
+        "symbol_cell": "E93",
+        "unit_cell": "H93",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F35",
+          "G48"
+        ],
+        "dependents": [
+          "G124",
+          "G95"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.1",
+          "manual_page": 1323,
+          "manual_excerpt": "CSA O86:19 Engineering design in wood 7.5.8 Compressive resistance parallel to grain 7.5.8.1 Effective length, Le Unless otherwise noted in this Standard, the effective length,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "G94",
+      "display_name": "Slenderness Ratio, Strong Axis",
+      "symbol": "Ccs",
+      "role": "calculation",
+      "value": 18.94736842105263,
+      "formula": "=IF(G92/G50>50,\"Error\",G92/G50)",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G94",
+        "label_cell": "D94",
+        "symbol_cell": "E94",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G50",
+          "G92"
+        ],
+        "dependents": [
+          "G76",
+          "M24"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G95",
+      "display_name": "Slenderness Ratio, Weak Axis",
+      "symbol": "Ccw",
+      "role": "calculation",
+      "value": 14.857142857142858,
+      "formula": "=IF(G93/G49>50,\"Error\",G93/G49)",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G95",
+        "label_cell": "D95",
+        "symbol_cell": "E95",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G49",
+          "G93"
+        ],
+        "dependents": [
+          "G76",
+          "M25"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.2",
+          "manual_page": 1228,
+          "manual_excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G97",
+      "display_name": "Factored Compressive Resistance",
+      "symbol": "Pr",
+      "role": "calculation",
+      "value": 730.466860278928,
+      "formula": "=G69*G83*G51*G74*G76/1000",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G97",
+        "label_cell": "D97",
+        "symbol_cell": "E97",
+        "unit_cell": "H97",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G51",
+          "G69",
+          "G74",
+          "G76",
+          "G83"
+        ],
+        "dependents": [
+          "G125",
+          "N18"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.8.5",
+          "manual_page": 1307,
+          "manual_excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G102",
+      "display_name": "Tensile resistance, gross",
+      "symbol": "Tg",
+      "role": "calculation",
+      "value": 789.7955624999998,
+      "formula": "=G70*G84*G51/1000",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G102",
+        "label_cell": "D102",
+        "symbol_cell": "E102",
+        "unit_cell": "H102",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G51",
+          "G70",
+          "G84"
+        ],
+        "dependents": [
+          "G105"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G103",
+      "display_name": "Tensile resistance, net",
+      "symbol": "Tn",
+      "role": "calculation",
+      "value": 0,
+      "formula": "=G70*G85*G52/1000",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G103",
+        "label_cell": "D103",
+        "symbol_cell": "E103",
+        "unit_cell": "H103",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G52",
+          "G70",
+          "G85"
+        ],
+        "dependents": [
+          "G105"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G105",
+      "display_name": "Tensile resistance",
+      "symbol": "Tr",
+      "role": "calculation",
+      "value": 789.7955624999998,
+      "formula": "=IF(G103=0,G102,MIN(G102,G103))",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G105",
+        "label_cell": "D105",
+        "symbol_cell": "E105",
+        "unit_cell": "H105",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G102",
+          "G103"
+        ],
+        "dependents": [
+          "G112",
+          "N20"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G110",
+      "display_name": "Factored Compressive Resistance",
+      "symbol": "Pr",
+      "role": "output",
+      "value": 730.466860278928,
+      "formula": "=G69*G86*G51*G74*G76/1000",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G110",
+        "label_cell": "D110",
+        "symbol_cell": "E110",
+        "unit_cell": "H110",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G51",
+          "G69",
+          "G74",
+          "G76",
+          "G86"
+        ],
+        "dependents": []
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.12",
+          "manual_page": 1066,
+          "manual_excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G112",
+      "display_name": "Tensile resistance",
+      "symbol": "Tr",
+      "role": "calculation",
+      "value": 789.7955624999998,
+      "formula": "=G105",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G112",
+        "label_cell": "D112",
+        "symbol_cell": "E112",
+        "unit_cell": "H112",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G105"
+        ],
+        "dependents": [
+          "G127"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.11",
+          "manual_page": 1067,
+          "manual_excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.3",
+          "manual_page": 1311,
+          "manual_excerpt": "displacement, the unsupported length may be taken as zero. For decking to provide such support, it shall be fastened securely to the bending member and"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        }
+      ],
+      "engineering_context": "Material / resistance parameter used in CSA O86 glulam column design checks."
+    },
+    {
+      "anchor_cell": "G114",
+      "display_name": "Effective length,",
+      "symbol": "Le",
+      "role": "calculation",
+      "value": 0,
+      "formula": "=IF(F40=\"Yes\",0,1.92*F41)",
+      "unit": "mm",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G114",
+        "label_cell": "D114",
+        "symbol_cell": "E114",
+        "unit_cell": "H114",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F40",
+          "F41"
+        ],
+        "dependents": [
+          "G115"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.3",
+          "manual_page": 1311,
+          "manual_excerpt": "displacement, the unsupported length may be taken as zero. For decking to provide such support, it shall be fastened securely to the bending member and"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Geometric stability parameter for glulam column effective length / slenderness checks."
+    },
+    {
+      "anchor_cell": "G115",
+      "display_name": "Slenderness ratio,",
+      "symbol": "CB",
+      "role": "calculation",
+      "value": 0,
+      "formula": "=SQRT(G114*G50/(G49^2))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G115",
+        "label_cell": "D115",
+        "symbol_cell": "E115",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G114",
+          "G49",
+          "G50"
+        ],
+        "dependents": [
+          "G80",
+          "M26"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.3",
+          "manual_page": 1311,
+          "manual_excerpt": "displacement, the unsupported length may be taken as zero. For decking to provide such support, it shall be fastened securely to the bending member and"
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G116",
+      "display_name": "Slenderness ratio,",
+      "symbol": "CK",
+      "role": "calculation",
+      "value": 24.755598839717926,
+      "formula": "=SQRT((0.97*G67*G75*G73)/(G87))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G116",
+        "label_cell": "D116",
+        "symbol_cell": "E116",
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G67",
+          "G73",
+          "G75",
+          "G87"
+        ],
+        "dependents": [
+          "G80"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.4.4",
+          "manual_page": 83,
+          "manual_excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+        },
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G118",
+      "display_name": "Mr 1",
+      "symbol": null,
+      "role": "calculation",
+      "value": 68.21982476589633,
+      "formula": "=G70*G87*G56*G79*G81/(1000^2)",
+      "unit": "kN·m",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G118",
+        "label_cell": "E118",
+        "symbol_cell": null,
+        "unit_cell": "H118",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G56",
+          "G70",
+          "G79",
+          "G81",
+          "G87"
+        ],
+        "dependents": [
+          "G125",
+          "G127"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G119",
+      "display_name": "Mr 2",
+      "symbol": null,
+      "role": "calculation",
+      "value": 66.95539199999999,
+      "formula": "=G70*G87*G56*G79*G80/(1000^2)",
+      "unit": "kN·m",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G119",
+        "label_cell": "E119",
+        "symbol_cell": null,
+        "unit_cell": "H119",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "G56",
+          "G70",
+          "G79",
+          "G80",
+          "G87"
+        ],
+        "dependents": [
+          "G125",
+          "G127"
+        ]
+      },
+      "code_references": [
+        {
+          "code": "CSA O86 / Wood Design Manual",
+          "clause": "7.5.6.5.1",
+          "manual_page": 1062,
+          "manual_excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+        }
+      ],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G124",
+      "display_name": "Euler Buckling Load",
+      "symbol": "Pe",
+      "role": "calculation",
+      "value": 1479.1962332723733,
+      "formula": "=IF(F38=\"Strong-Axis\",(PI()^2)*G68*G75*G73*G54/(1000*G92^2),(PI()^2)*G68*G75*G73*G54/(1000*G93^2))",
+      "unit": "kN",
+      "constraint": null,
+      "cells": {
+        "value_cell": "G124",
+        "label_cell": "D124",
+        "symbol_cell": "E124",
+        "unit_cell": "H124",
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F38",
+          "G54",
+          "G68",
+          "G73",
+          "G75",
+          "G92",
+          "G93"
+        ],
+        "dependents": [
+          "G125"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G125",
+      "display_name": "=IF(F38=\"Strong-Axis\",(PI()^2)*G68*G75*G73*G54/(1000*G92^2),(PI()^2)*G68*G75*G73*G54/(1000*G93^2))",
+      "symbol": null,
+      "role": "calculation",
+      "value": 1.9214448934000452,
+      "formula": "=((F25/G97)^2) + ((F37/MIN(G118:G119))*(1/(1-(F25/G124))))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G125",
+        "label_cell": null,
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F25",
+          "F37",
+          "G118",
+          "G119",
+          "G124",
+          "G97"
+        ],
+        "dependents": [
+          "N22"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    },
+    {
+      "anchor_cell": "G127",
+      "display_name": null,
+      "symbol": null,
+      "role": "calculation",
+      "value": 1.5031324666042098,
+      "formula": "=(F25/G112)+(F37/MIN(G118:G119))",
+      "unit": null,
+      "constraint": null,
+      "cells": {
+        "value_cell": "G127",
+        "label_cell": null,
+        "symbol_cell": null,
+        "unit_cell": null,
+        "constraint_cell": null
+      },
+      "dependencies": {
+        "precedents": [
+          "F25",
+          "F37",
+          "G112",
+          "G118",
+          "G119"
+        ],
+        "dependents": [
+          "N22"
+        ]
+      },
+      "code_references": [],
+      "engineering_context": "Glulam column design parameter within the Axial sheet workflow."
+    }
+  ],
+  "clause_index": {
+    "7.4.4": {
+      "clause": "7.4.4",
+      "page": 53,
+      "excerpt": "Chapter 6. (2) If the sawn lumber joists in this example are substituted by glulam joists, the system factor must be taken as KH ="
+    },
+    "7.5.6.4.4": {
+      "clause": "7.5.6.4.4",
+      "page": 83,
+      "excerpt": "93 0.174 0.158 0.144 0.132 0.121 0.111 b where Le = effective length, mm (Table 2.7); d = depth, mm; b = width, mm. 2."
+    },
+    "7.5.6.4.1": {
+      "clause": "7.5.6.4.1",
+      "page": 257,
+      "excerpt": "ns subjected to combined bending and compression (CSA O86 Clause 7.5.6.3.2) as well as sawn lumber and timber. If the above limits are exceeded, KL"
+    },
+    "7.5.8.6": {
+      "clause": "7.5.8.6",
+      "page": 281,
+      "excerpt": "oads plus snow or occupancy loads. Long-term loading = dead loads alone. Short-term loading = dead plus wind loads. Long term 42.0 43.3 43.5 Fcb/E'="
+    },
+    "5.3.2.3": {
+      "clause": "5.3.2.3",
+      "page": 282,
+      "excerpt": "d at both ends to prevent lateral displacement and rotation, the lateral stability factor KL = 1.0 for all three trial sections as the member"
+    },
+    "7.4.2": {
+      "clause": "7.4.2",
+      "page": 1060,
+      "excerpt": "sizes and species of wood . As such, the effect is considered to be a characteristic of the parent material, and the same duration of"
+    },
+    "7.4.3": {
+      "clause": "7.4.3",
+      "page": 1061,
+      "excerpt": "r-Larch glulam has demonstrated good performance under adverse moisture conditions, such as due to poor roof maintenance, provided that the moisture was not retained for"
+    },
+    "7.5.6.5.1": {
+      "clause": "7.5.6.5.1",
+      "page": 1062,
+      "excerpt": "t be determined and applied to the moment resistance . The method used, the same as in previous standards, is based on the work of"
+    },
+    "7.5.12": {
+      "clause": "7.5.12",
+      "page": 1066,
+      "excerpt": "ricity (to account for out-of-straightness) the designer is required to consider bending moments due to eccentrically applied loads when sizing glulam columns . In this"
+    },
+    "7.5.11": {
+      "clause": "7.5.11",
+      "page": 1067,
+      "excerpt": "se 6.5 .6) . The value of Fcp corresponding to compression face bearing from Table 7.2 must be used with Clause 7.5 .9 .3 to"
+    },
+    "7.5.8.2": {
+      "clause": "7.5.8.2",
+      "page": 1228,
+      "excerpt": "Errata — March 2020 Preface Clauses 2, 3.2, 4.2, 5.4.5.1, 5.4.5.2, 6.4.5.1, 6.5.3.2.2, 6.5.3.2.4, 6.5.5.2.2, 6.5.5.2.5, 6.5.6.3.2, 6.5.7, 6.5.12.3.3, 7.4.3.1, 7.5.6.4.4, 7.5.7.1, 7.5.7.5.2, 7.5.7.6, 7.5.8.2,"
+    },
+    "7.5.8.5": {
+      "clause": "7.5.8.5",
+      "page": 1307,
+      "excerpt": "d timber are given in Table 7.2. Table 7.2 Specified strengths and moduli of elasticity for glued-laminated timber, MPa (See Clauses 7.3, 7.5.6.4.4, 7.5.6.5.1, 7.5.6.6.1,"
+    },
+    "7.5.6.4.3": {
+      "clause": "7.5.6.4.3",
+      "page": 1311,
+      "excerpt": "displacement, the unsupported length may be taken as zero. For decking to provide such support, it shall be fastened securely to the bending member and"
+    },
+    "7.5.6.4.2": {
+      "clause": "7.5.6.4.2",
+      "page": 1311,
+      "excerpt": "d by purlins so connected that they prevent lateral displacement of the compressive edge of the bending member, the unsupported length shall be taken as"
+    },
+    "7.5.8.1": {
+      "clause": "7.5.8.1",
+      "page": 1323,
+      "excerpt": "CSA O86:19 Engineering design in wood 7.5.8 Compressive resistance parallel to grain 7.5.8.1 Effective length, Le Unless otherwise noted in this Standard, the effective length,"
+    }
+  },
+  "notes": {
+    "ordering": "Fields are sorted by anchor_cell row then column (top-to-bottom, left-to-right).",
+    "role_definition": {
+      "input": "Red font + grey fill (user-entered).",
+      "calculation": "Formula cell with downstream dependents.",
+      "output": "Numeric/formula cell with no downstream dependents (sink).",
+      "static": "Non-input constant or selection used in calculations."
+    },
+    "code_reference_policy": "Code references are attached when clause tags are found near the computation on the sheet, and are inherited one hop upstream to supporting fields when appropriate."
+  }
+}

@@ -7,15 +7,13 @@ from dataclasses import MISSING, asdict, fields
 
 from langgraph.graph import StateGraph, END
 
-from models.parent_state import ParentState
-from models.rag_state import RAGState
+from models.orchestration_state import OrchestrationState
 from config.logging_config import log_query
 from utils.path_setup import ensure_info_retrieval_on_path
 
 ensure_info_retrieval_on_path()
 from nodes.plan import node_plan
 from nodes.router_dispatcher import node_router_dispatcher
-from nodes.DesktopAgent.doc_generation.task_classifier import node_doc_task_classifier
 from graph.subgraphs import (
     call_db_retrieval_subgraph,
     call_desktop_agent_subgraph,
@@ -29,39 +27,7 @@ def _get_state_field(state, field, default=None):
     return getattr(state, field, default)
 
 
-def _convert_to_rag_state(state) -> RAGState:
-    """Convert a dict or ParentState-like object into RAGState with defaults."""
-    if isinstance(state, RAGState):
-        return state
-
-    state_dict = state if isinstance(state, dict) else asdict(state)
-    rag_fields = {f.name: f for f in fields(RAGState)}
-
-    normalized = {}
-    extras = {}
-    for key, value in state_dict.items():
-        if key in rag_fields:
-            normalized[key] = value
-        else:
-            extras[key] = value
-
-    for name, f in rag_fields.items():
-        if name in normalized:
-            continue
-        if f.default_factory is not MISSING:  # type: ignore[attr-defined]
-            normalized[name] = f.default_factory()  # type: ignore[call-arg]
-        elif f.default is not MISSING:
-            normalized[name] = f.default
-        else:
-            normalized[name] = None
-
-    rag_state = RAGState(**normalized)
-    for key, value in extras.items():
-        setattr(rag_state, key, value)
-    return rag_state
-
-
-def _router_route(state: RAGState) -> str:
+def _router_route(state: OrchestrationState) -> str:
     """
     Planner routing:
     - If the plan selected any routers, run router_dispatcher first.
@@ -71,23 +37,6 @@ def _router_route(state: RAGState) -> str:
     if selected_routers:
         return "router_dispatcher"
     return "db_retrieval"
-
-
-def _doc_or_router(state: RAGState) -> str:
-    """
-    Route to desktop/doc generation when requested; otherwise follow router/db_retrieval flow.
-    """
-    workflow = _get_state_field(state, "workflow")
-    task_type = _get_state_field(state, "task_type")
-    selected_app = (_get_state_field(state, "selected_app") or "").lower()
-    desktop_tools = _get_state_field(state, "desktop_tools", []) or []
-    requires_desktop = _get_state_field(state, "requires_desktop_action", False)
-
-    if workflow == "docgen" or task_type in {"doc_section", "doc_report"}:
-        return "desktop_agent"
-    if selected_app or desktop_tools or requires_desktop:
-        return "desktop_agent"
-    return _router_route(state)
 
 
 def _log_node_state(node_name: str, state) -> None:
@@ -134,8 +83,43 @@ def _wrap_node(node_name: str, fn):
             return parent_verbose + [node_entry] + result_verbose
         return parent_verbose + [node_entry]
 
-    def _wrapped(state: RAGState, *args, **kwargs):
-        state = _convert_to_rag_state(state)
+    def _wrapped(state: OrchestrationState, *args, **kwargs):
+        # Ensure state is OrchestrationState (or convert from dict)
+        if isinstance(state, dict):
+            # Convert dict to OrchestrationState with defaults
+            state_dict = state
+            orch_fields = {f.name: f for f in fields(OrchestrationState)}
+            normalized = {}
+            for key, value in state_dict.items():
+                if key in orch_fields:
+                    normalized[key] = value
+            for name, f in orch_fields.items():
+                if name not in normalized:
+                    if f.default_factory is not MISSING:
+                        normalized[name] = f.default_factory()
+                    elif f.default is not MISSING:
+                        normalized[name] = f.default
+                    else:
+                        normalized[name] = None
+            state = OrchestrationState(**normalized)
+        elif not isinstance(state, OrchestrationState):
+            # Convert other state types to OrchestrationState
+            state_dict = asdict(state) if hasattr(state, '__dict__') else dict(state)
+            orch_fields = {f.name: f for f in fields(OrchestrationState)}
+            normalized = {}
+            for key, value in state_dict.items():
+                if key in orch_fields:
+                    normalized[key] = value
+            for name, f in orch_fields.items():
+                if name not in normalized:
+                    if f.default_factory is not MISSING:
+                        normalized[name] = f.default_factory()
+                    elif f.default is not MISSING:
+                        normalized[name] = f.default
+                    else:
+                        normalized[name] = None
+            state = OrchestrationState(**normalized)
+        
         _log_node_state(node_name, state)
 
         def get(field, default=None):
@@ -179,25 +163,20 @@ def _wrap_node(node_name: str, fn):
 
 def build_graph():
     """Build the parent LangGraph workflow."""
-    g = StateGraph(RAGState)
+    g = StateGraph(OrchestrationState)
 
     g.add_node("plan", _wrap_node("plan", node_plan))
-    g.add_node("doc_task_classifier", _wrap_node("doc_task_classifier", node_doc_task_classifier))
     g.add_node("desktop_agent", _wrap_node("desktop_agent", call_desktop_agent_subgraph))
     g.add_node("db_retrieval", _wrap_node("db_retrieval", call_db_retrieval_subgraph))
     g.add_node("router_dispatcher", _wrap_node("router_dispatcher", node_router_dispatcher))
 
     g.set_entry_point("plan")
 
-    # Always run doc/docgen classifier after plan to set workflow/task_type hints
-    g.add_edge("plan", "doc_task_classifier")
-
-    # After doc_task_classifier: route based on workflow/task_type
+    # Route directly from plan based on selected_routers
     g.add_conditional_edges(
-        "doc_task_classifier",
-        _doc_or_router,
+        "plan",
+        _router_route,
         {
-            "desktop_agent": "desktop_agent",
             "router_dispatcher": "router_dispatcher",
             "db_retrieval": "db_retrieval",
         },

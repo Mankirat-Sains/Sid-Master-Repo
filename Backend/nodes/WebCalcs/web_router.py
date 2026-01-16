@@ -5,12 +5,12 @@ Routes query to appropriate web applications and Python tools
 import json
 import re
 import time
-from models.rag_state import RAGState
+from models.webcalcs_state import WebCalcsState
 from prompts.web_router_prompts import WEB_ROUTER_PROMPT, web_router_llm
 from config.logging_config import log_route
 
 
-def node_web_router(state: RAGState) -> dict:
+def node_web_router(state: WebCalcsState) -> dict:
     """Route query to appropriate web applications and Python tools"""
     t_start = time.time()
     log_route.info(">>> WEB ROUTER START")

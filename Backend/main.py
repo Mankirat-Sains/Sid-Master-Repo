@@ -12,7 +12,7 @@ from typing import Dict, List, Optional
 from utils.path_setup import ensure_info_retrieval_on_path
 
 ensure_info_retrieval_on_path()
-from models.parent_state import ParentState
+from models.orchestration_state import OrchestrationState
 from models.memory import (
     SESSION_MEMORY, MAX_SEMANTIC_HISTORY,
     intelligent_query_rewriter, update_focus_state, FOCUS_STATES
@@ -31,14 +31,14 @@ graph = build_graph()
 PROJECT_RE = re.compile(r'\d{2}-\d{2}-\d{3,4}')
 
 
-def run_agentic_rag(
+def execute_query(
     question: str,
     session_id: str = "default",
     data_sources: Optional[Dict[str, bool]] = None,
     images_base64: Optional[List[str]] = None
 ) -> Dict:
     """
-    Main RAG entry point - runs the agentic RAG pipeline
+    Main query execution entry point - runs the query orchestration pipeline
     
     Args:
         question: User's question
@@ -54,7 +54,7 @@ def run_agentic_rag(
     # Log image receipt at entry point
     log_vlm.info("")
     log_vlm.info("🔍" * 30)
-    log_vlm.info(f"🔍 run_agentic_rag CALLED with images_base64={images_base64 is not None}")
+    log_vlm.info(f"🔍 execute_query CALLED with images_base64={images_base64 is not None}")
     if images_base64:
         log_vlm.info(f"🔍 Image count: {len(images_base64)}")
         log_vlm.info(f"🔍 Image data lengths: {[len(img) for img in images_base64[:3]]} chars (first 3)")
@@ -152,7 +152,7 @@ def run_agentic_rag(
     init_messages = list(previous_messages or [])
     init_messages.append({"role": "user", "content": question})
 
-    init_state = ParentState(
+    init_state = OrchestrationState(
         session_id=session_id,
         user_query=base_query,
         original_question=question,
@@ -166,7 +166,7 @@ def run_agentic_rag(
     final = graph.invoke(asdict(init_state), config={"configurable": {"thread_id": session_id}})
 
     if isinstance(final, dict):
-        final_state = ParentState(**asdict(init_state))
+        final_state = OrchestrationState(**asdict(init_state))
         for k, v in final.items():
             setattr(final_state, k, v)
     else:
@@ -420,7 +420,7 @@ def run_agentic_rag(
     }
 
 
-def rag_healthcheck() -> Dict:
+def query_system_healthcheck() -> Dict:
     """Health check for RAG system"""
     project_db_status = test_database_connection()
 

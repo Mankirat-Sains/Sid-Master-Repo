@@ -3,7 +3,8 @@ BuildModelGen Subgraph
 Handles building model generation and modification
 """
 from langgraph.graph import StateGraph, START, END
-from models.parent_state import ParentState
+from models.orchestration_state import OrchestrationState
+from models.building_model_gen_state import BuildingModelGenState
 from config.logging_config import log_query
 
 # Future nodes will be added here:
@@ -13,7 +14,7 @@ from config.logging_config import log_query
 # from nodes.BuildingModelGen.verify import node_verify_model
 
 
-def _placeholder_node(state: ParentState) -> dict:
+def _placeholder_node(state: BuildingModelGenState) -> dict:
     """
     Placeholder node for BuildModelGen subgraph.
     This will be replaced with actual model generation logic.
@@ -38,7 +39,7 @@ def build_build_model_gen_subgraph():
     - modify: Modify existing building model
     - verify: Verify structural coherence
     """
-    g = StateGraph(ParentState)  # TODO: Create BuildModelGenState in the future
+    g = StateGraph(BuildingModelGenState)
     
     # Add placeholder node for now
     g.add_node("placeholder", _placeholder_node)
@@ -64,10 +65,10 @@ def build_build_model_gen_subgraph():
 _build_model_gen_subgraph = None
 
 
-def call_build_model_gen_subgraph(state: ParentState) -> dict:
+def call_build_model_gen_subgraph(state: OrchestrationState) -> dict:
     """
     Wrapper node that invokes the BuildModelGen subgraph.
-    This function is called from the parent graph.
+    Extracts needed fields from OrchestrationState → BuildingModelGenState → invokes subgraph → returns results.
     """
     global _build_model_gen_subgraph
     
@@ -77,10 +78,31 @@ def call_build_model_gen_subgraph(state: ParentState) -> dict:
         _build_model_gen_subgraph = build_build_model_gen_subgraph()
         log_query.info("✅ BuildModelGen subgraph initialized")
     
-    # Invoke subgraph with current state
+    # Extract fields from OrchestrationState and create BuildingModelGenState
+    state_dict = state if isinstance(state, dict) else asdict(state)
+    
+    build_model_state = BuildingModelGenState(
+        session_id=state_dict.get("session_id", ""),
+        user_query=state_dict.get("user_query", ""),
+        original_question=state_dict.get("original_question"),
+        messages=state_dict.get("messages", []),
+        conversation_history=state_dict.get("conversation_history", []),
+        execution_trace=state_dict.get("execution_trace", []),
+        execution_trace_verbose=state_dict.get("execution_trace_verbose", []),
+    )
+    
+    # Invoke subgraph with BuildingModelGenState
     try:
-        result = _build_model_gen_subgraph.invoke(state)
-        return result
+        result = _build_model_gen_subgraph.invoke(build_model_state)
+        
+        # Return only key results to orchestration state
+        return {
+            "build_model_result": result.get("build_model_result"),
+            "build_model_status": result.get("build_model_status"),
+            "build_model_error": result.get("build_model_error"),
+            "execution_trace": result.get("execution_trace", []),
+            "execution_trace_verbose": result.get("execution_trace_verbose", []),
+        }
     except Exception as e:
         log_query.error(f"❌ BuildModelGen subgraph failed: {e}")
         import traceback

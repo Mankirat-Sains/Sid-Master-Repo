@@ -1,0 +1,14 @@
+{
+  "excel_files": [
+    {
+      "file_name": "0 - Beam Design - Sidian - VBA (Template)6.xlsx",
+      "file_path": "/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Sidian/Vibeeng/Excel Templates/0 - Beam Design - Sidian - VBA (Template)6.xlsx",
+      "description": "A comprehensive beam design and checking workbook used to size structural members under gravity and point loads. The workbook uses tabulated properties, load factoring, and serviceability limits to evaluate beam designs. It collects user inputs including spans, tributary widths, loads, and material/type selections, then computes factored design actions (moment, shear, reactions) and required section properties. The workbook evaluates strength and deflection criteria, reporting utilization/capacity checks and pass/fail status for selected members. It contains multiple sheets including 'INFO 4-12 Ceil' for main design calculations, 'L(1)' for additional beam configurations, and supporting sheets for locations, wood data, and change logs. This workbook is typically used for preliminary sizing and QA/QC of hand-calculations, with the expectation that final design is confirmed in a full structural analysis workflow. Values are organized into input blocks, intermediate calculation tables, and output/check cells to support traceable review."
+    },
+    {
+      "file_name": "Glulam Column.xlsx",
+      "file_path": "/Users/jameshinsperger/Desktop/Desktop - MacBook Pro (2)/Sidian/Vibeeng/Excel Templates/Glulam Column.xlsx",
+      "description": "A glulam column design worksheet that evaluates axial load, bending moment, and combined axial-bending checks for a single structural member. Users enter geometry, tributary loading, material grade/species, service condition, and stability factors, and the sheet computes factored actions and section properties. The worksheet derives material modification factors and resistances (compression, tension, moment) consistent with CSA O86 design procedures for glulam members. It calculates interaction/utilization ratios (e.g., axial/bending utilization) to indicate pass/fail against the standard ≤1.0 acceptance criterion. The workbook contains the main 'Axial' sheet for design calculations and a 'Guidance Tables' sheet with reference data. This worksheet should be used during preliminary and detailed design to quickly verify whether a proposed glulam column size and bracing arrangement satisfies code-based resistance requirements. The design follows CSA O86 standards and includes comprehensive input parameters for loads, member geometry, material properties, and stability considerations."
+    }
+  ]
+}

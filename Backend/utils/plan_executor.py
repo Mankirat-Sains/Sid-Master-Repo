@@ -6,7 +6,7 @@ import re
 import time
 from typing import List, Dict, Optional
 from langchain_core.documents import Document
-from models.rag_state import RAGState
+from models.orchestration_state import OrchestrationState
 from models.memory import SESSION_MEMORY
 from config.settings import (
     MAX_RETRIEVAL_DOCS, MAX_SMART_RETRIEVAL_DOCS, MAX_LARGE_RETRIEVAL_DOCS,
@@ -108,7 +108,7 @@ def pick_top_n_projects(docs: List[Document], n: int, max_docs: int) -> List[Doc
     return out[:max_docs]
 
 
-def execute_plan(state: RAGState) -> dict:
+def execute_plan(state: OrchestrationState) -> dict:
     """Execute the query plan steps"""
     steps = (state.query_plan or {}).get("steps", [])
     if not steps:

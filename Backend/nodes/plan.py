@@ -1,21 +1,21 @@
 """
 Planning Node - Router Selection Only
-Determines which routers (rag, web, desktop) should handle the query
+Determines which routers (database, web, desktop) should handle the query
 This is the orchestrator - keeps it simple and fast
 """
 import json
 import re
 import time
-from models.parent_state import ParentState
+from models.orchestration_state import OrchestrationState
 from prompts.router_selection_prompts import ROUTER_SELECTION_PROMPT, router_selection_llm
 from config.logging_config import log_query
 from langgraph.config import get_stream_writer
 
 
-def node_plan(state: ParentState) -> dict:
+def node_plan(state: OrchestrationState) -> dict:
     """
     Planning node - selects which routers to use (orchestrator level - keep it simple)
-    Determines which routers (rag, web, desktop) should handle the query
+    Determines which routers (database, web, desktop) should handle the query
     """
     t_start = time.time()
     log_query.info(">>> PLAN START (Router Selection)")
@@ -64,18 +64,21 @@ def node_plan(state: ParentState) -> dict:
         reasoning = obj.get("reasoning", "No reasoning provided.")
         
         # Normalize and validate routers
-        allowed_routers = {"rag", "web", "desktop"}
+        allowed_routers = {"database", "web", "desktop"}
         selected_routers = []
         if isinstance(routers_in, list):
             for r in routers_in:
                 r_str = str(r).strip().lower()
+                # Handle legacy "rag" -> "database" conversion
+                if r_str == "rag":
+                    r_str = "database"
                 if r_str in allowed_routers:
                     selected_routers.append(r_str)
         
-        # Fallback: if no routers specified, default to "rag"
+        # Fallback: if no routers specified, default to "database"
         if not selected_routers:
-            selected_routers = ["rag"]
-            log_query.warning("⚠️  No valid routers found, defaulting to 'rag'")
+            selected_routers = ["database"]
+            log_query.warning("⚠️  No valid routers found, defaulting to 'database'")
 
         log_query.info("🎯 ROUTER SELECTION:")
         log_query.info(f"   Selected Routers: {selected_routers}")
@@ -91,5 +94,5 @@ def node_plan(state: ParentState) -> dict:
         log_query.error(f"Router selection failed: {e}")
         t_elapsed = time.time() - t_start
         log_query.info(f"<<< PLAN DONE (Router Selection - with error) in {t_elapsed:.2f}s")
-        # Fallback to rag router
-        return {"selected_routers": ["rag"]}
+        # Fallback to database router
+        return {"selected_routers": ["database"]}

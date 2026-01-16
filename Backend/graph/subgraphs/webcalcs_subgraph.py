@@ -3,7 +3,8 @@ WebCalcs Subgraph
 Handles web-based calculations and tools (Calculator, SkyCiv, Jabacus, etc.)
 """
 from langgraph.graph import StateGraph, START, END
-from models.parent_state import ParentState
+from models.orchestration_state import OrchestrationState
+from models.webcalcs_state import WebCalcsState
 from config.logging_config import log_route
 
 # Import WebCalcs nodes
@@ -29,7 +30,7 @@ def build_webcalcs_subgraph():
     - jabacus: Jabacus tool integration
     - verify: Verify calculation results
     """
-    g = StateGraph(ParentState)  # TODO: Create WebCalcsState in the future
+    g = StateGraph(WebCalcsState)
     
     # Add nodes
     g.add_node("web_router", node_web_router)
@@ -55,10 +56,10 @@ def build_webcalcs_subgraph():
 _webcalcs_subgraph = None
 
 
-def call_webcalcs_subgraph(state: ParentState) -> dict:
+def call_webcalcs_subgraph(state: OrchestrationState) -> dict:
     """
     Wrapper node that invokes the WebCalcs subgraph.
-    This function is called from the parent graph or router_dispatcher.
+    Extracts needed fields from OrchestrationState → WebCalcsState → invokes subgraph → returns results.
     """
     global _webcalcs_subgraph
     
@@ -68,10 +69,32 @@ def call_webcalcs_subgraph(state: ParentState) -> dict:
         _webcalcs_subgraph = build_webcalcs_subgraph()
         log_route.info("✅ WebCalcs subgraph initialized")
     
-    # Invoke subgraph with current state
+    # Extract fields from OrchestrationState and create WebCalcsState
+    state_dict = state if isinstance(state, dict) else asdict(state)
+    
+    webcalcs_state = WebCalcsState(
+        session_id=state_dict.get("session_id", ""),
+        user_query=state_dict.get("user_query", ""),
+        original_question=state_dict.get("original_question"),
+        messages=state_dict.get("messages", []),
+        conversation_history=state_dict.get("conversation_history", []),
+        selected_routers=state_dict.get("selected_routers", []),
+        execution_trace=state_dict.get("execution_trace", []),
+        execution_trace_verbose=state_dict.get("execution_trace_verbose", []),
+    )
+    
+    # Invoke subgraph with WebCalcsState
     try:
-        result = _webcalcs_subgraph.invoke(state)
-        return result
+        result = _webcalcs_subgraph.invoke(webcalcs_state)
+        
+        # Return only key results to orchestration state
+        return {
+            "webcalcs_result": result.get("webcalcs_result"),
+            "web_tools": result.get("web_tools", []),
+            "web_reasoning": result.get("web_reasoning", ""),
+            "execution_trace": result.get("execution_trace", []),
+            "execution_trace_verbose": result.get("execution_trace_verbose", []),
+        }
     except Exception as e:
         log_route.error(f"❌ WebCalcs subgraph failed: {e}")
         import traceback

@@ -44,7 +44,7 @@ EXECUTION_PLANNING_PROMPT = PromptTemplate.from_template(
 
 AVAILABLE ROUTERS AND THEIR CAPABILITIES:
 
-1. "rag" - Information Retrieval & Database Search
+1. "database" - Information Retrieval & Database Search
    - Search databases, documents, BIM data in Supabase
    - Find engineering drawings, specifications, project documents
    - Retrieve building codes, standards, technical documentation
@@ -72,15 +72,15 @@ PLANNING PRINCIPLES:
 
 1. **Task Dependencies**: Some tasks must happen in sequence
    - Example: "Design a beam and verify it meets code"
-     - Step 1: Retrieve design requirements (rag) → needs input data
+     - Step 1: Retrieve design requirements (database) → needs input data
      - Step 2: Calculate required beam capacity (web) → uses loads from Step 1
      - Step 3: Design beam section (web) → uses capacity from Step 2
-     - Step 4: Verify code compliance (rag) → checks design from Step 3
+     - Step 4: Verify code compliance (database) → checks design from Step 3
      - Step 5: Generate design report (desktop) → documents all results
 
 2. **Parallel Execution**: Independent tasks can run simultaneously
    - Example: "Find beam designs and calculate deflection"
-     - Step 1: Search for beam designs (rag) → can run in parallel
+     - Step 1: Search for beam designs (database) → can run in parallel
      - Step 2: Calculate deflection (web) → can run in parallel
 
 3. **Information Flow**: Later steps often need results from earlier steps
@@ -105,7 +105,7 @@ EXECUTION PLAN STRUCTURE:
 Each step in the execution plan should include:
 - step: Sequential step number (1, 2, 3...)
 - description: Clear, actionable description of what this step does
-- router: Which router handles this step ("rag", "web", or "desktop")
+- router: Which router handles this step ("database", "web", or "desktop")
 - status: Initial status is always "pending"
 - dependencies: List of step numbers this step depends on (empty list if none)
 - expected_output: What information or result this step produces
@@ -115,12 +115,12 @@ CRITICAL: Return ONLY valid JSON, no explanations or preamble. Start your respon
 JSON Format:
 {{
   "is_complex": true,
-  "selected_routers": ["rag", "web"],
+  "selected_routers": ["database", "web"],
   "execution_plan": [
     {{
       "step": 1,
       "description": "Clear step description",
-      "router": "rag",
+      "router": "database",
       "status": "pending",
       "dependencies": [],
       "expected_output": "What this step produces"

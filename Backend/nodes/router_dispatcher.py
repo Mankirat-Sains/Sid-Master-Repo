@@ -6,14 +6,14 @@ Runs selected routers in parallel
 import time
 from concurrent.futures import ThreadPoolExecutor
 from langgraph.errors import GraphInterrupt
-from models.parent_state import ParentState
+from models.orchestration_state import OrchestrationState
 from graph.subgraphs.db_retrieval_subgraph import call_db_retrieval_subgraph
 from graph.subgraphs.webcalcs_subgraph import call_webcalcs_subgraph
 from graph.subgraphs.desktop_agent_subgraph import call_desktop_agent_subgraph
 from config.logging_config import log_route
 
 
-def _requires_desktop_agent(state: ParentState) -> bool:
+def _requires_desktop_agent(state: OrchestrationState) -> bool:
     """Determine whether the desktop agent should be invoked."""
     if getattr(state, "requires_desktop_action", False):
         return True
@@ -41,7 +41,7 @@ def _requires_desktop_agent(state: ParentState) -> bool:
     return any(k in text for k in desktop_keywords)
 
 
-def node_router_dispatcher(state: ParentState) -> dict:
+def node_router_dispatcher(state: OrchestrationState) -> dict:
     """Dispatch to appropriate router nodes in parallel"""
     t_start = time.time()
     log_route.info(">>> ROUTER DISPATCHER START")
@@ -59,24 +59,25 @@ def node_router_dispatcher(state: ParentState) -> dict:
     
     results = {}
     
-    # CRITICAL: RAG subgraph must be called directly (not in ThreadPoolExecutor)
+    # CRITICAL: Database subgraph must be called directly (not in ThreadPoolExecutor)
     # to allow GraphInterrupt exceptions to propagate correctly to the parent graph
-    if "rag" in selected_routers:
+    # Handle both "database" and legacy "rag" for backward compatibility
+    if "database" in selected_routers or "rag" in selected_routers:
         log_route.info("🚀 Dispatching to DBRetrieval subgraph")
         try:
-            rag_result = call_db_retrieval_subgraph(state)
-            results["rag"] = rag_result
-            log_route.info("✅ RAG router completed")
+            db_result = call_db_retrieval_subgraph(state)
+            results["database"] = db_result
+            log_route.info("✅ Database router completed")
         except GraphInterrupt:
             # CRITICAL: Re-raise GraphInterrupt to propagate to parent graph
             # This allows the interrupt to be handled at the API level
             raise
         except Exception as e:
-            log_route.error(f"❌ RAG router failed: {e}")
-            results["rag"] = {}
+            log_route.error(f"❌ Database router failed: {e}")
+            results["database"] = {}
     
     # Other routers can run in parallel (they don't use interrupts)
-    other_routers = [r for r in selected_routers if r != "rag"]
+    other_routers = [r for r in selected_routers if r not in ["database", "rag"]]
     if other_routers:
         with ThreadPoolExecutor(max_workers=2) as executor:
             futures = {}
@@ -102,7 +103,10 @@ def node_router_dispatcher(state: ParentState) -> dict:
     # Merge results into state updates
     state_updates = {}
     
-    if "rag" in results:
+    if "database" in results:
+        db_result = results["database"]
+        state_updates.update(db_result)
+    elif "rag" in results:  # Legacy support
         rag_result = results["rag"]
         state_updates.update(rag_result)
     

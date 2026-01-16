@@ -1,38 +1,31 @@
 """
 DesktopAgent Subgraph
 Handles desktop application interactions and delegates to specific desktop agents.
-Structure matches commit 32b6666 (see CODEBASE_STRUCTURE_32b6666.md) while keeping
-doc-generation compatibility when workflow demands it.
+Routes to ExcelAgent, WordAgent, or RevitAgent based on desktop_router decisions.
 """
 from dataclasses import asdict
 from langgraph.graph import StateGraph, END
 
-from models.rag_state import RAGState
-from models.parent_state import ParentState
+from models.orchestration_state import OrchestrationState
+from models.desktop_agent_state import DesktopAgentState
 from config.logging_config import log_route
 from config.settings import DEEP_AGENT_ENABLED
 from nodes.DesktopAgent.desktop_router import node_desktop_router
-from nodes.DesktopAgent.excel_agent import node_excel_agent
-from nodes.DesktopAgent.word_agent import node_word_agent
-from nodes.DesktopAgent.revit_agent import node_revit_agent
-from graph.subgraphs.desktop.docgen_subgraph import call_doc_generation_subgraph
+from nodes.DesktopAgent.ExcelAgent.excel_agent import node_excel_agent
+from nodes.DesktopAgent.WordAgent.word_agent import node_word_agent
+from nodes.DesktopAgent.RevitAgent.revit_agent import node_revit_agent
 from graph.subgraphs.deep_desktop_subgraph import call_deep_desktop_subgraph
 from graph.tracing import wrap_subgraph_node
 
 
-def _desktop_to_next(state: RAGState) -> str:
+def _desktop_to_next(state: DesktopAgentState) -> str:
     """
     Route after desktop router:
-    - If doc generation is requested, route to deep_desktop when enabled, otherwise doc_generation.
-    - Otherwise route to the requested desktop app agent or finish.
+    - Route to the requested desktop app agent (excel, word, revit)
+    - Word agent handles doc generation internally
     """
-    workflow = getattr(state, "workflow", None)
-    task_type = getattr(state, "task_type", None)
     selected_app = (getattr(state, "selected_app", None) or "").lower()
     desktop_tools = getattr(state, "desktop_tools", []) or []
-
-    if workflow == "docgen" or task_type in {"doc_section", "doc_report"}:
-        return "deep_desktop" if DEEP_AGENT_ENABLED else "doc_generation"
 
     target = selected_app or (str(desktop_tools[0]).lower() if desktop_tools else "")
 
@@ -48,15 +41,15 @@ def _desktop_to_next(state: RAGState) -> str:
 def build_desktop_agent_subgraph():
     """
     Build the DesktopAgent subgraph.
-    Structure: desktop_router → (excel|word|revit|docgen) → finish.
+    Structure: desktop_router → (excel_agent|word_agent|revit_agent) → finish.
+    Word agent handles doc generation internally.
     """
-    g = StateGraph(RAGState)
+    g = StateGraph(DesktopAgentState)
 
     g.add_node("desktop_router", wrap_subgraph_node("desktop_router")(node_desktop_router))
     g.add_node("excel_agent", wrap_subgraph_node("excel_agent")(node_excel_agent))
     g.add_node("word_agent", wrap_subgraph_node("word_agent")(node_word_agent))
     g.add_node("revit_agent", wrap_subgraph_node("revit_agent")(node_revit_agent))
-    g.add_node("doc_generation", wrap_subgraph_node("doc_generation")(call_doc_generation_subgraph))
     if DEEP_AGENT_ENABLED:
         g.add_node("deep_desktop", wrap_subgraph_node("deep_desktop")(call_deep_desktop_subgraph))
     g.add_node("finish", wrap_subgraph_node("finish")(lambda state: {}))
@@ -69,7 +62,6 @@ def build_desktop_agent_subgraph():
             _desktop_to_next,
             {
                 "deep_desktop": "deep_desktop",
-                "doc_generation": "doc_generation",
                 "excel_agent": "excel_agent",
                 "word_agent": "word_agent",
                 "revit_agent": "revit_agent",
@@ -82,7 +74,6 @@ def build_desktop_agent_subgraph():
             "desktop_router",
             _desktop_to_next,
             {
-                "doc_generation": "doc_generation",
                 "excel_agent": "excel_agent",
                 "word_agent": "word_agent",
                 "revit_agent": "revit_agent",
@@ -90,7 +81,6 @@ def build_desktop_agent_subgraph():
             },
         )
 
-    g.add_edge("doc_generation", "finish")
     g.add_edge("excel_agent", "finish")
     g.add_edge("word_agent", "finish")
     g.add_edge("revit_agent", "finish")
@@ -102,9 +92,10 @@ def build_desktop_agent_subgraph():
 _desktop_agent_subgraph = None
 
 
-def call_desktop_agent_subgraph(state: ParentState) -> dict:
+def call_desktop_agent_subgraph(state: OrchestrationState) -> dict:
     """
     Wrapper node that invokes the DesktopAgent subgraph.
+    Extracts needed fields from OrchestrationState → DesktopAgentState → invokes subgraph → returns results.
     """
     global _desktop_agent_subgraph
 
@@ -113,21 +104,77 @@ def call_desktop_agent_subgraph(state: ParentState) -> dict:
         _desktop_agent_subgraph = build_desktop_agent_subgraph()
         log_route.info("✅ DesktopAgent subgraph initialized")
 
-    # Normalize state to RAGState with defaults for new fields
+    # Extract fields from OrchestrationState and create DesktopAgentState
     state_dict = state if isinstance(state, dict) else asdict(state)
-    rag_state_dict = _ensure_rag_state_fields(state_dict)
-    rag_state = RAGState(**rag_state_dict)
+    
+    # Create DesktopAgentState with fields from orchestration state
+    desktop_state = DesktopAgentState(
+        session_id=state_dict.get("session_id", ""),
+        user_query=state_dict.get("user_query", ""),
+        original_question=state_dict.get("original_question"),
+        user_role=state_dict.get("user_role"),
+        messages=state_dict.get("messages", []),
+        conversation_history=state_dict.get("conversation_history", []),
+        selected_app=state_dict.get("selected_app", ""),
+        operation_type=state_dict.get("operation_type", ""),
+        file_path=state_dict.get("file_path", ""),
+        verification_result=state_dict.get("verification_result", {}),
+        desktop_tools=state_dict.get("desktop_tools", []),
+        desktop_reasoning=state_dict.get("desktop_reasoning", ""),
+        workflow=state_dict.get("workflow"),
+        desktop_policy=state_dict.get("desktop_policy"),
+        task_type=state_dict.get("task_type"),
+        doc_type=state_dict.get("doc_type"),
+        section_type=state_dict.get("section_type"),
+        doc_request=state_dict.get("doc_request"),
+        requires_desktop_action=state_dict.get("requires_desktop_action", False),
+        desktop_action_plan=state_dict.get("desktop_action_plan"),
+        desktop_steps=state_dict.get("desktop_steps", []),
+        desktop_execution=state_dict.get("desktop_execution"),
+        output_artifact_ref=state_dict.get("output_artifact_ref"),
+        desktop_plan_steps=state_dict.get("desktop_plan_steps", []),
+        desktop_current_step=state_dict.get("desktop_current_step", 0),
+        desktop_iteration_count=state_dict.get("desktop_iteration_count", 0),
+        desktop_workspace_dir=state_dict.get("desktop_workspace_dir"),
+        desktop_workspace_files=state_dict.get("desktop_workspace_files", []),
+        desktop_memories=state_dict.get("desktop_memories", []),
+        desktop_context=state_dict.get("desktop_context", {}),
+        desktop_interrupt_pending=state_dict.get("desktop_interrupt_pending", False),
+        desktop_approved_actions=state_dict.get("desktop_approved_actions", []),
+        desktop_interrupt_data=state_dict.get("desktop_interrupt_data"),
+        tool_execution_log=state_dict.get("tool_execution_log", []),
+        large_output_refs=state_dict.get("large_output_refs", {}),
+        desktop_loop_result=state_dict.get("desktop_loop_result"),
+        doc_generation_result=state_dict.get("doc_generation_result"),
+        doc_generation_warnings=state_dict.get("doc_generation_warnings", []),
+        needs_retrieval=state_dict.get("needs_retrieval", True),
+        retrieval_completed=state_dict.get("retrieval_completed", False),
+        execution_trace=state_dict.get("execution_trace", []),
+        execution_trace_verbose=state_dict.get("execution_trace_verbose", []),
+    )
 
-    parent_trace = rag_state.execution_trace or []
-    parent_verbose = rag_state.execution_trace_verbose or []
+    parent_trace = desktop_state.execution_trace or []
+    parent_verbose = desktop_state.execution_trace_verbose or []
 
     try:
-        result = _desktop_agent_subgraph.invoke(rag_state)
+        result = _desktop_agent_subgraph.invoke(desktop_state)
         if not isinstance(result, dict):
             return {"desktop_result": result}
+        
+        # Extract only key results to return to orchestration state
         return {
-            **result,
-            "desktop_result": result,
+            "desktop_result": result.get("desktop_result") or result,
+            "desktop_tools": result.get("desktop_tools", []),
+            "desktop_reasoning": result.get("desktop_reasoning", ""),
+            "selected_app": result.get("selected_app", ""),
+            "workflow": result.get("workflow"),
+            "task_type": result.get("task_type"),
+            "doc_type": result.get("doc_type"),
+            "section_type": result.get("section_type"),
+            "doc_generation_result": result.get("doc_generation_result"),
+            "doc_generation_warnings": result.get("doc_generation_warnings", []),
+            "final_answer": result.get("final_answer"),
+            "answer_citations": result.get("answer_citations", []),
             "execution_trace": parent_trace + (result.get("execution_trace", []) or []),
             "execution_trace_verbose": parent_verbose + (result.get("execution_trace_verbose", []) or []),
         }
@@ -140,28 +187,3 @@ def call_desktop_agent_subgraph(state: ParentState) -> dict:
             "desktop_tools": [],
             "desktop_reasoning": f"Error: {str(e)}",
         }
-
-
-def _ensure_rag_state_fields(state_dict: dict) -> dict:
-    """Ensure all RAGState fields exist in the state dictionary."""
-    rag_state_defaults = {
-        "selected_app": "",
-        "operation_type": "",
-        "desktop_plan_steps": [],
-        "desktop_current_step": 0,
-        "desktop_iteration_count": 0,
-        "desktop_workspace_dir": None,
-        "desktop_workspace_files": [],
-        "desktop_memories": [],
-        "desktop_context": {},
-        "desktop_interrupt_pending": False,
-        "desktop_approved_actions": [],
-        "desktop_interrupt_data": None,
-        "tool_execution_log": [],
-        "large_output_refs": {},
-        "desktop_loop_result": None,
-    }
-    for field, default in rag_state_defaults.items():
-        if field not in state_dict:
-            state_dict[field] = default
-    return state_dict

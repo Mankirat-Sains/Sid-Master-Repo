@@ -13,7 +13,7 @@ if backend_dir.exists() and str(backend_dir) not in sys.path:
     sys.path.append(str(backend_dir))
 
 from Backend.graph.builder import build_graph  # noqa: E402
-from Backend.models.parent_state import ParentState  # noqa: E402
+from Backend.models.orchestration_state import OrchestrationState  # noqa: E402
 
 
 def test_doc_generation_branch(monkeypatch):
@@ -63,7 +63,7 @@ def test_doc_generation_branch(monkeypatch):
 
     app = build_graph()
     out = app.invoke(
-        ParentState(user_query="Open artifact X in Word and apply edits"),
+        OrchestrationState(user_query="Open artifact X in Word and apply edits"),
         config={"configurable": {"thread_id": "test-docgen"}},
     )
 
@@ -108,7 +108,7 @@ def test_qa_branch_skips_doc_generation(monkeypatch):
 
     app = build_graph()
     out = app.invoke(
-        ParentState(user_query="Summarize report X"),
+        OrchestrationState(user_query="Summarize report X"),
         config={"configurable": {"thread_id": "test-qa"}},
     )
 

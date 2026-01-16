@@ -4,10 +4,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "node -e \"require('fs').mkdirSync('.nuxt', {recursive: true})\" && cross-env NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt dev",
-        "build": "node -e \"require('fs').mkdirSync('.nuxt', {recursive: true})\" && cross-env NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt build",
-        "generate": "node -e \"require('fs').mkdirSync('.nuxt', {recursive: true})\" && cross-env NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt generate",
-        "preview": "node -e \"require('fs').mkdirSync('.nuxt', {recursive: true})\" && cross-env NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt preview",
+        "dev": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt dev",
+        "build": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt build",
+        "generate": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt generate",
+        "preview": "mkdir -p .nuxt && NODE_OPTIONS=\"--localstorage-file=.nuxt/localstorage.json\" nuxt preview",
         "postinstall": "nuxt prepare",
         "lint": "eslint .",
         "typecheck": "vue-tsc --noEmit"

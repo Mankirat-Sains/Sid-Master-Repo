@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-FastAPI server for Mantle RAG Chat Interface
-Connect the chatbutton Electron app to the rag.py backend
+FastAPI server for Sidian Query Orchestration System
+Provides REST API endpoints for the query execution pipeline
 """
 
 # Windows async event loop fix - required for proper SSE streaming on Windows
@@ -37,7 +37,7 @@ try:
         extract_interrupt_data,
         create_approval_payload,
         validate_action_approval,
-        ensure_rag_state_compatibility,
+        ensure_desktop_agent_state_compatibility,
         get_deep_agent_state_summary,
     )
 except ImportError:  # pragma: no cover - fallback for alternative module paths
@@ -45,7 +45,7 @@ except ImportError:  # pragma: no cover - fallback for alternative module paths
         extract_interrupt_data,
         create_approval_payload,
         validate_action_approval,
-        ensure_rag_state_compatibility,
+        ensure_desktop_agent_state_compatibility,
         get_deep_agent_state_summary,
     )
 
@@ -58,8 +58,8 @@ else:
     load_dotenv(override=True)
     print(f"⚠️ Root .env not found at {root_env_path}, using current environment")
 
-# Import the RAG system from new modular structure
-from main import run_agentic_rag, rag_healthcheck
+# Import the query execution system
+from main import execute_query, query_system_healthcheck
 from nodes.DBRetrieval.KGdb import test_database_connection
 from config.settings import PROJECT_CATEGORIES, CATEGORIES_PATH, PLANNER_PLAYBOOK, PLAYBOOK_PATH, DEBUG_MODE, MAX_CONVERSATION_HISTORY
 
@@ -178,36 +178,6 @@ def strip_asterisks_from_projects(text: str) -> str:
     return text
 
 
-def sanitize_file_path(file_path: str) -> str:
-    r"""
-    Sanitize file path from Supabase:
-    1. Stop at \md (remove \md and everything after)
-    2. Change .md extension to .pdf
-    3. Prepend network path: \\\\WADDELLNAS\\Resources\\References & Codes\\
-    
-    Example:
-    Input:  "NBCC\\nbc2020_p1\\md\\nbc2020_p1_page-379.md"
-    Output: "\\\\WADDELLNAS\\Resources\\References & Codes\\NBCC\\nbc2020_p1.pdf"
-    
-    Input:  "base\\ASCE7-10WindLoadingProvisionsStaticProcedure\\md\\ASCE7-10WindLoadingProvisionsStaticProcedure_page-014.md"
-    Output: "\\\\WADDELLNAS\\Resources\\References & Codes\\base\\ASCE7-10WindLoadingProvisionsStaticProcedure.pdf"
-    """
-    if not file_path:
-        return ""
-    
-    # Stop at \md (remove \md and everything after)
-    if "\\md" in file_path:
-        file_path = file_path.split("\\md")[0]
-    
-    # Change .md extension to .pdf
-    if file_path.endswith(".md"):
-        file_path = file_path[:-3] + ".pdf"
-    
-    # Prepend network path
-    network_path = "\\\\WADDELLNAS\\Resources\\References & Codes\\"
-    sanitized_path = network_path + file_path
-    
-    return sanitized_path
 
 
 def wrap_code_file_links(text: str, code_citations: List[Dict]) -> str:
@@ -998,7 +968,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Enable CORS for the Electron desktop app
+# Enable CORS for frontend applications
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allow all origins for desktop app
@@ -1143,14 +1113,6 @@ class ActionApprovalResponse(BaseModel):
     resumed: bool
     next_state: Optional[dict] = None
 
-class FeedbackRequest(BaseModel):
-    message_id: str
-    rating: str  # 'positive' or 'negative'
-    comment: Optional[str] = ""
-    user_question: str
-    response: str
-    timestamp: str
-
 class HealthResponse(BaseModel):
     status: str
     system_info: Dict[str, Any]
@@ -1161,8 +1123,8 @@ class HealthResponse(BaseModel):
 async def health_check():
     """System health check"""
     try:
-        # Get system info from rag healthcheck
-        health_info = rag_healthcheck()
+        # Get system info from query system healthcheck
+        health_info = query_system_healthcheck()
         
         return HealthResponse(
             status="healthy",
@@ -1177,52 +1139,6 @@ async def health_check():
             timestamp=datetime.now().isoformat()
         )
 
-# Debug endpoint to check if project categories and playbook are loaded
-@app.get("/debug/categories")
-async def debug_categories():
-    """Debug endpoint to check if project categories and playbook are loaded"""
-    try:
-        # Check categories
-        categories_loaded = PROJECT_CATEGORIES != "No project categories provided."
-        categories_file_exists = CATEGORIES_PATH.exists() if hasattr(CATEGORIES_PATH, 'exists') else False
-        
-        # Check playbook
-        playbook_loaded = PLANNER_PLAYBOOK != "No playbook provided."
-        playbook_file_exists = PLAYBOOK_PATH.exists() if hasattr(PLAYBOOK_PATH, 'exists') else False
-        
-        return {
-            "categories": {
-                "loaded": categories_loaded,
-                "file_path": str(CATEGORIES_PATH),
-                "file_exists": categories_file_exists,
-                "content_length": len(PROJECT_CATEGORIES) if categories_loaded else 0,
-                "preview": PROJECT_CATEGORIES[:500] if categories_loaded else "Not loaded"
-            },
-            "playbook": {
-                "loaded": playbook_loaded,
-                "file_path": str(PLAYBOOK_PATH),
-                "file_exists": playbook_file_exists,
-                "content_length": len(PLANNER_PLAYBOOK) if playbook_loaded else 0,
-                "preview": PLANNER_PLAYBOOK[:500] if playbook_loaded else "Not loaded"
-            },
-            "error": None
-        }
-    except Exception as e:
-        return {
-            "categories": {
-                "loaded": False,
-                "file_path": "Unknown",
-                "file_exists": False,
-                "error": str(e)
-            },
-            "playbook": {
-                "loaded": False,
-                "file_path": "Unknown",
-                "file_exists": False,
-                "error": str(e)
-            },
-            "error": str(e)
-        }
 
 
 # ---------------------------------------------------------------------------
@@ -1277,361 +1193,6 @@ async def _resume_graph(graph, session_id: str):
         return None
 
 
-# Main chat endpoint
-# NOTE: This endpoint should ideally not be called if /chat/stream is being used.
-# If both are called, it causes duplication. Frontend should use /chat/stream for real-time logs.
-@app.post("/chat", response_model=ChatResponse)
-async def chat_handler(request: ChatRequest):
-    """
-    Handle chat requests from the Electron chatbutton app.
-    
-    WARNING: This endpoint runs the full pipeline synchronously. For real-time thinking logs,
-    use /chat/stream instead. If both endpoints are called, it causes duplication.
-
-    Expected request format:
-    {
-        "message": "What are the roof truss bracing notes for 25-07-003?",
-        "session_id": "desktop"
-    }
-
-    Returns:
-    {
-        "reply": "The answer from the RAG system...",
-        "session_id": "desktop",
-        "timestamp": "2024-01-01T12:00:00",
-        "latency_ms": 1250.5,
-        "citations": 5,
-        "route": "drawings",
-        "message_id": "msg_12345_abcdef"
-    }
-    """
-    import time
-    import uuid
-    start_time = time.time()
-
-    try:
-        logger.info(f"Processing chat request from session '{request.session_id}': {request.message[:100]}...")
-        logger.warning("⚠️ /chat endpoint called - consider using /chat/stream for real-time logs to avoid duplication")
-
-        # Generate unique message ID for feedback tracking
-        message_id = f"msg_{int(time.time())}_{uuid.uuid4().hex[:8]}"
-
-        # Consolidate images: use images_base64 array if provided, else fallback to single image_base64
-        images_to_process = request.images_base64 or []
-        if not images_to_process and request.image_base64:
-            images_to_process = [request.image_base64]  # Backwards compatibility
-        
-        # Log image receipt status
-        logger.info(f"📸 IMAGE RECEIPT: images_base64={request.images_base64 is not None}, image_base64={request.image_base64 is not None}")
-        logger.info(f"📸 IMAGES TO PROCESS: count={len(images_to_process)}, has_images={len(images_to_process) > 0}")
-        if images_to_process:
-            logger.info(f"📸 Image data lengths: {[len(img) for img in images_to_process[:3]]} chars (showing first 3)")
-        
-        # Run the agentic RAG system (with optional images for VLM processing)
-        # Use wrapper that adds thinking logs
-        from thinking.rag_wrapper import run_agentic_rag_with_thinking_logs
-        
-        logger.info(f"🔄 Calling run_agentic_rag_with_thinking_logs with images_base64={images_to_process if images_to_process else None}")
-        rag_result = run_agentic_rag_with_thinking_logs(
-            question=request.message,
-            session_id=request.session_id,
-            data_sources=request.data_sources,
-            images_base64=images_to_process if images_to_process else None
-        )
-
-        # Extract the answer(s)
-        answer = rag_result.get("answer", "No answer generated.")
-        code_answer = rag_result.get("code_answer")  # May be None if code_db not enabled
-        coop_answer = rag_result.get("coop_answer")  # May be None if coop_manual not enabled
-        code_citations = rag_result.get("code_citations", [])
-        coop_citations = rag_result.get("coop_citations", [])
-        project_citations = rag_result.get("citations", [])
-        image_similarity_results = rag_result.get("image_similarity_results", [])  # Similar images from embedding search
-        follow_up_questions = rag_result.get("follow_up_questions", [])  # Follow-up questions from verifier
-        follow_up_suggestions = rag_result.get("follow_up_suggestions", [])  # Follow-up suggestions from verifier
-        doc_answer_text = None
-        
-        # Only extract doc_generation_result if workflow is docgen (not qa/rag)
-        # This ensures RAG subgraph results don't include document generation artifacts
-        workflow = rag_result.get("workflow")
-        doc_generation_result_payload = rag_result.get("doc_generation_result") if workflow == "docgen" else None
-        
-        citations_metadata = _ensure_citations_metadata(
-            doc_generation_result_payload if isinstance(doc_generation_result_payload, dict) else None,
-            project_citations,
-            rag_result.get("doc_generation_warnings") or rag_result.get("warnings") or [],
-            request.message,
-            expanded_queries=rag_result.get("expanded_queries") or [],
-            support_score=rag_result.get("support") or rag_result.get("answer_support_score"),
-        )
-        if isinstance(doc_generation_result_payload, dict) and not doc_generation_result_payload.get("citations_metadata"):
-            doc_generation_result_payload = dict(doc_generation_result_payload)
-            doc_generation_result_payload["citations_metadata"] = citations_metadata
-        print(
-            f"🐛 DEBUG: /chat citations_metadata docs={len(citations_metadata.get('documents', [])) if isinstance(citations_metadata, dict) else 0}"
-        )
-        doc_summary = None
-        
-        # Check which databases were used
-        has_project = bool(answer and answer.strip())
-        has_code = bool(code_answer and code_answer.strip())
-        has_coop = bool(coop_answer and coop_answer.strip())
-        enabled_count = sum([has_project, has_code, has_coop])
-        multiple_enabled = enabled_count > 1
-        
-        # Note: References sections are no longer added automatically
-        # Only inline citations in brackets are used (as specified in the prompts)
-        
-        # Handle empty or None answers
-        if not answer or answer.strip() == "":
-            # Only set error message if there's no code_answer or coop_answer (pure project_db mode)
-            if not code_answer or not code_answer.strip():
-                if not coop_answer or not coop_answer.strip():
-                    answer = "I couldn't generate a response. Please try rephrasing your question or check that the system is properly configured."
-        
-        # Process answers separately for multi-bubble display
-        if multiple_enabled:
-            # Multiple databases enabled - return separate answers
-            # Strip asterisks from project names/numbers
-            processed_project_answer = strip_asterisks_from_projects(answer) if has_project else None
-            
-            # Wrap code file citations with file-link tags (shows filename)
-            processed_code_answer = wrap_code_file_links(code_answer, code_citations) if (has_code and code_citations) else code_answer
-            
-            # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
-            if has_code:
-                processed_code_answer = wrap_external_links(processed_code_answer)
-            
-            # Wrap coop file citations with file-link tags (shows page number only)
-            processed_coop_answer = wrap_coop_file_links(coop_answer, coop_citations) if (has_coop and coop_citations) else coop_answer
-            
-            # Calculate latency
-            latency_ms = (time.time() - start_time) * 1000
-
-            # Log to Supabase (combine for logging purposes)
-            supabase_logger = get_supabase_logger()
-            if supabase_logger.enabled:
-                user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
-                # Build combined logging text
-                parts = []
-                if has_project:
-                    parts.append(answer)
-                if has_code:
-                    parts.append(f"--- Code References ---\n\n{code_answer}")
-                if has_coop:
-                    parts.append(f"--- Training Manual References ---\n\n{coop_answer}")
-                combined_for_logging = "\n\n".join(parts)
-                
-                # Upload first image if provided (for logging)
-                image_url = None
-                if images_to_process and len(images_to_process) > 0:
-                    image_url = supabase_logger.upload_image(
-                        images_to_process[0],
-                        message_id,
-                        "image/png"
-                    )
-
-                query_data = {
-                    "message_id": message_id,
-                    "session_id": request.session_id,
-                    "user_query": request.message,
-                    "rag_response": combined_for_logging,
-                    "route": rag_result.get("route"),
-                    "citations_count": len(project_citations) + len(code_citations) + len(coop_citations),
-                    "latency_ms": round(latency_ms, 2),
-                    "user_identifier": user_identifier,
-                    "image_url": image_url
-                }
-                supabase_logger.log_user_query(query_data)
-
-            # Extract thinking log from result
-            thinking_log = rag_result.get("thinking_log", [])
-            
-            # Return separate answers
-            doc_answer_text = processed_project_answer or processed_code_answer or processed_coop_answer or answer
-            
-            # Only format document summary if workflow is docgen (not qa/rag)
-            # This ensures document statistics only appear for doc generation, not RAG queries
-            doc_summary = None
-            if workflow == "docgen" and doc_generation_result_payload:
-                doc_summary = format_document_summary(
-                    doc_generation_result_payload,
-                    rag_result.get("doc_type"),
-                    rag_result.get("section_type"),
-                    doc_answer_text,
-                )
-                if doc_summary and isinstance(doc_generation_result_payload, dict):
-                    doc_generation_result_payload = dict(doc_generation_result_payload)
-                    doc_generation_result_payload["document_summary"] = doc_summary
-            response = ChatResponse(
-                reply=processed_project_answer or processed_code_answer or processed_coop_answer or "No answer generated.",  # Primary answer (for backward compatibility)
-                session_id=request.session_id,
-                timestamp=datetime.now().isoformat(),
-                latency_ms=round(latency_ms, 2),
-                citations=len(project_citations) + len(code_citations) + len(coop_citations),  # Total citations
-                route=rag_result.get("route"),
-                message_id=message_id,
-                project_answer=processed_project_answer,
-                code_answer=processed_code_answer,
-                coop_answer=processed_coop_answer,
-                project_citations=len(project_citations) if has_project else None,
-                code_citations=len(code_citations) if has_code else None,
-                coop_citations=len(coop_citations) if has_coop else None,
-                image_similarity_results=image_similarity_results if image_similarity_results else None,
-                thinking_log=thinking_log if thinking_log else None,
-                follow_up_questions=follow_up_questions if follow_up_questions else None,
-                follow_up_suggestions=follow_up_suggestions if follow_up_suggestions else None,
-                execution_trace=rag_result.get("execution_trace"),
-                node_path=" → ".join(rag_result.get("execution_trace", []) or []),
-                workflow=rag_result.get("workflow"),
-                task_type=rag_result.get("task_type"),
-                doc_type=rag_result.get("doc_type"),
-                section_type=rag_result.get("section_type"),
-                warnings=rag_result.get("doc_generation_warnings"),
-                doc_generation_result=doc_generation_result_payload,
-                doc_generation_warnings=rag_result.get("doc_generation_warnings"),
-                citations_metadata=citations_metadata,
-            )
-        else:
-            # Single answer mode (backward compatible)
-            if code_answer and code_answer.strip():
-                combined_answer = code_answer
-                total_citations = len(code_citations)
-            elif coop_answer and coop_answer.strip():
-                combined_answer = coop_answer
-                total_citations = len(coop_citations)
-            else:
-                combined_answer = answer
-                total_citations = len(project_citations)
-            
-            # Strip asterisks from project names/numbers
-            combined_answer = strip_asterisks_from_projects(combined_answer)
-            
-            # Wrap code file citations with file-link tags for clickable links
-            if code_citations:
-                combined_answer = wrap_code_file_links(combined_answer, code_citations)
-            
-            # Wrap coop file citations with file-link tags for clickable links
-            if coop_citations:
-                combined_answer = wrap_code_file_links(combined_answer, coop_citations)
-            
-            # Convert external links to file-link format (for sidian-bot links) - works with existing frontend handlers
-            if code_answer and code_answer.strip():
-                combined_answer = wrap_external_links(combined_answer)
-
-            # Calculate latency
-            latency_ms = (time.time() - start_time) * 1000
-
-            # Log to Supabase
-            supabase_logger = get_supabase_logger()
-            if supabase_logger.enabled:
-                user_identifier = request.user_identifier or f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
-                
-                # Upload first image if provided (for logging)
-                image_url = None
-                if images_to_process and len(images_to_process) > 0:
-                    image_url = supabase_logger.upload_image(
-                        images_to_process[0],
-                        message_id,
-                        "image/png"
-                    )
-
-                query_data = {
-                    "message_id": message_id,
-                    "session_id": request.session_id,
-                    "user_query": request.message,
-                    "rag_response": combined_answer,
-                    "route": rag_result.get("route"),
-                    "citations_count": total_citations,
-                    "latency_ms": round(latency_ms, 2),
-                    "user_identifier": user_identifier,
-                    "image_url": image_url
-                }
-                supabase_logger.log_user_query(query_data)
-
-            # Extract thinking log from result
-            thinking_log = rag_result.get("thinking_log", [])
-            
-            # Prepare response
-            doc_answer_text = combined_answer
-            
-            # Only format document summary if workflow is docgen (not qa/rag)
-            # This ensures document statistics only appear for doc generation, not RAG queries
-            doc_summary = None
-            if workflow == "docgen" and doc_generation_result_payload:
-                doc_summary = format_document_summary(
-                    doc_generation_result_payload,
-                    rag_result.get("doc_type"),
-                    rag_result.get("section_type"),
-                    doc_answer_text,
-                )
-                if doc_summary and isinstance(doc_generation_result_payload, dict):
-                    doc_generation_result_payload = dict(doc_generation_result_payload)
-                    doc_generation_result_payload["document_summary"] = doc_summary
-            response = ChatResponse(
-                reply=combined_answer,
-                session_id=request.session_id,
-                timestamp=datetime.now().isoformat(),
-                latency_ms=round(latency_ms, 2),
-                citations=total_citations,
-                route=rag_result.get("route"),
-                message_id=message_id,
-                image_similarity_results=image_similarity_results if image_similarity_results else None,
-                thinking_log=thinking_log if thinking_log else None,
-                follow_up_questions=follow_up_questions if follow_up_questions else None,
-                follow_up_suggestions=follow_up_suggestions if follow_up_suggestions else None,
-                execution_trace=rag_result.get("execution_trace"),
-                node_path=" → ".join(rag_result.get("execution_trace", []) or []),
-                workflow=rag_result.get("workflow"),
-                task_type=rag_result.get("task_type"),
-                doc_type=rag_result.get("doc_type"),
-                section_type=rag_result.get("section_type"),
-                warnings=rag_result.get("doc_generation_warnings"),
-                doc_generation_result=doc_generation_result_payload,
-                doc_generation_warnings=rag_result.get("doc_generation_warnings"),
-                citations_metadata=citations_metadata,
-            )
-
-        if should_materialize_doc(rag_result.get("workflow"), rag_result.get("task_type"), rag_result.get("doc_generation_result")):
-            # Fallback to final_answer if doc_answer_text is empty
-            doc_answer_text = doc_answer_text or rag_result.get("final_answer") or rag_result.get("answer")
-            document_state = materialize_onlyoffice_document(
-                doc_generation_result_payload,
-                doc_answer_text or answer,
-                request.session_id,
-                message_id,
-            )
-            if document_state:
-                response.document_state = document_state
-                response.reply = doc_summary or "✅ Please refer to the document"
-                doc_url = document_state.get("docUrl") or document_state.get("onlyoffice", {}).get("docUrl")
-                logger.warning(f"📑 Chat response includes document_state with url={doc_url}")
-                print(f"📑 Chat document_state url={doc_url}")
-
-        if doc_summary:
-            response.reply = doc_summary
-
-        logger.info(f"Successfully processed request in {latency_ms:.2f}ms [ID: {message_id}]")
-        return response
-
-    except Exception as e:
-        logger.error(f"Error processing chat request: {e}")
-        latency_ms = (time.time() - start_time) * 1000
-
-        # Return error response
-        error_response = ChatResponse(
-            reply=f"I encountered an error while processing your request: {str(e)}",
-            session_id=request.session_id,
-            timestamp=datetime.now().isoformat(),
-            latency_ms=round(latency_ms, 2),
-            citations=0,
-            message_id=f"err_{int(time.time())}",
-            thinking_log=None
-        )
-
-        # Don't raise HTTPException here - return error message instead
-        # The Electron app expects a ChatResponse object
-        return error_response
 
 
 # Streaming chat endpoint with real-time thinking logs
@@ -1735,7 +1296,7 @@ async def chat_stream_handler(request: ChatRequest):
             
             # Import graph and state
             from main import graph
-            from models.parent_state import ParentState
+            from models.orchestration_state import OrchestrationState
             from dataclasses import asdict
             from thinking.intelligent_log_generator import IntelligentLogGenerator
             from models.memory import intelligent_query_rewriter
@@ -1833,7 +1394,7 @@ async def chat_stream_handler(request: ChatRequest):
             
             # Create initial state with messages and original question
             # This follows LangGraph best practices for short-term memory
-            init_state = ParentState(
+            init_state = OrchestrationState(
                 session_id=request.session_id,
                 user_query=rewritten_query,  # Rewritten query for retrieval (with context)
                 original_question=request.message,  # Original question (for storing in messages)
@@ -1872,16 +1433,7 @@ async def chat_stream_handler(request: ChatRequest):
                 logger.info(f"💾 Checkpointer: Will save state after each node ({durability_mode} mode)")
             
             node_count = 0
-            # Use multiple stream modes per LangGraph best practices:
-            # - "updates": State updates per node with node names {node_name: state_updates}
-            # - "custom": Custom events emitted from nodes (for real-time progress)
-            # - "messages": LLM tokens as they're generated (for real-time answer streaming)
-            # NOTE: LangGraph automatically saves state to checkpointer after each node when:
-            #       1. Graph is compiled with checkpointer
-            #       2. Config includes thread_id
-            #       3. Using graph.astream() or graph.ainvoke()
-            #       4. Durability mode controls WHEN it saves (exit = only at end, async/sync = after each node)
-            # CRITICAL: durability is a DIRECT parameter, not in config dict!
+
             messages_received = 0
             async for stream_mode, chunk in graph.astream(
                 asdict(init_state),
@@ -1994,7 +1546,7 @@ async def chat_stream_handler(request: ChatRequest):
                             query=request.message,
                             selected_routers=state_dict.get("selected_routers", [])
                         )
-                    elif node_name == "rag":
+                    elif node_name == "database" or node_name == "rag":  # Support legacy "rag"
                         thinking_log = log_generator.generate_rag_log(
                             query=request.message,
                             query_plan=state_dict.get("query_plan"),
@@ -2385,7 +1937,7 @@ async def chat_stream_handler(request: ChatRequest):
             interrupt_payload = extract_interrupt_data(interrupt)
             try:
                 state_snapshot = await _load_thread_state(graph, request.session_id)
-                safe_state = ensure_rag_state_compatibility(state_snapshot)
+                safe_state = ensure_desktop_agent_state_compatibility(state_snapshot)
                 safe_state["desktop_interrupt_pending"] = True
                 safe_state["desktop_interrupt_data"] = interrupt_payload
                 await _update_thread_state(
@@ -2562,21 +2114,9 @@ async def doc_agent_history(doc_id: str, limit: int = 100):
     return await _doc_agent_request("get", "/api/doc/history", params={"doc_id": doc_id, "limit": limit})
 
 
-# Additional endpoint for compatibility with different response formats
-@app.post("/chat/legacy")
-async def chat_legacy(request: ChatRequest):
-    """
-    Legacy endpoint that returns the exact format the chatbutton originally expected.
-    Returns answer field instead of reply for backward compatibility.
-    """
-    response = await chat_handler(request)
-    return {
-        "answer": response.reply,
-        "session_id": response.session_id,
-        "citations": response.citations,
-        "route": response.route,
-        "data_sources": response.data_sources
-    }
+# Legacy endpoint REMOVED - use /chat/stream instead
+# The /chat/legacy endpoint has been removed to simplify the codebase
+# All clients should migrate to the streaming endpoint
 
 # IFC File Upload endpoint
 @app.post("/chat/upload-ifc")
@@ -2729,73 +2269,6 @@ async def upload_ifc_to_speckle(
         logger.error(f"❌ IFC upload error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
-
-# Feedback endpoint
-@app.post("/feedback")
-async def feedback_handler(request: FeedbackRequest):
-    """
-    Handle feedback submissions from the Electron app.
-    Saves feedback locally to AppData and syncs to GitHub.
-
-    Expected request format:
-    {
-        "message_id": "msg_12345_abcdef",
-        "rating": "positive",
-        "comment": "Great answer!",
-        "user_question": "What are...",
-        "response": "The answer is...",
-        "timestamp": "2025-10-05T12:00:00Z"
-    }
-    """
-    try:
-        logger.info(f"Received feedback: {request.rating} for message {request.message_id}")
-
-        # Get feedback logger instance
-        feedback_logger = get_feedback_logger()
-
-        # Prepare feedback data
-        feedback_data = {
-            "message_id": request.message_id,
-            "rating": request.rating,
-            "comment": request.comment or "",
-            "user_question": request.user_question,
-            "response": request.response,
-            "timestamp": request.timestamp
-        }
-
-        # Log feedback (saves locally + pushes to GitHub)
-        success = feedback_logger.log_feedback(feedback_data)
-
-        # Also log to Supabase
-        supabase_logger = get_supabase_logger()
-        if supabase_logger.enabled:
-            user_identifier = f"{os.getenv('USERNAME', 'unknown')}@{os.getenv('COMPUTERNAME', 'unknown')}"
-            supabase_feedback_data = {
-                "message_id": request.message_id,
-                "rating": request.rating,
-                "comment": request.comment or "",
-                "user_identifier": user_identifier
-            }
-            supabase_success = supabase_logger.log_feedback(supabase_feedback_data)
-            
-            if supabase_success:
-                logger.info(f"✓ Feedback also logged to Supabase: {request.message_id}")
-            else:
-                logger.warning(f"⚠ Failed to log feedback to Supabase: {request.message_id}")
-
-        if success:
-            return {
-                "status": "success",
-                "message": "Feedback received and saved",
-                "message_id": request.message_id
-            }
-        else:
-            raise HTTPException(status_code=500, detail="Failed to save feedback")
-
-    except Exception as e:
-        logger.error(f"Error processing feedback: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
 # Feedback stats endpoint (for debugging/admin)
 @app.get("/feedback/stats")
 async def feedback_stats():
@@ -2926,49 +2399,6 @@ async def get_instructions():
         "format": "markdown"
     }
 
-# ============================================================
-# RENDERER AUTO-UPDATE ENDPOINTS
-# ============================================================
-# These endpoints serve the renderer files for the Electron app auto-update system.
-# When you want to push an update, edit the files in Backend/renderer-update/
-# and bump the version in version.json.
-
-RENDERER_UPDATE_DIR = os.path.join(os.path.dirname(__file__), "renderer-update")
-
-@app.get("/renderer-update/version.json")
-async def get_renderer_version():
-    """Return the current version info for auto-update check."""
-    version_file = os.path.join(RENDERER_UPDATE_DIR, "version.json")
-    if not os.path.exists(version_file):
-        raise HTTPException(status_code=404, detail="version.json not found")
-    return FileResponse(version_file, media_type="application/json")
-
-@app.get("/renderer-update/{filename}")
-async def get_renderer_file(filename: str):
-    """
-    Serve renderer files for auto-update.
-    Allowed files: index.html, renderer.js, style.css, PURPLE LIGHT.png
-    """
-    # Security: only allow specific files
-    allowed_files = ["index.html", "renderer.js", "style.css", "PURPLE LIGHT.png"]
-    if filename not in allowed_files:
-        raise HTTPException(status_code=404, detail="File not found")
-    
-    file_path = os.path.join(RENDERER_UPDATE_DIR, filename)
-    if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail=f"{filename} not found")
-    
-    # Determine media type
-    media_types = {
-        "index.html": "text/html",
-        "renderer.js": "application/javascript",
-        "style.css": "text/css",
-        "PURPLE LIGHT.png": "image/png"
-    }
-    media_type = media_types.get(filename, "application/octet-stream")
-    
-    return FileResponse(file_path, media_type=media_type)
-
 
 # Test endpoint to verify which backend is running
 @app.get("/test/backend-version")
@@ -3062,7 +2492,7 @@ if __name__ == "__main__":
     if DEBUG_MODE:
         print(f"   🛠️  Kuzu Graph DB Cypher: http://0.0.0.0:{port}/graph/schema")
     print(f"\n📡 Server running on port: {port}")
-    print("⚡ Ready for Electron chatbutton app!")
+    print("⚡ Server ready - listening on http://0.0.0.0:8000")
 
     # Run the server
     uvicorn.run(

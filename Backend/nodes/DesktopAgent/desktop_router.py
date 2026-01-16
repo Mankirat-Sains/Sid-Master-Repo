@@ -8,6 +8,7 @@ import time
 from models.desktop_agent_state import DesktopAgentState
 from prompts.desktop_router_prompts import DESKTOP_ROUTER_PROMPT, desktop_router_llm
 from config.logging_config import log_route
+from nodes.DesktopAgent.WordAgent.task_classifier import _detect_task_type, _detect_doc_type, _detect_section, _classify_generation_complexity
 
 
 def _infer_operation_type(query: str) -> str:
@@ -54,6 +55,27 @@ def node_desktop_router(state: DesktopAgentState) -> dict:
         selected_app = ""
         if selected_tools:
             selected_app = str(selected_tools[0]).lower()
+        
+        # Check if this is a document generation request (even if not explicitly Word)
+        # Use WordAgent task classifier to detect doc generation intent
+        task_type, section_hint, rule, doc_type_hint = _detect_task_type(user_query)
+        doc_type = doc_type_hint or _detect_doc_type(user_query)
+        section_type = section_hint or _detect_section(user_query)
+        gen_task_type, _, _ = _classify_generation_complexity(user_query)
+        
+        # If doc generation detected, route to word agent
+        doc_intent = (
+            task_type in {"doc_section", "doc_report"}
+            or bool(doc_type)
+            or bool(rule)
+            or bool(gen_task_type)
+        )
+        
+        if doc_intent and not selected_app:
+            selected_app = "word"
+            selected_tools = ["word"]
+            log_route.info(f"📝 Detected document generation intent → routing to Word agent")
+            log_route.info(f"   Task type: {task_type}, Doc type: {doc_type}, Section: {section_type}")
 
         operation_type = _infer_operation_type(user_query)
 
@@ -69,12 +91,24 @@ def node_desktop_router(state: DesktopAgentState) -> dict:
         t_elapsed = time.time() - t_start
         log_route.info(f"<<< DESKTOP ROUTER DONE in {t_elapsed:.2f}s")
 
-        return {
+        # If doc generation detected, set workflow and task_type
+        result = {
             "desktop_tools": selected_tools,
             "desktop_reasoning": reasoning,
             "selected_app": selected_app,
             "operation_type": operation_type,
         }
+        
+        if doc_intent:
+            result["workflow"] = "docgen"
+            if task_type:
+                result["task_type"] = task_type
+            if doc_type:
+                result["doc_type"] = doc_type
+            if section_type:
+                result["section_type"] = section_type
+        
+        return result
     except Exception as e:
         log_route.error(f"Desktop router failed: {e}")
         t_elapsed = time.time() - t_start

@@ -23,7 +23,7 @@ except Exception as e:
 
 print("\n2. Testing model imports...")
 try:
-    from models.rag_state import RAGState
+    from models.orchestration_state import OrchestrationState
     from models.memory import SESSION_MEMORY
     print("   ✓ Models imported")
 except Exception as e:
@@ -64,7 +64,7 @@ except Exception as e:
 
 print("\n6. Testing main entry point...")
 try:
-    from main import run_agentic_rag, rag_healthcheck
+    from main import execute_query, query_system_healthcheck
     print("   ✓ Main functions imported")
 except Exception as e:
     print(f"   ✗ Main import failed: {e}")
@@ -88,5 +88,5 @@ print("=" * 60)
 print("\nYou can now start the server with:")
 print("  python api_server.py")
 print("\nOr test the health endpoint:")
-print("  python -c \"from main import rag_healthcheck; print(rag_healthcheck())\"")
+print("  python -c \"from main import query_system_healthcheck; print(query_system_healthcheck())\"")  
 

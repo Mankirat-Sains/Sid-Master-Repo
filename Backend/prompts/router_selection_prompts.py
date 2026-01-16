@@ -8,7 +8,7 @@ ROUTER_SELECTION_PROMPT = PromptTemplate.from_template(
     """You are a routing assistant that determines which router(s) should handle a user's query.
 
 AVAILABLE ROUTERS:
-1. "rag": Use for queries requiring database/document search in Supabase
+1. "database": Use for queries requiring database/document search in Supabase
    - BIM data search
    - Engineering drawings search
    - Project documents search
@@ -46,14 +46,14 @@ DECISION PROCESS:
    → NO: Continue to step 4
 
 4. Does the query require searching databases, documents, or retrieving information from stored data?
-   → YES: Include "rag"
-   → NO: Default to "rag" for information retrieval
+   → YES: Include "database"
+   → NO: Default to "database" for information retrieval
 
 PRIORITY ORDER:
 - Desktop file operations (Desktop, Documents, local files) → "desktop" FIRST
 - Desktop applications (Excel, Word) → "desktop"
 - Calculations/web tools → "web"
-- Database/document search → "rag"
+- Database/document search → "database"
 
 IMPORTANT:
 - You can select MULTIPLE routers if the query requires multiple types of resources
@@ -64,7 +64,7 @@ CRITICAL: Return ONLY valid JSON, no explanations or preamble. Start your respon
 
 JSON Format:
 {{
-  "routers": ["rag"],
+  "routers": ["database"],
   "reasoning": "Brief explanation of why these routers were selected"
 }}
 

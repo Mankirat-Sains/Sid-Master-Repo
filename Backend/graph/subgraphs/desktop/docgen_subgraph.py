@@ -7,29 +7,28 @@ from dataclasses import asdict
 
 from langgraph.graph import StateGraph, END
 
-from models.parent_state import ParentState
-from models.rag_state import RAGState
+from models.desktop_agent_state import DesktopAgentState
 from config.settings import MAX_CONVERSATION_HISTORY
 from config.logging_config import log_query
-from nodes.DesktopAgent.doc_generation.plan import node_doc_plan
-from nodes.DesktopAgent.doc_generation.section_generator import node_doc_generate_section
-from nodes.DesktopAgent.doc_generation.report_generator import node_doc_generate_report
-from nodes.DesktopAgent.doc_generation.answer_adapter import node_doc_answer_adapter
+from nodes.DesktopAgent.WordAgent.plan import node_doc_plan
+from nodes.DesktopAgent.WordAgent.section_generator import node_doc_generate_section
+from nodes.DesktopAgent.WordAgent.report_generator import node_doc_generate_report
+from nodes.DesktopAgent.WordAgent.answer_adapter import node_doc_answer_adapter
 
 
-def _doc_entry_passthrough(state: RAGState) -> dict:
+def _doc_entry_passthrough(state: DesktopAgentState) -> dict:
     """Entry node to allow routing decisions."""
     return {}
 
 
-def _doc_generate_route(state: RAGState) -> str:
+def _doc_generate_route(state: DesktopAgentState) -> str:
     """Route to section vs report generation."""
     if getattr(state, "task_type", None) == "doc_report":
         return "doc_generate_report"
     return "doc_generate_section"
 
 
-def _doc_should_retrieve(state: RAGState) -> str:
+def _doc_should_retrieve(state: DesktopAgentState) -> str:
     """Decide whether to run retrieval before planning."""
     needs_retrieval = getattr(state, "needs_retrieval", False)
     retrieval_completed = getattr(state, "retrieval_completed", False)
@@ -41,7 +40,7 @@ def _doc_should_retrieve(state: RAGState) -> str:
     return "doc_plan"
 
 
-def _doc_retrieve(state: RAGState) -> dict:
+def _doc_retrieve(state: DesktopAgentState) -> dict:
     """
     Placeholder retrieval guard for doc generation.
     Marks retrieval as completed to avoid loops when generation doesn't need DB retrieval.
@@ -61,7 +60,7 @@ def _doc_retrieve(state: RAGState) -> dict:
     return {"retrieval_completed": True, "needs_retrieval": False}
 
 
-def _doc_verify(state: RAGState) -> dict:
+def _doc_verify(state: DesktopAgentState) -> dict:
     """Lightweight verify node for doc generation."""
     log_query.info("DOCGEN: verify (noop)")
     return {
@@ -71,7 +70,7 @@ def _doc_verify(state: RAGState) -> dict:
     }
 
 
-def _doc_correct(state: RAGState) -> dict:
+def _doc_correct(state: DesktopAgentState) -> dict:
     """Finalize doc generation answer; ensure fields propagate to parent."""
     log_query.info("DOCGEN: correct (pass-through)")
     messages = list(getattr(state, "messages", []) or [])
@@ -116,7 +115,7 @@ def _doc_correct(state: RAGState) -> dict:
 
 def build_doc_generation_subgraph():
     """Compile the doc generation subgraph."""
-    g = StateGraph(RAGState)
+    g = StateGraph(DesktopAgentState)
 
     g.add_node("doc_entry", _doc_entry_passthrough)
     g.add_node("doc_retrieve", _doc_retrieve)
@@ -159,10 +158,10 @@ def build_doc_generation_subgraph():
 _doc_generation_subgraph = None
 
 
-def call_doc_generation_subgraph(state: ParentState) -> dict:
+def call_doc_generation_subgraph(state: DesktopAgentState) -> dict:
     """
-    Wrapper node that invokes the doc generation subgraph from the parent graph.
-    Transforms ParentState → RAGState → invokes subgraph → back to ParentState fields.
+    Wrapper node that invokes the doc generation subgraph.
+    DesktopAgentState already has all needed fields, so we can pass it directly.
     """
     global _doc_generation_subgraph
 
@@ -171,34 +170,8 @@ def call_doc_generation_subgraph(state: ParentState) -> dict:
         _doc_generation_subgraph = build_doc_generation_subgraph()
         log_query.info("✅ DocGeneration subgraph initialized")
 
-    doc_state = RAGState(
-        session_id=state.session_id,
-        user_query=state.user_query,
-        original_question=state.original_question,
-        user_role=state.user_role,
-        messages=state.messages,
-        conversation_history=getattr(state, "conversation_history", []),
-        selected_routers=getattr(state, "selected_routers", []),
-        workflow=getattr(state, "workflow", None) or "docgen",
-        desktop_policy=getattr(state, "desktop_policy", None),
-        task_type=getattr(state, "task_type", None),
-        doc_type=getattr(state, "doc_type", None),
-        section_type=getattr(state, "section_type", None),
-        doc_request=getattr(state, "doc_request", None),
-        requires_desktop_action=getattr(state, "requires_desktop_action", False),
-        desktop_action_plan=getattr(state, "desktop_action_plan", None),
-        doc_generation_result=getattr(state, "doc_generation_result", None),
-        doc_generation_warnings=getattr(state, "doc_generation_warnings", []),
-        needs_retrieval=getattr(state, "needs_retrieval", True),
-        retrieval_completed=getattr(state, "retrieval_completed", False),
-        retrieved_docs=getattr(state, "retrieved_docs", []),
-        retrieved_code_docs=getattr(state, "retrieved_code_docs", []),
-        retrieved_coop_docs=getattr(state, "retrieved_coop_docs", []),
-        execution_trace=getattr(state, "execution_trace", []),
-        execution_trace_verbose=getattr(state, "execution_trace_verbose", []),
-    )
-
-    result = _doc_generation_subgraph.invoke(asdict(doc_state))
+    # DesktopAgentState already has all needed fields - pass it directly
+    result = _doc_generation_subgraph.invoke(state)
 
     return {
         "workflow": result.get("workflow") or "docgen",

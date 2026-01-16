@@ -1,0 +1,18 @@
+{
+  "doc_request": {
+    "user_query": "How do I design a steel beam?"
+  },
+  "user_context": {},
+  "timestamp": "2026-01-16T17:28:11.609538",
+  "state_context": {
+    "user_query": "How do I design a steel beam?",
+    "retrieved_docs": [],
+    "conversation_history": [
+      {
+        "question": "How do I design a steel beam?",
+        "answer": null,
+        "timestamp": 1768584488.41495
+      }
+    ]
+  }
+}

@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from langgraph.graph import StateGraph, END
 from models.db_retrieval_state import DBRetrievalState
-from models.parent_state import ParentState
+from models.orchestration_state import OrchestrationState
 from config.logging_config import log_query, log_route
 from graph.tracing import wrap_subgraph_node
 
@@ -130,10 +130,10 @@ def build_db_retrieval_subgraph():
 _db_retrieval_subgraph = None
 
 
-def call_db_retrieval_subgraph(state: ParentState) -> dict:
+def call_db_retrieval_subgraph(state: OrchestrationState) -> dict:
     """
     Wrapper node that invokes the DBRetrieval subgraph from the parent graph.
-    Transforms ParentState → DBRetrievalState → invokes subgraph → transforms result back.
+    Extracts needed fields from OrchestrationState → DBRetrievalState → invokes subgraph → returns results.
     """
     global _db_retrieval_subgraph
 

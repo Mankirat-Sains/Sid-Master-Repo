@@ -387,7 +387,7 @@ Generate an engineer-focused summary explaining what engineering information is 
         
         Args:
             query: User's original question
-            selected_routers: List of routers selected (e.g., ["rag", "web", "desktop"])
+            selected_routers: List of routers selected (e.g., ["database", "web", "desktop"])
         """
         if not selected_routers:
             return "ROUTER SELECTION\n\nAnalyzing query to determine appropriate data sources and engineering tools."
@@ -398,7 +398,8 @@ Generate an engineer-focused summary explaining what engineering information is 
         needs_calc = any(term in query_lower for term in ["calculate", "design", "size", "dimension", "load"])
         
         router_names = {
-            "rag": "project document database",
+            "database": "project document database",
+            "rag": "project document database",  # Legacy support
             "web": "web-based calculation tools",
             "desktop": "desktop engineering applications"
         }
@@ -408,7 +409,7 @@ Generate an engineer-focused summary explaining what engineering information is 
         # Generate context-aware message
         if len(router_descriptions) == 1:
             router_desc = router_descriptions[0]
-            if "rag" in selected_routers:
+            if "database" in selected_routers or "rag" in selected_routers:  # Support legacy "rag"
                 context = "searching past project documents and design specifications"
             elif "web" in selected_routers:
                 context = "performing calculations using web-based tools"

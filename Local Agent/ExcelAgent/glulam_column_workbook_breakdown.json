@@ -1,0 +1,7652 @@
+{
+  "source": {
+    "workbook_path": "/mnt/data/Glulam Column.xlsx",
+    "sheets": [
+      "Axial",
+      "Guidance Tables"
+    ]
+  },
+  "sheets": {
+    "Axial": {
+      "sheet": "Axial",
+      "summary": "This worksheet is a glulam column design calculator for combined axial load and bending, producing utilization checks from user-defined loads, geometry, and material/adjustment factors. It is used during preliminary and detailed design to size a glulam column and verify governing limit states for the selected loading case (e.g., axial-only or axial+bending). Grey cells with red text are the engineer-controlled inputs (loads, tributary area, member dimensions, species/grade, and adjustment factors), while the remaining cells compute derived actions, section properties, resistances, and utilization ratios. The sheet embeds clause references and table lookups consistent with CSA O86-style member design, and it is intended for rapid iteration and sanity-checking rather than replacing engineering judgement. Use it when you need a transparent, auditable calculation trail from inputs \u2192 intermediate calculations \u2192 final results/utilization outputs for a single column/member.",
+      "code_references_found_on_sheet": [
+        {
+          "cell": "H32",
+          "text": "Cl. 5.3.2.3: 1.0 typical, 0.65 for permanent loads, 1.15 for temporary loads"
+        },
+        {
+          "cell": "H33",
+          "text": "Cl. 7.4.4: 1.0 for single member, 1.1 for 3 or more beams spaced < 610mm"
+        },
+        {
+          "cell": "H40",
+          "text": "Cl. 7.5.6.4.2"
+        },
+        {
+          "cell": "H41",
+          "text": "Cl. 7.5.6.4.1"
+        },
+        {
+          "cell": "I68",
+          "text": "Cl. 7.5.8.6"
+        },
+        {
+          "cell": "I69",
+          "text": "Cl. 7.5.8.5"
+        },
+        {
+          "cell": "I70",
+          "text": "Cl. 7.5.11"
+        },
+        {
+          "cell": "I73",
+          "text": "Cl. 7.4.3: 1.0 for preservative-treated, non-incised, for fire-retardant,  capacities shall be based on documented results of tests"
+        },
+        {
+          "cell": "I74",
+          "text": "Cl. 7.5.8.5"
+        },
+        {
+          "cell": "I75",
+          "text": "Cl. 7.4.2"
+        },
+        {
+          "cell": "I76",
+          "text": "Cl. 7.5.8.6"
+        },
+        {
+          "cell": "I79",
+          "text": "Cl. 7.5.6.4.4 1 for straight members"
+        },
+        {
+          "cell": "I80",
+          "text": "Cl. 7.5.6.4.4"
+        },
+        {
+          "cell": "I81",
+          "text": "Cl. 7.5.6.5.1"
+        },
+        {
+          "cell": "I83",
+          "text": "Cl. 7.5.8.5"
+        },
+        {
+          "cell": "I84",
+          "text": "Cl. 7.5.11"
+        },
+        {
+          "cell": "I85",
+          "text": "Cl. 7.5.11"
+        },
+        {
+          "cell": "I86",
+          "text": "Cl. 7.5.12"
+        },
+        {
+          "cell": "I92",
+          "text": "Cl. 7.5.8.1"
+        },
+        {
+          "cell": "I93",
+          "text": "Cl. 7.5.8.1"
+        },
+        {
+          "cell": "I94",
+          "text": "Cl. 7.5.8.2"
+        },
+        {
+          "cell": "I95",
+          "text": "Cl. 7.5.8.2"
+        },
+        {
+          "cell": "I97",
+          "text": "Cl. 7.5.8.5"
+        },
+        {
+          "cell": "I102",
+          "text": "Cl. 7.5.11"
+        },
+        {
+          "cell": "I103",
+          "text": "Cl. 7.5.11"
+        },
+        {
+          "cell": "I105",
+          "text": "Cl. 7.5.11"
+        },
+        {
+          "cell": "I110",
+          "text": "Cl. 7.5.12"
+        },
+        {
+          "cell": "I112",
+          "text": "Cl. 7.5.11"
+        },
+        {
+          "cell": "I115",
+          "text": "Cl. 7.5.6.4.3"
+        },
+        {
+          "cell": "I116",
+          "text": "Cl. 7.5.6.4.4"
+        },
+        {
+          "cell": "I118",
+          "text": "Cl. 7.5.6.5.1"
+        },
+        {
+          "cell": "I119",
+          "text": "Cl. 7.5.6.5.1"
+        }
+      ],
+      "cells": [
+        {
+          "cell": "B3",
+          "row": 3,
+          "col": 2,
+          "label": null,
+          "role": "static",
+          "value": "GLULAM COLUMN DESIGN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B6",
+          "row": 6,
+          "col": 2,
+          "label": "GLULAM COLUMN DESIGN",
+          "role": "static",
+          "value": "1. Project Information",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "R6",
+          "row": 6,
+          "col": 18,
+          "label": "1. Project Information",
+          "role": "static",
+          "value": "Legend",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D8",
+          "row": 8,
+          "col": 4,
+          "label": null,
+          "role": "static",
+          "value": "Project Name:",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E8",
+          "row": 8,
+          "col": 5,
+          "label": "Project Name:",
+          "role": "input",
+          "value": "Template",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "S8",
+          "row": 8,
+          "col": 19,
+          "label": "Template",
+          "role": "input",
+          "value": "Input",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D9",
+          "row": 9,
+          "col": 4,
+          "label": "Project Name:",
+          "role": "static",
+          "value": "Project Number:",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E9",
+          "row": 9,
+          "col": 5,
+          "label": "Project Number:",
+          "role": "input",
+          "value": null,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "S9",
+          "row": 9,
+          "col": 19,
+          "label": "Project Number:",
+          "role": "static",
+          "value": "Output",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D10",
+          "row": 10,
+          "col": 4,
+          "label": "Project Number:",
+          "role": "static",
+          "value": "Date:",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E10",
+          "row": 10,
+          "col": 5,
+          "label": "Date:",
+          "role": "input",
+          "value": null,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "S10",
+          "row": 10,
+          "col": 19,
+          "label": "Date:",
+          "role": "static",
+          "value": "Calculation",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D11",
+          "row": 11,
+          "col": 4,
+          "label": "Date:",
+          "role": "static",
+          "value": "Designer:",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E11",
+          "row": 11,
+          "col": 5,
+          "label": "Designer:",
+          "role": "input",
+          "value": null,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "S11",
+          "row": 11,
+          "col": 19,
+          "label": "Designer:",
+          "role": "static",
+          "value": "Override",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B14",
+          "row": 14,
+          "col": 2,
+          "label": "1. Project Information",
+          "role": "static",
+          "value": "2. Loads & Inputs",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K14",
+          "row": 14,
+          "col": 11,
+          "label": "2. Loads & Inputs",
+          "role": "static",
+          "value": "3. Results",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C16",
+          "row": 16,
+          "col": 3,
+          "label": null,
+          "role": "static",
+          "value": "Member Type",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F16",
+          "row": 16,
+          "col": 6,
+          "label": "Member Type",
+          "role": "input",
+          "value": "Axial-Bending",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "H27",
+            "H28",
+            "M24",
+            "M25",
+            "M26",
+            "N18",
+            "N20",
+            "N22"
+          ]
+        },
+        {
+          "cell": "C18",
+          "row": 18,
+          "col": 3,
+          "label": "Member Type",
+          "role": "static",
+          "value": "Dead Load",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F18",
+          "row": 18,
+          "col": 6,
+          "label": "Dead Load",
+          "role": "input",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "F24",
+            "F25"
+          ]
+        },
+        {
+          "cell": "G18",
+          "row": 18,
+          "col": 7,
+          "label": "Dead Load",
+          "role": "static",
+          "value": "kPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "L18",
+          "row": 18,
+          "col": 12,
+          "label": "kPa",
+          "role": "static",
+          "value": "Compression Utilization",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "M18",
+          "row": 18,
+          "col": 13,
+          "label": "Compression Utilization",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "N18",
+          "row": 18,
+          "col": 14,
+          "label": "=",
+          "role": "output",
+          "value": "N/A",
+          "formula": "=IF(F16=\"Compression\",F25/MIN(G97:G97),\"N/A\")",
+          "precedents": [
+            "F16",
+            "F25",
+            "G97"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "O18",
+          "row": 18,
+          "col": 15,
+          "label": "=IF(F16=\"Compression\",F25/MIN(G97:G97),\"N/A\")",
+          "role": "static",
+          "value": "\u22641",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C19",
+          "row": 19,
+          "col": 3,
+          "label": "Dead Load",
+          "role": "static",
+          "value": "Live Load",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F19",
+          "row": 19,
+          "col": 6,
+          "label": "Live Load",
+          "role": "input",
+          "value": 3.25,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "F24",
+            "F25"
+          ]
+        },
+        {
+          "cell": "G19",
+          "row": 19,
+          "col": 7,
+          "label": "Live Load",
+          "role": "static",
+          "value": "kPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "L20",
+          "row": 20,
+          "col": 12,
+          "label": "Compression Utilization",
+          "role": "static",
+          "value": "Tension Utilization",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "M20",
+          "row": 20,
+          "col": 13,
+          "label": "Tension Utilization",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "N20",
+          "row": 20,
+          "col": 14,
+          "label": "=",
+          "role": "output",
+          "value": "N/A",
+          "formula": "=IF(F16=\"Tension\",F25/G105,\"N/A\")",
+          "precedents": [
+            "F16",
+            "F25",
+            "G105"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "O20",
+          "row": 20,
+          "col": 15,
+          "label": "=IF(F16=\"Tension\",F25/G105,\"N/A\")",
+          "role": "static",
+          "value": "\u22641",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C21",
+          "row": 21,
+          "col": 3,
+          "label": "Live Load",
+          "role": "static",
+          "value": "Tributary Width",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F21",
+          "row": 21,
+          "col": 6,
+          "label": "Tributary Width",
+          "role": "input",
+          "value": 9,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "F24",
+            "F25"
+          ]
+        },
+        {
+          "cell": "G21",
+          "row": 21,
+          "col": 7,
+          "label": "Tributary Width",
+          "role": "static",
+          "value": "m",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C22",
+          "row": 22,
+          "col": 3,
+          "label": "Tributary Width",
+          "role": "static",
+          "value": "Tributary Length",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F22",
+          "row": 22,
+          "col": 6,
+          "label": "Tributary Length",
+          "role": "input",
+          "value": 9,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "F24",
+            "F25"
+          ]
+        },
+        {
+          "cell": "G22",
+          "row": 22,
+          "col": 7,
+          "label": "Tributary Length",
+          "role": "static",
+          "value": "m",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "L22",
+          "row": 22,
+          "col": 12,
+          "label": "m",
+          "role": "static",
+          "value": "Axial/Bending Utilization",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "M22",
+          "row": 22,
+          "col": 13,
+          "label": "Axial/Bending Utilization",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "N22",
+          "row": 22,
+          "col": 14,
+          "label": "=",
+          "role": "output",
+          "value": 1.9214448934000452,
+          "formula": "=IF(F16=\"Axial-Bending\",IF(F39=\"Compression\",G125,G127),\"N/A\")",
+          "precedents": [
+            "F16",
+            "F39",
+            "G125",
+            "G127"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "O22",
+          "row": 22,
+          "col": 15,
+          "label": "=IF(F16=\"Axial-Bending\",IF(F39=\"Compression\",G125,G127),\"N/A\")",
+          "role": "static",
+          "value": "\u22641",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C24",
+          "row": 24,
+          "col": 3,
+          "label": "Tributary Length",
+          "role": "static",
+          "value": "Axial Load",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D24",
+          "row": 24,
+          "col": 4,
+          "label": "Axial Load",
+          "role": "static",
+          "value": "Pn",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E24",
+          "row": 24,
+          "col": 5,
+          "label": "Pn",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F24",
+          "row": 24,
+          "col": 6,
+          "label": "=",
+          "role": "calculation",
+          "value": 425.25,
+          "formula": "=F21*F22*(F18+F19)",
+          "precedents": [
+            "F18",
+            "F19",
+            "F21",
+            "F22"
+          ],
+          "dependents": [
+            "G72",
+            "G75",
+            "G77",
+            "G78"
+          ]
+        },
+        {
+          "cell": "G24",
+          "row": 24,
+          "col": 7,
+          "label": "=F21*F22*(F18+F19)",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "M24",
+          "row": 24,
+          "col": 13,
+          "label": "kN",
+          "role": "output",
+          "value": null,
+          "formula": "=IF(F16=\"Compression\",IF(G94=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+          "precedents": [
+            "F16",
+            "G94"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "C25",
+          "row": 25,
+          "col": 3,
+          "label": "Axial Load",
+          "role": "static",
+          "value": "Factored Axial Load",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D25",
+          "row": 25,
+          "col": 4,
+          "label": "Factored Axial Load",
+          "role": "static",
+          "value": "Pf",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E25",
+          "row": 25,
+          "col": 5,
+          "label": "Pf",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F25",
+          "row": 25,
+          "col": 6,
+          "label": "=",
+          "role": "calculation",
+          "value": 597.375,
+          "formula": "=MAX(1.4*F18,1.25*F18+1.5*F19)*(F21*F22)",
+          "precedents": [
+            "F18",
+            "F19",
+            "F21",
+            "F22"
+          ],
+          "dependents": [
+            "G125",
+            "G127",
+            "N18",
+            "N20"
+          ]
+        },
+        {
+          "cell": "G25",
+          "row": 25,
+          "col": 7,
+          "label": "=MAX(1.4*F18,1.25*F18+1.5*F19)*(F21*F22)",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "M25",
+          "row": 25,
+          "col": 13,
+          "label": "kN",
+          "role": "output",
+          "value": null,
+          "formula": "=IF(F16=\"Compression\",IF(G95=\"Error\",\"Too slender, increase member size\",\"\"),\"\")",
+          "precedents": [
+            "F16",
+            "G95"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "H26",
+          "row": 26,
+          "col": 8,
+          "label": null,
+          "role": "static",
+          "value": "Stress grades not recommended:",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "M26",
+          "row": 26,
+          "col": 13,
+          "label": "Stress grades not recommended:",
+          "role": "output",
+          "value": null,
+          "formula": "=IF(F16=\"Axial-Bending\",IF(G115>50,\"Too slender, increase member size\",\"\"),\"\")",
+          "precedents": [
+            "F16",
+            "G115"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "C27",
+          "row": 27,
+          "col": 3,
+          "label": "Factored Axial Load",
+          "role": "static",
+          "value": "Wood species",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E27",
+          "row": 27,
+          "col": 5,
+          "label": "Wood species",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F27",
+          "row": 27,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": "D.F.L",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G61",
+            "G62",
+            "G63",
+            "G65",
+            "G67"
+          ]
+        },
+        {
+          "cell": "H27",
+          "row": 27,
+          "col": 8,
+          "label": "D.F.L",
+          "role": "output",
+          "value": "DFL: 24f-E, 20f-E",
+          "formula": "=IF(F16=\"Compression\",\"DFL: 24f-E, 24F-EX, 20f-E ,20f-EX\",IF(F16=\"Tension\",\"DFL: 24f-E, 20f-E\",\"DFL: 24f-E, 20f-E\"))",
+          "precedents": [
+            "F16"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "C28",
+          "row": 28,
+          "col": 3,
+          "label": "Wood species",
+          "role": "static",
+          "value": "Stress Grade",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E28",
+          "row": 28,
+          "col": 5,
+          "label": "Stress Grade",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F28",
+          "row": 28,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": "20f-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G61",
+            "G62",
+            "G63",
+            "G65",
+            "G67"
+          ]
+        },
+        {
+          "cell": "H28",
+          "row": 28,
+          "col": 8,
+          "label": "20f-E",
+          "role": "output",
+          "value": "SPF: 20f-E",
+          "formula": "=IF(F16=\"Compression\", \"SPF: 20f-E ,20f-EX\",IF(F16=\"Tension\",\"SPF: 20f-E\",\"SPF: 20f-E\"))",
+          "precedents": [
+            "F16"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "C30",
+          "row": 30,
+          "col": 3,
+          "label": "Stress Grade",
+          "role": "static",
+          "value": "Service Condition",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E30",
+          "row": 30,
+          "col": 5,
+          "label": "Service Condition",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F30",
+          "row": 30,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": "Wet",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G72",
+            "G75",
+            "G77",
+            "G78"
+          ]
+        },
+        {
+          "cell": "C32",
+          "row": 32,
+          "col": 3,
+          "label": "Service Condition",
+          "role": "static",
+          "value": "Load Duration Factor,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D32",
+          "row": 32,
+          "col": 4,
+          "label": "Load Duration Factor,",
+          "role": "static",
+          "value": "KD",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E32",
+          "row": 32,
+          "col": 5,
+          "label": "KD",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F32",
+          "row": 32,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G83",
+            "G84",
+            "G85",
+            "G86",
+            "G87"
+          ]
+        },
+        {
+          "cell": "H32",
+          "row": 32,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "Cl. 5.3.2.3: 1.0 typical, 0.65 for permanent loads, 1.15 for temporary loads",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C33",
+          "row": 33,
+          "col": 3,
+          "label": "Load Duration Factor,",
+          "role": "static",
+          "value": "System Factor",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D33",
+          "row": 33,
+          "col": 4,
+          "label": "System Factor",
+          "role": "static",
+          "value": "KH",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E33",
+          "row": 33,
+          "col": 5,
+          "label": "KH",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F33",
+          "row": 33,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": 1.15,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G83",
+            "G84",
+            "G85",
+            "G86",
+            "G87"
+          ]
+        },
+        {
+          "cell": "H33",
+          "row": 33,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "Cl. 7.4.4: 1.0 for single member, 1.1 for 3 or more beams spaced < 610mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C34",
+          "row": 34,
+          "col": 3,
+          "label": "System Factor",
+          "role": "static",
+          "value": "Effective Length Factor Strong Axis,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D34",
+          "row": 34,
+          "col": 4,
+          "label": "Effective Length Factor Strong Axis,",
+          "role": "static",
+          "value": "Ke,d",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E34",
+          "row": 34,
+          "col": 5,
+          "label": "Ke,d",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F34",
+          "row": 34,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": 0.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G92"
+          ]
+        },
+        {
+          "cell": "H34",
+          "row": 34,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "Table A.4 based on column end restraints",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C35",
+          "row": 35,
+          "col": 3,
+          "label": "Effective Length Factor Strong Axis,",
+          "role": "static",
+          "value": "Effective Length Factor Weak Axis,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D35",
+          "row": 35,
+          "col": 4,
+          "label": "Effective Length Factor Weak Axis,",
+          "role": "static",
+          "value": "Ke,b",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E35",
+          "row": 35,
+          "col": 5,
+          "label": "Ke,b",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F35",
+          "row": 35,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": 0.65,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G93"
+          ]
+        },
+        {
+          "cell": "H35",
+          "row": 35,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "Table A.4 based on column end restraints",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C37",
+          "row": 37,
+          "col": 3,
+          "label": "Effective Length Factor Weak Axis,",
+          "role": "static",
+          "value": "Factored Moment",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D37",
+          "row": 37,
+          "col": 4,
+          "label": "Factored Moment",
+          "role": "static",
+          "value": "Mf",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E37",
+          "row": 37,
+          "col": 5,
+          "label": "Mf",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F37",
+          "row": 37,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": 50,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G125",
+            "G127"
+          ]
+        },
+        {
+          "cell": "G37",
+          "row": 37,
+          "col": 7,
+          "label": "=",
+          "role": "static",
+          "value": "kNm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C38",
+          "row": 38,
+          "col": 3,
+          "label": "Factored Moment",
+          "role": "static",
+          "value": "Bending Along",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E38",
+          "row": 38,
+          "col": 5,
+          "label": "Bending Along",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F38",
+          "row": 38,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": "Strong-Axis",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G124",
+            "G54",
+            "G55"
+          ]
+        },
+        {
+          "cell": "C39",
+          "row": 39,
+          "col": 3,
+          "label": "Bending Along",
+          "role": "static",
+          "value": "Compression or Tension",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E39",
+          "row": 39,
+          "col": 5,
+          "label": "Compression or Tension",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F39",
+          "row": 39,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": "Compression",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "N22"
+          ]
+        },
+        {
+          "cell": "C40",
+          "row": 40,
+          "col": 3,
+          "label": "Compression or Tension",
+          "role": "static",
+          "value": "Compression Edge Fully Laterally Supported?",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E40",
+          "row": 40,
+          "col": 5,
+          "label": "Compression Edge Fully Laterally Supported?",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F40",
+          "row": 40,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": "Yes",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G114"
+          ]
+        },
+        {
+          "cell": "H40",
+          "row": 40,
+          "col": 8,
+          "label": "Yes",
+          "role": "static",
+          "value": "Cl. 7.5.6.4.2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C41",
+          "row": 41,
+          "col": 3,
+          "label": "Compression Edge Fully Laterally Supported?",
+          "role": "static",
+          "value": "Intermediate Support Spacing",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E41",
+          "row": 41,
+          "col": 5,
+          "label": "Intermediate Support Spacing",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F41",
+          "row": 41,
+          "col": 6,
+          "label": "=",
+          "role": "input",
+          "value": 50,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G114"
+          ]
+        },
+        {
+          "cell": "G41",
+          "row": 41,
+          "col": 7,
+          "label": "=",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H41",
+          "row": 41,
+          "col": 8,
+          "label": "mm",
+          "role": "static",
+          "value": "Cl. 7.5.6.4.1",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B44",
+          "row": 44,
+          "col": 2,
+          "label": "2. Loads & Inputs",
+          "role": "static",
+          "value": "4. Beam Properties",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D46",
+          "row": 46,
+          "col": 4,
+          "label": "Mf",
+          "role": "static",
+          "value": "Column Length",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E46",
+          "row": 46,
+          "col": 5,
+          "label": "Column Length",
+          "role": "static",
+          "value": "L",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F46",
+          "row": 46,
+          "col": 6,
+          "label": "L",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G46",
+          "row": 46,
+          "col": 7,
+          "label": "=",
+          "role": "input",
+          "value": 9000,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G53"
+          ]
+        },
+        {
+          "cell": "H46",
+          "row": 46,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D47",
+          "row": 47,
+          "col": 4,
+          "label": "Column Length",
+          "role": "static",
+          "value": "Unbraced length, strong-axis,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E47",
+          "row": 47,
+          "col": 5,
+          "label": "Unbraced length, strong-axis,",
+          "role": "static",
+          "value": "Ld",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F47",
+          "row": 47,
+          "col": 6,
+          "label": "Ld",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G47",
+          "row": 47,
+          "col": 7,
+          "label": "=",
+          "role": "input",
+          "value": 9000,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G81",
+            "G92"
+          ]
+        },
+        {
+          "cell": "H47",
+          "row": 47,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D48",
+          "row": 48,
+          "col": 4,
+          "label": "Unbraced length, strong-axis,",
+          "role": "static",
+          "value": "Unbraced length, weak-axis,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E48",
+          "row": 48,
+          "col": 5,
+          "label": "Unbraced length, weak-axis,",
+          "role": "static",
+          "value": "Lb",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F48",
+          "row": 48,
+          "col": 6,
+          "label": "Lb",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G48",
+          "row": 48,
+          "col": 7,
+          "label": "=",
+          "role": "input",
+          "value": 4000,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G93"
+          ]
+        },
+        {
+          "cell": "H48",
+          "row": 48,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D49",
+          "row": 49,
+          "col": 4,
+          "label": "Unbraced length, weak-axis,",
+          "role": "static",
+          "value": "Beam width,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E49",
+          "row": 49,
+          "col": 5,
+          "label": "Beam width,",
+          "role": "static",
+          "value": "b",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F49",
+          "row": 49,
+          "col": 6,
+          "label": "b",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G49",
+          "row": 49,
+          "col": 7,
+          "label": "=",
+          "role": "input",
+          "value": 175,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G115",
+            "G51",
+            "G53",
+            "G54",
+            "G55",
+            "G81",
+            "G95"
+          ]
+        },
+        {
+          "cell": "H49",
+          "row": 49,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D50",
+          "row": 50,
+          "col": 4,
+          "label": "Beam width,",
+          "role": "static",
+          "value": "Beam depth,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E50",
+          "row": 50,
+          "col": 5,
+          "label": "Beam depth,",
+          "role": "static",
+          "value": "d",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F50",
+          "row": 50,
+          "col": 6,
+          "label": "d",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G50",
+          "row": 50,
+          "col": 7,
+          "label": "=",
+          "role": "input",
+          "value": 380,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G115",
+            "G51",
+            "G53",
+            "G54",
+            "G55",
+            "G81",
+            "G94"
+          ]
+        },
+        {
+          "cell": "H50",
+          "row": 50,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D51",
+          "row": 51,
+          "col": 4,
+          "label": "Beam depth,",
+          "role": "static",
+          "value": "Cross sectional area,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E51",
+          "row": 51,
+          "col": 5,
+          "label": "Cross sectional area,",
+          "role": "static",
+          "value": "Ag",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F51",
+          "row": 51,
+          "col": 6,
+          "label": "Ag",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G51",
+          "row": 51,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 66500,
+          "formula": "=G49*G50",
+          "precedents": [
+            "G49",
+            "G50"
+          ],
+          "dependents": [
+            "G102",
+            "G110",
+            "G97"
+          ]
+        },
+        {
+          "cell": "H51",
+          "row": 51,
+          "col": 8,
+          "label": "=G49*G50",
+          "role": "static",
+          "value": "mm2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D52",
+          "row": 52,
+          "col": 4,
+          "label": "Cross sectional area,",
+          "role": "static",
+          "value": "Net creoss-sectional area,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E52",
+          "row": 52,
+          "col": 5,
+          "label": "Net creoss-sectional area,",
+          "role": "static",
+          "value": "An",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G52",
+          "row": 52,
+          "col": 7,
+          "label": "An",
+          "role": "input",
+          "value": 0,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G103"
+          ]
+        },
+        {
+          "cell": "H52",
+          "row": 52,
+          "col": 8,
+          "label": "An",
+          "role": "static",
+          "value": "mm2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D53",
+          "row": 53,
+          "col": 4,
+          "label": "Net creoss-sectional area,",
+          "role": "static",
+          "value": "Beam volume,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E53",
+          "row": 53,
+          "col": 5,
+          "label": "Beam volume,",
+          "role": "static",
+          "value": "Z",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F53",
+          "row": 53,
+          "col": 6,
+          "label": "Z",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G53",
+          "row": 53,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0.5984999999999999,
+          "formula": "=(G49/1000)*(G50/1000)*(G46/1000)",
+          "precedents": [
+            "G46",
+            "G49",
+            "G50"
+          ],
+          "dependents": [
+            "G74"
+          ]
+        },
+        {
+          "cell": "H53",
+          "row": 53,
+          "col": 8,
+          "label": "=(G49/1000)*(G50/1000)*(G46/1000)",
+          "role": "static",
+          "value": "m3",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D54",
+          "row": 54,
+          "col": 4,
+          "label": "Beam volume,",
+          "role": "static",
+          "value": "Moment of inertia,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E54",
+          "row": 54,
+          "col": 5,
+          "label": "Moment of inertia,",
+          "role": "static",
+          "value": "Ig",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F54",
+          "row": 54,
+          "col": 6,
+          "label": "Ig",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G54",
+          "row": 54,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 800216666.6666666,
+          "formula": "=IF(F38=\"Strong-Axis\", G49*(G50^3)/12,G50*(G49^3)/12)",
+          "precedents": [
+            "F38",
+            "G49",
+            "G50"
+          ],
+          "dependents": [
+            "G124",
+            "G56"
+          ]
+        },
+        {
+          "cell": "H54",
+          "row": 54,
+          "col": 8,
+          "label": "=IF(F38=\"Strong-Axis\", G49*(G50^3)/12,G50*(G49^3)/12)",
+          "role": "static",
+          "value": "mm4",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D55",
+          "row": 55,
+          "col": 4,
+          "label": "Moment of inertia,",
+          "role": "static",
+          "value": "Neutral axis,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E55",
+          "row": 55,
+          "col": 5,
+          "label": "Neutral axis,",
+          "role": "static",
+          "value": "y",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F55",
+          "row": 55,
+          "col": 6,
+          "label": "y",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G55",
+          "row": 55,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 190,
+          "formula": "=IF(F38=\"Strong-Axis\",G50/2,G49/2)",
+          "precedents": [
+            "F38",
+            "G49",
+            "G50"
+          ],
+          "dependents": [
+            "G56"
+          ]
+        },
+        {
+          "cell": "H55",
+          "row": 55,
+          "col": 8,
+          "label": "=IF(F38=\"Strong-Axis\",G50/2,G49/2)",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D56",
+          "row": 56,
+          "col": 4,
+          "label": "Neutral axis,",
+          "role": "static",
+          "value": "Section modulus,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E56",
+          "row": 56,
+          "col": 5,
+          "label": "Section modulus,",
+          "role": "static",
+          "value": "S",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F56",
+          "row": 56,
+          "col": 6,
+          "label": "S",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G56",
+          "row": 56,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 4211666.666666666,
+          "formula": "=G54/G55",
+          "precedents": [
+            "G54",
+            "G55"
+          ],
+          "dependents": [
+            "G118",
+            "G119"
+          ]
+        },
+        {
+          "cell": "H56",
+          "row": 56,
+          "col": 8,
+          "label": "=G54/G55",
+          "role": "static",
+          "value": "mm3",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B59",
+          "row": 59,
+          "col": 2,
+          "label": "4. Beam Properties",
+          "role": "static",
+          "value": "5. Material Properties ",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D61",
+          "row": 61,
+          "col": 4,
+          "label": "Section modulus,",
+          "role": "static",
+          "value": "Comp. strength parallel to grain,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E61",
+          "row": 61,
+          "col": 5,
+          "label": "Comp. strength parallel to grain,",
+          "role": "static",
+          "value": "fc",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F61",
+          "row": 61,
+          "col": 6,
+          "label": "fc",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G61",
+          "row": 61,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 30.2,
+          "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,5,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,5,0)))",
+          "precedents": [
+            "C14",
+            "C6",
+            "F27",
+            "F28",
+            "K12",
+            "K18"
+          ],
+          "dependents": [
+            "G64",
+            "G83"
+          ]
+        },
+        {
+          "cell": "H61",
+          "row": 61,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I61",
+          "row": 61,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Table 7.2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D62",
+          "row": 62,
+          "col": 4,
+          "label": "Comp. strength parallel to grain,",
+          "role": "static",
+          "value": "Strength in tension parallel to grain at net section, ",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E62",
+          "row": 62,
+          "col": 5,
+          "label": "Strength in tension parallel to grain at net section,",
+          "role": "static",
+          "value": "ftn",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F62",
+          "row": 62,
+          "col": 6,
+          "label": "ftn",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G62",
+          "row": 62,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 20.4,
+          "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,7,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,7,0)))",
+          "precedents": [
+            "C14",
+            "C6",
+            "F27",
+            "F28",
+            "K12",
+            "K18"
+          ],
+          "dependents": [
+            "G85"
+          ]
+        },
+        {
+          "cell": "H62",
+          "row": 62,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I62",
+          "row": 62,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Table 7.2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D63",
+          "row": 63,
+          "col": 4,
+          "label": "Strength in tension parallel to grain at net section,",
+          "role": "static",
+          "value": "Strength in tension parallel to grain at gross section, ",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E63",
+          "row": 63,
+          "col": 5,
+          "label": "Strength in tension parallel to grain at gross section,",
+          "role": "static",
+          "value": "ftg",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F63",
+          "row": 63,
+          "col": 6,
+          "label": "ftg",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G63",
+          "row": 63,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 15.3,
+          "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,8,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,8,0)))",
+          "precedents": [
+            "C14",
+            "C6",
+            "F27",
+            "F28",
+            "K12",
+            "K18"
+          ],
+          "dependents": [
+            "G84"
+          ]
+        },
+        {
+          "cell": "H63",
+          "row": 63,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D64",
+          "row": 64,
+          "col": 4,
+          "label": "Strength in tension parallel to grain at gross section,",
+          "role": "static",
+          "value": "Compression parallel combined with bending",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E64",
+          "row": 64,
+          "col": 5,
+          "label": "Compression parallel combined with bending",
+          "role": "static",
+          "value": "fcb",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F64",
+          "row": 64,
+          "col": 6,
+          "label": "fcb",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G64",
+          "row": 64,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 30.2,
+          "formula": "=G61",
+          "precedents": [
+            "G61"
+          ],
+          "dependents": [
+            "G86"
+          ]
+        },
+        {
+          "cell": "D65",
+          "row": 65,
+          "col": 4,
+          "label": "Compression parallel combined with bending",
+          "role": "static",
+          "value": "Strength in bending",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E65",
+          "row": 65,
+          "col": 5,
+          "label": "Strength in bending",
+          "role": "static",
+          "value": "fb",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F65",
+          "row": 65,
+          "col": 6,
+          "label": "fb",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G65",
+          "row": 65,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 19.2,
+          "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,3,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,3,0)))",
+          "precedents": [
+            "C14",
+            "C6",
+            "F27",
+            "F28",
+            "K12",
+            "K18"
+          ],
+          "dependents": [
+            "G87"
+          ]
+        },
+        {
+          "cell": "H65",
+          "row": 65,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D67",
+          "row": 67,
+          "col": 4,
+          "label": "Strength in bending",
+          "role": "static",
+          "value": "Modulus of elasticity,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E67",
+          "row": 67,
+          "col": 5,
+          "label": "Modulus of elasticity,",
+          "role": "static",
+          "value": "E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F67",
+          "row": 67,
+          "col": 6,
+          "label": "E",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G67",
+          "row": 67,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 12400,
+          "formula": "=IF($F$27='Guidance Tables'!C6,VLOOKUP(Axial!$F$28,'Guidance Tables'!C6:K12,9,0),IF($F$27='Guidance Tables'!C14,VLOOKUP(Axial!$F$28,'Guidance Tables'!C14:K18,9,0)))",
+          "precedents": [
+            "C14",
+            "C6",
+            "F27",
+            "F28",
+            "K12",
+            "K18"
+          ],
+          "dependents": [
+            "G116",
+            "G68",
+            "G80"
+          ]
+        },
+        {
+          "cell": "H67",
+          "row": 67,
+          "col": 8,
+          "label": "=",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I67",
+          "row": 67,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Table 7.2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E68",
+          "row": 68,
+          "col": 5,
+          "label": "E",
+          "role": "static",
+          "value": "E05",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F68",
+          "row": 68,
+          "col": 6,
+          "label": "E05",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G68",
+          "row": 68,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 10788,
+          "formula": "=0.87*G67",
+          "precedents": [
+            "G67"
+          ],
+          "dependents": [
+            "G124",
+            "G76"
+          ]
+        },
+        {
+          "cell": "H68",
+          "row": 68,
+          "col": 8,
+          "label": "=0.87*G67",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I68",
+          "row": 68,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Cl. 7.5.8.6",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D69",
+          "row": 69,
+          "col": 4,
+          "label": "Modulus of elasticity,",
+          "role": "static",
+          "value": "Compression Resistance factor,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E69",
+          "row": 69,
+          "col": 5,
+          "label": "Compression Resistance factor,",
+          "role": "static",
+          "value": "\u03d5C",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F69",
+          "row": 69,
+          "col": 6,
+          "label": "\u03d5C",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G69",
+          "row": 69,
+          "col": 7,
+          "label": "=",
+          "role": "static",
+          "value": 0.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G110",
+            "G97"
+          ]
+        },
+        {
+          "cell": "I69",
+          "row": 69,
+          "col": 9,
+          "label": "=",
+          "role": "static",
+          "value": "Cl. 7.5.8.5",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D70",
+          "row": 70,
+          "col": 4,
+          "label": "Compression Resistance factor,",
+          "role": "static",
+          "value": "Resistance factor,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E70",
+          "row": 70,
+          "col": 5,
+          "label": "Resistance factor,",
+          "role": "static",
+          "value": "\u03d5",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F70",
+          "row": 70,
+          "col": 6,
+          "label": "\u03d5",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G70",
+          "row": 70,
+          "col": 7,
+          "label": "=",
+          "role": "static",
+          "value": 0.9,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G102",
+            "G103",
+            "G118",
+            "G119"
+          ]
+        },
+        {
+          "cell": "I70",
+          "row": 70,
+          "col": 9,
+          "label": "=",
+          "role": "static",
+          "value": "Cl. 7.5.11",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D72",
+          "row": 72,
+          "col": 4,
+          "label": "Resistance factor,",
+          "role": "static",
+          "value": "Comp. parallel to grain,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E72",
+          "row": 72,
+          "col": 5,
+          "label": "Comp. parallel to grain,",
+          "role": "static",
+          "value": "KSc",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G72"
+          ]
+        },
+        {
+          "cell": "F72",
+          "row": 72,
+          "col": 6,
+          "label": "KSc",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G72",
+          "row": 72,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0.75,
+          "formula": "=IF($F$30=\"Dry\",VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "precedents": [
+            "E72",
+            "F24",
+            "F30",
+            "H30"
+          ],
+          "dependents": [
+            "G83",
+            "G84",
+            "G85",
+            "G86"
+          ]
+        },
+        {
+          "cell": "I72",
+          "row": 72,
+          "col": 9,
+          "label": "=IF($F$30=\"Dry\",VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E72,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "role": "static",
+          "value": "Table 7.3",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D73",
+          "row": 73,
+          "col": 4,
+          "label": "Comp. parallel to grain,",
+          "role": "static",
+          "value": "Treatment factor,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E73",
+          "row": 73,
+          "col": 5,
+          "label": "Treatment factor,",
+          "role": "static",
+          "value": "KT",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F73",
+          "row": 73,
+          "col": 6,
+          "label": "KT",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G73",
+          "row": 73,
+          "col": 7,
+          "label": "=",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G116",
+            "G124",
+            "G76",
+            "G80",
+            "G83",
+            "G84",
+            "G85",
+            "G86",
+            "G87"
+          ]
+        },
+        {
+          "cell": "I73",
+          "row": 73,
+          "col": 9,
+          "label": "=",
+          "role": "static",
+          "value": "Cl. 7.4.3: 1.0 for preservative-treated, non-incised, for fire-retardant,  capacities shall be based on documented results of tests",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E74",
+          "row": 74,
+          "col": 5,
+          "label": "KT",
+          "role": "static",
+          "value": "KZcg",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F74",
+          "row": 74,
+          "col": 6,
+          "label": "KZcg",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G74",
+          "row": 74,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0.7269266193455038,
+          "formula": "=MIN(0.68*G53^(-0.13),1)",
+          "precedents": [
+            "G53"
+          ],
+          "dependents": [
+            "G110",
+            "G76",
+            "G97"
+          ]
+        },
+        {
+          "cell": "I74",
+          "row": 74,
+          "col": 9,
+          "label": "=MIN(0.68*G53^(-0.13),1)",
+          "role": "static",
+          "value": "Cl. 7.5.8.5",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D75",
+          "row": 75,
+          "col": 4,
+          "label": "Treatment factor,",
+          "role": "static",
+          "value": "Modulus of elasticity,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E75",
+          "row": 75,
+          "col": 5,
+          "label": "Modulus of elasticity,",
+          "role": "static",
+          "value": "KSE",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G75"
+          ]
+        },
+        {
+          "cell": "F75",
+          "row": 75,
+          "col": 6,
+          "label": "KSE",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G75",
+          "row": 75,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0.9,
+          "formula": "=IF($F$30=\"Dry\",VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "precedents": [
+            "E75",
+            "F24",
+            "F30",
+            "H30"
+          ],
+          "dependents": [
+            "G116",
+            "G124",
+            "G76",
+            "G80"
+          ]
+        },
+        {
+          "cell": "I75",
+          "row": 75,
+          "col": 9,
+          "label": "=IF($F$30=\"Dry\",VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E75,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "role": "static",
+          "value": "Cl. 7.4.2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D76",
+          "row": 76,
+          "col": 4,
+          "label": "Modulus of elasticity,",
+          "role": "static",
+          "value": "Slenderness Factor",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E76",
+          "row": 76,
+          "col": 5,
+          "label": "Slenderness Factor",
+          "role": "static",
+          "value": "KC",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F76",
+          "row": 76,
+          "col": 6,
+          "label": "KC",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G76",
+          "row": 76,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0.7251573715310196,
+          "formula": "=(1+(G83*G74*MAX(G94:G95)^3)/(35*G68*G75*G73))^-1",
+          "precedents": [
+            "G68",
+            "G73",
+            "G74",
+            "G75",
+            "G83",
+            "G94",
+            "G95"
+          ],
+          "dependents": [
+            "G110",
+            "G97"
+          ]
+        },
+        {
+          "cell": "I76",
+          "row": 76,
+          "col": 9,
+          "label": "=(1+(G83*G74*MAX(G94:G95)^3)/(35*G68*G75*G73))^-1",
+          "role": "static",
+          "value": "Cl. 7.5.8.6",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D77",
+          "row": 77,
+          "col": 4,
+          "label": "Slenderness Factor",
+          "role": "static",
+          "value": "Tension parallel to grain,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E77",
+          "row": 77,
+          "col": 5,
+          "label": "Tension parallel to grain,",
+          "role": "static",
+          "value": "KSt",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G77"
+          ]
+        },
+        {
+          "cell": "F77",
+          "row": 77,
+          "col": 6,
+          "label": "KSt",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G77",
+          "row": 77,
+          "col": 7,
+          "label": "=",
+          "role": "output",
+          "value": 0.75,
+          "formula": "=IF($F$30=\"Dry\",VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "precedents": [
+            "E77",
+            "F24",
+            "F30",
+            "H30"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "I77",
+          "row": 77,
+          "col": 9,
+          "label": "=IF($F$30=\"Dry\",VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E77,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "role": "static",
+          "value": "Table 7.3",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D78",
+          "row": 78,
+          "col": 4,
+          "label": "Tension parallel to grain,",
+          "role": "static",
+          "value": "Bending,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E78",
+          "row": 78,
+          "col": 5,
+          "label": "Bending,",
+          "role": "static",
+          "value": "KSb",
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G78"
+          ]
+        },
+        {
+          "cell": "F78",
+          "row": 78,
+          "col": 6,
+          "label": "KSb",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G78",
+          "row": 78,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0.8,
+          "formula": "=IF($F$30=\"Dry\",VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "precedents": [
+            "E78",
+            "F24",
+            "F30",
+            "H30"
+          ],
+          "dependents": [
+            "G87"
+          ]
+        },
+        {
+          "cell": "I78",
+          "row": 78,
+          "col": 9,
+          "label": "=IF($F$30=\"Dry\",VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,2,FALSE),VLOOKUP(E78,'Guidance Tables'!$F$24:$H$30,3,FALSE))",
+          "role": "static",
+          "value": "Table 7.3",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D79",
+          "row": 79,
+          "col": 4,
+          "label": "Bending,",
+          "role": "static",
+          "value": "Curvature factor,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E79",
+          "row": 79,
+          "col": 5,
+          "label": "Curvature factor,",
+          "role": "static",
+          "value": "Kx",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F79",
+          "row": 79,
+          "col": 6,
+          "label": "Kx",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G79",
+          "row": 79,
+          "col": 7,
+          "label": "=",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": [
+            "G118",
+            "G119",
+            "G80"
+          ]
+        },
+        {
+          "cell": "I79",
+          "row": 79,
+          "col": 9,
+          "label": "=",
+          "role": "static",
+          "value": "Cl. 7.5.6.4.4 1 for straight members",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D80",
+          "row": 80,
+          "col": 4,
+          "label": "Curvature factor,",
+          "role": "static",
+          "value": "Lateral stability factor,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E80",
+          "row": 80,
+          "col": 5,
+          "label": "Lateral stability factor,",
+          "role": "static",
+          "value": "KL",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F80",
+          "row": 80,
+          "col": 6,
+          "label": "KL",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G80",
+          "row": 80,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 1,
+          "formula": "=IF(G115>50,\"ERROR\",IF(G115<10,1,IF(G115<G116,(1-(1/3)*((G115/G116)^4)),IF(G116<G115,0.65*G67*G75*G73/((G115^2)*G87*G79)))))",
+          "precedents": [
+            "G115",
+            "G116",
+            "G67",
+            "G73",
+            "G75",
+            "G79",
+            "G87"
+          ],
+          "dependents": [
+            "G119"
+          ]
+        },
+        {
+          "cell": "I80",
+          "row": 80,
+          "col": 9,
+          "label": "=",
+          "role": "static",
+          "value": "Cl. 7.5.6.4.4",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D81",
+          "row": 81,
+          "col": 4,
+          "label": "Lateral stability factor,",
+          "role": "static",
+          "value": "Size factor,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E81",
+          "row": 81,
+          "col": 5,
+          "label": "Size factor,",
+          "role": "static",
+          "value": "KZbg",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F81",
+          "row": 81,
+          "col": 6,
+          "label": "KZbg",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G81",
+          "row": 81,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 1.0188847041011477,
+          "formula": "=MIN(((130/G47)^(1/10))*((610/G50)^(1/10))*((9100/G49)^(1/10)),1.3)",
+          "precedents": [
+            "G47",
+            "G49",
+            "G50"
+          ],
+          "dependents": [
+            "G118"
+          ]
+        },
+        {
+          "cell": "I81",
+          "row": 81,
+          "col": 9,
+          "label": "=MIN(((130/G47)^(1/10))*((610/G50)^(1/10))*((9100/G49)^(1/10)),1.3)",
+          "role": "static",
+          "value": "Cl. 7.5.6.5.1",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D83",
+          "row": 83,
+          "col": 4,
+          "label": "Size factor,",
+          "role": "static",
+          "value": "Compressive strength parallel to grain,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E83",
+          "row": 83,
+          "col": 5,
+          "label": "Compressive strength parallel to grain,",
+          "role": "static",
+          "value": "Fc",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F83",
+          "row": 83,
+          "col": 6,
+          "label": "Fc",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G83",
+          "row": 83,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 26.0475,
+          "formula": "=G61*F32*F33*G72*G73",
+          "precedents": [
+            "F32",
+            "F33",
+            "G61",
+            "G72",
+            "G73"
+          ],
+          "dependents": [
+            "G76",
+            "G97"
+          ]
+        },
+        {
+          "cell": "H83",
+          "row": 83,
+          "col": 8,
+          "label": "=G61*F32*F33*G72*G73",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I83",
+          "row": 83,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Cl. 7.5.8.5",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D84",
+          "row": 84,
+          "col": 4,
+          "label": "Compressive strength parallel to grain,",
+          "role": "static",
+          "value": "Strength in tension parallel to grain at gross section,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E84",
+          "row": 84,
+          "col": 5,
+          "label": "Strength in tension parallel to grain at gross section,",
+          "role": "static",
+          "value": "Ftg",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F84",
+          "row": 84,
+          "col": 6,
+          "label": "Ftg",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G84",
+          "row": 84,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 13.19625,
+          "formula": "=G63*F32*F33*G72*G73",
+          "precedents": [
+            "F32",
+            "F33",
+            "G63",
+            "G72",
+            "G73"
+          ],
+          "dependents": [
+            "G102"
+          ]
+        },
+        {
+          "cell": "H84",
+          "row": 84,
+          "col": 8,
+          "label": "=G63*F32*F33*G72*G73",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I84",
+          "row": 84,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Cl. 7.5.11",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D85",
+          "row": 85,
+          "col": 4,
+          "label": "Strength in tension parallel to grain at gross section,",
+          "role": "static",
+          "value": "Strength in tension parallel to grain at net section,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E85",
+          "row": 85,
+          "col": 5,
+          "label": "Strength in tension parallel to grain at net section,",
+          "role": "static",
+          "value": "Ftn",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F85",
+          "row": 85,
+          "col": 6,
+          "label": "Ftn",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G85",
+          "row": 85,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 17.595,
+          "formula": "=G62*F32*F33*G72*G73",
+          "precedents": [
+            "F32",
+            "F33",
+            "G62",
+            "G72",
+            "G73"
+          ],
+          "dependents": [
+            "G103"
+          ]
+        },
+        {
+          "cell": "H85",
+          "row": 85,
+          "col": 8,
+          "label": "=G62*F32*F33*G72*G73",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I85",
+          "row": 85,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Cl. 7.5.11",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D86",
+          "row": 86,
+          "col": 4,
+          "label": "Strength in tension parallel to grain at net section,",
+          "role": "static",
+          "value": "Strength in compression parallel combined with bending,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E86",
+          "row": 86,
+          "col": 5,
+          "label": "Strength in compression parallel combined with bending,",
+          "role": "static",
+          "value": "Fcb",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F86",
+          "row": 86,
+          "col": 6,
+          "label": "Fcb",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G86",
+          "row": 86,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 26.0475,
+          "formula": "=G64*F32*F33*G72*G73",
+          "precedents": [
+            "F32",
+            "F33",
+            "G64",
+            "G72",
+            "G73"
+          ],
+          "dependents": [
+            "G110"
+          ]
+        },
+        {
+          "cell": "H86",
+          "row": 86,
+          "col": 8,
+          "label": "=G64*F32*F33*G72*G73",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I86",
+          "row": 86,
+          "col": 9,
+          "label": "MPa",
+          "role": "static",
+          "value": "Cl. 7.5.12",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D87",
+          "row": 87,
+          "col": 4,
+          "label": "Strength in compression parallel combined with bending,",
+          "role": "static",
+          "value": "Strength in Bending.",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E87",
+          "row": 87,
+          "col": 5,
+          "label": "Strength in Bending.",
+          "role": "static",
+          "value": "Fb",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F87",
+          "row": 87,
+          "col": 6,
+          "label": "Fb",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G87",
+          "row": 87,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 17.663999999999998,
+          "formula": "=G65*F32*F33*G78*G73",
+          "precedents": [
+            "F32",
+            "F33",
+            "G65",
+            "G73",
+            "G78"
+          ],
+          "dependents": [
+            "G116",
+            "G118",
+            "G119",
+            "G80"
+          ]
+        },
+        {
+          "cell": "H87",
+          "row": 87,
+          "col": 8,
+          "label": "=G65*F32*F33*G78*G73",
+          "role": "static",
+          "value": "MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B90",
+          "row": 90,
+          "col": 2,
+          "label": "5. Material Properties",
+          "role": "static",
+          "value": "6. Compressive Resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D92",
+          "row": 92,
+          "col": 4,
+          "label": "Strength in Bending.",
+          "role": "static",
+          "value": "Effective Length, Strong Axis,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E92",
+          "row": 92,
+          "col": 5,
+          "label": "Effective Length, Strong Axis,",
+          "role": "static",
+          "value": "Le,d",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F92",
+          "row": 92,
+          "col": 6,
+          "label": "Le,d",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G92",
+          "row": 92,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 7200,
+          "formula": "=G47*F34",
+          "precedents": [
+            "F34",
+            "G47"
+          ],
+          "dependents": [
+            "G124",
+            "G94"
+          ]
+        },
+        {
+          "cell": "H92",
+          "row": 92,
+          "col": 8,
+          "label": "=G47*F34",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I92",
+          "row": 92,
+          "col": 9,
+          "label": "mm",
+          "role": "static",
+          "value": "Cl. 7.5.8.1",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D93",
+          "row": 93,
+          "col": 4,
+          "label": "Effective Length, Strong Axis,",
+          "role": "static",
+          "value": "Effective Length, Weak Axis,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E93",
+          "row": 93,
+          "col": 5,
+          "label": "Effective Length, Weak Axis,",
+          "role": "static",
+          "value": "Le,b",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F93",
+          "row": 93,
+          "col": 6,
+          "label": "Le,b",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G93",
+          "row": 93,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 2600,
+          "formula": "=G48*F35",
+          "precedents": [
+            "F35",
+            "G48"
+          ],
+          "dependents": [
+            "G124",
+            "G95"
+          ]
+        },
+        {
+          "cell": "H93",
+          "row": 93,
+          "col": 8,
+          "label": "=G48*F35",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I93",
+          "row": 93,
+          "col": 9,
+          "label": "mm",
+          "role": "static",
+          "value": "Cl. 7.5.8.1",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D94",
+          "row": 94,
+          "col": 4,
+          "label": "Effective Length, Weak Axis,",
+          "role": "static",
+          "value": "Slenderness Ratio, Strong Axis",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E94",
+          "row": 94,
+          "col": 5,
+          "label": "Slenderness Ratio, Strong Axis",
+          "role": "static",
+          "value": "Ccs",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F94",
+          "row": 94,
+          "col": 6,
+          "label": "Ccs",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G94",
+          "row": 94,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 18.94736842105263,
+          "formula": "=IF(G92/G50>50,\"Error\",G92/G50)",
+          "precedents": [
+            "G50",
+            "G92"
+          ],
+          "dependents": [
+            "G76",
+            "M24"
+          ]
+        },
+        {
+          "cell": "I94",
+          "row": 94,
+          "col": 9,
+          "label": "=IF(G92/G50>50,\"Error\",G92/G50)",
+          "role": "static",
+          "value": "Cl. 7.5.8.2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D95",
+          "row": 95,
+          "col": 4,
+          "label": "Slenderness Ratio, Strong Axis",
+          "role": "static",
+          "value": "Slenderness Ratio, Weak Axis",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E95",
+          "row": 95,
+          "col": 5,
+          "label": "Slenderness Ratio, Weak Axis",
+          "role": "static",
+          "value": "Ccw",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F95",
+          "row": 95,
+          "col": 6,
+          "label": "Ccw",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G95",
+          "row": 95,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 14.857142857142858,
+          "formula": "=IF(G93/G49>50,\"Error\",G93/G49)",
+          "precedents": [
+            "G49",
+            "G93"
+          ],
+          "dependents": [
+            "G76",
+            "M25"
+          ]
+        },
+        {
+          "cell": "I95",
+          "row": 95,
+          "col": 9,
+          "label": "=IF(G93/G49>50,\"Error\",G93/G49)",
+          "role": "static",
+          "value": "Cl. 7.5.8.2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D97",
+          "row": 97,
+          "col": 4,
+          "label": "Slenderness Ratio, Weak Axis",
+          "role": "static",
+          "value": "Factored Compressive Resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E97",
+          "row": 97,
+          "col": 5,
+          "label": "Factored Compressive Resistance",
+          "role": "static",
+          "value": "Pr",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F97",
+          "row": 97,
+          "col": 6,
+          "label": "Pr",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G97",
+          "row": 97,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 730.466860278928,
+          "formula": "=G69*G83*G51*G74*G76/1000",
+          "precedents": [
+            "G51",
+            "G69",
+            "G74",
+            "G76",
+            "G83"
+          ],
+          "dependents": [
+            "G125",
+            "N18"
+          ]
+        },
+        {
+          "cell": "H97",
+          "row": 97,
+          "col": 8,
+          "label": "=G69*G83*G51*G74*G76/1000",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I97",
+          "row": 97,
+          "col": 9,
+          "label": "kN",
+          "role": "static",
+          "value": "Cl. 7.5.8.5",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B100",
+          "row": 100,
+          "col": 2,
+          "label": "6. Compressive Resistance",
+          "role": "static",
+          "value": "7. Tensile Resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D102",
+          "row": 102,
+          "col": 4,
+          "label": "Factored Compressive Resistance",
+          "role": "static",
+          "value": "Tensile resistance, gross",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E102",
+          "row": 102,
+          "col": 5,
+          "label": "Tensile resistance, gross",
+          "role": "static",
+          "value": "Tg",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F102",
+          "row": 102,
+          "col": 6,
+          "label": "Tg",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G102",
+          "row": 102,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 789.7955624999998,
+          "formula": "=G70*G84*G51/1000",
+          "precedents": [
+            "G51",
+            "G70",
+            "G84"
+          ],
+          "dependents": [
+            "G105"
+          ]
+        },
+        {
+          "cell": "H102",
+          "row": 102,
+          "col": 8,
+          "label": "=G70*G84*G51/1000",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I102",
+          "row": 102,
+          "col": 9,
+          "label": "kN",
+          "role": "static",
+          "value": "Cl. 7.5.11",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D103",
+          "row": 103,
+          "col": 4,
+          "label": "Tensile resistance, gross",
+          "role": "static",
+          "value": "Tensile resistance, net",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E103",
+          "row": 103,
+          "col": 5,
+          "label": "Tensile resistance, net",
+          "role": "static",
+          "value": "Tn",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F103",
+          "row": 103,
+          "col": 6,
+          "label": "Tn",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G103",
+          "row": 103,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0,
+          "formula": "=G70*G85*G52/1000",
+          "precedents": [
+            "G52",
+            "G70",
+            "G85"
+          ],
+          "dependents": [
+            "G105"
+          ]
+        },
+        {
+          "cell": "H103",
+          "row": 103,
+          "col": 8,
+          "label": "=G70*G85*G52/1000",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I103",
+          "row": 103,
+          "col": 9,
+          "label": "kN",
+          "role": "static",
+          "value": "Cl. 7.5.11",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D105",
+          "row": 105,
+          "col": 4,
+          "label": "Tensile resistance, net",
+          "role": "static",
+          "value": "Tensile resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E105",
+          "row": 105,
+          "col": 5,
+          "label": "Tensile resistance",
+          "role": "static",
+          "value": "Tr",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F105",
+          "row": 105,
+          "col": 6,
+          "label": "Tr",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G105",
+          "row": 105,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 789.7955624999998,
+          "formula": "=IF(G103=0,G102,MIN(G102,G103))",
+          "precedents": [
+            "G102",
+            "G103"
+          ],
+          "dependents": [
+            "G112",
+            "N20"
+          ]
+        },
+        {
+          "cell": "H105",
+          "row": 105,
+          "col": 8,
+          "label": "=IF(G103=0,G102,MIN(G102,G103))",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I105",
+          "row": 105,
+          "col": 9,
+          "label": "kN",
+          "role": "static",
+          "value": "Cl. 7.5.11",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B108",
+          "row": 108,
+          "col": 2,
+          "label": "7. Tensile Resistance",
+          "role": "static",
+          "value": "8. Moment Resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D110",
+          "row": 110,
+          "col": 4,
+          "label": "Tensile resistance",
+          "role": "static",
+          "value": "Factored Compressive Resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E110",
+          "row": 110,
+          "col": 5,
+          "label": "Factored Compressive Resistance",
+          "role": "static",
+          "value": "Pr",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F110",
+          "row": 110,
+          "col": 6,
+          "label": "Pr",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G110",
+          "row": 110,
+          "col": 7,
+          "label": "=",
+          "role": "output",
+          "value": 730.466860278928,
+          "formula": "=G69*G86*G51*G74*G76/1000",
+          "precedents": [
+            "G51",
+            "G69",
+            "G74",
+            "G76",
+            "G86"
+          ],
+          "dependents": []
+        },
+        {
+          "cell": "H110",
+          "row": 110,
+          "col": 8,
+          "label": "=G69*G86*G51*G74*G76/1000",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I110",
+          "row": 110,
+          "col": 9,
+          "label": "kN",
+          "role": "static",
+          "value": "Cl. 7.5.12",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D112",
+          "row": 112,
+          "col": 4,
+          "label": "Factored Compressive Resistance",
+          "role": "static",
+          "value": "Tensile resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E112",
+          "row": 112,
+          "col": 5,
+          "label": "Tensile resistance",
+          "role": "static",
+          "value": "Tr",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F112",
+          "row": 112,
+          "col": 6,
+          "label": "Tr",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G112",
+          "row": 112,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 789.7955624999998,
+          "formula": "=G105",
+          "precedents": [
+            "G105"
+          ],
+          "dependents": [
+            "G127"
+          ]
+        },
+        {
+          "cell": "H112",
+          "row": 112,
+          "col": 8,
+          "label": "=G105",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I112",
+          "row": 112,
+          "col": 9,
+          "label": "kN",
+          "role": "static",
+          "value": "Cl. 7.5.11",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D114",
+          "row": 114,
+          "col": 4,
+          "label": "Tensile resistance",
+          "role": "static",
+          "value": "Effective length,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E114",
+          "row": 114,
+          "col": 5,
+          "label": "Effective length,",
+          "role": "static",
+          "value": "Le",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F114",
+          "row": 114,
+          "col": 6,
+          "label": "Le",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G114",
+          "row": 114,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0,
+          "formula": "=IF(F40=\"Yes\",0,1.92*F41)",
+          "precedents": [
+            "F40",
+            "F41"
+          ],
+          "dependents": [
+            "G115"
+          ]
+        },
+        {
+          "cell": "H114",
+          "row": 114,
+          "col": 8,
+          "label": "=IF(F40=\"Yes\",0,1.92*F41)",
+          "role": "static",
+          "value": "mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D115",
+          "row": 115,
+          "col": 4,
+          "label": "Effective length,",
+          "role": "static",
+          "value": "Slenderness ratio,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E115",
+          "row": 115,
+          "col": 5,
+          "label": "Slenderness ratio,",
+          "role": "static",
+          "value": "CB",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F115",
+          "row": 115,
+          "col": 6,
+          "label": "CB",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G115",
+          "row": 115,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 0,
+          "formula": "=SQRT(G114*G50/(G49^2))",
+          "precedents": [
+            "G114",
+            "G49",
+            "G50"
+          ],
+          "dependents": [
+            "G80",
+            "M26"
+          ]
+        },
+        {
+          "cell": "I115",
+          "row": 115,
+          "col": 9,
+          "label": "=SQRT(G114*G50/(G49^2))",
+          "role": "static",
+          "value": "Cl. 7.5.6.4.3",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D116",
+          "row": 116,
+          "col": 4,
+          "label": "Slenderness ratio,",
+          "role": "static",
+          "value": "Slenderness ratio,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E116",
+          "row": 116,
+          "col": 5,
+          "label": "Slenderness ratio,",
+          "role": "static",
+          "value": "CK",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F116",
+          "row": 116,
+          "col": 6,
+          "label": "CK",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G116",
+          "row": 116,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 24.755598839717926,
+          "formula": "=SQRT((0.97*G67*G75*G73)/(G87))",
+          "precedents": [
+            "G67",
+            "G73",
+            "G75",
+            "G87"
+          ],
+          "dependents": [
+            "G80"
+          ]
+        },
+        {
+          "cell": "I116",
+          "row": 116,
+          "col": 9,
+          "label": "=SQRT((0.97*G67*G75*G73)/(G87))",
+          "role": "static",
+          "value": "Cl. 7.5.6.4.4",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F117",
+          "row": 117,
+          "col": 6,
+          "label": "=",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D118",
+          "row": 118,
+          "col": 4,
+          "label": "Slenderness ratio,",
+          "role": "static",
+          "value": "Moment Resistance 1,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E118",
+          "row": 118,
+          "col": 5,
+          "label": "Moment Resistance 1,",
+          "role": "static",
+          "value": "Mr 1",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F118",
+          "row": 118,
+          "col": 6,
+          "label": "Mr 1",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G118",
+          "row": 118,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 68.21982476589633,
+          "formula": "=G70*G87*G56*G79*G81/(1000^2)",
+          "precedents": [
+            "G56",
+            "G70",
+            "G79",
+            "G81",
+            "G87"
+          ],
+          "dependents": [
+            "G125",
+            "G127"
+          ]
+        },
+        {
+          "cell": "H118",
+          "row": 118,
+          "col": 8,
+          "label": "=G70*G87*G56*G79*G81/(1000^2)",
+          "role": "static",
+          "value": "kN-m",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I118",
+          "row": 118,
+          "col": 9,
+          "label": "kN-m",
+          "role": "static",
+          "value": "Cl. 7.5.6.5.1",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D119",
+          "row": 119,
+          "col": 4,
+          "label": "Moment Resistance 1,",
+          "role": "static",
+          "value": "Moment Resistance 2,",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E119",
+          "row": 119,
+          "col": 5,
+          "label": "Moment Resistance 2,",
+          "role": "static",
+          "value": "Mr 2",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F119",
+          "row": 119,
+          "col": 6,
+          "label": "Mr 2",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G119",
+          "row": 119,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 66.95539199999999,
+          "formula": "=G70*G87*G56*G79*G80/(1000^2)",
+          "precedents": [
+            "G56",
+            "G70",
+            "G79",
+            "G80",
+            "G87"
+          ],
+          "dependents": [
+            "G125",
+            "G127"
+          ]
+        },
+        {
+          "cell": "H119",
+          "row": 119,
+          "col": 8,
+          "label": "=G70*G87*G56*G79*G80/(1000^2)",
+          "role": "static",
+          "value": "kN-m",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I119",
+          "row": 119,
+          "col": 9,
+          "label": "kN-m",
+          "role": "static",
+          "value": "Cl. 7.5.6.5.1",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B122",
+          "row": 122,
+          "col": 2,
+          "label": "8. Moment Resistance",
+          "role": "static",
+          "value": "9. Combined Bending & Axial Resistance",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D124",
+          "row": 124,
+          "col": 4,
+          "label": "Moment Resistance 2,",
+          "role": "static",
+          "value": "Euler Buckling Load",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E124",
+          "row": 124,
+          "col": 5,
+          "label": "Euler Buckling Load",
+          "role": "static",
+          "value": "Pe",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F124",
+          "row": 124,
+          "col": 6,
+          "label": "Pe",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G124",
+          "row": 124,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 1479.1962332723733,
+          "formula": "=IF(F38=\"Strong-Axis\",(PI()^2)*G68*G75*G73*G54/(1000*G92^2),(PI()^2)*G68*G75*G73*G54/(1000*G93^2))",
+          "precedents": [
+            "F38",
+            "G54",
+            "G68",
+            "G73",
+            "G75",
+            "G92",
+            "G93"
+          ],
+          "dependents": [
+            "G125"
+          ]
+        },
+        {
+          "cell": "H124",
+          "row": 124,
+          "col": 8,
+          "label": "=IF(F38=\"Strong-Axis\",(PI()^2)*G68*G75*G73*G54/(1000*G92^2),(PI()^2)*G68*G75*G73*G54/(1000*G93^2))",
+          "role": "static",
+          "value": "kN",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D125",
+          "row": 125,
+          "col": 4,
+          "label": "Euler Buckling Load",
+          "role": "static",
+          "value": "Compression-Bending",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F125",
+          "row": 125,
+          "col": 6,
+          "label": "Compression-Bending",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G125",
+          "row": 125,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 1.9214448934000452,
+          "formula": "=((F25/G97)^2) + ((F37/MIN(G118:G119))*(1/(1-(F25/G124))))",
+          "precedents": [
+            "F25",
+            "F37",
+            "G118",
+            "G119",
+            "G124",
+            "G97"
+          ],
+          "dependents": [
+            "N22"
+          ]
+        },
+        {
+          "cell": "D127",
+          "row": 127,
+          "col": 4,
+          "label": "Compression-Bending",
+          "role": "static",
+          "value": "Tensile-Bending",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F127",
+          "row": 127,
+          "col": 6,
+          "label": "Tensile-Bending",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G127",
+          "row": 127,
+          "col": 7,
+          "label": "=",
+          "role": "calculation",
+          "value": 1.5031324666042098,
+          "formula": "=(F25/G112)+(F37/MIN(G118:G119))",
+          "precedents": [
+            "F25",
+            "F37",
+            "G112",
+            "G118",
+            "G119"
+          ],
+          "dependents": [
+            "N22"
+          ]
+        }
+      ]
+    },
+    "Guidance Tables": {
+      "sheet": "Guidance Tables",
+      "summary": "This worksheet contains the supporting reference tables used by the design sheet (material properties, section factors, and lookup data). It is not intended for direct user input during routine checks; instead it drives dropdowns and table lookups in the main calculation sheet. Most values here are static tabulated data and are referenced by formulas elsewhere in the workbook. Change these tables only when updating the workbook to a new edition of reference data or when calibrating to a specific manufacturer/grade set. Use this sheet when you need to audit where a property value comes from or to extend the workbook to additional grades/sizes.",
+      "code_references_found_on_sheet": [],
+      "cells": [
+        {
+          "cell": "B4",
+          "row": 4,
+          "col": 2,
+          "label": null,
+          "role": "static",
+          "value": "Table 3.7.3 Specified Strengths and Modulus of Elasticity for Glulam Timber, MPa",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "N4",
+          "row": 4,
+          "col": 14,
+          "label": "Table 3.7.3 Specified Strengths and Modulus of Elasticity for Glulam Timber, MPa",
+          "role": "static",
+          "value": "Standard Glulam Sizes",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C5",
+          "row": 5,
+          "col": 3,
+          "label": null,
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D5",
+          "row": 5,
+          "col": 4,
+          "label": null,
+          "role": "static",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E5",
+          "row": 5,
+          "col": 5,
+          "label": null,
+          "role": "static",
+          "value": 3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F5",
+          "row": 5,
+          "col": 6,
+          "label": null,
+          "role": "static",
+          "value": 4,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G5",
+          "row": 5,
+          "col": 7,
+          "label": null,
+          "role": "static",
+          "value": 5,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H5",
+          "row": 5,
+          "col": 8,
+          "label": null,
+          "role": "static",
+          "value": 6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I5",
+          "row": 5,
+          "col": 9,
+          "label": null,
+          "role": "static",
+          "value": 7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J5",
+          "row": 5,
+          "col": 10,
+          "label": null,
+          "role": "static",
+          "value": 8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K5",
+          "row": 5,
+          "col": 11,
+          "label": null,
+          "role": "static",
+          "value": 9,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C6",
+          "row": 6,
+          "col": 3,
+          "label": null,
+          "role": "static",
+          "value": "D.F.L",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D6",
+          "row": 6,
+          "col": 4,
+          "label": "D.F.L",
+          "role": "static",
+          "value": "fb +",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E6",
+          "row": 6,
+          "col": 5,
+          "label": "fb +",
+          "role": "static",
+          "value": "fb -",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F6",
+          "row": 6,
+          "col": 6,
+          "label": "fb -",
+          "role": "static",
+          "value": "fv",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G6",
+          "row": 6,
+          "col": 7,
+          "label": "fv",
+          "role": "static",
+          "value": "fc",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H6",
+          "row": 6,
+          "col": 8,
+          "label": "fc",
+          "role": "static",
+          "value": "fc90",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I6",
+          "row": 6,
+          "col": 9,
+          "label": "fc90",
+          "role": "static",
+          "value": "ftn",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J6",
+          "row": 6,
+          "col": 10,
+          "label": "ftn",
+          "role": "static",
+          "value": "ftg",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K6",
+          "row": 6,
+          "col": 11,
+          "label": "ftg",
+          "role": "static",
+          "value": "E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O6",
+          "row": 6,
+          "col": 15,
+          "label": "E",
+          "role": "static",
+          "value": "Widths",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P6",
+          "row": 6,
+          "col": 16,
+          "label": "Widths",
+          "role": "static",
+          "value": "Depths",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C7",
+          "row": 7,
+          "col": 3,
+          "label": "D.F.L",
+          "role": "static",
+          "value": "24f-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D7",
+          "row": 7,
+          "col": 4,
+          "label": "24f-E",
+          "role": "static",
+          "value": 30.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E7",
+          "row": 7,
+          "col": 5,
+          "label": "24f-E",
+          "role": "static",
+          "value": 23,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F7",
+          "row": 7,
+          "col": 6,
+          "label": "24f-E",
+          "role": "static",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G7",
+          "row": 7,
+          "col": 7,
+          "label": "24f-E",
+          "role": "static",
+          "value": 30.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H7",
+          "row": 7,
+          "col": 8,
+          "label": "24f-E",
+          "role": "static",
+          "value": 7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I7",
+          "row": 7,
+          "col": 9,
+          "label": "24f-E",
+          "role": "static",
+          "value": 20.4,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J7",
+          "row": 7,
+          "col": 10,
+          "label": "24f-E",
+          "role": "static",
+          "value": 15.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K7",
+          "row": 7,
+          "col": 11,
+          "label": "24f-E",
+          "role": "static",
+          "value": 12800,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O7",
+          "row": 7,
+          "col": 15,
+          "label": "24f-E",
+          "role": "static",
+          "value": 80,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P7",
+          "row": 7,
+          "col": 16,
+          "label": "24f-E",
+          "role": "static",
+          "value": 114,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C8",
+          "row": 8,
+          "col": 3,
+          "label": "24f-E",
+          "role": "static",
+          "value": "24f-EX",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D8",
+          "row": 8,
+          "col": 4,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 30.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E8",
+          "row": 8,
+          "col": 5,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 30.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F8",
+          "row": 8,
+          "col": 6,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G8",
+          "row": 8,
+          "col": 7,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 30.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H8",
+          "row": 8,
+          "col": 8,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I8",
+          "row": 8,
+          "col": 9,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 20.4,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J8",
+          "row": 8,
+          "col": 10,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 15.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K8",
+          "row": 8,
+          "col": 11,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 12800,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O8",
+          "row": 8,
+          "col": 15,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 130,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P8",
+          "row": 8,
+          "col": 16,
+          "label": "24f-EX",
+          "role": "static",
+          "value": 152,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C9",
+          "row": 9,
+          "col": 3,
+          "label": "24f-EX",
+          "role": "static",
+          "value": "20f-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D9",
+          "row": 9,
+          "col": 4,
+          "label": "20f-E",
+          "role": "static",
+          "value": 25.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E9",
+          "row": 9,
+          "col": 5,
+          "label": "20f-E",
+          "role": "static",
+          "value": 19.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F9",
+          "row": 9,
+          "col": 6,
+          "label": "20f-E",
+          "role": "static",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G9",
+          "row": 9,
+          "col": 7,
+          "label": "20f-E",
+          "role": "static",
+          "value": 30.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H9",
+          "row": 9,
+          "col": 8,
+          "label": "20f-E",
+          "role": "static",
+          "value": 7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I9",
+          "row": 9,
+          "col": 9,
+          "label": "20f-E",
+          "role": "static",
+          "value": 20.4,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J9",
+          "row": 9,
+          "col": 10,
+          "label": "20f-E",
+          "role": "static",
+          "value": 15.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K9",
+          "row": 9,
+          "col": 11,
+          "label": "20f-E",
+          "role": "static",
+          "value": 12400,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O9",
+          "row": 9,
+          "col": 15,
+          "label": "20f-E",
+          "role": "static",
+          "value": 175,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P9",
+          "row": 9,
+          "col": 16,
+          "label": "20f-E",
+          "role": "static",
+          "value": 190,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C10",
+          "row": 10,
+          "col": 3,
+          "label": "20f-E",
+          "role": "static",
+          "value": "20f-EX",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D10",
+          "row": 10,
+          "col": 4,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 25.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E10",
+          "row": 10,
+          "col": 5,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 25.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F10",
+          "row": 10,
+          "col": 6,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G10",
+          "row": 10,
+          "col": 7,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 30.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H10",
+          "row": 10,
+          "col": 8,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I10",
+          "row": 10,
+          "col": 9,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 20.4,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J10",
+          "row": 10,
+          "col": 10,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 15.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K10",
+          "row": 10,
+          "col": 11,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 12400,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O10",
+          "row": 10,
+          "col": 15,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 215,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P10",
+          "row": 10,
+          "col": 16,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 228,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C11",
+          "row": 11,
+          "col": 3,
+          "label": "20f-EX",
+          "role": "static",
+          "value": "18t-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D11",
+          "row": 11,
+          "col": 4,
+          "label": "18t-E",
+          "role": "static",
+          "value": 24.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E11",
+          "row": 11,
+          "col": 5,
+          "label": "18t-E",
+          "role": "static",
+          "value": 24.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F11",
+          "row": 11,
+          "col": 6,
+          "label": "18t-E",
+          "role": "static",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G11",
+          "row": 11,
+          "col": 7,
+          "label": "18t-E",
+          "role": "static",
+          "value": 30.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H11",
+          "row": 11,
+          "col": 8,
+          "label": "18t-E",
+          "role": "static",
+          "value": 7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I11",
+          "row": 11,
+          "col": 9,
+          "label": "18t-E",
+          "role": "static",
+          "value": 23,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J11",
+          "row": 11,
+          "col": 10,
+          "label": "18t-E",
+          "role": "static",
+          "value": 17.9,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K11",
+          "row": 11,
+          "col": 11,
+          "label": "18t-E",
+          "role": "static",
+          "value": 13800,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O11",
+          "row": 11,
+          "col": 15,
+          "label": "18t-E",
+          "role": "static",
+          "value": 265,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P11",
+          "row": 11,
+          "col": 16,
+          "label": "18t-E",
+          "role": "static",
+          "value": 266,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C12",
+          "row": 12,
+          "col": 3,
+          "label": "18t-E",
+          "role": "static",
+          "value": "16c-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D12",
+          "row": 12,
+          "col": 4,
+          "label": "16c-E",
+          "role": "static",
+          "value": 14,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E12",
+          "row": 12,
+          "col": 5,
+          "label": "16c-E",
+          "role": "static",
+          "value": 14,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F12",
+          "row": 12,
+          "col": 6,
+          "label": "16c-E",
+          "role": "static",
+          "value": 2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G12",
+          "row": 12,
+          "col": 7,
+          "label": "16c-E",
+          "role": "static",
+          "value": 30.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H12",
+          "row": 12,
+          "col": 8,
+          "label": "16c-E",
+          "role": "static",
+          "value": 7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I12",
+          "row": 12,
+          "col": 9,
+          "label": "16c-E",
+          "role": "static",
+          "value": 20.4,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J12",
+          "row": 12,
+          "col": 10,
+          "label": "16c-E",
+          "role": "static",
+          "value": 15.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K12",
+          "row": 12,
+          "col": 11,
+          "label": "16c-E",
+          "role": "static",
+          "value": 12400,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O12",
+          "row": 12,
+          "col": 15,
+          "label": "16c-E",
+          "role": "static",
+          "value": 315,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P12",
+          "row": 12,
+          "col": 16,
+          "label": "16c-E",
+          "role": "static",
+          "value": 304,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "O13",
+          "row": 13,
+          "col": 15,
+          "label": "Widths",
+          "role": "static",
+          "value": 365,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P13",
+          "row": 13,
+          "col": 16,
+          "label": "Depths",
+          "role": "static",
+          "value": 342,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C14",
+          "row": 14,
+          "col": 3,
+          "label": "16c-E",
+          "role": "static",
+          "value": "S.P.F",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D14",
+          "row": 14,
+          "col": 4,
+          "label": "S.P.F",
+          "role": "static",
+          "value": "fb +",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E14",
+          "row": 14,
+          "col": 5,
+          "label": "fb +",
+          "role": "static",
+          "value": "fb -",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F14",
+          "row": 14,
+          "col": 6,
+          "label": "fb -",
+          "role": "static",
+          "value": "fv",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G14",
+          "row": 14,
+          "col": 7,
+          "label": "fv",
+          "role": "static",
+          "value": "fc",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H14",
+          "row": 14,
+          "col": 8,
+          "label": "fc",
+          "role": "static",
+          "value": "fc90",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I14",
+          "row": 14,
+          "col": 9,
+          "label": "fc90",
+          "role": "static",
+          "value": "ftn",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J14",
+          "row": 14,
+          "col": 10,
+          "label": "ftn",
+          "role": "static",
+          "value": "ftg",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K14",
+          "row": 14,
+          "col": 11,
+          "label": "ftg",
+          "role": "static",
+          "value": "E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P14",
+          "row": 14,
+          "col": 16,
+          "label": "E",
+          "role": "static",
+          "value": 380,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C15",
+          "row": 15,
+          "col": 3,
+          "label": "S.P.F",
+          "role": "static",
+          "value": "20f-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D15",
+          "row": 15,
+          "col": 4,
+          "label": "20f-E",
+          "role": "static",
+          "value": 25.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E15",
+          "row": 15,
+          "col": 5,
+          "label": "20f-E",
+          "role": "static",
+          "value": 19.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F15",
+          "row": 15,
+          "col": 6,
+          "label": "20f-E",
+          "role": "static",
+          "value": 1.75,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G15",
+          "row": 15,
+          "col": 7,
+          "label": "20f-E",
+          "role": "static",
+          "value": 25.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H15",
+          "row": 15,
+          "col": 8,
+          "label": "20f-E",
+          "role": "static",
+          "value": 5.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I15",
+          "row": 15,
+          "col": 9,
+          "label": "20f-E",
+          "role": "static",
+          "value": 17,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J15",
+          "row": 15,
+          "col": 10,
+          "label": "20f-E",
+          "role": "static",
+          "value": 12.7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K15",
+          "row": 15,
+          "col": 11,
+          "label": "20f-E",
+          "role": "static",
+          "value": 10300,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P15",
+          "row": 15,
+          "col": 16,
+          "label": "20f-E",
+          "role": "static",
+          "value": 418,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C16",
+          "row": 16,
+          "col": 3,
+          "label": "20f-E",
+          "role": "static",
+          "value": "20f-EX",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D16",
+          "row": 16,
+          "col": 4,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 25.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E16",
+          "row": 16,
+          "col": 5,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 25.6,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F16",
+          "row": 16,
+          "col": 6,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 1.75,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G16",
+          "row": 16,
+          "col": 7,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 25.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H16",
+          "row": 16,
+          "col": 8,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 5.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I16",
+          "row": 16,
+          "col": 9,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 17,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J16",
+          "row": 16,
+          "col": 10,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 12.7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K16",
+          "row": 16,
+          "col": 11,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 10300,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P16",
+          "row": 16,
+          "col": 16,
+          "label": "20f-EX",
+          "role": "static",
+          "value": 456,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C17",
+          "row": 17,
+          "col": 3,
+          "label": "20f-EX",
+          "role": "static",
+          "value": "14t-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D17",
+          "row": 17,
+          "col": 4,
+          "label": "14t-E",
+          "role": "static",
+          "value": 24.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E17",
+          "row": 17,
+          "col": 5,
+          "label": "14t-E",
+          "role": "static",
+          "value": 24.3,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F17",
+          "row": 17,
+          "col": 6,
+          "label": "14t-E",
+          "role": "static",
+          "value": 1.75,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G17",
+          "row": 17,
+          "col": 7,
+          "label": "14t-E",
+          "role": "static",
+          "value": 25.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H17",
+          "row": 17,
+          "col": 8,
+          "label": "14t-E",
+          "role": "static",
+          "value": 5.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I17",
+          "row": 17,
+          "col": 9,
+          "label": "14t-E",
+          "role": "static",
+          "value": 17.9,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J17",
+          "row": 17,
+          "col": 10,
+          "label": "14t-E",
+          "role": "static",
+          "value": 13.4,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K17",
+          "row": 17,
+          "col": 11,
+          "label": "14t-E",
+          "role": "static",
+          "value": 10700,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P17",
+          "row": 17,
+          "col": 16,
+          "label": "14t-E",
+          "role": "static",
+          "value": 494,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C18",
+          "row": 18,
+          "col": 3,
+          "label": "14t-E",
+          "role": "static",
+          "value": "12c-E",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D18",
+          "row": 18,
+          "col": 4,
+          "label": "12c-E",
+          "role": "static",
+          "value": 9.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E18",
+          "row": 18,
+          "col": 5,
+          "label": "12c-E",
+          "role": "static",
+          "value": 9.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F18",
+          "row": 18,
+          "col": 6,
+          "label": "12c-E",
+          "role": "static",
+          "value": 1.75,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G18",
+          "row": 18,
+          "col": 7,
+          "label": "12c-E",
+          "role": "static",
+          "value": 25.2,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H18",
+          "row": 18,
+          "col": 8,
+          "label": "12c-E",
+          "role": "static",
+          "value": 5.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "I18",
+          "row": 18,
+          "col": 9,
+          "label": "12c-E",
+          "role": "static",
+          "value": 17,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "J18",
+          "row": 18,
+          "col": 10,
+          "label": "12c-E",
+          "role": "static",
+          "value": 12.7,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "K18",
+          "row": 18,
+          "col": 11,
+          "label": "12c-E",
+          "role": "static",
+          "value": 9700,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P18",
+          "row": 18,
+          "col": 16,
+          "label": "12c-E",
+          "role": "static",
+          "value": 532,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P19",
+          "row": 19,
+          "col": 16,
+          "label": "Depths",
+          "role": "static",
+          "value": 570,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P20",
+          "row": 20,
+          "col": 16,
+          "label": "Depths",
+          "role": "static",
+          "value": 608,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B21",
+          "row": 21,
+          "col": 2,
+          "label": "Table 3.7.3 Specified Strengths and Modulus of Elasticity for Glulam Timber, MPa",
+          "role": "static",
+          "value": "Table 7.4.2  Service Condition Factors, Ks",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P21",
+          "row": 21,
+          "col": 16,
+          "label": "Table 7.4.2  Service Condition Factors, Ks",
+          "role": "static",
+          "value": 646,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P22",
+          "row": 22,
+          "col": 16,
+          "label": "Depths",
+          "role": "static",
+          "value": 684,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G23",
+          "row": 23,
+          "col": 7,
+          "label": "fc",
+          "role": "static",
+          "value": "Dry",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H23",
+          "row": 23,
+          "col": 8,
+          "label": "Dry",
+          "role": "static",
+          "value": "Wet",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P23",
+          "row": 23,
+          "col": 16,
+          "label": "Wet",
+          "role": "static",
+          "value": 722,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C24",
+          "row": 24,
+          "col": 3,
+          "label": "12c-E",
+          "role": "static",
+          "value": "Bending",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F24",
+          "row": 24,
+          "col": 6,
+          "label": "Bending",
+          "role": "static",
+          "value": "KSb",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G24",
+          "row": 24,
+          "col": 7,
+          "label": "KSb",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H24",
+          "row": 24,
+          "col": 8,
+          "label": "KSb",
+          "role": "static",
+          "value": 0.8,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P24",
+          "row": 24,
+          "col": 16,
+          "label": "KSb",
+          "role": "static",
+          "value": 760,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C25",
+          "row": 25,
+          "col": 3,
+          "label": "Bending",
+          "role": "static",
+          "value": "Longitudinal shear",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F25",
+          "row": 25,
+          "col": 6,
+          "label": "Longitudinal shear",
+          "role": "static",
+          "value": "KSv",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G25",
+          "row": 25,
+          "col": 7,
+          "label": "KSv",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H25",
+          "row": 25,
+          "col": 8,
+          "label": "KSv",
+          "role": "static",
+          "value": 0.87,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P25",
+          "row": 25,
+          "col": 16,
+          "label": "KSv",
+          "role": "static",
+          "value": 798,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C26",
+          "row": 26,
+          "col": 3,
+          "label": "Longitudinal shear",
+          "role": "static",
+          "value": "Comp. parallel to grain",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F26",
+          "row": 26,
+          "col": 6,
+          "label": "Comp. parallel to grain",
+          "role": "static",
+          "value": "KSc",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G26",
+          "row": 26,
+          "col": 7,
+          "label": "KSc",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H26",
+          "row": 26,
+          "col": 8,
+          "label": "KSc",
+          "role": "static",
+          "value": 0.75,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P26",
+          "row": 26,
+          "col": 16,
+          "label": "KSc",
+          "role": "static",
+          "value": 836,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C27",
+          "row": 27,
+          "col": 3,
+          "label": "Comp. parallel to grain",
+          "role": "static",
+          "value": "Comp. perpendicular to grain",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F27",
+          "row": 27,
+          "col": 6,
+          "label": "Comp. perpendicular to grain",
+          "role": "static",
+          "value": "KScp",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G27",
+          "row": 27,
+          "col": 7,
+          "label": "KScp",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H27",
+          "row": 27,
+          "col": 8,
+          "label": "KScp",
+          "role": "static",
+          "value": 0.67,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P27",
+          "row": 27,
+          "col": 16,
+          "label": "KScp",
+          "role": "static",
+          "value": 874,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C28",
+          "row": 28,
+          "col": 3,
+          "label": "Comp. perpendicular to grain",
+          "role": "static",
+          "value": "Tension parallel to grain",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F28",
+          "row": 28,
+          "col": 6,
+          "label": "Tension parallel to grain",
+          "role": "static",
+          "value": "KSt",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G28",
+          "row": 28,
+          "col": 7,
+          "label": "KSt",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H28",
+          "row": 28,
+          "col": 8,
+          "label": "KSt",
+          "role": "static",
+          "value": 0.75,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P28",
+          "row": 28,
+          "col": 16,
+          "label": "KSt",
+          "role": "static",
+          "value": 912,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C29",
+          "row": 29,
+          "col": 3,
+          "label": "Tension parallel to grain",
+          "role": "static",
+          "value": "Tension perpendicular to grain",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F29",
+          "row": 29,
+          "col": 6,
+          "label": "Tension perpendicular to grain",
+          "role": "static",
+          "value": "KStp",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G29",
+          "row": 29,
+          "col": 7,
+          "label": "KStp",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H29",
+          "row": 29,
+          "col": 8,
+          "label": "KStp",
+          "role": "static",
+          "value": 0.85,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P29",
+          "row": 29,
+          "col": 16,
+          "label": "KStp",
+          "role": "static",
+          "value": 950,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C30",
+          "row": 30,
+          "col": 3,
+          "label": "Tension perpendicular to grain",
+          "role": "static",
+          "value": "Modulus of elasticity",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F30",
+          "row": 30,
+          "col": 6,
+          "label": "Modulus of elasticity",
+          "role": "static",
+          "value": "KsE",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G30",
+          "row": 30,
+          "col": 7,
+          "label": "KsE",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H30",
+          "row": 30,
+          "col": 8,
+          "label": "KsE",
+          "role": "static",
+          "value": 0.9,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P30",
+          "row": 30,
+          "col": 16,
+          "label": "KsE",
+          "role": "static",
+          "value": 988,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "P31",
+          "row": 31,
+          "col": 16,
+          "label": "Depths",
+          "role": "static",
+          "value": 1026,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B34",
+          "row": 34,
+          "col": 2,
+          "label": "Table 7.4.2  Service Condition Factors, Ks",
+          "role": "static",
+          "value": "Table 7.5.6.4.3  Effective length (Le) for bending members",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C36",
+          "row": 36,
+          "col": 3,
+          "label": "Modulus of elasticity",
+          "role": "static",
+          "value": "lu ",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D36",
+          "row": 36,
+          "col": 4,
+          "label": "lu",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E36",
+          "row": 36,
+          "col": 5,
+          "label": "=",
+          "role": "static",
+          "value": "unsupported length (dist between supports or length of cantilever)",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C37",
+          "row": 37,
+          "col": 3,
+          "label": "lu",
+          "role": "static",
+          "value": "a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "D37",
+          "row": 37,
+          "col": 4,
+          "label": "a",
+          "role": "output",
+          "value": "=",
+          "formula": "=",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E37",
+          "row": 37,
+          "col": 5,
+          "label": "=",
+          "role": "static",
+          "value": "maximum purlin spacing (when purlins provide lateral support of compressive edge)",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G39",
+          "row": 39,
+          "col": 7,
+          "label": "Dry",
+          "role": "static",
+          "value": "Intermediate Support",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C40",
+          "row": 40,
+          "col": 3,
+          "label": "a",
+          "role": "static",
+          "value": "Beams",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G40",
+          "row": 40,
+          "col": 7,
+          "label": "Beams",
+          "role": "static",
+          "value": "yes",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H40",
+          "row": 40,
+          "col": 8,
+          "label": "yes",
+          "role": "static",
+          "value": "no",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C41",
+          "row": 41,
+          "col": 3,
+          "label": "Beams",
+          "role": "static",
+          "value": "Any loading",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G41",
+          "row": 41,
+          "col": 7,
+          "label": "Any loading",
+          "role": "static",
+          "value": "1.92 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H41",
+          "row": 41,
+          "col": 8,
+          "label": "1.92 a",
+          "role": "static",
+          "value": "1.92 lu",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C42",
+          "row": 42,
+          "col": 3,
+          "label": "Any loading",
+          "role": "static",
+          "value": "Uniformly distributed load",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G42",
+          "row": 42,
+          "col": 7,
+          "label": "Uniformly distributed load",
+          "role": "static",
+          "value": "1.92 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H42",
+          "row": 42,
+          "col": 8,
+          "label": "1.92 a",
+          "role": "static",
+          "value": "1.92 lu",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C43",
+          "row": 43,
+          "col": 3,
+          "label": "Uniformly distributed load",
+          "role": "static",
+          "value": "Concentrated load at centre",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G43",
+          "row": 43,
+          "col": 7,
+          "label": "Concentrated load at centre",
+          "role": "static",
+          "value": "1.11 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H43",
+          "row": 43,
+          "col": 8,
+          "label": "1.11 a",
+          "role": "static",
+          "value": "1.61 lu",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C44",
+          "row": 44,
+          "col": 3,
+          "label": "Concentrated load at centre",
+          "role": "static",
+          "value": "Concentrated loads at 1/3 points",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G44",
+          "row": 44,
+          "col": 7,
+          "label": "Concentrated loads at 1/3 points",
+          "role": "static",
+          "value": "1.68 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C45",
+          "row": 45,
+          "col": 3,
+          "label": "Concentrated loads at 1/3 points",
+          "role": "static",
+          "value": "Concentrated loads at 1/4 points",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G45",
+          "row": 45,
+          "col": 7,
+          "label": "Concentrated loads at 1/4 points",
+          "role": "static",
+          "value": "1.54 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C46",
+          "row": 46,
+          "col": 3,
+          "label": "Concentrated loads at 1/4 points",
+          "role": "static",
+          "value": "Concentrated loads at 1/5 points",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G46",
+          "row": 46,
+          "col": 7,
+          "label": "Concentrated loads at 1/5 points",
+          "role": "static",
+          "value": "1.68 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C47",
+          "row": 47,
+          "col": 3,
+          "label": "Concentrated loads at 1/5 points",
+          "role": "static",
+          "value": "Concentrated loads at 1/6 points",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G47",
+          "row": 47,
+          "col": 7,
+          "label": "Concentrated loads at 1/6 points",
+          "role": "static",
+          "value": "1.73 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C48",
+          "row": 48,
+          "col": 3,
+          "label": "Concentrated loads at 1/6 points",
+          "role": "static",
+          "value": "Concentrated loads at 1/7 points",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G48",
+          "row": 48,
+          "col": 7,
+          "label": "Concentrated loads at 1/7 points",
+          "role": "static",
+          "value": "1.78 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C49",
+          "row": 49,
+          "col": 3,
+          "label": "Concentrated loads at 1/7 points",
+          "role": "static",
+          "value": "Concentrated loads at 1/8 points",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "G49",
+          "row": 49,
+          "col": 7,
+          "label": "Concentrated loads at 1/8 points",
+          "role": "static",
+          "value": "1.84 a",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C50",
+          "row": 50,
+          "col": 3,
+          "label": "Concentrated loads at 1/8 points",
+          "role": "static",
+          "value": "Cantilevers",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C51",
+          "row": 51,
+          "col": 3,
+          "label": "Cantilevers",
+          "role": "static",
+          "value": "Any loading",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H51",
+          "row": 51,
+          "col": 8,
+          "label": "Any loading",
+          "role": "static",
+          "value": "1.92 lu",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C52",
+          "row": 52,
+          "col": 3,
+          "label": "Any loading",
+          "role": "static",
+          "value": "Uniformly distributed load",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H52",
+          "row": 52,
+          "col": 8,
+          "label": "Uniformly distributed load",
+          "role": "static",
+          "value": "1.23 lu",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C53",
+          "row": 53,
+          "col": 3,
+          "label": "Uniformly distributed load",
+          "role": "static",
+          "value": "Concentrated load at free end",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "H53",
+          "row": 53,
+          "col": 8,
+          "label": "Concentrated load at free end",
+          "role": "static",
+          "value": "1.69 lu",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B56",
+          "row": 56,
+          "col": 2,
+          "label": "Table 7.5.6.4.3  Effective length (Le) for bending members",
+          "role": "static",
+          "value": "Table 6.5.7.6  Length of Bearing Factor, KB",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C58",
+          "row": 58,
+          "col": 3,
+          "label": "Concentrated load at free end",
+          "role": "static",
+          "value": "Bearing length, mm",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E58",
+          "row": 58,
+          "col": 5,
+          "label": "Bearing length, mm",
+          "role": "static",
+          "value": "KB",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C59",
+          "row": 59,
+          "col": 3,
+          "label": "Bearing length, mm",
+          "role": "static",
+          "value": "<=12.5",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E59",
+          "row": 59,
+          "col": 5,
+          "label": "<=12.5",
+          "role": "static",
+          "value": 1.75,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C60",
+          "row": 60,
+          "col": 3,
+          "label": "<=12.5",
+          "role": "static",
+          "value": 25,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E60",
+          "row": 60,
+          "col": 5,
+          "label": "KB",
+          "role": "static",
+          "value": 1.38,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C61",
+          "row": 61,
+          "col": 3,
+          "label": "<=12.5",
+          "role": "static",
+          "value": 38,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E61",
+          "row": 61,
+          "col": 5,
+          "label": "KB",
+          "role": "static",
+          "value": 1.25,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C62",
+          "row": 62,
+          "col": 3,
+          "label": "<=12.5",
+          "role": "static",
+          "value": 50,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E62",
+          "row": 62,
+          "col": 5,
+          "label": "KB",
+          "role": "static",
+          "value": 1.19,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C63",
+          "row": 63,
+          "col": 3,
+          "label": "<=12.5",
+          "role": "static",
+          "value": 76,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E63",
+          "row": 63,
+          "col": 5,
+          "label": "KB",
+          "role": "static",
+          "value": 1.13,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C64",
+          "row": 64,
+          "col": 3,
+          "label": "<=12.5",
+          "role": "static",
+          "value": 100,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E64",
+          "row": 64,
+          "col": 5,
+          "label": "KB",
+          "role": "static",
+          "value": 1.1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C65",
+          "row": 65,
+          "col": 3,
+          "label": "<=12.5",
+          "role": "output",
+          "value": "=>150",
+          "formula": "=>150",
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "E65",
+          "row": 65,
+          "col": 5,
+          "label": "=>150",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "B68",
+          "row": 68,
+          "col": 2,
+          "label": "Table 6.5.7.6  Length of Bearing Factor, KB",
+          "role": "static",
+          "value": "Table 6.5.7.5 Size Factor for Bearing, KZcp",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C70",
+          "row": 70,
+          "col": 3,
+          "label": "=>150",
+          "role": "static",
+          "value": "Ratio of member width to depth",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F70",
+          "row": 70,
+          "col": 6,
+          "label": "Ratio of member width to depth",
+          "role": "static",
+          "value": "KZcp",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C71",
+          "row": 71,
+          "col": 3,
+          "label": "Ratio of member width to depth",
+          "role": "static",
+          "value": "1.0 or less",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F71",
+          "row": 71,
+          "col": 6,
+          "label": "1.0 or less",
+          "role": "static",
+          "value": 1,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "C72",
+          "row": 72,
+          "col": 3,
+          "label": "1.0 or less",
+          "role": "static",
+          "value": "2.0 or more",
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        },
+        {
+          "cell": "F72",
+          "row": 72,
+          "col": 6,
+          "label": "2.0 or more",
+          "role": "static",
+          "value": 1.15,
+          "formula": null,
+          "precedents": [],
+          "dependents": []
+        }
+      ]
+    }
+  }
+}
