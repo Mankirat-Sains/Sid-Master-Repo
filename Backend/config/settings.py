@@ -146,7 +146,8 @@ MAX_INLINE_TOOL_RESULT = int(os.getenv("MAX_INLINE_TOOL_RESULT", "3000"))
 # =============================================================================
 # DOCGEN REVAMP FLAGS
 # =============================================================================
-SECTION_BY_SECTION_GENERATION = os.getenv("SECTION_BY_SECTION_GENERATION", "false").lower() == "true"
+# Enable section-by-section generation by default so section approvals run without extra env wiring
+SECTION_BY_SECTION_GENERATION = os.getenv("SECTION_BY_SECTION_GENERATION", "true").lower() == "true"
 SECTION_BY_SECTION_ALLOWLIST = {
     item.strip().lower()
     for item in os.getenv("SECTION_BY_SECTION_ALLOWLIST", "").split(",")

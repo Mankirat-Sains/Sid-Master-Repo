@@ -113,15 +113,30 @@ class DocGenTool:
         workspace_dir: Path,
     ) -> Dict[str, Any]:
         """Call existing docgen generation logic."""
-        from nodes.DesktopAgent.doc_generation.section_generator import SectionGenerator  # type: ignore
-
-        generator = SectionGenerator()
-        result = generator.generate(
-            doc_request=doc_request,
-            context_path=str(context_file),
-            output_dir=str(workspace_dir),
+        from nodes.DesktopAgent.doc_generation.section_generator import (  # type: ignore
+            node_doc_generate_section,
         )
-        return result
+        from models.rag_state import RAGState
+
+        # Build a minimal RAGState to reuse the same section generator that raises interrupts
+        state = RAGState(
+            session_id=str(thread_id),
+            user_query=doc_request.get("user_query") or doc_request.get("title") or "",
+            original_question=doc_request.get("user_query") or doc_request.get("title") or "",
+            workflow="docgen",
+            task_type="doc_section",
+            doc_type=doc_request.get("doc_type"),
+            doc_type_variant=doc_request.get("doc_type_variant"),
+            section_type=doc_request.get("section_type"),
+            template_id=doc_request.get("template_id"),
+            template_sections=doc_request.get("template_sections") or [],
+            section_queue=doc_request.get("section_queue") or [],
+            approved_sections=doc_request.get("approved_sections") or [],
+            current_section_id=doc_request.get("section_id"),
+            doc_request=doc_request,
+        )
+
+        return node_doc_generate_section(state)
 
     def _process_docgen_result(self, result: Dict[str, Any], workspace_dir: Path) -> Dict[str, Any]:
         """Process docgen result with output eviction."""

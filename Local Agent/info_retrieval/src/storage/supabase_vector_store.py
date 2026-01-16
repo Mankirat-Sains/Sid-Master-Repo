@@ -102,7 +102,9 @@ class SupabaseVectorStore(VectorStore):
                 raise
 
         if last_exc and not data:
-            raise last_exc
+            # Degrade gracefully when RPC is missing to allow upstream fallbacks
+            logger.error("Supabase RPC search failed, returning no results: %s", last_exc)
+            return []
 
         results: List[SearchResult] = []
         for row in data:

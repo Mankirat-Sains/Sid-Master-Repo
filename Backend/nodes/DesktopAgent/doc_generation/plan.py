@@ -28,6 +28,34 @@ def _should_use_templates(doc_type: Optional[str]) -> bool:
     return True
 
 
+def _infer_sections_from_prompt(prompt: str) -> List[Dict[str, Any]]:
+    """Lightweight heuristic to derive a section queue when templates are missing."""
+    lowered = (prompt or "").lower()
+    candidates = []
+    if "executive summary" in lowered:
+        candidates.append(("executive_summary", "Executive Summary"))
+    if "methodology" in lowered:
+        candidates.append(("methodology", "Methodology"))
+    if "results" in lowered:
+        candidates.append(("results", "Results"))
+    if not candidates and lowered.strip():
+        # Fallback single section based on the noun in prompt
+        candidates.append(("summary", "Summary"))
+
+    queue: List[Dict[str, Any]] = []
+    for idx, (stype, sname) in enumerate(candidates):
+        queue.append(
+            {
+                "section_id": f"sec-{stype}-{idx+1}",
+                "section_type": stype,
+                "section_name": sname,
+                "position_order": idx + 1,
+                "status": "pending" if idx == 0 else "locked",
+            }
+        )
+    return queue
+
+
 def _resolve_template_sections(company_id: str, doc_type: Optional[str]) -> Tuple[Optional[str], List[Dict[str, Any]], Dict[str, Any], List[str]]:
     """
     Fetch ordered template sections and template metadata from Supabase when enabled.
@@ -170,6 +198,13 @@ def build_doc_plan(state: RAGState) -> Dict[str, Any]:
     section_queue, current_section_id, queue_section_type = _build_section_queue(template_sections, approved_sections, section_type)
     if queue_section_type and not section_type:
         section_type = queue_section_type
+    # If templates are unavailable and we still want section-by-section, infer a minimal queue from the prompt
+    if SECTION_BY_SECTION_GENERATION and not section_queue:
+        inferred_queue = _infer_sections_from_prompt(state.user_query or state.original_question or "")
+        if inferred_queue:
+            section_queue = inferred_queue
+            current_section_id = inferred_queue[0].get("section_id")
+            section_type = inferred_queue[0].get("section_type") or section_type
 
     analysis["doc_type"] = doc_type
     analysis["section_type"] = section_type

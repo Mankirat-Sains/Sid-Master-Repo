@@ -213,6 +213,64 @@ def node_doc_generate_section(state: RAGState) -> dict:
 
     extra_context: List[Any] = []
     approved_sections = getattr(state, "approved_sections", []) or overrides.get("approved_sections") or []
+    # If all sections are already approved, assemble the document and return without regenerating
+    pending_sections = [
+        sec for sec in (section_queue or []) if isinstance(sec, dict) and (sec.get("status") not in {"approved", "generated"})
+    ]
+    if section_queue and not pending_sections:
+        def _section_text(sec: Dict[str, Any]) -> str:
+            return (
+                sec.get("text")
+                or sec.get("draft_text")
+                or sec.get("content")
+                or sec.get("body")
+                or sec.get("combined_text")
+                or ""
+            )
+
+        combined_parts: List[str] = []
+        for sec in sorted(approved_sections, key=lambda s: s.get("position_order") or 0):
+            title = sec.get("section_name") or sec.get("section_type") or "Section"
+            text = _section_text(sec)
+            if text:
+                combined_parts.append(f"## {title.title()}\n\n{text}")
+        combined_text = "\n\n".join(combined_parts) if combined_parts else "No content generated."
+
+        section_status: List[Dict[str, Any]] = []
+        for sec in section_queue:
+            if not isinstance(sec, dict):
+                continue
+            section_status.append(
+                {
+                    "section_id": sec.get("section_id"),
+                    "section_type": sec.get("section_type"),
+                    "position_order": sec.get("position_order"),
+                    "status": "approved",
+                }
+            )
+
+        return {
+            "doc_generation_result": {
+                "draft_text": combined_text,
+                "combined_text": combined_text,
+                "citations": [],
+                "warnings": getattr(state, "doc_generation_warnings", []) or [],
+                "metadata": {"template_id": template_id},
+                "section_queue": section_queue,
+                "approved_sections": approved_sections,
+                "template_sections": template_sections,
+                "section_status": section_status,
+            },
+            "doc_generation_warnings": getattr(state, "doc_generation_warnings", []) or [],
+            "section_queue": section_queue,
+            "approved_sections": approved_sections,
+            "template_id": template_id,
+            "doc_type_variant": doc_type_variant,
+            "current_section_id": None,
+            "section_status": section_status,
+            "section_type": overrides.get("section_type"),
+        }
+
     approved_context = _sections_to_context(approved_sections)
     if approved_context:
         extra_context.extend(approved_context)
