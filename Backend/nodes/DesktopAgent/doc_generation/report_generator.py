@@ -11,6 +11,7 @@ from typing import Any, Dict
 
 from models.rag_state import RAGState
 from config.logging_config import log_query
+from nodes.DesktopAgent.doc_generation.section_generator import _sections_to_context
 
 _DOC_SERVICES: Dict[str, Any] | None = None
 
@@ -179,12 +180,32 @@ def node_doc_generate_report(state: RAGState) -> dict:
     company_id = os.getenv("DEMO_COMPANY_ID", "demo_company")
     overrides: Dict[str, Any] = {}
     if state.doc_request:
-        overrides.update({k: v for k, v in state.doc_request.items() if v})
+        overrides.update({k: v for k, v in state.doc_request.items() if v is not None})
     if state.doc_type:
         overrides["doc_type"] = state.doc_type
+    if state.template_id:
+        overrides["template_id"] = state.template_id
+    if state.doc_type_variant and not overrides.get("doc_type_variant"):
+        overrides["doc_type_variant"] = state.doc_type_variant
+    section_queue = list(getattr(state, "section_queue", []) or overrides.get("section_queue", []) or [])
+    if section_queue:
+        overrides["section_queue"] = section_queue
+    approved_sections = getattr(state, "approved_sections", []) or overrides.get("approved_sections") or []
+    extra_context = _sections_to_context(approved_sections)
     context_docs = getattr(state, "graded_docs", None) or getattr(state, "retrieved_docs", None)
     if context_docs:
-        overrides["extra_context"] = context_docs
+        if isinstance(context_docs, list):
+            extra_context.extend(context_docs)
+        else:
+            extra_context.append(context_docs)
+    if overrides.get("extra_context"):
+        existing_extra = overrides.pop("extra_context")
+        if isinstance(existing_extra, list):
+            extra_context.extend(existing_extra)
+        else:
+            extra_context.append(existing_extra)
+    if extra_context:
+        overrides["extra_context"] = extra_context
 
     result = drafter.draft_report(
         company_id=company_id,
@@ -193,7 +214,7 @@ def node_doc_generate_report(state: RAGState) -> dict:
         overrides=overrides or None,
     )
 
-    warnings = result.get("warnings", []) or []
+    warnings = (getattr(state, "doc_generation_warnings", []) or []) + (result.get("warnings", []) or [])
     # Mark if any section is TBD/skipped due to missing grounding
     for section in result.get("sections", []):
         if section.get("text", "").strip().startswith("[TBD"):
@@ -237,6 +258,16 @@ def node_doc_generate_report(state: RAGState) -> dict:
         log_query.warning(f"DOCGEN: failed to log citations_metadata debug info ({exc})")
 
     return {
-        "doc_generation_result": result,
+        "doc_generation_result": {
+            **result,
+            "section_queue": section_queue,
+            "approved_sections": approved_sections,
+            "template_id": overrides.get("template_id"),
+            "doc_type_variant": overrides.get("doc_type_variant"),
+        },
         "doc_generation_warnings": warnings,
+        "section_queue": section_queue,
+        "approved_sections": approved_sections,
+        "template_id": overrides.get("template_id"),
+        "doc_type_variant": overrides.get("doc_type_variant"),
     }

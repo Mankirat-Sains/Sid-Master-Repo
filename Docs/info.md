@@ -14,6 +14,11 @@
 - Verified data:
   - `document_templates` now contains entries like `design_report template v1`, `calculation_narrative template v1`, `method_statement template v1` with heading styles in `metadata`.
   - `template_sections` populated with ordered sections per template (e.g., executive_summary → references for design_report).
+- Ingestion/resolution:
+  - Ingestion pipeline can auto-resolve `template_id` and `section_id` mapping from Supabase templates/sections and stamps them (and `doc_type_variant`) into chunk metadata.
+  - Supabase vector store passthrough/mapping updated for `template_id`/`section_id`/`doc_type_variant`.
+- Generation:
+  - Report drafter now honors feature flag `SECTION_BY_SECTION_GENERATION` (with optional allowlist), fetches template sections from Supabase, and passes `template_id`/`doc_type_variant` into section drafts.
 
 ## Reference queries
 - Fetch template + ordered sections (asyncpg example):

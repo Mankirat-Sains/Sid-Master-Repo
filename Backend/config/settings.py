@@ -144,6 +144,16 @@ INTERRUPT_APPROVAL_TIMEOUT = int(os.getenv("INTERRUPT_APPROVAL_TIMEOUT", "300"))
 MAX_INLINE_TOOL_RESULT = int(os.getenv("MAX_INLINE_TOOL_RESULT", "3000"))
 
 # =============================================================================
+# DOCGEN REVAMP FLAGS
+# =============================================================================
+SECTION_BY_SECTION_GENERATION = os.getenv("SECTION_BY_SECTION_GENERATION", "false").lower() == "true"
+SECTION_BY_SECTION_ALLOWLIST = {
+    item.strip().lower()
+    for item in os.getenv("SECTION_BY_SECTION_ALLOWLIST", "").split(",")
+    if item.strip()
+}
+
+# =============================================================================
 # ROLE-BASED DATABASE PREFERENCES
 # =============================================================================
 # Defines which databases should be preferred/prioritized for different user roles

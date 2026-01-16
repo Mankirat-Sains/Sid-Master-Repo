@@ -55,6 +55,7 @@ class DeepDesktopLoop:
             logger.info(f"Desktop loop starting for thread {thread_id} in {workspace_dir}")
 
             plan = self._create_plan(state, workspace_dir)
+            plan_updates = plan.get("state_updates", {}) if isinstance(plan, dict) else {}
             if not plan or not plan.get("steps"):
                 logger.warning("No plan generated, returning early")
                 return {
@@ -68,6 +69,10 @@ class DeepDesktopLoop:
             # Extract docgen output (if any) to propagate to parent graph/API
             docgen_result = None
             docgen_warnings: List[str] = []
+            plan_warns: List[str] = []
+            if isinstance(plan_updates, dict) and plan_updates.get("doc_generation_warnings"):
+                plan_warns = list(plan_updates.get("doc_generation_warnings") or [])
+                plan_updates = {k: v for k, v in plan_updates.items() if k != "doc_generation_warnings"}
             for r in results:
                 action_res = r.get("action", {}) or {}
                 if action_res.get("action") == "generate_document" and action_res.get("success"):
@@ -94,8 +99,9 @@ class DeepDesktopLoop:
                 "requires_desktop_action": False,
                 "output_artifact_ref": final_result.get("artifact_ref"),
                 "doc_generation_result": docgen_result,
-                "doc_generation_warnings": docgen_warnings,
+                "doc_generation_warnings": plan_warns + (docgen_warnings or []),
                 "final_answer": (docgen_result or {}).get("draft_text") if isinstance(docgen_result, dict) else None,
+                **(plan_updates or {}),
             }
         except Exception as exc:  # pragma: no cover - defensive
             logger.error(f"Error in deep desktop loop: {exc}", exc_info=True)
@@ -125,7 +131,16 @@ class DeepDesktopLoop:
         # For docgen workflows, short-circuit to a deterministic plan that actually calls docgen.
         is_doc_workflow = _get(state, "workflow") == "docgen" or str(_get(state, "task_type")).startswith("doc_")
         if is_doc_workflow:
-            doc_request = _get(state, "doc_request", {}) or {}
+            doc_plan_updates: Dict[str, Any] = {}
+            try:
+                from nodes.DesktopAgent.doc_generation.plan import build_doc_plan
+
+                doc_plan_updates = build_doc_plan(state)
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(f"DOCGEN: doc plan helper failed in deep loop: {exc}")
+                doc_plan_updates = {}
+
+            doc_request = doc_plan_updates.get("doc_request") or _get(state, "doc_request", {}) or {}
             if user_query and not doc_request.get("user_query"):
                 doc_request["user_query"] = user_query
             doc_type = _get(state, "doc_type")
@@ -134,6 +149,21 @@ class DeepDesktopLoop:
                 doc_request.setdefault("doc_type", doc_type)
             if section_type:
                 doc_request.setdefault("section_type", section_type)
+            section_queue = doc_plan_updates.get("section_queue") or _get(state, "section_queue", []) or []
+            approved_sections = doc_plan_updates.get("approved_sections") or _get(state, "approved_sections", []) or []
+            template_id = doc_plan_updates.get("template_id") or _get(state, "template_id")
+            doc_type_variant = doc_plan_updates.get("doc_type_variant") or _get(state, "doc_type_variant")
+            current_section_id = doc_plan_updates.get("current_section_id") or doc_request.get("section_id")
+            if section_queue and not doc_request.get("section_queue"):
+                doc_request["section_queue"] = section_queue
+            if approved_sections and not doc_request.get("approved_sections"):
+                doc_request["approved_sections"] = approved_sections
+            if template_id and not doc_request.get("template_id"):
+                doc_request["template_id"] = template_id
+            if doc_type_variant and not doc_request.get("doc_type_variant"):
+                doc_request["doc_type_variant"] = doc_type_variant
+            if current_section_id:
+                doc_request.setdefault("section_id", current_section_id)
             logger.info("Doc workflow detected; forcing generate_document plan")
             return {
                 "goal": f"Generate document content for: {user_query or 'document request'}",
@@ -144,6 +174,15 @@ class DeepDesktopLoop:
                         "params": {"doc_request": doc_request},
                     }
                 ],
+                "state_updates": {
+                    **doc_plan_updates,
+                    "doc_request": doc_request,
+                    "section_queue": section_queue,
+                    "approved_sections": approved_sections,
+                    "template_id": template_id,
+                    "doc_type_variant": doc_type_variant,
+                    "current_section_id": current_section_id,
+                },
             }
 
         planning_prompt = f"""You are a desktop task planner. Break down the following request into concrete steps.

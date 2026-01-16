@@ -8,7 +8,7 @@ import os
 import re
 import traceback
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import pandas as pd
 
@@ -126,6 +126,31 @@ def _build_citations_metadata(result: Dict[str, Any], user_request: str | None) 
     }
 
 
+def _sections_to_context(sections: Any) -> List[Dict[str, Any]]:
+    """Convert approved/prior sections into retriever-style context chunks."""
+    context_chunks: List[Dict[str, Any]] = []
+    for idx, sec in enumerate(sections or []):
+        if not isinstance(sec, dict):
+            continue
+        text = (
+            sec.get("text")
+            or sec.get("draft_text")
+            or sec.get("content")
+            or sec.get("body")
+            or sec.get("combined_text")
+        )
+        if not text:
+            continue
+        meta = dict(sec.get("metadata") or {})
+        meta.setdefault("section_type", sec.get("section_type"))
+        meta.setdefault("section_id", sec.get("section_id"))
+        meta.setdefault("template_id", sec.get("template_id"))
+        meta.setdefault("source", meta.get("source") or f"approved_section_{idx + 1}")
+        meta.setdefault("similarity_score", meta.get("similarity_score") or 0.85)
+        context_chunks.append({"text": text, "metadata": meta, "score": meta.get("similarity_score")})
+    return context_chunks
+
+
 def node_doc_generate_section(state: RAGState) -> dict:
     """Generate a section draft and stash in state."""
     log_query.info(
@@ -149,14 +174,53 @@ def node_doc_generate_section(state: RAGState) -> dict:
     company_id = os.getenv("DEMO_COMPANY_ID", "demo_company")
     overrides: Dict[str, Any] = {}
     if state.doc_request:
-        overrides.update({k: v for k, v in state.doc_request.items() if v})
+        overrides.update({k: v for k, v in state.doc_request.items() if v is not None})
     if state.doc_type:
         overrides["doc_type"] = state.doc_type
     if state.section_type:
         overrides["section_type"] = state.section_type
+    template_id = overrides.get("template_id") or getattr(state, "template_id", None)
+    if template_id:
+        overrides["template_id"] = template_id
+    doc_type_variant = overrides.get("doc_type_variant") or getattr(state, "doc_type_variant", None)
+    if doc_type_variant:
+        overrides["doc_type_variant"] = doc_type_variant
+
+    section_queue = list(getattr(state, "section_queue", []) or overrides.get("section_queue", []) or [])
+    section_id = overrides.get("section_id") or getattr(state, "current_section_id", None)
+    if section_queue:
+        for sec in section_queue:
+            if not isinstance(sec, dict):
+                continue
+            if (sec.get("status") or "") == "approved":
+                continue
+            if not section_id:
+                section_id = sec.get("section_id")
+            if not overrides.get("section_type") and sec.get("section_type"):
+                overrides["section_type"] = sec.get("section_type")
+            break
+    if section_id:
+        overrides["section_id"] = section_id
+
+    extra_context: List[Any] = []
+    approved_sections = getattr(state, "approved_sections", []) or overrides.get("approved_sections") or []
+    approved_context = _sections_to_context(approved_sections)
+    if approved_context:
+        extra_context.extend(approved_context)
+    if overrides.get("extra_context"):
+        existing_extra = overrides.pop("extra_context")
+        if isinstance(existing_extra, list):
+            extra_context.extend(existing_extra)
+        else:
+            extra_context.append(existing_extra)
     context_docs = getattr(state, "graded_docs", None) or getattr(state, "retrieved_docs", None)
     if context_docs:
-        overrides["extra_context"] = context_docs
+        if isinstance(context_docs, list):
+            extra_context.extend(context_docs)
+        else:
+            extra_context.append(context_docs)
+    if extra_context:
+        overrides["extra_context"] = extra_context
 
     def _draft_with_overrides(extra: Dict[str, Any]) -> Dict[str, Any]:
         merged = dict(overrides)
@@ -177,7 +241,7 @@ def node_doc_generate_section(state: RAGState) -> dict:
 
     result = _draft_with_overrides({})
 
-    warnings = result.get("warnings", []) or []
+    warnings = (getattr(state, "doc_generation_warnings", []) or []) + (result.get("warnings", []) or [])
     draft_text = result.get("draft_text", "") or ""
     debug = result.get("debug", {}) or {}
     _log_text_checkpoint("docgen.initial_result", draft_text)
@@ -260,6 +324,32 @@ def node_doc_generate_section(state: RAGState) -> dict:
                     if isinstance(section.get(key), str):
                         section[key] = _clean_draft_text(section.get(key))
 
+    # Track template + queue metadata for downstream consumers
+    generation_meta = result.get("metadata") if isinstance(result.get("metadata"), dict) else {}
+    if template_id:
+        generation_meta["template_id"] = template_id
+    if doc_type_variant:
+        generation_meta["doc_type_variant"] = doc_type_variant
+    if section_id:
+        generation_meta["section_id"] = section_id
+    result["metadata"] = generation_meta
+
+    updated_queue: List[Dict[str, Any]] = []
+    if section_queue:
+        for sec in section_queue:
+            if not isinstance(sec, dict):
+                continue
+            entry = dict(sec)
+            if section_id and (
+                entry.get("section_id") == section_id
+                or (not entry.get("section_id") and entry.get("section_type") == overrides.get("section_type"))
+            ):
+                if entry.get("status") != "approved":
+                    entry["status"] = "generated"
+            updated_queue.append(entry)
+    if updated_queue:
+        section_queue = updated_queue
+
     # Ensure citations metadata is always present for the UI (sources dropdown)
     if not result.get("citations_metadata"):
         result["citations_metadata"] = _build_citations_metadata(result, state.user_query or state.original_question)
@@ -279,8 +369,18 @@ def node_doc_generate_section(state: RAGState) -> dict:
         log_query.warning(f"DOCGEN: failed to log citations_metadata debug info ({exc})")
 
     return {
-        "doc_generation_result": result,
+        "doc_generation_result": {
+            **result,
+            "section_queue": section_queue,
+            "approved_sections": approved_sections,
+            "template_sections": overrides.get("template_sections") or state.template_sections,
+        },
         "doc_generation_warnings": warnings,
+        "section_queue": section_queue,
+        "approved_sections": approved_sections,
+        "template_id": template_id,
+        "doc_type_variant": doc_type_variant,
+        "current_section_id": section_id,
     }
 
 
@@ -450,6 +550,31 @@ class SectionGenerator:
             if doc_request:
                 overrides.update({k: v for k, v in doc_request.items() if v is not None})
 
+            section_queue = list(overrides.get("section_queue") or [])
+            if section_queue and not overrides.get("section_id"):
+                for sec in section_queue:
+                    if not isinstance(sec, dict):
+                        continue
+                    if (sec.get("status") or "") == "approved":
+                        continue
+                    overrides.setdefault("section_id", sec.get("section_id"))
+                    overrides.setdefault("section_type", sec.get("section_type"))
+                    break
+
+            extra_context: List[Any] = []
+            approved_sections = (doc_request or {}).get("approved_sections") if isinstance(doc_request, dict) else []
+            approved_context = _sections_to_context(approved_sections)
+            if approved_context:
+                extra_context.extend(approved_context)
+            if overrides.get("extra_context"):
+                existing_extra = overrides.pop("extra_context")
+                if isinstance(existing_extra, list):
+                    extra_context.extend(existing_extra)
+                else:
+                    extra_context.append(existing_extra)
+            if extra_context:
+                overrides["extra_context"] = extra_context
+
             generator = self._get_generator()
             company_id = os.getenv("DEMO_COMPANY_ID", "demo_company")
             result = generator.draft_section(
@@ -461,6 +586,13 @@ class SectionGenerator:
             # Ensure a metadata block is always present
             metadata = result.get("metadata") or {}
             metadata["used_context_file"] = bool(context_path and Path(context_path).exists())
+            if doc_request:
+                if doc_request.get("template_id"):
+                    metadata["template_id"] = doc_request.get("template_id")
+                if doc_request.get("doc_type_variant"):
+                    metadata["doc_type_variant"] = doc_request.get("doc_type_variant")
+                if doc_request.get("section_id"):
+                    metadata["section_id"] = doc_request.get("section_id")
             result["metadata"] = metadata
             # Sanitize text to remove warnings/citations from content
             if isinstance(result.get("draft_text"), str):
@@ -475,6 +607,24 @@ class SectionGenerator:
                                 section[key] = _clean_draft_text(section.get(key))
             # Build citations metadata for UI (sources dropdown)
             result["citations_metadata"] = _build_citations_metadata(result, user_request)
+            section_queue = (doc_request or {}).get("section_queue") if isinstance(doc_request, dict) else []
+            if section_queue:
+                updated_queue: List[Dict[str, Any]] = []
+                section_id = (doc_request or {}).get("section_id")
+                for sec in section_queue:
+                    if not isinstance(sec, dict):
+                        continue
+                    entry = dict(sec)
+                    if section_id and (
+                        entry.get("section_id") == section_id
+                        or (not entry.get("section_id") and entry.get("section_type") == overrides.get("section_type"))
+                    ):
+                        if entry.get("status") != "approved":
+                            entry["status"] = "generated"
+                    updated_queue.append(entry)
+                section_queue = updated_queue
+            result["section_queue"] = section_queue
+            result["approved_sections"] = approved_sections
             return result
         except Exception as exc:  # pragma: no cover - defensive fallback
             log_query.error(f"DOCGEN: SectionGenerator.generate failed: {exc}")

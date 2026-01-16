@@ -67,6 +67,12 @@ class ParentState:
     desktop_policy: Optional[str] = None  # "required" | "optional" | "never"
     task_type: Optional[str] = None  # "qa" | "doc_section" | "doc_report"
     doc_type: Optional[str] = None
+    doc_type_variant: Optional[str] = None
+    template_id: Optional[str] = None
+    template_sections: List[Dict[str, Any]] = field(default_factory=list)
+    section_queue: List[Dict[str, Any]] = field(default_factory=list)
+    approved_sections: List[Dict[str, Any]] = field(default_factory=list)
+    current_section_id: Optional[str] = None
     section_type: Optional[str] = None
     doc_request: Optional[Dict[str, Any]] = None
     requires_desktop_action: bool = False

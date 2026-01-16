@@ -60,6 +60,12 @@ class DocGenTool:
                 "length_target": (result.get("length_target") or {}),
                 "doc_type": doc_request.get("doc_type"),
                 "section_type": doc_request.get("section_type"),
+                "doc_type_variant": doc_request.get("doc_type_variant"),
+                "template_id": doc_request.get("template_id") or (result.get("metadata") or {}).get("template_id"),
+                "section_id": doc_request.get("section_id") or (result.get("metadata") or {}).get("section_id"),
+                "section_queue": result.get("section_queue"),
+                "approved_sections": result.get("approved_sections"),
+                "template_sections": result.get("template_sections") or doc_request.get("template_sections"),
                 "citations_metadata": result.get("citations_metadata"),
             }
 
