@@ -57,7 +57,6 @@ def _convert_to_rag_state(state) -> RAGState:
     return rag_state
 
 
-<<<<<<< HEAD
 def _router_route(state: RAGState) -> str:
     """
     Planner routing:
@@ -93,8 +92,6 @@ def _doc_or_router(state: RAGState) -> str:
     if workflow == "docgen" or task_type in {"doc_section", "doc_report"}:
         return "desktop_agent"
     return _router_route(state)
-=======
->>>>>>> 069be303bd5b6910ab2e1a78bc142bfbafba3541
 
 
 def _log_node_state(node_name: str, state) -> None:
@@ -193,7 +190,6 @@ def build_graph():
 
     g.set_entry_point("plan")
 
-<<<<<<< HEAD
     # After plan: if planner selected RAG, go directly to router_dispatcher
     # Otherwise, check doc_task_classifier to see if it's doc generation
     g.add_conditional_edges(
@@ -217,13 +213,6 @@ def build_graph():
     )
 
     g.add_edge("desktop_agent", END)
-=======
-    # Plan goes directly to router_dispatcher which handles routing to:
-    # - db_retrieval subgraph (if "rag" in selected_routers)
-    # - webcalcs subgraph (if "web" in selected_routers)
-    # - desktop_agent subgraph (if "desktop" in selected_routers)
-    g.add_edge("plan", "router_dispatcher")
->>>>>>> 069be303bd5b6910ab2e1a78bc142bfbafba3541
     g.add_edge("router_dispatcher", END)
 
     from graph.checkpointer import checkpointer
