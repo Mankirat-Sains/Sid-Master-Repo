@@ -516,6 +516,8 @@ def node_doc_generate_section(state: RAGState) -> dict:
         "current_section_id": section_id,
         "section_status": section_status,
         "section_type": overrides.get("section_type"),
+        "section_draft": cleaned_text or result.get("draft_text") or draft_text,
+        "citations": result.get("citations", []),
     }
     doc_request = dict(overrides)
     doc_request["section_queue"] = section_queue
@@ -533,13 +535,25 @@ def node_doc_generate_section(state: RAGState) -> dict:
         ),
         "draft",
     )
+    section_name = overrides.get("section_name")
+    if not section_name:
+        for sec in section_queue:
+            if not isinstance(sec, dict):
+                continue
+            if (section_id and sec.get("section_id") == section_id) or (
+                not section_id and sec.get("section_type") == overrides.get("section_type")
+            ):
+                section_name = sec.get("section_name")
+                break
 
     interrupt_payload: Dict[str, Any] = {
+        "interrupt_type": "section_approval",
         "type": "section_approval",
         "action": "doc_section_review",
         "action_id": f"section::{section_id or overrides.get('section_type') or 'unknown'}",
         "section_id": section_id,
         "section_type": overrides.get("section_type"),
+        "section_name": section_name,
         "section_status": section_status_value,
         "section_preview": section_preview,
         "section_content": cleaned_text or result.get("draft_text") or draft_text,
@@ -706,6 +720,7 @@ class SectionGenerator:
             output_dir: Directory for any outputs (kept for parity; not used directly here).
         """
         try:
+            doc_request_dict: Dict[str, Any] = doc_request if isinstance(doc_request, dict) else {}
             ctx = {}
             if context_path and Path(context_path).exists():
                 try:
@@ -714,12 +729,12 @@ class SectionGenerator:
                     pass
 
             user_request = ""
-            if doc_request:
+            if doc_request_dict:
                 user_request = (
-                    doc_request.get("user_query")
-                    or doc_request.get("title")
-                    or doc_request.get("content")
-                    or doc_request.get("prompt")
+                    doc_request_dict.get("user_query")
+                    or doc_request_dict.get("title")
+                    or doc_request_dict.get("content")
+                    or doc_request_dict.get("prompt")
                     or ""
                 )
             if not user_request and isinstance(ctx, dict):
@@ -733,9 +748,10 @@ class SectionGenerator:
                 )
 
             overrides: Dict[str, Any] = {}
-            if doc_request:
-                overrides.update({k: v for k, v in doc_request.items() if v is not None})
+            if doc_request_dict:
+                overrides.update({k: v for k, v in doc_request_dict.items() if v is not None})
 
+            approved_sections = doc_request_dict.get("approved_sections") if isinstance(doc_request_dict, dict) else []
             section_queue = list(overrides.get("section_queue") or [])
             if section_queue and not overrides.get("section_id"):
                 for sec in section_queue:
@@ -745,10 +761,33 @@ class SectionGenerator:
                         continue
                     overrides.setdefault("section_id", sec.get("section_id"))
                     overrides.setdefault("section_type", sec.get("section_type"))
+                    overrides.setdefault("section_name", sec.get("section_name"))
                     break
 
+            # If a section queue exists, delegate to the graph-based generator so interrupts are raised per section.
+            if section_queue:
+                doc_request_payload = dict(overrides)
+                doc_request_payload["section_queue"] = section_queue
+                doc_request_payload["approved_sections"] = approved_sections or []
+                rag_state = RAGState(
+                    session_id=str(doc_request_dict.get("session_id", "section_generator")),
+                    user_query=user_request,
+                    original_question=user_request,
+                    workflow="docgen",
+                    task_type="doc_section",
+                    doc_type=doc_request_dict.get("doc_type"),
+                    doc_type_variant=doc_request_dict.get("doc_type_variant"),
+                    section_type=doc_request_payload.get("section_type"),
+                    template_id=doc_request_dict.get("template_id"),
+                    template_sections=doc_request_dict.get("template_sections") or [],
+                    section_queue=section_queue,
+                    approved_sections=approved_sections or [],
+                    current_section_id=doc_request_payload.get("section_id"),
+                    doc_request=doc_request_payload,
+                )
+                return node_doc_generate_section(rag_state)
+
             extra_context: List[Any] = []
-            approved_sections = (doc_request or {}).get("approved_sections") if isinstance(doc_request, dict) else []
             approved_context = _sections_to_context(approved_sections)
             if approved_context:
                 extra_context.extend(approved_context)
@@ -772,13 +811,13 @@ class SectionGenerator:
             # Ensure a metadata block is always present
             metadata = result.get("metadata") or {}
             metadata["used_context_file"] = bool(context_path and Path(context_path).exists())
-            if doc_request:
-                if doc_request.get("template_id"):
-                    metadata["template_id"] = doc_request.get("template_id")
-                if doc_request.get("doc_type_variant"):
-                    metadata["doc_type_variant"] = doc_request.get("doc_type_variant")
-                if doc_request.get("section_id"):
-                    metadata["section_id"] = doc_request.get("section_id")
+            if doc_request_dict:
+                if doc_request_dict.get("template_id"):
+                    metadata["template_id"] = doc_request_dict.get("template_id")
+                if doc_request_dict.get("doc_type_variant"):
+                    metadata["doc_type_variant"] = doc_request_dict.get("doc_type_variant")
+                if doc_request_dict.get("section_id"):
+                    metadata["section_id"] = doc_request_dict.get("section_id")
             result["metadata"] = metadata
             # Sanitize text to remove warnings/citations from content
             if isinstance(result.get("draft_text"), str):
@@ -793,10 +832,10 @@ class SectionGenerator:
                                 section[key] = _clean_draft_text(section.get(key))
             # Build citations metadata for UI (sources dropdown)
             result["citations_metadata"] = _build_citations_metadata(result, user_request)
-            section_queue = (doc_request or {}).get("section_queue") if isinstance(doc_request, dict) else []
+            section_queue = doc_request_dict.get("section_queue") if isinstance(doc_request_dict, dict) else []
             if section_queue:
                 updated_queue: List[Dict[str, Any]] = []
-                section_id = (doc_request or {}).get("section_id")
+                section_id = doc_request_dict.get("section_id")
                 for sec in section_queue:
                     if not isinstance(sec, dict):
                         continue

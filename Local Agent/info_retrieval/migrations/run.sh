@@ -17,6 +17,7 @@ migrations=(
   "002_create_section_templates.sql"
   "003_create_style_rules.sql"
   "004_template_sections.sql"
+  "005_match_chunks.sql"
 )
 
 for mig in "${migrations[@]}"; do

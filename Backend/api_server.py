@@ -2137,6 +2137,31 @@ async def chat_stream_handler(request: ChatRequest):
                     if not isinstance(state_updates, dict):
                         continue
                     
+                    # Short-circuit if an interrupt event is emitted as a node output (updates mode).
+                    if node_name == "__interrupt__" or state_updates.get("interrupt_type") or state_updates.get("action") == "doc_section_review":
+                        interrupt_payload = state_updates
+                        try:
+                            state_snapshot = await _load_thread_state(graph, request.session_id)
+                            safe_state = ensure_rag_state_compatibility(state_snapshot)
+                            interrupt_state_updates = interrupt_payload.get("state_updates") if isinstance(interrupt_payload, dict) else {}
+                            if isinstance(interrupt_state_updates, dict):
+                                safe_state.update(interrupt_state_updates)
+                            safe_state["desktop_interrupt_pending"] = True
+                            safe_state["desktop_interrupt_data"] = interrupt_payload
+                            update_values = {
+                                "desktop_interrupt_pending": True,
+                                "desktop_interrupt_data": interrupt_payload,
+                                "desktop_approved_actions": safe_state.get("desktop_approved_actions", []),
+                            }
+                            if isinstance(interrupt_state_updates, dict) and interrupt_state_updates:
+                                update_values.update(interrupt_state_updates)
+                            await _update_thread_state(graph, request.session_id, update_values)
+                            interrupt_payload["state_summary"] = get_deep_agent_state_summary(safe_state)
+                        except Exception as exc:  # pragma: no cover - defensive
+                            logger.error(f"Failed to persist interrupt state (updates stream): {exc}")
+                        yield f"data: {json.dumps({'type': 'interrupt', 'message': 'Action requires approval', 'interrupt': interrupt_payload, 'session_id': request.session_id})}\n\n"
+                        return
+                    
                     # Merge state updates into accumulated state
                     # (updates mode gives us only the changes, not full state)
                     accumulated_state.update(state_updates)

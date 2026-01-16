@@ -6,6 +6,7 @@ doc-generation compatibility when workflow demands it.
 """
 from dataclasses import asdict
 from langgraph.graph import StateGraph, END
+from langgraph.errors import GraphInterrupt
 
 from models.rag_state import RAGState
 from models.parent_state import ParentState
@@ -131,6 +132,9 @@ def call_desktop_agent_subgraph(state: ParentState) -> dict:
             "execution_trace": parent_trace + (result.get("execution_trace", []) or []),
             "execution_trace_verbose": parent_verbose + (result.get("execution_trace_verbose", []) or []),
         }
+    except GraphInterrupt:
+        # Allow approval interrupts to propagate to the API layer.
+        raise
     except Exception as e:
         log_route.error(f"❌ DesktopAgent subgraph failed: {e}")
         import traceback

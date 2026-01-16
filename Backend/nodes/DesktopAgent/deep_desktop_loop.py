@@ -103,6 +103,9 @@ class DeepDesktopLoop:
                 "final_answer": (docgen_result or {}).get("draft_text") if isinstance(docgen_result, dict) else None,
                 **(plan_updates or {}),
             }
+        except GraphInterrupt:
+            logger.info("Propagating GraphInterrupt from deep desktop loop.")
+            raise
         except Exception as exc:  # pragma: no cover - defensive
             logger.error(f"Error in deep desktop loop: {exc}", exc_info=True)
             return {

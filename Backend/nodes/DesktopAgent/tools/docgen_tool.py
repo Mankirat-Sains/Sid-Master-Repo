@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 from uuid import uuid4
 
+from langgraph.errors import GraphInterrupt
+
 from models.rag_state import RAGState
 from utils.tool_eviction import get_evictor
 from persistence.workspace_manager import get_workspace_manager
@@ -46,6 +48,7 @@ class DocGenTool:
                 doc_request=doc_request,
                 context_file=context_file,
                 workspace_dir=workspace_dir,
+                thread_id=thread_id,
             )
             # Final guardrail: strip warning/citation noise from draft_text
             if isinstance(result.get("draft_text"), str):
@@ -76,6 +79,9 @@ class DocGenTool:
                 "metadata": processed.get("metadata", {}),
                 "doc_generation_result": docgen_payload,
             }
+        except GraphInterrupt:
+            logger.info("Docgen tool raised interrupt; propagating for approval.")
+            raise
         except Exception as exc:  # pragma: no cover - defensive
             logger.error(f"Error in docgen tool: {exc}", exc_info=True)
             return {"success": False, "error": str(exc)}
@@ -111,6 +117,7 @@ class DocGenTool:
         doc_request: Dict[str, Any],
         context_file: Path,
         workspace_dir: Path,
+        thread_id: str,
     ) -> Dict[str, Any]:
         """Call existing docgen generation logic."""
         from nodes.DesktopAgent.doc_generation.section_generator import (  # type: ignore
