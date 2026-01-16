@@ -66,6 +66,7 @@ type OnlyOfficeEditorConfig = {
     onDocumentReady?: () => void
     onError?: (event: OnlyOfficeErrorEvent) => void
   }
+  token?: string
   width: string
   height: string
 }
@@ -112,6 +113,8 @@ const loadState = ref<'idle' | 'loading' | 'ready' | 'error'>('idle')
 const errorMessage = ref('')
 const editorRef = shallowRef<OnlyOfficeEditorInstance | null>(null)
 const lastLoadedKey = ref<string>('')
+const lastSignedToken = ref<string>('')
+const lastSignedConfig = ref<Record<string, unknown> | null>(null)
 
 function makeDocumentKey(source: string) {
   const cleaned = source.replace(/[^0-9A-Za-z_.=-]/g, '_')
@@ -199,11 +202,100 @@ const overlayTitle = computed(() => {
   return 'Preparing editor…'
 })
 
+function resolveOnlyOfficeSignUrls(): string[] {
+  const urls = new Set<string>()
+  const override = (config.public.onlyofficeSignUrl as string | undefined)?.trim()
+  if (override) {
+    urls.add(override.replace(/\/$/, ''))
+  }
+
+  const orchestratorBase = (config.public.orchestratorUrl as string | undefined)?.replace(/\/$/, '')
+  const browserOrigin = typeof window !== 'undefined' ? window.location.origin.replace(/\/$/, '') : ''
+  const docOrigin = (() => {
+    try {
+      return documentUrl.value ? new URL(documentUrl.value).origin.replace(/\/$/, '') : ''
+    } catch {
+      return ''
+    }
+  })()
+  const callbackOrigin = (() => {
+    try {
+      return callbackUrl.value ? new URL(callbackUrl.value).origin.replace(/\/$/, '') : ''
+    } catch {
+      return ''
+    }
+  })()
+
+  if (orchestratorBase) {
+    urls.add(`${orchestratorBase}/onlyoffice/sign`)
+    urls.add(`${orchestratorBase}/api/onlyoffice/sign`)
+  } else if (browserOrigin) {
+    urls.add(`${browserOrigin}/onlyoffice/sign`)
+    urls.add(`${browserOrigin}/api/onlyoffice/sign`)
+  }
+
+  if (docOrigin) {
+    urls.add(`${docOrigin}/onlyoffice/sign`)
+    urls.add(`${docOrigin}/api/onlyoffice/sign`)
+  }
+  if (callbackOrigin && callbackOrigin !== docOrigin) {
+    urls.add(`${callbackOrigin}/onlyoffice/sign`)
+    urls.add(`${callbackOrigin}/api/onlyoffice/sign`)
+  }
+
+  return Array.from(urls)
+}
+
 function destroyEditor() {
   if (editorRef.value?.destroyEditor) {
     editorRef.value.destroyEditor()
   }
   editorRef.value = null
+}
+
+async function signOnlyOfficeConfig(configToSign: OnlyOfficeEditorConfig): Promise<string | null> {
+  const signUrls = resolveOnlyOfficeSignUrls()
+  if (!signUrls.length) {
+    throw new Error('Orchestrator URL is not configured for OnlyOffice signing.')
+  }
+  const payload = { config: configToSign }
+  console.log('📄 [OnlyOffice] Signing payload (unsigned):', payload)
+
+  const errors: string[] = []
+  for (const url of signUrls) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      if (!response.ok) {
+        const text = await response.text()
+        errors.push(`${url} -> ${response.status}: ${text}`)
+        continue
+      }
+      const data = (await response.json()) as { token?: string | null; unsigned?: boolean }
+      if (!data.token) {
+        if (data.unsigned) {
+          console.warn(`📄 [OnlyOffice] Using unsigned editor config from ${url} (no JWT secret configured)`)
+          lastSignedToken.value = ''
+          lastSignedConfig.value = JSON.parse(JSON.stringify(configToSign))
+          return null
+        }
+        errors.push(`${url} -> missing token`)
+        continue
+      }
+      lastSignedToken.value = data.token
+      lastSignedConfig.value = JSON.parse(JSON.stringify(configToSign))
+      return data.token
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err)
+      errors.push(`${url} -> ${message}`)
+    }
+  }
+
+  const errorHint = errors.length ? errors.join(' ; ') : 'Unknown error'
+  throw new Error(`OnlyOffice sign failed (tried ${signUrls.length} endpoint${signUrls.length > 1 ? 's' : ''}): ${errorHint}`)
 }
 
 async function bootEditor() {
@@ -287,6 +379,17 @@ async function bootEditor() {
       height: '100%'
     }
 
+    console.log('📄 [OnlyOffice] Unsigned editorConfig:', editorConfig)
+
+    // Request a signed JWT for this config from the orchestrator to satisfy OnlyOffice JWT validation
+    const token = await signOnlyOfficeConfig(editorConfig)
+    if (token) {
+      editorConfig.token = token
+    } else {
+      delete (editorConfig as any).token
+    }
+
+    console.log('📄 [OnlyOffice] Signed editorConfig token:', token)
     editorRef.value = new api.DocEditor(containerId, editorConfig)
     lastLoadedKey.value = documentKey.value
   } catch (error: unknown) {

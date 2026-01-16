@@ -58,6 +58,7 @@ export default defineNuxtConfig({
       onlyofficeDocumentBaseUrl: process.env.ONLYOFFICE_DOCUMENT_BASE_URL || '',
       onlyofficeDocumentUrl: process.env.ONLYOFFICE_DOCUMENT_URL || '',
       onlyofficeCallbackUrl: process.env.ONLYOFFICE_CALLBACK_URL || '',
+      onlyofficeSignUrl: process.env.ONLYOFFICE_SIGN_URL || '',
       onlyofficeUserName: process.env.ONLYOFFICE_USER_NAME || '',
       onlyofficeUserId: process.env.ONLYOFFICE_USER_ID || ''
     }

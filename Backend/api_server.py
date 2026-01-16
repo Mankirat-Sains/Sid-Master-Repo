@@ -20,9 +20,12 @@ import logging
 import shutil
 import re
 import uuid
+import base64
+import hmac
+import hashlib
 from typing import Dict, Any, Optional, List
 from langgraph.errors import GraphInterrupt
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
 from docx import Document as DocxDocument
@@ -57,6 +60,45 @@ if root_env_path.exists():
 else:
     load_dotenv(override=True)
     print(f"⚠️ Root .env not found at {root_env_path}, using current environment")
+
+# OnlyOffice JWT configuration
+ONLYOFFICE_JWT_SECRET = os.getenv("ONLYOFFICE_JWT_SECRET") or os.getenv("JWT_SECRET") or "secret"  # default to OnlyOffice Document Server default
+ONLYOFFICE_JWT_ALG = os.getenv("ONLYOFFICE_JWT_ALG", "HS256")
+ONLYOFFICE_SERVER_URL = os.getenv("ONLYOFFICE_SERVER_URL")
+ONLYOFFICE_CALLBACK_URL = os.getenv("ONLYOFFICE_CALLBACK_URL")
+ONLYOFFICE_DOCUMENT_BASE_URL = os.getenv("ONLYOFFICE_DOCUMENT_BASE_URL")
+ONLYOFFICE_ALLOW_UNSIGNED = os.getenv("ONLYOFFICE_ALLOW_UNSIGNED", "true").lower() in {"1", "true", "yes", "on"}
+
+# JWT helpers (no external dependency; HS256 only)
+def _b64url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
+
+
+def jwt_encode(payload: Dict[str, Any], secret: str, alg: str = "HS256") -> str:
+    if alg != "HS256":
+        raise ValueError("Only HS256 is supported")
+    header = {"alg": alg, "typ": "JWT"}
+    header_b64 = _b64url(json.dumps(header, separators=(",", ":")).encode("utf-8"))
+    payload_b64 = _b64url(json.dumps(payload, separators=(",", ":")).encode("utf-8"))
+    signing_input = f"{header_b64}.{payload_b64}".encode("ascii")
+    sig = hmac.new(secret.encode("utf-8"), signing_input, hashlib.sha256).digest()
+    return f"{header_b64}.{payload_b64}.{_b64url(sig)}"
+
+
+def jwt_decode(token: str, secret: str, alg: str = "HS256") -> Dict[str, Any]:
+    if alg != "HS256":
+        raise ValueError("Only HS256 is supported")
+    try:
+        header_b64, payload_b64, sig_b64 = token.split(".")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid JWT format")
+    signing_input = f"{header_b64}.{payload_b64}".encode("ascii")
+    expected_sig = _b64url(hmac.new(secret.encode("utf-8"), signing_input, hashlib.sha256).digest())
+    if not hmac.compare_digest(expected_sig, sig_b64):
+        raise HTTPException(status_code=401, detail="JWT signature mismatch")
+    payload_json = base64.urlsafe_b64decode(payload_b64 + "==")
+    return json.loads(payload_json)
+
 
 # Import the RAG system from new modular structure
 from main import run_agentic_rag, rag_healthcheck
@@ -1041,6 +1083,106 @@ async def get_document(document_name: str):
             "Expires": "0",
         },
     )
+
+
+@app.post("/onlyoffice/sign")
+async def sign_onlyoffice(request: Request):
+    """
+    Sign an OnlyOffice editor config with the shared JWT secret (HS256).
+    Required when Document Server JWT is enabled.
+    """
+    if not ONLYOFFICE_JWT_SECRET:
+        if ONLYOFFICE_ALLOW_UNSIGNED:
+            logger.warning("ONLYOFFICE_JWT_SECRET is not configured; returning unsigned config (ONLYOFFICE_ALLOW_UNSIGNED=true)")
+            return {"token": None, "alg": None, "unsigned": True}
+        raise HTTPException(status_code=500, detail="ONLYOFFICE_JWT_SECRET is not configured")
+
+    try:
+        body = await request.json()
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=400, detail=f"Invalid JSON: {exc}") from exc
+
+    config_to_sign = body.get("config") if isinstance(body, dict) else None
+    if not config_to_sign:
+        config_to_sign = body if isinstance(body, dict) else None
+    if not isinstance(config_to_sign, dict):
+        raise HTTPException(status_code=400, detail="Missing or invalid 'config' payload")
+
+    logger.info("🖋️  Signing OnlyOffice config (unsigned): %s", json.dumps(config_to_sign)[:2000])
+    try:
+        token = jwt_encode(config_to_sign, ONLYOFFICE_JWT_SECRET, ONLYOFFICE_JWT_ALG)
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Failed to sign OnlyOffice config: %s", exc)
+        raise HTTPException(status_code=500, detail="Failed to sign OnlyOffice config") from exc
+
+    logger.info("🖋️  OnlyOffice JWT generated (alg=%s, len=%s)", ONLYOFFICE_JWT_ALG, len(token))
+    return {"token": token, "alg": ONLYOFFICE_JWT_ALG}
+
+
+@app.post("/api/onlyoffice/sign")
+async def sign_onlyoffice_api(request: Request):
+    """Alias route for signing OnlyOffice config when behind an /api prefix."""
+    return await sign_onlyoffice(request)
+
+
+@app.post("/api/doc/onlyoffice/sign")
+async def sign_onlyoffice_api_doc(request: Request):
+    """Alias route for signing when proxied under /api/doc/*."""
+    return await sign_onlyoffice(request)
+
+
+@app.post("/onlyoffice/callback")
+async def onlyoffice_callback(request: Request):
+    """
+    Handle OnlyOffice callback with JWT validation and return the expected error=0 payload.
+    Returning {"error": 0} signals the document was saved successfully.
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+
+    token = ""
+    raw_auth = request.headers.get("Authorization", "")
+    if raw_auth.lower().startswith("bearer "):
+        token = raw_auth.split(" ", 1)[1].strip()
+    if not token:
+        token = str(body.get("token", "") or "")
+
+    if not ONLYOFFICE_JWT_SECRET:
+        if ONLYOFFICE_ALLOW_UNSIGNED:
+            logger.warning("ONLYOFFICE_JWT_SECRET not configured; accepting unsigned OnlyOffice callback")
+            logger.info("📥 OnlyOffice callback body (unsigned): %s", json.dumps(body)[:2000])
+            return {"error": 0, "unsigned": True}
+        raise HTTPException(status_code=500, detail="ONLYOFFICE_JWT_SECRET is not configured")
+
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing OnlyOffice JWT in callback")
+
+    try:
+        decoded = jwt_decode(token, ONLYOFFICE_JWT_SECRET, ONLYOFFICE_JWT_ALG)
+        logger.info("📥 OnlyOffice callback verified | payload=%s", json.dumps(decoded)[:2000])
+    except Exception as exc:  # noqa: BLE001
+        logger.error("OnlyOffice callback JWT verification failed: %s", exc)
+        raise
+
+    status_code = body.get("status")
+    logger.info("📥 OnlyOffice callback body: %s | status=%s", json.dumps(body)[:2000], status_code)
+
+    # Signal success to the Document Server
+    return {"error": 0}
+
+
+@app.post("/api/onlyoffice/callback")
+async def onlyoffice_callback_api(request: Request):
+    """Alias route for callbacks when the API is mounted behind an /api prefix."""
+    return await onlyoffice_callback(request)
+
+
+@app.post("/api/doc/onlyoffice/callback")
+async def onlyoffice_callback_api_doc(request: Request):
+    """Alias route for callbacks when proxied under /api/doc/*."""
+    return await onlyoffice_callback(request)
 
 # Initialize async checkpointer on FastAPI startup
 @app.on_event("startup")
