@@ -154,6 +154,9 @@ def node_doc_generate_section(state: RAGState) -> dict:
         overrides["doc_type"] = state.doc_type
     if state.section_type:
         overrides["section_type"] = state.section_type
+    context_docs = getattr(state, "graded_docs", None) or getattr(state, "retrieved_docs", None)
+    if context_docs:
+        overrides["extra_context"] = context_docs
 
     def _draft_with_overrides(extra: Dict[str, Any]) -> Dict[str, Any]:
         merged = dict(overrides)
