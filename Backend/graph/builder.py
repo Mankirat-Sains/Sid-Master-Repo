@@ -14,6 +14,8 @@ from utils.path_setup import ensure_info_retrieval_on_path
 ensure_info_retrieval_on_path()
 from nodes.plan import node_plan
 from nodes.router_dispatcher import node_router_dispatcher
+# CacheSearch wrapper - intercepts ProjectChat queries
+from nodes.DesktopAgent.CacheSearch.router_wrapper import node_router_dispatcher_with_cache_search
 from graph.subgraphs import (
     call_db_retrieval_subgraph,
     call_desktop_agent_subgraph,
@@ -168,7 +170,8 @@ def build_graph():
     g.add_node("plan", _wrap_node("plan", node_plan))
     g.add_node("desktop_agent", _wrap_node("desktop_agent", call_desktop_agent_subgraph))
     g.add_node("db_retrieval", _wrap_node("db_retrieval", call_db_retrieval_subgraph))
-    g.add_node("router_dispatcher", _wrap_node("router_dispatcher", node_router_dispatcher))
+    # Use wrapper that intercepts CacheSearch queries
+    g.add_node("router_dispatcher", _wrap_node("router_dispatcher", node_router_dispatcher_with_cache_search))
 
     g.set_entry_point("plan")
 

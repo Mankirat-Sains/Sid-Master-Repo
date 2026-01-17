@@ -28,6 +28,20 @@ from local_sync_agent import SyncAgent, ExcelReader, load_config
 import openpyxl
 from openpyxl.utils import get_column_letter
 
+# Import cache generator
+import sys
+from pathlib import Path
+# Add caching module to path
+caching_path = Path(__file__).parent.parent / "caching"
+if str(caching_path) not in sys.path:
+    sys.path.insert(0, str(caching_path))
+try:
+    from cache_generator import build_project_cache
+    CACHE_GENERATOR_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Cache generator not available: {e}")
+    CACHE_GENERATOR_AVAILABLE = False
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -96,6 +110,19 @@ class SyncResult(BaseModel):
     project_id: str
     message: str
     data: Optional[Dict[str, Any]] = None
+    timestamp: str
+
+class BuildCacheRequest(BaseModel):
+    folder_path: str
+
+class BuildCacheResponse(BaseModel):
+    success: bool
+    project_id: Optional[str] = None
+    message: str
+    cache_location: Optional[str] = None
+    total_files: int = 0
+    processed: int = 0
+    failed: int = 0
     timestamp: str
 
 class DirectoryInfo(BaseModel):
@@ -277,6 +304,8 @@ async def root():
             "history": "/api/agent/history",
             "configure": "/api/agent/configure",
             "files_list": "/api/agent/files/list",
+            "cache_build": "/api/agent/cache/build",
+            "cache_status": "/api/agent/cache/status/{project_id}",
             "excel_info": "/api/agent/files/excel/info",
             "excel_read": "/api/agent/files/excel/read",
             "directories": "/api/agent/directories"
@@ -1307,6 +1336,125 @@ async def delete_directory(request: DeleteDirectoryRequest):
             status_code=500,
             detail=f"Failed to remove directory: {str(e)}"
         )
+
+
+# ============================================================================
+# CACHE GENERATION ENDPOINTS
+# ============================================================================
+
+@app.post("/api/agent/cache/build", response_model=BuildCacheResponse)
+async def build_cache(request: BuildCacheRequest, background_tasks: BackgroundTasks):
+    """
+    Build embeddings cache for a project folder.
+    This processes all PDFs, Word docs, and Excel files in the folder,
+    generating embeddings for semantic search.
+    
+    Runs in background - returns immediately with status, processing continues async.
+    
+    Args:
+        request: BuildCacheRequest with folder_path
+    
+    Returns:
+        BuildCacheResponse with initial status
+    """
+    if not CACHE_GENERATOR_AVAILABLE:
+        raise HTTPException(
+            status_code=503,
+            detail="Cache generator not available. Check dependencies."
+        )
+    
+    try:
+        # Validate path
+        folder_path = validate_path(request.folder_path)
+        
+        if not folder_path.exists():
+            raise HTTPException(
+                status_code=404,
+                detail=f"Folder not found: {request.folder_path}"
+            )
+        
+        if not folder_path.is_dir():
+            raise HTTPException(
+                status_code=400,
+                detail=f"Path is not a directory: {request.folder_path}"
+            )
+        
+        # Start cache building in background
+        def build_cache_task():
+            """Background task to build cache"""
+            try:
+                logger.info(f"Starting cache build for folder: {folder_path}")
+                result = build_project_cache(str(folder_path))
+                logger.info(f"Cache build complete: {result.get('processed', 0)} files processed")
+            except Exception as e:
+                logger.error(f"Error building cache: {e}", exc_info=True)
+        
+        background_tasks.add_task(build_cache_task)
+        
+        # Return immediately with status
+        return BuildCacheResponse(
+            success=True,
+            message=f"Cache building started for folder: {folder_path}. Processing in background.",
+            cache_location=f"/Volumes/J/cache/projects/{Path(folder_path).name}/",
+            timestamp=datetime.utcnow().isoformat()
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error starting cache build: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to start cache build: {str(e)}"
+        )
+
+
+@app.get("/api/agent/cache/status/{project_id}")
+async def get_cache_status(project_id: str):
+    """
+    Get cache status for a project.
+    
+    Args:
+        project_id: Project identifier (usually folder name)
+    
+    Returns:
+        Cache status information
+    """
+    try:
+        from pathlib import Path
+        cache_dir = Path("/Volumes/J/cache/projects") / project_id
+        index_file = cache_dir / "index.json"
+        
+        if not index_file.exists():
+            return {
+                "exists": False,
+                "project_id": project_id,
+                "message": "Cache not found for this project"
+            }
+        
+        # Load index
+        with open(index_file, 'r', encoding='utf-8') as f:
+            index_data = json.load(f)
+        
+        return {
+            "exists": True,
+            "project_id": project_id,
+            "folder_path": index_data.get("folder_path"),
+            "created_at": index_data.get("created_at"),
+            "total_files": index_data.get("total_files", 0),
+            "processed": index_data.get("processed", 0),
+            "failed": index_data.get("failed", 0),
+            "cache_location": str(cache_dir),
+            "files": index_data.get("files", [])
+        }
+    
+    except Exception as e:
+        logger.error(f"Error getting cache status: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get cache status: {str(e)}"
+        )
+
 
 # ============================================================================
 # MAIN

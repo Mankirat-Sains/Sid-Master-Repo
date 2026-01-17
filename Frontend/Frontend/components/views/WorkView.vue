@@ -48,6 +48,31 @@
 
     <!-- Welcome Screen (Project Selection) -->
     <div v-else-if="!selectedProject" class="h-full flex flex-col items-center justify-center px-8 text-center overflow-y-auto">
+      <!-- Cache Build Status Notification -->
+      <div
+        v-if="cacheBuildStatus"
+        class="fixed top-4 right-4 z-50 max-w-md bg-[#111] border border-purple-500/50 rounded-lg shadow-lg p-4 flex items-start gap-3"
+      >
+        <div v-if="cacheBuilding" class="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin flex-shrink-0 mt-0.5"></div>
+        <div v-else class="w-5 h-5 flex-shrink-0 mt-0.5">
+          <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="text-sm text-white font-medium">Cache Generation</p>
+          <p class="text-xs text-white/70 mt-1">{{ cacheBuildStatus }}</p>
+        </div>
+        <button
+          @click="cacheBuildStatus = null"
+          class="text-white/40 hover:text-white transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
       <h2 class="text-3xl font-semibold text-white mb-10 tracking-tight max-w-3xl">
         Pick a folder to be the predominant knowledge base for your chat
       </h2>
@@ -308,12 +333,16 @@ import DraftEditor from '~/components/DraftEditor.vue'
 import FolderBrowserModal from '~/components/FolderBrowserModal.vue'
 import ProjectWorkspaceView from '~/components/ProjectWorkspaceView.vue'
 import { useWorkspace } from '~/composables/useWorkspace'
+import { useCacheAgent } from '~/composables/useCacheAgent'
 
 const workspace = useWorkspace()
 const workspaceState = computed(() => workspace.state.value)
 const draftLoading = ref(false)
 const draftLoadingMessage = ref('')
 const showFolderBrowser = ref(false)
+const cacheAgent = useCacheAgent()
+const cacheBuilding = ref(false)
+const cacheBuildStatus = ref<string | null>(null)
 
 interface Project {
   id: string
@@ -378,7 +407,7 @@ function removeFolder(projectId: string) {
   }
 }
 
-function handleFolderSelected(path: string, name: string) {
+async function handleFolderSelected(path: string, name: string) {
   const project: Project = {
     id: name,
     name: name,
@@ -387,6 +416,31 @@ function handleFolderSelected(path: string, name: string) {
   }
   addFolder(project)
   showFolderBrowser.value = false
+  
+  // Start cache generation in background
+  cacheBuilding.value = true
+  cacheBuildStatus.value = `Building cache for ${name}...`
+  
+  try {
+    const result = await cacheAgent.buildCache(path)
+    console.log('✅ Cache build started:', result)
+    cacheBuildStatus.value = `Cache generation started for ${name}. Processing files in background...`
+    
+    // Clear status after 5 seconds
+    setTimeout(() => {
+      cacheBuildStatus.value = null
+      cacheBuilding.value = false
+    }, 5000)
+  } catch (error: any) {
+    console.error('❌ Error starting cache build:', error)
+    cacheBuildStatus.value = `Warning: Could not start cache generation. ${error.message}`
+    cacheBuilding.value = false
+    
+    // Clear error message after 10 seconds
+    setTimeout(() => {
+      cacheBuildStatus.value = null
+    }, 10000)
+  }
 }
 
 function clearSelection() {

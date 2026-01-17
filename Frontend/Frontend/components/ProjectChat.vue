@@ -100,6 +100,7 @@
         </button>
       </div>
       <p class="text-xs text-white/30 mt-2">Press Enter to send, Shift+Enter for new line</p>
+      <p v-if="USE_TEST_SERVER" class="text-xs text-yellow-400/60 mt-1">⚠️ Using Test Server ({{ TEST_SERVER_URL }})</p>
     </div>
   </div>
 </template>
@@ -127,6 +128,10 @@ const props = defineProps<{
   folderPath: string
   openFiles: OpenFile[]
 }>()
+
+// Test server URL - change this to switch between test and production
+const TEST_SERVER_URL = 'http://localhost:8002'
+const USE_TEST_SERVER = true  // Set to false to use main API
 
 const { sendChatMessage } = useChat()
 
@@ -161,7 +166,33 @@ async function sendMessage() {
     // Include folder context in the message
     const contextMessage = `[Context: User is working in project folder: ${props.folderPath}. Open files: ${props.openFiles.map(f => f.name).join(', ') || 'none'}]\n\n${question}`
     
-    const response = await sendChatMessage(contextMessage, sessionId)
+    let response
+    
+    if (USE_TEST_SERVER) {
+      // Call test server directly
+      console.log(`🧪 Using test server: ${TEST_SERVER_URL}`)
+      const testResponse = await fetch(`${TEST_SERVER_URL}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: contextMessage,
+          session_id: sessionId
+        })
+      })
+      
+      if (!testResponse.ok) {
+        throw new Error(`HTTP ${testResponse.status}: ${testResponse.statusText}`)
+      }
+      
+      const testResult = await testResponse.json()
+      response = { reply: testResult.reply || 'No response' }
+    } else {
+      // Use main API (via useChat composable)
+      console.log('📡 Using main API server')
+      response = await sendChatMessage(contextMessage, sessionId)
+    }
     
     const assistantMessage: Message = {
       id: `msg-${Date.now() + 1}`,
@@ -171,12 +202,15 @@ async function sendMessage() {
     }
     
     messages.value.push(assistantMessage)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Chat error:', error)
+    const errorMessage = error.message || 'Unknown error'
     messages.value.push({
       id: `msg-${Date.now() + 1}`,
       role: 'assistant',
-      content: 'Sorry, I encountered an error. Please try again.',
+      content: USE_TEST_SERVER 
+        ? `Sorry, I encountered an error: ${errorMessage}. Make sure the test server is running on ${TEST_SERVER_URL}`
+        : 'Sorry, I encountered an error. Please try again.',
       timestamp: new Date()
     })
   } finally {

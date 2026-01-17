@@ -1195,6 +1195,43 @@ async def _resume_graph(graph, session_id: str):
 
 
 
+# Non-streaming chat endpoint (for ProjectChat compatibility)
+@app.post("/chat")
+async def chat_handler(request: ChatRequest):
+    """
+    Non-streaming chat endpoint for simple requests.
+    Used by ProjectChat component.
+    """
+    try:
+        logger.info(f"📤 Chat request received: {request.message[:100]}...")
+        
+        # Call execute_query
+        result = execute_query(
+            question=request.message,
+            session_id=request.session_id,
+            images_base64=request.images_base64,
+        )
+        
+        # Extract answer and citations
+        reply = result.get("answer", result.get("final_answer", "No response generated"))
+        citations = result.get("citations", [])
+        
+        return {
+            "reply": reply,
+            "citations": citations,
+            "session_id": request.session_id,
+        }
+    except Exception as e:
+        logger.error(f"❌ Chat endpoint error: {e}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "reply": f"Sorry, I encountered an error: {str(e)}",
+            "citations": [],
+            "session_id": request.session_id,
+        }
+
+
 # Streaming chat endpoint with real-time thinking logs
 @app.post("/chat/stream")
 async def chat_stream_handler(request: ChatRequest):
